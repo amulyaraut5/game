@@ -1,2 +1,4 @@
-package client;public class ChatClient {
+package client;
+
+public class ChatClient {
 }
