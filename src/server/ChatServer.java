@@ -1,7 +1,21 @@
 package server;
 
 public class ChatServer {
+    private int port;
 
+    public ChatServer(int port) {
+    }
+
+
+    public static void main(String[] args) {
+        int port = 4444;
+
+        ChatServer server = new ChatServer(port);
+        server.execute();
+    }
+
+    public void execute(){
+    }
     
     public void communicateAll(String message){
         //delivers a message from one user to the all users
