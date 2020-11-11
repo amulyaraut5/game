@@ -33,14 +33,21 @@ public class WriterThread {
         client.setUserName(userName);
         writer.println(userName);
 
-        String text;
+        String inputUser;
 
         do {
             //System.out.print("You: ");
-            text = scan.next();
-            writer.println(text);
+            inputUser = scan.next();
+            writer.println(inputUser);
 
-        } while (!text.equals("bye"));
+        } while (!inputUser.equals("bye"));
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+
+            System.out.println("Error writing to server: " + ex.getMessage());
+        }
 
     }
 }
