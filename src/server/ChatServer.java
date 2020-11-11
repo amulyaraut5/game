@@ -1,7 +1,13 @@
 package server;
 
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
 public class ChatServer {
     private int port;
+    private list<UserThread> userThreads;
+    private list<String> userNames;
 
     public ChatServer(int port) {
     }
@@ -18,6 +24,9 @@ public class ChatServer {
     }
     
     public void communicateAll(String message){
+        for (UserThread user: userThreads){
+            user.sendMessage(message)
+        }
         //delivers a message from one user to the all users
     }
 
@@ -35,6 +44,10 @@ public class ChatServer {
 
     public void removeUser(String userNAme, UserThread thisUser){
         //removes associated username and UserThread when client is disconnected
+    }
+
+    public boolean hasUsers(){
+        return (!this.userNames.isEmpty());
     }
 
 
