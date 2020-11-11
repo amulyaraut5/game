@@ -6,9 +6,6 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-/**
- *
- */
 public class ReaderThread extends Thread{
     private ChatClient client;
 
@@ -20,9 +17,6 @@ public class ReaderThread extends Thread{
         this.client = client;
     }
 
-    /**
-     *
-     */
     @Override
     public void run() {
         while (true){
