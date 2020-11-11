@@ -32,4 +32,7 @@ public class ChatClient {
             e.printStackTrace();
         }
     }
+    public void setUserName(String userName){
+        //Ich brauch die Methode in WriterThread :) (Sarah)
+    }
 }
