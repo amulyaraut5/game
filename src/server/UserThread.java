@@ -41,7 +41,11 @@ public class UserThread extends Thread{
           do {
               clientMessage = reader.readLine();
               serverMessage = userName + ": " + clientMessage;
-              server.communicateAll(serverMessage);
+              String youMessage = "You: " + clientMessage;
+
+              server.communicateOthers(serverMessage, this);
+              server.justUser(youMessage,this);
+
 
           } while (!clientMessage.equals("bye"));
           server.removeUser(userName, this);
