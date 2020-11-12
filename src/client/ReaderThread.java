@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ReaderThread extends Thread{
     private ChatClient client;
@@ -30,6 +31,9 @@ public class ReaderThread extends Thread{
             try {
                 String text = bReader.readLine();
                 System.out.println(text + "\r\n");
+            } catch (SocketException e){
+                e.printStackTrace();
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
                 break;
