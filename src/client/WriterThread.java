@@ -1,11 +1,7 @@
 package client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class WriterThread extends Thread {
 
@@ -28,18 +24,23 @@ public class WriterThread extends Thread {
     }
     @Override
     public void run() {
-        Scanner scan = new Scanner(System.in);
+        InputStream in = System.in;
+        bReader = new BufferedReader(new InputStreamReader(in));
 
         System.out.println("Enter your name");
-        String userName = scan.nextLine();
+        String userName = "userName";
+        try {
+            userName = bReader.readLine();
+        } catch (IOException e) { e.printStackTrace(); }
         client.setUserName(userName);
         writer.println(userName);
 
-        String inputUser;
+        String inputUser ="";
 
         do {
-            //System.out.print("You: ");
-            inputUser = scan.next();
+            try {
+                inputUser = bReader.readLine();
+            } catch (IOException e) { e.printStackTrace(); }
             writer.println(inputUser);
 
         } while (!inputUser.equals("bye"));
@@ -48,10 +49,8 @@ public class WriterThread extends Thread {
             socket.close();
 
         } catch (IOException ex) {
-
             System.out.println("Error writing to server: " + ex.getMessage());
         }
-
     }
 }
 
