@@ -95,7 +95,7 @@ public class ChatServer {
     public void removeUser(String userName, UserThread thisUser){
         boolean b = userNames.remove(userName);
         if (b)
-        {userThreads.remove(userName);
+        {userThreads.remove(thisUser);
             System.out.println(userName + " quitted") ;
         }
     }
