@@ -57,16 +57,15 @@ public class ChatServer {
         }
     }
     
-    public void communicateAll(String message){
+    public void communicate(String message, UserThread sender){
         for (UserThread user: userThreads){
-            user.sendMessage(message);
+            if (user != sender){
+                user.sendMessage(message);
+            }
+
         }
-        //delivers a message from one user to the all users
     }
 
-    public void communicateOthers(String message, UserThread exceptMe){
-        //delivers a message from one user to others
-    }
 
     public void justUser(String message, UserThread thisUser){
         //sends a message only to one client
