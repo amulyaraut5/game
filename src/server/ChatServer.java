@@ -29,7 +29,7 @@ public class ChatServer {
         ServerSocket server_socket = null;
         try {
             server_socket = new ServerSocket(port);
-            System.out.println("Server is waiting for the connection" + port);
+            System.out.println("Chat server is waiting for the connection to: " + port);
             acceptClients(server_socket);
 
         } catch (IOException e) {
