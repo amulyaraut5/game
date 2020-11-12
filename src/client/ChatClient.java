@@ -24,6 +24,8 @@ public class ChatClient {
             new ReaderThread(socket, this).start();
             new WriterThread(socket, this).start();
 
+        } catch (UnknownHostException e) {
+            System.out.println("Connection failed: Could not find Server" + e.getMessage());
         } catch (IOException e) {
             System.out.println("Connection failed: General I/O exception" + e.getMessage());
             e.printStackTrace();
