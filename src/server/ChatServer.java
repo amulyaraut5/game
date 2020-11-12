@@ -69,7 +69,11 @@ public class ChatServer {
     }
 
     public void justUser(String message, UserThread thisUser){
-        //sends a message only to one client
+        for (UserThread aUser : userThreads) {
+            if (aUser == thisUser) {
+                aUser.sendMessage(message);
+            }
+        }//sends a message only to one client
     }
     /**
      * After the Userthread is created and user enters the name, the new user is added to the Set of the names.
@@ -91,6 +95,10 @@ public class ChatServer {
         {userThreads.remove(userName);
             System.out.println(userName + " quitted") ;
         }
+    }
+
+    ArrayList<String> getUserNames() {
+        return this.userNames;
     }
 
     public boolean hasUsers(){
