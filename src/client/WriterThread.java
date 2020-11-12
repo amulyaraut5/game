@@ -27,7 +27,6 @@ public class WriterThread extends Thread {
         InputStream in = System.in;
         bReader = new BufferedReader(new InputStreamReader(in));
 
-        System.out.println("Enter your name");
         String userName = "userName";
         try {
             userName = bReader.readLine();
