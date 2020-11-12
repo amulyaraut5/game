@@ -29,16 +29,16 @@ public class UserThread extends Thread{
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
 
-<<<<<<< HEAD
+
             String userName = reader.readLine();
             server.addUserName(userName);
-=======
-          //printUsers();
-          //userOut.println("Enter your username");
 
-          String userName = reader.readLine();
-          server.addUserName(userName);
->>>>>>> 8b2fa122a10d8dd9da47640e3093c2cc38d20ed0
+            //printUsers();
+            //userOut.println("Enter your username");
+
+            String userName = reader.readLine();
+            server.addUserName(userName);
+
 
             String serverMessage = "Welcome " + userName;
             server.justUser(serverMessage, this);
@@ -48,32 +48,32 @@ public class UserThread extends Thread{
 
             String clientMessage;
 
-<<<<<<< HEAD
+
             do {
                 clientMessage = reader.readLine();
                 serverMessage = userName + ": " + clientMessage;
                 server.communicateAll(serverMessage);
-=======
-          do {
-              clientMessage = reader.readLine();
-              serverMessage = userName + ": " + clientMessage;
-              String youMessage = "You: " + clientMessage;
 
-              server.communicateOthers(serverMessage, this);
-              server.justUser(youMessage,this);
+                do {
+                    clientMessage = reader.readLine();
+                    serverMessage = userName + ": " + clientMessage;
+                    String youMessage = "You: " + clientMessage;
 
->>>>>>> 8b2fa122a10d8dd9da47640e3093c2cc38d20ed0
+                    server.communicateOthers(serverMessage, this);
+                    server.justUser(youMessage, this);
 
-            } while (!clientMessage.equals("bye"));
-            server.removeUser(userName, this);
-            socket.close();
 
-            serverMessage = userName + " left the room.";
-            server.communicateOthers(serverMessage, this);
+                } while (!clientMessage.equals("bye"));
+                server.removeUser(userName, this);
+                socket.close();
 
-        } catch (IOException ex) {
-            System.out.println("Error occurred in UserThread: " + ex.getMessage());
-            ex.printStackTrace();
+                serverMessage = userName + " left the room.";
+                server.communicateOthers(serverMessage, this);
+
+            } catch(IOException ex){
+                System.out.println("Error occurred in UserThread: " + ex.getMessage());
+                ex.printStackTrace();
+            }
         }
     }
       //prints a message for one specific user
