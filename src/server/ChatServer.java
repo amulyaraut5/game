@@ -24,7 +24,7 @@ public class ChatServer {
      * start_Server() method opens a channel for the connection between Server and Client
      */
     private  void start_Server(){
-        userThreads = new HashSet<UserThread>();
+
         ServerSocket server_socket = null;
         try {
             server_socket = new ServerSocket(server_port);
