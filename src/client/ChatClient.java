@@ -7,17 +7,17 @@ import java.net.UnknownHostException;
 public class ChatClient {
 
     private int port;
-    private String ip;
+    private String hostname;
     private String userName;
 
-    public ChatClient (String ip, int port) {
-        this.ip = ip;
+    public ChatClient (String hostname, int port) {
+        this.hostname = hostname;
         this.port = port;
     }
 
     public void establishConnection () {
         try {
-            Socket socket = new Socket(ip, port);
+            Socket socket = new Socket(hostname, port);
 
             System.out.println("Connection to server successful");
 
@@ -43,10 +43,10 @@ public class ChatClient {
     public static void main(String[] args) {
         if (args.length < 2) return;
 
-        String ip = args[0];
+        String hostname = args[0];
         int port = Integer.parseInt(args [1]);
 
-        ChatClient client = new ChatClient(ip, port);
+        ChatClient client = new ChatClient(hostname, port);
         client.establishConnection();
     }
 
