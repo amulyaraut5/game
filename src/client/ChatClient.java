@@ -27,9 +27,6 @@ public class ChatClient {
         } catch (IOException e) {
             System.out.println("Connection failed: General I/O exception" + e.getMessage());
             e.printStackTrace();
-        } catch (UnknownHostException e) {
-            System.out.println("Connection failed: Could not find Server" + e.getMessage());
-            e.printStackTrace();
         }
     }
 
