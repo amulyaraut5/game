@@ -6,8 +6,8 @@ import java.util.*;
 
 public class ChatServer {
     private int port;
-    private list<UserThread> userThreads;
-    private list<String> userNames;
+    private ArrayList<UserThread> userThreads;
+    private ArrayList<String> userNames;
 
     public ChatServer(int port) {
     }
