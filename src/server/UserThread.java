@@ -28,11 +28,7 @@ public class UserThread extends Thread{
 
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
-
-
-            String userName = reader.readLine();
-            server.addUserName(userName);
-
+            
             //printUsers();
             //userOut.println("Enter your username");
 
@@ -47,12 +43,6 @@ public class UserThread extends Thread{
             server.communicateOthers(serverMessage, this);
 
             String clientMessage;
-
-
-            do {
-                clientMessage = reader.readLine();
-                serverMessage = userName + ": " + clientMessage;
-                server.communicateAll(serverMessage);
 
                 do {
                     clientMessage = reader.readLine();
@@ -70,7 +60,7 @@ public class UserThread extends Thread{
                 serverMessage = userName + " left the room.";
                 server.communicateOthers(serverMessage, this);
 
-            }
+
         } catch(IOException ex){
                 System.out.println("Error occurred in UserThread: " + ex.getMessage());
                 ex.printStackTrace();
