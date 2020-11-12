@@ -10,6 +10,7 @@ public class ChatServer {
     private ArrayList<String> userNames = new ArrayList<>();
 
     public ChatServer(int port) {
+        this.port = port;
     }
 
 
