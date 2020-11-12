@@ -6,10 +6,11 @@ import java.util.*;
 
 public class ChatServer {
     private int port;
-    private ArrayList<UserThread> userThreads;
-    private ArrayList<String> userNames;
+    private ArrayList<UserThread> userThreads = new ArrayList<>();
+    private ArrayList<String> userNames = new ArrayList<>();
 
     public ChatServer(int port) {
+        this.port = port;
     }
 
 
@@ -57,16 +58,15 @@ public class ChatServer {
         }
     }
     
-    public void communicateAll(String message){
+    public void communicate(String message, UserThread sender){
         for (UserThread user: userThreads){
-            user.sendMessage(message);
+            if (user != sender){
+                user.sendMessage(message);
+            }
+
         }
-        //delivers a message from one user to the all users
     }
 
-    public void communicateOthers(String message, UserThread exceptMe){
-        //delivers a message from one user to others
-    }
 
     public void justUser(String message, UserThread thisUser){
         for (UserThread aUser : userThreads) {

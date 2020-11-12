@@ -38,7 +38,7 @@ public class UserThread extends Thread{
             server.justUser(serverMessage, this);
 
             serverMessage = userName + " joined the room.";
-            server.communicateOthers(serverMessage, this);
+            server.communicate(serverMessage, this);
 
             String clientMessage;
 
@@ -47,7 +47,7 @@ public class UserThread extends Thread{
                     serverMessage = userName + ": " + clientMessage;
                     String youMessage = "You: " + clientMessage;
 
-                    server.communicateOthers(serverMessage, this);
+                    server.communicate(serverMessage, this);
                     server.justUser(youMessage, this);
 
 
@@ -56,7 +56,7 @@ public class UserThread extends Thread{
                 socket.close();
 
                 serverMessage = userName + " left the room.";
-                server.communicateOthers(serverMessage, this);
+                server.communicate(serverMessage, this);
 
 
         } catch(IOException ex){
