@@ -24,7 +24,7 @@ public class ChatServer {
      * start_Server() method opens a channel for the connection between Server and Client
      */
     private  void start_Server(){
-        userThreads = new HashSet<UserThread>();
+
         ServerSocket server_socket = null;
         try {
             server_socket = new ServerSocket(server_port);
@@ -71,13 +71,26 @@ public class ChatServer {
     public void justUser(String message, UserThread thisUser){
         //sends a message only to one client
     }
-
+    /**
+     * After the Userthread is created and user enters the name, the new user is added to the Set of the names.
+     *
+     * @param userName userName to be added
+     */
     public void addUserName(String userName){
-       //store username in newly connected client
+        userNames.add(userName);
     }
-
-    public void removeUser(String userNAme, UserThread thisUser){
-        //removes associated username and UserThread when client is disconnected
+    /**
+     * This method removes the username and userthread from their respective Set .
+     * Removing can be done by calling a pre defined method remove().
+     * @param userName userName to be removed
+     * @param thisUser userthread to be removed
+     */
+    public void removeUser(String userName, UserThread thisUser){
+        boolean b = userNames.remove(userName);
+        if (b)
+        {userThreads.remove(userName);
+            System.out.println(userName + " quitted") ;
+        }
     }
 
     public boolean hasUsers(){
