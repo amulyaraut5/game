@@ -1,16 +1,18 @@
 package client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class WriterThread {
+public class WriterThread extends Thread {
 
     private PrintWriter writer;
     private Socket socket;
     private ChatClient client;
+    private BufferedReader bReader;
 
     public WriterThread(Socket socket, ChatClient client) {
         this.socket = socket;
@@ -24,8 +26,8 @@ public class WriterThread {
             ex.printStackTrace();
         }
     }
-
-    public void start() {
+    @Override
+    public void run() {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Enter your name");
