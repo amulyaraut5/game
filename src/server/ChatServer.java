@@ -25,7 +25,7 @@ public class ChatServer {
     
     public void communicateAll(String message){
         for (UserThread user: userThreads){
-            user.sendMessage(message)
+            user.sendMessage(message);
         }
         //delivers a message from one user to the all users
     }
