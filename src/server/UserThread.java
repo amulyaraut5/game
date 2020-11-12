@@ -28,10 +28,15 @@ public class UserThread extends Thread{
 
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
-            ;
+
             userOut.println("Enter your username");
 
             String userName = reader.readLine();
+            while (server.checkUserNames(userName)){
+                userOut.println("This username is already taken please try another one");
+                userName = reader.readLine();
+            }
+
             server.addUserName(userName);
 
             String serverMessage = "Welcome " + userName;
@@ -44,11 +49,11 @@ public class UserThread extends Thread{
 
                 do {
                     clientMessage = reader.readLine();
-                    serverMessage = userName + ": " + clientMessage;
-                    String youMessage = "You: " + clientMessage;
+                    serverMessage = "[" + userName + "] : " + clientMessage;
+                    //String youMessage = "You: " + clientMessage;
 
                     server.communicate(serverMessage, this);
-                    server.justUser(youMessage, this);
+                    //server.justUser(youMessage, this);
 
 
                 } while (!clientMessage.equals("bye"));

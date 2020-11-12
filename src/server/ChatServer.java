@@ -9,7 +9,7 @@ public class ChatServer {
     private ArrayList<UserThread> userThreads = new ArrayList<>();
     private ArrayList<String> userNames = new ArrayList<>();
 
-    public ChatServer(int port) {
+    public ChatServer(int port) { this.port = port;
         this.port = port;
     }
 
@@ -82,6 +82,9 @@ public class ChatServer {
      */
     public void addUserName(String userName){
         userNames.add(userName);
+    }
+    boolean checkUserNames (String userName){
+        return userNames.contains(userName);
     }
     /**
      * This method removes the username and userthread from their respective Set .
