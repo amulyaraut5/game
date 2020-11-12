@@ -32,10 +32,10 @@ public class ReaderThread extends Thread{
                 String text = bReader.readLine();
                 System.out.println(text + "\r\n");
             } catch (SocketException e){
-                e.printStackTrace();
+                //e.printStackTrace();
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 break;
             }
         }
