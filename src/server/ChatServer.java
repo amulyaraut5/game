@@ -27,8 +27,8 @@ public class ChatServer {
 
         ServerSocket server_socket = null;
         try {
-            server_socket = new ServerSocket(server_port);
-            System.out.println("Server is waiting for the connection" + server_port);
+            server_socket = new ServerSocket(port);
+            System.out.println("Server is waiting for the connection" + port);
             acceptClients(server_socket);
 
         } catch (IOException e) {
@@ -41,18 +41,18 @@ public class ChatServer {
      * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
      * @param server_socket socket from which connection is to be established
      */
-    private void acceptClients(ServerSocket server_socket)  {
+    public void acceptClients(ServerSocket server_socket)  {
         while(true){
             Socket client_socket = null;
             try {
                 client_socket = server_socket.accept();
 
                 System.out.println("Accepted the connection from address: " + client_socket.getRemoteSocketAddress());
-                UserThread newUser = new UserThread(this, client_socket);
+                UserThread newUser = new UserThread(client_socket, this);
                 userThreads.add(newUser);
                 newUser.start();
             }catch (IOException e){
-                System.out.println("Accept failed on:" + server_port);
+                System.out.println("Accept failed on:" + port);
             }
         }
     }

@@ -10,7 +10,7 @@ public class UserThread extends Thread{
     private ChatServer server;
     private PrintWriter userOut;
 
-  private UserThread(Socket socket, ChatServer server){
+  public UserThread(Socket socket, ChatServer server){
       this.socket = socket;
       this.server = server;
   }
