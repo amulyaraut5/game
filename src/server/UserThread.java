@@ -70,12 +70,13 @@ public class UserThread extends Thread{
                 serverMessage = userName + " left the room.";
                 server.communicateOthers(serverMessage, this);
 
-            } catch(IOException ex){
+            }
+        } catch(IOException ex){
                 System.out.println("Error occurred in UserThread: " + ex.getMessage());
                 ex.printStackTrace();
             }
         }
-    }
+
       //prints a message for one specific user
     public void sendMessage(String message){
           userOut.println(message);
@@ -83,4 +84,3 @@ public class UserThread extends Thread{
 
     }
 
-}
