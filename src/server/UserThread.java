@@ -28,13 +28,11 @@ public class UserThread extends Thread{
 
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
-            
-            //printUsers();
-            //userOut.println("Enter your username");
+            ;
+            userOut.println("Enter your username");
 
             String userName = reader.readLine();
             server.addUserName(userName);
-
 
             String serverMessage = "Welcome " + userName;
             server.justUser(serverMessage, this);
