@@ -29,8 +29,16 @@ public class UserThread extends Thread{
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
 
+<<<<<<< HEAD
             String userName = reader.readLine();
             server.addUserName(userName);
+=======
+          //printUsers();
+          //userOut.println("Enter your username");
+
+          String userName = reader.readLine();
+          server.addUserName(userName);
+>>>>>>> 8b2fa122a10d8dd9da47640e3093c2cc38d20ed0
 
             String serverMessage = "Welcome " + userName;
             server.justUser(serverMessage, this);
@@ -40,10 +48,21 @@ public class UserThread extends Thread{
 
             String clientMessage;
 
+<<<<<<< HEAD
             do {
                 clientMessage = reader.readLine();
                 serverMessage = userName + ": " + clientMessage;
                 server.communicateAll(serverMessage);
+=======
+          do {
+              clientMessage = reader.readLine();
+              serverMessage = userName + ": " + clientMessage;
+              String youMessage = "You: " + clientMessage;
+
+              server.communicateOthers(serverMessage, this);
+              server.justUser(youMessage,this);
+
+>>>>>>> 8b2fa122a10d8dd9da47640e3093c2cc38d20ed0
 
             } while (!clientMessage.equals("bye"));
             server.removeUser(userName, this);
