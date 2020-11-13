@@ -29,7 +29,7 @@ public class ChatServer {
         ServerSocket server_socket = null;
         try {
             server_socket = new ServerSocket(port);
-            System.out.println("Chat server is waiting for the connection to: " + port);
+            System.out.println("Chat server is listening to port " + port);
             acceptClients(server_socket);
 
         } catch (IOException e) {
@@ -63,7 +63,6 @@ public class ChatServer {
             if (user != sender){
                 user.sendMessage(message);
             }
-
         }
     }
 
@@ -87,7 +86,7 @@ public class ChatServer {
     public void removeUser(String userName, UserThread thisUser){
         boolean b = userNames.remove(userName);
         if (b)
-        {userThreads.remove(userName);
+        {userThreads.remove(thisUser);
             System.out.println(userName + " quitted") ;
         }
     }
