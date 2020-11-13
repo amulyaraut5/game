@@ -29,20 +29,19 @@ public class UserThread extends Thread{
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
 
-            userOut.println("Enter your username");
+            sendMessage("Enter your username");
 
             String userName = reader.readLine();
             while (server.checkUserNames(userName)){
-                userOut.println("This username is already taken please try another one");
+                sendMessage("This username is already taken please try another one");
                 userName = reader.readLine();
             }
 
             server.addUserName(userName);
 
-            String serverMessage = "Welcome " + userName;
-            server.justUser(serverMessage, this);
+            sendMessage("Welcome " + userName + "!");
 
-            serverMessage = userName + " joined the room.";
+            String serverMessage = userName + " joined the room.";
             server.communicate(serverMessage, this);
 
             String clientMessage;
