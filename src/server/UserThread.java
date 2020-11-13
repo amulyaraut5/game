@@ -15,10 +15,9 @@ public class UserThread extends Thread{
       this.server = server;
   }
     /**
-     * This method starts a new thread when ever a client gets connected to the server, therefore the server is able to handle multiple clients at the same time.
-     * It sends a welcome-message when a new user enters the chatroom and notifies all other users.
-     * It runs a loop of reading messages sent from the user and sending them to all other users until the user types "bye" to disconnect.
-     * The other users get notified when a user disconnects and the connection is closed.
+     * The method starts new thread when a client gets connected, therefore server is able to handle multiple clients at the same time.
+     * It runs a loop of reading messages sent from the user and sending them to all other users.
+     * The other users get notified when a user disconnects by typing "bye" and the connection is closed.
      */
     @Override
     public void run() {
@@ -38,7 +37,6 @@ public class UserThread extends Thread{
             }
 
             server.addUserName(userName);
-
             sendMessage("Welcome " + userName + "!");
 
             String serverMessage = userName + " joined the room.";
@@ -52,7 +50,7 @@ public class UserThread extends Thread{
                     //String youMessage = "You: " + clientMessage;
 
                     server.communicate(serverMessage, this);
-                    //server.justUser(youMessage, this);
+                    //server.sendMessage(youMessage);
 
 
                 } while (!clientMessage.equals("bye"));
