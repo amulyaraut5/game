@@ -30,7 +30,7 @@ public class ReaderThread extends Thread{
         while (true){
             try {
                 String text = bReader.readLine();
-                System.out.println(text + "\r\n");
+                System.out.print(text + "\r\n");
             } catch (SocketException e){
                 //e.printStackTrace();
                 break;

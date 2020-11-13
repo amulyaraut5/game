@@ -63,7 +63,6 @@ public class ChatServer {
             if (user != sender){
                 user.sendMessage(message);
             }
-
         }
     }
 
