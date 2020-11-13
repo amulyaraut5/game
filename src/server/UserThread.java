@@ -57,6 +57,7 @@ public class UserThread extends Thread{
 
 
                 } while (!clientMessage.equals("bye"));
+                userOut.println("Bye " + userName);
                 server.removeUser(userName, this);
                 socket.close();
 
