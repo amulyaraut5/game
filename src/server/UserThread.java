@@ -24,43 +24,33 @@ public class UserThread extends Thread{
         try {
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
 
             sendMessage("Enter your username");
-
             String userName = reader.readLine();
             while (server.checkUserNames(userName)){
                 sendMessage("This username is already taken please try another one");
                 userName = reader.readLine();
             }
-
             server.addUserName(userName);
             sendMessage("Welcome " + userName + "!");
-
             String serverMessage = userName + " joined the room.";
             server.communicate(serverMessage, this);
 
             String clientMessage;
-
                 do {
                     clientMessage = reader.readLine();
                     serverMessage = "[" + userName + "] : " + clientMessage;
-                    //String youMessage = "You: " + clientMessage;
-
                     server.communicate(serverMessage, this);
-                    //server.sendMessage(youMessage);
-
 
                 } while (!clientMessage.equals("bye"));
-                userOut.println("Bye " + userName);
+                sendMessage("Bye " + userName);
                 server.removeUser(userName, this);
                 socket.close();
 
                 serverMessage = userName + " left the room.";
                 server.communicate(serverMessage, this);
-
 
         } catch(IOException ex){
                 System.out.println("Error occurred in UserThread: " + ex.getMessage());
@@ -72,6 +62,5 @@ public class UserThread extends Thread{
     public void sendMessage(String message){
           userOut.println(message);
         }
-
     }
 
