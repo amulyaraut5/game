@@ -69,6 +69,10 @@ public class UserThread extends Thread{
         sendMessage("Enter your username");
         try {
             userName = reader.readLine();
+            while (server.check_for_emptyString(userName)) {
+                sendMessage("Empty String is not valid.Please enter  username ");
+                userName = reader.readLine();
+            }
             while (!server.checkAvailability(userName)) {
                 sendMessage("This username is already taken please try another one");
                 userName = reader.readLine();
