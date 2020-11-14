@@ -32,9 +32,9 @@ public class WriterThread extends Thread {
         InputStream in = System.in;
         bReader = new BufferedReader(new InputStreamReader(in));
 
-        dealWithUserName ();
+        manageUserName ();
 
-        dealWithUserInput();
+        manageUserInput();
 
         try {
             socket.close();
@@ -46,7 +46,7 @@ public class WriterThread extends Thread {
      *
      *
      */
-    private void dealWithUserName(){
+    private void manageUserName(){
         String userName = "userName";
         try {
             userName = bReader.readLine();
@@ -58,7 +58,7 @@ public class WriterThread extends Thread {
      *
      *
      */
-    private void dealWithUserInput(){
+    private void manageUserInput(){
         String inputUser ="";
 
         do {
