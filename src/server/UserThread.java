@@ -11,6 +11,8 @@ public class UserThread extends Thread{
     private PrintWriter userOut;
     private BufferedReader reader;
 
+    private String userName;
+
   public UserThread(Socket socket, ChatServer server){
       this.socket = socket;
       this.server = server;
@@ -25,6 +27,7 @@ public class UserThread extends Thread{
           ex.printStackTrace();
       }
   }
+
     /**
      * The method starts new thread when a client gets connected, therefore server is able to handle multiple clients at the same time.
      * It runs a loop of reading messages sent from the user and sending them to all other users.
@@ -33,18 +36,9 @@ public class UserThread extends Thread{
     @Override
     public void run() {
         try {
-            sendMessage("Enter your username");
-            String userName = reader.readLine();
-            while (server.checkUserNames(userName)) {
-                sendMessage("This username is already taken please try another one");
-                userName = reader.readLine();
-            }
-            server.addUserName(userName);
-            sendMessage("Welcome " + userName + "!");
-            String serverMessage = userName + " joined the room.";
-            server.communicate(serverMessage, this);
-
+            logIn();
             String clientMessage;
+            String serverMessage;
             do {
                 clientMessage = reader.readLine();
                 serverMessage = "[" + userName + "] : " + clientMessage;
@@ -57,6 +51,7 @@ public class UserThread extends Thread{
 
             serverMessage = userName + " left the room.";
             server.communicate(serverMessage, this);
+
         } catch (IOException ex) {
             System.out.println("Error in UserThread: " + ex.getMessage());
             ex.printStackTrace();
@@ -80,7 +75,7 @@ public class UserThread extends Thread{
         String serverMessage = userName + " joined the room.";
         server.communicate(serverMessage, this);
     }
-    
+
       //prints a message for one specific user
     public void sendMessage(String message){
           userOut.println(message);
