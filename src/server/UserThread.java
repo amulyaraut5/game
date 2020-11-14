@@ -16,6 +16,7 @@ public class UserThread extends Thread{
   public UserThread(Socket socket, ChatServer server){
       this.socket = socket;
       this.server = server;
+      this.userName = userName;
 
       try {
           InputStream input = socket.getInputStream();
@@ -59,21 +60,21 @@ public class UserThread extends Thread{
         }
     }
 
-    public void logIn() {
+    public String logIn() {
         sendMessage("Enter your username");
-        String userName = null;
         try {
             userName = reader.readLine();
             while (server.checkUserNames(userName)) {
                 sendMessage("This username is already taken please try another one");
-                userName = reader.readLine();
+                userName = reader.readLine();return userName;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return userName;
     }
 
-    public void welcome() {
+    public void welcome(){
         server.addUserName(userName);
         sendMessage("Welcome " + userName + "!");
         String serverMessage = userName + " joined the room.";
