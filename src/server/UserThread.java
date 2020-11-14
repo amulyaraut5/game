@@ -57,12 +57,30 @@ public class UserThread extends Thread{
 
             serverMessage = userName + " left the room.";
             server.communicate(serverMessage, this);
-        } catch (IOException e) {
-
+        } catch (IOException ex) {
+            System.out.println("Error in UserThread: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
-
+    public void logIn() {
+        sendMessage("Enter your username");
+        String userName = null;
+        try {
+            userName = reader.readLine();
+        while (server.checkUserNames(userName)) {
+            sendMessage("This username is already taken please try another one");
+            userName = reader.readLine();
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        server.addUserName(userName);
+        sendMessage("Welcome " + userName + "!");
+        String serverMessage = userName + " joined the room.";
+        server.communicate(serverMessage, this);
+    }
+    
       //prints a message for one specific user
     public void sendMessage(String message){
           userOut.println(message);
