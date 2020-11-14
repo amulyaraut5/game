@@ -29,7 +29,7 @@ public class UserThread extends Thread{
 
             sendMessage("Enter your username");
             String userName = reader.readLine();
-            while (server.checkUserNames(userName)){
+            while (!server.checkUserNames(userName)){
                 sendMessage("This username is already taken please try another one");
                 userName = reader.readLine();
             }

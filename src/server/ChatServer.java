@@ -78,10 +78,10 @@ public class ChatServer {
      * It checks if the username is already in the list of assigned usernames
      *
      * @param userName userName to be checked
-     * @return True if username is already taken, false if not
+     * @return True if username is free, false if it´s already assigned
      */
     public boolean checkUserNames (String userName){
-        return userNames.contains(userName);
+        return !(userNames.contains(userName));
     }
     /**
      * This method removes the username and userthread from their respective Set .
