@@ -30,8 +30,7 @@ public class UserThread extends Thread{
   }
 
     /**
-     * The method starts new thread when a client gets connected, therefore server is able to handle multiple clients at the same time.
-     * It runs a loop of reading messages sent from the user and sending them to all other users.
+     * The method runs a loop of reading messages from the user and sending them to all other users.
      * The other users get notified when a user disconnects by typing "bye" and the connection is closed.
      */
     @Override
@@ -45,8 +44,8 @@ public class UserThread extends Thread{
                 clientMessage = reader.readLine();
                 serverMessage = "[" + userName + "] : " + clientMessage;
                 server.communicate(serverMessage, this);
-
             } while (!clientMessage.equals("bye"));
+
             sendMessage("Bye " + userName);
             server.removeUser(userName, this);
             socket.close();
@@ -60,13 +59,19 @@ public class UserThread extends Thread{
         }
     }
 
+    /**
+     * The user is asked to enter a name to log in.
+     * If the name already exists in the list of assigned usernames, the user is asked to try again.
+     *
+     * @return the entered and accepted username
+     */
     public String logIn() {
         sendMessage("Enter your username");
         try {
             userName = reader.readLine();
             while (server.checkUserNames(userName)) {
                 sendMessage("This username is already taken please try another one");
-                userName = reader.readLine();return userName;
+                userName = reader.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,6 +79,9 @@ public class UserThread extends Thread{
         return userName;
     }
 
+    /**
+     * Sends welcome message to the user and notifies all other users.
+     */
     public void welcome(){
         server.addUserName(userName);
         sendMessage("Welcome " + userName + "!");
@@ -81,7 +89,10 @@ public class UserThread extends Thread{
         server.communicate(serverMessage, this);
     }
 
-      //prints a message for one specific user
+    /**
+     * prints a message for one specific user
+     * @param message the message to be sent
+     */
     public void sendMessage(String message){
           userOut.println(message);
         }
