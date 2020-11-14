@@ -6,6 +6,7 @@ import java.net.Socket;
 public class WriterThread extends Thread {
 
     private PrintWriter writer;
+    private OutputStream output;
     private Socket socket;
     private ChatClient client;
     private BufferedReader bReader;
@@ -15,25 +16,49 @@ public class WriterThread extends Thread {
         this.client = client;
 
         try {
-            OutputStream output = socket.getOutputStream();
+            output = socket.getOutputStream();
             writer = new PrintWriter(output, true);
         } catch (IOException ex) {
             System.out.println("Error getting output stream: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
+    /**
+     *
+     *
+     */
     @Override
     public void run() {
         InputStream in = System.in;
         bReader = new BufferedReader(new InputStreamReader(in));
 
+        dealWithUserName ();
+
+        dealWithUserInput();
+
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            System.out.println("Error writing to server: " + ex.getMessage());
+        }
+    }
+    /**
+     *
+     *
+     */
+    private void dealWithUserName(){
         String userName = "userName";
         try {
             userName = bReader.readLine();
         } catch (IOException e) { e.printStackTrace(); }
         client.setUserName(userName);
         writer.println(userName);
-
+    }
+    /**
+     *
+     *
+     */
+    private void dealWithUserInput(){
         String inputUser ="";
 
         do {
@@ -44,11 +69,6 @@ public class WriterThread extends Thread {
 
         } while (!inputUser.equals("bye"));
 
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            System.out.println("Error writing to server: " + ex.getMessage());
-        }
     }
 }
 
