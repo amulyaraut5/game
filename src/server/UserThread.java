@@ -70,11 +70,11 @@ public class UserThread extends Thread{
         try {
             userName = reader.readLine();
             while (server.check_for_emptyString(userName)) {
-                sendMessage("Empty String is not valid.Please enter  username ");
+                sendMessage("Empty String is not valid. Please enter your username. ");
                 userName = reader.readLine();
             }
             while (!server.checkAvailability(userName)) {
-                sendMessage("This username is already taken please try another one");
+                sendMessage("This username is already taken please try another one. ");
                 userName = reader.readLine();
             }
         } catch (IOException e) {
@@ -98,7 +98,8 @@ public class UserThread extends Thread{
      * @param message the message to be sent
      */
     public void sendMessage(String message){
-          userOut.println(message);
+
+        userOut.println(message);
         }
     }
 

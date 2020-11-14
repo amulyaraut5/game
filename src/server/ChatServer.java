@@ -90,7 +90,6 @@ public class ChatServer {
      * @return True if username is free, false if it´s already assigned
      */
     public boolean checkAvailability (String userName){
-
         return (!userNames.contains(userName));
     }
     /**

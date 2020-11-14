@@ -43,8 +43,8 @@ public class WriterThread extends Thread {
         }
     }
     /**
-     *
-     *
+     * It reads the userName the user writes in the console and
+     * transfers it to the server
      */
     private void manageUserName(){
         String userName = "userName";
@@ -55,8 +55,8 @@ public class WriterThread extends Thread {
         writer.println(userName);
     }
     /**
-     *
-     *
+     * It reads input in the console and transfers it to the server
+     * as long if the user doesn´t write "bye"
      */
     private void manageUserInput(){
         String inputUser ="";
