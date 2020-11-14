@@ -40,6 +40,7 @@ public class ChatClient {
         this.userName = userName;
     }
 
+
     public static void main(String[] args) {
 
         String hostname = "localhost";
