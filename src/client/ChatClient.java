@@ -15,6 +15,11 @@ public class ChatClient {
         this.port = port;
     }
 
+    /**
+     * This method establishes the connection between the server and the client using the assigned hostname and port.
+     * If this was successful it creates a ReadThread and a WriterThread which handle the communication.
+     */
+
     public void establishConnection () {
         try {
             Socket socket = new Socket(hostname, port);
@@ -34,10 +39,6 @@ public class ChatClient {
 
     void setUserName (String userName) {
         this.userName = userName;
-    }
-
-    String getUserName () {
-        return this.userName;
     }
 
     public static void main(String[] args) {
