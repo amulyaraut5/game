@@ -37,6 +37,7 @@ public class UserThread extends Thread{
     public void run() {
         try {
             logIn();
+            welcome();
             String clientMessage;
             String serverMessage;
             do {
@@ -63,13 +64,16 @@ public class UserThread extends Thread{
         String userName = null;
         try {
             userName = reader.readLine();
-        while (server.checkUserNames(userName)) {
-            sendMessage("This username is already taken please try another one");
-            userName = reader.readLine();
-        }
+            while (server.checkUserNames(userName)) {
+                sendMessage("This username is already taken please try another one");
+                userName = reader.readLine();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void welcome() {
         server.addUserName(userName);
         sendMessage("Welcome " + userName + "!");
         String serverMessage = userName + " joined the room.";

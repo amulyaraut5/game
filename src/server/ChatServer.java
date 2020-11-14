@@ -74,8 +74,14 @@ public class ChatServer {
     public void addUserName(String userName){
         userNames.add(userName);
     }
-    boolean checkUserNames (String userName){
-        return userNames.contains(userName);
+    /**
+     * It checks if the username is already in the list of assigned usernames
+     *
+     * @param userName userName to be checked
+     * @return True if username is free, false if it´s already assigned
+     */
+    public boolean checkUserNames (String userName){
+        return !(userNames.contains(userName));
     }
     /**
      * This method removes the username and userthread from their respective Set .
@@ -84,9 +90,8 @@ public class ChatServer {
      * @param thisUser userthread to be removed
      */
     public void removeUser(String userName, UserThread thisUser){
-        boolean b = userNames.remove(userName);
-        if (b)
-        {userThreads.remove(thisUser);
+        if (userNames.remove(userName)) {
+            userThreads.remove(thisUser);
             System.out.println(userName + " quitted") ;
         }
     }
