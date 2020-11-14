@@ -33,11 +33,10 @@ public class ChatClient {
             System.out.println("Connection failed: Could not find Server" + e.getMessage());
         } catch (IOException e) {
             System.out.println("Connection failed: General I/O exception" + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    void setUserName (String userName) {
+    void setUserName(String userName) {
         this.userName = userName;
     }
 

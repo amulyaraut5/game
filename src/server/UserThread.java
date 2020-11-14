@@ -1,8 +1,6 @@
 package server;
 
 import java.io.*;
-import java.net.*;
-import java.util.*;
 import java.net.Socket;
 
 public class UserThread extends Thread{
@@ -16,7 +14,6 @@ public class UserThread extends Thread{
   public UserThread(Socket socket, ChatServer server){
       this.socket = socket;
       this.server = server;
-      this.userName = userName;
 
       try {
           InputStream input = socket.getInputStream();
@@ -66,15 +63,15 @@ public class UserThread extends Thread{
      * @return the entered and accepted username
      */
     public String logIn() {
-        sendMessage("Enter your username");
+        sendMessage("Enter your username:");
         try {
             userName = reader.readLine();
             while (server.check_for_emptyString(userName)) {
-                sendMessage("Empty String is not valid. Please enter your username. ");
+                sendMessage("Empty String is not valid. Please enter your username:");
                 userName = reader.readLine();
             }
             while (!server.checkAvailability(userName)) {
-                sendMessage("This username is already taken please try another one. ");
+                sendMessage("This username is already taken. Please try another one:");
                 userName = reader.readLine();
             }
         } catch (IOException e) {
@@ -89,6 +86,7 @@ public class UserThread extends Thread{
     public void welcome(){
         server.addUserName(userName);
         sendMessage("Welcome " + userName + "!");
+        sendMessage("Type \"bye\" to leave the room.");
         String serverMessage = userName + " joined the room.";
         server.communicate(serverMessage, this);
     }
@@ -98,8 +96,7 @@ public class UserThread extends Thread{
      * @param message the message to be sent
      */
     public void sendMessage(String message){
-
-        userOut.println(message);
+          userOut.println(message);
         }
     }
 

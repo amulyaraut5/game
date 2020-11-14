@@ -32,7 +32,7 @@ public class WriterThread extends Thread {
         InputStream in = System.in;
         bReader = new BufferedReader(new InputStreamReader(in));
 
-        manageUserName ();
+        manageUserName();
 
         manageUserInput();
 
