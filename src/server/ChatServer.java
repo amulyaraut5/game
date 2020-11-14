@@ -80,8 +80,9 @@ public class ChatServer {
      * @param userName userName to be checked
      * @return True if username is free, false if it´s already assigned
      */
-    public boolean checkUserNames (String userName){
-        return (userNames.contains(userName));
+    public boolean checkAvailability (String userName){
+
+        return (!userNames.contains(userName));
     }
     /**
      * This method removes the username and userthread from their respective Set .
