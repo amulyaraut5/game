@@ -46,7 +46,6 @@ public class WriterThread extends Thread {
 
         try {
             socket.close();
-
         } catch (IOException ex) {
             System.out.println("Error writing to server: " + ex.getMessage());
         }

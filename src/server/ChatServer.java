@@ -74,7 +74,13 @@ public class ChatServer {
     public void addUserName(String userName){
         userNames.add(userName);
     }
-    boolean checkUserNames (String userName){
+    /**
+     * It checks if the username is already in the list of assigned usernames
+     *
+     * @param userName userName to be checked
+     * @return True if username is already taken, false if not
+     */
+    public boolean checkUserNames (String userName){
         return userNames.contains(userName);
     }
     /**
