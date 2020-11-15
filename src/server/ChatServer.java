@@ -114,14 +114,4 @@ public class ChatServer {
         userNames.remove(userName);
         userThreads.remove(thisUser);
     }
-
-    ArrayList<String> getUserNames() {
-        return this.userNames;
-    }
-
-    public boolean hasUsers() {
-        return (!this.userNames.isEmpty());
-    }
-
-
 }
