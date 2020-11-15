@@ -37,12 +37,11 @@ public class ReaderThread extends Thread {
                 System.out.println(text);
                 //throw new SocketException();
             } catch (IOException e) {
-                System.err.println("The server is no longer reachable: " + e.getMessage());
                 try {
                     socket.close();
                     System.out.println("The connection with the server is closed.");
                 } catch (IOException ioException) {
-                    System.err.println(e.getMessage());
+                    System.err.println("The server is no longer reachable: " + e.getMessage());
                 }
                 break;
             }
