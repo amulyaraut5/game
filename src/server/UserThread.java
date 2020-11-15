@@ -21,8 +21,7 @@ public class UserThread extends Thread {
             OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
         } catch (IOException ex) {
-            System.out.println("Error occurred in UserThread: " + ex.getMessage());
-            ex.printStackTrace();
+            disconnect(ex);
         }
     }
 
