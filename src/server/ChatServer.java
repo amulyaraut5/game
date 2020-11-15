@@ -68,14 +68,6 @@ public class ChatServer {
     }
 
 
-    public void justUser(String message, UserThread thisUser) {
-        for (UserThread aUser : userThreads) {
-            if (aUser == thisUser) {
-                aUser.sendMessage(message);
-            }
-        }//sends a message only to one client
-    }
-
     /**
      * After the UserThread is created and user enters the name, the new user is added to the Set of the names.
      *

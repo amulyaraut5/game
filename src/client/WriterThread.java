@@ -25,7 +25,7 @@ public class WriterThread extends Thread {
     }
 
     /**
-     * manages reading what the user is typing in its console. Starting with the name, the messages and
+     * This method manages reading what the user is typing in its console. Starting with the name, the messages and
      * if the user is typing "bye" the socket will get closed
      */
     @Override
