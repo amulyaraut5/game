@@ -39,9 +39,9 @@ public class ChatClient {
             new WriterThread(socket, this).start();
 
         } catch (UnknownHostException e) {
-            System.out.println("Connection failed: Could not find Server" + e.getMessage());
+            System.out.println("Connection failed - IP-address of host could not be determined: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("Connection failed: General I/O exception" + e.getMessage());
+            System.out.println("Connection failed - General I/O exception: " + e.getMessage());
         }
     }
 
