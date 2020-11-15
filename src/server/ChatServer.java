@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ChatServer {
-    private int port;
+    private final int port;
     private ArrayList<UserThread> userThreads = new ArrayList<>();
     private ArrayList<String> userNames = new ArrayList<>();
 
