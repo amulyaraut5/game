@@ -17,15 +17,16 @@ public class WriterThread extends Thread {
 
         try {
             output = socket.getOutputStream();
-            writer = new PrintWriter(output, true);
         } catch (IOException ex) {
             System.out.println("Error getting output stream: " + ex.getMessage());
             ex.printStackTrace();
         }
+        writer = new PrintWriter(output, true);
     }
 
     /**
-     *
+     * manages reading what the user is typing in its console. Starting with the name, the messages and
+     * if the user is typing "bye" the socket will get closed
      */
     @Override
     public void run() {
@@ -44,7 +45,7 @@ public class WriterThread extends Thread {
     }
 
     /**
-     * It reads the userName the user writes in the console and
+     * the user writes his userName in the console, manageUserName() reads it and
      * transfers it to the server
      */
     private void manageUserName() {
