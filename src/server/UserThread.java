@@ -36,8 +36,6 @@ public class UserThread extends Thread {
         try {
             if (!exit) {
                 logIn();
-            }
-            if (!exit) {
                 welcome();
             }
 
