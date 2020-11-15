@@ -23,8 +23,8 @@ public class WriterThread extends Thread {
             ex.printStackTrace();
         }
     }
+
     /**
-     *
      *
      */
     @Override
@@ -42,29 +42,35 @@ public class WriterThread extends Thread {
             System.out.println("Error writing to server: " + ex.getMessage());
         }
     }
+
     /**
      * It reads the userName the user writes in the console and
      * transfers it to the server
      */
-    private void manageUserName(){
+    private void manageUserName() {
         String userName = "userName";
         try {
             userName = bReader.readLine();
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         client.setUserName(userName);
         writer.println(userName);
     }
+
     /**
      * It reads input in the console and transfers it to the server
-     * as long if the user doesn´t write "bye"
+     * as long if the user doesn't write "bye"
      */
-    private void manageUserInput(){
-        String inputUser ="";
+    private void manageUserInput() {
+        String inputUser = "";
 
         do {
             try {
                 inputUser = bReader.readLine();
-            } catch (IOException e) { e.printStackTrace(); }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             writer.println(inputUser);
 
         } while (!inputUser.equals("bye"));

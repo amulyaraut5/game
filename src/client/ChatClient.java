@@ -10,9 +10,18 @@ public class ChatClient {
     private String hostname;
     private String userName;
 
-    public ChatClient (String hostname, int port) {
+    public ChatClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
+    }
+
+    public static void main(String[] args) {
+
+        String hostname = "localhost";
+        int port = 4444;
+
+        ChatClient client = new ChatClient(hostname, port);
+        client.establishConnection();
     }
 
     /**
@@ -20,7 +29,7 @@ public class ChatClient {
      * If this was successful it creates a ReadThread and a WriterThread which handle the communication.
      */
 
-    public void establishConnection () {
+    public void establishConnection() {
         try {
             Socket socket = new Socket(hostname, port);
 
@@ -38,16 +47,6 @@ public class ChatClient {
 
     void setUserName(String userName) {
         this.userName = userName;
-    }
-
-
-    public static void main(String[] args) {
-
-        String hostname = "localhost";
-        int port = 4444;
-
-        ChatClient client = new ChatClient(hostname, port);
-        client.establishConnection();
     }
 
 }

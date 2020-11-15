@@ -7,13 +7,13 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class ReaderThread extends Thread{
+public class ReaderThread extends Thread {
     private ChatClient client;
 
     private Socket socket;
     private BufferedReader bReader;
 
-    public ReaderThread(Socket socket,ChatClient client) {
+    public ReaderThread(Socket socket, ChatClient client) {
         this.socket = socket;
         this.client = client;
 
@@ -27,12 +27,12 @@ public class ReaderThread extends Thread{
 
     @Override
     public void run() {
-        while (true){
+        while (true) {
             try {
                 String text = bReader.readLine();
                 System.out.println(text);
                 //throw new IOException();
-            } catch (SocketException e){
+            } catch (SocketException e) {
                 //e.printStackTrace();
                 break;
             } catch (IOException e) {
