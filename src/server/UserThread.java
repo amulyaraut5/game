@@ -82,7 +82,7 @@ public class UserThread extends Thread {
     }
 
     /**
-     * Method should be called if an Exception occurs during connection.
+     * Method is called if an Exception occurs during connection.
      * The connection is tried to close and other users get notified.
      *
      * @param ex Exception which occurred
@@ -104,12 +104,11 @@ public class UserThread extends Thread {
     private void welcome() {
         server.addUserName(userName);
         sendMessage("Welcome " + userName + "!");
-        String serverMessage = userName + " joined the room.";
-        server.communicate(serverMessage, this);
+        server.communicate(userName + " joined the room.", this);
     }
 
     /**
-     * prints a message for one specific user
+     * prints a message for specific user
      *
      * @param message the message to be sent
      */
