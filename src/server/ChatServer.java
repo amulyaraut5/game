@@ -104,19 +104,16 @@ public class ChatServer {
     }
 
     /**
-     * This method removes the username and UserThread from their respective Set .
+     * This method removes the username and UserThread from their respective Set.
      * Removing can be done by calling a pre defined method remove().
      *
      * @param userName userName to be removed
      * @param thisUser UserThread to be removed
      */
     public void removeUser(String userName, UserThread thisUser) {
-        if (userNames.remove(userName)) {
-            userThreads.remove(thisUser);
-            System.out.println(userName + " quitted");
-        }
+        userNames.remove(userName);
+        userThreads.remove(thisUser);
     }
-
 
     ArrayList<String> getUserNames() {
         return this.userNames;

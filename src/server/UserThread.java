@@ -9,6 +9,8 @@ public class UserThread extends Thread {
     private PrintWriter userOut;
     private BufferedReader reader;
 
+    private boolean exit = false;
+
     private String userName;
 
     public UserThread(Socket socket, ChatServer server) {
@@ -32,16 +34,23 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-            logIn();
-            welcome();
+            if (!exit) {
+                logIn();
+            }
+            if (!exit) {
+                welcome();
+            }
+
             String clientMessage = "";
-            String serverMessage = "";
-            while (!clientMessage.equals("bye")) {
+            String serverMessage;
+            while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
                 serverMessage = "[" + userName + "]: " + clientMessage;
                 server.communicate(serverMessage, this);
             }
-            disconnect();
+            if (!exit) {
+                disconnect();
+            }
         } catch (IOException ex) {
             disconnect(ex);
         }
@@ -74,6 +83,7 @@ public class UserThread extends Thread {
         sendMessage("Bye " + userName);
         server.removeUser(userName, this);
         server.communicate(userName + " left the room.", this);
+        System.out.println("Closed the connection with address: " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
@@ -88,9 +98,11 @@ public class UserThread extends Thread {
      * @param ex Exception which occurred
      */
     private void disconnect(Exception ex) {
+        exit = true;
         System.err.println("Error in UserThread: " + ex.getMessage());
         server.removeUser(userName, this);
         server.communicate(userName + " left the room.", this);
+        System.out.println("Closed the connection with address: " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
