@@ -6,8 +6,8 @@ import java.net.UnknownHostException;
 
 public class ChatClient {
 
-    private int port;
-    private String hostname;
+    private final int port;
+    private final String hostname;
     private String userName;
 
     public ChatClient(String hostname, int port) {

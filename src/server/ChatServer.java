@@ -12,7 +12,6 @@ public class ChatServer {
 
     public ChatServer(int port) {
         this.port = port;
-        this.port = port;
     }
 
 
@@ -27,13 +26,10 @@ public class ChatServer {
      * start_Server() method opens a channel for the connection between Server and Client
      */
     private void start_Server() {
-
-        ServerSocket server_socket = null;
         try {
-            server_socket = new ServerSocket(port);
-            System.out.println("Chat server is waiting for the connection to: " + port);
+            ServerSocket server_socket = new ServerSocket(port);
+            System.out.println("Chat server is waiting for clients to connect to port " + port + ".");
             acceptClients(server_socket);
-
         } catch (IOException e) {
             System.err.println("could not connect: " + e.getLocalizedMessage());
             e.printStackTrace();

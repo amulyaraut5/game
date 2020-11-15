@@ -5,10 +5,10 @@ import java.net.Socket;
 
 public class WriterThread extends Thread {
 
-    private PrintWriter writer;
+    private final PrintWriter writer;
     private OutputStream output;
-    private Socket socket;
-    private ChatClient client;
+    private final Socket socket;
+    private final ChatClient client;
     private BufferedReader bReader;
 
     public WriterThread(Socket socket, ChatClient client) {
