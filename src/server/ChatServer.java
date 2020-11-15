@@ -43,7 +43,8 @@ public class ChatServer {
      * @param server_socket socket from which connection is to be established
      */
     public void acceptClients(ServerSocket server_socket) {
-        while (true) {
+        boolean accept = true;
+        while (accept) {
             Socket client_socket = null;
             try {
                 client_socket = server_socket.accept();
@@ -53,6 +54,7 @@ public class ChatServer {
                 userThreads.add(newUser);
                 newUser.start();
             } catch (IOException e) {
+                accept = false;
                 System.out.println("Accept failed on: " + port);
             }
         }
