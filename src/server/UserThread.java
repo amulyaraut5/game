@@ -11,7 +11,7 @@ public class UserThread extends Thread {
 
     private boolean exit = false;
 
-    private String userName;
+    private String userName = "Unnamed user";
 
     public UserThread(Socket socket, ChatServer server) {
         this.socket = socket;
@@ -54,16 +54,22 @@ public class UserThread extends Thread {
     /**
      * The user is asked to enter a name to log in.
      * If the name already exists in the list of assigned usernames, the user is asked to try again.
+     * It also makes sure that the user enters something and not a empty String.
      *
      * @return the entered and accepted username
      */
     private String logIn() {
         sendMessage("Enter your username:");
         try {
-            userName = reader.readLine();
-            while (!server.checkAvailability(userName)) {
-                sendMessage("This username is already taken or you might not have entered the username. Please try again.");
+            while (true) {
                 userName = reader.readLine();
+                if (userName.isBlank()) {
+                    sendMessage("You might not have entered a username. Please try again:");
+                } else if (!server.checkAvailability(userName)) {
+                    sendMessage("This username is already taken. Please try a different username:");
+                } else {
+                    return userName;
+                }
             }
         } catch (IOException ex) {
             disconnect(ex);
@@ -103,7 +109,7 @@ public class UserThread extends Thread {
      */
     private void disconnect(Exception ex) {
         exit = true;
-        System.err.println("Error in UserThread with address "+ socket.getRemoteSocketAddress()+": " + ex.getMessage());
+        System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(userName, this);
         server.communicate(userName + " left the room.", this);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());

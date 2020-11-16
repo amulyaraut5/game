@@ -84,16 +84,12 @@ public class ChatServer {
     }
 
     /**
-     * It checks if the username is already in the list of assigned usernames
-     * It also makes sure that the user enters something and not a empty String.
+     * It checks if the username is already in the list of assigned usernames.
      *
      * @param userName userName to be checked
      * @return True if username is free, false if it´s already assigned
      */
     public boolean checkAvailability(String userName) {
-        if (userName.isBlank()) {
-            return false;
-        }
         return (!userNames.contains(userName));
     }
 
