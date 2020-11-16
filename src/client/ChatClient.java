@@ -9,6 +9,9 @@ public class ChatClient {
     private final int port;
     private final String hostname;
     private String userName;
+    private Socket socket;
+    private ReaderThread readerThread;
+    private WriterThread writerThread;
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
@@ -31,18 +34,43 @@ public class ChatClient {
 
     public void establishConnection() {
         try {
-            Socket socket = new Socket(hostname, port);
+            socket = new Socket(hostname, port);
 
-            System.out.println("Connection to server successful");
+            readerThread = new ReaderThread(socket, this);
+            writerThread = new WriterThread(socket, this);
+            readerThread.start();
+            writerThread.start();
 
-            new ReaderThread(socket, this).start();
-            new WriterThread(socket, this).start();
+            System.out.println("Connection to server successful.");
 
         } catch (UnknownHostException e) {
             System.out.println("Connection failed - IP-address of host could not be determined: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("Connection failed - General I/O exception: " + e.getMessage());
         }
+    }
+
+    public void disconnect() {
+        readerThread.interrupt();
+        writerThread.interrupt();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void disconnect(Exception ex) {
+        readerThread.interrupt();
+        writerThread.interrupt();
+        System.out.println("The server is no longer reachable: " + ex.getMessage());
+        try {
+            socket.close();
+            System.out.println("The connection with the server is closed.");
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        System.out.println("Type \"bye\" to exit.");
     }
 
     void setUserName(String userName) {

@@ -21,8 +21,8 @@ public class ReaderThread extends Thread {
         try {
             InputStream in = socket.getInputStream();
             bReader = new BufferedReader(new InputStreamReader(in));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            if (!isInterrupted()) client.disconnect(ex);
         }
     }
 
@@ -31,18 +31,12 @@ public class ReaderThread extends Thread {
      */
     @Override
     public void run() {
-        while (true) {
+        while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
                 System.out.println(text);
-                //throw new SocketException();
             } catch (IOException e) {
-                try {
-                    socket.close();
-                    System.out.println("The connection with the server is closed.");
-                } catch (IOException ioException) {
-                    System.err.println("The server is no longer reachable: " + e.getMessage());
-                }
+                if (!isInterrupted()) client.disconnect(e);
                 break;
             }
         }

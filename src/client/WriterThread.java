@@ -6,9 +6,9 @@ import java.net.Socket;
 public class WriterThread extends Thread {
 
     private final PrintWriter writer;
-    private OutputStream output;
     private final Socket socket;
     private final ChatClient client;
+    private OutputStream output;
     private BufferedReader bReader;
 
     public WriterThread(Socket socket, ChatClient client) {
@@ -18,8 +18,7 @@ public class WriterThread extends Thread {
         try {
             output = socket.getOutputStream();
         } catch (IOException ex) {
-            System.out.println("Error getting output stream: " + ex.getMessage());
-            ex.printStackTrace();
+            if (!isInterrupted()) client.disconnect(ex);
         }
         writer = new PrintWriter(output, true);
     }
@@ -33,15 +32,10 @@ public class WriterThread extends Thread {
         InputStream in = System.in;
         bReader = new BufferedReader(new InputStreamReader(in));
 
-        manageUserName();
+        if (!isInterrupted()) manageUserName();
+        if (!isInterrupted()) manageUserInput();
 
-        manageUserInput();
-
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            System.out.println("Error writing to server: " + ex.getMessage());
-        }
+        if (!isInterrupted()) client.disconnect();
     }
 
     /**
@@ -49,11 +43,11 @@ public class WriterThread extends Thread {
      * transfers it to the server
      */
     private void manageUserName() {
-        String userName = "userName";
+        String userName = "";
         try {
             userName = bReader.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (!isInterrupted()) client.disconnect(e);
         }
         client.setUserName(userName);
         writer.println(userName);
@@ -65,17 +59,14 @@ public class WriterThread extends Thread {
      */
     private void manageUserInput() {
         String inputUser = "";
-
         do {
             try {
                 inputUser = bReader.readLine();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (!isInterrupted()) client.disconnect(e);
             }
             writer.println(inputUser);
-
-        } while (!inputUser.equals("bye"));
-
+        } while (!isInterrupted() && !inputUser.equals("bye"));
     }
 }
 
