@@ -29,29 +29,26 @@ public class UserThread extends Thread {
 
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
-     * The user disconnects by typing "bye"
+     * The user disconnects by typing "bye".
      */
     @Override
     public void run() {
-        try {
-            if (!exit) {
-                logIn();
-                welcome();
-            }
+        //before each method call it is checked if run() should be exited.
+        if (!exit) logIn();
+        if (!exit) welcome();
 
-            String clientMessage = "";
-            String serverMessage;
+        String clientMessage = "";
+        String serverMessage;
+        try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
                 serverMessage = "[" + userName + "]: " + clientMessage;
                 server.communicate(serverMessage, this);
             }
-            if (!exit) {
-                disconnect();
-            }
         } catch (IOException ex) {
             disconnect(ex);
         }
+        if (!exit) disconnect();
     }
 
     /**
@@ -75,7 +72,16 @@ public class UserThread extends Thread {
     }
 
     /**
-     * The connection is closed and other users get notified.
+     * Sends welcome message to the user and notifies all other users.
+     */
+    private void welcome() {
+        server.addUserName(userName);
+        sendMessage("Welcome " + userName + "!");
+        server.communicate(userName + " joined the room.", this);
+    }
+
+    /**
+     * The connection is closed and other users get notified that the user left.
      */
     private void disconnect() {
         sendMessage("Bye " + userName);
@@ -91,30 +97,21 @@ public class UserThread extends Thread {
 
     /**
      * Method is called if an Exception occurs during connection.
-     * The connection is tried to close and other users get notified.
+     * The connection is tried to close and other users get notified that the user left.
      *
      * @param ex Exception which occurred
      */
     private void disconnect(Exception ex) {
         exit = true;
-        System.err.println("Error in UserThread: " + ex.getMessage());
+        System.err.println("Error in UserThread with address "+ socket.getRemoteSocketAddress()+": " + ex.getMessage());
         server.removeUser(userName, this);
         server.communicate(userName + " left the room.", this);
-        System.out.println("Closed the connection with address: " + socket.getRemoteSocketAddress());
+        System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    /**
-     * Sends welcome message to the user and notifies all other users.
-     */
-    private void welcome() {
-        server.addUserName(userName);
-        sendMessage("Welcome " + userName + "!");
-        server.communicate(userName + " joined the room.", this);
     }
 
     /**
