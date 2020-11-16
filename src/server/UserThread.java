@@ -83,6 +83,7 @@ public class UserThread extends Thread {
     private void welcome() {
         server.addUserName(userName);
         sendMessage("Welcome " + userName + "!");
+        sendMessage("Type \"bye\" to leave the room.");
         server.communicate(userName + " joined the room.", this);
     }
 
@@ -93,7 +94,7 @@ public class UserThread extends Thread {
         sendMessage("Bye " + userName);
         server.removeUser(userName, this);
         server.communicate(userName + " left the room.", this);
-        System.out.println("Closed the connection with address: " + socket.getRemoteSocketAddress());
+        System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
