@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * This class creates the socket for the client.
+ * It handles the connection and disconnection to the server.
+ * In this process it creates or interrupts the WriterThread and ReaderThread.
+ *
+ * @author janau
+ */
+
 public class ChatClient {
 
     private final int port;
