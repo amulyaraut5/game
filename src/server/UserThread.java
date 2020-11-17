@@ -3,6 +3,13 @@ package server;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Handles connection for each connected client,
+ * therefore the server is able to handle multiple clients at the same time.
+ *
+ * @author
+ */
+
 public class UserThread extends Thread {
     private final Socket socket;
     private final ChatServer server;
