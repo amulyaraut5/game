@@ -18,6 +18,20 @@ public class GameBoard {
      */
     public void startGame(){
         started = true;
+        //Message to player that game has started
+        //explore who begins
+        Player firstplayer = compareDates();
+        //message to firstplayer: what are his cards, what card does  he want to discard
+        //message to other players: turnplayers turn
+
+        //Game
+
+    }
+
+    /**
+     * Method ends the whole game after couple of rounds
+     */
+    public void endGame(){
 
     }
 
