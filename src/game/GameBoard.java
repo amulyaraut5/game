@@ -1,14 +1,18 @@
 package game;
 
+import cards.Cards;
 import server.UserThread;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class GameBoard {
     public ArrayList<Player> playerList;
     private boolean started = false;
     private GameController gameController = new GameController();
     public Player lastRecentlyWon; //to check who´s next in following rounds
+    public ArrayList <Player> activePlayerList;
+    public Stack<Cards> stackCards;
 
     public GameBoard(){
 
@@ -70,13 +74,25 @@ public class GameBoard {
 
     /**
      * checks whether some Player already has won the round
-     * @return winRound
+     * @return endRound
      */
-    private boolean roundWon(){
-        boolean winRound = false;
-        return winRound;
+
+    boolean endRound(){
+        boolean endRound = false;
+        //1. possibility: stack is empty
+
+        //2.possibility: only one person left
+
+        return endRound;
     }
 
+    /**
+     * checks if round is over who´s the winner depending on value cards/discarded cards
+     * @return winner
+     */
+    Player getWinner(){
+        return null;
+    }
     /**
      * checks whether some Player already has won the whole game
      * @return winGame
