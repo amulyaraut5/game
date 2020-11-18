@@ -28,12 +28,7 @@ public class GameBoard {
 
     }
 
-    /**
-     * Method ends the whole game after couple of rounds
-     */
-    public void endGame(){
 
-    }
 
     /**
      * it finds out who was last recently on a date
@@ -65,6 +60,34 @@ public class GameBoard {
      */
     public boolean isStarted() {
         return started;
+    }
+    /**
+     * Method ends the whole game after couple of rounds
+     */
+    public void endGame(){
+
+    }
+
+    /**
+     * checks whether some Player already has won the round
+     * @return winRound
+     */
+    private boolean roundWon(){
+        boolean winRound = false;
+        return winRound;
+    }
+
+    /**
+     * checks whether some Player already has won the whole game
+     * @return winGame
+     */
+    private boolean gameWon (){
+        boolean winGame = false;
+        //check whether one player has enough token
+        //2 player -> 7 token
+        //3 player -> 5 token
+        //4 player -> 4 token
+      return winGame;
     }
 
 
