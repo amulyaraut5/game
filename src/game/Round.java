@@ -1,11 +1,17 @@
 package game;
 
+import cards.Cards;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class Round {
     private List<Player> activePlayers;
     public Map<Player, List<Card>> playedCards;
+    public List<Cards> cardDeck; //Remove after getStackCards is created
+
 
     public Round(){
     }
@@ -15,6 +21,7 @@ public class Round {
      * Shuffles the deck of Gameboard in each new round.
      */
     public void shuffleDeck(){ //Maybe just Collections.shuffle(stackCards) in runRound?
+        //Objekt und getStackCards?
     }
 
     /**
@@ -23,7 +30,7 @@ public class Round {
      * (Rules: Remove top card of the deck without looking at it and place it aside.
      * When playing a 2-player game, take 3 more cards from the top of the deck and place them to the side, face up.)
      */
-    public void removeDeckCard(){ //(int stackCards.length, activePlayers.length)
+    public void removeDeckCard(List<Player> activePlayers){
     }
 
     /**
@@ -48,6 +55,8 @@ public class Round {
      * @return true when round is finished
      */
     public boolean isRoundFinished(){
+        if (cardDeck.size() <= 1) return true;         // last card has been drawn (none or one card left in stack/list)
+        if (numPlayerStillInRound() < 2) return true; // one player has won
         return false;
     }
 
