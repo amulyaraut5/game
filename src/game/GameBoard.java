@@ -85,6 +85,14 @@ public class GameBoard {
 
         return endRound;
     }
+
+    /**
+     * checks if round is over who´s the winner depending on value cards/discarded cards
+     * @return winner
+     */
+    Player getWinner(){
+        return null;
+    }
     /**
      * checks whether some Player already has won the whole game
      * @return winGame
