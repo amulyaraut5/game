@@ -8,13 +8,13 @@ public class Round {
     public Map<Player, List<Card>> playedCards;
 
     public Round(){
-
     }
+
 
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public void shuffleDeck(){
+    public void shuffleDeck(){ //Maybe just Collections.shuffle(stackCards) in runRound?
     }
 
     /**
@@ -32,17 +32,7 @@ public class Round {
      * @param activePlayers all players of the new round
      */
     public void playerOrder(Player lastWinner, List<Player> activePlayers){
-
     }
-
-    /**
-     * check if the round is finished
-     * @return true when round is finished
-     */
-    public boolean isRoundFinished(){
-        return false;
-    }
-
 
     /**
      * Number of players that are not out yet.
@@ -53,9 +43,18 @@ public class Round {
         return number;
     }
 
-    public void runRound(){
-
+    /**
+     * Check if the round is finished
+     * @return true when round is finished
+     */
+    public boolean isRoundFinished(){
+        return false;
     }
+
+
+
+
+
 
 
 
