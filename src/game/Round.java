@@ -12,20 +12,18 @@ public class Round {
     }
 
     /**
+     * Shuffles the deck of Gameboard in each new round.
+     */
+    public void shuffleDeck(){
+    }
+
+    /**
      * Method to remove cards from the deck at the beginning of a round
      * - depending on the number of players.
      * (Rules: Remove top card of the deck without looking at it and place it aside.
      * When playing a 2-player game, take 3 more cards from the top of the deck and place them to the side, face up.)
      */
-    public void removeDeckCard(){ //(int deck.length, activePlayers.length)
-    }
-
-    /**
-     * check if the round is finished
-     * @return true when round is finished
-     */
-    public boolean isRoundFinished(){
-        return false;
+    public void removeDeckCard(){ //(int stackCards.length, activePlayers.length)
     }
 
     /**
@@ -36,6 +34,15 @@ public class Round {
     public void playerOrder(Player lastWinner, List<Player> activePlayers){
 
     }
+
+    /**
+     * check if the round is finished
+     * @return true when round is finished
+     */
+    public boolean isRoundFinished(){
+        return false;
+    }
+
 
     /**
      * Number of players that are not out yet.
