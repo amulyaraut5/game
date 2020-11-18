@@ -8,6 +8,7 @@ public class GameBoard {
     public ArrayList<Player> playerList;
     private boolean started = false;
     private GameController gameController = new GameController();
+    public Player lastRecentlyWon; //to check who´s next in following rounds
 
     public GameBoard(){
 
@@ -20,6 +21,13 @@ public class GameBoard {
 
     }
 
+    /**
+     * it finds out who was last recently on a date
+     * @return this player
+     */
+    public Player compareDates(){
+        return playerList.get(0); //just puffer
+    }
     /**
      * It creates a Player and adds it to the list of joined player
      * @param user Thread of the user
