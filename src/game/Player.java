@@ -3,8 +3,11 @@ package game;
 import server.UserThread;
 
 public class Player {
+    private UserThread user;
+    private String userName;
 
-    public Player(UserThread user, String username) {
-        //kannst du auch ändern, ich wollte nur Fehlermeldungen vermeiden :)
+    public Player(UserThread user, String userName) {
+        this.user = user;
+        this.userName = userName;
     }
 }
