@@ -2,6 +2,8 @@ package game;
 
 import server.UserThread;
 
+import java.util.Date;
+
 /**
  * For each user who plays the game, a Player object is created.
  * The Player class stores data of the user and player specific data.
@@ -10,6 +12,8 @@ public class Player {
     private final UserThread user;
     private final String userName;
     private int numOfTokens;
+    private Card currentCard;
+    private Date lastDate;
 
     /**
      * Creates new player with given parameters.
@@ -64,5 +68,17 @@ public class Player {
      */
     public int getNumOfTokens() {
         return numOfTokens;
+    }
+
+    public Card getCurrentCard() {
+        return currentCard;
+    }
+
+    public void setCurrentCard(Card currentCard) {
+        this.currentCard = currentCard;
+    }
+
+    public Date getLastDate() {
+        return lastDate;
     }
 }
