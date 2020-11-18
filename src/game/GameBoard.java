@@ -7,8 +7,16 @@ import java.util.ArrayList;
 public class GameBoard {
     public ArrayList<Player> playerList;
     private boolean started = false;
+    private GameController gameController = new GameController();
 
     public GameBoard(){
+
+    }
+    /**
+     * If this method is called, the game is on and no more users can join
+     */
+    public void startGame(){
+        started = true;
 
     }
 
@@ -29,7 +37,13 @@ public class GameBoard {
     public int getPlayerCount(){
         return playerList.size();
     }
-
+    /**
+     * It communicates whether the game has already started
+     * @return started
+     */
+    public boolean isStarted() {
+        return started;
+    }
 
 
 }
