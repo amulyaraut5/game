@@ -12,7 +12,7 @@ public class GameBoard {
     private GameController gameController = new GameController();
     public Player lastRecentlyWon; //to check who´s next in following rounds
     public ArrayList <Player> activePlayerList;
-    public Stack<Cards> stackCards;
+    public Stack<Cards> stackCards; //ArrayList - so we can use Collections.shuffle?
 
     public GameBoard(){
 
