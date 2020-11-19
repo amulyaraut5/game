@@ -5,7 +5,8 @@ import server.UserThread;
 import java.util.ArrayList;
 
 public class GameController {
-    private int playerCount;
+
+    private Boolean runningGame;
 
     public GameController () {
 
@@ -23,10 +24,22 @@ public class GameController {
     public void playGame (UserThread sender, String userName) {
 
         GameBoard gameBoard = new GameBoard();
+        // überprüfen, ob Spiel bereits erstellt wurde
+        // nein, dann neues GameBoard
+        // ja, dann überprüfen, ob Spiel schon gestartet wurde
         // isStarted() überprüft, ob Spiel bereits gestartet
         // wenn ja, Rückmeldung an User
-        // wenn nein, überprüfen, wie viele Spieler bereits beigetreten sind
+        // wenn nein, Rückmeldung an user, dass er joinen kann.
+    }
+
+    public void joinGame (UserThread sender, String userName) {
+        // ob  wie viele Spieler bereits beigetreten sind
         // wenn <4, dann addUser(userThread, userName)
+    }
+
+    public void startGame () {
+        // ruft startGame Methode in Board auf
+        // Boolean Wert zur verwaltung, ob gestartet oder nicht
     }
 
     public void sendMessage (String message, ArrayList<Player> playerList) {
