@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 public class GameController {
 
-    private boolean startedGame;
-    private boolean runningGame;
+    private boolean startedGame = false;
+    private boolean runningGame = false;
+    private int playerCount = 0;
 
     public GameController () {
 
@@ -49,6 +50,7 @@ public class GameController {
             }
         } else {
             GameBoard gameBoard = new GameBoard();
+            startedGame = true;
             //join für den user aufrufen.
         }
     }
@@ -62,7 +64,14 @@ public class GameController {
      */
 
     public void join (UserThread sender, String userName) {
-
+        if (startedGame && !runningGame && playerCount < 4) {
+            //message: You've joined the game.
+            //addUser
+        } else if (playerCount >= 4) {
+            //message: game already full
+        } else if (!startedGame){
+            //message: please start a game
+        }
     }
 
     /**
