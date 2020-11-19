@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class Round {
     private List<Player> activePlayers;
-    public Map<Player, List<Card>> playedCards;
+    private Map<Player, List<Card>> playedCards;
     public List<Cards> cardDeck; //Remove after getStackCards is created
 
 
