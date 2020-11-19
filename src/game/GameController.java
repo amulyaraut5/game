@@ -13,38 +13,50 @@ public class GameController {
 
     }
 
+    /**
+     * verwaltet jegliche commands, die vom server gesendet werden
+     */
     public void readCommand (String message, UserThread sender) {
-        //verwaltet jegliche commands, die vom server gesendet werden
     }
 
     /**
-     * überprüft, ob bereits ein Spiel gestartet wurde
+     * überprüft, ob bereits ein Spiel erstellt wurde
      */
     public boolean isStarted () {
         return startedGame;
     }
 
+    /**
+     * überprüft, ob bereits ein Spiel gestartet wurde
+     */
     public boolean isRunning () {
         return runningGame;
     }
-
-    public void playGame (UserThread sender, String userName) {
+    /**
+     * Reagiert auf das command play.
+     * Diese Methode erstellt ein neues Gamebord, falls noch keines erstellt wurde.
+     * Danach wird User darauf hingewiesen, dass er joinen kann
+     * Wurde bereits ein Gameboard erstellt, wird der User darauf hingewiesen, dass er joinen kann.
+     */
+    public void create (UserThread sender, String userName) {
 
         GameBoard gameBoard = new GameBoard();
-        // überprüfen, ob Spiel bereits erstellt wurde
-        // nein, dann neues GameBoard
-        // ja, dann überprüfen, ob Spiel schon gestartet wurde
-        // isStarted() überprüft, ob Spiel bereits gestartet
-        // wenn ja, Rückmeldung an User
-        // wenn nein, Rückmeldung an user, dass er joinen kann.
+
     }
 
-    public void joinGame (UserThread sender, String userName) {
-        // ob  wie viele Spieler bereits beigetreten sind
-        // wenn <4, dann addUser(userThread, userName)
+    /**
+     * Reagiert auf das command join.
+     * Diese Methode überprüft, ob schon ein GameBoard exisitert, wenn nein, Aufforderung "play".
+     * Dann wird überprüft, ob das Spiel bereits gestartet wurde.
+     * Wenn nicht, wird der Spieler hinzugefügt, wenn <4 Spieler.
+     * Falls Spiel gestartet, Hinweis.
+     */
+
+    public void join (UserThread sender, String userName) {
+
     }
 
-    public void startGame () {
+    public void start () {
         // ruft startGame Methode in Board auf
         // Boolean Wert zur verwaltung, ob gestartet oder nicht
     }
