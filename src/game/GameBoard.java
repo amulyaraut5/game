@@ -17,14 +17,7 @@ public class GameBoard {
     public GameBoard(){
 
     }
-    /**
-     * If this method is called, the game is on and no more users can join
-     */
-    public void startGame(){
 
-        playGame();
-
-    }
 
     /**
      * method to play rounds until someone has won the whole game
@@ -35,6 +28,7 @@ public class GameBoard {
             Round round = new Round(firstplayer);
             round.play();
             firstplayer = round.getWinner();
+            firstplayer.increaseNumOfTokens();
         }
         gameWinner = firstplayer;
     }
