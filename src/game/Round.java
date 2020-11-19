@@ -1,6 +1,9 @@
 package game;
 
 
+import card.Card;
+import card.PriestCard;
+
 import java.util.*;
 
 public class Round {
@@ -18,7 +21,7 @@ public class Round {
         cardDeck = new ArrayList<Card>();
         for (int i = Card.GUARD; i <= Card.PRINCESS; i++) {
             for (int j = 0; j < Card.numberOfIndividualCards[i]; j++) {
-                Card card = new Card(i);
+                PriestCard card = new PriestCard(i);
                 cardDeck.add(card);
             }
         }
@@ -69,13 +72,7 @@ public class Round {
      */
     public void play() {
 
-        //while runde noch nicht gewonnen(!isRoundFinished):
-        //      for (Spieler a der dran ist in activeList)
-        //              handleturn(Spieler a)
-        //                  du hast die beiden karten welche willst du?
-        //                  "Ich nehme die Priest Karte"
-        //                  priestCard.handleCard()
-        //
+
     }
 
     /**

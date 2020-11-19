@@ -1,5 +1,6 @@
 package game;
 
+import card.Card;
 import server.UserThread;
 
 import java.util.ArrayList;
