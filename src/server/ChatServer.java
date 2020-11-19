@@ -57,7 +57,8 @@ public class ChatServer {
             }
         }
     }
-    
+
+    //checks regex and calls the method readCommand for these messages
     public void communicate(String message, UserThread sender){
         for (UserThread user: userThreads){
             if (user != sender){
@@ -67,7 +68,7 @@ public class ChatServer {
         }
     }
 
-
+   //sends commands from GameController to the player (e.g. "Please deal card")
     public void justUser(String message, UserThread thisUser){
         for (UserThread aUser : userThreads) {
             if (aUser == thisUser) {
