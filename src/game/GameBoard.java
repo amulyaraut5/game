@@ -8,6 +8,7 @@ import java.util.Stack;
 
 public class GameBoard {
     public ArrayList<Player> playerList;
+    public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
     public Stack<Cards> stackCards; //ArrayList - so we can use Collections.shuffle?
@@ -95,5 +96,14 @@ public class GameBoard {
         return win;
     }
 
+    /**
+     * kicks one player from the current round
+     * @param p
+     */
+    public void kickPlayer(Player p){
 
+    }
 }
+
+
+
