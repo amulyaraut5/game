@@ -67,6 +67,7 @@ public class GameController {
         if (startedGame && !runningGame && playerCount < 4) {
             //message: You've joined the game.
             //addUser
+            playerCount++;
         } else if (playerCount >= 4) {
             //message: game already full
         } else if (!startedGame){
@@ -84,7 +85,20 @@ public class GameController {
      * Wenn etwas nicht passt, dann Hinweis an den User.
      */
     public void start () {
-    //ruft play Funktion aus Board auf
+        if (startedGame && !runningGame && (playerCount >= 2) && (playerCount <= 4)) {
+            //ruft play Funktion aus Board auf
+            runningGame = true;
+        }
+
+    }
+
+    /**
+     * method that resets all game controlling variables when a Game is ended
+     */
+    public void reset () {
+        startedGame = false;
+        runningGame = false;
+        playerCount = 0;
     }
 
     /**
