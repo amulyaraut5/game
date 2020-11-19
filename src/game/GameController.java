@@ -1,6 +1,27 @@
 package game;
 
+import server.UserThread;
+
 public class GameController {
+
+    public GameController () {
+
+    }
+
+    public void readCommand (String message, UserThread sender) {
+
+    }
+
+    public boolean isStarted () {
+        return true;
+    }
+
+    public void playGame (UserThread sender, String userName) {
+
+        GameBoard gameBoard = new GameBoard();
+
+    }
+
 
     //play: new GameBoard and then method addUser(userThread, username)
 
