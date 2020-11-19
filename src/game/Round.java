@@ -1,18 +1,12 @@
 package game;
 
-import game.Card;
 
 import java.util.*;
 
 public class Round {
     private List<Player> activePlayers;
-<<<<<<< HEAD
     private Map<Player, List<Card>> playedCards;
-    public List<Cards> cardDeck; //Remove after getStackCards is created
-=======
-    public Map<Player, List<Card>> playedCards;
     public List<Card> cardDeck; //Remove after getStackCards is created
->>>>>>> ab9f87b24eee4fd49f6cdb54115f3be0356649ac
 
 
     public Round(Player firstplayer){

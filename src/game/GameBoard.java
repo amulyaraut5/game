@@ -12,6 +12,7 @@ public class GameBoard {
     private GameController gameController = new GameController();
     public Stack<Card> stackCards; //ArrayList - so we can use Collections.shuffle?
     public Player gameWinner;
+    public Round activeRound;
 
     public GameBoard(){
 
@@ -24,9 +25,9 @@ public class GameBoard {
     public void playGame(){
         Player firstplayer = compareDates();
         while (!gameWon()){
-            Round round = new Round(firstplayer);
-            round.play();
-            firstplayer = round.getWinner();
+            activeRound = new Round(firstplayer);
+            activeRound.play();
+            firstplayer = activeRound.getWinner();
             firstplayer.increaseNumOfTokens();
         }
         gameWinner = firstplayer;
