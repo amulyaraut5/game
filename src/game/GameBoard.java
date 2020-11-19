@@ -58,19 +58,7 @@ public class GameBoard {
     public int getPlayerCount(){
         return playerList.size();
     }
-    /**
-     * It communicates whether the game has already started
-     * @return started
-     */
-    public boolean isStarted() {
-        return started;
-    }
-    /**
-     * Method ends the whole game after couple of rounds
-     */
-    public void endGame(){
 
-    }
 
     /**
      * checks whether some Player already has won the round
