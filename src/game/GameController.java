@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class GameController {
 
+    private Boolean startedGame;
     private Boolean runningGame;
 
     public GameController () {
