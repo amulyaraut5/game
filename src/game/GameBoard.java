@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class GameBoard {
     public ArrayList<Player> playerList;
+    public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
     public Player lastRecentlyWon; //to check who´s next in following rounds
@@ -67,5 +68,14 @@ public class GameBoard {
         return started;
     }
 
+    /**
+     * kicks one player from the current round
+     * @param p
+     */
+    public void kickPlayer(Player p){
 
+    }
 }
+
+
+
