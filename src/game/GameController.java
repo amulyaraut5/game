@@ -56,9 +56,17 @@ public class GameController {
 
     }
 
+    /**
+     * Reagiert auf das command start.
+     * Prüft, ob Spieler schon gejoined hat.
+     * Prüft, ob ein Spiel bereits gestartet wurde.
+     * Wenn nicht, dann wird geprüft, ob ein Spiel schon erstellt wurde.
+     * Wenn ja, dann wird geprüft ob schon mind. 2 Spieler da sind.
+     * Wenn alles passt, dann wird startGame aus dem Board aufgerufen.
+     * Wenn etwas nicht passt, dann Hinweis an den User.
+     */
     public void start () {
-        // ruft startGame Methode in Board auf
-        // Boolean Wert zur verwaltung, ob gestartet oder nicht
+
     }
 
     public void sendMessage (String message, ArrayList<Player> playerList) {
