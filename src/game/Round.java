@@ -33,13 +33,7 @@ public class Round {
     public void removeDeckCard(List<Player> activePlayers){
     }
 
-    /**
-     * Puts the players in order so the winner of the last round starts.
-     * @param lastWinner the winner of the last round
-     * @param activePlayers all players of the new round
-     */
-    public void playerOrder(Player lastWinner, List<Player> activePlayers){
-    }
+
 
     /**
      * Number of players that are not out yet.
