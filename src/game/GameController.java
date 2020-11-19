@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class GameController {
 
-    private Boolean startedGame;
-    private Boolean runningGame;
+    private boolean startedGame;
+    private boolean runningGame;
 
     public GameController () {
 
@@ -17,9 +17,15 @@ public class GameController {
         //verwaltet jegliche commands, die vom server gesendet werden
     }
 
+    /**
+     * überprüft, ob bereits ein Spiel gestartet wurde
+     */
     public boolean isStarted () {
-        //überprüft, ob bereits ein Spiel gestartet wurde
-        return true;
+        return startedGame;
+    }
+
+    public boolean isRunning () {
+        return runningGame;
     }
 
     public void playGame (UserThread sender, String userName) {
