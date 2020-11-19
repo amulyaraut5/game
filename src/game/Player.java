@@ -81,4 +81,14 @@ public class Player {
     public Date getLastDate() {
         return lastDate;
     }
+
+    public int getSumValue() {
+        return 0;
+    }
+
+    public int getTokenCount() {
+        return 0;
+    }
+
+
 }

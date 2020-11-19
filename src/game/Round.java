@@ -13,7 +13,7 @@ public class Round {
     public List<Cards> cardDeck; //Remove after getStackCards is created
 
 
-    public Round(){
+    public Round(Player firstplayer){
     }
 
 
@@ -58,20 +58,21 @@ public class Round {
         if (cardDeck.size() <= 1) return true;         // last card has been drawn (none or one card left in stack/list)
         if (numPlayerStillInRound() < 2) return true; // one player has won
         return false;
+
     }
 
+    /**
+     * this method is called by the GameBoard to start a round after it is created
+     */
+    public void play() {
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * this methods returns the winner of the round
+     * @return winner of the round
+     */
+    public Player getWinner() {
+        Player winner = null;
+        return winner;
+    }
 }
