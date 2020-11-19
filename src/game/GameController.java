@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 public class GameController {
 
-    private boolean startedGame;
-    private boolean runningGame;
+    private boolean startedGame = false;
+    private boolean runningGame = false;
+    private int playerCount = 0;
+    private GameBoard gameboard;
 
     public GameController () {
 
@@ -21,19 +23,6 @@ public class GameController {
         //score
     }
 
-    /**
-     * überprüft, ob bereits ein Spiel erstellt wurde
-     */
-    public boolean isStarted () {
-        return startedGame;
-    }
-
-    /**
-     * überprüft, ob bereits ein Spiel gestartet wurde
-     */
-    public boolean isRunning () {
-        return runningGame;
-    }
     /**
      * Reagiert auf das command create.
      * Diese Methode erstellt ein neues Gamebord, falls noch keines erstellt wurde.
@@ -49,6 +38,7 @@ public class GameController {
             }
         } else {
             GameBoard gameBoard = new GameBoard();
+            startedGame = true;
             //join für den user aufrufen.
         }
     }
@@ -62,7 +52,17 @@ public class GameController {
      */
 
     public void join (UserThread sender, String userName) {
-
+        if (startedGame && !runningGame && playerCount < 4) {
+            //message: You've joined the game.
+            //addUser
+            playerCount++;
+        } else if (!startedGame) {
+            //message: please start a game
+        } else if (runningGame) {
+            //message: The game is already running
+        } else if (playerCount >= 4) {
+            //message: game already full
+        }
     }
 
     /**
@@ -75,7 +75,25 @@ public class GameController {
      * Wenn etwas nicht passt, dann Hinweis an den User.
      */
     public void start () {
-    //ruft play Funktion aus Board auf
+        if (startedGame && !runningGame && (playerCount >= 2)) {
+            gameboard.playGame();
+            runningGame = true;
+        } else if (!startedGame) {
+            //message: please start a game
+        } else if (runningGame) {
+            //message: The game is already running
+        } else if (playerCount > 2) {
+            //message: not enough players to start the game yet
+        }
+    }
+
+    /**
+     * method that resets all game controlling variables when a Game is ended
+     */
+    public void reset () {
+        startedGame = false;
+        runningGame = false;
+        playerCount = 0;
     }
 
     /**
