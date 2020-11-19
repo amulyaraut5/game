@@ -68,6 +68,14 @@ public class Round {
      * this method is called by the GameBoard to start a round after it is created
      */
     public void play() {
+
+        //while runde noch nicht gewonnen(!isRoundFinished):
+        //      for (Spieler a der dran ist in activeList)
+        //              handleturn(Spieler a)
+        //                  du hast die beiden karten welche willst du?
+        //                  "Ich nehme die Priest Karte"
+        //                  priestCard.handleCard()
+        //
     }
 
     /**
