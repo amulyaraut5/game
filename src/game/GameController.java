@@ -9,6 +9,7 @@ public class GameController {
     private boolean startedGame = false;
     private boolean runningGame = false;
     private int playerCount = 0;
+    private GameBoard gameboard;
 
     public GameController () {
 
@@ -22,19 +23,6 @@ public class GameController {
         //score
     }
 
-    /**
-     * überprüft, ob bereits ein Spiel erstellt wurde
-     */
-    public boolean isStarted () {
-        return startedGame;
-    }
-
-    /**
-     * überprüft, ob bereits ein Spiel gestartet wurde
-     */
-    public boolean isRunning () {
-        return runningGame;
-    }
     /**
      * Reagiert auf das command create.
      * Diese Methode erstellt ein neues Gamebord, falls noch keines erstellt wurde.
@@ -68,10 +56,12 @@ public class GameController {
             //message: You've joined the game.
             //addUser
             playerCount++;
+        } else if (!startedGame) {
+            //message: please start a game
+        } else if (runningGame) {
+            //message: The game is already running
         } else if (playerCount >= 4) {
             //message: game already full
-        } else if (!startedGame){
-            //message: please start a game
         }
     }
 
@@ -85,11 +75,16 @@ public class GameController {
      * Wenn etwas nicht passt, dann Hinweis an den User.
      */
     public void start () {
-        if (startedGame && !runningGame && (playerCount >= 2) && (playerCount <= 4)) {
-            //ruft play Funktion aus Board auf
+        if (startedGame && !runningGame && (playerCount >= 2)) {
+            gameboard.playGame();
             runningGame = true;
+        } else if (!startedGame) {
+            //message: please start a game
+        } else if (runningGame) {
+            //message: The game is already running
+        } else if (playerCount > 2) {
+            //message: not enough players to start the game yet
         }
-
     }
 
     /**
