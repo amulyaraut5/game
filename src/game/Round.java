@@ -1,19 +1,33 @@
 package game;
 
-import cards.Cards;
+import game.Card;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class Round {
     private List<Player> activePlayers;
+<<<<<<< HEAD
     private Map<Player, List<Card>> playedCards;
     public List<Cards> cardDeck; //Remove after getStackCards is created
+=======
+    public Map<Player, List<Card>> playedCards;
+    public List<Card> cardDeck; //Remove after getStackCards is created
+>>>>>>> ab9f87b24eee4fd49f6cdb54115f3be0356649ac
 
 
     public Round(Player firstplayer){
+        // carddeck should be created here otherwise we would get  error
+        //remove() function cannot be called in removeDeckCard
+        // secondly it would be better to create a deck and shuffle after each round
+        //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
+        // delete this message
+        cardDeck = new ArrayList<Card>();
+        for (int i = Card.GUARD; i <= Card.PRINCESS; i++) {
+            for (int j = 0; j < Card.numberOfIndividualCards[i]; j++) {
+                Card card = new Card(i);
+                cardDeck.add(card);
+            }
+        }
     }
 
 
@@ -31,15 +45,10 @@ public class Round {
      * When playing a 2-player game, take 3 more cards from the top of the deck and place them to the side, face up.)
      */
     public void removeDeckCard(List<Player> activePlayers){
+
     }
 
-    /**
-     * Puts the players in order so the winner of the last round starts.
-     * @param lastWinner the winner of the last round
-     * @param activePlayers all players of the new round
-     */
-    public void playerOrder(Player lastWinner, List<Player> activePlayers){
-    }
+
 
     /**
      * Number of players that are not out yet.
