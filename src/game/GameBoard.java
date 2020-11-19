@@ -1,6 +1,5 @@
 package game;
 
-import cards.Cards;
 import server.UserThread;
 
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ public class GameBoard {
     public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
-    public Stack<Cards> stackCards; //ArrayList - so we can use Collections.shuffle?
+    public Stack<Card> stackCards; //ArrayList - so we can use Collections.shuffle?
     public Player gameWinner;
 
     public GameBoard(){
