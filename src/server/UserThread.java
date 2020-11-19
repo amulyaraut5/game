@@ -7,7 +7,7 @@ import java.net.Socket;
  * Handles connection for each connected client,
  * therefore the server is able to handle multiple clients at the same time.
  *
- * @author
+ * @author vossa,
  */
 
 public class UserThread extends Thread {

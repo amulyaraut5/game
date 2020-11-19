@@ -1,15 +1,18 @@
 package game;
 
+import cards.Cards;
 import server.UserThread;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class GameBoard {
     public ArrayList<Player> playerList;
     public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
-    public Player lastRecentlyWon; //to check who´s next in following rounds
+    public Stack<Cards> stackCards; //ArrayList - so we can use Collections.shuffle?
+    public Player gameWinner;
 
     public GameBoard(){
 
@@ -18,22 +21,22 @@ public class GameBoard {
      * If this method is called, the game is on and no more users can join
      */
     public void startGame(){
-        started = true;
-        //Message to player that game has started
-        //explore who begins
-        Player firstplayer = compareDates();
-        //message to firstplayer: what are his cards, what card does  he want to discard
-        //message to other players: turnplayers turn
 
-        //Game
+        playGame();
 
     }
 
     /**
-     * Method ends the whole game after couple of rounds
+     * method to play rounds until someone has won the whole game
      */
-    public void endGame(){
-
+    public void playGame(){
+        Player firstplayer = compareDates();
+        while (!gameWon()){
+            Round round = new Round(firstplayer);
+            round.play();
+            firstplayer = round.getWinner();
+        }
+        gameWinner = firstplayer;
     }
 
     /**
@@ -60,12 +63,37 @@ public class GameBoard {
     public int getPlayerCount(){
         return playerList.size();
     }
+
+
+
     /**
-     * It communicates whether the game has already started
-     * @return started
+     * checks if round is over who´s the winner depending on value cards/discarded cards
+     * @return winner
      */
-    public boolean isStarted() {
-        return started;
+    public Player getWinner(){
+        return gameWinner;
+    }
+    /**
+     * checks whether some Player already has won the whole game
+     * @return winGame
+     */
+    private boolean gameWon (){
+
+        boolean win = false;
+        //you win the game of you have enough token
+        for (Player player : playerList){
+            //2 player -> 7 token
+            if((playerList.size()==2) && (player.getTokenCount()>=7)){
+                win = true;
+            } //3 player -> 5 token
+            else if((playerList.size()==3) && (player.getTokenCount()>=5 )){
+                win = true;
+            }  //4 player -> 4 token
+            else if ((playerList.size()==4) && (player.getTokenCount()>=4)){
+                win = true;
+            }
+        }
+        return win;
     }
 
     /**
