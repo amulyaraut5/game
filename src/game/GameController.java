@@ -17,6 +17,8 @@ public class GameController {
      * verwaltet jegliche commands, die vom server gesendet werden
      */
     public void readCommand (String message, UserThread sender) {
+        //help
+        //score
     }
 
     /**
@@ -33,15 +35,22 @@ public class GameController {
         return runningGame;
     }
     /**
-     * Reagiert auf das command play.
+     * Reagiert auf das command create.
      * Diese Methode erstellt ein neues Gamebord, falls noch keines erstellt wurde.
      * Danach wird User darauf hingewiesen, dass er joinen kann
      * Wurde bereits ein Gameboard erstellt, wird der User darauf hingewiesen, dass er joinen kann.
      */
     public void create (UserThread sender, String userName) {
-
-        GameBoard gameBoard = new GameBoard();
-
+        if (startedGame) {
+            if (runningGame) {
+                //message: You're friends have started without you. Just wait and join in the next round.
+            } else {
+                //message: You're friend is already waiting for you. Type join and play the game.
+            }
+        } else {
+            GameBoard gameBoard = new GameBoard();
+            //join für den user aufrufen.
+        }
     }
 
     /**
