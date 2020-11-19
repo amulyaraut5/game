@@ -66,11 +66,22 @@ public class GameController {
      * Wenn etwas nicht passt, dann Hinweis an den User.
      */
     public void start () {
-
+    //ruft play Funktion aus Board auf
     }
 
+    /**
+     * Method to send message from GameBoard to GameController and then just to the playing users
+     * @param message
+     * @param playerList
+     */
     public void sendMessage (String message, ArrayList<Player> playerList) {
-        //method to send something from GameBoard to GameController and then just to the playing users
+        //get User Thread
     }
 
+    /**
+     * Method to send message from GameBoard to GameController and then just to one targeted player.
+     */
+    public void sendPrivateMessage (String message, Player justPlayer) {
+
+    }
 }
