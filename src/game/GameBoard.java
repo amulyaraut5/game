@@ -1,6 +1,6 @@
 package game;
 
-import card.Card;
+import card.*;
 import server.UserThread;
 
 import java.util.ArrayList;
@@ -19,7 +19,19 @@ public class GameBoard {
 
     }
     public Stack<Card> createDeck(){
-
+        // every card just one time: princess, countess, king
+        stackCards.add(new PrincessCard(8));
+        stackCards.add(new CountessCard(7));
+        stackCards.add(new KingCard(6));
+        //every card two times: prince, handmaid, baron, priest, guard
+        for(int i = 0; i<=1; i++){
+            stackCards.add(new PrinceCard(5));
+            stackCards.add(new HandmaidCard(4));
+            stackCards.add(new BaronCard(3));
+            stackCards.add(new PriestCard(2));
+            stackCards.add(new GuardCard(1));
+        }
+        return stackCards;
     }
 
     /**
