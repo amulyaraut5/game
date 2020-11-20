@@ -40,6 +40,12 @@ public class GameBoard {
     }
 
     /**
+     * Order of players
+     */
+    public void playerOrder(){
+    }
+
+    /**
      * method to play rounds until someone has won the whole game
      */
     public void playGame(){
