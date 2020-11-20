@@ -12,13 +12,13 @@ public class Round {
     private ArrayList<Card> faceUpCards;
     private Card firstCardRemoved = null;
 
-    public Round(Player firstplayer){
+    public Round(Player firstplayer, ArrayList<Card> deck){
         // carddeck should be created here otherwise we would get  error
         //remove() function cannot be called in removeDeckCard
         // secondly it would be better to create a deck and shuffle after each round
         //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
         // delete this message
-        cardDeck = GameBoard.createDeck();
+        this.cardDeck = deck;
         shuffleDeck(cardDeck);
         firstCardRemoved = pop();
         removeThreeMore(cardDeck);

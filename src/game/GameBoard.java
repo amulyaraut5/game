@@ -46,7 +46,7 @@ public class GameBoard {
     public void playGame(){
         Player firstplayer = compareDates();
         while (!gameWon()){
-            activeRound = new Round(firstplayer);
+            activeRound = new Round(firstplayer, createDeck());
             activeRound.play();
             firstplayer = activeRound.getRoundWinner();
             firstplayer.increaseNumOfTokens();
