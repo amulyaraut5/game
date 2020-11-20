@@ -14,6 +14,7 @@ public class Player {
     private final String userName;
     private int numOfTokens;
     private Card currentCard;
+    private Card secondCard;
     private Date lastDate;
 
     /**
@@ -77,6 +78,14 @@ public class Player {
 
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
+    }
+
+    public Card getSecondcard(){
+        return secondCard;
+    }
+
+    public void setSecondCard(Card secondCard) {
+        this.secondCard = secondCard;
     }
 
     public Date getLastDate() {
