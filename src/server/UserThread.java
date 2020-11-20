@@ -97,11 +97,11 @@ public class UserThread extends Thread {
     private LocalDate logInDate(){
 
         try {
-            sendMessage ("I am curious. When was the last time you were on a date? (dd.MM.yy)");
+            sendMessage ("I am curious. When was the last time you were on a date? (dd MM yy)");
 
             datePuffer = reader.readLine();
 
-            while(!isValid(datePuffer) || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
+            while(/*!isValid(datePuffer) ||*/ !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
                 sendMessage ("This date is not in the correct format. Please try again. ");
                 datePuffer = reader.readLine();
             }
@@ -113,8 +113,8 @@ public class UserThread extends Thread {
         }
         return lastDate;
         }
-
-    public static boolean isValid(final String date) {
+    //TODO: no valid dates doesnt count
+    public static boolean isValid(String date) {
         boolean valid = false;
         try {
             // ResolverStyle.STRICT for 30, 31 days checking, and also leap year.
