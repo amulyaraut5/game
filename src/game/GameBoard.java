@@ -48,7 +48,7 @@ public class GameBoard {
         Player firstplayer = compareDates(playerList);
 
 
-        activeRound = new Round(firstplayer, createDeck(), playerList);
+        activeRound = new Round(firstplayer, createDeck(), orderedPlayers);
         //activeRound.play();
         winnerList = activeRound.getRoundWinner();
         for (Player player : winnerList){
@@ -83,8 +83,14 @@ public class GameBoard {
      * @param  firstplayer is the Player who needs to be on index 0
      */
     public void playerOrder(ArrayList<Player> plList, Player firstplayer){
-
-        orderedPlayers = plList;
+        orderedPlayers.add(firstplayer);
+        int indexFirstPlayer = plList.indexOf(firstplayer);
+        for ( int i = indexFirstPlayer++; i<plList.size(); i++){
+            orderedPlayers.add(plList.get(i));
+        }
+        for (int i = 0; i < indexFirstPlayer; i++){
+            orderedPlayers.add(plList.get(i));
+        }
     }
 
     public void rotatePlayers(){
