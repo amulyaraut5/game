@@ -10,13 +10,12 @@ public class Round {
     private Map<Player, List<Card>> playedCards;
     public ArrayList<Card> cardDeck; //Remove after getStackCards is created
     private ArrayList<Card> faceUpCards;
-    public Stack <Card> cardDeck;
-    private Stack <Card> faceUpCards;
+
     private Card firstCardRemoved = null;
     private Player currentPlayer;
     private int playerCount;
 
-    public Round(Player firstplayer, Stack<Card> deck, ArrayList<Player> activePlayers){
+    public Round(Player firstplayer, ArrayList<Card> deck, ArrayList<Player> activePlayers){
         // carddeck should be created here otherwise we would get  error
         //remove() function cannot be called in removeDeckCard
         // secondly it would be better to create a deck and shuffle after each round
@@ -84,7 +83,7 @@ public class Round {
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public Stack<Card> shuffleDeck(Stack<Card> cardDeck){
+    public ArrayList<Card> shuffleDeck(ArrayList<Card> cardDeck){
         Collections.shuffle(cardDeck);
         return cardDeck;
     }
@@ -104,8 +103,8 @@ public class Round {
      * @param cardDeck the created cardeck
      * @return the three removed cards
      */
-    public Stack<Card> removeThreeMore(Stack<Card> cardDeck){
-        faceUpCards = new Stack<Card>();
+    public ArrayList<Card> removeThreeMore(ArrayList<Card> cardDeck){
+        faceUpCards = new ArrayList<Card>();
          if(activePlayers.size() == 2){
              for(int i = 0; i<3; i++){
                  faceUpCards.add(pop()); //show?
@@ -147,7 +146,7 @@ public class Round {
      */
     public boolean isRoundFinished(){
         //A round ends if the deck is empty at the end of a player’s turn
-        if (cardDeck.empty()) return true;
+        if (cardDeck.isEmpty()) return true;
         //A round also ends if all players but one are out of the round, in which case the remaining player wins
         if (activePlayers.size() < 2) return true; // one player has won
         return false;
