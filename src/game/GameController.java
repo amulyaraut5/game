@@ -8,7 +8,6 @@ public class GameController {
 
     private boolean startedGame = false;
     private boolean runningGame = false;
-    private int playerCount = 0;
     private GameBoard gameboard;
 
     public GameController () {
@@ -16,93 +15,82 @@ public class GameController {
     }
 
     /**
-     * verwaltet jegliche commands, die vom server gesendet werden
+     * reads and distributes all incoming commands regarding the game
      */
     public void readCommand (String message, UserThread sender) {
-        //help
-        //score
+        //TODO: help
+        //TODO: score
     }
 
     /**
-     * Reagiert auf das command create.
-     * Diese Methode erstellt ein neues Gamebord, falls noch keines erstellt wurde.
-     * Danach wird User darauf hingewiesen, dass er joinen kann
-     * Wurde bereits ein Gameboard erstellt, wird der User darauf hingewiesen, dass er joinen kann.
+     * Reacts to command "create".
+     * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
+     * If a GameBoard was already created the User gets a message to join the game.
      */
-    public void create (UserThread sender, String userName) {
-        if (startedGame) {
-            if (runningGame) {
-                //message: You're friends have started without you. Just wait and join in the next round.
-            } else {
-                //message: You're friend is already waiting for you. Type join and play the game.
-            }
-        } else {
+    public void create (UserThread user, String username) {
+        if (!startedGame) {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
-            //join für den user aufrufen.
+            gameboard.addUser(user, username);
+        } else if (startedGame && !runningGame) {
+            //TODO: message: Soemone has already created a game. Type join if you want to join the game.
+        } else if (startedGame && runningGame) {
+            //TODO: message: You're friends have started without you. Just wait and join in the next round.
         }
     }
 
     /**
-     * Reagiert auf das command join.
-     * Diese Methode überprüft, ob schon ein GameBoard exisitert, wenn nein, Aufforderung "play".
-     * Dann wird überprüft, ob das Spiel bereits gestartet wurde.
-     * Wenn nicht, wird der Spieler hinzugefügt, wenn <4 Spieler.
-     * Falls Spiel gestartet, Hinweis.
+     * Reacts to command "join".
+     * This method checks if a GameBoard has already been created and/or started.
+     * Also a player can only join if <4 players already joined.
      */
 
-    public void join (UserThread sender, String userName) {
-        if (startedGame && !runningGame && playerCount < 4) {
-            //message: You've joined the game.
-            //addUser
-            playerCount++;
+    public void join (UserThread user, String username) {
+        if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
+            gameboard.addUser(user, username);
+            //TODO: message: You've joined the game.
         } else if (!startedGame) {
-            //message: please start a game
+            //TODO: message: please start a game
         } else if (runningGame) {
-            //message: The game is already running
-        } else if (playerCount >= 4) {
-            //message: game already full
+            //TODO: message: The game is already running
+        } else if (gameboard.getPlayerCount() >= 4) {
+            //TODO: message: game already full
         }
     }
 
     /**
-     * Reagiert auf das command start.
-     * Prüft, ob Spieler schon gejoined hat.
-     * Prüft, ob ein Spiel bereits gestartet wurde.
-     * Wenn nicht, dann wird geprüft, ob ein Spiel schon erstellt wurde.
-     * Wenn ja, dann wird geprüft ob schon mind. 2 Spieler da sind.
-     * Wenn alles passt, dann wird startGame aus dem Board aufgerufen.
-     * Wenn etwas nicht passt, dann Hinweis an den User.
+     * Reacts to command "start"
+     * checks if the player has already joined the game, if a game has been created/started
+     * and if there are >=2 and <=4 players.
+     * If game can be started the method playGame() is called from the GameBoard.
      */
     public void start () {
-        if (startedGame && !runningGame && (playerCount >= 2)) {
+        // TODO: check if player already joined the game
+        if (startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.playGame();
             runningGame = true;
         } else if (!startedGame) {
-            //message: please start a game
+            //TODO: message: please start a game
         } else if (runningGame) {
-            //message: The game is already running
-        } else if (playerCount > 2) {
-            //message: not enough players to start the game yet
+            //TODO: message: The game is already running
+        } else if (gameboard.getPlayerCount() > 2) {
+            //TODO: message: not enough players to start the game yet
         }
     }
 
     /**
-     * method that resets all game controlling variables when a Game is ended
+     * method that resets all game controlling variables when a game is ended.
      */
     public void reset () {
         startedGame = false;
         runningGame = false;
-        playerCount = 0;
     }
 
     /**
      * Method to send message from GameBoard to GameController and then just to the playing users
-     * @param message
-     * @param playerList
      */
     public void sendMessage (String message, ArrayList<Player> playerList) {
-        //get User Thread
+        //TODO: get User Thread
     }
 
     /**
