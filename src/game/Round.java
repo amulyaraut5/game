@@ -94,27 +94,36 @@ public class Round {
 
     }
 
-    /**
-     * Number of players that are not out yet.
-     *  @return number of players that are still in the game
-     */
-    public int numPlayerStillInRound(){ //Needs inGame-method in Player
-        int number = 0;
-        return number;
-    }
+
 
     /**
      * Check if the round is finished
      * @return true when round is finished
      */
     public boolean isRoundFinished(){
-        if (cardDeck.size() <= 1) return true;         // last card has been drawn (none or one card left in stack/list)
-        if (numPlayerStillInRound() < 2) return true; // one player has won
+        //A round ends if the deck is empty at the end of a player’s turn
+        if (cardDeck.empty()) return true;
+        //A round also ends if all players but one are out of the round, in which case the remaining player wins
+        if (activePlayers.size() < 2) return true; // one player has won
         return false;
-
     }
+/*
+    Player setWinner(){
+        Player winner = activePlayerList.get(0);
+        for (int i = 1; i<= activePlayerList.size(); i++) {
+            if (winner.getSumValue() < activePlayerList.get(i).getSumValue()) {
+                winner = activePlayerList.get(i);
+            } else if (winner.getSumValue() == activePlayerList.get(i).getSumValue()) {
+                if (winner.getSumDiscarded() < activePlayerList.get(i).getSumDiscarded()) {
+                    winner = activePlayerList.get(i);
 
-
+                } else {
+                    //
+                }
+            }
+        }
+        return winner;
+    }*/
     /**
      * this methods returns the winner of the round
      * @return winner of the round
