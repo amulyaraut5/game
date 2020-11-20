@@ -20,8 +20,8 @@ public class GameBoard {
 
     }
 
-   public static ArrayList<Card> createDeck(){
-       ArrayList<Card> stackCards = new ArrayList<Card>();
+   public static Stack<Card> createDeck(){
+       Stack<Card> stackCards = new Stack<>();
        // every card just one time: princess, countess, king
         stackCards.add(new PrincessCard(8));
         stackCards.add(new CountessCard(7));

@@ -8,11 +8,11 @@ import java.util.*;
 public class Round {
     private List<Player> activePlayers;
     private Map<Player, List<Card>> playedCards;
-    public ArrayList<Card> cardDeck;
-    private ArrayList<Card> faceUpCards;
+    public Stack <Card> cardDeck;
+    private Stack <Card> faceUpCards;
     private Card firstCardRemoved = null;
 
-    public Round(Player firstplayer, ArrayList<Card> deck){
+    public Round(Player firstplayer, Stack<Card> deck){
         // carddeck should be created here otherwise we would get  error
         //remove() function cannot be called in removeDeckCard
         // secondly it would be better to create a deck and shuffle after each round
@@ -35,7 +35,7 @@ public class Round {
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public ArrayList<Card> shuffleDeck(ArrayList<Card> cardDeck){
+    public Stack<Card> shuffleDeck(Stack<Card> cardDeck){
         Collections.shuffle(cardDeck);
         return cardDeck;
     }
@@ -55,8 +55,8 @@ public class Round {
      * @param cardDeck the created cardeck
      * @return the three removed cards
      */
-    public ArrayList<Card> removeThreeMore(ArrayList<Card> cardDeck){
-        faceUpCards = new ArrayList<Card>();
+    public Stack<Card> removeThreeMore(Stack<Card> cardDeck){
+        faceUpCards = new Stack<Card>();
          if(activePlayers.size() == 2){
              for(int i = 0; i<3; i++){
                  faceUpCards.add(pop()); //show?
