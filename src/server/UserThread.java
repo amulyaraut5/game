@@ -18,11 +18,12 @@ public class UserThread extends Thread {
 
     private boolean exit = false;
 
-    private String userName = "Unnamed user";
+    private User user; //Connected user, which data has to be filled in logIn()
 
-    public UserThread(Socket socket, ChatServer server) {
+    public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;
         this.server = server;
+        this.user = user;
 
         try {
             InputStream input = socket.getInputStream();
@@ -49,8 +50,8 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
-                server.communicate(serverMessage, this);
+                serverMessage = "[" + user.getName() + "]: " + clientMessage;
+                server.communicate(serverMessage, user);
             }
         } catch (IOException ex) {
             disconnect(ex);
@@ -65,42 +66,50 @@ public class UserThread extends Thread {
      *
      * @return the entered and accepted username
      */
-    private String logIn() {
+    private void logIn() {
         sendMessage("Enter your username:");
         try {
             while (true) {
-                userName = reader.readLine();
+                String userName = reader.readLine();
+                System.out.println(userName);
                 if (userName.isBlank()) {
                     sendMessage("You might not have entered a username. Please try again:");
-                } else if (!server.checkAvailability(userName)) {
+                } else if (!server.isAvailable(userName)) {
                     sendMessage("This username is already taken. Please try a different username:");
                 } else {
-                    return userName;
+                    System.out.println("a");
+                    synchronized(user) {
+                        user.setName(userName);
+                    }
+                    System.out.println(user);
+                    break;
                 }
             }
         } catch (IOException ex) {
             disconnect(ex);
         }
-        return userName;
+        // while (true) {
+        //TODO test if date is in correct dateformat
+        //if yes: user.setLastDate(lastDate);
+        // }
     }
 
     /**
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
-        server.addUserName(userName);
-        sendMessage("Welcome " + userName + "!");
+        sendMessage("Welcome " + user.getName() + "!");
         sendMessage("Type \"bye\" to leave the room.");
-        server.communicate(userName + " joined the room.", this);
+        server.communicate(user.getName() + " joined the room.", user);
     }
 
     /**
      * The connection is closed and other users get notified that the user left.
      */
     private void disconnect() {
-        sendMessage("Bye " + userName);
-        server.removeUser(userName, this);
-        server.communicate(userName + " left the room.", this);
+        sendMessage("Bye " + user.getName());
+        server.removeUser(user);
+        server.communicate(user.getName() + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
@@ -118,8 +127,8 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         exit = true;
         System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
-        server.removeUser(userName, this);
-        server.communicate(userName + " left the room.", this);
+        server.removeUser(user);
+        server.communicate(user.getName() + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();

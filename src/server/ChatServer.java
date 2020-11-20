@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ChatServer {
     private final int port;
-    private ArrayList<UserThread> userThreads = new ArrayList<>();
-    private ArrayList<String> userNames = new ArrayList<>();
+    private List<User> users = Collections.synchronizedList(new ArrayList<User>(10));
 
     public ChatServer(int port) {
         this.port = port;
@@ -34,6 +35,7 @@ public class ChatServer {
             System.err.println("could not connect: " + e.getMessage());
         }
     }
+
     /**
      * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
      *
@@ -45,10 +47,13 @@ public class ChatServer {
             try {
                 Socket client_socket = server_socket.accept();
 
-                System.out.println("Accepted the connection from address: " + client_socket.getRemoteSocketAddress());
-                UserThread newUser = new UserThread(client_socket, this);
-                userThreads.add(newUser);
-                newUser.start();
+                System.out.println("Accepted the connection from address : " + client_socket.getRemoteSocketAddress());
+                User user = new User();
+                System.out.println(user);
+                UserThread thread = new UserThread(client_socket, this, user);
+                user.setThread(thread);
+                users.add(user);
+                thread.start();
             } catch (IOException e) {
                 accept = false;
                 System.out.println("Accept failed on: " + port);
@@ -57,51 +62,55 @@ public class ChatServer {
     }
 
     /**
+     * This method sends a message to each client which is connected to the server
+     */
+    public void communicate(String message) {
+        //TODO checks regex and calls the method readCommand for these messages
+        for (User user : users) {
+            user.message(message);
+        }
+    }
+
+    /**
      * This method sends a message to each client which is connected to the server except the sender itself
      */
-    public void communicate(String message, UserThread sender) {
+    public void communicate(String message, User sender) {
         //TODO checks regex and calls the method readCommand for these messages
-        for (UserThread user : userThreads) {
+        for (User user : users) {
             if (user != sender) {
-                user.sendMessage(message);
+                user.message(message);
             }
         }
     }
 
-    public void justUser(String message, UserThread thisUser) {
-        //TODO sends commands from GameController to the player (e.g. "Please deal card")
-        for (UserThread aUser : userThreads) {
-            if (aUser == thisUser) {
-                aUser.sendMessage(message);
-            }
-        }//sends a message only to one client
+
+    public void addUser(User user) {
+        users.add(user);
     }
+
     /**
-     * After the UserThread is created and user enters the name, the new user is added to the Set of the names.
-     *
-     * @param userName userName to be added
-     */
-    public void addUserName(String userName) {
-        userNames.add(userName);
-    }
-    /**
-     * It checks if the username is already in the list of assigned usernames.
+     * It checks if the username is already used of another user.
      *
      * @param userName userName to be checked
      * @return True if username is free, false if it´s already assigned
      */
-    public boolean checkAvailability(String userName) {
-        return (!userNames.contains(userName));
+    public synchronized boolean isAvailable(String userName) {
+        for (User u : users) {
+            if (u.getName() == userName) {
+                System.out.println("used");
+                return false;
+            }
+        }
+        System.out.println("unused");
+        return true;
     }
+
     /**
-     * This method removes the username and UserThread from their respective Set.
-     * Removing can be done by calling a pre defined method remove().
+     * This method removes a user from the list of users.
      *
-     * @param userName userName to be removed
-     * @param thisUser UserThread to be removed
+     * @param user User to be removed
      */
-    public void removeUser(String userName, UserThread thisUser) {
-        userNames.remove(userName);
-        userThreads.remove(thisUser);
+    public void removeUser(User user) {
+        users.remove(user);
     }
 }
