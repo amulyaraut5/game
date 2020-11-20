@@ -85,13 +85,16 @@ public class ChatServer {
         }
     }
 
+    /**
+     * send message only to one client
+     */
     public void justUser(String message, UserThread thisUser) {
         //TODO sends commands from GameController to the player (e.g. "Please deal card")
         for (UserThread aUser : userThreads) {
             if (aUser == thisUser) {
                 aUser.sendMessage(message);
             }
-        }//sends a message only to one client
+        }
     }
     /**
      * After the UserThread is created and user enters the name, the new user is added to the Set of the names.
