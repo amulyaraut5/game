@@ -16,30 +16,27 @@ public class GameController {
     }
 
     /**
-     * verwaltet jegliche commands, die vom server gesendet werden
+     * reads and distributes all incoming commands regarding the game
      */
     public void readCommand (String message, UserThread sender) {
-        //help
-        //score
+        //TODO: help
+        //TODO: score
     }
 
     /**
-     * Reagiert auf das command create.
-     * Diese Methode erstellt ein neues Gamebord, falls noch keines erstellt wurde.
-     * Danach wird User darauf hingewiesen, dass er joinen kann
-     * Wurde bereits ein Gameboard erstellt, wird der User darauf hingewiesen, dass er joinen kann.
+     * Reacts to command "create".
+     * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
+     * If a GameBoard was already created the User gets a message to join the game.
      */
     public void create (UserThread sender, String userName) {
-        if (startedGame) {
-            if (runningGame) {
-                //message: You're friends have started without you. Just wait and join in the next round.
-            } else {
-                //message: You're friend is already waiting for you. Type join and play the game.
-            }
-        } else {
+        if (!startedGame) {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
-            //join für den user aufrufen.
+            //TODO: join für den user aufrufen.
+        } else if (startedGame && !runningGame) {
+            //TODO: message: Soemone has already created a game. Type join if you want to join the game.
+        } else if (startedGame && runningGame) {
+            //TODO: message: You're friends have started without you. Just wait and join in the next round.
         }
     }
 
@@ -53,8 +50,8 @@ public class GameController {
 
     public void join (UserThread sender, String userName) {
         if (startedGame && !runningGame && playerCount < 4) {
-            //message: You've joined the game.
-            //addUser
+            //TODO: message: You've joined the game.
+            //TODO: addUser
             playerCount++;
         } else if (!startedGame) {
             //message: please start a game
