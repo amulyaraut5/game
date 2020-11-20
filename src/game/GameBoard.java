@@ -18,7 +18,9 @@ public class GameBoard {
     public GameBoard(){
 
     }
+    public Stack<Card> createDeck(){
 
+    }
 
     /**
      * method to play rounds until someone has won the whole game
@@ -40,6 +42,9 @@ public class GameBoard {
      */
     public Player compareDates(){
         return playerList.get(0); //just puffer
+    }
+    public void rotatePlayers(){
+
     }
     /**
      * It creates a Player and adds it to the list of joined player
