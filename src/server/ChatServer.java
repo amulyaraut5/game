@@ -5,6 +5,7 @@ import game.GameController;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +15,8 @@ public class ChatServer {
     private final int port;
     private ArrayList<UserThread> userThreads = new ArrayList<>();
     private ArrayList<String> userNames = new ArrayList<>();
+    private ArrayList<LocalDate> lastDates = new ArrayList<>();
+
     private GameController gameController = new GameController();
 
     public ChatServer(int port) {
@@ -103,6 +106,14 @@ public class ChatServer {
      */
     public void addUserName(String userName) {
         userNames.add(userName);
+    }
+    /**
+     * After the UserThread is created and user enters the date, the new date is added to the Set of the dates.
+     *
+     * @param lastDate lastDate to be added
+     */
+    public void addDate(LocalDate lastDate) {
+        lastDates.add(lastDate);
     }
     /**
      * It checks if the username is already in the list of assigned usernames.

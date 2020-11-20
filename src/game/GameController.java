@@ -84,6 +84,8 @@ public class GameController {
         }
     }
 
+
+
     /**
      * method that resets all game controlling variables when a game is ended.
      */
