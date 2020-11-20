@@ -24,8 +24,6 @@ public class Round {
         removeThreeMore(cardDeck);
     }
 
-
-
     /**
      * this method is called by the GameBoard to start a round after it is created
      */
@@ -74,7 +72,17 @@ public class Round {
         //sendet abgedeckte Karten an alle Spieler
     }
 
+    public void dealCards(){
 
+    }
+
+    public void drawCards(){
+
+    }
+
+    public void discardCards(){
+
+    }
 
     /**
      * Number of players that are not out yet.
@@ -101,7 +109,7 @@ public class Round {
      * this methods returns the winner of the round
      * @return winner of the round
      */
-    public Player getWinner() {
+    public Player getRoundWinner() {
         Player winner = null;
         return winner;
     }

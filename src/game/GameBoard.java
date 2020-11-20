@@ -18,6 +18,7 @@ public class GameBoard {
     public GameBoard(){
 
     }
+
    public static ArrayList<Card> createDeck(){
        ArrayList<Card> stackCards = new ArrayList<Card>();
        // every card just one time: princess, countess, king
@@ -31,7 +32,7 @@ public class GameBoard {
             stackCards.add(new BaronCard(3));
             stackCards.add(new PriestCard(2));
         }
-        //guard 5 times in deck:
+        //guard five times:
         for(int i = 0; i<5; i++){
             stackCards.add(new GuardCard(1));
         }
@@ -46,7 +47,7 @@ public class GameBoard {
         while (!gameWon()){
             activeRound = new Round(firstplayer);
             activeRound.play();
-            firstplayer = activeRound.getWinner();
+            firstplayer = activeRound.getRoundWinner();
             firstplayer.increaseNumOfTokens();
         }
         gameWinner = firstplayer;
