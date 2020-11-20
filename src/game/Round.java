@@ -12,16 +12,20 @@ public class Round {
     private Stack <Card> faceUpCards;
     private Card firstCardRemoved = null;
 
-    public Round(Player firstplayer, Stack<Card> deck){
+    public Round(Player firstplayer, Stack<Card> deck, ArrayList<Player> activePlayers){
         // carddeck should be created here otherwise we would get  error
         //remove() function cannot be called in removeDeckCard
         // secondly it would be better to create a deck and shuffle after each round
         //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
         // delete this message
         this.cardDeck = deck;
+        this.activePlayers=activePlayers;
         shuffleDeck(cardDeck);
         firstCardRemoved = pop();
-        removeThreeMore(cardDeck);
+        if(activePlayers.size()==2){
+            removeThreeMore(cardDeck);
+        }
+
     }
 
     /**
