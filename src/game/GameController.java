@@ -21,7 +21,9 @@ public class GameController {
     /**
      * reads and distributes all incoming commands regarding the game
      */
-    public void readCommand (String message, UserThread sender) {
+    public void readCommand (String message, UserThread user) {
+        //TODO: getUserName
+        String username = "Default";
         switch (message) {
             case "#create":
                 //TODO
@@ -67,6 +69,7 @@ public class GameController {
      */
 
     public void join (UserThread user, String username, LocalDate lastDate) {
+        // TODO: check if player already joined the game
         if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addUser(user, username, lastDate);
             server.justUser("You've joined the game.", user);
