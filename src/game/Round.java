@@ -7,7 +7,6 @@ import java.util.*;
 
 public class Round {
     private List<Player> activePlayers;
-    private Map<Player, List<Card>> playedCards;
     public ArrayList<Card> cardDeck;
     private ArrayList<Card> faceUpCards;
     private Card firstCardRemoved = null;
@@ -19,9 +18,9 @@ public class Round {
         //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
         // delete this message
         cardDeck = GameBoard.createDeck();
-        shuffleDeck(cardDeck);
+        shuffleDeck();
         firstCardRemoved = pop();
-        removeThreeMore(cardDeck);
+        removeThreeMore();
     }
 
     /**
@@ -29,13 +28,12 @@ public class Round {
      */
     public void play() {
 
-
     }
 
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public ArrayList<Card> shuffleDeck(ArrayList<Card> cardDeck){
+    public ArrayList<Card> shuffleDeck(){
         Collections.shuffle(cardDeck);
         return cardDeck;
     }
@@ -52,10 +50,9 @@ public class Round {
 
     /**
      * removes three more cards from the deck, if there are only two players.
-     * @param cardDeck the created cardeck
      * @return the three removed cards
      */
-    public ArrayList<Card> removeThreeMore(ArrayList<Card> cardDeck){
+    public ArrayList<Card> removeThreeMore(){
         faceUpCards = new ArrayList<Card>();
          if(activePlayers.size() == 2){
              for(int i = 0; i<3; i++){
@@ -79,35 +76,30 @@ public class Round {
         for (Player player : activePlayers){
             player.setCurrentCard(pop());
         }
+    }
+
+    public void drawCards(ArrayList<Player> activePlayers){
+        while (!isRoundFinished()){
+            for (Player currentPlayer : activePlayers){
+                currentPlayer.setSecondCard(pop());
+                discardCards(currentPlayer);
+            }
+        }
+    }
+
+    public void discardCards(Player currentPlayer){
 
     }
 
-    public void drawCards(){
-
-    }
-
-    public void discardCards(){
-
-    }
-
-    /**
-     * Number of players that are not out yet.
-     *  @return number of players that are still in the game
-     */
-    public int numPlayerStillInRound(){ //Needs inGame-method in Player
-        int number = 0;
-        return number;
-    }
 
     /**
      * Check if the round is finished
      * @return true when round is finished
      */
     public boolean isRoundFinished(){
-        if (cardDeck.size() <= 1) return true;         // last card has been drawn (none or one card left in stack/list)
-        if (numPlayerStillInRound() < 2) return true; // one player has won
+        if (cardDeck.size() <= 1) return true;      // last card has been drawn (none or one card left in stack/list)
+        if (activePlayers.size() < 2) return true;  // one player has won
         return false;
-
     }
 
 
