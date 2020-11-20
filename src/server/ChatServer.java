@@ -1,14 +1,20 @@
 package server;
 
+import game.GameController;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatServer {
+
     private final int port;
     private ArrayList<UserThread> userThreads = new ArrayList<>();
     private ArrayList<String> userNames = new ArrayList<>();
+    private GameController gameController = new GameController();
 
     public ChatServer(int port) {
         this.port = port;
@@ -60,7 +66,18 @@ public class ChatServer {
      * This method sends a message to each client which is connected to the server except the sender itself
      */
     public void communicate(String message, UserThread sender) {
-        //TODO checks regex and calls the method readCommand for these messages
+        Pattern gamePattern = Pattern.compile("^#+");
+        Matcher matcher = gamePattern.matcher(message);
+
+        if (matcher.lookingAt()) {
+            gameController.readCommand(message, sender);
+        } else {
+            for (UserThread user : userThreads) {
+                if (user != sender) {
+                    user.sendMessage(message);
+                }
+            }
+        }
         for (UserThread user : userThreads) {
             if (user != sender) {
                 user.sendMessage(message);
