@@ -113,10 +113,10 @@ public class GameController {
     }
 
     /**
-     * Method to send message from GameBoard to GameController and then just to the playing users
+     * Method to send message from GameBoard to GameController and then to all users
      */
-    public void sendMessage (String message, ArrayList<Player> playerList) {
-        //TODO
+    public void sendMessage (String message) {
+        server.communicateAll(message);
     }
 
     /**
