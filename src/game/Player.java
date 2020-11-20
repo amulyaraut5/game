@@ -3,6 +3,7 @@ package game;
 import card.Card;
 import server.UserThread;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ public class Player {
     private final String userName;
     private int numOfTokens;
     private Card currentCard;
-    private Date lastDate;
+    private LocalDate lastDate;
 
     /**
      * Creates new player with given parameters.
@@ -22,9 +23,10 @@ public class Player {
      * @param user     UserThread connected with this player
      * @param userName Name of the player
      */
-    public Player(UserThread user, String userName) {
+    public Player(UserThread user, String userName, LocalDate lastDate) {
         this.user = user;
         this.userName = userName;
+        this.lastDate = lastDate;
         numOfTokens = 0;
     }
 
@@ -79,7 +81,7 @@ public class Player {
         this.currentCard = currentCard;
     }
 
-    public Date getLastDate() {
+    public LocalDate getLastDate() {
         return lastDate;
     }
 

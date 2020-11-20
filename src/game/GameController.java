@@ -3,6 +3,7 @@ package game;
 import server.ChatServer;
 import server.UserThread;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GameController {
@@ -30,11 +31,11 @@ public class GameController {
      * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
      * If a GameBoard was already created the User gets a message to join the game.
      */
-    public void create (UserThread user, String username) {
+    public void create (UserThread user, String username, LocalDate lastDate) {
         if (!startedGame) {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
-            gameboard.addUser(user, username);
+            gameboard.addUser(user, username, lastDate);
         } else if (startedGame && !runningGame) {
 
             //TODO: message: Someone has already created a game. Type join if you want to join the game.
@@ -49,9 +50,9 @@ public class GameController {
      * Also a player can only join if <4 players already joined.
      */
 
-    public void join (UserThread user, String username) {
+    public void join (UserThread user, String username, LocalDate lastDate) {
         if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
-            gameboard.addUser(user, username);
+            gameboard.addUser(user, username, lastDate);
             server.justUser("You've joined the game.", user);
             //TODO: message: You've joined the game.
         } else if (!startedGame) {
