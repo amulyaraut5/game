@@ -2,15 +2,15 @@ package game;
 
 
 import card.Card;
-import card.PriestCard;
 
 import java.util.*;
 
 public class Round {
     private List<Player> activePlayers;
     private Map<Player, List<Card>> playedCards;
-    public List<Card> cardDeck; //Remove after getStackCards is created
-
+    public ArrayList<Card> cardDeck;
+    private ArrayList<Card> faceUpCards;
+    private Card firstCardRemoved = null;
 
     public Round(Player firstplayer){
         // carddeck should be created here otherwise we would get  error
@@ -18,14 +18,13 @@ public class Round {
         // secondly it would be better to create a deck and shuffle after each round
         //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
         // delete this message
-        cardDeck = new ArrayList<Card>();
-        for (int i = Card.GUARD; i <= Card.PRINCESS; i++) {
-            for (int j = 0; j < Card.numberOfIndividualCards[i]; j++) {
-                PriestCard card = new PriestCard(i);
-                cardDeck.add(card);
-            }
-        }
+        cardDeck = GameBoard.createDeck();
+        shuffleDeck(cardDeck);
+        firstCardRemoved = pop();
+        removeThreeMore(cardDeck);
     }
+
+
 
     /**
      * this method is called by the GameBoard to start a round after it is created
@@ -38,18 +37,41 @@ public class Round {
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public void shuffleDeck(){
+    public ArrayList<Card> shuffleDeck(ArrayList<Card> cardDeck){
         Collections.shuffle(cardDeck);
+        return cardDeck;
     }
 
     /**
-     * Method to remove cards from the deck at the beginning of a round
-     * - depending on the number of players.
-     * (Rules: Remove top card of the deck without looking at it and place it aside.
-     * When playing a 2-player game, take 3 more cards from the top of the deck and place them to the side, face up.)
+     * removes first card of the deck
+     * @return poped the removed card
      */
-    public void removeDeckCard(List<Player> activePlayers){
+    public Card pop(){
+        Card poped = cardDeck.get(0);
+        cardDeck.remove(poped);
+        return poped;
+    }
 
+    /**
+     * removes three more cards from the deck, if there are only two players.
+     * @param cardDeck the created cardeck
+     * @return the three removed cards
+     */
+    public ArrayList<Card> removeThreeMore(ArrayList<Card> cardDeck){
+        faceUpCards = new ArrayList<Card>();
+         if(activePlayers.size() == 2){
+             for(int i = 0; i<3; i++){
+                 faceUpCards.add(pop()); //show?
+             }
+        }
+        return faceUpCards;
+    }
+
+    /**
+     * shows the three removed cards to the players
+     */
+    public void sendFaceUpCards(){
+        //sendet abgedeckte Karten an alle Spieler
     }
 
 

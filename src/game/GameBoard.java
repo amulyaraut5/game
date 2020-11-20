@@ -11,24 +11,28 @@ public class GameBoard {
     public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
-    public Stack<Card> stackCards; //ArrayList - so we can use Collections.shuffle?
+
     public Player gameWinner;
     public Round activeRound;
 
     public GameBoard(){
 
     }
-    public Stack<Card> createDeck(){
-        // every card just one time: princess, countess, king
+   public static ArrayList<Card> createDeck(){
+       ArrayList<Card> stackCards = new ArrayList<Card>();
+       // every card just one time: princess, countess, king
         stackCards.add(new PrincessCard(8));
         stackCards.add(new CountessCard(7));
         stackCards.add(new KingCard(6));
         //every card two times: prince, handmaid, baron, priest, guard
-        for(int i = 0; i<=1; i++){
+        for(int i = 0; i<2; i++){
             stackCards.add(new PrinceCard(5));
             stackCards.add(new HandmaidCard(4));
             stackCards.add(new BaronCard(3));
             stackCards.add(new PriestCard(2));
+        }
+        //guard 5 times in deck:
+        for(int i = 0; i<5; i++){
             stackCards.add(new GuardCard(1));
         }
         return stackCards;
