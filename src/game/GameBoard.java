@@ -1,8 +1,9 @@
 package game;
 
-import cards.Cards;
+import card.*;
 import server.UserThread;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -11,19 +12,32 @@ public class GameBoard {
     public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
-    public Stack<Cards> stackCards; //ArrayList - so we can use Collections.shuffle?
+
     public Player gameWinner;
+    public Round activeRound;
 
     public GameBoard(){
 
     }
-    /**
-     * If this method is called, the game is on and no more users can join
-     */
-    public void startGame(){
 
-        playGame();
-
+   public static ArrayList<Card> createDeck(){
+       ArrayList<Card> stackCards = new ArrayList<Card>();
+       // every card just one time: princess, countess, king
+        stackCards.add(new PrincessCard(8));
+        stackCards.add(new CountessCard(7));
+        stackCards.add(new KingCard(6));
+        //every card two times: prince, handmaid, baron, priest, guard
+        for(int i = 0; i<2; i++){
+            stackCards.add(new PrinceCard(5));
+            stackCards.add(new HandmaidCard(4));
+            stackCards.add(new BaronCard(3));
+            stackCards.add(new PriestCard(2));
+        }
+        //guard five times:
+        for(int i = 0; i<5; i++){
+            stackCards.add(new GuardCard(1));
+        }
+        return stackCards;
     }
 
     /**
@@ -32,9 +46,10 @@ public class GameBoard {
     public void playGame(){
         Player firstplayer = compareDates();
         while (!gameWon()){
-            Round round = new Round(firstplayer);
-            round.play();
-            firstplayer = round.getWinner();
+            activeRound = new Round(firstplayer, createDeck());
+            activeRound.play();
+            firstplayer = activeRound.getRoundWinner();
+            firstplayer.increaseNumOfTokens();
         }
         gameWinner = firstplayer;
     }
@@ -44,15 +59,25 @@ public class GameBoard {
      * @return this player
      */
     public Player compareDates(){
-        return playerList.get(0); //just puffer
+        Player player = playerList.get(0);
+        for(int i = 1; i<=playerList.size()-1; i++){
+            if (playerList.get(i).getLastDate().isAfter(player.getLastDate())){
+                player = playerList.get(i);
+            }
+        }
+        return player;
+
+    }
+    public void rotatePlayers(){
+
     }
     /**
      * It creates a Player and adds it to the list of joined player
      * @param user Thread of the user
      * @param username
      */
-    public void addUser(UserThread user, String username){
-        Player player = new Player(user, username);
+    public void addUser(UserThread user, String username, LocalDate lastDate){
+        Player player = new Player(user, username, lastDate);
         playerList.add(player);
     }
 
