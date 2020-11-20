@@ -27,12 +27,19 @@ public class Round {
         }
     }
 
+    /**
+     * this method is called by the GameBoard to start a round after it is created
+     */
+    public void play() {
+
+
+    }
 
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public void shuffleDeck(){ //Maybe just Collections.shuffle(stackCards) in runRound?
-        //Objekt und getStackCards?
+    public void shuffleDeck(){
+        Collections.shuffle(cardDeck);
     }
 
     /**
@@ -67,13 +74,6 @@ public class Round {
 
     }
 
-    /**
-     * this method is called by the GameBoard to start a round after it is created
-     */
-    public void play() {
-
-
-    }
 
     /**
      * this methods returns the winner of the round
