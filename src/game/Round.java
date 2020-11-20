@@ -165,30 +165,34 @@ public class Round {
         if (activePlayers.size() < 2) return true; // one player has won
         return false;
     }
-/*
-    Player setWinner(){
-        Player winner = activePlayerList.get(0);
-        for (int i = 1; i<= activePlayerList.size(); i++) {
-            if (winner.getSumValue() < activePlayerList.get(i).getSumValue()) {
-                winner = activePlayerList.get(i);
-            } else if (winner.getSumValue() == activePlayerList.get(i).getSumValue()) {
-                if (winner.getSumDiscarded() < activePlayerList.get(i).getSumDiscarded()) {
-                    winner = activePlayerList.get(i);
 
-                } else {
-                    //
-                }
-            }
-        }
-        return winner;
-    }*/
     /**
      * this methods returns the winner of the round
      * @return winner of the round
      */
-    public Player getRoundWinner() {
-        Player winner = null;
-        return winner;
+    public ArrayList<Player> getRoundWinner() {
+        ArrayList<Player> winnerList = new ArrayList<Player>();
+        Player winner = activePlayers.get(0);
+        //A round also ends if all players but one are out of the round, in which case the remaining player wins.
+        if(activePlayers.size()==1){
+            winnerList.add(winner);
+            return winnerList;
+        } else { //A round ends if the deck is empty at the end of a player’s turn
+            for (int i = 1; i <= activePlayers.size(); i++) {
+                //The player with the highest number in their hand wins the round.
+                if (winner.getCurrentCard().getValue() < activePlayers.get(i).getCurrentCard().getValue()) {
+                    winnerList.get(i); //TODO
+                //In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins.
+                } else if (winner.getCurrentCard().getValue() == activePlayers.get(i).getCurrentCard().getValue()) {
+                    if (winner.getCurrentCard().getValue() < activePlayers.get(i).getCurrentCard().getValue()) {
+                        winner = activePlayers.get(i);//TODO
+                    } else {
+                        //
+                    }
+                }
+            }
+        }
+        return winnerList;
     }
     /**
      * this method adds another player to the game.
