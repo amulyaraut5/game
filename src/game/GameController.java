@@ -54,14 +54,12 @@ public class GameController {
         if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addUser(user, username, lastDate);
             server.justUser("You've joined the game.", user);
-            //TODO: message: You've joined the game.
         } else if (!startedGame) {
-            server.justUser("Please type 'start' to start", user);
-            //TODO: message: please start a game
+            server.justUser("Please type '#create' to create a new game", user);
         } else if (runningGame) {
-            //TODO: message: The game is already running
+            server.justUser("The game is already running. Please wait and join in the next game", user);
         } else if (gameboard.getPlayerCount() >= 4) {
-            //TODO: message: game already full
+            server.justUser("All player slots have already been taken. Please wait and join the next game.", user);
         }
     }
 
