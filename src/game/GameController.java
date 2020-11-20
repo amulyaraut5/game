@@ -1,5 +1,6 @@
 package game;
 
+import server.ChatServer;
 import server.UserThread;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ public class GameController {
     private boolean startedGame = false;
     private boolean runningGame = false;
     private GameBoard gameboard;
+    private ChatServer server;
+    private Player player;
 
     public GameController () {
 
@@ -33,7 +36,8 @@ public class GameController {
             startedGame = true;
             gameboard.addUser(user, username);
         } else if (startedGame && !runningGame) {
-            //TODO: message: Soemone has already created a game. Type join if you want to join the game.
+
+            //TODO: message: Someone has already created a game. Type join if you want to join the game.
         } else if (startedGame && runningGame) {
             //TODO: message: You're friends have started without you. Just wait and join in the next round.
         }
@@ -48,8 +52,10 @@ public class GameController {
     public void join (UserThread user, String username) {
         if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addUser(user, username);
+            server.justUser("You've joined the game.", user);
             //TODO: message: You've joined the game.
         } else if (!startedGame) {
+            server.justUser("Please type 'start' to start", user);
             //TODO: message: please start a game
         } else if (runningGame) {
             //TODO: message: The game is already running
@@ -90,13 +96,14 @@ public class GameController {
      * Method to send message from GameBoard to GameController and then just to the playing users
      */
     public void sendMessage (String message, ArrayList<Player> playerList) {
-        //TODO: get User Thread
+
     }
 
     /**
      * Method to send message from GameBoard to GameController and then just to one targeted player.
      */
-    public void sendPrivateMessage (String message, Player justPlayer) {
-
+    public void sendPrivateMessage (String message, Player player) {
+        UserThread user = player.getUserThread();
+        server.justUser (message, user);
     }
 }
