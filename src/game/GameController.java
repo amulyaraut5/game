@@ -69,17 +69,17 @@ public class GameController {
      * and if there are >=2 and <=4 players.
      * If game can be started the method playGame() is called from the GameBoard.
      */
-    public void start () {
+    public void start (UserThread user) {
         // TODO: check if player already joined the game
         if (startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.playGame();
             runningGame = true;
         } else if (!startedGame) {
-            //TODO: message: please start a game
+            server.justUser("Please type '#create' to create a new game", user);
         } else if (runningGame) {
-            //TODO: message: The game is already running
+            server.justUser("The game is already running. Please wait and join in the next game", user);
         } else if (gameboard.getPlayerCount() > 2) {
-            //TODO: message: not enough players to start the game yet
+            server.justUser("You need more players to start the game", user);
         }
     }
 
