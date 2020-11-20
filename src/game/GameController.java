@@ -22,8 +22,25 @@ public class GameController {
      * reads and distributes all incoming commands regarding the game
      */
     public void readCommand (String message, UserThread sender) {
-        //TODO: help
-        //TODO: score
+        switch (message) {
+            case "#create":
+                //TODO
+                break;
+            case "#join":
+                //TODO
+                break;
+            case "#start":
+                //TODO
+                break;
+            case "#help":
+                //TODO
+                break;
+            case "#score":
+                //TODO
+                break;
+            //TODO: cards
+            //TODO: end game
+        }
     }
 
     /**
@@ -96,7 +113,7 @@ public class GameController {
      * Method to send message from GameBoard to GameController and then just to the playing users
      */
     public void sendMessage (String message, ArrayList<Player> playerList) {
-
+        //TODO
     }
 
     /**
