@@ -81,11 +81,11 @@ public class ChatServer {
                 }
             }
         }
-        for (UserThread user : userThreads) {
-            if (user != sender) {
-                user.sendMessage(message);
-            }
-        }
+    }
+
+    public void communicateAll (String message) {
+        for (UserThread user: userThreads)
+        user.sendMessage (message);
     }
 
     /**
