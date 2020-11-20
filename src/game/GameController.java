@@ -36,11 +36,10 @@ public class GameController {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
             gameboard.addUser(user, username, lastDate);
-        } else if (startedGame && !runningGame) {
-
-            //TODO: message: Someone has already created a game. Type join if you want to join the game.
-        } else if (startedGame && runningGame) {
-            //TODO: message: You're friends have started without you. Just wait and join in the next round.
+        } else if (!runningGame) {
+            server.justUser("Someone has already created a game. Type '#join' if you want to join the game", user);
+        } else if (runningGame) {
+            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         }
     }
 
@@ -55,9 +54,9 @@ public class GameController {
             gameboard.addUser(user, username, lastDate);
             server.justUser("You've joined the game.", user);
         } else if (!startedGame) {
-            server.justUser("Please type '#create' to create a new game", user);
+            server.justUser("Please type '#create' to create a new game.", user);
         } else if (runningGame) {
-            server.justUser("The game is already running. Please wait and join in the next game", user);
+            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         } else if (gameboard.getPlayerCount() >= 4) {
             server.justUser("All player slots have already been taken. Please wait and join the next game.", user);
         }
@@ -75,11 +74,11 @@ public class GameController {
             gameboard.playGame();
             runningGame = true;
         } else if (!startedGame) {
-            server.justUser("Please type '#create' to create a new game", user);
+            server.justUser("Please type '#create' to create a new game.", user);
         } else if (runningGame) {
-            server.justUser("The game is already running. Please wait and join in the next game", user);
+            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         } else if (gameboard.getPlayerCount() > 2) {
-            server.justUser("You need more players to start the game", user);
+            server.justUser("You need more players to start the game.", user);
         }
     }
 
