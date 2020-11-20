@@ -18,12 +18,14 @@ public class UserThread extends Thread {
 
     private boolean exit = false;
 
-    private User user; //Connected user, which data has to be filled in logIn()
+    private static volatile User user; //Connected user, which data has to be filled in logIn()
 
     public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;
         this.server = server;
         this.user = user;
+
+        this.user.setThread(this);
 
         try {
             InputStream input = socket.getInputStream();
@@ -71,7 +73,6 @@ public class UserThread extends Thread {
         try {
             while (true) {
                 String userName = reader.readLine();
-                System.out.println(userName);
                 if (userName.isBlank()) {
                     sendMessage("You might not have entered a username. Please try again:");
                 } else if (!server.isAvailable(userName)) {
@@ -80,9 +81,6 @@ public class UserThread extends Thread {
                     synchronized (user) {
                         //TODO synchronize change in user
                         user.setName(userName);
-                        //server.updateUser(user);
-                        //server.addUser(user);
-                        //server.addUser(new User(this, userName));
                     }
                     break;
                 }

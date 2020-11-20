@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ChatServer {
     //private volatile static List<User> users = Collections.synchronizedList(new ArrayList<User>(10));
-    private volatile static List<User> users = new ArrayList<User>(10);
+    private static final List<User> users = new ArrayList<User>(10);
     private final int port;
 
     public ChatServer(int port) {
@@ -20,13 +20,13 @@ public class ChatServer {
         int port = 4444;
 
         ChatServer server = new ChatServer(port);
-        server.start_Server();
+        server.start();
     }
 
     /**
      * start_Server() method opens a channel for the connection between Server and Client
      */
-    private void start_Server() {
+    private void start() {
         try {
             ServerSocket server_socket = new ServerSocket(port);
             System.out.println("Chat server is waiting for clients to connect to port " + port + ".");
@@ -49,9 +49,7 @@ public class ChatServer {
 
                 System.out.println("Accepted the connection from address : " + client_socket.getRemoteSocketAddress());
                 User user = new User();
-                System.out.println(user);
                 UserThread thread = new UserThread(client_socket, this, user);
-                user.setThread(thread);
                 users.add(user);
                 thread.start();
             } catch (IOException e) {
@@ -103,9 +101,10 @@ public class ChatServer {
      */
     public synchronized boolean isAvailable(String userName) {
         int i = 0;
-        System.out.println("begin test of "+userName);
+        System.out.println("begin test of " + userName);
         for (User u : users) {
-            System.out.println("test user " + i++ + ": "+u.getName());
+            System.out.println(u);
+            System.out.println("test user " + i++ + ": " + u.getName());
             if (u.getName().equals(userName)) {
                 System.out.println("used");
                 return false;
