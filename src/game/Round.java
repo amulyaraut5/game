@@ -42,6 +42,10 @@ public class Round {
         return cardDeck;
     }
 
+    /**
+     * removes first card of the deck
+     * @return poped the removed card
+     */
     public Card pop(){
         Card poped = cardDeck.get(0);
         cardDeck.remove(poped);
@@ -49,10 +53,9 @@ public class Round {
     }
 
     /**
-     * Method to remove cards from the deck at the beginning of a round
-     * - depending on the number of players.
-     * (Rules: Remove top card of the deck without looking at it and place it aside.
-     * When playing a 2-player game, take 3 more cards from the top of the deck and place them to the side, face up.)
+     * removes three more cards from the deck, if there are only two players.
+     * @param cardDeck the created cardeck
+     * @return the three removed cards
      */
     public ArrayList<Card> removeThreeMore(ArrayList<Card> cardDeck){
         faceUpCards = new ArrayList<Card>();
@@ -64,6 +67,9 @@ public class Round {
         return faceUpCards;
     }
 
+    /**
+     * shows the three removed cards to the players
+     */
     public void sendFaceUpCards(){
         //sendet abgedeckte Karten an alle Spieler
     }
