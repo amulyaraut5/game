@@ -24,11 +24,14 @@ public class GameBoard {
         stackCards.add(new CountessCard(7));
         stackCards.add(new KingCard(6));
         //every card two times: prince, handmaid, baron, priest, guard
-        for(int i = 0; i<=1; i++){
+        for(int i = 0; i<2; i++){
             stackCards.add(new PrinceCard(5));
             stackCards.add(new HandmaidCard(4));
             stackCards.add(new BaronCard(3));
             stackCards.add(new PriestCard(2));
+        }
+        //guard 5 times in deck
+        for(int i = 0; i<5; i++){
             stackCards.add(new GuardCard(1));
         }
         return stackCards;
