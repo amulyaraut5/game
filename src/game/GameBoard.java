@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class GameBoard {
     public ArrayList<Player> playerList;
-    public ArrayList<Player> activePlayers; //lists players that are still active in the current round
+    public ArrayList<Player> orderedPlayers;
     private boolean started = false;
     private GameController gameController = new GameController();
     private ArrayList<Player> winnerList = new ArrayList<>();
@@ -40,11 +40,6 @@ public class GameBoard {
         return stackCards;
     }
 
-    /**
-     * Order of players
-     */
-    public void playerOrder(){
-    }
 
     /**
      * method to play rounds until someone has won the whole game
@@ -82,6 +77,16 @@ public class GameBoard {
         return player;
 
     }
+    /**
+     * in list orderedPlayers the Player who´s allowed to play first is on index 0
+     * @param plList is the playerList who needs a new order
+     * @param  firstplayer is the Player who needs to be on index 0
+     */
+    public void playerOrder(ArrayList<Player> plList, Player firstplayer){
+
+        orderedPlayers = plList;
+    }
+
     public void rotatePlayers(){
 
     }
