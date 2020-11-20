@@ -3,9 +3,18 @@ package server;
 import java.util.Date;
 
 public class User {
-    private UserThread thread;
-    private String name = "Unnamed user";
-    private Date lastDate = new Date(0); //TODO set low date
+    private volatile static UserThread thread;
+    private volatile static String name = "Unnamed user";
+    private volatile static Date lastDate = new Date(0); //TODO set low date
+
+    public User(UserThread thread, String name) {
+        this.thread = thread;
+        this.name = name;
+    }
+
+    public User() {
+
+    }
 
     public UserThread getThread() {
         return thread;

@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ChatServer {
+    //private volatile static List<User> users = Collections.synchronizedList(new ArrayList<User>(10));
+    private volatile static List<User> users = new ArrayList<User>(10);
     private final int port;
-    private List<User> users = Collections.synchronizedList(new ArrayList<User>(10));
 
     public ChatServer(int port) {
         this.port = port;
@@ -88,6 +88,13 @@ public class ChatServer {
         users.add(user);
     }
 
+    public void updateUser(User user) {
+        if (users.contains(user)) {
+            users.remove(user);
+            users.add(user);
+        }
+    }
+
     /**
      * It checks if the username is already used of another user.
      *
@@ -95,8 +102,11 @@ public class ChatServer {
      * @return True if username is free, false if it´s already assigned
      */
     public synchronized boolean isAvailable(String userName) {
+        int i = 0;
+        System.out.println("begin test of "+userName);
         for (User u : users) {
-            if (u.getName() == userName) {
+            System.out.println("test user " + i++ + ": "+u.getName());
+            if (u.getName().equals(userName)) {
                 System.out.println("used");
                 return false;
             }

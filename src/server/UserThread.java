@@ -77,11 +77,13 @@ public class UserThread extends Thread {
                 } else if (!server.isAvailable(userName)) {
                     sendMessage("This username is already taken. Please try a different username:");
                 } else {
-                    System.out.println("a");
-                    synchronized(user) {
+                    synchronized (user) {
+                        //TODO synchronize change in user
                         user.setName(userName);
+                        //server.updateUser(user);
+                        //server.addUser(user);
+                        //server.addUser(new User(this, userName));
                     }
-                    System.out.println(user);
                     break;
                 }
             }
