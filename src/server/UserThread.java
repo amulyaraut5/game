@@ -131,7 +131,7 @@ public class UserThread extends Thread {
      */
     private void welcome() {
         server.addUserName(userName);
-        server.addDate(lastDate);
+        server.addLastDate(lastDate);
         sendMessage("Welcome " + userName + "!");
         sendMessage("Type \"bye\" to leave the room.");
         server.communicate(userName + " joined the room.", this);
@@ -142,7 +142,7 @@ public class UserThread extends Thread {
      */
     private void disconnect() {
         sendMessage("Bye " + userName);
-        server.removeUser(userName, this);
+        server.removeUser(userName, this, lastDate);
         server.communicate(userName + " left the room.", this);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
@@ -161,7 +161,7 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         exit = true;
         System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
-        server.removeUser(userName, this);
+        server.removeUser(userName, this, lastDate);
         server.communicate(userName + " left the room.", this);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {

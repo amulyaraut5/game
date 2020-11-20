@@ -112,7 +112,7 @@ public class ChatServer {
      *
      * @param lastDate lastDate to be added
      */
-    public void addDate(LocalDate lastDate) {
+    public void addLastDate(LocalDate lastDate) {
         lastDates.add(lastDate);
     }
     /**
@@ -131,8 +131,9 @@ public class ChatServer {
      * @param userName userName to be removed
      * @param thisUser UserThread to be removed
      */
-    public void removeUser(String userName, UserThread thisUser) {
+    public void removeUser(String userName, UserThread thisUser, LocalDate thisDate) {
         userNames.remove(userName);
         userThreads.remove(thisUser);
+        lastDates.remove(thisDate);
     }
 }
