@@ -28,11 +28,11 @@ public class GameController {
      * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
      * If a GameBoard was already created the User gets a message to join the game.
      */
-    public void create (UserThread sender, String userName) {
+    public void create (UserThread user, String username) {
         if (!startedGame) {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
-            //TODO: join für den user aufrufen.
+            gameboard.addUser(user, username);
         } else if (startedGame && !runningGame) {
             //TODO: message: Soemone has already created a game. Type join if you want to join the game.
         } else if (startedGame && runningGame) {
@@ -41,51 +41,47 @@ public class GameController {
     }
 
     /**
-     * Reagiert auf das command join.
-     * Diese Methode überprüft, ob schon ein GameBoard exisitert, wenn nein, Aufforderung "play".
-     * Dann wird überprüft, ob das Spiel bereits gestartet wurde.
-     * Wenn nicht, wird der Spieler hinzugefügt, wenn <4 Spieler.
-     * Falls Spiel gestartet, Hinweis.
+     * Reacts to command "join".
+     * This method checks if a GameBoard has already been created and/or started.
+     * Also a player can only join if <4 players already joined.
      */
 
-    public void join (UserThread sender, String userName) {
+    public void join (UserThread user, String username) {
         if (startedGame && !runningGame && playerCount < 4) {
-            //TODO: message: You've joined the game.
-            //TODO: addUser
+            gameboard.addUser(user, username);
             playerCount++;
+            //TODO: message: You've joined the game.
         } else if (!startedGame) {
-            //message: please start a game
+            //TODO: message: please start a game
         } else if (runningGame) {
-            //message: The game is already running
+            //TODO: message: The game is already running
         } else if (playerCount >= 4) {
-            //message: game already full
+            //TODO: message: game already full
         }
     }
 
     /**
-     * Reagiert auf das command start.
-     * Prüft, ob Spieler schon gejoined hat.
-     * Prüft, ob ein Spiel bereits gestartet wurde.
-     * Wenn nicht, dann wird geprüft, ob ein Spiel schon erstellt wurde.
-     * Wenn ja, dann wird geprüft ob schon mind. 2 Spieler da sind.
-     * Wenn alles passt, dann wird startGame aus dem Board aufgerufen.
-     * Wenn etwas nicht passt, dann Hinweis an den User.
+     * Reacts to command "start"
+     * checks if the player has already joined the game, if a game has been created/started
+     * and if there are >=2 and <=4 players.
+     * If game can be started the method playGame() is called from the GameBoard.
      */
     public void start () {
+        // TODO: check if player already joined the game
         if (startedGame && !runningGame && (playerCount >= 2)) {
             gameboard.playGame();
             runningGame = true;
         } else if (!startedGame) {
-            //message: please start a game
+            //TODO: message: please start a game
         } else if (runningGame) {
-            //message: The game is already running
+            //TODO: message: The game is already running
         } else if (playerCount > 2) {
-            //message: not enough players to start the game yet
+            //TODO: message: not enough players to start the game yet
         }
     }
 
     /**
-     * method that resets all game controlling variables when a Game is ended
+     * method that resets all game controlling variables when a game is ended.
      */
     public void reset () {
         startedGame = false;
@@ -95,11 +91,9 @@ public class GameController {
 
     /**
      * Method to send message from GameBoard to GameController and then just to the playing users
-     * @param message
-     * @param playerList
      */
     public void sendMessage (String message, ArrayList<Player> playerList) {
-        //get User Thread
+        //TODO: get User Thread
     }
 
     /**
