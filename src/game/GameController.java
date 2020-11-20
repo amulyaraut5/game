@@ -3,6 +3,7 @@ package game;
 import server.ChatServer;
 import server.UserThread;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GameController {
@@ -21,8 +22,25 @@ public class GameController {
      * reads and distributes all incoming commands regarding the game
      */
     public void readCommand (String message, UserThread sender) {
-        //TODO: help
-        //TODO: score
+        switch (message) {
+            case "#create":
+                //TODO
+                break;
+            case "#join":
+                //TODO
+                break;
+            case "#start":
+                //TODO
+                break;
+            case "#help":
+                //TODO
+                break;
+            case "#score":
+                //TODO
+                break;
+            //TODO: cards
+            //TODO: end game
+        }
     }
 
     /**
@@ -30,16 +48,15 @@ public class GameController {
      * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
      * If a GameBoard was already created the User gets a message to join the game.
      */
-    public void create (UserThread user, String username) {
+    public void create (UserThread user, String username, LocalDate lastDate) {
         if (!startedGame) {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
-            gameboard.addUser(user, username);
-        } else if (startedGame && !runningGame) {
-
-            //TODO: message: Someone has already created a game. Type join if you want to join the game.
-        } else if (startedGame && runningGame) {
-            //TODO: message: You're friends have started without you. Just wait and join in the next round.
+            gameboard.addUser(user, username, lastDate);
+        } else if (!runningGame) {
+            server.justUser("Someone has already created a game. Type '#join' if you want to join the game", user);
+        } else if (runningGame) {
+            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         }
     }
 
@@ -49,18 +66,16 @@ public class GameController {
      * Also a player can only join if <4 players already joined.
      */
 
-    public void join (UserThread user, String username) {
+    public void join (UserThread user, String username, LocalDate lastDate) {
         if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
-            gameboard.addUser(user, username);
+            gameboard.addUser(user, username, lastDate);
             server.justUser("You've joined the game.", user);
-            //TODO: message: You've joined the game.
         } else if (!startedGame) {
-            server.justUser("Please type 'start' to start", user);
-            //TODO: message: please start a game
+            server.justUser("Please type '#create' to create a new game.", user);
         } else if (runningGame) {
-            //TODO: message: The game is already running
+            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         } else if (gameboard.getPlayerCount() >= 4) {
-            //TODO: message: game already full
+            server.justUser("All player slots have already been taken. Please wait and join the next game.", user);
         }
     }
 
@@ -70,19 +85,21 @@ public class GameController {
      * and if there are >=2 and <=4 players.
      * If game can be started the method playGame() is called from the GameBoard.
      */
-    public void start () {
+    public void start (UserThread user) {
         // TODO: check if player already joined the game
         if (startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.playGame();
             runningGame = true;
         } else if (!startedGame) {
-            //TODO: message: please start a game
+            server.justUser("Please type '#create' to create a new game.", user);
         } else if (runningGame) {
-            //TODO: message: The game is already running
+            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         } else if (gameboard.getPlayerCount() > 2) {
-            //TODO: message: not enough players to start the game yet
+            server.justUser("You need more players to start the game.", user);
         }
     }
+
+
 
     /**
      * method that resets all game controlling variables when a game is ended.
@@ -96,7 +113,7 @@ public class GameController {
      * Method to send message from GameBoard to GameController and then just to the playing users
      */
     public void sendMessage (String message, ArrayList<Player> playerList) {
-
+        //TODO
     }
 
     /**

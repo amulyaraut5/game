@@ -2,6 +2,10 @@ package server;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 /**
  * Handles connection for each connected client,
@@ -19,6 +23,9 @@ public class UserThread extends Thread {
     private boolean exit = false;
 
     private String userName = "Unnamed user";
+    private String datePuffer = "Datepuffer";
+    private LocalDate lastDate;
+    public static DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("dd MM yy");
 
     public UserThread(Socket socket, ChatServer server) {
         this.socket = socket;
@@ -41,7 +48,11 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         //before each method call it is checked if run() should be exited.
-        if (!exit) logIn();
+        if (!exit) logInName();
+
+        if (!exit) logInDate();
+
+
         if (!exit) welcome();
 
         String clientMessage = "";
@@ -65,7 +76,7 @@ public class UserThread extends Thread {
      *
      * @return the entered and accepted username
      */
-    private String logIn() {
+    private String logInName() {
         sendMessage("Enter your username:");
         try {
             while (true) {
@@ -83,12 +94,44 @@ public class UserThread extends Thread {
         }
         return userName;
     }
+    private LocalDate logInDate(){
 
+        try {
+            sendMessage ("I am curious. When was the last time you were on a date? (dd MM yy)");
+
+            datePuffer = reader.readLine();
+
+            while(/*!isValid(datePuffer) ||*/ !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
+                sendMessage ("This date is not in the correct format. Please try again. ");
+                datePuffer = reader.readLine();
+            }
+            return lastDate = LocalDate.parse(datePuffer, formatter);
+
+        } catch (IOException ex) {
+            sendMessage("nö");
+            disconnect(ex);
+        }
+        return lastDate;
+        }
+    //TODO: no valid dates doesnt count
+    public static boolean isValid(String date) {
+        boolean valid = false;
+        try {
+            // ResolverStyle.STRICT for 30, 31 days checking, and also leap year.
+            LocalDate.parse(date, formatter.withResolverStyle(ResolverStyle.STRICT));
+            valid = true;
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            valid = false;
+        }
+        return valid;
+    }
     /**
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
         server.addUserName(userName);
+        server.addLastDate(lastDate);
         sendMessage("Welcome " + userName + "!");
         sendMessage("Type \"bye\" to leave the room.");
         server.communicate(userName + " joined the room.", this);
@@ -99,7 +142,7 @@ public class UserThread extends Thread {
      */
     private void disconnect() {
         sendMessage("Bye " + userName);
-        server.removeUser(userName, this);
+        server.removeUser(userName, this, lastDate);
         server.communicate(userName + " left the room.", this);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
@@ -118,7 +161,7 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         exit = true;
         System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
-        server.removeUser(userName, this);
+        server.removeUser(userName, this, lastDate);
         server.communicate(userName + " left the room.", this);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {

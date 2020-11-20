@@ -3,6 +3,7 @@ package game;
 import card.*;
 import server.UserThread;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -20,7 +21,7 @@ public class GameBoard {
     }
 
    public static ArrayList<Card> createDeck(){
-       ArrayList<Card> stackCards = new ArrayList<Card>();
+       ArrayList<Card> stackCards = new ArrayList<>();
        // every card just one time: princess, countess, king
         stackCards.add(new PrincessCard(8));
         stackCards.add(new CountessCard(7));
@@ -51,8 +52,8 @@ public class GameBoard {
     public void playGame(){
         Player firstplayer = compareDates();
         while (!gameWon()){
-            activeRound = new Round(firstplayer);
-            activeRound.play();
+            activeRound = new Round(firstplayer, createDeck(), playerList);
+            activeRound.start();
             firstplayer = activeRound.getRoundWinner();
             firstplayer.increaseNumOfTokens();
         }
@@ -64,7 +65,14 @@ public class GameBoard {
      * @return this player
      */
     public Player compareDates(){
-        return playerList.get(0); //just puffer
+        Player player = playerList.get(0);
+        for(int i = 1; i<=playerList.size()-1; i++){
+            if (playerList.get(i).getLastDate().isAfter(player.getLastDate())){
+                player = playerList.get(i);
+            }
+        }
+        return player;
+
     }
     public void rotatePlayers(){
 
@@ -74,8 +82,8 @@ public class GameBoard {
      * @param user Thread of the user
      * @param username
      */
-    public void addUser(UserThread user, String username){
-        Player player = new Player(user, username);
+    public void addUser(UserThread user, String username, LocalDate lastDate){
+        Player player = new Player(user, username, lastDate);
         playerList.add(player);
     }
 
