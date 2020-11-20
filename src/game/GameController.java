@@ -8,7 +8,6 @@ public class GameController {
 
     private boolean startedGame = false;
     private boolean runningGame = false;
-    private int playerCount = 0;
     private GameBoard gameboard;
 
     public GameController () {
@@ -47,15 +46,14 @@ public class GameController {
      */
 
     public void join (UserThread user, String username) {
-        if (startedGame && !runningGame && playerCount < 4) {
+        if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addUser(user, username);
-            playerCount++;
             //TODO: message: You've joined the game.
         } else if (!startedGame) {
             //TODO: message: please start a game
         } else if (runningGame) {
             //TODO: message: The game is already running
-        } else if (playerCount >= 4) {
+        } else if (gameboard.getPlayerCount() >= 4) {
             //TODO: message: game already full
         }
     }
@@ -68,14 +66,14 @@ public class GameController {
      */
     public void start () {
         // TODO: check if player already joined the game
-        if (startedGame && !runningGame && (playerCount >= 2)) {
+        if (startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.playGame();
             runningGame = true;
         } else if (!startedGame) {
             //TODO: message: please start a game
         } else if (runningGame) {
             //TODO: message: The game is already running
-        } else if (playerCount > 2) {
+        } else if (gameboard.getPlayerCount() > 2) {
             //TODO: message: not enough players to start the game yet
         }
     }
@@ -86,7 +84,6 @@ public class GameController {
     public void reset () {
         startedGame = false;
         runningGame = false;
-        playerCount = 0;
     }
 
     /**
