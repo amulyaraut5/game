@@ -72,7 +72,13 @@ public class Round {
         //sendet abgedeckte Karten an alle Spieler
     }
 
+    /**
+     * deals out the first cards
+     */
     public void dealCards(){
+        for (Player player : activePlayers){
+            player.setCurrentCard(pop());
+        }
 
     }
 
