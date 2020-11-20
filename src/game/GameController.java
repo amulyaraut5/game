@@ -57,7 +57,7 @@ public class GameController {
             gameboard.addUser(user, username, lastDate);
         } else if (!runningGame) {
             server.justUser("Someone has already created a game. Type '#join' if you want to join the game", user);
-        } else if (runningGame) {
+        } else {
             server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
         }
     }
