@@ -71,9 +71,6 @@ public class Player {
      *
      * @return Number of tokens.
      */
-    public int getNumOfTokens() {
-        return numOfTokens;
-    }
 
     public Card getCurrentCard() {
         return currentCard;
@@ -95,9 +92,6 @@ public class Player {
         return lastDate;
     }
 
-    public int getSumValue() {
-        return 0;
-    }
 
     public int getTokenCount() {
         return 0;

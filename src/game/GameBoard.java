@@ -12,7 +12,7 @@ public class GameBoard {
     public ArrayList<Player> activePlayers; //lists players that are still active in the current round
     private boolean started = false;
     private GameController gameController = new GameController();
-
+    private ArrayList<Player> winnerList = new ArrayList<>();
     public Player gameWinner;
     public Round activeRound;
 
@@ -50,13 +50,21 @@ public class GameBoard {
      * method to play rounds until someone has won the whole game
      */
     public void playGame(){
-        Player firstplayer = compareDates();
-        while (!gameWon()){
-            activeRound = new Round(firstplayer, createDeck(), playerList);
-            activeRound.start();
-            firstplayer = activeRound.getRoundWinner();
-            firstplayer.increaseNumOfTokens();
+        Player firstplayer = compareDates(playerList);
+
+
+        activeRound = new Round(firstplayer, createDeck(), playerList);
+        //activeRound.play();
+        winnerList = activeRound.getRoundWinner();
+        for (Player player : winnerList){
+            player.increaseNumOfTokens();
         }
+        if(winnerList.size()==1){
+            firstplayer=winnerList.get(0);
+        } else {
+            firstplayer = compareDates(winnerList);
+        }
+
         gameWinner = firstplayer;
     }
 
@@ -64,11 +72,11 @@ public class GameBoard {
      * it finds out who was last recently on a date
      * @return this player
      */
-    public Player compareDates(){
-        Player player = playerList.get(0);
-        for(int i = 1; i<=playerList.size()-1; i++){
-            if (playerList.get(i).getLastDate().isAfter(player.getLastDate())){
-                player = playerList.get(i);
+    public Player compareDates(ArrayList<Player> plList){
+        Player player = plList.get(0);
+        for(int i = 1; i<=plList.size()-1; i++){
+            if (plList.get(i).getLastDate().isAfter(player.getLastDate())){
+                player = plList.get(i);
             }
         }
         return player;
