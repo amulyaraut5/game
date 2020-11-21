@@ -15,12 +15,15 @@ public class HandmaidCard extends Card {
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 
 
-    // Player cannot be affected by the other players card until the next turn.
+    /**
+     * By calling this method Player cannot be affected by the other players card until the next turn.
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
         playerPlayingCard.isGuarded = true;

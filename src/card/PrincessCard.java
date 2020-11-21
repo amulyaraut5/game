@@ -15,11 +15,15 @@ public class PrincessCard extends Card {
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 
-    // If a player discard this card, then the player will be out of the round.
+
+    /**
+     * If a player discard this card, then the player will be out of the round.
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
         playerPlayingCard.setInGame(false);

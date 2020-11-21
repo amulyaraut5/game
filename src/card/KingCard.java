@@ -14,12 +14,15 @@ public class KingCard extends Card {
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 
 
-    // Player trades card with another card
+    /**
+     * By calling this method the playing trades card with another card
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
         for (Player player : players) {

@@ -14,7 +14,7 @@ public abstract class Card {
 
 
     abstract String getCardName();
-    abstract int getCardValue();
+    public abstract int getCardValue();
 
     abstract void handlecard(Player playerPlayingCard);
 }
