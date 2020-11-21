@@ -45,7 +45,7 @@ public class GameController {
                 user.message(validCommands);
                 break;
             case "#score":
-                //TODO
+                gameboard.getScorePlayer();
                 break;
             case "#choose":
                 message = message.substring(message.indexOf(" ")+1);
