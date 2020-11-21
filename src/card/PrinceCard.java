@@ -30,7 +30,6 @@ public class PrinceCard extends Card {
     @Override
     public void handlecard(Player playerPlayingCard) {
 
-        String targetPlayername;
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded)               // must not be guarded and discarding own card is allowed
             {
@@ -48,10 +47,12 @@ public class PrinceCard extends Card {
             if (targetPlayer.getCard().getCardName().equals("Princess")) {
                 //we kick the player out of the round.
                 round.kickPlayer(targetPlayer);
-                //TODO Display message to all the players
-                System.out.println("Target player has discarded a princess because of you! " +
-                        "\nTarget player is now out of the game!" +
-                        " \n*shakes fist angrily");
+                //Display message to all the players    -maybe replace with communicateAll?
+                for (Player player : availablePlayers){
+                    player.message("Target player has discarded a princess because of " + playerPlayingCard + "!" +
+                            "\nTarget player is now out of the game!" +
+                            " \n*shakes fist angrily");
+                }
                 } else {
                     targetPlayer.setCurrentCard(round.pop());
                     // TODO targetPlayer needs to draw a card from the deck
