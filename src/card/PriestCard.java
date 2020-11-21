@@ -1,5 +1,7 @@
 package card;
 
+import game.Player;
+
 public class PriestCard extends Card{
     public PriestCard(String name_of_card, int card_value){
         this.name_of_card = name_of_card;

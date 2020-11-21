@@ -143,13 +143,13 @@ public class Round {
         //currentPlayer.setPlayedHandmaid(false);
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
-        if (currentPlayer.getCard().value == Card.COUNTESS &&
-                (currentPlayer.getSecondcard().value == Card.KING || currentPlayer.getSecondcard().value == Card.PRINCE)) {
+        if (currentPlayer.getCard().name_of_card == "COUNTESS" &&
+                (currentPlayer.getSecondcard().name_of_card == "KING" || currentPlayer.getSecondcard().name_of_card == "PRINCE")) {
             if (chosenCard == currentPlayer.getSecondcard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
-        } else if (currentPlayer.getSecondcard().value == Card.COUNTESS &&
-                (currentPlayer.getCard().value == Card.KING || currentPlayer.getCard().value == Card.PRINCE)) {
+        } else if (currentPlayer.getSecondcard().name_of_card == "COUNTESS" &&
+                (currentPlayer.getCard().name_of_card == "KING" || currentPlayer.getCard().name_of_card == "PRINCE")) {
             if (chosenCard == currentPlayer.getCard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
