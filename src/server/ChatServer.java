@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChatServer {
     private static final ArrayList<User> users = new ArrayList<>(10);
