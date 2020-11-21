@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Player extends User {
 
-    private boolean guarded;
+    private boolean guarded = false;
     private int numOfTokens;
     private Card currentCard;
     private ArrayList<Card> playedCards = new ArrayList<>();
@@ -57,10 +57,6 @@ public class Player extends User {
      */
     public Card getCard() {
         return currentCard;
-    }
-
-    // TODO required in card subclasses
-    public void setCard(Card card) {
     }
 
     /**
