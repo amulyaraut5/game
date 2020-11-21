@@ -15,21 +15,20 @@ import java.time.format.ResolverStyle;
  */
 
 public class UserThread extends Thread {
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yy");
+    private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final ChatServer server;
     private PrintWriter userOut;
     private BufferedReader reader;
-
     private boolean exit = false;
 
-    private String userName = "Unnamed user";
-    private String datePuffer = "Datepuffer";
-    private LocalDate lastDate;
-    public static DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("dd MM yy");
-
-    public UserThread(Socket socket, ChatServer server) {
+    public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;
         this.server = server;
+        this.user = user;
+
+        this.user.setThread(this);
 
         try {
             InputStream input = socket.getInputStream();
@@ -41,78 +40,6 @@ public class UserThread extends Thread {
         }
     }
 
-    /**
-     * The method runs a loop of reading messages from the user and sending them to all other users.
-     * The user disconnects by typing "bye".
-     */
-    @Override
-    public void run() {
-        //before each method call it is checked if run() should be exited.
-        if (!exit) logInName();
-
-        if (!exit) logInDate();
-
-
-        if (!exit) welcome();
-
-        String clientMessage = "";
-        String serverMessage;
-        try {
-            while (!exit && !clientMessage.equals("bye")) {
-                clientMessage = reader.readLine();
-                serverMessage = "[" + userName + "]: " + clientMessage;
-                server.communicate(serverMessage, this);
-            }
-        } catch (IOException ex) {
-            disconnect(ex);
-        }
-        if (!exit) disconnect();
-    }
-
-    /**
-     * The user is asked to enter a name to log in.
-     * If the name already exists in the list of assigned usernames, the user is asked to try again.
-     * It also makes sure that the user enters something and not a empty String.
-     *
-     * @return the entered and accepted username
-     */
-    private String logInName() {
-        sendMessage("Enter your username:");
-        try {
-            while (true) {
-                userName = reader.readLine();
-                if (userName.isBlank()) {
-                    sendMessage("You might not have entered a username. Please try again:");
-                } else if (!server.checkAvailability(userName)) {
-                    sendMessage("This username is already taken. Please try a different username:");
-                } else {
-                    return userName;
-                }
-            }
-        } catch (IOException ex) {
-            disconnect(ex);
-        }
-        return userName;
-    }
-    private LocalDate logInDate(){
-
-        try {
-            sendMessage ("I am curious. When was the last time you were on a date? (dd MM yy)");
-
-            datePuffer = reader.readLine();
-
-            while(/*!isValid(datePuffer) ||*/ !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
-                sendMessage ("This date is not in the correct format. Please try again. ");
-                datePuffer = reader.readLine();
-            }
-            return lastDate = LocalDate.parse(datePuffer, formatter);
-
-        } catch (IOException ex) {
-            sendMessage("nö");
-            disconnect(ex);
-        }
-        return lastDate;
-        }
     //TODO: no valid dates doesnt count
     public static boolean isValid(String date) {
         boolean valid = false;
@@ -126,24 +53,99 @@ public class UserThread extends Thread {
         }
         return valid;
     }
+
+    /**
+     * The method runs a loop of reading messages from the user and sending them to all other users.
+     * The user disconnects by typing "bye".
+     */
+    @Override
+    public void run() {
+        //before each method call it is checked if run() should be exited.
+        if (!exit) logInName();
+        if (!exit) logInDate();
+        if (!exit) welcome();
+
+        String clientMessage = "";
+        String serverMessage;
+        try {
+            while (!exit && !clientMessage.equals("bye")) {
+                clientMessage = reader.readLine();
+                //TODO regex: check here if message is "#", otherwise do following lines
+                // (Wenn erst in communicate geprüft wird, dann wird immer ["+user.getName()+"] angehängt)
+                serverMessage = "[" + user.getName() + "]: " + clientMessage;
+                server.communicate(serverMessage, user);
+            }
+        } catch (IOException ex) {
+            disconnect(ex);
+        }
+        if (!exit) disconnect();
+    }
+
+    /**
+     * prints a message for specific user
+     *
+     * @param message the message to be sent
+     */
+    public void sendMessage(String message) {
+        userOut.println(message);
+    }
+
+    /**
+     * The user is asked to enter a name to log in.
+     * If the name already exists in the list of assigned usernames, the user is asked to try again.
+     * It also makes sure that the user enters something and not a empty String.
+     */
+    private void logInName() {
+        sendMessage("Enter your username:");
+        try {
+            while (true) {
+                String userName = reader.readLine();
+                if (userName.isBlank()) {
+                    sendMessage("You might not have entered a username. Please try again:");
+                } else if (!server.isAvailable(userName)) {
+                    sendMessage("This username is already taken. Please try a different username:");
+                } else {
+                    user.setName(userName);
+                    break;
+                }
+            }
+        } catch (IOException ex) {
+            disconnect(ex);
+        }
+    }
+
+    private void logInDate() {
+        String datePuffer;
+        try {
+            sendMessage("I am curious. When was the last time you were on a date? (dd MM yy)");
+            datePuffer = reader.readLine();
+
+            while (/*!isValid(datePuffer) ||*/ !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
+                sendMessage("This date is not in the correct format. Please try again. ");
+                datePuffer = reader.readLine();
+            }
+            user.setLastDate(LocalDate.parse(datePuffer, formatter));
+        } catch (IOException ex) {
+            disconnect(ex);
+        }
+    }
+
     /**
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
-        server.addUserName(userName);
-        server.addLastDate(lastDate);
-        sendMessage("Welcome " + userName + "!");
+        sendMessage("Welcome " + user.getName() + "!");
         sendMessage("Type \"bye\" to leave the room.");
-        server.communicate(userName + " joined the room.", this);
+        server.communicate(user.getName() + " joined the room.", user);
     }
 
     /**
      * The connection is closed and other users get notified that the user left.
      */
     private void disconnect() {
-        sendMessage("Bye " + userName);
-        server.removeUser(userName, this, lastDate);
-        server.communicate(userName + " left the room.", this);
+        sendMessage("Bye " + user.getName());
+        server.removeUser(user);
+        server.communicate(user.getName() + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
@@ -161,23 +163,14 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         exit = true;
         System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
-        server.removeUser(userName, this, lastDate);
-        server.communicate(userName + " left the room.", this);
+        server.removeUser(user);
+        server.communicate(user.getName() + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    /**
-     * prints a message for specific user
-     *
-     * @param message the message to be sent
-     */
-    public void sendMessage(String message) {
-        userOut.println(message);
     }
 }
 

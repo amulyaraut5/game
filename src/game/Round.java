@@ -130,8 +130,8 @@ public class Round {
         Card secondCard = pop();
         String first = currentPlayer.getCard().toString();
         String second = secondCard.toString();
-        currentPlayer.getUserThread().sendMessage(first + "or" + second); //TODO Get both names
-        String message = gameBoard.readMessage();
+        currentPlayer.message(first + "or" + second); //TODO Get both names
+        String message = gameBoard.readResponse();
         gameBoard.getSender();
         //TODO check if sender is currentplayer
         //if choosen card is second card, change second card with currentcard

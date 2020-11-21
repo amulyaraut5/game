@@ -1,7 +1,7 @@
 package game;
 
 import server.ChatServer;
-import server.UserThread;
+import server.User;
 
 import java.time.LocalDate;
 
@@ -20,7 +20,7 @@ public class GameController {
     /**
      * reads and distributes all incoming commands regarding the game
      */
-    public synchronized void readCommand(String message, UserThread user) {
+    public synchronized void readCommand(String message, User user) {
         //TODO: getUserName
         String username = "Default";
         switch (message) {
@@ -49,15 +49,15 @@ public class GameController {
      * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
      * If a GameBoard was already created the User gets a message to join the game.
      */
-    public void create(UserThread user, String username, LocalDate lastDate) {
+    public void create(User user) {
         if (!startedGame) {
             GameBoard gameBoard = new GameBoard();
             startedGame = true;
-            gameboard.addUser(user, username, lastDate);
+            gameboard.addPlayer(user);
         } else if (!runningGame) {
-            server.justUser("Someone has already created a game. Type '#join' if you want to join the game", user);
+            user.message("Someone has already created a game. Type '#join' if you want to join the game");
         } else {
-            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
+            user.message("You're friends have started without you. Just wait and join in the next round.");
         }
     }
 
@@ -67,17 +67,17 @@ public class GameController {
      * Also a player can only join if <4 players already joined.
      */
 
-    public void join(UserThread user, String username, LocalDate lastDate) {
+    public void join(User user) {
         // TODO: check if player already joined the game
         if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
-            gameboard.addUser(user, username, lastDate);
-            server.justUser("You've joined the game.", user);
+            gameboard.addPlayer(user);
+            user.message("You've joined the game.");
         } else if (!startedGame) {
-            server.justUser("Please type '#create' to create a new game.", user);
+            user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
-            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
+            user.message("You're friends have started without you. Just wait and join in the next round.");
         } else if (gameboard.getPlayerCount() >= 4) {
-            server.justUser("All player slots have already been taken. Please wait and join the next game.", user);
+            user.message("All player slots have already been taken. Please wait and join the next game.");
         }
     }
 
@@ -87,17 +87,17 @@ public class GameController {
      * and if there are >=2 and <=4 players.
      * If game can be started the method playGame() is called from the GameBoard.
      */
-    public void start(UserThread user) {
+    public void start(User user) {
         // TODO: check if player already joined the game
         if (startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.run();
             runningGame = true;
         } else if (!startedGame) {
-            server.justUser("Please type '#create' to create a new game.", user);
+            user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
-            server.justUser("You're friends have started without you. Just wait and join in the next round.", user);
+            user.message("You're friends have started without you. Just wait and join in the next round.");
         } else if (gameboard.getPlayerCount() > 2) {
-            server.justUser("You need more players to start the game.", user);
+            user.message("You need more players to start the game.");
         }
     }
 
@@ -115,13 +115,5 @@ public class GameController {
      */
     public void sendMessage(String message) {
         server.communicateAll(message);
-    }
-
-    /**
-     * Method to send message from GameBoard to GameController and then just to one targeted player.
-     */
-    public void sendPrivateMessage(String message, Player player) {
-        UserThread user = player.getUserThread();
-        server.justUser(message, user);
     }
 }

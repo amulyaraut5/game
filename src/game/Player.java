@@ -1,54 +1,42 @@
 package game;
 
 import card.Card;
-import server.UserThread;
-
-import java.time.LocalDate;
+import server.User;
 
 /**
  * For each user who plays the game, a Player object is created.
  * The Player class stores data of the user and player specific data.
+ * Player extends from user, thus it is possible to call all methods from user.
+ * <p>
+ * To send the player a message, use the message(String) method.
  */
-public class Player {
-    private final UserThread user;
-    private final String userName;
+public class Player extends User {
     private int numOfTokens;
     private Card currentCard;
     private Card secondCard;
-    private LocalDate lastDate;
-
 
     /**
-     * Creates new player with given parameters.
+     * Creates new player from given user.
+     * The attributes from user are hand over.
      *
-     * @param user     UserThread connected with this player
-     * @param userName Name of the player
+     * @param user user to be added
      */
-    public Player(UserThread user, String userName, LocalDate lastDate) {
-        this.user = user;
-        this.userName = userName;
-        this.lastDate = lastDate;
+    public Player(User user) {
+        setThread(user.getThread());
+        setName(user.getName());
+        setLastDate(user.getLastDate());
+
         numOfTokens = 0;
     }
 
     /**
-     * returns the name of the user connected with this player.
+     * Getter for the number of tokens for that player.
      *
-     * @return Name of the Player.
+     * @return Number of tokens.
      */
-    public String getUserName() {
-        return userName;
+    public int getTokenCount() {
+        return 0;
     }
-
-    /**
-     * Getter for the userThread.
-     *
-     * @return UserThread of this player.
-     */
-    public UserThread getUserThread() {
-        return user;
-    }
-
     /**
      * Resets the number of tokens for that player to '0'.
      */
@@ -66,35 +54,33 @@ public class Player {
     }
 
     /**
-     * Getter for the number of tokens for that player.
-     *
-     * @return Number of tokens.
+     * Getter for the current card of player
+     * @return current card
      */
-
     public Card getCard() {
         return currentCard;
     }
 
+    /**
+     * Setter for the current card of player
+     * @param currentCard new current card
+     */
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
     }
-
+    /**
+     * Getter for the second card of player
+     * @return second card
+     */
     public Card getSecondcard() {
         return secondCard;
     }
 
+    /**
+     * Setter for the second card of player
+     * @param secondCard new second card
+     */
     public void setSecondCard(Card secondCard) {
         this.secondCard = secondCard;
     }
-
-    public LocalDate getLastDate() {
-        return lastDate;
-    }
-
-
-    public int getTokenCount() {
-        return 0;
-    }
-
-
 }

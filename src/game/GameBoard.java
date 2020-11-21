@@ -1,6 +1,7 @@
 package game;
 
 import card.*;
+import server.User;
 import server.UserThread;
 
 import java.time.LocalDate;
@@ -15,8 +16,8 @@ public class GameBoard extends Thread {
     private boolean started = false;
     private GameController gameController = new GameController();
     private ArrayList<Player> winnerList = new ArrayList<>();
-    private volatile String userMessage;
-    private volatile UserThread sender;
+    private volatile String userResponse;
+    private volatile User sender;
 
     public GameBoard() {
 
@@ -42,25 +43,25 @@ public class GameBoard extends Thread {
         return stackCards;
     }
 
-    public void message(String message, UserThread sender) {
+    public void incomingResponse(String message, User sender) {
         //TODO differentiate between getter messages (Tokens) or responses to gamelogic
-        if (userMessage == null) {
-            userMessage = message;
+        if (userResponse == null) {
+            userResponse = message;
             this.sender = sender;
         }
     }
 
-    public String readMessage() {
+    public String readResponse() {
         String message;
-        while (userMessage == null) {
+        while (userResponse == null) {
             //TODO wait();
         }
-        message = userMessage;
-        userMessage = null;
+        message = userResponse;
+        userResponse = null;
         return message;
     }
 
-    public UserThread getSender() {
+    public User getSender() {
         return sender;
     }
 
@@ -130,13 +131,10 @@ public class GameBoard extends Thread {
 
     /**
      * It creates a Player and adds it to the list of joined player
-     *
-     * @param user     Thread of the user
-     * @param username
+     * @param user User on the server to be added as a player
      */
-    public void addUser(UserThread user, String username, LocalDate lastDate) {
-        Player player = new Player(user, username, lastDate);
-        playerList.add(player);
+    public void addPlayer(User user) {
+        playerList.add(new Player(user));
     }
 
     /**
