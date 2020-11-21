@@ -85,4 +85,8 @@ public class Player extends User {
     public void setSecondCard(Card secondCard) {
         this.secondCard = secondCard;
     }
+
+    //TODO required in card subclasses
+    public void setInGame(boolean b) {
+    }
 }

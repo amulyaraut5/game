@@ -18,11 +18,15 @@ public class GuardCard extends Card{
     int getCardValue() {
         return card_value;
     }
-
+    // Guard designates another players and names a type of card. If that players has that card
+    // then the player will be out of the round.
+    // However a player cannot name GUARD card.
     @Override
     void handlecard(Player playerPlayingCard) {
-        Player targetPlayer;
-        String playername;
+
+        String targetplayername = null;
+        String guess_cardname = null;
+
         for (Player player : players) {
             if (player.inGame &&                        // other player must still be in the game
                     !player.isGuarded &&                    // and must not be guarded
@@ -35,38 +39,37 @@ public class GuardCard extends Card{
         // TODO Display the player name from the availablePlayers so that the player can choose the name
 
         // TODO Read the input of the user
-        // The input from the player is String, but the targetPlayer is of Playertype
-
+        // The input from the player is String, but the targetPlayer is of Player type!!!!!!!!
 
         // TODO Set the targetPlayer as per users choice
 
+        //THOUGHT
 
+        for(Player targetPlayer: availablePlayers){
 
-        if (availablePlayers.contains(playername)) {
+            if (targetPlayer.getName().equals(targetplayername)){
+                // Then playerPlayingCard  can guess the card of the targetPlayer
 
-            targetPlayer = players.equals(playername);
-            String guess_cardname;
-            // Then currentplayer sees the guess the card of the targetPlayer
+                //TODO change every println statement!!!!!!!!!!!!!!!
+                System.out.println("What card do you think the target player has?");
 
-            // hier we could print out the message to the current player to choose the card
-            System.out.println("What card do you think the target player has?");
-            guess_cardname = read input from the client;
+                //TODO read the input from the Player
+                //guess_cardname = ;
 
-            if (guess_cardname == this.name_of_card ) {
-                System.out.println("You cannot choose the guard name");
-            }else if(guess_cardname.equals(targetPlayer.getCard1().getCardName())) {
-                System.out.println("your guess was correct");
+                if (guess_cardname == this.name_of_card ) {
+                    System.out.println("You cannot choose the guard name");
 
-                //If the guess ic correct we set the player setInGame to false and he will be out of the round.
-                targetPlayer.setInGame(false);
-            }else {
-                System.out.println("your guess was incorrect.");
+                }else if(guess_cardname.equals(targetPlayer.getCard().getCardName())) {
+                    System.out.println("Your guess was correct");
+
+                    //If the guess ic correct we set the player setInGame to false and he will be out of the round.
+                    targetPlayer.setInGame(false);
+                }else {
+                    System.out.println("Your guess was Incorrect.");
+                }
+
             }
-        }else {
-            System.out.println("Choos the name from the list of available players")
         }
-
-    }
 
     }
 }
