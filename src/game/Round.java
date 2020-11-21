@@ -251,4 +251,8 @@ public class Round {
     public void kickPlayer(Player player) {
         this.activePlayers.remove(player);
     }
+
+    public  ArrayList<Player> getActivePlayers(){
+        return this.activePlayers;
+    }
 }

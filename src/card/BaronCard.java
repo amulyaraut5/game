@@ -18,7 +18,6 @@ public class BaronCard extends Card {
         return card_value;
     }
 
-
     /**
      * By calling this method player will choose the targetPlayer and privately compare the cards.
      * The Player with the lower card_value will be eliminated from the round.
@@ -27,29 +26,33 @@ public class BaronCard extends Card {
     @Override
     void handlecard(Player playerPlayingCard) {
 
-        String targetplayername = null;
-
+        String targetPlayername;
+        availablePlayers = round.getActivePlayers();
+        /*
         for (Player player : players) {
-            if (player.inGame &&                        // other player must still be in the game
-                    !player.isGuarded)                // and must not be guarded)   // and must not choose himself, unless for the prince (discarding own card is allowed)
+            if (player.inGame &&           // other player must still be in the game
+                    !player.isGuarded)     // and must not be guarded)
             {
                 availablePlayers.add(player);
             }
-        }
+        }*/
         // TODO Display the player name from the availablePlayers so that the player can choose the name
         // TODO Change the println statement
-        // Print the name from the Set<Player>....
+        // Print the name from the ....
         for(Player player : availablePlayers) {
             System.out.println(player.getName());
         }
 
-        // TODO Read the input of the user
 
+        playerPlayingCard.message("Choose the name of the player you want to target.");
+        // TODO Read the input of the user and set to targetPlayer
         // TODO Set the targetPlayer as per users choice from the list of players
+        targetPlayername = gameboard.readResponse();
+
 
         for(Player targetPlayer: availablePlayers){
 
-            if (targetPlayer.getName().equals(targetplayername)){
+            if (targetPlayer.getName().equals(targetPlayername)){
                 // Then playerPlayingCard  see the card of the targetPlayer
                 // and compares the hand to see who has the greater card_value
 
@@ -63,10 +66,6 @@ public class BaronCard extends Card {
                     playerPlayingCard.setInGame(false);
                 }
             }
-
         }
-
     }
-
-
 }
