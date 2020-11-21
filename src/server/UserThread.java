@@ -106,8 +106,9 @@ public class UserThread extends Thread {
      */
     private void logInDate() {
         String datePuffer;
+        //TODO if exception is thrown because date is not valid, the user should be asked to try again
         try {
-            sendMessage("I am curious. When was the last time you were on a date? (dd MM yy)");
+            sendMessage("I am curious. When was the last time you were on a date? (dd mm yy)");
             datePuffer = reader.readLine();
 
             while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
@@ -138,7 +139,9 @@ public class UserThread extends Thread {
      */
     private void welcome() {
         sendMessage("Welcome " + user.getName() + "!");
-        sendMessage("Type \"bye\" to leave the room.");
+        sendMessage("Type: \"bye\" to leave the room.");
+        sendMessage("      \"#help\" to list all commands.");
+        sendMessage("      \"#create\" to play the LoveLetter game.");
         server.communicate(user.getName() + " joined the room.", user);
     }
 
