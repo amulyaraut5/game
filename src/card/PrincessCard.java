@@ -27,10 +27,12 @@ public class PrincessCard extends Card {
     @Override
     public void handleCard(Player playerPlayingCard) {
         round.kickPlayer(playerPlayingCard);
+        playerPlayingCard.message("You have been eliminated from the round");
 
         //TODO Change the println statement to display message to all the players
-
-        System.out.println("You have been eliminated from the round");
+        for (Player player : availablePlayers){
+            player.message(playerPlayingCard + " is eliminated from the round.");
+        }
     }
 
 
