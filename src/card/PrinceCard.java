@@ -27,9 +27,8 @@ public class PrinceCard extends Card {
     @Override
     void handlecard(Player playerPlayingCard) {
 
-        for (Player player : players) {
-            if (player.inGame &&                        // other player must still be in the game
-                    !player.isGuarded &&                // and must not be guarded
+        for (Player player : round.getActivePlayers()) {
+            if (!player.isGuarded &&                // must not be guarded
                     (this.name_of_card == "PRINCE" || player != playerPlayingCard))   //  can be prince (discarding own card is allowed)
             {
                 availablePlayers.add(player);
@@ -56,7 +55,8 @@ public class PrinceCard extends Card {
                 System.out.println("Target player has discarded a princess because of you! " +
                         "\nTarget player is now out of the game!" +
                         " \n*shakes fist angrily");
-                targetPlayer.setInGame(false);
+                //we kick the player out of the round.
+                round.kickPlayer(targetPlayer);
             }
             else{
                 // TODO targetPlayer needs to draw a card from the deck

@@ -31,9 +31,8 @@ public class PriestCard extends Card{
         String targetplayername = null;
 
 
-        for (Player player : players) {
-            if (player.inGame &&                        // other player must still be in the game
-                    !player.isGuarded)                  // and must not be guarded
+        for (Player player : round.getActivePlayers()) {
+            if (!player.isGuarded)                  // other player must not be guarded
             {
                 availablePlayers.add(player);
             }

@@ -32,9 +32,8 @@ public class GuardCard extends Card{
         String targetplayername = null;
         String guess_cardname = null;
 
-        for (Player player : players) {
-            if (player.inGame &&                        // other player must still be in the game
-                    !player.isGuarded)                  // and must not be guarded
+        for (Player player : round.getActivePlayers()) {
+            if (!player.isGuarded)                  // must not be guarded
             {
                 availablePlayers.add(player);
             }
@@ -70,8 +69,8 @@ public class GuardCard extends Card{
                 }else if(guess_cardname.equals(targetPlayer.getCard().getCardName())) {
                     System.out.println("Your guess was correct");
 
-                    //If the guess ic correct we set the player setInGame to false and he will be out of the round.
-                    targetPlayer.setInGame(false);
+                    //If the guess is correct we kick the player out of the round.
+                    round.kickPlayer(targetPlayer);
                 }else {
                     System.out.println("Your guess was Incorrect.");
                 }
