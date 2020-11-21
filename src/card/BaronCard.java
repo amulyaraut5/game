@@ -28,27 +28,19 @@ public class BaronCard extends Card {
 
         String targetPlayername;
         availablePlayers = round.getActivePlayers();
-        /*
-        for (Player player : players) {
-            if (player.inGame &&           // other player must still be in the game
-                    !player.isGuarded)     // and must not be guarded)
-            {
-                availablePlayers.add(player);
-            }
-        }*/
-        // TODO Display the player name from the availablePlayers so that the player can choose the name
-        // TODO Change the println statement
-        // Print the name from the ....
-        for(Player player : availablePlayers) {
-            System.out.println(player.getName());
-        }
 
+        String printPlayers="";
+        for(Player player : availablePlayers) {
+            if(!player.isGuarded && player != playerPlayingCard) {
+                printPlayers += (player.getName() + " ");
+            }
+        }
+        playerPlayingCard.message(printPlayers);    // Display the player name from the availablePlayers so that the player can choose the name
 
         playerPlayingCard.message("Choose the name of the player you want to target.");
-        // TODO Read the input of the user and set to targetPlayer
-        // TODO Set the targetPlayer as per users choice from the list of players
+        // Read the input of the user and set to targetPlayer
+        // Set the targetPlayer as per users choice from the list of players
         targetPlayername = gameboard.readResponse();
-
 
         for(Player targetPlayer: availablePlayers){
 
@@ -61,9 +53,9 @@ public class BaronCard extends Card {
                 int playerPlayingCardValue = playerPlayingCard.getCard().getCardValue();
 
                 if(targetCardValue > playerPlayingCardValue){
-                    targetPlayer.setInGame(false);
+                    round.kickPlayer(playerPlayingCard);
                 } else {
-                    playerPlayingCard.setInGame(false);
+                    round.kickPlayer(targetPlayer);
                 }
             }
         }
