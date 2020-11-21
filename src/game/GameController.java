@@ -12,6 +12,12 @@ public class GameController {
     private GameBoard gameboard;
     private ChatServer server;
     private Player player;
+    private String validCommands = "Use the following commands to control the game: " +
+            "\n #create: creates a new game " +
+            "\n #join: join the game " +
+            "\n  #start: starts the game " +
+            "\n #score: look at current scores " +
+            "\n #choose: if you have to choose a card or another player ";
 
     public GameController() {
 
@@ -27,30 +33,25 @@ public class GameController {
         }
         switch (command) {
             case "#create":
-                //TODO
+                create(user);
                 break;
             case "#join":
-                //TODO
+                join(user);
                 break;
             case "#start":
-                //TODO
+                start(user);
                 break;
             case "#help":
-                //TODO
+                user.message(validCommands);
                 break;
             case "#score":
                 //TODO
                 break;
-            case "#1":
-            case "#2":
-                //TODO
-                break;
             case "#choose":
-                //TODO
+                message = message.substring(message.indexOf(" ")+1);
+                gameboard.incomingResponse (message, user);
                 break;
-            case "#end":
-            //TODO: end game
-                break;
+            //case "#end":
         }
     }
 
