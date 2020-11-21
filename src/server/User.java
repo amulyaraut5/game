@@ -14,11 +14,7 @@ public class User {
 
     }
 
-    public UserThread getThread() {
-        return thread;
-    }
-
-    public void setThread(UserThread thread) {
+    public synchronized void setThread(UserThread thread) {
         this.thread = thread;
     }
 
@@ -26,7 +22,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 
@@ -34,11 +30,11 @@ public class User {
         return lastDate;
     }
 
-    public void setLastDate(Date lastDate) {
+    public synchronized void setLastDate(Date lastDate) {
         this.lastDate = lastDate;
     }
 
-    public void message(String message) {
+    public synchronized void message(String message) {
         thread.sendMessage(message);
     }
 }

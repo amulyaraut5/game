@@ -11,7 +11,7 @@ import java.net.Socket;
  */
 
 public class UserThread extends Thread {
-    private static volatile User user; //Connected user, which data has to be filled in logIn()
+    private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final ChatServer server;
     private PrintWriter userOut;
@@ -63,8 +63,6 @@ public class UserThread extends Thread {
      * The user is asked to enter a name to log in.
      * If the name already exists in the list of assigned usernames, the user is asked to try again.
      * It also makes sure that the user enters something and not a empty String.
-     *
-     * @return the entered and accepted username
      */
     private void logIn() {
         sendMessage("Enter your username:");
@@ -76,10 +74,7 @@ public class UserThread extends Thread {
                 } else if (!server.isAvailable(userName)) {
                     sendMessage("This username is already taken. Please try a different username:");
                 } else {
-                    synchronized (user) {
-                        //TODO synchronize change in user
-                        user.setName(userName);
-                    }
+                    user.setName(userName);
                     break;
                 }
             }

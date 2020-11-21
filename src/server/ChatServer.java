@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatServer {
-    //private volatile static List<User> users = Collections.synchronizedList(new ArrayList<User>(10));
-    private static final List<User> users = new ArrayList<User>(10);
+    private static final List<User> users = new ArrayList<>(10);
     private final int port;
 
     public ChatServer(int port) {
@@ -81,18 +80,6 @@ public class ChatServer {
         }
     }
 
-
-    public void addUser(User user) {
-        users.add(user);
-    }
-
-    public void updateUser(User user) {
-        if (users.contains(user)) {
-            users.remove(user);
-            users.add(user);
-        }
-    }
-
     /**
      * It checks if the username is already used of another user.
      *
@@ -100,7 +87,6 @@ public class ChatServer {
      * @return True if username is free, false if it´s already assigned
      */
     public synchronized boolean isAvailable(String userName) {
-        int i = 0;
         for (User u : users) {
             if (u.getName().equals(userName)) {
                 return false;
