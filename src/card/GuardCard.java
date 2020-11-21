@@ -1,7 +1,75 @@
 package card;
 
+import game.Player;
+
 public class GuardCard extends Card{
-    public GuardCard(int value) {
-        super(value);
+    public GuardCard(String name_of_card, int card_value) {
+
+        this.name_of_card = name_of_card;
+        this.card_value = card_value;
+    }
+
+    @Override
+    String getCardName() {
+        return name_of_card;
+    }
+
+    @Override
+    int getCardValue() {
+        return card_value;
+    }
+    // Guard designates another players and names a type of card. If that players has that card
+    // then the player will be out of the round.
+    // However a player cannot name GUARD card.
+    @Override
+    void handlecard(Player playerPlayingCard) {
+
+        String targetplayername = null;
+        String guess_cardname = null;
+
+        for (Player player : players) {
+            if (player.inGame &&                        // other player must still be in the game
+                    !player.isGuarded &&                    // and must not be guarded
+                    (this.name_of_card == "PRINCE" || player != playerPlayingCard)  )   // and must not choose himself, unless for the prince (discarding own card is allowed)
+            {
+                availablePlayers.add(player);
+            }
+        }
+
+        // TODO Display the player name from the availablePlayers so that the player can choose the name
+
+        // TODO Read the input of the user
+        // The input from the player is String, but the targetPlayer is of Player type!!!!!!!!
+
+        // TODO Set the targetPlayer as per users choice
+
+        //THOUGHT
+
+        for(Player targetPlayer: availablePlayers){
+
+            if (targetPlayer.getName().equals(targetplayername)){
+                // Then playerPlayingCard  can guess the card of the targetPlayer
+
+                //TODO change every println statement!!!!!!!!!!!!!!!
+                System.out.println("What card do you think the target player has?");
+
+                //TODO read the input from the Player
+                //guess_cardname = ;
+
+                if (guess_cardname == this.name_of_card ) {
+                    System.out.println("You cannot choose the guard name");
+
+                }else if(guess_cardname.equals(targetPlayer.getCard().getCardName())) {
+                    System.out.println("Your guess was correct");
+
+                    //If the guess ic correct we set the player setInGame to false and he will be out of the round.
+                    targetPlayer.setInGame(false);
+                }else {
+                    System.out.println("Your guess was Incorrect.");
+                }
+
+            }
+        }
+
     }
 }

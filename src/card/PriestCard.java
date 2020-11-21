@@ -1,12 +1,49 @@
 package card;
 
+import game.Player;
+
 public class PriestCard extends Card{
-    public PriestCard(int value) {
-        super(value);
+    public PriestCard(String name_of_card, int card_value){
+        this.name_of_card = name_of_card;
+        this.card_value = card_value;
+    }
+
+
+
+    @Override
+    String getCardName() {
+        return this.name_of_card;
     }
 
     @Override
-    public void handleCard() {
-        super.handleCard();
+    int getCardValue() {
+        return this.card_value;
+    }
+    //Player is allowed to see the hand of other player he chooses
+    //He needs to choose the player from the set of available players
+    @Override
+    void handlecard(Player playerPlayingCard) {
+        Player targetPlayer = null;
+        for (Player player : players) {
+            if (player.inGame &&                        // other player must still be in the game
+                    !player.isGuarded &&                    // and must not be guarded
+                    (this.name_of_card == "PRINCE" || player != playerPlayingCard)  )   // and must not choose himself, unless for the prince (discarding own card is allowed)
+            {
+                availablePlayers.add(player);
+            }
+        }
+
+        // TODO Display the player name from the availablePlayers so that the player can choose the name
+
+
+        // TODO Read the input of the user
+
+        // TODO Set the targetPlayer as per users choice from the list of players
+
+
+        if (availablePlayers.contains(targetPlayer)) {
+            // Then currentplayer sees the hand of the targetPlayer
+            // Code here
+        }
     }
 }
