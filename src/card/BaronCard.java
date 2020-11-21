@@ -54,8 +54,10 @@ public class BaronCard extends Card {
 
                 if(targetCardValue > playerPlayingCardValue){
                     round.kickPlayer(playerPlayingCard);
+                    //TODO Display message to all the players
                 } else {
                     round.kickPlayer(targetPlayer);
+                    //TODO Display message to all the players
                 }
             }
         }

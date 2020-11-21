@@ -28,8 +28,8 @@ public class PrincessCard extends Card {
     public void handlecard(Player playerPlayingCard) {
         round.kickPlayer(playerPlayingCard);
 
-        //TODO Change the println statement
-        // display message to all the players
+        //TODO Change the println statement to display message to all the players
+
         System.out.println("You have been eliminated from the round");
     }
 

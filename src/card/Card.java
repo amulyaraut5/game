@@ -10,7 +10,7 @@ public abstract class Card {
     GameBoard gameboard;
     Round round;
 
-    ArrayList<Player> availablePlayers = new ArrayList<Player>();
+    ArrayList<Player> availablePlayers;
 
 
 

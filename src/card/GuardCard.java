@@ -61,6 +61,7 @@ public class GuardCard extends Card{
 
                     //If the guess is correct the player will be out of the round.
                     round.kickPlayer(targetPlayer);
+                    //TODO Display message to all the players
 
                 }else {
                     playerPlayingCard.message("Your guess was Incorrect.");
