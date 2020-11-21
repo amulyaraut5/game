@@ -13,6 +13,8 @@ public class Round {
     private Card firstCardRemoved = null;
     private Player currentPlayer;
     private GameBoard gameBoard;
+    private String first = "";
+    private String second = "";
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
         //remove() function cannot be called in removeDeckCard
@@ -112,29 +114,16 @@ public class Round {
     /**
      * deals out the first cards
      */
-    public void ydealCards() {
+    public void dealCards() {
         for (Player player : activePlayers) {
             player.setCurrentCard(pop());
         }
     }
 
     /**
-     * lets players draw a card according to the order
-     * @param activePlayers the ordered list of players
-     */
-    //public void drawCards(ArrayList<Player> activePlayers){
-        //while (!isRoundFinished()){
-            //for (Player currentPlayer : activePlayers){
-                //currentPlayer.setSecondCard(pop());
-                //discardCards(currentPlayer);
-            //}
-        //}
-    //}
-
-    /**
      * current player can choose between a new card or his old card
      */
-    public void drawCard() {
+    public void chooseCard() {
         //TODO choose which card currentPlayer.
         Card secondCard = pop();
         String first = currentPlayer.getCard().toString();
@@ -152,13 +141,13 @@ public class Round {
         //currentPlayer.setPlayedHandmaid(false); 
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
-        if (currentPlayer.getCard().name_of_card == "COUNTESS" &&
-                (currentPlayer.getSecondcard().name_of_card == "KING" || currentPlayer.getSecondcard().name_of_card == "PRINCE")) {
+        if (first == "COUNTESS" &&
+                (second == "KING" || second == "PRINCE")) {
             if (chosenCard == currentPlayer.getSecondcard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
-        } else if (currentPlayer.getSecondcard().name_of_card == "COUNTESS" &&
-                (currentPlayer.getCard().name_of_card == "KING" || currentPlayer.getCard().name_of_card == "PRINCE")) {
+        } else if (second == "COUNTESS" &&
+                (first == "KING" || first == "PRINCE")) {
             if (chosenCard == currentPlayer.getCard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
