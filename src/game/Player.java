@@ -85,6 +85,6 @@ public class Player extends User {
     }
 
     public String toString() {
-        return getClass().getName();
+        return getName();
     }
 }
