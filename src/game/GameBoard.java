@@ -6,9 +6,9 @@ import server.User;
 import java.util.ArrayList;
 
 public class GameBoard extends Thread {
-    public ArrayList<Player> playerList;
-    public Player gameWinner;
-    public Round activeRound;
+    private ArrayList<Player> playerList;
+    private Player gameWinner;
+    private Round activeRound;
     private boolean started = false;
     private GameController gameController = new GameController();
     private ArrayList<Player> winnerList = new ArrayList<>();
@@ -50,7 +50,6 @@ public class GameBoard extends Thread {
      * @param sender  User who replied
      */
     public void incomingResponse(String message, User sender) {
-
         //TODO proof if message is coming from the current user
         if (userResponse == null) {
             userResponse = message;
@@ -71,7 +70,10 @@ public class GameBoard extends Thread {
     public String readResponse() {
         String message;
         while (userResponse == null && !isInterrupted()) {
-            //TODO wait();
+            try {
+                sleep(50);
+            } catch (InterruptedException e) {
+            }
         }
         message = userResponse;
         userResponse = null;
@@ -90,7 +92,7 @@ public class GameBoard extends Thread {
      * @param user user who needs to be checked whether he already joined
      * @return if user has already joined
      */
-    public boolean playerAlreadyJoined(User user) {
+    public boolean alreadyJoined(User user) {
         String username = user.getName();
         for (Player pl : playerList) {
             if (pl.getName() == username) return true;
