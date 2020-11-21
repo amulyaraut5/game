@@ -4,7 +4,6 @@ import card.Card;
 import server.UserThread;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * For each user who plays the game, a Player object is created.
@@ -72,7 +71,7 @@ public class Player {
      * @return Number of tokens.
      */
 
-    public Card getCurrentCard() {
+    public Card getCard() {
         return currentCard;
     }
 
@@ -80,7 +79,7 @@ public class Player {
         this.currentCard = currentCard;
     }
 
-    public Card getSecondcard(){
+    public Card getSecondcard() {
         return secondCard;
     }
 
