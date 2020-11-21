@@ -26,19 +26,19 @@ public class GameBoard extends Thread {
     public static ArrayList<Card> createDeck() {
         ArrayList<Card> stackCards = new ArrayList<>();
         // every card just one time: princess, countess, king
-        stackCards.add(new PrincessCard(8));
-        stackCards.add(new CountessCard(7));
-        stackCards.add(new KingCard(6));
+        stackCards.add(new PrincessCard("Princess",8));
+        stackCards.add(new CountessCard("Countess", 7));
+        stackCards.add(new KingCard("King",6));
         //every card two times: prince, handmaid, baron, priest, guard
         for (int i = 0; i < 2; i++) {
-            stackCards.add(new PrinceCard(5));
-            stackCards.add(new HandmaidCard(4));
-            stackCards.add(new BaronCard(3));
-            stackCards.add(new PriestCard(2));
+            stackCards.add(new PrinceCard("Prince",5));
+            stackCards.add(new HandmaidCard("Handmaid", 4));
+            stackCards.add(new BaronCard("Baron",2));
+            stackCards.add(new PriestCard("Priest",2));
         }
         //guard five times:
         for (int i = 0; i < 5; i++) {
-            stackCards.add(new GuardCard(1));
+            stackCards.add(new GuardCard("Guard", 1));
         }
         return stackCards;
     }
