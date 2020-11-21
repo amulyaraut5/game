@@ -25,7 +25,7 @@ public class HandmaidCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    void handlecard(Player playerPlayingCard) {
+    public void handlecard(Player playerPlayingCard) {
         playerPlayingCard.isGuarded = true;
     }
 
