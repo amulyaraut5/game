@@ -2,9 +2,7 @@ package game;
 
 import card.*;
 import server.User;
-import server.UserThread;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GameBoard extends Thread {
@@ -24,12 +22,12 @@ public class GameBoard extends Thread {
     public static ArrayList<Card> createDeck() {
         ArrayList<Card> stackCards = new ArrayList<>();
         // every card just one time: princess, countess, king
-        stackCards.add(new PrincessCard("Princess",8));
+        stackCards.add(new PrincessCard("Princess", 8));
         stackCards.add(new CountessCard("Countess", 7));
-        stackCards.add(new KingCard("King",6));
+        stackCards.add(new KingCard("King", 6));
         //every card two times: prince, handmaid, baron, priest, guard
         for (int i = 0; i < 2; i++) {
-            stackCards.add(new PrinceCard("Prince",5));
+            stackCards.add(new PrinceCard("Prince", 5));
             stackCards.add(new HandmaidCard("Handmaid", 4));
             stackCards.add(new BaronCard("Baron",3));
             stackCards.add(new PriestCard("Priest",2));
@@ -46,18 +44,19 @@ public class GameBoard extends Thread {
         if (userResponse == null) {
             userResponse = message;
             this.sender = sender;
-        }else{
+        } else {
             sender.message("It's not your turn"); //TODO turn has to be in Round
         }
     }
 
-    public void getScorePlayer(){
+    public void getScorePlayer() {
         String score = "";
-        for (Player pl: playerList){
+        for (Player pl : playerList) {
             score += pl.getName() + ": " + pl.getTokenCount() + " \n";
         }
         gameController.sendMessage(score);
     }
+
     public String readResponse() {
         String message;
         while (userResponse == null) {
@@ -69,14 +68,13 @@ public class GameBoard extends Thread {
     }
 
     /**
-     *
      * @param user user who needs to be checked whether he already joined
      * @return if user has already joined
      */
-    public boolean playerAlreadyJoined(User user){
+    public boolean playerAlreadyJoined(User user) {
         String username = user.getName();
-        for(Player pl : playerList){
-            if(pl.getName() == username) return true;
+        for (Player pl : playerList) {
+            if (pl.getName() == username) return true;
         }
         return false;
     }
@@ -131,6 +129,7 @@ public class GameBoard extends Thread {
 
     /**
      * It creates a Player and adds it to the list of joined player
+     *
      * @param user User on the server to be added as a player
      */
     public void addPlayer(User user) {

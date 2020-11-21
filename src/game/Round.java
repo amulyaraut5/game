@@ -29,7 +29,7 @@ public class Round {
     }
 
     /**
-     * Executes one round.
+     * this method executes one round
      */
     public void play() {
         for (Player p : activePlayers) {
@@ -41,6 +41,7 @@ public class Round {
             playedCard = chooseCard();
             handleTurn(playedCard);//handlecard is called
         }
+        //todo player needs to be reset at the end of a round
     }
     /**
      * Actual turn gets handled.
@@ -113,8 +114,8 @@ public class Round {
         Card card = null;
         //TODO choose which card currentPlayer.
         Card secondCard = pop();
-        first = currentPlayer.getCard().toString();
-        second = secondCard.toString();
+        String first = currentPlayer.getCard().getCardName();
+        String second = secondCard.getCardName();
         currentPlayer.message(first + "or" + second); //TODO Get both names
         String message = gameBoard.readResponse();
         gameBoard.getSender();
@@ -126,7 +127,7 @@ public class Round {
 
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
-        //currentPlayer.setPlayedHandmaid(false); 
+        //currentPlayer.setPlayedHandmaid(false);
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
         if (first == "Countess" &&
@@ -226,7 +227,7 @@ public class Round {
         this.activePlayers.remove(player);
     }
 
-    public  ArrayList<Player> getActivePlayers(){
+    public ArrayList<Player> getActivePlayers() {
         return this.activePlayers;
     }
 }
