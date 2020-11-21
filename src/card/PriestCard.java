@@ -30,19 +30,22 @@ public class PriestCard extends Card{
 
         String targetplayername = null;
 
-
+        /*
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded)                  // other player must not be guarded
             {
                 availablePlayers.add(player);
             }
-        }
+        }*/
 
-        // TODO Display the player name from the availablePlayers so that the player can choose the name
+
         // TODO Change the println statement
         // Print the name from the Set<Player>....
         for(Player player : availablePlayers) {
-            System.out.println(player.getName());
+            if(!player.isGuarded){
+                //TODO Display the player name from the availablePlayers so that the player can choose the name
+
+            }
         }
 
         // TODO Read the input of the user

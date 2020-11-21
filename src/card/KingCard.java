@@ -3,7 +3,7 @@ package card;
 import game.Player;
 
 public class KingCard extends Card {
-    public KingCard(String nameOfCard, int cardValue){
+    public KingCard(String nameOfCard, int card_value){
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
     }
@@ -25,8 +25,9 @@ public class KingCard extends Card {
      */
     @Override
     void handlecard(Player playerPlayingCard) {
-        for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded)                // other player must not be guarded
+        for (Player player : players) {
+            if (player.inGame &&                        // other player must still be in the game
+                    !player.isGuarded)                // and must not be guarded)
             {
                 availablePlayers.add(player);
             }
