@@ -19,9 +19,11 @@ public class HandmaidCard extends Card {
         return card_value;
     }
 
+
+    // Player cannot be affected by the other players card until the next turn.
     @Override
     void handlecard(Player playerPlayingCard) {
-
+        playerPlayingCard.isGuarded = true;
     }
 
 

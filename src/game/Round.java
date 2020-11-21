@@ -23,13 +23,12 @@ public class Round {
         // delete this message
         this.currentPlayer = firstPlayer;
         this.cardDeck = deck;
+        shuffleDeck();
         this.activePlayers = activePlayers;
         this.gameBoard = gameBoard;
 
         firstCardRemoved = pop();
-        if (activePlayers.size() == 2) {
-            removeThreeMore();
-        }
+        removeThreeMore();
     }
 
     /**
@@ -123,6 +122,19 @@ public class Round {
     }
 
     /**
+     * lets players draw a card according to the order
+     * @param activePlayers the ordered list of players
+     */
+    //public void drawCards(ArrayList<Player> activePlayers){
+        //while (!isRoundFinished()){
+            //for (Player currentPlayer : activePlayers){
+                //currentPlayer.setSecondCard(pop());
+                //discardCards(currentPlayer);
+            //}
+        //}
+    //}
+
+    /**
      * current player can choose between a new card or his old card
      */
     public void drawCard() {
@@ -140,7 +152,7 @@ public class Round {
 
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
-        //currentPlayer.setPlayedHandmaid(false);
+        //currentPlayer.setPlayedHandmaid(false); 
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
         if (currentPlayer.getCard().name_of_card == "COUNTESS" &&
@@ -187,7 +199,7 @@ public class Round {
         } else { //A round ends if the deck is empty at the end of a player’s turn
             for (int i = 1; i <= activePlayers.size(); i++) {
                 //The player with the highest number in their hand wins the round.
-                if (winner.getCard().getValue() < activePlayers.get(i).getCard().getValue()) {
+                if (winner.getCard().getValue < activePlayers.get(i).getCard().getValue()) {
                     winnerList.get(i); //TODO
                     //In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins.
                 } else if (winner.getCard().getValue() == activePlayers.get(i).getCard().getValue()) {

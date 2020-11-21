@@ -18,8 +18,46 @@ public class BaronCard extends Card {
         return card_value;
     }
 
+    // Player will choose the targetPlayer and privately compare hands.
+    // The Player with the lower card_value will be eliminated from the round.
     @Override
     void handlecard(Player playerPlayingCard) {
+
+        String targetplayername = null;
+
+        for (Player player : players) {
+            if (player.inGame &&                        // other player must still be in the game
+                    !player.isGuarded)                // and must not be guarded)   // and must not choose himself, unless for the prince (discarding own card is allowed)
+            {
+                availablePlayers.add(player);
+            }
+        }
+        // TODO Display the player name from the availablePlayers so that the player can choose the name
+
+
+        // TODO Read the input of the user
+
+        // TODO Set the targetPlayer as per users choice from the list of players
+
+        for(Player targetPlayer: availablePlayers){
+
+            if (targetPlayer.getName().equals(targetplayername)){
+                // Then playerPlayingCard   see the card of the targetPlayer
+                // and compares the hand to see who has the greater card_value
+
+
+                // Get the card of targetPlayer and show only to the player playing card
+                int targetPlayerCard = targetPlayer.getCard().getCardValue();
+                int playerPlaying = playerPlayingCard.getCard().getCardValue();
+
+                if(targetPlayerCard > playerPlaying){
+                    targetPlayer.setInGame(false);
+                } else {
+                    playerPlayingCard.setInGame(false);
+                }
+            }
+
+        }
 
     }
 

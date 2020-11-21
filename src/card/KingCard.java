@@ -18,9 +18,33 @@ public class KingCard extends Card {
         return card_value;
     }
 
+
+    // Player trades card with another card
     @Override
     void handlecard(Player playerPlayingCard) {
+        for (Player player : players) {
+            if (player.inGame &&                        // other player must still be in the game
+                    !player.isGuarded)                // and must not be guarded)
+            {
+                availablePlayers.add(player);
+            }
+        }
+        // TODO Display the player name from the availablePlayers so that the player can choose the name
 
+
+        // TODO Read the input of the user
+
+        // TODO Set the targetPlayer as per users choice from the list of players
+
+        for(Player targetPlayer: availablePlayers){
+            if(playerPlayingCard.getCard().getCardName().equals("king")){
+                Card temp = targetPlayer.getCard();
+                targetPlayer.setCard(playerPlayingCard.getCard());
+                playerPlayingCard.setCard(temp);
+
+            }
+
+        }
     }
 
 
