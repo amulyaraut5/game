@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChatServer {
     private static final ArrayList<User> users = new ArrayList<>(10);
@@ -66,18 +64,16 @@ public class ChatServer {
      * This method sends a message to each client which is connected to the server except the sender itself
      */
     public void communicate(String message, User sender) {
-        Pattern gamePattern = Pattern.compile("^#+");
-        Matcher matcher = gamePattern.matcher(message);
 
-        if (matcher.lookingAt()) {
-            gameController.readCommand(message, sender);
-        } else {
             for (User user : users) {
                 if (user != sender) {
                     user.message(message);
                 }
             }
         }
+
+    public void communicateGame (String message, User sender) {
+        gameController.readCommand(message, sender);
     }
 
     public void communicateAll(String message) {

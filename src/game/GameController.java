@@ -70,10 +70,10 @@ public class GameController {
 
     public void join(User user) {
 
-        if (!gameboard.playerAlreadyJoined(user) && startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
+        if (!gameboard.alreadyJoined(user) && startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addPlayer(user);
             user.message("You've joined the game.");
-        } else if (gameboard.playerAlreadyJoined(user)) {
+        } else if (gameboard.alreadyJoined(user)) {
             user.message("You've already joined the game.");
         } else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");
@@ -91,10 +91,10 @@ public class GameController {
      * If game can be started the method playGame() is called from the GameBoard.
      */
     public void start(User user) {
-        if (gameboard.playerAlreadyJoined(user) && startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
+        if (gameboard.alreadyJoined(user) && startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.run();
             runningGame = true;
-        } else if (!gameboard.playerAlreadyJoined(user)) {
+        } else if (!gameboard.alreadyJoined(user)) {
             user.message("You need to join the game to start it.");
         } else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Handles connection for each connected client,
@@ -57,10 +59,16 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-                //TODO regex: check here if message is "#", otherwise do following lines
-                // (Wenn erst in communicate geprüft wird, dann wird immer ["+user.getName()+"] angehängt)
-                serverMessage = "[" + user.getName() + "]: " + clientMessage;
-                server.communicate(serverMessage, user);
+
+                Pattern gamePattern = Pattern.compile("^#+");
+                Matcher matcher = gamePattern.matcher(clientMessage);
+
+                if (matcher.lookingAt()) {
+                    server.communicateGame(clientMessage, user);
+                } else {
+                    serverMessage = "[" + user.getName() + "]: " + clientMessage;
+                    server.communicate(serverMessage, user);
+                }
             }
         } catch (IOException ex) {
             disconnect(ex);
@@ -106,8 +114,9 @@ public class UserThread extends Thread {
      */
     private void logInDate() {
         String datePuffer;
+        //TODO if exception is thrown because date is not valid, the user should be asked to try again
         try {
-            sendMessage("I am curious. When was the last time you were on a date? (dd MM yy)");
+            sendMessage("I am curious. When was the last time you were on a date? (dd mm yy)");
             datePuffer = reader.readLine();
 
             while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
@@ -138,7 +147,9 @@ public class UserThread extends Thread {
      */
     private void welcome() {
         sendMessage("Welcome " + user.getName() + "!");
-        sendMessage("Type \"bye\" to leave the room.");
+        sendMessage("Type: \"bye\" to leave the room.");
+        sendMessage("      \"#help\" to list all commands.");
+        sendMessage("      \"#create\" to play the LoveLetter game.");
         server.communicate(user.getName() + " joined the room.", user);
     }
 
