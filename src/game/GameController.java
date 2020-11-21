@@ -5,10 +5,6 @@ import server.User;
 
 public class GameController {
 
-    private boolean startedGame = false;
-    private boolean runningGame = false;
-    private GameBoard gameboard;
-    private ChatServer server;
     private final String COMMANDS = """
             Use the following commands to control the game:\s
              #create: creates a new game\s
@@ -16,6 +12,10 @@ public class GameController {
              #start: starts the game\s
              #score: look at current scores\s
              #choose: if you have to choose a card or another player\s""";
+    private boolean startedGame = false;
+    private boolean runningGame = false;
+    private GameBoard gameboard;
+    private ChatServer server;
 
     public GameController() {
 
@@ -26,8 +26,8 @@ public class GameController {
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
-        if(message.contains(" ")){
-            command= message.substring(0, message.indexOf(" "));
+        if (message.contains(" ")) {
+            command = message.substring(0, message.indexOf(" "));
         }
         //case "#end":
         switch (command) {
@@ -40,7 +40,7 @@ public class GameController {
                 message = message.substring(message.indexOf(" ") + 1);
                 gameboard.incomingResponse(message, user);
                 //case "#end":
-            //TODO default case
+                //TODO default case
             }
         }
     }
@@ -75,7 +75,7 @@ public class GameController {
             user.message("You've joined the game.");
         } else if (gameboard.playerAlreadyJoined(user)) {
             user.message("You've already joined the game.");
-        }else if (!startedGame) {
+        } else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next round.");

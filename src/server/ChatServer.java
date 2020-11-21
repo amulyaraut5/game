@@ -8,13 +8,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
 
 public class ChatServer {
+    private static final ArrayList<User> users = new ArrayList<>(10);
     private final int port;
     private final GameController gameController = new GameController();
-
-    private static final List<User> users = new ArrayList<>(10);
 
     public ChatServer(int port) {
         this.port = port;
@@ -82,7 +80,7 @@ public class ChatServer {
         }
     }
 
-    public void communicateAll (String message) {
+    public void communicateAll(String message) {
         for (User user : users)
             user.message(message);
     }
