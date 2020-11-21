@@ -31,7 +31,7 @@ public class GameBoard extends Thread {
         for (int i = 0; i < 2; i++) {
             stackCards.add(new PrinceCard("Prince",5));
             stackCards.add(new HandmaidCard("Handmaid", 4));
-            stackCards.add(new BaronCard("Baron",2));
+            stackCards.add(new BaronCard("Baron",3));
             stackCards.add(new PriestCard("Priest",2));
         }
         //guard five times:
