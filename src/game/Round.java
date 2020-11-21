@@ -90,7 +90,8 @@ public class Round {
     }
 
     /**
-     * removes three more cards from the deck, if there are only two players.
+     * removes one card from  the deck and
+     * removes three more cards from the deck, if there are only two players and add them to faceUpCards
      *
      * @return the three removed cards
      */
