@@ -29,7 +29,7 @@ public class Round {
     }
 
     /**
-     * this method is called by the GameBoard to start a round after it is created
+     * Executes one round.
      */
     public void play() {
         for (Player p : activePlayers) {
@@ -42,9 +42,16 @@ public class Round {
             handleTurn(playedCard);//handlecard is called
         }
     }
-
+    /**
+     * Actual turn gets handled.
+     * @param card Card that the player chose to play.
+     */
     public synchronized void handleTurn(Card card) {
+        //call handlecard method, change currentPlayer(indicates who's turn it is) afterwards
         card.handlecard(this.currentPlayer);
+        if (!isRoundFinished()){
+            this.currentPlayer = nextPlayer();
+        }
     }
 
     /**
@@ -122,13 +129,13 @@ public class Round {
         //currentPlayer.setPlayedHandmaid(false); 
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
-        if (first == "COUNTESS" &&
-                (second == "KING" || second == "PRINCE")) {
+        if (first == "Countess" &&
+                (second == "King" || second == "Prince")) {
             if (chosenCard == currentPlayer.getSecondcard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
-        } else if (second == "COUNTESS" &&
-                (first == "KING" || first == "PRINCE")) {
+        } else if (second == "Countess" &&
+                (first == "King" || first == "Prince")) {
             if (chosenCard == currentPlayer.getCard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
@@ -197,10 +204,10 @@ public class Round {
     /**
      * this method changes the currentPlayer attribute(which determines which player's turn it is).
      *
-     * @param player last player that played a card.
+     * @return Player who's turn it is after the current one
      */
-    public Player nextPlayer(Player player) {
-        int temp = this.activePlayers.indexOf(player);
+    public Player nextPlayer() {
+        int temp = this.activePlayers.indexOf(this.currentPlayer);
         Player next;
         if (temp < (activePlayers.size() - 1)) {
             next = this.activePlayers.get(temp + 1);
