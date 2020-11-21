@@ -8,8 +8,6 @@ public class PriestCard extends Card{
         this.cardValue = cardValue;
     }
 
-
-
     @Override
     public String getCardName() {
         return this.nameOfCard;
@@ -28,43 +26,31 @@ public class PriestCard extends Card{
     @Override
     public void handlecard(Player playerPlayingCard) {
 
-        String targetplayername = null;
+        String targetPlayername;
+        availablePlayers = round.getActivePlayers();
 
-        /*
-        for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded)                  // other player must not be guarded
-            {
-                availablePlayers.add(player);
-            }
-        }*/
-
-
-        // TODO Change the println statement
-        // Print the name from the Set<Player>....
+        String printPlayers="";
         for(Player player : availablePlayers) {
-            if(!player.isGuarded){
-                //TODO Display the player name from the availablePlayers so that the player can choose the name
-
+            if(!player.isGuarded && player != playerPlayingCard) {
+                printPlayers += (player.getName() + " ");
             }
         }
+        playerPlayingCard.message(printPlayers);    // Display the player name from the availablePlayers so that the player can choose the name
 
-        // TODO Read the input of the user
-
-        // TODO Set the targetPlayer as per users choice from the list of players
-
+        playerPlayingCard.message("Choose the name of the player you want to target.");
+        // Read the input of the user and set to targetPlayer
+        // Set the targetPlayer as per users choice from the list of players
+        targetPlayername = gameboard.readResponse();
 
         for(Player targetPlayer: availablePlayers){
 
-            if (targetPlayer.getName().equals(targetplayername)){
+            if (targetPlayer.getName().equals(targetPlayername)){
+
                 // Then playerPlayingCard  can see the card of the targetPlayer
+                // Get the card of targetPlayer and display this card only to the player playing card
 
-                //TODO change every println statement!!!!!!!!!!!!!!!
-
-                // Get the card of targetPlayer
-                // TODO display this card only to the player playing card
                 String card = targetPlayer.getCard().getCardName();
-
-
+                playerPlayingCard.message("Your targetPlayer has:" + card);
             }
         }
     }

@@ -31,7 +31,6 @@ public class Player extends User {
         setThread(user.getThread());
         setName(user.getName());
         setLastDate(user.getLastDate());
-
         numOfTokens = 0;
     }
 
