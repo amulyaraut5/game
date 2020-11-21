@@ -21,8 +21,11 @@ public class GameController {
      * reads and distributes all incoming commands regarding the game
      */
     public synchronized void readCommand(String message, User user) {
-        //TODO: getUserName
-        switch (message) {
+        String command = message;
+        if(message.contains(" ")){
+            command= message.substring(0, message.indexOf(" "));
+        }
+        switch (command) {
             case "#create":
                 //TODO
                 break;
@@ -38,8 +41,16 @@ public class GameController {
             case "#score":
                 //TODO
                 break;
-            //TODO: cards
+            case "#1":
+            case "#2":
+                //TODO
+                break;
+            case "#choose":
+                //TODO
+                break;
+            case "#end":
             //TODO: end game
+                break;
         }
     }
 
