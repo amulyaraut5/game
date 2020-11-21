@@ -2,6 +2,7 @@ package game;
 
 
 import card.Card;
+import server.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,7 @@ public class Round {
     }
 
     /**
-     * Executes one round.
+     * this method executes one round
      */
     public void play() {
         for (Player p : activePlayers) {
@@ -39,8 +40,9 @@ public class Round {
             Card playedCard = null;
             System.out.println("It's your turn, " + currentPlayer);
             playedCard = chooseCard();
-            handleTurn(playedCard);//handlecard is called
+            handleTurn(playedCard);
         }
+        //todo player needs to be reset at the end of a round
     }
     /**
      * Actual turn gets handled.
@@ -113,12 +115,14 @@ public class Round {
         Card card = null;
         //TODO choose which card currentPlayer.
         Card secondCard = pop();
-        first = currentPlayer.getCard().toString();
-        second = secondCard.toString();
-        currentPlayer.message(first + "or" + second); //TODO Get both names
+        currentPlayer.message("Available cards: " + first + ", " + second); //TODO Get both names
+        String first = currentPlayer.getCard().getCardName();
+        String second = secondCard.getCardName();
+        currentPlayer.message("Available cards: " + first + ", " + second); //TODO Get both names
         String message = gameBoard.readResponse();
-        gameBoard.getSender();
+        User sender = gameBoard.getSender();
         //TODO check if sender is currentplayer
+
         //if choosen card is second card, change second card with currentcard
         return card;
 
@@ -126,7 +130,7 @@ public class Round {
 
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
-        //currentPlayer.setPlayedHandmaid(false); 
+        //currentPlayer.setPlayedHandmaid(false);
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
         if (first == "Countess" &&
@@ -226,7 +230,7 @@ public class Round {
         this.activePlayers.remove(player);
     }
 
-    public  ArrayList<Player> getActivePlayers(){
+    public ArrayList<Player> getActivePlayers() {
         return this.activePlayers;
     }
 }
