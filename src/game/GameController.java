@@ -67,9 +67,9 @@ public class GameController {
             startedGame = true;
             gameboard.addPlayer(user);
         } else if (!runningGame) {
-            user.message("Someone has already created a game. Type '#join' if you want to join the game");
+            user.message("Someone has already created a game. Type '#join' if you want to join the game.");
         } else {
-            user.message("You're friends have started without you. Just wait and join in the next round.");
+            user.message("You're friends have started without you. Just wait and join in the next game.");
         }
     }
 
@@ -78,26 +78,25 @@ public class GameController {
      * This method checks if a GameBoard has already been created and/or started.
      * Also a player can only join if <4 players already joined.
      */
-
     public void join(User user) {
 
         if (!gameboard.alreadyJoined(user) && startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addPlayer(user);
-            user.message("You've joined the game.");
+            user.message("You've joined the game. If you want to start already type '#start'.");
         } else if (gameboard.alreadyJoined(user)) {
-            user.message("You've already joined the game.");
+            user.message("You've already joined the game. If you want to start already type '#start'.");
         } else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
-            user.message("You're friends have started without you. Just wait and join in the next round.");
+            user.message("You're friends have started without you. Just wait and join in the next game.");
         } else if (gameboard.getPlayerCount() >= 4) {
             user.message("All player slots have already been taken. Please wait and join the next game.");
         }
     }
 
     /**
-     * Reacts to command "start"
-     * checks if the player has already joined the game, if a game has been created/started
+     * Reacts to command "start".
+     * Checks if the player has already joined the game, if a game has been created/started
      * and if there are >=2 and <=4 players.
      * If game can be started the method playGame() is called from the GameBoard.
      */
@@ -106,13 +105,13 @@ public class GameController {
             gameboard.run();
             runningGame = true;
         } else if (!gameboard.alreadyJoined(user)) {
-            user.message("You need to join the game to start it.");
+            user.message("You need to join the game to start it. Type '#join' to do so.");
         } else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
-            user.message("You're friends have started without you. Just wait and join in the next round.");
+            user.message("You're friends have started without you. Just wait and join in the next game.");
         } else if (gameboard.getPlayerCount() > 2) {
-            user.message("You need more players to start the game.");
+            user.message("You need at least one more player to start the game.");
         }
     }
 
