@@ -50,6 +50,7 @@ public class GameBoard extends Thread {
             sender.message("It's not your turn"); //TODO turn has to be in Round
         }
     }
+
     public void getScorePlayer(){
         String score = "";
         for (Player pl: playerList){
