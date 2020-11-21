@@ -22,7 +22,6 @@ public class GameController {
      */
     public synchronized void readCommand(String message, User user) {
         //TODO: getUserName
-        String username = "Default";
         switch (message) {
             case "#create":
                 //TODO
@@ -68,11 +67,13 @@ public class GameController {
      */
 
     public void join(User user) {
-        // TODO: check if player already joined the game
-        if (startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
+
+        if (!gameboard.playerAlreadyJoined(user) && startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addPlayer(user);
             user.message("You've joined the game.");
-        } else if (!startedGame) {
+        } else if (gameboard.playerAlreadyJoined(user)) {
+            user.message("You've already joined the game.");
+        }else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next round.");
@@ -88,10 +89,11 @@ public class GameController {
      * If game can be started the method playGame() is called from the GameBoard.
      */
     public void start(User user) {
-        // TODO: check if player already joined the game
-        if (startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
+        if (gameboard.playerAlreadyJoined(user) && startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.run();
             runningGame = true;
+        } else if (!gameboard.playerAlreadyJoined(user)) {
+            user.message("You need to join the game to start it.");
         } else if (!startedGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
