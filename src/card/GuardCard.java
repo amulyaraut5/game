@@ -3,6 +3,8 @@ package card;
 import game.Player;
 
 public class GuardCard extends Card{
+    private Player targetPlayer = null;
+
     public GuardCard(String nameOfCard, int cardValue) {
 
         this.nameOfCard = nameOfCard;
@@ -21,54 +23,59 @@ public class GuardCard extends Card{
 
 
     /**
-     * By calling this method player  designates another player and names a type of card. If that players has that card
+     * By calling this method player designates another player and names a type of card. If that players has that card
      * then the player will be out of the round.
      * However a player cannot name GUARD card.
-     * @param playerPlayingCard
+     * @param playerPlayingCard 
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
 
-        String targetPlayername;
-        availablePlayers = round.getActivePlayers();
+        for (Player player : round.getActivePlayers()) {
+            if (!player.isGuarded() && player != playerPlayingCard) {
+                availablePlayers.add(player);
 
-        String printPlayers="";
-        for(Player player : availablePlayers) {
-            if(!player.isGuarded() && player != playerPlayingCard) {
-                printPlayers += (player.getName() + " ");
             }
         }
-        playerPlayingCard.message(printPlayers);   // Display the player name from the availablePlayers so that the player can choose the name
+
+         // Display the player name from the availablePlayers so that the player can choose the name
+        playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
 
         // Read the input of the user and set to targetPlayer
         // Set the targetPlayer as per users choice from the list of players
-        targetPlayername = gameboard.readResponse();
+        getTargetPlayer();
 
-        for(Player targetPlayer: availablePlayers){
+        // Then playerPlayingCard can guess the card of the targetPlayer
+        playerPlayingCard.message("What card do you think the player has?");
+        // Read the input of the player
+        String guessCardName = gameboard.readResponse();
 
-            if (targetPlayer.getName().equals(targetPlayername)){
 
-                // Then playerPlayingCard  can guess the card of the targetPlayer
-                playerPlayingCard.message("What card do you think the target player has?");
-                // Read the input of the player
-                String guessCardName = gameboard.readResponse();
+        if (guessCardName == this.nameOfCard) {
+            playerPlayingCard.message("You cannot choose the guard card, try again.");
+            getTargetPlayer();
 
-                if (guessCardName == this.nameOfCard ) {
-                    playerPlayingCard.message("You cannot choose the guard name");
-
-                }else if(guessCardName.equals(targetPlayer.getCard().getCardName())) {
-                    playerPlayingCard.message("Your guess was correct");
-
-                    //If the guess is correct the player will be out of the round.
-                    round.kickPlayer(targetPlayer);
-                    //TODO Display message to all the players
-
-                }else {
-                    playerPlayingCard.message("Your guess was Incorrect.");
-                }
-
+        }else if(guessCardName.equals(targetPlayer.getCard().getCardName())) {
+            playerPlayingCard.message("Your guess was correct!");
+            //If the guess is correct the player will be out of the round.
+            round.kickPlayer(targetPlayer);
+            //TODO Display message to all the players
+            for (Player player : availablePlayers){
+                player.message(targetPlayer + "is eliminated from the round.");
             }
+
+        }else {
+            playerPlayingCard.message("Your guess was Incorrect.");
         }
 
+    }
+    Player getTargetPlayer(){
+        String targetPlayerName = gameboard.readResponse();
+        for (Player player : availablePlayers) {
+            if(player.getName().equals(targetPlayerName)){
+                targetPlayer = player;
+            }
+        }
+        return targetPlayer;
     }
 }
