@@ -24,10 +24,9 @@ public class Round {
         this.activePlayers = activePlayers;
         this.gameBoard = gameBoard;
 
-        firstCardRemoved = pop();
-        if(activePlayers.size()==2){
-            removeThreeMore();
-        }
+
+        removeFirstCards();
+
 
     }
 
@@ -95,7 +94,8 @@ public class Round {
      *
      * @return the three removed cards
      */
-    public ArrayList<Card> removeThreeMore() {
+    public ArrayList<Card> removeFirstCards() {
+        firstCardRemoved = pop();
         faceUpCards = new ArrayList<Card>();
         if (activePlayers.size() == 2) {
             for (int i = 0; i < 3; i++) {
