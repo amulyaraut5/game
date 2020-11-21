@@ -1,5 +1,7 @@
 package card;
 
+import game.Player;
+
 public class CountessCard extends Card {
     public CountessCard(String name_of_card, int card_value){
         this.name_of_card = name_of_card;
@@ -18,7 +20,9 @@ public class CountessCard extends Card {
     }
 
     @Override
-    void handlecard() {
+    void handlecard(Player playerPlayingCard) {
 
     }
+
+
 }

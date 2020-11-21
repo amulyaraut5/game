@@ -22,7 +22,28 @@ public class PriestCard extends Card{
     //Player is allowed to see the hand of other player he chooses
     //He needs to choose the player from the set of available players
     @Override
-    void handlecard() {
+    void handlecard(Player playerPlayingCard) {
+        Player targetPlayer = null;
+        for (Player player : players) {
+            if (player.inGame &&                        // other player must still be in the game
+                    !player.isGuarded &&                    // and must not be guarded
+                    (this.name_of_card == "PRINCE" || player != playerPlayingCard)  )   // and must not choose himself, unless for the prince (discarding own card is allowed)
+            {
+                availablePlayers.add(player);
+            }
+        }
 
+        // TODO Display the player name from the availablePlayers so that the player can choose the name
+
+
+        // TODO Read the input of the user
+
+        // TODO Set the targetPlayer as per users choice from the list of players
+
+
+        if (availablePlayers.contains(targetPlayer)) {
+            // Then currentplayer sees the hand of the targetPlayer
+            // Code here
+        }
     }
 }

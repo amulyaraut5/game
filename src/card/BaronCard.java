@@ -1,5 +1,7 @@
 package card;
 
+import game.Player;
+
 public class BaronCard extends Card {
     public BaronCard(String name_of_card, int card_value){
         this.name_of_card = name_of_card;
@@ -17,7 +19,9 @@ public class BaronCard extends Card {
     }
 
     @Override
-    void handlecard() {
+    void handlecard(Player playerPlayingCard) {
 
     }
+
+
 }

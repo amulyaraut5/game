@@ -1,5 +1,7 @@
 package card;
 
+import game.Player;
+
 public class HandmaidCard extends Card {
     public HandmaidCard(String name_of_card, int card_value) {
 
@@ -18,7 +20,9 @@ public class HandmaidCard extends Card {
     }
 
     @Override
-    void handlecard() {
+    void handlecard(Player playerPlayingCard) {
 
     }
+
+
 }

@@ -11,6 +11,8 @@ import server.User;
  * To send the player a message, use the message(String) method.
  */
 public class Player extends User {
+    public boolean inGame; // TODO used in card subclass
+    public boolean isGuarded; // TODO used in card subclass
     private int numOfTokens;
     private Card currentCard;
     private Card secondCard;
