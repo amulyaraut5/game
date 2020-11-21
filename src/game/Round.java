@@ -2,6 +2,7 @@ package game;
 
 
 import card.Card;
+import server.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public class Round {
             Card playedCard = null;
             System.out.println("It's your turn, " + currentPlayer);
             playedCard = chooseCard();
-            handleTurn(playedCard);//handlecard is called
+            handleTurn(playedCard);
         }
     }
     /**
@@ -115,10 +116,11 @@ public class Round {
         Card secondCard = pop();
         first = currentPlayer.getCard().toString();
         second = secondCard.toString();
-        currentPlayer.message(first + "or" + second); //TODO Get both names
+        currentPlayer.message("Available cards: " + first + ", " + second); //TODO Get both names
         String message = gameBoard.readResponse();
-        gameBoard.getSender();
+        User sender = gameBoard.getSender();
         //TODO check if sender is currentplayer
+
         //if choosen card is second card, change second card with currentcard
         return card;
 
