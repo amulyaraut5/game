@@ -7,6 +7,8 @@ import server.User;
  * The GameController mainly handles the communication between the chat and the game.
  * It reads all the game commands and distributes it to the assigned classes in the game.
  * In particular it handles the creation of the GameBoard, joining and starting a game.
+ *
+ * @author janau
  */
 
 public class GameController {
