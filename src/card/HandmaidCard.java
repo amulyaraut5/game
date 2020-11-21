@@ -3,20 +3,20 @@ package card;
 import game.Player;
 
 public class HandmaidCard extends Card {
-    public HandmaidCard(String name_of_card, int card_value) {
+    public HandmaidCard(String nameOfCard, int cardValue) {
 
-        this.name_of_card = name_of_card;
-        this.card_value = card_value;
+        this.nameOfCard = nameOfCard;
+        this.cardValue = cardValue;
     }
 
     @Override
     public String getCardName() {
-        return name_of_card;
+        return nameOfCard;
     }
 
     @Override
     public int getCardValue() {
-        return card_value;
+        return cardValue;
     }
 
 

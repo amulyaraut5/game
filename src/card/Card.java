@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import game.Round;
 
 public abstract class Card {
-    public int card_value;
-    public String name_of_card;
+    public int cardValue;
+    public String nameOfCard;
     GameBoard gameboard;
     Round round;
 

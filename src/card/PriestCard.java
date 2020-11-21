@@ -3,21 +3,21 @@ package card;
 import game.Player;
 
 public class PriestCard extends Card{
-    public PriestCard(String name_of_card, int card_value){
-        this.name_of_card = name_of_card;
-        this.card_value = card_value;
+    public PriestCard(String nameOfCard, int cardValue){
+        this.nameOfCard = nameOfCard;
+        this.cardValue = cardValue;
     }
 
 
 
     @Override
     public String getCardName() {
-        return this.name_of_card;
+        return this.nameOfCard;
     }
 
     @Override
     public int getCardValue() {
-        return this.card_value;
+        return this.cardValue;
     }
 
     /**

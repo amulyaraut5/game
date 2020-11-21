@@ -3,19 +3,19 @@ package card;
 import game.Player;
 
 public class BaronCard extends Card {
-    public BaronCard(String name_of_card, int card_value){
-        this.name_of_card = name_of_card;
-        this.card_value = card_value;
+    public BaronCard(String nameOfCard, int cardValue){
+        this.nameOfCard = nameOfCard;
+        this.cardValue = cardValue;
     }
 
     @Override
     public String getCardName() {
-        return this.name_of_card;
+        return this.nameOfCard;
     }
 
     @Override
     public int getCardValue() {
-        return card_value;
+        return cardValue;
     }
 
     /**
@@ -61,9 +61,9 @@ public class BaronCard extends Card {
                 int playerPlayingCardValue = playerPlayingCard.getCard().getCardValue();
 
                 if(targetCardValue > playerPlayingCardValue){
-                    targetPlayer.setInGame(false);
+                    round.kickPlayer(targetPlayer);
                 } else {
-                    playerPlayingCard.setInGame(false);
+                    round.kickPlayer(playerPlayingCard);
                 }
             }
         }

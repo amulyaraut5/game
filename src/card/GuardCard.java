@@ -3,20 +3,20 @@ package card;
 import game.Player;
 
 public class GuardCard extends Card{
-    public GuardCard(String name_of_card, int card_value) {
+    public GuardCard(String nameOfCard, int cardValue) {
 
-        this.name_of_card = name_of_card;
-        this.card_value = card_value;
+        this.nameOfCard = nameOfCard;
+        this.cardValue = cardValue;
     }
 
     @Override
     public String getCardName() {
-        return name_of_card;
+        return nameOfCard;
     }
 
     @Override
     public int getCardValue() {
-        return card_value;
+        return cardValue;
     }
 
 
@@ -63,7 +63,7 @@ public class GuardCard extends Card{
                 //TODO read the input from the Player
                 //guess_cardname = ;
 
-                if (guess_cardname == this.name_of_card ) {
+                if (guess_cardname == this.nameOfCard) {
                     System.out.println("You cannot choose the guard name");
 
                 }else if(guess_cardname.equals(targetPlayer.getCard().getCardName())) {

@@ -126,8 +126,8 @@ public class Round {
     public void chooseCard() {
         //TODO choose which card currentPlayer.
         Card secondCard = pop();
-        String first = currentPlayer.getCard().toString();
-        String second = secondCard.toString();
+        first = currentPlayer.getCard().toString();
+        second = secondCard.toString();
         currentPlayer.message(first + "or" + second); //TODO Get both names
         String message = gameBoard.readResponse();
         gameBoard.getSender();

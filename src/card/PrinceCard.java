@@ -3,19 +3,19 @@ package card;
 import game.Player;
 
 public class PrinceCard extends Card {
-    public PrinceCard(String name_of_card, int card_value) {
-        this.name_of_card = name_of_card;
-        this.card_value = card_value;
+    public PrinceCard(String nameOfCard, int cardValue) {
+        this.nameOfCard = nameOfCard;
+        this.cardValue = cardValue;
     }
 
     @Override
     public String getCardName() {
-        return name_of_card;
+        return nameOfCard;
     }
 
     @Override
     public int getCardValue() {
-        return card_value;
+        return cardValue;
     }
 
 
@@ -29,7 +29,7 @@ public class PrinceCard extends Card {
 
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded &&                // must not be guarded
-                    (this.name_of_card == "PRINCE" || player != playerPlayingCard))   //  can be prince (discarding own card is allowed)
+                    (this.nameOfCard == "PRINCE" || player != playerPlayingCard))   //  can be prince (discarding own card is allowed)
             {
                 availablePlayers.add(player);
             }
