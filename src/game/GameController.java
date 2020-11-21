@@ -3,21 +3,19 @@ package game;
 import server.ChatServer;
 import server.User;
 
-import java.time.LocalDate;
-
 public class GameController {
 
     private boolean startedGame = false;
     private boolean runningGame = false;
     private GameBoard gameboard;
     private ChatServer server;
-    private Player player;
-    private String validCommands = "Use the following commands to control the game: " +
-            "\n #create: creates a new game " +
-            "\n #join: join the game " +
-            "\n  #start: starts the game " +
-            "\n #score: look at current scores " +
-            "\n #choose: if you have to choose a card or another player ";
+    private final String COMMANDS = """
+            Use the following commands to control the game:\s
+             #create: creates a new game\s
+             #join: join the game\s
+             #start: starts the game\s
+             #score: look at current scores\s
+             #choose: if you have to choose a card or another player\s""";
 
     public GameController() {
 
@@ -31,27 +29,19 @@ public class GameController {
         if(message.contains(" ")){
             command= message.substring(0, message.indexOf(" "));
         }
+        //case "#end":
         switch (command) {
-            case "#create":
-                create(user);
-                break;
-            case "#join":
-                join(user);
-                break;
-            case "#start":
-                start(user);
-                break;
-            case "#help":
-                user.message(validCommands);
-                break;
-            case "#score":
-                gameboard.getScorePlayer();
-                break;
-            case "#choose":
-                message = message.substring(message.indexOf(" ")+1);
-                gameboard.incomingResponse (message, user);
-                break;
-            //case "#end":
+            case "#create" -> create(user);
+            case "#join" -> join(user);
+            case "#start" -> start(user);
+            case "#help" -> user.message(COMMANDS);
+            case "#score" -> gameboard.getScorePlayer();
+            case "#choose" -> {
+                message = message.substring(message.indexOf(" ") + 1);
+                gameboard.incomingResponse(message, user);
+                //case "#end":
+            //TODO default case
+            }
         }
     }
 
@@ -62,7 +52,7 @@ public class GameController {
      */
     public void create(User user) {
         if (!startedGame) {
-            GameBoard gameBoard = new GameBoard();
+            gameboard = new GameBoard();
             startedGame = true;
             gameboard.addPlayer(user);
         } else if (!runningGame) {
@@ -119,6 +109,7 @@ public class GameController {
     /**
      * method that resets all game controlling variables when a game is ended.
      */
+    //TODO muss resettet werden
     public void reset() {
         startedGame = false;
         runningGame = false;
