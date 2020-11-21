@@ -26,7 +26,7 @@ public class PriestCard extends Card{
      * @param playerPlayingCard
      */
     @Override
-    void handlecard(Player playerPlayingCard) {
+    public void handlecard(Player playerPlayingCard) {
 
         String targetplayername = null;
 

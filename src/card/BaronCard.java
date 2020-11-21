@@ -24,7 +24,7 @@ public class BaronCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    void handlecard(Player playerPlayingCard) {
+    public void handlecard(Player playerPlayingCard) {
 
         String targetPlayername;
         availablePlayers = round.getActivePlayers();
