@@ -63,8 +63,13 @@ public class UserThread extends Thread {
                 Pattern gamePattern = Pattern.compile("^#+");
                 Matcher matcher = gamePattern.matcher(clientMessage);
 
+                Pattern directPattern = Pattern.compile("^@+");
+                Matcher directMatcher = gamePattern.matcher(clientMessage);
+
                 if (matcher.lookingAt()) {
                     server.communicateGame(clientMessage, user);
+                } else if (directMatcher.lookingAt()) {
+                    //TODO handle direct messages to one assigned user
                 } else {
                     serverMessage = "[" + user.getName() + "]: " + clientMessage;
                     server.communicate(serverMessage, user);
