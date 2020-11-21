@@ -61,6 +61,19 @@ public class GameBoard extends Thread {
         return message;
     }
 
+    /**
+     *
+     * @param user user who needs to be checked whether he already joined
+     * @return if user has already joined
+     */
+    public boolean playerAlreadyJoined(User user){
+        String username = user.getName();
+        for(Player pl : playerList){
+            if(pl.getName() == username) return true;
+        }
+        return false;
+    }
+
     public User getSender() {
         return sender;
     }
