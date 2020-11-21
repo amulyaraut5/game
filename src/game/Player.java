@@ -13,7 +13,8 @@ import java.util.ArrayList;
  * To send the player a message, use the message(String) method.
  */
 public class Player extends User {
-    public boolean isGuarded; // TODO used in card subclass
+
+    private boolean guarded;
     private int numOfTokens;
     private Card currentCard;
     private ArrayList<Card> playedCards = new ArrayList<>();
@@ -51,31 +52,35 @@ public class Player extends User {
 
     /**
      * Getter for the current card of player
+     *
      * @return current card
      */
     public Card getCard() {
         return currentCard;
     }
 
+    // TODO required in card subclasses
+    public void setCard(Card card) {
+    }
+
     /**
      * Setter for the current card of player
+     *
      * @param currentCard new current card
      */
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
     }
 
-    // TODO required in card subclasses
-    public void setCard(Card card) {
-    }
-    public int getSumPlayedCards(){
+    public int getSumPlayedCards() {
         int sum = 0;
-        for (Card card : playedCards){
+        for (Card card : playedCards) {
             sum += card.getCardValue();
         }
         return sum;
     }
-    public void resetPlayedCards(){
+
+    public void resetPlayedCards() {
         playedCards.clear();
     }
 
@@ -84,7 +89,13 @@ public class Player extends User {
         return playedCards;
     }
 
-    public String toString() {
-        return getName();
+    public boolean isGuarded() {
+        return guarded;
     }
+
+    public void setGuarded(boolean guarded) {
+        this.guarded = guarded;
+    }
+
+
 }

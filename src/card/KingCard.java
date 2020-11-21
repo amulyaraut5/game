@@ -27,11 +27,12 @@ public class KingCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    public void handlecard(Player playerPlayingCard) {
+    public void handleCard(Player playerPlayingCard) {
 
         for (Player player : round.getActivePlayers()) {
-            if(!player.isGuarded && player != playerPlayingCard) {
+            if(!player.isGuarded() && player != playerPlayingCard) {
                 availablePlayers.add(player);
+
             }
         }
         // Display the player name from the availablePlayers so that the player can choose the name

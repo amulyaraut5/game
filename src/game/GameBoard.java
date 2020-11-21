@@ -177,6 +177,8 @@ public class GameBoard extends Thread {
 
     /**
      * checks whether some Player already has won the whole game
+     *If someone has won, the reset Method from gameController is called which enables the start
+     * of a new game.
      *
      * @return winGame
      */
@@ -188,12 +190,15 @@ public class GameBoard extends Thread {
             //2 player -> 7 token
             if ((playerList.size() == 2) && (player.getTokenCount() >= 7)) {
                 win = true;
+                gameController.reset();
             } //3 player -> 5 token
             else if ((playerList.size() == 3) && (player.getTokenCount() >= 5)) {
                 win = true;
+                gameController.reset();
             }  //4 player -> 4 token
             else if ((playerList.size() == 4) && (player.getTokenCount() >= 4)) {
                 win = true;
+                gameController.reset();
             }
         }
         return win;
