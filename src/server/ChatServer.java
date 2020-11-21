@@ -80,6 +80,10 @@ public class ChatServer {
         }
     }
 
+    public void communicateGame (String message, User sender) {
+        gameController.readCommand(message, sender);
+    }
+
     public void communicateAll(String message) {
         for (User user : users)
             user.message(message);
