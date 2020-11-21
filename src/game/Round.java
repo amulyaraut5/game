@@ -113,16 +113,18 @@ public class Round {
      */
     public Card chooseCard() {
         Card card = null;
-        //TODO choose which card currentPlayer.
         Card secondCard = pop();
-        currentPlayer.message("Available cards: " + first + ", " + second); //TODO Get both names
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
-        currentPlayer.message("Available cards: " + first + ", " + second); //TODO Get both names
+        currentPlayer.message("Available cards: " + first + ", " + second);
         String message = gameBoard.readResponse();
         User sender = gameBoard.getSender();
         //TODO check if sender is currentplayer
-
+        //Are sender and currentPlayer comparable?
+        if (sender != this.currentPlayer){
+            return null;
+        }
+        //check if player chooses card 1 or card 2, return the one he chose.
         //if choosen card is second card, change second card with currentcard
         return card;
 
