@@ -18,9 +18,14 @@ public class GuardCard extends Card{
     int getCardValue() {
         return card_value;
     }
-    // Guard designates another players and names a type of card. If that players has that card
-    // then the player will be out of the round.
-    // However a player cannot name GUARD card.
+
+
+    /**
+     * By calling this method player  designates another player and names a type of card. If that players has that card
+     * then the player will be out of the round.
+     * However a player cannot name GUARD card.
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
 

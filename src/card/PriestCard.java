@@ -20,8 +20,11 @@ public class PriestCard extends Card{
         return this.card_value;
     }
 
-    //Player is allowed to see the hand of other player he chooses
-    //He needs to choose the player from the set of available players
+    /**
+     * By calling this method player is allowed to see the hand of other player he chooses.
+     * He needs to choose the player from the set of available players
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
 
@@ -52,7 +55,8 @@ public class PriestCard extends Card{
 
                 //TODO change every println statement!!!!!!!!!!!!!!!
 
-                // Get the card of targetPlayer and show only to the player playing card
+                // Get the card of targetPlayer
+                // TODO display this card only to the player playing card
                 String card = targetPlayer.getCard().getCardName();
 
 

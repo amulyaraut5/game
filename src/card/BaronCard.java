@@ -18,8 +18,12 @@ public class BaronCard extends Card {
         return card_value;
     }
 
-    // Player will choose the targetPlayer and privately compare hands.
-    // The Player with the lower card_value will be eliminated from the round.
+
+    /**
+     * By calling this method player will choose the targetPlayer and privately compare the cards.
+     * The Player with the lower card_value will be eliminated from the round.
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
 

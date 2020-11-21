@@ -19,7 +19,10 @@ public class KingCard extends Card {
     }
 
 
-    // Player trades card with another card
+    /**
+     * By calling this method the playing trades card with another card
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
         for (Player player : players) {

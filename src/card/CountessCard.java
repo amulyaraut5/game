@@ -18,9 +18,14 @@ public class CountessCard extends Card {
     int getCardValue() {
         return card_value;
     }
-    // If a player holds both this card and either the "king" and "Prince",
-    // then this card should be played.
-    // Other players will know that the playerPlayingCard
+
+
+    //
+
+    /**
+     * Already handled in Round class
+     * @param playerPlayingCard
+     */
     @Override
     void handlecard(Player playerPlayingCard) {
 
