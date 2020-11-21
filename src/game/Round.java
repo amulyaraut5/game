@@ -169,28 +169,32 @@ public class Round {
      *
      * @return winner of the round
      */
-    public ArrayList<Player> getRoundWinner() {
-        ArrayList<Player> winnerList = new ArrayList<Player>();
+    public  ArrayList<Player> getRoundWinner() {
+        ArrayList<Player> winnerList = new ArrayList<>();
+        ArrayList<Player> waitList = new ArrayList <>();
         Player winner = activePlayers.get(0);
         //A round also ends if all players but one are out of the round, in which case the remaining player wins.
         if (activePlayers.size() == 1) {
             winnerList.add(winner);
             return winnerList;
         } else { //A round ends if the deck is empty at the end of a player’s turn
-            for (int i = 1; i <= activePlayers.size(); i++) {
-                //The player with the highest number in their hand wins the round.
-                if (winner.getCard().getCardValue() < activePlayers.get(i).getCard().getCardValue()) {
-                    winnerList.get(i); //TODO
-                    //In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins.
-                } else if (winner.getCard().getCardValue() == activePlayers.get(i).getCard().getCardValue()) {
-                    if (winner.getCard().getCardValue() < activePlayers.get(i).getCard().getCardValue()) {
-                        winner = activePlayers.get(i);//TODO
-                    } else {
-                        //
-                    }
+            for (int i = 1; i < activePlayers.size(); i++) {
+                Player currentPlayer = activePlayers.get(i);
+                if (winner.getCard().getCardValue() < currentPlayer.getCard().getCardValue()) winner = currentPlayer;
+                else if (winner.getCard().getCardValue() == currentPlayer.getCard().getCardValue()) {
+                    if (winner.getSumPlayedCards() < currentPlayer.getSumPlayedCards()) winner = currentPlayer;
+                    else if (winner.getSumPlayedCards() == currentPlayer.getSumPlayedCards()) waitList.add(currentPlayer);
                 }
             }
         }
+        for (Player player : waitList){
+            if(winner.getCard().getCardValue()<player.getCard().getCardValue()) winner = player;
+            else if(winner.getCard().getCardValue()==player.getCard().getCardValue()){
+                if (winner.getSumPlayedCards()< player.getSumPlayedCards()) winner=player;
+                else if(winner.getSumPlayedCards()==player.getSumPlayedCards()) winnerList.add(player);
+            }
+        }
+        winnerList.add(winner);
         return winnerList;
     }
 
