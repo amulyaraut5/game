@@ -36,7 +36,7 @@ public class KingCard extends Card {
             }
         }
         // Display the player name from the availablePlayers so that the player can choose the name
-        playerPlayingCard.message("Choose the name of the player you want to target." + availablePlayers.toString());
+        playerPlayingCard.message("Choose the name of the player you want to swap cards with: " + availablePlayers.toString());
         // Read the input of the user and set to targetPlayer
         // Set the targetPlayer as per users choice from the list of players
         getTargetPlayer();
@@ -46,6 +46,8 @@ public class KingCard extends Card {
         Card targetCard = targetPlayer.getCard();
         targetPlayer.setCurrentCard(playerCard);
         playerPlayingCard.setCurrentCard(targetCard);
+
+
     }
 
     /**
