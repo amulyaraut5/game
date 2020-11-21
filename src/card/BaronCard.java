@@ -3,7 +3,7 @@ package card;
 import game.Player;
 
 public class BaronCard extends Card {
-    public BaronCard(String name_of_card, int cardValue){
+    public BaronCard(String nameOfCard, int cardValue){
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
     }
