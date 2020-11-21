@@ -37,7 +37,7 @@ public class Round {
         }
         while (!isRoundFinished()) {
             System.out.println("It's your turn, " + currentPlayer);
-            drawCard();
+            chooseCard();
             handleTurn();//handlecard is called
         }
     }
@@ -141,13 +141,13 @@ public class Round {
         //currentPlayer.setPlayedHandmaid(false); 
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
-        if (first == "COUNTESS" &&
-                (second == "KING" || second == "PRINCE")) {
+        if (first == "Countess" &&
+                (second == "King" || second == "Prince")) {
             if (chosenCard == currentPlayer.getSecondcard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
-        } else if (second == "COUNTESS" &&
-                (first == "KING" || first == "PRINCE")) {
+        } else if (second == "Countess" &&
+                (first == "King" || first == "Prince")) {
             if (chosenCard == currentPlayer.getCard()) {
                 //send Message to player: "You have to choose Countess, please try again."
             }
