@@ -24,12 +24,12 @@ public class KingCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    public void handlecard(Player playerPlayingCard) {
+    public void handleCard(Player playerPlayingCard) {
         String targetPlayername;
         String printPlayers="";
 
         for (Player player : round.getActivePlayers()) {
-            if(!player.isGuarded && player.getName() != playerPlayingCard.getName()) {
+            if(!player.isGuarded() && player.getName() != playerPlayingCard.getName()) {
                 printPlayers += (player.getName() + " ");
             }
         }

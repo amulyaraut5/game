@@ -25,7 +25,7 @@ public class PrincessCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    public void handlecard(Player playerPlayingCard) {
+    public void handleCard(Player playerPlayingCard) {
         round.kickPlayer(playerPlayingCard);
 
         //TODO Change the println statement to display message to all the players

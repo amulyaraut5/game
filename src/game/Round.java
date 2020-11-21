@@ -44,16 +44,16 @@ public class Round {
         }
         //todo player needs to be reset at the end of a round
     }
+
     /**
      * Actual turn gets handled.
+     *
      * @param card Card that the player chose to play.
      */
     public synchronized void handleTurn(Card card) {
         //call handlecard method, change currentPlayer(indicates who's turn it is) afterwards
-        card.handlecard(this.currentPlayer);
-        if (!isRoundFinished()){
-            this.currentPlayer = nextPlayer();
-        }
+        card.handleCard(this.currentPlayer);
+        this.currentPlayer = nextPlayer();
     }
 
     /**
@@ -121,7 +121,7 @@ public class Round {
         User sender = gameBoard.getSender();
         //TODO check if sender is currentplayer
         //Are sender and currentPlayer comparable?
-        if (sender != this.currentPlayer){
+        if (sender != this.currentPlayer) {
             return null;
         }
         //check if player chooses card 1 or card 2, return the one he chose.
@@ -138,7 +138,7 @@ public class Round {
         if (first == "Countess" &&
                 (second == "King" || second == "Prince")) {
             // if (chosenCard == currentPlayer.getSecondcard()) {
-                //send Message to player: "You have to choose Countess, please try again."
+            //send Message to player: "You have to choose Countess, please try again."
             //}
         } else if (second == "Countess" &&
                 (first == "King" || first == "Prince")) {

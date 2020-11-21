@@ -27,14 +27,14 @@ public class GuardCard extends Card{
      * @param playerPlayingCard
      */
     @Override
-    public void handlecard(Player playerPlayingCard) {
+    public void handleCard(Player playerPlayingCard) {
 
         String targetPlayername;
         availablePlayers = round.getActivePlayers();
 
         String printPlayers="";
         for(Player player : availablePlayers) {
-            if(!player.isGuarded && player != playerPlayingCard) {
+            if(!player.isGuarded() && player != playerPlayingCard) {
                 printPlayers += (player.getName() + " ");
             }
         }

@@ -27,7 +27,7 @@ public class CountessCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    public void handlecard(Player playerPlayingCard) {
+    public void handleCard(Player playerPlayingCard) {
 
     }
 
