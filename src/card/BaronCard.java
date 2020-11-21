@@ -14,7 +14,7 @@ public class BaronCard extends Card {
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 

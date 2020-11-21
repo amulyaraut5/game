@@ -15,7 +15,7 @@ public class PrincessCard extends Card {
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 

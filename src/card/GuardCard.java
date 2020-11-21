@@ -15,7 +15,7 @@ public class GuardCard extends Card{
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 

@@ -199,11 +199,11 @@ public class Round {
         } else { //A round ends if the deck is empty at the end of a player’s turn
             for (int i = 1; i <= activePlayers.size(); i++) {
                 //The player with the highest number in their hand wins the round.
-                if (winner.getCard().getValue < activePlayers.get(i).getCard().getValue()) {
+                if (winner.getCard().getCardValue() < activePlayers.get(i).getCard().getCardValue()) {
                     winnerList.get(i); //TODO
                     //In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins.
-                } else if (winner.getCard().getValue() == activePlayers.get(i).getCard().getValue()) {
-                    if (winner.getCard().getValue() < activePlayers.get(i).getCard().getValue()) {
+                } else if (winner.getCard().getCardValue() == activePlayers.get(i).getCard().getCardValue()) {
+                    if (winner.getCard().getCardValue() < activePlayers.get(i).getCard().getCardValue()) {
                         winner = activePlayers.get(i);//TODO
                     } else {
                         //

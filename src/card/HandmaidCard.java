@@ -15,7 +15,7 @@ public class HandmaidCard extends Card {
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return card_value;
     }
 

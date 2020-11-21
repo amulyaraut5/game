@@ -16,7 +16,7 @@ public class PriestCard extends Card{
     }
 
     @Override
-    int getCardValue() {
+    public int getCardValue() {
         return this.card_value;
     }
 
