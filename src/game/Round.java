@@ -23,12 +23,7 @@ public class Round {
         shuffleDeck();
         this.activePlayers = activePlayers;
         this.gameBoard = gameBoard;
-
-        firstCardRemoved = pop();
-        if(activePlayers.size()==2){
-            removeThreeMore();
-        }
-
+        removeFirstCards();
     }
 
     /**
@@ -91,11 +86,13 @@ public class Round {
     }
 
     /**
-     * removes three more cards from the deck, if there are only two players.
+     * removes one card from  the deck and
+     * removes three more cards from the deck, if there are only two players and add them to faceUpCards
      *
      * @return the three removed cards
      */
-    public ArrayList<Card> removeThreeMore() {
+    public ArrayList<Card> removeFirstCards() {
+        firstCardRemoved = pop();
         faceUpCards = new ArrayList<Card>();
         if (activePlayers.size() == 2) {
             for (int i = 0; i < 3; i++) {
@@ -250,5 +247,9 @@ public class Round {
      */
     public void kickPlayer(Player player) {
         this.activePlayers.remove(player);
+    }
+
+    public  ArrayList<Player> getActivePlayers(){
+        return this.activePlayers;
     }
 }

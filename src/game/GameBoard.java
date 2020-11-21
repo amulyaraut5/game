@@ -129,11 +129,6 @@ public class GameBoard extends Thread {
 
     }
 
-    public void rotatePlayers() {
-    }
-
-
-
     /**
      * It creates a Player and adds it to the list of joined player
      * @param user User on the server to be added as a player

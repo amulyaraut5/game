@@ -1,16 +1,17 @@
 package card;
 import game.Player;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import game.GameBoard;
+import java.util.ArrayList;
+import game.Round;
 
 public abstract class Card {
     public int card_value;
     public String name_of_card;
+    GameBoard gameboard;
+    Round round;
 
-    Set<Player> availablePlayers = new HashSet<Player>();
-    List<Player> players;
+    ArrayList<Player> availablePlayers = new ArrayList<Player>();
+
 
 
     public abstract String getCardName();
