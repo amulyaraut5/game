@@ -29,50 +29,42 @@ public class GuardCard extends Card{
     @Override
     public void handlecard(Player playerPlayingCard) {
 
-        String targetplayername = null;
-        String guess_cardname = null;
+        String targetPlayername;
+        availablePlayers = round.getActivePlayers();
 
-        for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded)                  // must not be guarded
-            {
-                availablePlayers.add(player);
+        String printPlayers="";
+        for(Player player : availablePlayers) {
+            if(!player.isGuarded && player != playerPlayingCard) {
+                printPlayers += (player.getName() + " ");
             }
         }
+        playerPlayingCard.message(printPlayers);   // Display the player name from the availablePlayers so that the player can choose the name
 
-        // TODO Display the player name from the availablePlayers so that the player can choose the name
-        // TODO Change the println statement
-        // Print the name from the Set<Player>....
-        for(Player player : availablePlayers) {
-            System.out.println(player.getName());
-        }
-        // TODO Read the input of the user
-        // The input from the player is String, but the targetPlayer is of Player type!!!!!!!!
-
-        // TODO Set the targetPlayer as per users choice
-
-        //THOUGHT
+        // Read the input of the user and set to targetPlayer
+        // Set the targetPlayer as per users choice from the list of players
+        targetPlayername = gameboard.readResponse();
 
         for(Player targetPlayer: availablePlayers){
 
-            if (targetPlayer.getName().equals(targetplayername)){
+            if (targetPlayer.getName().equals(targetPlayername)){
+
                 // Then playerPlayingCard  can guess the card of the targetPlayer
+                playerPlayingCard.message("What card do you think the target player has?");
+                // Read the input of the player
+                String guessCardName = gameboard.readResponse();
 
-                //TODO change every println statement!!!!!!!!!!!!!!!
-                System.out.println("What card do you think the target player has?");
+                if (guessCardName == this.nameOfCard ) {
+                    playerPlayingCard.message("You cannot choose the guard name");
 
-                //TODO read the input from the Player
-                //guess_cardname = ;
+                }else if(guessCardName.equals(targetPlayer.getCard().getCardName())) {
+                    playerPlayingCard.message("Your guess was correct");
 
-                if (guess_cardname == this.nameOfCard) {
-                    System.out.println("You cannot choose the guard name");
-
-                }else if(guess_cardname.equals(targetPlayer.getCard().getCardName())) {
-                    System.out.println("Your guess was correct");
-
-                    //If the guess is correct we kick the player out of the round.
+                    //If the guess is correct the player will be out of the round.
                     round.kickPlayer(targetPlayer);
+                    //TODO Display message to all the players
+
                 }else {
-                    System.out.println("Your guess was Incorrect.");
+                    playerPlayingCard.message("Your guess was Incorrect.");
                 }
 
             }

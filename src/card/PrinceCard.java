@@ -30,40 +30,32 @@ public class PrinceCard extends Card {
     @Override
     public void handlecard(Player playerPlayingCard) {
 
+        String targetPlayername;
         for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded)               // must not be guarded
+            if (!player.isGuarded)               // must not be guarded and discarding own card is allowed
             {
                 availablePlayers.add(player);
             }
         }
-        // TODO Display the player name from the availablePlayers so that the player can choose the name
-        // TODO Change the println statement
-        // Print the name from the Set<Player>....
+        //Display the player name from the availablePlayers so that the player can choose the name
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
 
         //Read the input of the user and return the target player
         getTargetPlayer();
 
-        // TODO Set the targetPlayer as per users choice from the list of players
-
         for (Player targetPlayer : availablePlayers) {
             // And targetPlayer can be playerPlayingCard which is already included in availablePlayers.
-            // TODO Change the println statement
-
             if (targetPlayer.getCard().getCardName().equals("Princess")) {
-                // Display this messages to all the players.
-
-                System.out.println("Target player has discarded a princess because of " + playerPlayingCard + "!" +
-                        "\nTarget player is now out of the game!" +
-                        " \n*shakes fist angrily");
                 //we kick the player out of the round.
                 round.kickPlayer(targetPlayer);
-            }
-            else{
-                targetPlayer.setCurrentCard(round.pop());
-                // TODO targetPlayer needs to draw a card from the deck
-
-            }
+                //TODO Display message to all the players
+                System.out.println("Target player has discarded a princess because of you! " +
+                        "\nTarget player is now out of the game!" +
+                        " \n*shakes fist angrily");
+                } else {
+                    targetPlayer.setCurrentCard(round.pop());
+                    // TODO targetPlayer needs to draw a card from the deck
+                }
         }
 
     }
