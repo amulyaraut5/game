@@ -16,7 +16,6 @@ public class GameBoard extends Thread {
     private volatile User sender;
 
     public GameBoard() {
-
     }
 
     public static ArrayList<Card> createDeck() {
@@ -29,8 +28,8 @@ public class GameBoard extends Thread {
         for (int i = 0; i < 2; i++) {
             stackCards.add(new PrinceCard("Prince", 5));
             stackCards.add(new HandmaidCard("Handmaid", 4));
-            stackCards.add(new BaronCard("Baron",3));
-            stackCards.add(new PriestCard("Priest",2));
+            stackCards.add(new BaronCard("Baron", 3));
+            stackCards.add(new PriestCard("Priest", 2));
         }
         //guard five times:
         for (int i = 0; i < 5; i++) {
@@ -39,14 +38,44 @@ public class GameBoard extends Thread {
         return stackCards;
     }
 
+    /**
+     * Gives Messages to the Game-Thread to read.
+     * Method should be called if UserThreads get messages from clients,
+     * which have to be passed to the GameBoard-Thread.
+     * If an incoming response is set, no other responses can be set,
+     * until the response is read by the GameBoard-Thread.
+     * To read the response in the GameBoard-Thread, readResponse() should be called.
+     *
+     * @param message response of the player
+     * @param sender  User who replied
+     */
     public void incomingResponse(String message, User sender) {
-        //TODO differentiate between getter messages (Tokens) or responses to gamelogic
+
+        //TODO proof if message is coming from the current user
         if (userResponse == null) {
             userResponse = message;
             this.sender = sender;
         } else {
-            sender.message("It's not your turn"); //TODO turn has to be in Round
+            sender.message("It's not your turn, " + sender.getName() + "!"); //TODO turn has to be in Round
         }
+    }
+
+    /**
+     * The methods reads the response, which is send from a player.
+     * Warning: The method waits and ends, if there is a feedback from the user.
+     * if no client responds, the method does not return!
+     * The method is interruptible
+     *
+     * @return response message of the player
+     */
+    public String readResponse() {
+        String message;
+        while (userResponse == null && !isInterrupted()) {
+            //TODO wait();
+        }
+        message = userResponse;
+        userResponse = null;
+        return message;
     }
 
     public void getScorePlayer() {
@@ -55,16 +84,6 @@ public class GameBoard extends Thread {
             score += pl.getName() + ": " + pl.getTokenCount() + " \n";
         }
         gameController.sendMessage(score);
-    }
-
-    public String readResponse() {
-        String message;
-        while (userResponse == null) {
-            //TODO wait();
-        }
-        message = userResponse;
-        userResponse = null;
-        return message;
     }
 
     /**
