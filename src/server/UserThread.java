@@ -40,19 +40,6 @@ public class UserThread extends Thread {
         }
     }
 
-    //TODO: no valid dates doesnt count
-    public static boolean isValid(String date) {
-        boolean valid = false;
-        try {
-            // ResolverStyle.STRICT for 30, 31 days checking, and also leap year.
-            LocalDate.parse(date, formatter.withResolverStyle(ResolverStyle.STRICT));
-            valid = true;
-        } catch (DateTimeParseException e) {
-            e.printStackTrace();
-            valid = false;
-        }
-        return valid;
-    }
 
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
@@ -113,20 +100,36 @@ public class UserThread extends Thread {
             disconnect(ex);
         }
     }
-
+    /**
+     * The user is asked to enter the date where he last dated.
+     * If the date is not valid he has to do it again.
+     */
     private void logInDate() {
         String datePuffer;
         try {
             sendMessage("I am curious. When was the last time you were on a date? (dd MM yy)");
             datePuffer = reader.readLine();
 
-            while (/*!isValid(datePuffer) ||*/ !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
+            while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
                 sendMessage("This date is not in the correct format. Please try again. ");
                 datePuffer = reader.readLine();
             }
             user.setLastDate(LocalDate.parse(datePuffer, formatter));
         } catch (IOException ex) {
             disconnect(ex);
+        }
+    }
+
+    /**
+     * Turns a String into a date or null
+     * @param date as String
+     * @return null if String is not a valid date or the date
+     */
+    public static LocalDate turnIntoDate (String date){
+        try {
+            return LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            return null;
         }
     }
 

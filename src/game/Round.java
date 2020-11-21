@@ -137,9 +137,9 @@ public class Round {
         //if player has countess in hand check for prince or king
         if (first == "Countess" &&
                 (second == "King" || second == "Prince")) {
-            if (chosenCard == currentPlayer.getSecondcard()) {
+            // if (chosenCard == currentPlayer.getSecondcard()) {
                 //send Message to player: "You have to choose Countess, please try again."
-            }
+            //}
         } else if (second == "Countess" &&
                 (first == "King" || first == "Prince")) {
             if (chosenCard == currentPlayer.getCard()) {
