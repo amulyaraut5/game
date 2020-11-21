@@ -36,36 +36,15 @@ public class Round {
             p.setCurrentCard(pop());
         }
         while (!isRoundFinished()) {
+            Card playedCard = null;
             System.out.println("It's your turn, " + currentPlayer);
-            chooseCard();
-            handleTurn();//handlecard is called
+            playedCard = chooseCard();
+            handleTurn(playedCard);//handlecard is called
         }
     }
 
-    public synchronized void handleTurn() {
-        if (player == this.currentPlayer && card == player.getCurrentCard()) {
-            //do turn
-            //card needs to be discarded
-            //card.handleCard();
-        } else if (player != this.currentPlayer) {
-            //send Message to player: "Please wait your turn!"
-        } else {
-            //send Message to player: "This card is not available."
-
-        }
-
-        if (this.activePlayers.size() >= 1) {
-            if (this.cardDeck.size() == 0) {
-                //count card values and determine the winner, end round
-
-            } else {
-                //Nächsten Zug einleiten.
-            }
-        } else {
-            //Beende Runde, da nurnoch ein Spieler im Spiel ist.
-        }
-
-
+    public synchronized void handleTurn(Card card) {
+        card.handlecard(this.currentPlayer);
     }
 
     /**
@@ -123,7 +102,8 @@ public class Round {
     /**
      * current player can choose between a new card or his old card
      */
-    public void chooseCard() {
+    public Card chooseCard() {
+        Card card = null;
         //TODO choose which card currentPlayer.
         Card secondCard = pop();
         first = currentPlayer.getCard().toString();
@@ -133,6 +113,7 @@ public class Round {
         gameBoard.getSender();
         //TODO check if sender is currentplayer
         //if choosen card is second card, change second card with currentcard
+        return card;
 
     }
 

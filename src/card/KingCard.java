@@ -24,7 +24,7 @@ public class KingCard extends Card {
      * @param playerPlayingCard
      */
     @Override
-    void handlecard(Player playerPlayingCard) {
+    public void handlecard(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded)                // other player must not be guarded
             {

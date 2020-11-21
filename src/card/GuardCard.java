@@ -27,7 +27,7 @@ public class GuardCard extends Card{
      * @param playerPlayingCard
      */
     @Override
-    void handlecard(Player playerPlayingCard) {
+    public void handlecard(Player playerPlayingCard) {
 
         String targetplayername = null;
         String guess_cardname = null;
