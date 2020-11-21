@@ -69,7 +69,9 @@ public class UserThread extends Thread {
                 if (matcher.lookingAt()) {
                     server.communicateGame(clientMessage, user);
                 } else if (directMatcher.lookingAt()) {
-                    server.communicateDirect(clientMessage, user);
+                    if (!server.communicateDirect(clientMessage, user)){
+                        user.message("This name is not assigned. Please try again");
+                    }
                 } else {
                     serverMessage = "[" + user.getName() + "]: " + clientMessage;
                     server.communicate(serverMessage, user);
