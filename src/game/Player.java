@@ -83,4 +83,8 @@ public class Player extends User {
     public ArrayList<Card> getPlayedCards() {
         return playedCards;
     }
+
+    public String toString() {
+        return getClass().getName();
+    }
 }
