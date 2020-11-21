@@ -19,11 +19,15 @@ public class PriestCard extends Card{
     int getCardValue() {
         return this.card_value;
     }
+
     //Player is allowed to see the hand of other player he chooses
     //He needs to choose the player from the set of available players
     @Override
     void handlecard(Player playerPlayingCard) {
-        Player targetPlayer = null;
+
+        String targetplayername = null;
+
+
         for (Player player : players) {
             if (player.inGame &&                        // other player must still be in the game
                     !player.isGuarded &&                    // and must not be guarded
@@ -41,9 +45,18 @@ public class PriestCard extends Card{
         // TODO Set the targetPlayer as per users choice from the list of players
 
 
-        if (availablePlayers.contains(targetPlayer)) {
-            // Then currentplayer sees the hand of the targetPlayer
-            // Code here
+        for(Player targetPlayer: availablePlayers){
+
+            if (targetPlayer.getName().equals(targetplayername)){
+                // Then playerPlayingCard  can see the card of the targetPlayer
+
+                //TODO change every println statement!!!!!!!!!!!!!!!
+
+                // Get the card of targetPlayer and show only to the player playing card
+                String card = targetPlayer.getCard().getCardName();
+
+
+            }
         }
     }
 }
