@@ -9,7 +9,7 @@ public class PrinceCard extends Card {
     }
 
     @Override
-    String getCardName() {
+    public String getCardName() {
         return name_of_card;
     }
 

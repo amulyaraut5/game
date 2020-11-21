@@ -13,7 +13,7 @@ public abstract class Card {
     List<Player> players;
 
 
-    abstract String getCardName();
+    public abstract String getCardName();
     public abstract int getCardValue();
 
     abstract void handlecard(Player playerPlayingCard);

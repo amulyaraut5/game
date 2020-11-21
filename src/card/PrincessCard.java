@@ -10,7 +10,7 @@ public class PrincessCard extends Card {
     }
 
     @Override
-    String getCardName() {
+    public String getCardName() {
         return name_of_card;
     }
 

@@ -9,7 +9,7 @@ public class BaronCard extends Card {
     }
 
     @Override
-    String getCardName() {
+    public String getCardName() {
         return this.name_of_card;
     }
 

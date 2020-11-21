@@ -11,7 +11,7 @@ public class PriestCard extends Card{
 
 
     @Override
-    String getCardName() {
+    public String getCardName() {
         return this.name_of_card;
     }
 
