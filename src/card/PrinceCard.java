@@ -54,8 +54,10 @@ public class PrinceCard extends Card {
                             " \n*shakes fist angrily");
                 }
                 } else {
+                //targetPlayer needs to draw a card from the deck
+                    Card currentCard = targetPlayer.getCard();
+                    targetPlayer.getPlayedCards().add(currentCard);
                     targetPlayer.setCurrentCard(round.pop());
-                    // TODO targetPlayer needs to draw a card from the deck
                 }
         }
 
