@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Handles connection for each connected client,
@@ -57,23 +59,22 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-                //TODO regex: check here if message is "#", otherwise do following lines
-                // (Wenn erst in communicate geprüft wird, dann wird immer ["+user.getName()+"] angehängt)
-                serverMessage = "[" + user.getName() + "]: " + clientMessage;
-                server.communicate(serverMessage, user);
+
+                Pattern gamePattern = Pattern.compile("^#+");
+                Matcher matcher = gamePattern.matcher(clientMessage);
+
+                if (matcher.lookingAt()) {
+                    server.communicateGame(clientMessage, user);
+                } else {
+                    serverMessage = "[" + user.getName() + "]: " + clientMessage;
+                    server.communicate(serverMessage, user);
+                }
             }
         } catch (IOException ex) {
             disconnect(ex);
         }
         if (!exit) disconnect();
     }
-
-    // Pattern gamePattern = Pattern.compile("^#+");
-    //        Matcher matcher = gamePattern.matcher(message);
-    //
-    //        if (matcher.lookingAt()) {
-    //            gameController.readCommand(message, sender);
-    //        } else {
 
     /**
      * prints a message for specific user
