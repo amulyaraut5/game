@@ -29,14 +29,18 @@ public class PrinceCard extends Card {
 
         for (Player player : players) {
             if (player.inGame &&                        // other player must still be in the game
-                    !player.isGuarded &&                    // and must not be guarded
+                    !player.isGuarded &&                // and must not be guarded
                     (this.name_of_card == "PRINCE" || player != playerPlayingCard))   //  can be prince (discarding own card is allowed)
             {
                 availablePlayers.add(player);
             }
         }
         // TODO Display the player name from the availablePlayers so that the player can choose the name
-
+        // TODO Change the println statement
+        // Print the name from the Set<Player>....
+        for(Player player : availablePlayers) {
+            System.out.println(player.getName());
+        }
 
         // TODO Read the input of the user
 
@@ -53,6 +57,10 @@ public class PrinceCard extends Card {
                         "\nTarget player is now out of the game!" +
                         " \n*shakes fist angrily");
                 targetPlayer.setInGame(false);
+            }
+            else{
+                // TODO targetPlayer needs to draw a card from the deck
+
             }
         }
     }

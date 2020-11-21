@@ -37,7 +37,11 @@ public class BaronCard extends Card {
             }
         }
         // TODO Display the player name from the availablePlayers so that the player can choose the name
-
+        // TODO Change the println statement
+        // Print the name from the Set<Player>....
+        for(Player player : availablePlayers) {
+            System.out.println(player.getName());
+        }
 
         // TODO Read the input of the user
 
@@ -46,15 +50,14 @@ public class BaronCard extends Card {
         for(Player targetPlayer: availablePlayers){
 
             if (targetPlayer.getName().equals(targetplayername)){
-                // Then playerPlayingCard   see the card of the targetPlayer
+                // Then playerPlayingCard  see the card of the targetPlayer
                 // and compares the hand to see who has the greater card_value
 
+                int targetCardValue = targetPlayer.getCard().getCardValue();
 
-                // Get the card of targetPlayer and show only to the player playing card
-                int targetPlayerCard = targetPlayer.getCard().getCardValue();
-                int playerPlaying = playerPlayingCard.getCard().getCardValue();
+                int playerPlayingCardValue = playerPlayingCard.getCard().getCardValue();
 
-                if(targetPlayerCard > playerPlaying){
+                if(targetCardValue > playerPlayingCardValue){
                     targetPlayer.setInGame(false);
                 } else {
                     playerPlayingCard.setInGame(false);
