@@ -50,12 +50,22 @@ public class GameBoard extends Thread {
      * @param sender  User who replied
      */
     public void incomingResponse(String message, User sender) {
+        String cards = "baron countess guard handmaid king priest prince princess";
+        String names = "";
+        for (Player player:playerList)  names += player.getName();
         //TODO proof if message is coming from the current user
         if (userResponse == null) {
             userResponse = message;
             this.sender = sender;
         } else {
             sender.message("It's not your turn, " + sender.getName() + "!"); //TODO turn has to be in Round
+        }
+        if(message.equals("1") || message.equals("2")){
+            //
+        } else if(cards.contains(message)) {
+            //
+        } else if(names.contains(message)){
+            //
         }
     }
 
