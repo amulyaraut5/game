@@ -3,8 +3,8 @@ package card;
 import game.Player;
 
 public class PrinceCard extends Card {
-    Player targetPlayer = null;
-    String targetPlayerName = "";
+    private Player targetPlayer = null;
+    private String targetPlayerName = "";
 
     public PrinceCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
