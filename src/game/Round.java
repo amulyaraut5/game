@@ -22,7 +22,7 @@ public class Round {
 
         this.cardDeck = deck;
         this.playerCount = 1;
-        this.activePlayers=activePlayers;
+        this.activePlayers = activePlayers;
         shuffleDeck();
         firstCardRemoved = pop();
         removeThreeMore(); //If(activePlayer.size() == 2) already in Method
@@ -123,6 +123,10 @@ public class Round {
         }
     }
 
+    /**
+     * lets players draw a card according to the order
+     * @param activePlayers the ordered list of players
+     */
     public void drawCards(ArrayList<Player> activePlayers){
         while (!isRoundFinished()){
             for (Player currentPlayer : activePlayers){
@@ -132,9 +136,13 @@ public class Round {
         }
     }
 
+    /**
+     * handles the discarding of a card.
+     * @param currentPlayer the player who is in line to play a card
+     */
     public void discardCards(Player currentPlayer){
         //remove old handmaid effect
-        //currentPlayer.setPlayedHandmaid(false);
+        //currentPlayer.setPlayedHandmaid(false); 
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
         if ( currentPlayer.getCurrentCard().value == Card.COUNTESS &&
