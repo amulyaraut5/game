@@ -47,7 +47,7 @@ public class ChatServer {
             try {
                 Socket client_socket = server_socket.accept();
 
-                System.out.println("Accepted the connection from address : " + client_socket.getRemoteSocketAddress());
+                System.out.println("Accepted the connection from address: " + client_socket.getRemoteSocketAddress());
                 User user = new User();
                 UserThread thread = new UserThread(client_socket, this, user);
                 users.add(user);
@@ -101,16 +101,11 @@ public class ChatServer {
      */
     public synchronized boolean isAvailable(String userName) {
         int i = 0;
-        System.out.println("begin test of " + userName);
         for (User u : users) {
-            System.out.println(u);
-            System.out.println("test user " + i++ + ": " + u.getName());
             if (u.getName().equals(userName)) {
-                System.out.println("used");
                 return false;
             }
         }
-        System.out.println("unused");
         return true;
     }
 

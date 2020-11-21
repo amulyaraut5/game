@@ -11,14 +11,12 @@ import java.net.Socket;
  */
 
 public class UserThread extends Thread {
+    private static volatile User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final ChatServer server;
     private PrintWriter userOut;
     private BufferedReader reader;
-
     private boolean exit = false;
-
-    private static volatile User user; //Connected user, which data has to be filled in logIn()
 
     public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;

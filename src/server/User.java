@@ -2,15 +2,13 @@ package server;
 
 import java.util.Date;
 
+/**
+ *
+ */
 public class User {
     private volatile UserThread thread;
     private volatile String name = "Unnamed user";
-    private volatile Date lastDate = new Date(0); //TODO set low date
-
-    public User(UserThread thread, String name) {
-        this.thread = thread;
-        this.name = name;
-    }
+    private volatile Date lastDate = new Date(0);
 
     public User() {
 
