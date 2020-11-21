@@ -3,6 +3,8 @@ package game;
 import card.Card;
 import server.User;
 
+import java.util.ArrayList;
+
 /**
  * For each user who plays the game, a Player object is created.
  * The Player class stores data of the user and player specific data.
@@ -17,6 +19,7 @@ public class Player extends User {
     private int numOfTokens;
     private Card currentCard;
     private Card secondCard;
+    private ArrayList<Card> playedCards = new ArrayList<>();
 
     /**
      * Creates new player from given user.
@@ -92,5 +95,15 @@ public class Player extends User {
     }
     // TODO required in card subclasses
     public void setCard(Card card) {
+    }
+    public int getSumPlayedCards(){
+        int sum = 0;
+        for (Card card : playedCards){
+            sum += card.getCardValue();
+        }
+        return sum;
+    }
+    public void resetPlayedCards(){
+        playedCards.clear();
     }
 }

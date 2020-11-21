@@ -11,7 +11,6 @@ import java.util.Map;
 public class Round {
     public ArrayList<Card> cardDeck; //Remove after getStackCards is created
     private ArrayList<Player> activePlayers;
-    private Map<Player, List<Card>> playedCards;
     private ArrayList<Card> faceUpCards;
     private Card firstCardRemoved = null;
     private Player currentPlayer;
@@ -28,7 +27,10 @@ public class Round {
         this.gameBoard = gameBoard;
 
         firstCardRemoved = pop();
-        removeThreeMore();
+        if(activePlayers.size()==2){
+            removeThreeMore();
+        }
+
     }
 
     /**
