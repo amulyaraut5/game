@@ -125,22 +125,7 @@ public class GameBoard extends Thread {
     public void rotatePlayers() {
     }
 
-    /**
-     * in list orderedPlayers the Player who´s allowed to play first is on index 0
-     *
-     * @param plList      is the playerList who needs a new order
-     * @param firstplayer is the Player who needs to be on index 0
-     */
-    public void playerOrder(ArrayList<Player> plList, Player firstplayer) {
-        orderedPlayers.add(firstplayer);
-        int indexFirstPlayer = plList.indexOf(firstplayer);
-        for (int i = indexFirstPlayer++; i < plList.size(); i++) {
-            orderedPlayers.add(plList.get(i));
-        }
-        for (int i = 0; i < indexFirstPlayer; i++) {
-            orderedPlayers.add(plList.get(i));
-        }
-    }
+
 
     /**
      * It creates a Player and adds it to the list of joined player
