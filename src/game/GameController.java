@@ -3,6 +3,12 @@ package game;
 import server.ChatServer;
 import server.User;
 
+/**
+ * The GameController mainly handles the communication between the chat and the game.
+ * It reads all the game commands and distributes it to the assigned classes in the game.
+ * In particular it handles the creation of the GameBoard, joining and starting a game.
+ */
+
 public class GameController {
 
     private final String COMMANDS = """
@@ -22,14 +28,16 @@ public class GameController {
     }
 
     /**
-     * reads and distributes all incoming commands regarding the game
+     * Reads and distributes all incoming commands regarding the game.
+     * In case the command consists of additional information in choose the command gets cut.
+     * It checks if the required additional information is there and then sends only this
+     * additional information to the gameboard to be evaluated.
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
         if (message.contains(" ")) {
             command = message.substring(0, message.indexOf(" "));
         }
-        //case "#end":
         switch (command) {
             case "#create" -> create(user);
             case "#join" -> join(user);
@@ -38,11 +46,14 @@ public class GameController {
             case "#score" -> gameboard.getScorePlayer();
             case "#choose" -> {
                 message = message.substring(message.indexOf(" ") + 1);
-                gameboard.incomingResponse(message, user);
-                //case "#end":
-                //TODO default case
+                if (message.contains("#choose")) {
+                    user.message("Unexpected command: " + command + "\n Please enter a valid command. Type #help to see them.");
+                } else {
+                    gameboard.incomingResponse(message, user);
+                }
             }
-        }
+            default -> user.message("Unexpected command: " + command + "\n Please enter a valid command. Type #help to see them.");
+        } //case "#end":
     }
 
     /**
