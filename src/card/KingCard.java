@@ -9,7 +9,7 @@ public class KingCard extends Card {
     }
 
     @Override
-    String getCardName() {
+    public String getCardName() {
         return name_of_card;
     }
 
@@ -33,7 +33,11 @@ public class KingCard extends Card {
             }
         }
         // TODO Display the player name from the availablePlayers so that the player can choose the name
-
+        // TODO Change the println statement
+        // Print the name from the Set<Player>....
+        for(Player player : availablePlayers) {
+            System.out.println(player.getName());
+        }
 
         // TODO Read the input of the user
 

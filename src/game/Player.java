@@ -43,12 +43,6 @@ public class Player extends User {
     public int getTokenCount() {
         return 0;
     }
-    /**
-     * Resets the number of tokens for that player to '0'.
-     */
-    public void resetNumOfTokens() {
-        numOfTokens = 0;
-    }
 
     /**
      * Increases the number of tokens for that player.

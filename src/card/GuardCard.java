@@ -10,7 +10,7 @@ public class GuardCard extends Card{
     }
 
     @Override
-    String getCardName() {
+    public String getCardName() {
         return name_of_card;
     }
 
@@ -34,15 +34,18 @@ public class GuardCard extends Card{
 
         for (Player player : players) {
             if (player.inGame &&                        // other player must still be in the game
-                    !player.isGuarded &&                    // and must not be guarded
-                    (this.name_of_card == "PRINCE" || player != playerPlayingCard)  )   // and must not choose himself, unless for the prince (discarding own card is allowed)
+                    !player.isGuarded)                  // and must not be guarded
             {
                 availablePlayers.add(player);
             }
         }
 
         // TODO Display the player name from the availablePlayers so that the player can choose the name
-
+        // TODO Change the println statement
+        // Print the name from the Set<Player>....
+        for(Player player : availablePlayers) {
+            System.out.println(player.getName());
+        }
         // TODO Read the input of the user
         // The input from the player is String, but the targetPlayer is of Player type!!!!!!!!
 
