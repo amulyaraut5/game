@@ -68,6 +68,13 @@ public class UserThread extends Thread {
         if (!exit) disconnect();
     }
 
+    // Pattern gamePattern = Pattern.compile("^#+");
+    //        Matcher matcher = gamePattern.matcher(message);
+    //
+    //        if (matcher.lookingAt()) {
+    //            gameController.readCommand(message, sender);
+    //        } else {
+
     /**
      * prints a message for specific user
      *

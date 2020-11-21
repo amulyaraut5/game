@@ -66,19 +66,13 @@ public class ChatServer {
      * This method sends a message to each client which is connected to the server except the sender itself
      */
     public void communicate(String message, User sender) {
-        Pattern gamePattern = Pattern.compile("^#+");
-        Matcher matcher = gamePattern.matcher(message);
 
-        if (matcher.lookingAt()) {
-            gameController.readCommand(message, sender);
-        } else {
             for (User user : users) {
                 if (user != sender) {
                     user.message(message);
                 }
             }
         }
-    }
 
     public void communicateAll(String message) {
         for (User user : users)
