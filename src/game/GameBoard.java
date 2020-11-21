@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 public class GameBoard extends Thread {
     public ArrayList<Player> playerList;
-    public ArrayList<Player> activePlayers; //lists players that are still active in the current round
-    public ArrayList<Player> orderedPlayers;
     public Player gameWinner;
     public Round activeRound;
     private boolean started = false;
@@ -48,6 +46,8 @@ public class GameBoard extends Thread {
         if (userResponse == null) {
             userResponse = message;
             this.sender = sender;
+        }else{
+            sender.message("It's not your turn"); //TODO turn has to be in Round
         }
     }
 
