@@ -2,6 +2,8 @@ package card;
 
 import game.Player;
 
+import java.util.ArrayList;
+
 public class PrinceCard extends Card {
     public PrinceCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
@@ -21,7 +23,7 @@ public class PrinceCard extends Card {
 
     /**
      * By calling this method player can choose any player including themselves to discard their card
-     * and draw a new card.If the discarded card is princess the player will be eliminated from the round.
+     * and draw a new card. If the discarded card is princess the player will be eliminated from the round.
      * @param playerPlayingCard
      */
     @Override
@@ -29,7 +31,7 @@ public class PrinceCard extends Card {
 
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded &&                // must not be guarded
-                    (this.nameOfCard == "PRINCE" || player != playerPlayingCard))   //  can be prince (discarding own card is allowed)
+                    (this.nameOfCard == "Prince" || player != playerPlayingCard))   // Not needed? can be prince (discarding own card is allowed)
             {
                 availablePlayers.add(player);
             }
@@ -37,9 +39,7 @@ public class PrinceCard extends Card {
         // TODO Display the player name from the availablePlayers so that the player can choose the name
         // TODO Change the println statement
         // Print the name from the Set<Player>....
-        for(Player player : availablePlayers) {
-            System.out.println(player.getName());
-        }
+        playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
 
         // TODO Read the input of the user
 
