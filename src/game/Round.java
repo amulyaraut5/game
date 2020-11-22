@@ -6,6 +6,7 @@ import server.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 public class Round {
     private GameBoard gameBoard;
@@ -63,6 +64,7 @@ public class Round {
     public synchronized void handleTurn(Card card) {
         //call handlecard method, change currentPlayer(indicates who's turn it is) afterwards
         card.handleCard(this.currentPlayer);
+
         this.currentPlayer = nextPlayer();
     }
 
@@ -175,7 +177,6 @@ public class Round {
         String message = readResponse();
         System.out.println("Response from " + sender.getName() + ". " + message);
         //currentPlayer.message("You have chosen " + message);
-        //TODO change currentCard of active Player
         //Are sender and currentPlayer comparable?
         boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
         if (sender.getName() != this.currentPlayer.getName()) {
@@ -189,7 +190,6 @@ public class Round {
                 return null;
             }
             currentPlayer.setCurrentCard(secondCard);
-            //this.currentPlayer.setCurrentCard(secondCard);
         }
         if (message=="2") {
             card = secondCard;
