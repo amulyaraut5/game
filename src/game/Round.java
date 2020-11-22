@@ -185,18 +185,18 @@ public class Round {
         }
         if (message == "1") {
             card = currentPlayer.getCard();
-            if (mustCountess && (card.getCardName() != "Countess")) {
-                currentPlayer.message("You have to play the Countess. Please try again!");
-                return null;
-            }
+            //if (mustCountess && (card.getCardName() != "Countess")) {
+            //    currentPlayer.message("You have to play the Countess. Please try again!");
+            //    return null;
+            //}
             currentPlayer.setCurrentCard(secondCard);
         }
         if (message == "2") {
             card = secondCard;
-            if (mustCountess && (card.getCardName() != "Countess")) {
-                currentPlayer.message("You have to play the Countess. Please try again!");
-                return null;
-            }
+            //if (mustCountess && (card.getCardName() != "Countess")) {
+            //    currentPlayer.message("You have to play the Countess. Please try again!");
+            //    return null;
+            //}
         }
 
         if (message != "1" && message != "2") {
