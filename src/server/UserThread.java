@@ -63,7 +63,7 @@ public class UserThread extends Thread {
     public void run() {
         //before each method call it is checked if run() should be exited.
         if (!exit) logInName();
-        if (!exit) logInDate();
+        //if (!exit) logInDate(); //TODO remove comment-out before submission on monday
         if (!exit) welcome();
 
         String clientMessage = "";

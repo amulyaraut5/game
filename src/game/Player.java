@@ -77,12 +77,6 @@ public class Player extends User {
         return sum;
     }
 
-    /**
-     * Method clears the list of recently played cards in a round.
-     */
-    public void resetPlayedCards() {
-        playedCards.clear();
-    }
 
     /**
      *
@@ -99,6 +93,13 @@ public class Player extends User {
     public void setGuarded(boolean guarded) {
         this.guarded = guarded;
     }
-
+    /**
+     * Method clears the list of  played cards in a round, the player is not guarded anymore.
+     */
+    public void resetRound(){
+        setGuarded(false);
+        playedCards.clear();
+        setCurrentCard(null);
+    }
 
 }

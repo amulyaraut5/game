@@ -35,6 +35,7 @@ public abstract class Card {
     /**
      * Adds all not guarded players to the availablePlayers list, except current player
      */
+
     void setAvailablePlayers(Player playerPlayingCard){
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded() && player != playerPlayingCard) {

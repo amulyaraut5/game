@@ -31,7 +31,7 @@ public class PrinceCard extends Card {
 
         //Display the player name from the availablePlayers so that the player can choose the name
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
-
+        playerPlayingCard.message("Type #choose + name of player to choose the player");
         //Read the input of the user and return the target player
         getTargetPlayer();
 
@@ -44,12 +44,12 @@ public class PrinceCard extends Card {
                             " \n*shakes fist angrily");
             } else if (round.getCardDeck().size() <= 0) {
                 Card currentCard = round.getFirstCardRemoved();
-             }else{
+            } else {
             //targetPlayer needs to draw a card from the deck
-                Card currentCard = targetPlayer.getCard();
-                targetPlayer.getPlayedCards().add(currentCard);
-                targetPlayer.setCurrentCard(round.pop());
-            }
+            Card currentCard = targetPlayer.getCard();
+            targetPlayer.getPlayedCards().add(currentCard);
+            targetPlayer.setCurrentCard(round.pop());
+        }
     }
 
     @Override
@@ -63,4 +63,5 @@ public class PrinceCard extends Card {
             }
         }
     }
+
 }

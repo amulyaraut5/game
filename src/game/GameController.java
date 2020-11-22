@@ -54,12 +54,12 @@ public class GameController {
             case "#choose" -> {
                 message = message.substring(message.indexOf(" ") + 1);
                 if (message.contains("#choose")) {
-                    user.message("Unexpected command: " + command + "\n Please enter a valid command. Type #help to see them.");
+                    user.message("Unexpected command: " + command + "\nPlease enter a valid command. Type #help to see them.");
                 } else {
                     gameBoard.getActiveRound().writeResponse(message, user);
                 }
             }
-            default -> user.message("Unexpected command: " + command + "\n Please enter a valid command. Type #help to see them.");
+            default -> user.message("Unexpected command: " + command + "\nPlease enter a valid command. Type #help to see them.");
         } //case "#end":
     }
 
@@ -91,7 +91,7 @@ public class GameController {
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             user.message("You've joined the game. If you want to start already type '#start'.");
-            server.communicate(user + " joined the game! ("+ + gameBoard.getPlayerCount() + "/4)"+"\nPlayers can start the game by typing '#start'.", user);
+            server.communicate(user + " joined the game! (" + +gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start, type '#start'.");
         } else if (!createdGame) {
