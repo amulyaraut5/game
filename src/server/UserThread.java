@@ -41,6 +41,19 @@ public class UserThread extends Thread {
         }
     }
 
+    /**
+     * Turns a String into a date or null
+     *
+     * @param date as String
+     * @return null if String is not a valid date or the date
+     */
+    public static LocalDate turnIntoDate(String date) {
+        try {
+            return LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
 
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
@@ -68,11 +81,11 @@ public class UserThread extends Thread {
                 if (gameMatcher.lookingAt()) {
                     server.communicateGame(clientMessage, user);
                 } else if (directMatcher.lookingAt()) {
-                    if (!server.communicateDirect(clientMessage, user)){
+                    if (!server.communicateDirect(clientMessage, user)) {
                         user.message("This name is not assigned. Please try again.");
                     }
                 } else {
-                    serverMessage = "[" + user.getName() + "]: " + clientMessage;
+                    serverMessage = "[" + user + "]: " + clientMessage;
                     server.communicate(serverMessage, user);
                 }
             }
@@ -102,8 +115,9 @@ public class UserThread extends Thread {
             while (true) {
                 String userName = reader.readLine();
                 if (userName.isBlank()) sendMessage("You might not have entered a username. Please try again:");
-                else if(userName.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again.");
-                else if (!server.isAvailable(userName)) sendMessage("This username is already taken. Please try a different username:");
+                else if (userName.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again.");
+                else if (!server.isAvailable(userName))
+                    sendMessage("This username is already taken. Please try a different username:");
                 else {
                     user.setName(userName);
                     break;
@@ -113,6 +127,7 @@ public class UserThread extends Thread {
             disconnect(ex);
         }
     }
+
     /**
      * The user is asked to enter the date where he last dated.
      * If the date is not valid he has to do it again.
@@ -135,37 +150,25 @@ public class UserThread extends Thread {
     }
 
     /**
-     * Turns a String into a date or null
-     * @param date as String
-     * @return null if String is not a valid date or the date
-     */
-    public static LocalDate turnIntoDate (String date){
-        try {
-            return LocalDate.parse(date, formatter);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
-    }
-
-    /**
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
-        sendMessage("Thank you! Welcome " + user.getName() + "!");
-        sendMessage("Type: \"bye\" to leave the room.");
-        sendMessage("      \"#help\" to list all commands.");
-        sendMessage("      \"#create\" to play the LoveLetter game.");
-        sendMessage("      \"@'name'\" to send a direct message.");
-        server.communicate(user.getName() + " joined the room.", user);
+        sendMessage("Thank you! Welcome " + user + "!");
+        sendMessage("""
+                Type: 'bye' to leave the room.\s
+                      '@<name>' to send a direct message.\s
+                      '#help' to list all commands.\s
+                      '#create' to play the LoveLetter game.""");
+        server.communicate(user + " joined the room.", user);
     }
 
     /**
      * The connection is closed and other users get notified that the user left.
      */
     private void disconnect() {
-        sendMessage("Bye " + user.getName());
+        sendMessage("Bye " + user);
         server.removeUser(user);
-        server.communicate(user.getName() + " left the room.", user);
+        server.communicate(user + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
@@ -184,7 +187,7 @@ public class UserThread extends Thread {
         exit = true;
         System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(user);
-        server.communicate(user.getName() + " left the room.", user);
+        server.communicate(user + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
