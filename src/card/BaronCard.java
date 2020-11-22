@@ -3,8 +3,6 @@ package card;
 import game.Player;
 
 public class BaronCard extends Card {
-    private Player targetPlayer = null;
-
     public BaronCard(String nameOfCard, int cardValue){
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
@@ -51,18 +49,6 @@ public class BaronCard extends Card {
             controller.communicate(targetPlayer + " has been eliminated.", playerPlayingCard);
         } else {
             playerPlayingCard.message("Both the players have same card value.");
-        }
-    }
-
-    /**
-     * reads the input of player and sets the matching player as target player.
-     */
-    void getTargetPlayer(){
-        String targetPlayerName = round.readResponse();
-        for (Player player : availablePlayers) {
-            if(player.getName().equals(targetPlayerName)){
-                targetPlayer = player;
-            }
         }
     }
 }

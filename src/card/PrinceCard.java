@@ -3,8 +3,6 @@ package card;
 import game.Player;
 
 public class PrinceCard extends Card {
-    private Player targetPlayer = null;
-
     public PrinceCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
@@ -57,18 +55,6 @@ public class PrinceCard extends Card {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded()) {             // must not be guarded and discarding own card is allowed
                 availablePlayers.add(player);
-            }
-        }
-    }
-
-    /**
-     * reads the input of player and reads the input of player and sets the matching player as target player.
-     */
-    void getTargetPlayer(){
-        String targetPlayerName = round.readResponse();
-        for (Player player : availablePlayers) {
-            if(player.getName().equals(targetPlayerName)){
-                targetPlayer = player;
             }
         }
     }
