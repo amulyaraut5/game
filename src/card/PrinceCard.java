@@ -4,7 +4,6 @@ import game.Player;
 
 public class PrinceCard extends Card {
     private Player targetPlayer = null;
-    private String targetPlayerName = "";
 
     public PrinceCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
@@ -70,7 +69,7 @@ public class PrinceCard extends Card {
      * @return targetPlayer the selected player
      */
     Player getTargetPlayer(){
-        targetPlayerName = gameboard.readResponse();
+        String targetPlayerName = gameboard.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;

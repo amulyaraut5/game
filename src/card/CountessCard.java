@@ -19,8 +19,6 @@ public class CountessCard extends Card {
         return cardValue;
     }
 
-
-
     /**
      * Notifies all players that the countess has been discarded.
      * The Countess takes effect while she is in the hand, which is already handled in Round class.
@@ -38,6 +36,4 @@ public class CountessCard extends Card {
             player.message(playerPlayingCard + " has discarded the Countess");
         }
     }
-
-
 }
