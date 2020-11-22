@@ -191,7 +191,7 @@ public class Round {
 
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
-        //currentPlayer.setPlayedHandmaid(false);
+        currentPlayer.setGuarded(false);
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
         if (first == "Countess" &&
