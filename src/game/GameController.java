@@ -19,7 +19,7 @@ public class GameController {
                 #join:   join the game\s
                 #start:  starts the game\s
                 #score:  look at current scores\s
-                #choose: if you have to choose a card or another player\s""";
+                #choose 'card/player': if you have to choose a card or another player\s""";
     public GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;
@@ -45,7 +45,7 @@ public class GameController {
             case "#join" -> join(user);
             case "#start" -> start(user);
             case "#help" -> user.message(COMMANDS);
-            case "#score" -> gameBoard.getScorePlayer();
+            case "#score" -> gameBoard.getScorePlayer(user);
             case "#choose" -> {
                 message = message.substring(message.indexOf(" ") + 1);
                 if (message.contains("#choose")) {
@@ -138,6 +138,7 @@ public class GameController {
         server.communicateAll(message);
     }
 
-    public void communicate(String score) { //TODO
+    public void communicate(String message, User user) {
+        server.communicate(message, user);
     }
 }
