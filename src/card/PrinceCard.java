@@ -40,20 +40,17 @@ public class PrinceCard extends Card {
             round.kickPlayer(targetPlayer);
             //Display message to all the players
             controller.communicateAll(targetPlayer + " has discarded a princess because of " + playerPlayingCard + "!" +
-                            "\nThe player is now out of the game!" +
-                            " \n*shakes fist angrily");
-            } else {
+                    "\nThe player is now out of the game!" +
+                    " \n*shakes fist angrily");
+        } else {
             //targetPlayer needs to draw a card from the deck
-                Card currentCard = targetPlayer.getCard();
-                targetPlayer.getPlayedCards().add(currentCard);
-                targetPlayer.setCurrentCard(round.pop());
-            }
+            Card currentCard = targetPlayer.getCard();
+            targetPlayer.getPlayedCards().add(currentCard);
+            targetPlayer.setCurrentCard(round.pop());
+        }
     }
 
     @Override
-    /**
-     * adds all players that are not guarded to the list availablePlayers
-     */
     void setAvailablePlayers() {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded()) {  // must not be guarded and discarding own card is allowed
@@ -61,4 +58,5 @@ public class PrinceCard extends Card {
             }
         }
     }
+
 }

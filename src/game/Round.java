@@ -56,7 +56,6 @@ public class Round {
             currentPlayer.message("You chose " + playedCard.getCardName() + "!");
             handleTurn(playedCard);
         }
-        //todo player needs to be reset at the end of a round
 
         gameBoard.deliverMessage("Round ended.", this.currentPlayer);
     }
@@ -83,13 +82,13 @@ public class Round {
      * @param message response of the player
      * @param sender  User who replied
      */
-    public synchronized void writeResponse(String message, User sender) {
+    public  void writeResponse(String message, User sender) {
         if (User.isSameUser(sender, currentPlayer)) {
             if (userResponse == null) {
                 userResponse = message;
                 this.sender = sender;
             } else {
-                sender.message("You were to fast. The message has not yet been read. Please try again:");
+                sender.message("You were too fast. The message has not yet been read. Please try again:");
             }
         } else {
             sender.message("It's not your turn, " + sender + "!");

@@ -75,6 +75,9 @@ public class GameBoard extends Thread {
             activeRound = new Round(firstPlayer, deck, playerList, this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
+            for (Player resetPlayers : playerList){
+                resetPlayers.resetRound();
+            }
             for (Player player : winnerList) {
                 player.increaseNumOfTokens();
             }
@@ -86,6 +89,7 @@ public class GameBoard extends Thread {
         }
         gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #create to create a new game.");
+        gameController.reset();
     }
 
     /**
@@ -180,6 +184,10 @@ public class GameBoard extends Thread {
 
     public void deliverMessage(String message, Player player) {
         gameController.communicate(message, player);
+    }
+
+    public void deliverMessageAll(String message) {
+        gameController.communicateAll(message);
     }
 }
 

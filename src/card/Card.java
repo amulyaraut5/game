@@ -1,8 +1,10 @@
 package card;
 
+import game.GameBoard;
 import game.GameController;
 import game.Player;
 import game.Round;
+import server.User;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,7 @@ public abstract class Card {
 
     abstract public void handleCard(Player playerPlayingCard);
 
+
     /**
      * Adds all not guarded players to the availablePlayers list, except current player
      */
@@ -46,6 +49,7 @@ public abstract class Card {
     /**
      * reads the input of player and reads the input of player and sets the matching player as target player.
      */
+
     void getTargetPlayer() {
         String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
