@@ -169,7 +169,7 @@ public class Round {
         Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
-        currentPlayer.message("You have to choose which card you want to play.");
+        currentPlayer.message("You have to choose which card you want to keep.");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ".");
         gameBoard.deliverMessage("It´s " + currentPlayer + " turn", currentPlayer);
         String message = readResponse();
@@ -184,19 +184,18 @@ public class Round {
         }
         if (message == "1") {
             card = currentPlayer.getCard();
-            if (mustCountess && (card.getCardName() != "Countess")) {
-                currentPlayer.message("You have to play the Countess. Please try again!");
-                return card;
-            }
+            //if (mustCountess && (card.getCardName() != "Countess")) {
+            //    currentPlayer.message("You have to play the Countess. Please try again!");
+            //    return null;
+            //}
             currentPlayer.setCurrentCard(secondCard);
-            //this.currentPlayer.setCurrentCard(secondCard);
         }
         if (message == "2") {
             card = secondCard;
-            if (mustCountess && (card.getCardName() != "Countess")) {
-                currentPlayer.message("You have to play the Countess. Please try again!");
-                return card;
-            }
+            //if (mustCountess && (card.getCardName() != "Countess")) {
+            //    currentPlayer.message("You have to play the Countess. Please try again!");
+            //    return null;
+            //}
         }
 
         if (message != "1" && message != "2") {
