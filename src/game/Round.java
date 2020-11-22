@@ -44,9 +44,9 @@ public class Round {
         }
         while (!isRoundFinished()) {
             Card playedCard = null;
-            currentPlayer.message("It's your turn, " + currentPlayer.getName()+"!");
+            currentPlayer.message("It's your turn, " + currentPlayer + "!");
             playedCard = chooseCard();
-            while(playedCard == null){
+            while (playedCard == null) {
                 playedCard = chooseCard();
             }
             currentPlayer.message("You have chosen " + playedCard.getCardName());
@@ -80,13 +80,13 @@ public class Round {
     public synchronized void writeResponse(String message, User sender) {
         String cards = "baron countess guard handmaid king priest prince princess";
         String names = "";
-        for (Player player : activePlayers) names += player.getName();
+        for (Player player : activePlayers) names += player;
         //TODO proof if message is coming from the current user
         if (userResponse == null) {
             userResponse = message;
             this.sender = sender;
         } else {
-            sender.message("It's not your turn, " + sender.getName() + "!");
+            sender.message("It's not your turn, " + sender + "!");
         }
         if (message.equals("1") || message.equals("2")) {
             //
@@ -109,7 +109,7 @@ public class Round {
         String message;
         while (userResponse == null && !gameBoard.isInterrupted()) {
             try {
-                gameBoard.sleep(1000);//TODO 50 millis
+                gameBoard.sleep(50);
             } catch (InterruptedException e) {
             }
         }
@@ -171,27 +171,27 @@ public class Round {
         String second = secondCard.getCardName();
         currentPlayer.message("You have to choose which card you want to keep.");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ".");
-        gameBoard.deliverMessage("It´s "+currentPlayer.getName() + " turn", currentPlayer);
+        gameBoard.deliverMessage("It´s " + currentPlayer + " turn", currentPlayer);
         String message = readResponse();
-        System.out.println("Response from " + sender.getName() + ". " + message);
+        System.out.println("Response from " + sender + ". " + message);
         //currentPlayer.message("You have chosen " + message);
         //TODO change currentCard of active Player
         //Are sender and currentPlayer comparable?
         boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
-        if (sender.getName() != this.currentPlayer.getName()) {
+        if (User.isSameUser(sender, currentPlayer)) {//TODO move to write Response
             card = null;
-            sender.message("Please wait your turn.");
+            sender.message("Please wait for your turn!");
         }
-        if (message=="1"){
-            card=currentPlayer.getCard();
-            if (mustCountess && (card.getCardName() != "Countess")){
+        if (message == "1") {
+            card = currentPlayer.getCard();
+            if (mustCountess && (card.getCardName() != "Countess")) {
                 currentPlayer.message("You have to play the Countess. Please try again!");
                 return null;
             }
             currentPlayer.setCurrentCard(secondCard);
             //this.currentPlayer.setCurrentCard(secondCard);
         }
-        if (message=="2") {
+        if (message == "2") {
             card = secondCard;
             if (mustCountess && (card.getCardName() != "Countess")) {
                 currentPlayer.message("You have to play the Countess. Please try again!");
@@ -199,29 +199,28 @@ public class Round {
             }
         }
 
-        if (message != "1" && message != "2"){
+        if (message != "1" && message != "2") {
             currentPlayer.message("Please choose card 1 or 2.");
         }
-
-
 
 
         return card;
 
     }
 
-    public boolean checkCountess(Card card1, Card card2){
+    public boolean checkCountess(Card card1, Card card2) {
         if (first == "Countess" &&
                 (second == "King" || second == "Prince")) {
             return true;
 
         }
         if (second == "Countess" &&
-                (first == "King" || first == "Prince")){
+                (first == "King" || first == "Prince")) {
             return true;
         }
         return false;
     }
+
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
         currentPlayer.setGuarded(false);
@@ -306,7 +305,6 @@ public class Round {
 
     /**
      * this method changes the currentPlayer attribute(which determines which player's turn it is).
-
      */
     public void nextPlayer() {
         int temp = this.activePlayers.indexOf(this.currentPlayer);

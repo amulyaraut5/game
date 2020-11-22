@@ -1,7 +1,6 @@
 package server;
 
 import game.GameController;
-import game.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,15 +15,16 @@ public class ChatServer {
     public ChatServer(int port) {
         this.port = port;
     }
-    public ArrayList<User> getUsers(){
-        return users;
-    }
 
     public static void main(String[] args) {
         int port = 4444;
 
         ChatServer server = new ChatServer(port);
         server.start();
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
     /**
@@ -79,14 +79,15 @@ public class ChatServer {
         String userName = (message.split(" ", 2)[0]);
         String destinationUser = userName.substring(1);
         String messageUser = message.split(" ", 2)[1];
+        //TODO wenn keine Nachricht eingegeben wird (nur "@name"),
+        // tritt hier eine ArrayIndexOutOfBoundsException auf.)
         for (User user : users) {
             if (user.getName().equals(destinationUser)) {
-                user.message(sender.getName() + " directly to you: " + messageUser);
+                user.message("[" + sender + " (direct)]: " + messageUser);
                 return true;
             }
         }
         return false;
-
     }
 
     public void communicateGame(String message, User sender) {

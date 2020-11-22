@@ -43,7 +43,7 @@ public class GameBoard extends Thread {
     public void getScorePlayer(User user) {
         String score = "";
         for (Player pl : playerList) {
-            score += pl.getName() + ": " + pl.getTokenCount() + " \n";
+            score += pl + ": " + pl.getTokenCount() + " \n";
         }
         user.message(score);
     }
@@ -53,9 +53,8 @@ public class GameBoard extends Thread {
      * @return if user has already joined
      */
     public boolean alreadyJoined(User user) {
-        String username = user.getName();
         for (Player pl : playerList) {
-            if (pl.getName() == username) return true;
+            if (User.isSameUser(pl, user)) return true;
         }
         return false;
     }
@@ -86,7 +85,7 @@ public class GameBoard extends Thread {
             }
         }
         gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
-                "\nType #create to create a new game." );
+                "\nType #create to create a new game.");
     }
 
     /**
@@ -105,19 +104,20 @@ public class GameBoard extends Thread {
 
     }
 
-    public ArrayList<Player> playerOrder(){
+    public ArrayList<Player> playerOrder() {
         Player firstplayer = compareDates(playerList);
 
         orderedPlayers.add(firstplayer);
         int indexFirstPlayer = playerList.indexOf(firstplayer);
-        for ( int i = indexFirstPlayer++; i<playerList.size(); i++){
+        for (int i = indexFirstPlayer++; i < playerList.size(); i++) {
             orderedPlayers.add(playerList.get(i));
         }
-        for (int i = 0; i < indexFirstPlayer; i++){
+        for (int i = 0; i < indexFirstPlayer; i++) {
             orderedPlayers.add(playerList.get(i));
         }
         return orderedPlayers;
     }
+
     /**
      * It creates a Player and adds it to the list of joined player
      *
