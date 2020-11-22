@@ -22,7 +22,7 @@ public class PrincessCard extends Card {
 
     /**
      * If a player discard this card, then the player will be out of the round.
-     * @param playerPlayingCard
+     * @param playerPlayingCard the current player
      */
     @Override
     public void handleCard(Player playerPlayingCard) {

@@ -26,7 +26,7 @@ public class GuardCard extends Card{
      * By calling this method player designates another player and names a type of card. If that players has that card
      * then the player will be out of the round.
      * However a player cannot name GUARD card.
-     * @param playerPlayingCard
+     * @param playerPlayingCard the current player
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
@@ -51,7 +51,7 @@ public class GuardCard extends Card{
         String guessCardName = round.readResponse();
 
 
-        if (guessCardName == this.nameOfCard) {
+        if (guessCardName.equals(this.nameOfCard)) {
             playerPlayingCard.message("You cannot choose the guard card, try again.");
             getTargetPlayer();
 

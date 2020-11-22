@@ -22,7 +22,7 @@ public class HandmaidCard extends Card {
 
     /**
      * By calling this method Player cannot be affected by the other players card until the next turn.
-     * @param playerPlayingCard
+     * @param playerPlayingCard the current player
      */
     @Override
     public void handleCard(Player playerPlayingCard) {

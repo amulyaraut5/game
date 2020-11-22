@@ -23,7 +23,7 @@ public class PrinceCard extends Card {
     /**
      * By calling this method player can choose any player including themselves to discard their card
      * and draw a new card. If the discarded card is princess the player will be eliminated from the round.
-     * @param playerPlayingCard
+     * @param playerPlayingCard the current player
      */
     @Override
     public void handleCard(Player playerPlayingCard) {

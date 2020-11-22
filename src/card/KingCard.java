@@ -4,7 +4,6 @@ import game.Player;
 
 public class KingCard extends Card {
     private Player targetPlayer = null;
-    private String targetPlayerName = "";
 
     public KingCard(String nameOfCard, int cardValue){
         this.nameOfCard = nameOfCard;
@@ -24,7 +23,7 @@ public class KingCard extends Card {
 
     /**
      * By calling this method the current player trades card with another player
-     * @param playerPlayingCard
+     * @param playerPlayingCard the current player
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
@@ -51,17 +50,15 @@ public class KingCard extends Card {
     }
 
     /**
-     * reads the input of player and returns the selected player to which the card effect should be applied.
-     * @return targetPlayer the selected player
+     * reads the input of player and sets the matching player as target player.
      */
-    Player getTargetPlayer(){
-        targetPlayerName = round.readResponse();
+    void getTargetPlayer(){
+        String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;
             }
         }
-        return targetPlayer;
     }
 
 }
