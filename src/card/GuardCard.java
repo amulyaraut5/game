@@ -5,7 +5,6 @@ import game.Round;
 
 public class GuardCard extends Card{
     public GuardCard(String nameOfCard, int cardValue) {
-
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
     }

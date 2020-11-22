@@ -22,7 +22,6 @@ public class Round {
 
     private volatile String userResponse;
     private volatile User sender;
-    private boolean cardPoped = false;
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
         //remove() function cannot be called in removeDeckCard
@@ -58,6 +57,7 @@ public class Round {
             handleTurn(playedCard);
         }
         //todo player needs to be reset at the end of a round
+
         gameBoard.deliverMessage("Round ended.", this.currentPlayer);
     }
 
