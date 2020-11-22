@@ -64,8 +64,8 @@ public class Round {
     public synchronized void handleTurn(Card card) {
         //call handlecard method, change currentPlayer(indicates who's turn it is) afterwards
         card.handleCard(this.currentPlayer);
+        nextPlayer();
 
-        this.currentPlayer = nextPlayer();
     }
 
     /**
@@ -306,18 +306,15 @@ public class Round {
 
     /**
      * this method changes the currentPlayer attribute(which determines which player's turn it is).
-     *
-     * @return Player who's turn it is after the current one
+
      */
-    public Player nextPlayer() {
+    public void nextPlayer() {
         int temp = this.activePlayers.indexOf(this.currentPlayer);
-        Player next;
         if (temp < (activePlayers.size() - 1)) {
-            next = this.activePlayers.get(temp + 1);
+            currentPlayer = activePlayers.get(temp + 1);
         } else {
-            next = this.activePlayers.get(0);
+            currentPlayer = activePlayers.get(0);
         }
-        return next;
     }
 
     /**

@@ -27,7 +27,7 @@ public class HandmaidCard extends Card {
     @Override
     public void handleCard(Player playerPlayingCard) {
         playerPlayingCard.setGuarded(true);
+        playerPlayingCard.message("You are now guarded for this round.");
+        controller.communicate(playerPlayingCard + "is now guarded.", playerPlayingCard);
     }
-
-
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GameBoard extends Thread {
     private GameController gameController;
     private Round activeRound;
-
+    private ArrayList<Player> orderedPlayers = new ArrayList<>();
     private ArrayList<Player> playerList = new ArrayList<>();
     private ArrayList<Player> winnerList = new ArrayList<>();
 
@@ -85,9 +85,8 @@ public class GameBoard extends Thread {
                 firstPlayer = compareDates(winnerList);
             }
         }
-        gameWinner = firstPlayer;
-        //TODO wouldn't then the gameWinner be the last roundWinner?
-        // maybe set the gameWinner in gameWon() method
+        gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
+                "\nType #create to create a new game." );
     }
 
     /**
@@ -106,6 +105,19 @@ public class GameBoard extends Thread {
 
     }
 
+    public ArrayList<Player> playerOrder(){
+        Player firstplayer = compareDates(playerList);
+
+        orderedPlayers.add(firstplayer);
+        int indexFirstPlayer = playerList.indexOf(firstplayer);
+        for ( int i = indexFirstPlayer++; i<playerList.size(); i++){
+            orderedPlayers.add(playerList.get(i));
+        }
+        for (int i = 0; i < indexFirstPlayer; i++){
+            orderedPlayers.add(playerList.get(i));
+        }
+        return orderedPlayers;
+    }
     /**
      * It creates a Player and adds it to the list of joined player
      *
@@ -148,15 +160,15 @@ public class GameBoard extends Thread {
             //2 player -> 7 token
             if ((playerList.size() == 2) && (player.getTokenCount() >= 7)) {
                 win = true;
-                gameController.reset();
+                gameWinner = player;
             } //3 player -> 5 token
             else if ((playerList.size() == 3) && (player.getTokenCount() >= 5)) {
                 win = true;
-                gameController.reset();
+                gameWinner = player;
             }  //4 player -> 4 token
             else if ((playerList.size() == 4) && (player.getTokenCount() >= 4)) {
                 win = true;
-                gameController.reset();
+                gameWinner = player;
             }
         }
         return win;

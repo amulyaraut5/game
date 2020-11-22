@@ -43,19 +43,15 @@ public class BaronCard extends Card {
 
         if (targetCardValue > playerCardValue) {
             round.kickPlayer(playerPlayingCard);
-            //TODO Display message to all the players
-            for (Player player : availablePlayers) {
-                player.message(playerPlayingCard + " has been eliminated.");
-            }
+            //Display message to all the players
+            controller.communicate(targetPlayer + " has been eliminated.", playerPlayingCard);
         } else if (targetCardValue < playerCardValue) {
             round.kickPlayer(targetPlayer);
-            //TODO Display message to all the players
-            for (Player player : availablePlayers) {
-                player.message(targetPlayer + " has been eliminated.");
-            }
+            //Display message to all the players
+            controller.communicate(targetPlayer + " has been eliminated.", playerPlayingCard);
         } else {
             playerPlayingCard.message("Both the players have same card value.");
-            }
+        }
     }
 
     /**
