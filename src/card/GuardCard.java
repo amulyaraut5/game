@@ -1,7 +1,6 @@
 package card;
 
 import game.Player;
-import game.Round;
 
 public class GuardCard extends Card{
     public GuardCard(String nameOfCard, int cardValue) {

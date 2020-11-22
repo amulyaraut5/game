@@ -35,14 +35,16 @@ public class PrinceCard extends Card {
         //Read the input of the user and return the target player
         getTargetPlayer();
 
-        //checks if card of selected player is princess  and kick the player out of the round.
+        //checks if card of selected player is princess and kick the player out of the round.
         if (targetPlayer.getCard().getCardName().equals("Princess")) {
             round.kickPlayer(targetPlayer);
             //Display message to all the players
             controller.communicateAll(targetPlayer + " has discarded a princess because of " + playerPlayingCard + "!" +
                             "\nThe player is now out of the game!" +
                             " \n*shakes fist angrily");
-            } else {
+            } else if (round.getCardDeck().size() <= 0) {
+                Card currentCard = round.getFirstCardRemoved();
+             }else{
             //targetPlayer needs to draw a card from the deck
                 Card currentCard = targetPlayer.getCard();
                 targetPlayer.getPlayedCards().add(currentCard);
