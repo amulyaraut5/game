@@ -57,7 +57,7 @@ public class Round {
             handleTurn(playedCard);
         }
 
-        gameBoard.deliverMessage("Round ended.", this.currentPlayer);
+        gameBoard.deliverMessageAll("Round ended.");
     }
 
     /**
