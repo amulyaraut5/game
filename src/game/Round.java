@@ -89,7 +89,7 @@ public class Round {
                 userResponse = message;
                 this.sender = sender;
             } else {
-                sender.message("You were to fast. The message has not yet been read. Please try again:");
+                sender.message("You were too fast. The message has not yet been read. Please try again:");
             }
         } else {
             sender.message("It's not your turn, " + sender + "!");
