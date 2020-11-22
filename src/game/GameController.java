@@ -138,4 +138,7 @@ public class GameController {
     public void sendMessage(String message) {
         server.communicateAll(message);
     }
+
+    public void communicate(String score) { //TODO
+    }
 }
