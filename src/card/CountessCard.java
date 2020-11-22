@@ -26,11 +26,6 @@ public class CountessCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        for (Player player : round.getActivePlayers()) {
-            if(player != playerPlayingCard) {
-                availablePlayers.add(player);
-            }
-        }
         controller.communicate(playerPlayingCard + " has discarded the Countess", playerPlayingCard);
     }
 }

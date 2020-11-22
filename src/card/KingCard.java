@@ -25,13 +25,7 @@ public class KingCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-
-        for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded() && player != playerPlayingCard) {
-                availablePlayers.add(player);
-
-            }
-        }
+        setAvailablePlayers();
 
         if (availablePlayers.size() <= 0) {
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");

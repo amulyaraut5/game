@@ -28,12 +28,7 @@ public class GuardCard extends Card{
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-
-        for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded() && player != playerPlayingCard) {
-                availablePlayers.add(player);
-            }
-        }
+        setAvailablePlayers();
 
         if(availablePlayers.size() <= 0){
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
@@ -49,7 +44,6 @@ public class GuardCard extends Card{
             playerPlayingCard.message("What card do you think the player has?");
             // Read the input of the player
             String guessCardName = round.readResponse();
-
 
             if (guessCardName.equals(this.nameOfCard)) {
                 playerPlayingCard.message("You cannot choose the guard card, try again.");

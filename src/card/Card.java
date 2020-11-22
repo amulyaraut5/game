@@ -39,7 +39,6 @@ public abstract class Card {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded() && player != playerPlayingCard) {
                 availablePlayers.add(player);
-
             }
         }
     }
