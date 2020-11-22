@@ -80,9 +80,6 @@ public class ChatServer {
         String destinationUser = userName.substring(1);
         String messageUser = message.split(" ", 2)[1];
         if (messageUser.length() == 0) return false;
-        //TODO wenn keine Nachricht eingegeben wird (nur "@name"),
-        // tritt hier eine ArrayIndexOutOfBoundsException auf.)
-        sender.message(messageUser);
         for (User user : users) {
             if (user.getName().equals(destinationUser)) {
                 user.message("[" + sender + " (direct)]: " + messageUser);

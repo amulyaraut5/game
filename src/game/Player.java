@@ -47,8 +47,8 @@ public class Player extends User {
      *
      * @return Number of tokens after the increase.
      */
-    public int increaseNumOfTokens() {
-        return ++numOfTokens;
+    public void increaseNumOfTokens() {
+        numOfTokens+=1;
     }
 
     /**
