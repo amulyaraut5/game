@@ -115,7 +115,7 @@ public class GameController {
             user.message("You need at least one more player to start the game.");
         } else {
             runningGame = true;
-            server.communicate("The game has started!", user);
+            server.communicateAll("The game has started!");
             gameBoard.run();
         }
     }
