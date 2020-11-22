@@ -3,7 +3,7 @@ package card;
 import game.Player;
 import game.Round;
 
-public class GuardCard extends Card{
+public class GuardCard extends Card {
     public GuardCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
@@ -24,13 +24,14 @@ public class GuardCard extends Card{
      * By calling this method player designates another player and names a type of card. If that players has that card
      * then the player will be out of the round.
      * However a player cannot name GUARD card.
+     *
      * @param playerPlayingCard the current player
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
         setAvailablePlayers();
 
-        if(availablePlayers.size() <= 0){
+        if (availablePlayers.size() <= 0) {
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
         } else {
             // Display the player name from the availablePlayers so that the player can choose the name

@@ -64,7 +64,7 @@ public class Round {
      *
      * @param card Card that the player chose to play.
      */
-    public synchronized void handleTurn(Card card) {
+    public void handleTurn(Card card) {
         card.setRound(this);
         card.handleCard(this.currentPlayer);
         nextPlayer();
@@ -74,14 +74,16 @@ public class Round {
      * Gives Messages to the Game-Thread to read.
      * Method should be called if UserThreads get messages from clients,
      * which have to be passed to the GameBoard-Thread.
-     * If an incoming response is set, no other responses can be set,
-     * until the response is read by the GameBoard-Thread.
+     * <p>
+     * The response will not be accepted if the prior response has not yet been read.
+     * It is also checked if the response was sent from the currentPlayer. Otherwise it is not accepted.
+     * <p>
      * To read the response in the GameBoard-Thread, readResponse() should be called.
      *
      * @param message response of the player
      * @param sender  User who replied
      */
-    public  void writeResponse(String message, User sender) {
+    public synchronized void writeResponse(String message, User sender) {
         if (User.isSameUser(sender, currentPlayer)) {
             if (userResponse == null) {
                 userResponse = message;
@@ -95,24 +97,26 @@ public class Round {
     }
 
     /**
-     * The methods reads the response, which is send from a player.
-     * Warning: The method waits and ends, if there is a feedback from the user.
-     * if no client responds, the method does not return!
+     * The method reads the response, which is send from a player.
+     * <p>
+     * The method waits and returns, if there is a feedback from the user.
+     * Warning: If no client responds, the method does not return!
+     * <p>
      * The method is interruptible
      *
      * @return response message of the player
      */
     public String readResponse() {
-        String message;
+        String response;
         while (userResponse == null && !gameBoard.isInterrupted()) {
             try {
                 gameBoard.sleep(50);
             } catch (InterruptedException e) {
             }
         }
-        message = userResponse;
+        response = userResponse;
         userResponse = null;
-        return message;
+        return response;
     }
 
 
@@ -179,7 +183,6 @@ public class Round {
         }
         if (message.equals("1")) {
             card = currentPlayer.getCard();
-            System.out.println(card.getCardName());
             //if (mustCountess && (card.getCardName() != "Countess")) {
             //    currentPlayer.message("You have to play the Countess. Please try again!");
             //    return null;
@@ -187,7 +190,6 @@ public class Round {
             currentPlayer.setCurrentCard(secondCard);
         } else if (message.equals("2")) {
             card = secondCard;
-            System.out.println(card.getCardName());
             //if (mustCountess && (card.getCardName() != "Countess")) {
             //    currentPlayer.message("You have to play the Countess. Please try again!");
             //    return null;
