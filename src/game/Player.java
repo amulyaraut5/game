@@ -11,11 +11,13 @@ import java.util.ArrayList;
  * Player extends from user, thus it is possible to call all methods from user.
  * <p>
  * To send the player a message, use the message(String) method.
+ *
+ * @author simon
  */
 public class Player extends User {
 
     private boolean guarded = false;
-    private int numOfTokens;
+    private int numOfTokens = 0;
     private Card currentCard;
     private ArrayList<Card> playedCards = new ArrayList<>();
 
@@ -29,7 +31,6 @@ public class Player extends User {
         setThread(user.getThread());
         setName(user.getName());
         setLastDate(user.getLastDate());
-        numOfTokens = 0;
     }
 
     /**
@@ -51,7 +52,7 @@ public class Player extends User {
     }
 
     /**
-     * Getter for the current card of player
+     * Getter for the current card of player.
      *
      * @return current card
      */
@@ -60,9 +61,9 @@ public class Player extends User {
     }
 
     /**
-     * Setter for the current card of player
+     * Setter for the current card of player.
      *
-     * @param currentCard new current card
+     * @param currentCard new card
      */
     public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
@@ -76,11 +77,17 @@ public class Player extends User {
         return sum;
     }
 
+    /**
+     * Method clears the list of recently played cards in a round.
+     */
     public void resetPlayedCards() {
         playedCards.clear();
     }
 
-    //Is needed in Prince
+    /**
+     *
+     * @return
+     */
     public ArrayList<Card> getPlayedCards() {
         return playedCards;
     }

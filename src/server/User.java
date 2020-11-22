@@ -3,7 +3,7 @@ package server;
 import java.time.LocalDate;
 
 /**
- *
+ * @author simon
  */
 public class User {
     private volatile UserThread thread;
@@ -18,8 +18,8 @@ public class User {
      * (i.e. if they have the same UserThread and therefore are connected to the same client.)
      * For example if Player a is User b.
      *
-     * @param a
-     * @param b
+     * @param a first user
+     * @param b second user
      * @return
      */
     public static boolean isSameUser(User a, User b) {

@@ -171,9 +171,9 @@ public class Round {
         Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
-        currentPlayer.message("You have to choose which card you want to keep.");
-        currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ".");
-        gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn", currentPlayer);
+        currentPlayer.message("Choose the card you want to play.");
+        currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ":");
+        gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
         String message = readResponse();
         System.out.println("Response from " + sender + ". " + message);
         //currentPlayer.message("You have chosen " + message);

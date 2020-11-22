@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- *
+ * @author simon
  */
 public class ReaderThread extends Thread {
     private final ChatClient client;
