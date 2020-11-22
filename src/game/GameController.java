@@ -86,7 +86,8 @@ public class GameController {
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             user.message("You've joined the game. If you want to start already type '#start'.");
-            server.communicate("(" + gameBoard.getPlayerCount() + "/4) " + user.getName() + " joined the game!\nIf you want to start already type '#start'.", user);
+            server.communicate("(" + gameBoard.getPlayerCount() + "/4) " + user.getName() +
+                    " joined the game!\nPlayers can start the game by typing '#start'", user);
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start already type '#start'.");
         } else if (!createdGame) {
