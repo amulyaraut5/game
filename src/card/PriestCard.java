@@ -3,7 +3,6 @@ package card;
 import game.Player;
 
 public class PriestCard extends Card{
-    private Player targetPlayer = null;
     public PriestCard(String nameOfCard, int cardValue){
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
@@ -41,17 +40,5 @@ public class PriestCard extends Card{
         // Get the card of targetPlayer and display this card only to the current player
         String lookAtCard = targetPlayer.getCard().getCardName();
         playerPlayingCard.message(targetPlayer + "has the card: " + lookAtCard);
-    }
-
-    /**
-     * reads the input of player and sets the matching player as target player.
-     */
-    void getTargetPlayer(){
-        String targetPlayerName = round.readResponse();
-        for (Player player : availablePlayers) {
-            if(player.getName().equals(targetPlayerName)){
-                targetPlayer = player;
-            }
-        }
     }
 }

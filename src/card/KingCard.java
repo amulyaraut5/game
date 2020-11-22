@@ -3,8 +3,6 @@ package card;
 import game.Player;
 
 public class KingCard extends Card {
-    private Player targetPlayer = null;
-
     public KingCard(String nameOfCard, int cardValue){
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
@@ -47,17 +45,4 @@ public class KingCard extends Card {
         playerPlayingCard.setCurrentCard(targetCard);
         //TODO message to the players
     }
-
-    /**
-     * reads the input of player and sets the matching player as target player.
-     */
-    void getTargetPlayer(){
-        String targetPlayerName = round.readResponse();
-        for (Player player : availablePlayers) {
-            if(player.getName().equals(targetPlayerName)){
-                targetPlayer = player;
-            }
-        }
-    }
-
 }

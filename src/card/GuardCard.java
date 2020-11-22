@@ -3,8 +3,6 @@ package card;
 import game.Player;
 
 public class GuardCard extends Card{
-    private Player targetPlayer = null;
-
     public GuardCard(String nameOfCard, int cardValue) {
 
         this.nameOfCard = nameOfCard;
@@ -63,19 +61,6 @@ public class GuardCard extends Card{
             controller.communicateAll(targetPlayer + "is eliminated from the round.");
         }else {
             playerPlayingCard.message("Your guess was Incorrect.");
-        }
-
-    }
-
-    /**
-     * reads the input of player and sets the matching player as target player.
-     */
-    void getTargetPlayer(){
-        String targetPlayerName = round.readResponse();
-        for (Player player : availablePlayers) {
-            if(player.getName().equals(targetPlayerName)){
-                targetPlayer = player;
-            }
         }
     }
 }
