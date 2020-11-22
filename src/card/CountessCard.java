@@ -31,9 +31,6 @@ public class CountessCard extends Card {
                 availablePlayers.add(player);
             }
         }
-
-        for (Player player : availablePlayers){
-            player.message(playerPlayingCard + " has discarded the Countess");
-        }
+        controller.communicate(playerPlayingCard + " has discarded the Countess", playerPlayingCard);
     }
 }

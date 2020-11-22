@@ -45,6 +45,7 @@ public class KingCard extends Card {
         Card targetCard = targetPlayer.getCard();
         targetPlayer.setCurrentCard(playerCard);
         playerPlayingCard.setCurrentCard(targetCard);
+        //TODO message to the players
     }
 
     /**
