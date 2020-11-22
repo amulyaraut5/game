@@ -113,7 +113,7 @@ public class GameController {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
-        } else if (gameBoard.getPlayerCount() > 2) {
+        } else if (gameBoard.getPlayerCount() < 2) {
             user.message("You need at least one more player to start the game.");
         } else {
             runningGame = true;
