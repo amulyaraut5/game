@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class GameBoard extends Thread {
     private GameController gameController;
     private Round activeRound;
-    private ArrayList<Player> orderedPlayers = new ArrayList<>();
     private ArrayList<Player> playerList = new ArrayList<>();
     private ArrayList<Player> winnerList = new ArrayList<>();
 
@@ -72,7 +71,7 @@ public class GameBoard extends Thread {
         ArrayList<Card> deck = createDeck();
         while (!gameWon()) {
             deliverMessageAll("Player List size:" + playerList.size());
-            activeRound = new Round(firstPlayer, deck, playerList, this);
+            activeRound = new Round(firstPlayer, deck, new ArrayList(playerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
             this.activeRound = null;
@@ -108,20 +107,6 @@ public class GameBoard extends Thread {
         }
         return player;
 
-    }
-
-    public ArrayList<Player> playerOrder() {
-        Player firstplayer = compareDates(playerList);
-
-        orderedPlayers.add(firstplayer);
-        int indexFirstPlayer = playerList.indexOf(firstplayer);
-        for (int i = indexFirstPlayer++; i < playerList.size(); i++) {
-            orderedPlayers.add(playerList.get(i));
-        }
-        for (int i = 0; i < indexFirstPlayer; i++) {
-            orderedPlayers.add(playerList.get(i));
-        }
-        return orderedPlayers;
     }
 
     /**
