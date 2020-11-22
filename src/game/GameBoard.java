@@ -85,9 +85,8 @@ public class GameBoard extends Thread {
                 firstPlayer = compareDates(winnerList);
             }
         }
-        gameWinner = firstPlayer;
-        //TODO wouldn't then the gameWinner be the last roundWinner?
-        // maybe set the gameWinner in gameWon() method
+        gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
+                "\nType #create to create a new game." );
     }
 
     /**
