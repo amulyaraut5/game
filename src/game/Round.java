@@ -166,7 +166,7 @@ public class Round {
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
         currentPlayer.message("You have to choose which card you want to keep.");
-        currentPlayer.message("Type '1' for " + first + " and '2' for " + second + ".");
+        currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ".");
         String message = readResponse();
         System.out.println("Response from " + sender.getName() + ". " + message);
         currentPlayer.message("You have chosen " + message);
