@@ -23,6 +23,7 @@ public class GameController {
                 #start:  starts the game\s
                 #score:  look at current scores\s
                 #choose: 'Card/Player': if you have to choose a card or another player\s""";
+
     public GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;

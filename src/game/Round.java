@@ -58,6 +58,7 @@ public class Round {
             handleTurn(playedCard);
         }
         //todo player needs to be reset at the end of a round
+        gameBoard.deliverMessage("Round ended.", this.currentPlayer);
     }
 
     /**
