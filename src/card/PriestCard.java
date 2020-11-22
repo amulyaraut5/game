@@ -43,7 +43,7 @@ public class PriestCard extends Card{
             // Then playerPlayingCard can look at the card of targetPlayer
             // Get the card of targetPlayer and display this card only to the current player
             String lookAtCard = targetPlayer.getCard().getCardName();
-            playerPlayingCard.message(targetPlayer + "has the card: " + lookAtCard);
+            playerPlayingCard.message(targetPlayer + " has the card: " + lookAtCard);
         }
     }
 }
