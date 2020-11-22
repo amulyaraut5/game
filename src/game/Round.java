@@ -79,22 +79,12 @@ public class Round {
      * @param sender  User who replied
      */
     public synchronized void writeResponse(String message, User sender) {
-        String cards = "baron countess guard handmaid king priest prince princess";
-        String names = "";
-        for (Player player : activePlayers) names += player;
         //TODO proof if message is coming from the current user
         if (userResponse == null) {
             userResponse = message;
             this.sender = sender;
         } else {
             sender.message("It's not your turn, " + sender + "!");
-        }
-        if (message.equals("1") || message.equals("2")) {
-            //
-        } else if (cards.contains(message)) {
-            //
-        } else if (names.contains(message)) {
-            //
         }
     }
 
