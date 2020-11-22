@@ -1,6 +1,7 @@
 package server;
 
 import game.GameController;
+import game.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,7 +16,9 @@ public class ChatServer {
     public ChatServer(int port) {
         this.port = port;
     }
-
+    public ArrayList<User> getUsers(){
+        return users;
+    }
 
     public static void main(String[] args) {
         int port = 4444;

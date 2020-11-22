@@ -166,8 +166,8 @@ public class GameBoard extends Thread {
         return activeRound;
     }
 
-    public void deliverMessage(String message, User user) {
-        gameController.communicate(message, user);
+    public void deliverMessage(String message, Player player) {
+        gameController.communicate(message, player);
     }
 }
 
