@@ -33,6 +33,8 @@ public class Round {
         this.activePlayers = activePlayers;
         this.gameBoard = gameBoard;
         removeFirstCards();
+
+        Card.setRound(this);
     }
 
     /**
@@ -182,23 +184,22 @@ public class Round {
             card = null;
             sender.message("Please wait for your turn!");
         }
-        if (message == "1") {
+        if (message.equals("1")) {
             card = currentPlayer.getCard();
+            System.out.println(card.getCardName());
             //if (mustCountess && (card.getCardName() != "Countess")) {
             //    currentPlayer.message("You have to play the Countess. Please try again!");
             //    return null;
             //}
             currentPlayer.setCurrentCard(secondCard);
-        }
-        if (message == "2") {
+        } else if (message.equals("2")) {
             card = secondCard;
+            System.out.println(card.getCardName());
             //if (mustCountess && (card.getCardName() != "Countess")) {
             //    currentPlayer.message("You have to play the Countess. Please try again!");
             //    return null;
             //}
-        }
-
-        if (message != "1" && message != "2") {
+        } else {
             currentPlayer.message("Please choose card 1 or 2.");
         }
         return card;

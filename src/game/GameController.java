@@ -1,5 +1,6 @@
 package game;
 
+import card.Card;
 import server.ChatServer;
 import server.User;
 
@@ -29,6 +30,7 @@ public class GameController {
 
     public GameController(ChatServer server) {
         this.server = server;
+        Card.setController(this);
     }
 
     /**

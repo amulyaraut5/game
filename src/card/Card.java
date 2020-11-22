@@ -1,21 +1,32 @@
 package card;
-import game.Player;
-import game.GameBoard;
-import java.util.ArrayList;
-import game.Round;
+
 import game.GameController;
+import game.Player;
+import game.Round;
+
+import java.util.ArrayList;
 
 public abstract class Card {
+    protected static Round round;
+
+    protected static GameController controller;
+
     public int cardValue;
     public String nameOfCard;
     public Player targetPlayer;
-    GameBoard gameboard;
-    Round round;
-    GameController controller;
 
-    ArrayList<Player> availablePlayers;
+    ArrayList<Player> availablePlayers = new ArrayList<>();
+
+    public static void setRound(Round round) {
+        Card.round = round;
+    }
+
+    public static void setController(GameController controller) {
+        Card.controller = controller;
+    }
 
     public abstract String getCardName();
+
     public abstract int getCardValue();
 
     abstract public void handleCard(Player playerPlayingCard);
@@ -23,10 +34,10 @@ public abstract class Card {
     /**
      * reads the input of player and reads the input of player and sets the matching player as target player.
      */
-    void getTargetPlayer(){
+    void getTargetPlayer() {
         String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
-            if(player.getName().equals(targetPlayerName)){
+            if (player.getName().equals(targetPlayerName)) {
                 targetPlayer = player;
             }
         }
