@@ -34,7 +34,7 @@ public class PriestCard extends Card{
         } else {
             // Display the player name from the availablePlayers so that the player can choose the name
             playerPlayingCard.message("Choose the player whose card you wish to look at: " + availablePlayers.toString());
-            playerPlayingCard.message("Type #Choose + name of player to choose the player");
+            playerPlayingCard.message("Type #choose + name of player to choose the player");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer as per users choice from the list of players
             getTargetPlayer();
