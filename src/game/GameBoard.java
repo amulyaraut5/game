@@ -70,7 +70,7 @@ public class GameBoard extends Thread {
         Player firstPlayer = compareDates(playerList);
         ArrayList<Card> deck = createDeck();
         while (!gameWon()) {
-            activeRound = new Round(firstPlayer, deck, new ArrayList(playerList), this);
+            activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(playerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
             this.activeRound = null;
