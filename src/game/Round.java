@@ -306,12 +306,10 @@ public class Round {
 
     /**
      * this method changes the currentPlayer attribute(which determines which player's turn it is).
-     *
-     * @return Player who's turn it is after the current one
+
      */
     public void nextPlayer() {
         int temp = this.activePlayers.indexOf(this.currentPlayer);
-        Player next;
         if (temp < (activePlayers.size() - 1)) {
             currentPlayer = activePlayers.get(temp + 1);
         } else {
