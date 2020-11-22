@@ -89,7 +89,7 @@ public class GameController {
             server.communicate("(" + gameBoard.getPlayerCount() + "/4) " + user.getName() +
                     " joined the game!\nPlayers can start the game by typing '#start'", user);
         } else if (gameBoard.alreadyJoined(user)) {
-            user.message("You've already joined the game. If you want to start already type '#start'.");
+            user.message("You've already joined the game. If you want to start, type '#start'.");
         } else if (!createdGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
@@ -126,7 +126,7 @@ public class GameController {
         } else {
             runningGame = true;
             server.communicateAll("The game has started! Please wait until it's your turn.");
-            gameBoard.run();
+            gameBoard.start();
         }
     }
 
