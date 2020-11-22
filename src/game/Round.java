@@ -22,6 +22,7 @@ public class Round {
 
     private volatile String userResponse;
     private volatile User sender;
+    private boolean cardPoped = false;
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
         //remove() function cannot be called in removeDeckCard
@@ -47,9 +48,11 @@ public class Round {
         while (!isRoundFinished()) {
             Card playedCard = null;
             currentPlayer.message("It's your turn, " + currentPlayer + "!");
-            playedCard = chooseCard();
+            //Draw card before calling choosecard, to not draw the card multiple times(in case choosecard gets called multiple times)
+            Card secondCard = pop();
+            playedCard = chooseCard(secondCard);
             while (playedCard == null) {
-                playedCard = chooseCard();
+                playedCard = chooseCard(secondCard);
             }
             currentPlayer.message("You have chosen " + playedCard.getCardName());
             handleTurn(playedCard);
@@ -166,9 +169,9 @@ public class Round {
     /**
      * current player can choose between a new card or his old card
      */
-    public Card chooseCard() {
+    public Card chooseCard(Card secondCard) {
         Card card = null;
-        Card secondCard = pop();
+        //Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
         currentPlayer.message("Choose the card you want to play.");
