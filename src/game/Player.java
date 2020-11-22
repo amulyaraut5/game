@@ -39,7 +39,7 @@ public class Player extends User {
      * @return Number of tokens.
      */
     public int getTokenCount() {
-        return 0;
+        return numOfTokens;
     }
 
     /**

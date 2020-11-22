@@ -58,7 +58,6 @@ public class Round {
             currentPlayer.message("You chose " + playedCard.getCardName() + "!");
             handleTurn(playedCard);
         }
-
     }
 
     /**
@@ -214,7 +213,7 @@ public class Round {
         }
         return false;
     }
-    
+
     /**
      * Check if the round is finished
      *
@@ -298,10 +297,6 @@ public class Round {
 
     public ArrayList<Player> getActivePlayers() {
         return this.activePlayers;
-    }
-
-    public User getSender() {
-        return sender;
     }
 
     public ArrayList<Card> getCardDeck() {
