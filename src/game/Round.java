@@ -57,7 +57,6 @@ public class Round {
             handleTurn(playedCard);
         }
 
-        gameBoard.deliverMessageAll("Round ended.");
     }
 
     /**
@@ -115,6 +114,7 @@ public class Round {
         userResponse = null;
         return message;
     }
+
 
     /**
      * Shuffles the deck of Gameboard in each new round.

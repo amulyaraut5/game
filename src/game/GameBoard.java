@@ -86,6 +86,7 @@ public class GameBoard extends Thread {
             } else {
                 firstPlayer = compareDates(winnerList);
             }
+            gameController.communicateAll("The round has ended. Winner of the round: "+ firstPlayer.getName());
         }
         gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #create to create a new game.");
