@@ -57,7 +57,7 @@ public class Round {
             currentPlayer.message("You chose " + playedCard.getCardName() + "!");
             handleTurn(playedCard);
         }
-        //todo player needs to be reset at the end of a round
+
         gameBoard.deliverMessage("Round ended.", this.currentPlayer);
     }
 
