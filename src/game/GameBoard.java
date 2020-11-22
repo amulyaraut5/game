@@ -121,7 +121,7 @@ public class GameBoard extends Thread {
      * @return number of player
      */
     public int getPlayerCount() {
-        return playerList.size();
+        return playerList.size()-1;
     }
 
     /**
