@@ -3,6 +3,8 @@ package game;
 import server.ChatServer;
 import server.User;
 
+import java.util.ArrayList;
+
 /**
  * The GameController mainly handles the communication between the chat and the game.
  * It reads all the game commands and distributes it to the assigned classes in the game.
@@ -146,7 +148,10 @@ public class GameController {
         server.communicateAll(message);
     }
 
-    public void communicate(String message, User user) {
-        server.communicate(message, user);
+    public void communicate(String message, Player player) {
+        ArrayList<User> users = server.getUsers();
+        for(User user : users){
+            if (user.getName()==player.getName()) server.communicate(message, user);
+        }
     }
 }
