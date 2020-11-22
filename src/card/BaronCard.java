@@ -28,6 +28,7 @@ public class BaronCard extends Card {
     public void handleCard(Player playerPlayingCard) {
         setAvailablePlayers(playerPlayingCard);
 
+
         if (availablePlayers.size() <= 0) {
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
         } else {
