@@ -54,7 +54,7 @@ public class GuardCard extends Card{
                 //If the guess is correct the player will be out of the round.
                 round.kickPlayer(targetPlayer);
                 //Display message to all the players
-                controller.communicateAll(targetPlayer + "is eliminated from the round.");
+                controller.communicateAll(targetPlayer + " is eliminated from the round.");
             } else {
                 playerPlayingCard.message("Your guess was Incorrect.");
             }
