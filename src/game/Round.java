@@ -46,6 +46,9 @@ public class Round {
             Card playedCard = null;
             currentPlayer.message("It's your turn, " + currentPlayer.getName()+"!");
             playedCard = chooseCard();
+            while(playedCard == null){
+                playedCard = chooseCard();
+            }
             handleTurn(playedCard);
         }
         //todo player needs to be reset at the end of a round
@@ -171,24 +174,44 @@ public class Round {
         String message = readResponse();
         System.out.println("Response from " + sender.getName() + ". " + message);
         currentPlayer.message("You have chosen " + message);
-        //TODO check if sender is currentplayer
+        //TODO change currentCard of active Player
         //Are sender and currentPlayer comparable?
         if (sender.getName() != this.currentPlayer.getName()) {
-            return null;
+            card = null;
+            sender.message("Please wait your turn.");
         }
         if (message=="1"){
             card=currentPlayer.getCard();
-            this.currentPlayer.setCurrentCard(secondCard);
+            //this.currentPlayer.setCurrentCard(secondCard);
         }
         if (message=="2"){
             card=secondCard;
         }
-        //check if player chooses card 1 or card 2, return the one he chose.
-        //if choosen card is second card, change second card with currentcard
+        if (message != "1" && message != "2"){
+            currentPlayer.message("Please type 1 or 2.");
+        }
+
+        if(checkCountess(currentPlayer.getCard(), secondCard) && (card.getCardName() != "Countess")){
+            currentPlayer.message("You have to play the Countess. Please try again!");
+            card=null;
+        }
+
         return card;
 
     }
 
+    public boolean checkCountess(Card card1, Card card2){
+        if (first == "Countess" &&
+                (second == "King" || second == "Prince")) {
+            return true;
+
+        }
+        if (second == "Countess" &&
+                (first == "King" || first == "Prince")){
+            return true;
+        }
+        return false;
+    }
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
         //currentPlayer.setPlayedHandmaid(false);
