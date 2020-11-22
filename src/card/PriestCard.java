@@ -26,19 +26,23 @@ public class PriestCard extends Card{
     @Override
     public void handleCard(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
-            if(!player.isGuarded() && player != playerPlayingCard) {
+            if (!player.isGuarded() && player != playerPlayingCard) {
                 availablePlayers.add(player);
             }
         }
-        // Display the player name from the availablePlayers so that the player can choose the name
-        playerPlayingCard.message("Choose the player whose card you wish to look at: " +availablePlayers.toString());
-        // Read the input of the user and set to targetPlayer
-        // Set the targetPlayer as per users choice from the list of players
-        getTargetPlayer();
+        if (availablePlayers.size() <= 0) {
+            playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
+        } else {
+            // Display the player name from the availablePlayers so that the player can choose the name
+            playerPlayingCard.message("Choose the player whose card you wish to look at: " + availablePlayers.toString());
+            // Read the input of the user and set to targetPlayer
+            // Set the targetPlayer as per users choice from the list of players
+            getTargetPlayer();
 
-        // Then playerPlayingCard can look at the card of targetPlayer
-        // Get the card of targetPlayer and display this card only to the current player
-        String lookAtCard = targetPlayer.getCard().getCardName();
-        playerPlayingCard.message(targetPlayer + "has the card: " + lookAtCard);
+            // Then playerPlayingCard can look at the card of targetPlayer
+            // Get the card of targetPlayer and display this card only to the current player
+            String lookAtCard = targetPlayer.getCard().getCardName();
+            playerPlayingCard.message(targetPlayer + "has the card: " + lookAtCard);
+        }
     }
 }

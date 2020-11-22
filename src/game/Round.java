@@ -54,7 +54,7 @@ public class Round {
             while (playedCard == null) {
                 playedCard = chooseCard(secondCard);
             }
-            currentPlayer.message("You have chosen " + playedCard.getCardName());
+            currentPlayer.message("You chose " + playedCard.getCardName() + "!");
             handleTurn(playedCard);
         }
         //todo player needs to be reset at the end of a round
@@ -66,7 +66,6 @@ public class Round {
      * @param card Card that the player chose to play.
      */
     public synchronized void handleTurn(Card card) {
-        //call handlecard method, change currentPlayer(indicates who's turn it is) afterwards
         card.handleCard(this.currentPlayer);
         nextPlayer();
     }
@@ -83,22 +82,15 @@ public class Round {
      * @param sender  User who replied
      */
     public synchronized void writeResponse(String message, User sender) {
-        String cards = "baron countess guard handmaid king priest prince princess";
-        String names = "";
-        for (Player player : activePlayers) names += player;
-        //TODO proof if message is coming from the current user
-        if (userResponse == null) {
-            userResponse = message;
-            this.sender = sender;
+        if (!User.isSameUser(sender, currentPlayer)) {
+            if (userResponse == null) {
+                userResponse = message;
+                this.sender = sender;
+            } else {
+                sender.message("You were to fast. The message has not yet been read. Please try again:");
+            }
         } else {
             sender.message("It's not your turn, " + sender + "!");
-        }
-        if (message.equals("1") || message.equals("2")) {
-            //
-        } else if (cards.contains(message)) {
-            //
-        } else if (names.contains(message)) {
-            //
         }
     }
 
@@ -174,14 +166,11 @@ public class Round {
         //Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
-        currentPlayer.message("Choose the card you want to play.");
+        currentPlayer.message("Which card do you want to play?");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ":");
         gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
         String message = readResponse();
-        System.out.println("Response from " + sender + ". " + message);
-        //currentPlayer.message("You have chosen " + message);
         //TODO change currentCard of active Player
-        //Are sender and currentPlayer comparable?
         boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
         if (!User.isSameUser(sender, currentPlayer)) {//TODO move to write Response
             card = null;
@@ -203,7 +192,7 @@ public class Round {
             //    return null;
             //}
         } else {
-            currentPlayer.message("Please choose card 1 or 2.");
+            currentPlayer.message("Wrong Input. Please choose card 1 or 2:");
         }
         return card;
 
