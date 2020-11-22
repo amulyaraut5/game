@@ -49,6 +49,7 @@ public class Round {
             while(playedCard == null){
                 playedCard = chooseCard();
             }
+            currentPlayer.message("You have chosen " + playedCard.getCardName());
             handleTurn(playedCard);
         }
         //todo player needs to be reset at the end of a round
@@ -173,28 +174,37 @@ public class Round {
         gameBoard.deliverMessage("It´s "+currentPlayer.getName() + " turn", currentPlayer);
         String message = readResponse();
         System.out.println("Response from " + sender.getName() + ". " + message);
-        currentPlayer.message("You have chosen " + message);
+        //currentPlayer.message("You have chosen " + message);
         //TODO change currentCard of active Player
         //Are sender and currentPlayer comparable?
+        boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
         if (sender.getName() != this.currentPlayer.getName()) {
             card = null;
             sender.message("Please wait your turn.");
         }
         if (message=="1"){
             card=currentPlayer.getCard();
+            if (mustCountess && (card.getCardName() != "Countess")){
+                currentPlayer.message("You have to play the Countess. Please try again!");
+                return null;
+            }
+            currentPlayer.setCurrentCard(secondCard);
             //this.currentPlayer.setCurrentCard(secondCard);
         }
-        if (message=="2"){
-            card=secondCard;
-        }
-        if (message != "1" && message != "2"){
-            currentPlayer.message("Please type 1 or 2.");
+        if (message=="2") {
+            card = secondCard;
+            if (mustCountess && (card.getCardName() != "Countess")) {
+                currentPlayer.message("You have to play the Countess. Please try again!");
+                return null;
+            }
         }
 
-        if(checkCountess(currentPlayer.getCard(), secondCard) && (card.getCardName() != "Countess")){
-            currentPlayer.message("You have to play the Countess. Please try again!");
-            card=null;
+        if (message != "1" && message != "2"){
+            currentPlayer.message("Please choose card 1 or 2.");
         }
+
+
+
 
         return card;
 
