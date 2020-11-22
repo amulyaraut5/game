@@ -116,7 +116,7 @@ public class GameController {
             user.message("You need at least one more player to start the game.");
         } else {
             runningGame = true;
-            server.communicateAll("The game has started!");
+            server.communicateAll("The game has started! Please wait until it's your turn.");
             gameBoard.run();
         }
     }
@@ -125,7 +125,6 @@ public class GameController {
     /**
      * method that resets all game controlling variables when a game is ended.
      */
-    //TODO muss resettet werden
     public void reset() {
         createdGame = false;
         runningGame = false;
