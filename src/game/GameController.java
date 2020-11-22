@@ -45,7 +45,7 @@ public class GameController {
             case "#join" -> join(user);
             case "#start" -> start(user);
             case "#help" -> user.message(COMMANDS);
-            case "#score" -> gameBoard.getScorePlayer(user);
+            case "#score" -> score(user);
             case "#choose" -> {
                 message = message.substring(message.indexOf(" ") + 1);
                 if (message.contains("#choose")) {
@@ -98,7 +98,16 @@ public class GameController {
             user.message("All player slots have already been taken. Please wait and join the next game.");
         }
     }
-
+    public void score(User user){
+        if(!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
+        else if(!gameBoard.alreadyJoined(user)) user.message("You haven´t joined the game. Please type '#join' to join");
+        //TODO können auch User sich den Score anzeigenlassen, die keine Spieler sind?
+        else if(!runningGame) {
+            user.message("the game has not been started yet. Type '#start' to start it.");
+            gameBoard.getScorePlayer(user);
+        }
+        else gameBoard.getScorePlayer(user);
+    }
     /**
      * Reacts to command "start".
      * Checks if the player has already joined the game, if a game has been created/started
