@@ -40,7 +40,7 @@ public class BaronCard extends Card {
         playerPlayingCard.message("Choose the name of the player you want to target.");
         // Read the input of the user and set to targetPlayer
         // Set the targetPlayer as per users choice from the list of players
-        targetPlayername = gameboard.readResponse();
+        targetPlayername = round.readResponse();
 
         for(Player targetPlayer: availablePlayers){
 

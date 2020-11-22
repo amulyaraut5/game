@@ -8,14 +8,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Round {
-    public ArrayList<Card> cardDeck; //Remove after getStackCards is created
+    private GameBoard gameBoard;
+
+    private ArrayList<Card> cardDeck; //Remove after getStackCards is created
     private ArrayList<Player> activePlayers;
     private ArrayList<Card> faceUpCards;
+
     private Card firstCardRemoved = null;
     private Player currentPlayer;
-    private GameBoard gameBoard;
-    private String first = "";
+
+    private String first = "";//TODO save strings in method chooseCard()
     private String second = "";
+
+    private volatile String userResponse;
+    private volatile User sender;
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
         //remove() function cannot be called in removeDeckCard
@@ -54,6 +60,58 @@ public class Round {
         //call handlecard method, change currentPlayer(indicates who's turn it is) afterwards
         card.handleCard(this.currentPlayer);
         this.currentPlayer = nextPlayer();
+    }
+
+    /**
+     * Gives Messages to the Game-Thread to read.
+     * Method should be called if UserThreads get messages from clients,
+     * which have to be passed to the GameBoard-Thread.
+     * If an incoming response is set, no other responses can be set,
+     * until the response is read by the GameBoard-Thread.
+     * To read the response in the GameBoard-Thread, readResponse() should be called.
+     *
+     * @param message response of the player
+     * @param sender  User who replied
+     */
+    public synchronized void writeResponse(String message, User sender) {
+        String cards = "baron countess guard handmaid king priest prince princess";
+        String names = "";
+        for (Player player : activePlayers) names += player.getName();
+        //TODO proof if message is coming from the current user
+        if (userResponse == null) {
+            userResponse = message;
+            this.sender = sender;
+        } else {
+            sender.message("It's not your turn, " + sender.getName() + "!");
+        }
+        if (message.equals("1") || message.equals("2")) {
+            //
+        } else if (cards.contains(message)) {
+            //
+        } else if (names.contains(message)) {
+            //
+        }
+    }
+
+    /**
+     * The methods reads the response, which is send from a player.
+     * Warning: The method waits and ends, if there is a feedback from the user.
+     * if no client responds, the method does not return!
+     * The method is interruptible
+     *
+     * @return response message of the player
+     */
+    public String readResponse() {
+        String message;
+        while (userResponse == null && !gameBoard.isInterrupted()) {
+            try {
+                gameBoard.sleep(50);
+            } catch (InterruptedException e) {
+            }
+        }
+        message = userResponse;
+        userResponse = null;
+        return message;
     }
 
     /**
@@ -100,15 +158,6 @@ public class Round {
     }
 
     /**
-     * deals out the first cards
-     */
-    public void dealCards() {
-        for (Player player : activePlayers) {
-            player.setCurrentCard(pop());
-        }
-    }
-
-    /**
      * current player can choose between a new card or his old card
      */
     public Card chooseCard() {
@@ -117,8 +166,8 @@ public class Round {
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
         currentPlayer.message("Available cards: " + first + ", " + second);
-        String message = gameBoard.readResponse();
-        User sender = gameBoard.getSender();
+        String message = readResponse();
+        User sender = getSender();
         //TODO check if sender is currentplayer
         //Are sender and currentPlayer comparable?
         if (sender != this.currentPlayer) {
@@ -169,9 +218,9 @@ public class Round {
      *
      * @return winner of the round
      */
-    public  ArrayList<Player> getRoundWinner() {
+    public ArrayList<Player> getRoundWinner() {
         ArrayList<Player> winnerList = new ArrayList<>();
-        ArrayList<Player> waitList = new ArrayList <>();
+        ArrayList<Player> waitList = new ArrayList<>();
         Player winner = activePlayers.get(0);
         //A round also ends if all players but one are out of the round, in which case the remaining player wins.
         if (activePlayers.size() == 1) {
@@ -183,15 +232,16 @@ public class Round {
                 if (winner.getCard().getCardValue() < currentPlayer.getCard().getCardValue()) winner = currentPlayer;
                 else if (winner.getCard().getCardValue() == currentPlayer.getCard().getCardValue()) {
                     if (winner.getSumPlayedCards() < currentPlayer.getSumPlayedCards()) winner = currentPlayer;
-                    else if (winner.getSumPlayedCards() == currentPlayer.getSumPlayedCards()) waitList.add(currentPlayer);
+                    else if (winner.getSumPlayedCards() == currentPlayer.getSumPlayedCards())
+                        waitList.add(currentPlayer);
                 }
             }
         }
-        for (Player player : waitList){
-            if(winner.getCard().getCardValue()<player.getCard().getCardValue()) winner = player;
-            else if(winner.getCard().getCardValue()==player.getCard().getCardValue()){
-                if (winner.getSumPlayedCards()< player.getSumPlayedCards()) winner=player;
-                else if(winner.getSumPlayedCards()==player.getSumPlayedCards()) winnerList.add(player);
+        for (Player player : waitList) {
+            if (winner.getCard().getCardValue() < player.getCard().getCardValue()) winner = player;
+            else if (winner.getCard().getCardValue() == player.getCard().getCardValue()) {
+                if (winner.getSumPlayedCards() < player.getSumPlayedCards()) winner = player;
+                else if (winner.getSumPlayedCards() == player.getSumPlayedCards()) winnerList.add(player);
             }
         }
         winnerList.add(winner);
@@ -238,5 +288,9 @@ public class Round {
 
     public ArrayList<Player> getActivePlayers() {
         return this.activePlayers;
+    }
+
+    public User getSender() {
+        return sender;
     }
 }

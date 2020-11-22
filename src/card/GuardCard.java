@@ -48,7 +48,7 @@ public class GuardCard extends Card{
         // Then playerPlayingCard can guess the card of the targetPlayer
         playerPlayingCard.message("What card do you think the player has?");
         // Read the input of the player
-        String guessCardName = gameboard.readResponse();
+        String guessCardName = round.readResponse();
 
 
         if (guessCardName == this.nameOfCard) {
@@ -70,7 +70,7 @@ public class GuardCard extends Card{
 
     }
     Player getTargetPlayer(){
-        String targetPlayerName = gameboard.readResponse();
+        String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;

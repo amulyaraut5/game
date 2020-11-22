@@ -15,12 +15,12 @@ public class GameController {
 
     private final String COMMANDS = """
             Use the following commands to control the game:\s
-             #create: creates a new game\s
-             #join: join the game\s
-             #start: starts the game\s
-             #score: look at current scores\s
-             #choose: if you have to choose a card or another player\s""";
-    private boolean startedGame = false;
+                #create: creates a new game\s
+                #join:   join the game\s
+                #start:  starts the game\s
+                #score:  look at current scores\s
+                #choose: if you have to choose a card or another player\s""";
+    private boolean createdGame = false;
     private boolean runningGame = false;
     private GameBoard gameboard;
     private ChatServer server;
@@ -51,7 +51,7 @@ public class GameController {
                 if (message.contains("#choose")) {
                     user.message("Unexpected command: " + command + "\n Please enter a valid command. Type #help to see them.");
                 } else {
-                    gameboard.incomingResponse(message, user);
+                    gameboard.getActiveRound().writeResponse(message, user);
                 }
             }
             default -> user.message("Unexpected command: " + command + "\n Please enter a valid command. Type #help to see them.");
@@ -64,9 +64,9 @@ public class GameController {
      * If a GameBoard was already created the User gets a message to join the game.
      */
     public void create(User user) {
-        if (!startedGame) {
+        if (!createdGame) {
             gameboard = new GameBoard();
-            startedGame = true;
+            createdGame = true;
             gameboard.addPlayer(user);
         } else if (!runningGame) {
             user.message("Someone has already created a game. Type '#join' if you want to join the game.");
@@ -82,12 +82,12 @@ public class GameController {
      */
     public void join(User user) {
 
-        if (!gameboard.alreadyJoined(user) && startedGame && !runningGame && gameboard.getPlayerCount() < 4) {
+        if (!gameboard.alreadyJoined(user) && createdGame && !runningGame && gameboard.getPlayerCount() < 4) {
             gameboard.addPlayer(user);
             user.message("You've joined the game. If you want to start already type '#start'.");
         } else if (gameboard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start already type '#start'.");
-        } else if (!startedGame) {
+        } else if (!createdGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
@@ -103,12 +103,12 @@ public class GameController {
      * If game can be started the method playGame() is called from the GameBoard.
      */
     public void start(User user) {
-        if (gameboard.alreadyJoined(user) && startedGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
+        if (gameboard.alreadyJoined(user) && createdGame && !runningGame && (gameboard.getPlayerCount() >= 2)) {
             gameboard.run();
             runningGame = true;
         } else if (!gameboard.alreadyJoined(user)) {
             user.message("You need to join the game to start it. Type '#join' to do so.");
-        } else if (!startedGame) {
+        } else if (!createdGame) {
             user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
@@ -123,7 +123,7 @@ public class GameController {
      */
     //TODO muss resettet werden
     public void reset() {
-        startedGame = false;
+        createdGame = false;
         runningGame = false;
     }
 
