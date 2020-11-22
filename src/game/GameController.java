@@ -91,7 +91,7 @@ public class GameController {
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             user.message("You've joined the game. If you want to start already type '#start'.");
-            server.communicate(user + " joined the game! (" + +gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
+            server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start, type '#start'.");
         } else if (!createdGame) {
@@ -106,8 +106,8 @@ public class GameController {
     public void score(User user) {
         if (!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
         else if (!gameBoard.alreadyJoined(user))
-            user.message("You haven´t joined the game. Please type '#join' to join");
-            //TODO können auch User sich den Score anzeigenlassen, die keine Spieler sind?
+            user.message("You haven´t joined the game. Please type '#join' to join.");
+            //TODO können auch User sich den Score anzeigen lassen, die keine Spieler sind?
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
             gameBoard.getScorePlayer(user);
