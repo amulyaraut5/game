@@ -169,7 +169,7 @@ public class Round {
         Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
-        currentPlayer.message("You have to choose which card you want to keep.");
+        currentPlayer.message("You have to choose which card you want to play.");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ".");
         gameBoard.deliverMessage("It´s " + currentPlayer + " turn", currentPlayer);
         String message = readResponse();
@@ -178,7 +178,7 @@ public class Round {
         //TODO change currentCard of active Player
         //Are sender and currentPlayer comparable?
         boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
-        if (User.isSameUser(sender, currentPlayer)) {//TODO move to write Response
+        if (!User.isSameUser(sender, currentPlayer)) {//TODO move to write Response
             card = null;
             sender.message("Please wait for your turn!");
         }
@@ -186,7 +186,7 @@ public class Round {
             card = currentPlayer.getCard();
             if (mustCountess && (card.getCardName() != "Countess")) {
                 currentPlayer.message("You have to play the Countess. Please try again!");
-                return null;
+                return card;
             }
             currentPlayer.setCurrentCard(secondCard);
             //this.currentPlayer.setCurrentCard(secondCard);
@@ -195,15 +195,13 @@ public class Round {
             card = secondCard;
             if (mustCountess && (card.getCardName() != "Countess")) {
                 currentPlayer.message("You have to play the Countess. Please try again!");
-                return null;
+                return card;
             }
         }
 
         if (message != "1" && message != "2") {
             currentPlayer.message("Please choose card 1 or 2.");
         }
-
-
         return card;
 
     }
