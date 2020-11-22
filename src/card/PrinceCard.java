@@ -69,7 +69,7 @@ public class PrinceCard extends Card {
      * @return targetPlayer the selected player
      */
     Player getTargetPlayer(){
-        String targetPlayerName = gameboard.readResponse();
+        String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;

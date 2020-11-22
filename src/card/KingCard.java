@@ -55,7 +55,7 @@ public class KingCard extends Card {
      * @return targetPlayer the selected player
      */
     Player getTargetPlayer(){
-        targetPlayerName = gameboard.readResponse();
+        targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;

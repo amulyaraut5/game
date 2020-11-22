@@ -8,12 +8,11 @@ import java.util.ArrayList;
 public class GameBoard extends Thread {
     private ArrayList<Player> playerList;
     private Player gameWinner;
+
     private Round activeRound;
     private boolean started = false;
     private GameController gameController = new GameController();
     private ArrayList<Player> winnerList = new ArrayList<>();
-    private volatile String userResponse;
-    private volatile User sender;
 
     public GameBoard() {
     }
@@ -38,58 +37,6 @@ public class GameBoard extends Thread {
         return stackCards;
     }
 
-    /**
-     * Gives Messages to the Game-Thread to read.
-     * Method should be called if UserThreads get messages from clients,
-     * which have to be passed to the GameBoard-Thread.
-     * If an incoming response is set, no other responses can be set,
-     * until the response is read by the GameBoard-Thread.
-     * To read the response in the GameBoard-Thread, readResponse() should be called.
-     *
-     * @param message response of the player
-     * @param sender  User who replied
-     */
-    public void incomingResponse(String message, User sender) {
-        String cards = "baron countess guard handmaid king priest prince princess";
-        String names = "";
-        for (Player player:playerList)  names += player.getName();
-        //TODO proof if message is coming from the current user
-        if (userResponse == null) {
-            userResponse = message;
-            this.sender = sender;
-        } else {
-            sender.message("It's not your turn, " + sender.getName() + "!"); //TODO turn has to be in Round
-        }
-        if(message.equals("1") || message.equals("2")){
-            //
-        } else if(cards.contains(message)) {
-            //
-        } else if(names.contains(message)){
-            //
-        }
-    }
-
-    /**
-     * The methods reads the response, which is send from a player.
-     * Warning: The method waits and ends, if there is a feedback from the user.
-     * if no client responds, the method does not return!
-     * The method is interruptible
-     *
-     * @return response message of the player
-     */
-    public String readResponse() {
-        String message;
-        while (userResponse == null && !isInterrupted()) {
-            try {
-                sleep(50);
-            } catch (InterruptedException e) {
-            }
-        }
-        message = userResponse;
-        userResponse = null;
-        return message;
-    }
-
     public void getScorePlayer() {
         String score = "";
         for (Player pl : playerList) {
@@ -108,10 +55,6 @@ public class GameBoard extends Thread {
             if (pl.getName() == username) return true;
         }
         return false;
-    }
-
-    public User getSender() {
-        return sender;
     }
 
     @Override
@@ -140,6 +83,8 @@ public class GameBoard extends Thread {
             }
         }
         gameWinner = firstPlayer;
+        //TODO wouldn't then the gameWinner be the last roundWinner?
+        // maybe set the gameWinner in gameWon() method
     }
 
     /**
@@ -187,7 +132,7 @@ public class GameBoard extends Thread {
 
     /**
      * checks whether some Player already has won the whole game
-     *If someone has won, the reset Method from gameController is called which enables the start
+     * If someone has won, the reset Method from gameController is called which enables the start
      * of a new game.
      *
      * @return winGame
@@ -214,13 +159,8 @@ public class GameBoard extends Thread {
         return win;
     }
 
-    /**
-     * kicks one player from the current round
-     *
-     * @param p
-     */
-    public void kickPlayer(Player p) {
-
+    public Round getActiveRound() {
+        return activeRound;
     }
 }
 

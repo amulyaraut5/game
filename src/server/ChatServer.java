@@ -3,9 +3,11 @@ package server;
 import game.GameController;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChatServer {
     private static final ArrayList<User> users = new ArrayList<>(10);
@@ -71,7 +73,19 @@ public class ChatServer {
                 }
             }
         }
+    public boolean communicateDirect(String message, User sender){
+        String userName = (message.split(" ", 2)[0]);
+        String destinationUser = userName.substring(1);
+        String messageUser =message.split(" ", 2)[1];
+        for(User user : users){
+            if(user.getName().equals(destinationUser)){
+                user.message(sender.getName() + " directly to you: " + messageUser);
+                return true;
+            }
+        }
+        return false;
 
+    }
     public void communicateGame (String message, User sender) {
         gameController.readCommand(message, sender);
     }

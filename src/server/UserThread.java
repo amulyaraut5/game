@@ -64,12 +64,14 @@ public class UserThread extends Thread {
                 Matcher matcher = gamePattern.matcher(clientMessage);
 
                 Pattern directPattern = Pattern.compile("^@+");
-                Matcher directMatcher = gamePattern.matcher(clientMessage);
+                Matcher directMatcher = directPattern.matcher(clientMessage);
 
                 if (matcher.lookingAt()) {
                     server.communicateGame(clientMessage, user);
                 } else if (directMatcher.lookingAt()) {
-                    //TODO handle direct messages to one assigned user
+                    if (!server.communicateDirect(clientMessage, user)){
+                        user.message("This name is not assigned. Please try again");
+                    }
                 } else {
                     serverMessage = "[" + user.getName() + "]: " + clientMessage;
                     server.communicate(serverMessage, user);
@@ -151,7 +153,7 @@ public class UserThread extends Thread {
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
-        sendMessage("Welcome " + user.getName() + "!");
+        sendMessage("Thank you! Welcome " + user.getName() + "!");
         sendMessage("Type: \"bye\" to leave the room.");
         sendMessage("      \"#help\" to list all commands.");
         sendMessage("      \"#create\" to play the LoveLetter game.");

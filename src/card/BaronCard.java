@@ -32,6 +32,7 @@ public class BaronCard extends Card {
                 availablePlayers.add(player);
             }
         }
+
         // Display the availablePlayers so that the player can choose one
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
         // Read the input of the user and return the target player
@@ -61,7 +62,7 @@ public class BaronCard extends Card {
      * @return targetPlayer the selected player
      */
     Player getTargetPlayer(){
-        String targetPlayerName = gameboard.readResponse();
+        String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;
