@@ -6,13 +6,15 @@ import server.User;
 import java.util.ArrayList;
 
 public class GameBoard extends Thread {
+    private GameController gameController;
+    private Round activeRound;
+
     private ArrayList<Player> playerList = new ArrayList<>();
+    private ArrayList<Player> winnerList = new ArrayList<>();
+
+    private boolean started = false;
     private Player gameWinner;
 
-    private Round activeRound;
-    private boolean started = false;
-    private GameController gameController;
-    private ArrayList<Player> winnerList = new ArrayList<>();
 
     public GameBoard(GameController gameController) {
         this.gameController = gameController;
@@ -45,7 +47,7 @@ public class GameBoard extends Thread {
         for (Player pl : playerList) {
             score += pl.getName() + ": " + pl.getTokenCount() + " \n";
         }
-        gameController.sendMessage(score);
+        gameController.communicate(score);
     }
 
     /**

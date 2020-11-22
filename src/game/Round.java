@@ -44,7 +44,7 @@ public class Round {
         }
         while (!isRoundFinished()) {
             Card playedCard = null;
-            System.out.println("It's your turn, " + currentPlayer);
+            currentPlayer.message("It's your turn, " + currentPlayer.getName()+"!");
             playedCard = chooseCard();
             handleTurn(playedCard);
         }
@@ -105,7 +105,7 @@ public class Round {
         String message;
         while (userResponse == null && !gameBoard.isInterrupted()) {
             try {
-                gameBoard.sleep(50);
+                gameBoard.sleep(1000);//TODO 50 millis
             } catch (InterruptedException e) {
             }
         }
@@ -165,9 +165,11 @@ public class Round {
         Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
-        currentPlayer.message("Available cards: " + first + ", " + second);
+        currentPlayer.message("You have to choose which card you want to keep.");
+        currentPlayer.message("Type '1' for " + first + " and '2' for " + second + ".");
         String message = readResponse();
-        User sender = getSender();
+        System.out.println("Response from " + sender.getName() + ". " + message);
+        currentPlayer.message("You have chosen " + message);
         //TODO check if sender is currentplayer
         //Are sender and currentPlayer comparable?
         if (sender != this.currentPlayer) {

@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,16 +60,16 @@ public class UserThread extends Thread {
                 clientMessage = reader.readLine();
 
                 Pattern gamePattern = Pattern.compile("^#+");
-                Matcher matcher = gamePattern.matcher(clientMessage);
+                Matcher gameMatcher = gamePattern.matcher(clientMessage);
 
                 Pattern directPattern = Pattern.compile("^@+");
                 Matcher directMatcher = directPattern.matcher(clientMessage);
 
-                if (matcher.lookingAt()) {
+                if (gameMatcher.lookingAt()) {
                     server.communicateGame(clientMessage, user);
                 } else if (directMatcher.lookingAt()) {
                     if (!server.communicateDirect(clientMessage, user)){
-                        user.message("This name is not assigned. Please try again");
+                        user.message("This name is not assigned. Please try again.");
                     }
                 } else {
                     serverMessage = "[" + user.getName() + "]: " + clientMessage;

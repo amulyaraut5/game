@@ -3,16 +3,14 @@ package server;
 import game.GameController;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChatServer {
     private static final ArrayList<User> users = new ArrayList<>(10);
     private final int port;
-    private final GameController gameController = new GameController();
+    private final GameController gameController = new GameController(this);
 
     public ChatServer(int port) {
         this.port = port;
@@ -67,18 +65,19 @@ public class ChatServer {
      */
     public void communicate(String message, User sender) {
 
-            for (User user : users) {
-                if (user != sender) {
-                    user.message(message);
-                }
+        for (User user : users) {
+            if (user != sender) {
+                user.message(message);
             }
         }
-    public boolean communicateDirect(String message, User sender){
+    }
+
+    public boolean communicateDirect(String message, User sender) {
         String userName = (message.split(" ", 2)[0]);
         String destinationUser = userName.substring(1);
-        String messageUser =message.split(" ", 2)[1];
-        for(User user : users){
-            if(user.getName().equals(destinationUser)){
+        String messageUser = message.split(" ", 2)[1];
+        for (User user : users) {
+            if (user.getName().equals(destinationUser)) {
                 user.message(sender.getName() + " directly to you: " + messageUser);
                 return true;
             }
@@ -86,7 +85,8 @@ public class ChatServer {
         return false;
 
     }
-    public void communicateGame (String message, User sender) {
+
+    public void communicateGame(String message, User sender) {
         gameController.readCommand(message, sender);
     }
 
