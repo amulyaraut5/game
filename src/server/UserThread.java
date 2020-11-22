@@ -156,6 +156,7 @@ public class UserThread extends Thread {
         sendMessage("Type: \"bye\" to leave the room.");
         sendMessage("      \"#help\" to list all commands.");
         sendMessage("      \"#create\" to play the LoveLetter game.");
+        sendMessage("      \"@'name'\" to send a direct message.");
         server.communicate(user.getName() + " joined the room.", user);
     }
 

@@ -20,9 +20,9 @@ public class GameController {
                 #start:  starts the game\s
                 #score:  look at current scores\s
                 #choose: if you have to choose a card or another player\s""";
+    public GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;
-    public  GameBoard gameBoard;
     private ChatServer server;
 
     public GameController(ChatServer server) {
@@ -68,9 +68,8 @@ public class GameController {
             gameBoard = new GameBoard(this);
             createdGame = true;
             gameBoard.addPlayer(user);
-            user.message("You created a new game");
-            gameBoard.addPlayer(user);
-            server.communicate(user.getName() + " created a game!\nEveryone can join with '#join'. (max. 4 Players)", user);
+            user.message("You created a new game!\nYour Friends can join with '#join'. (2-4 Players)");
+            server.communicate(user.getName() + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
         } else if (!runningGame) {
             user.message("Someone has already created a game. Type '#join' if you want to join the game.");
         } else {
@@ -84,7 +83,6 @@ public class GameController {
      * Also a player can only join if <4 players already joined.
      */
     public void join(User user) {
-
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             user.message("You've joined the game. If you want to start already type '#start'.");
