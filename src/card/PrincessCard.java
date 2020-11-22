@@ -29,10 +29,7 @@ public class PrincessCard extends Card {
         round.kickPlayer(playerPlayingCard);
         playerPlayingCard.message("You have been eliminated from the round");
 
-        //TODO Change the println statement to display message to all the players
-        for (Player player : availablePlayers){
-            player.message(playerPlayingCard + " is eliminated from the round.");
-        }
+        controller.communicate(playerPlayingCard + " is eliminated from the round.", playerPlayingCard);
     }
 
 
