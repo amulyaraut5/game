@@ -86,6 +86,7 @@ public class GameBoard extends Thread {
         }
         gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #create to create a new game.");
+        gameController.reset();
     }
 
     /**
