@@ -72,7 +72,7 @@ public class GameController {
             gameBoard = new GameBoard(this);
             createdGame = true;
             gameBoard.addPlayer(user);
-            user.message("You created a new game!\nYour Friends can join with '#join'. (2-4 Players)");
+            user.message("You created a new game!\nYour friends can join with '#join'. (2-4 Players)");
             server.communicate(user + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
         } else if (!runningGame) {
             user.message("Someone has already created a game. Type '#join' if you want to join the game.");
@@ -90,8 +90,7 @@ public class GameController {
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             user.message("You've joined the game. If you want to start already type '#start'.");
-            server.communicate("(" + gameBoard.getPlayerCount() + "/4) " + user +
-                    " joined the game!\nPlayers can start the game by typing '#start'", user);
+            server.communicate(user + " joined the game! ("+ + gameBoard.getPlayerCount() + "/4)"+"\nPlayers can start the game by typing '#start'.", user);
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start, type '#start'.");
         } else if (!createdGame) {
