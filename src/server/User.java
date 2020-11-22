@@ -13,6 +13,28 @@ public class User {
     public User() {
     }
 
+    /**
+     * Test if two different objects of User are the same user.
+     * (i.e. if they have the same UserThread and therefore are connected to the same client.)
+     * For example if Player a is User b.
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static boolean isSameUser(User a, User b) {
+        return a.thread == b.thread;
+    }
+
+    public synchronized void message(String message) {
+        thread.sendMessage(message);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public UserThread getThread() {
         return thread;
     }
@@ -35,9 +57,5 @@ public class User {
 
     public synchronized void setLastDate(LocalDate lastDate) {
         this.lastDate = lastDate;
-    }
-
-    public synchronized void message(String message) {
-        thread.sendMessage(message);
     }
 }
