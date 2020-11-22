@@ -6,17 +6,20 @@ import server.User;
 import java.util.ArrayList;
 
 public class GameBoard extends Thread {
-    private ArrayList<Player> playerList;
+    private ArrayList<Player> playerList = new ArrayList<>();
     private Player gameWinner;
 
     private Round activeRound;
     private boolean started = false;
-    private GameController gameController = new GameController();
+    private GameController gameController;
     private ArrayList<Player> winnerList = new ArrayList<>();
 
-    public GameBoard() {
+    public GameBoard(GameController gameController) {
+        this.gameController = gameController;
     }
-
+    public String getString(){
+        return "Hat geklappt";
+    }
     public static ArrayList<Card> createDeck() {
         ArrayList<Card> stackCards = new ArrayList<>();
         // every card just one time: princess, countess, king

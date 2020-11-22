@@ -22,7 +22,7 @@ public class GameController {
                 #choose: if you have to choose a card or another player\s""";
     private boolean createdGame = false;
     private boolean runningGame = false;
-    private GameBoard gameboard;
+    public GameBoard gameboard;
     private ChatServer server;
 
     public GameController() {
@@ -65,9 +65,11 @@ public class GameController {
      */
     public void create(User user) {
         if (!createdGame) {
-            gameboard = new GameBoard();
+            gameboard = new GameBoard(this);
+            user.message(gameboard.getString());
             createdGame = true;
             gameboard.addPlayer(user);
+            user.message("You created a new game");
         } else if (!runningGame) {
             user.message("Someone has already created a game. Type '#join' if you want to join the game.");
         } else {
