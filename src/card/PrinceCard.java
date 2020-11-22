@@ -25,7 +25,7 @@ public class PrinceCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        getAvailablePlayers();
+        setAvailablePlayers();
 
         //Display the player name from the availablePlayers so that the player can choose the name
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
@@ -36,7 +36,7 @@ public class PrinceCard extends Card {
         //checks if card of selected player is princess  and kick the player out of the round.
         if (targetPlayer.getCard().getCardName().equals("Princess")) {
             round.kickPlayer(targetPlayer);
-            //Display message to all the players    -maybe replace with communicateAll?
+            //Display message to all the players
             controller.communicateAll(targetPlayer + " has discarded a princess because of " + playerPlayingCard + "!" +
                             "\nThe player is now out of the game!" +
                             " \n*shakes fist angrily");
@@ -48,12 +48,13 @@ public class PrinceCard extends Card {
             }
     }
 
+    @Override
     /**
      * adds all players that are not guarded to the list availablePlayers
      */
-    void getAvailablePlayers(){
+    void setAvailablePlayers() {
         for (Player player : round.getActivePlayers()) {
-            if (!player.isGuarded()) {             // must not be guarded and discarding own card is allowed
+            if (!player.isGuarded()) {  // must not be guarded and discarding own card is allowed
                 availablePlayers.add(player);
             }
         }
