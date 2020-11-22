@@ -82,7 +82,7 @@ public class Round {
      * @param sender  User who replied
      */
     public synchronized void writeResponse(String message, User sender) {
-        if (!User.isSameUser(sender, currentPlayer)) {
+        if (User.isSameUser(sender, currentPlayer)) {
             if (userResponse == null) {
                 userResponse = message;
                 this.sender = sender;
