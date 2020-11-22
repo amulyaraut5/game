@@ -22,7 +22,7 @@ public class GameController {
                 #choose: if you have to choose a card or another player\s""";
     private boolean createdGame = false;
     private boolean runningGame = false;
-    private GameBoard gameBoard;
+    public  GameBoard gameBoard;
     private ChatServer server;
 
     public GameController(ChatServer server) {
@@ -66,14 +66,15 @@ public class GameController {
     public void create(User user) {
         if (!createdGame) {
             gameBoard = new GameBoard(this);
-            user.message(gameBoard.getString());
             createdGame = true;
             gameBoard.addPlayer(user);
-            communicate(user.getName() + " created a game!\nEveryone can join with '#join'. (max. 4 Players)");
+            user.message("You created a new game");
+            gameBoard.addPlayer(user);
+            server.communicate(user.getName() + " created a game!\nEveryone can join with '#join'. (max. 4 Players)", user);
         } else if (!runningGame) {
             user.message("Someone has already created a game. Type '#join' if you want to join the game.");
         } else {
-            user.message("Your friends have started without you. Just wait and join in the next game.");
+            user.message("You're friends have started without you. Just wait and join in the next game.");
         }
     }
 
@@ -86,7 +87,8 @@ public class GameController {
 
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
-            communicate("(" + gameBoard.getPlayerCount() + "/4) " + user.getName() + " joined the game!\nIf you want to start already type '#start'.");
+            user.message("You've joined the game. If you want to start already type '#start'.");
+            server.communicate("(" + gameBoard.getPlayerCount() + "/4) " + user.getName() + " joined the game!\nIf you want to start already type '#start'.", user);
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start already type '#start'.");
         } else if (!createdGame) {
@@ -115,7 +117,7 @@ public class GameController {
             user.message("You need at least one more player to start the game.");
         } else {
             runningGame = true;
-            communicate("The game has started!");
+            server.communicate("The game has started!", user);
             gameBoard.run();
         }
     }
@@ -133,7 +135,7 @@ public class GameController {
     /**
      * Method to send message from GameBoard to GameController and then to all users
      */
-    public void communicate(String message) {
+    public void sendMessage(String message) {
         server.communicateAll(message);
     }
 }
