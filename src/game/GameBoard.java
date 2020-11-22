@@ -40,12 +40,12 @@ public class GameBoard extends Thread {
         return stackCards;
     }
 
-    public void getScorePlayer() {
+    public void getScorePlayer(User user) {
         String score = "";
         for (Player pl : playerList) {
             score += pl.getName() + ": " + pl.getTokenCount() + " \n";
         }
-        gameController.communicate(score);
+        user.message(score);
     }
 
     /**
@@ -164,6 +164,10 @@ public class GameBoard extends Thread {
 
     public Round getActiveRound() {
         return activeRound;
+    }
+
+    public void deliverMessage(String message, User user) {
+        gameController.communicate(message, user);
     }
 }
 
