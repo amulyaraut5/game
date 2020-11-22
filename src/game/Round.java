@@ -214,28 +214,7 @@ public class Round {
         }
         return false;
     }
-
-    public void discardCards(Player currentPlayer) {
-        //remove old handmaid effect
-        Card chosenCard = null;
-        //if player has countess in hand check for prince or king
-        if (first == "Countess" &&
-                (second == "King" || second == "Prince")) {
-            // if (chosenCard == currentPlayer.getSecondcard()) {
-            //send Message to player: "You have to choose Countess, please try again."
-            //}
-        } else if (second == "Countess" &&
-                (first == "King" || first == "Prince")) {
-            if (chosenCard == currentPlayer.getCard()) {
-                //send Message to player: "You have to choose Countess, please try again."
-            }
-        }
-        if (chosenCard == null) {
-            //chosenCard = currentPlayer.chooseCardtoPlay();
-            //handleCard(chosenCard);
-        }
-    }
-
+    
     /**
      * Check if the round is finished
      *
