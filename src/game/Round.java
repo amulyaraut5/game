@@ -173,8 +173,15 @@ public class Round {
         currentPlayer.message("You have chosen " + message);
         //TODO check if sender is currentplayer
         //Are sender and currentPlayer comparable?
-        if (sender != this.currentPlayer) {
+        if (sender.getName() != this.currentPlayer.getName()) {
             return null;
+        }
+        if (message=="1"){
+            card=currentPlayer.getCard();
+            this.currentPlayer.setCurrentCard(secondCard);
+        }
+        if (message=="2"){
+            card=secondCard;
         }
         //check if player chooses card 1 or card 2, return the one he chose.
         //if choosen card is second card, change second card with currentcard
