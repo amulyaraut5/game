@@ -101,11 +101,10 @@ public class UserThread extends Thread {
         try {
             while (true) {
                 String userName = reader.readLine();
-                if (userName.isBlank()) {
-                    sendMessage("You might not have entered a username. Please try again:");
-                } else if (!server.isAvailable(userName)) {
-                    sendMessage("This username is already taken. Please try a different username:");
-                } else {
+                if (userName.isBlank()) sendMessage("You might not have entered a username. Please try again:");
+                else if(userName.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again.");
+                else if (!server.isAvailable(userName)) sendMessage("This username is already taken. Please try a different username:");
+                else {
                     user.setName(userName);
                     break;
                 }
