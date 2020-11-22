@@ -33,6 +33,7 @@ public class Round {
         shuffleDeck();
         this.activePlayers = activePlayers;
         this.gameBoard = gameBoard;
+        firstCardRemoved = pop();
         removeFirstCards();
 
         Card.setRound(this);
@@ -50,6 +51,7 @@ public class Round {
             currentPlayer.message("It's your turn, " + currentPlayer + "!");
             //Draw card before calling choosecard, to not draw the card multiple times(in case choosecard gets called multiple times)
             Card secondCard = pop();
+            currentPlayer.setGuarded(false);
             playedCard = chooseCard(secondCard);
             while (playedCard == null) {
                 playedCard = chooseCard(secondCard);
@@ -143,7 +145,6 @@ public class Round {
      * @return the three removed cards
      */
     public ArrayList<Card> removeFirstCards() {
-        firstCardRemoved = pop();
         faceUpCards = new ArrayList<Card>();
         if (activePlayers.size() == 2) {
             for (int i = 0; i < 3; i++) {
@@ -215,7 +216,6 @@ public class Round {
 
     public void discardCards(Player currentPlayer) {
         //remove old handmaid effect
-        currentPlayer.setGuarded(false);
         Card chosenCard = null;
         //if player has countess in hand check for prince or king
         if (first == "Countess" &&
@@ -322,5 +322,13 @@ public class Round {
 
     public User getSender() {
         return sender;
+    }
+
+    public ArrayList<Card> getCardDeck() {
+        return cardDeck;
+    }
+
+    public Card getFirstCardRemoved() {
+        return firstCardRemoved;
     }
 }
