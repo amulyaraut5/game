@@ -1,6 +1,7 @@
 package card;
 
 import game.Player;
+import game.Round;
 
 public class HandmaidCard extends Card {
     public HandmaidCard(String nameOfCard, int cardValue) {
@@ -18,7 +19,6 @@ public class HandmaidCard extends Card {
     public int getCardValue() {
         return cardValue;
     }
-
 
     /**
      * By calling this method Player cannot be affected by the other players card until the next turn.

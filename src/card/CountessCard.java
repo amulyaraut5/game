@@ -1,6 +1,7 @@
 package card;
 
 import game.Player;
+import game.Round;
 
 public class CountessCard extends Card {
     public CountessCard(String nameOfCard, int cardValue){
@@ -18,6 +19,7 @@ public class CountessCard extends Card {
     public int getCardValue() {
         return cardValue;
     }
+
 
     /**
      * Notifies all players that the countess has been discarded.

@@ -1,6 +1,7 @@
 package card;
 
 import game.Player;
+import game.Round;
 
 public class KingCard extends Card {
     public KingCard(String nameOfCard, int cardValue){

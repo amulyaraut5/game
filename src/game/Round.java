@@ -67,6 +67,7 @@ public class Round {
      * @param card Card that the player chose to play.
      */
     public synchronized void handleTurn(Card card) {
+        card.setRound(this);
         card.handleCard(this.currentPlayer);
         nextPlayer();
     }

@@ -1,6 +1,7 @@
 package card;
 
 import game.Player;
+import game.Round;
 
 public class PrinceCard extends Card {
     public PrinceCard(String nameOfCard, int cardValue) {
@@ -17,6 +18,7 @@ public class PrinceCard extends Card {
     public int getCardValue() {
         return cardValue;
     }
+
 
     /**
      * By calling this method player can choose any player including themselves to discard their card

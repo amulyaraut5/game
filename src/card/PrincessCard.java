@@ -1,6 +1,7 @@
 package card;
 
 import game.Player;
+import game.Round;
 
 public class PrincessCard extends Card {
     public PrincessCard(String nameOfCard, int cardValue) {
@@ -18,7 +19,6 @@ public class PrincessCard extends Card {
     public int getCardValue() {
         return cardValue;
     }
-
 
     /**
      * If a player discard this card, then the player will be out of the round.

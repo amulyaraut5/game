@@ -1,6 +1,7 @@
 package card;
 
 import game.Player;
+import game.Round;
 
 public class PriestCard extends Card{
     public PriestCard(String nameOfCard, int cardValue){
