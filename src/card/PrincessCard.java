@@ -28,6 +28,6 @@ public class PrincessCard extends Card {
     public void handleCard(Player playerPlayingCard) {
         round.kickPlayer(playerPlayingCard);
         playerPlayingCard.message("You have been eliminated from the round");
-        controller.communicateAll(playerPlayingCard + " is eliminated from the round.");
+        controller.communicate(playerPlayingCard + " is eliminated from the round.", playerPlayingCard);
     }
 }
