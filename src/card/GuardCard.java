@@ -35,7 +35,7 @@ public class GuardCard extends Card{
         } else {
             // Display the player name from the availablePlayers so that the player can choose the name
             playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
-
+            playerPlayingCard.message("Type #Choose + name of player to choose the player");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer as per users choice from the list of players
             getTargetPlayer();

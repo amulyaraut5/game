@@ -30,9 +30,11 @@ public class PriestCard extends Card{
 
         if (availablePlayers.size() <= 0) {
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
+
         } else {
             // Display the player name from the availablePlayers so that the player can choose the name
             playerPlayingCard.message("Choose the player whose card you wish to look at: " + availablePlayers.toString());
+            playerPlayingCard.message("Type #Choose + name of player to choose the player");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer as per users choice from the list of players
             getTargetPlayer();
