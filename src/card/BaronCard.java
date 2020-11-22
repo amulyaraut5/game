@@ -57,17 +57,16 @@ public class BaronCard extends Card {
             playerPlayingCard.message("Both the players have same card value.");
             }
     }
+
     /**
-     * reads the input of player and returns the selected player to which the card effect should be applied.
-     * @return targetPlayer the selected player
+     * reads the input of player and sets the matching player as target player.
      */
-    Player getTargetPlayer(){
+    void getTargetPlayer(){
         String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;
             }
         }
-        return targetPlayer;
     }
 }

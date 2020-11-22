@@ -69,13 +69,16 @@ public class GuardCard extends Card{
         }
 
     }
-    Player getTargetPlayer(){
+
+    /**
+     * reads the input of player and sets the matching player as target player.
+     */
+    void getTargetPlayer(){
         String targetPlayerName = round.readResponse();
         for (Player player : availablePlayers) {
             if(player.getName().equals(targetPlayerName)){
                 targetPlayer = player;
             }
         }
-        return targetPlayer;
     }
 }
