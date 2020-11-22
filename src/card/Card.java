@@ -14,7 +14,7 @@ public abstract class Card {
     public int cardValue;
     public String nameOfCard;
     public Player targetPlayer;
-    public Player playerPlayingCard = null;
+    public Player playerPlayingCard;
 
     ArrayList<Player> availablePlayers = new ArrayList<>();
 
@@ -35,7 +35,7 @@ public abstract class Card {
     /**
      * Adds all not guarded players to the availablePlayers list, except current player
      */
-    void setAvailablePlayers(){
+    void setAvailablePlayers(Player playerPlayingCard){
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded() && player != playerPlayingCard) {
                 availablePlayers.add(player);

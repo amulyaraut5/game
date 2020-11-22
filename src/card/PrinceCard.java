@@ -27,7 +27,7 @@ public class PrinceCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        setAvailablePlayers();
+        setAvailablePlayers(playerPlayingCard);
 
         //Display the player name from the availablePlayers so that the player can choose the name
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
@@ -56,7 +56,7 @@ public class PrinceCard extends Card {
     /**
      * adds all players that are not guarded to the list availablePlayers
      */
-    void setAvailablePlayers() {
+    void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded()) {  // must not be guarded and discarding own card is allowed
                 availablePlayers.add(player);

@@ -28,7 +28,7 @@ public class GuardCard extends Card{
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        setAvailablePlayers();
+        setAvailablePlayers(playerPlayingCard);
 
         if(availablePlayers.size() <= 0){
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
