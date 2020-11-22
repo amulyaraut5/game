@@ -27,6 +27,7 @@ public class Round {
         //remove() function cannot be called in removeDeckCard
         //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
         // delete this message
+        gameBoard.deliverMessageAll("New Round object created.");
         this.currentPlayer = firstPlayer;
         this.cardDeck = deck;
         shuffleDeck();

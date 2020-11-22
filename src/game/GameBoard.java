@@ -71,10 +71,11 @@ public class GameBoard extends Thread {
         Player firstPlayer = compareDates(playerList);
         ArrayList<Card> deck = createDeck();
         while (!gameWon()) {
-
+            deliverMessageAll("Player List size:" + playerList.size());
             activeRound = new Round(firstPlayer, deck, playerList, this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
+            this.activeRound = null;
             for (Player resetPlayers : playerList){
                 resetPlayers.resetRound();
             }
