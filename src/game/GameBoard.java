@@ -85,9 +85,8 @@ public class GameBoard extends Thread {
                 firstPlayer = compareDates(winnerList);
             }
         }
-        gameWinner = firstPlayer;
-        //TODO wouldn't then the gameWinner be the last roundWinner?
-        // maybe set the gameWinner in gameWon() method
+        gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
+                "\nType #create to create a new game." );
     }
 
     /**
@@ -105,20 +104,20 @@ public class GameBoard extends Thread {
         return player;
 
     }
-    /*
+
     public ArrayList<Player> playerOrder(){
         Player firstplayer = compareDates(playerList);
 
         orderedPlayers.add(firstplayer);
         int indexFirstPlayer = playerList.indexOf(firstplayer);
         for ( int i = indexFirstPlayer++; i<playerList.size(); i++){
-            orderedPlayers.add(plList.get(i));
+            orderedPlayers.add(playerList.get(i));
         }
         for (int i = 0; i < indexFirstPlayer; i++){
-            orderedPlayers.add(plList.get(i));
+            orderedPlayers.add(playerList.get(i));
         }
         return orderedPlayers;
-    }*/
+    }
     /**
      * It creates a Player and adds it to the list of joined player
      *
