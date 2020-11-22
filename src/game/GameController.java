@@ -144,7 +144,7 @@ public class GameController {
     /**
      * Method to send message from GameBoard to GameController and then to all users
      */
-    public void sendMessage(String message) {
+    public void communicateAll(String message) {
         server.communicateAll(message);
     }
 
