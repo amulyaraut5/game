@@ -26,14 +26,14 @@ public class BaronCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        setAvailablePlayers();
+        setAvailablePlayers(playerPlayingCard);
 
         if (availablePlayers.size() <= 0) {
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
         } else {
             // Display the availablePlayers so that the player can choose one
             playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
-            playerPlayingCard.message("Type #Choose + name of player to choose the player");
+            playerPlayingCard.message("Type #choose <name> to choose the player.");
             // Read the input of the user and return the target player
             getTargetPlayer();
             // compares the hand to see who has the greater cardValue

@@ -27,22 +27,24 @@ public class PrinceCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        setAvailablePlayers();
+        setAvailablePlayers(playerPlayingCard);
 
         //Display the player name from the availablePlayers so that the player can choose the name
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
-        playerPlayingCard.message("Type #Choose + name of player to choose the player");
+        playerPlayingCard.message("Type #choose + name of player to choose the player");
         //Read the input of the user and return the target player
         getTargetPlayer();
 
-        //checks if card of selected player is princess  and kick the player out of the round.
+        //checks if card of selected player is princess and kick the player out of the round.
         if (targetPlayer.getCard().getCardName().equals("Princess")) {
             round.kickPlayer(targetPlayer);
             //Display message to all the players
             controller.communicateAll(targetPlayer + " has discarded a princess because of " + playerPlayingCard + "!" +
-                    "\nThe player is now out of the game!" +
-                    " \n*shakes fist angrily");
-        } else {
+                            "\nThe player is now out of the game!" +
+                            " \n*shakes fist angrily");
+            } else if (round.getCardDeck().size() <= 0) {
+                Card currentCard = round.getFirstCardRemoved();
+            } else {
             //targetPlayer needs to draw a card from the deck
             Card currentCard = targetPlayer.getCard();
             targetPlayer.getPlayedCards().add(currentCard);
@@ -51,7 +53,10 @@ public class PrinceCard extends Card {
     }
 
     @Override
-    void setAvailablePlayers() {
+    /**
+     * adds all players that are not guarded to the list availablePlayers
+     */
+    void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded()) {  // must not be guarded and discarding own card is allowed
                 availablePlayers.add(player);
