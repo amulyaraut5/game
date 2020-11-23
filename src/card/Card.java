@@ -14,7 +14,6 @@ public abstract class Card {
     public int cardValue;
     public String nameOfCard;
     public Player targetPlayer;
-    public Player playerPlayingCard;
 
     ArrayList<Player> availablePlayers = new ArrayList<>();
 

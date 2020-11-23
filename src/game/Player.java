@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 public class Player extends User {
 
+    private final ArrayList<Card> playedCards = new ArrayList<>();
     private boolean guarded = false;
     private int numOfTokens = 0;
     private Card currentCard;
-    private ArrayList<Card> playedCards = new ArrayList<>();
 
     /**
      * Creates new player from given user.

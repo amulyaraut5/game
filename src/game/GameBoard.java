@@ -13,12 +13,9 @@ import java.util.ArrayList;
  * @author sarah,
  */
 public class GameBoard extends Thread {
-    private GameController gameController;
+    private final GameController gameController;
+    private final ArrayList<Player> playerList = new ArrayList<>();
     private Round activeRound;
-    private ArrayList<Player> playerList = new ArrayList<>();
-    private ArrayList<Player> winnerList = new ArrayList<>();
-
-    private boolean started = false;
     private Player gameWinner;
 
 
@@ -47,13 +44,13 @@ public class GameBoard extends Thread {
     }
 
     public void getScorePlayer(User user) {
-        String score = "";
-        score += "Tokens | Player\n";
-        score += "---------------";
+        StringBuilder score = new StringBuilder();
+        score.append("Tokens | Player\n");
+        score.append("---------------");
         for (Player pl : playerList) {
-            score += "\n    " + pl.getTokenCount() + "  | " + pl;
+            score.append("\n    ").append(pl.getTokenCount()).append("  | ").append(pl);
         }
-        user.message(score);
+        user.message(score.toString());
     }
 
     /**
@@ -78,6 +75,7 @@ public class GameBoard extends Thread {
     public void playGame() {
         Player firstPlayer = compareDates(playerList);
         ArrayList<Card> deck = createDeck();
+        ArrayList<Player> winnerList;
         while (!gameWon()) {
             activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(playerList), this);
             activeRound.play();
@@ -136,15 +134,6 @@ public class GameBoard extends Thread {
     }
 
     /**
-     * checks if round is over who´s the winner depending on value cards/discarded cards
-     *
-     * @return winner
-     */
-    public Player getWinner() {
-        return gameWinner;
-    }
-
-    /**
      * checks whether some Player already has won the whole game
      * If someone has won, the reset Method from gameController is called which enables the start
      * of a new game.
@@ -179,10 +168,6 @@ public class GameBoard extends Thread {
 
     public void deliverMessage(String message, Player player) {
         gameController.communicate(message, player);
-    }
-
-    public void deliverMessageAll(String message) {
-        gameController.communicateAll(message);
     }
 }
 

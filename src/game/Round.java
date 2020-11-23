@@ -13,20 +13,16 @@ import java.util.Collections;
  * @author sarah,
  */
 public class Round {
-    private GameBoard gameBoard;
+    private final GameBoard gameBoard;
 
-    private ArrayList<Card> cardDeck; //Remove after getStackCards is created
-    private ArrayList<Player> activePlayers;
+    private final ArrayList<Card> cardDeck; //Remove after getStackCards is created
+    private final ArrayList<Player> activePlayers;
     private ArrayList<Card> faceUpCards;
 
-    private Card firstCardRemoved = null;
+    private final Card firstCardRemoved;
     private Player currentPlayer;
 
-    private String first = "";//TODO save strings in method chooseCard()
-    private String second = "";
-
     private volatile String userResponse;
-    private volatile User sender;
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
         //remove() function cannot be called in removeDeckCard
@@ -51,7 +47,7 @@ public class Round {
             p.setCurrentCard(pop());
         }
         while (!isRoundFinished()) {
-            Card playedCard = null;
+            Card playedCard;
             currentPlayer.message("It's your turn, " + currentPlayer + "!");
             //Draw card before calling choosecard, to not draw the card multiple times(in case choosecard gets called multiple times)
             Card secondCard = pop();
@@ -71,7 +67,7 @@ public class Round {
      * @param card Card that the player chose to play.
      */
     public void handleTurn(Card card) {
-        card.setRound(this);
+        Card.setRound(this);
         card.handleCard(this.currentPlayer);
         nextPlayer();
     }
@@ -93,7 +89,6 @@ public class Round {
         if (User.isSameUser(sender, currentPlayer)) {
             if (userResponse == null) {
                 userResponse = message;
-                this.sender = sender;
             } else {
                 sender.message("You were too fast. The message has not yet been read. Please try again:");
             }
@@ -118,6 +113,7 @@ public class Round {
             try {
                 gameBoard.sleep(50);
             } catch (InterruptedException e) {
+                break;
             }
         }
         response = userResponse;
@@ -129,9 +125,8 @@ public class Round {
     /**
      * Shuffles the deck of Gameboard in each new round.
      */
-    public ArrayList<Card> shuffleDeck() {
+    public void shuffleDeck() {
         Collections.shuffle(cardDeck);
-        return cardDeck;
     }
 
     /**
@@ -152,7 +147,7 @@ public class Round {
      * @return the three removed cards
      */
     public ArrayList<Card> removeFirstCards() {
-        faceUpCards = new ArrayList<Card>();
+        faceUpCards = new ArrayList<>();
         if (activePlayers.size() == 2) {
             for (int i = 0; i < 3; i++) {
                 faceUpCards.add(pop()); //show?
@@ -182,10 +177,6 @@ public class Round {
         String message = readResponse();
         //TODO change currentCard of active Player
         boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
-        if (!User.isSameUser(sender, currentPlayer)) {//TODO move to write Response
-            card = null;
-            sender.message("Please wait for your turn!");
-        }
         if (message.equals("1")) {
             card = currentPlayer.getCard();
             //if (mustCountess && (card.getCardName() != "Countess")) {
@@ -206,14 +197,15 @@ public class Round {
 
     }
 
-    public boolean checkCountess(Card card1, Card card2) {
-        if (first == "Countess" &&
-                (second == "King" || second == "Prince")) {
+    public boolean checkCountess(Card first, Card second) {
+        //TODO Card does not yet implement toString,
+        // thus the object reference of first is compared with "..."
+        if (first.equals("Countess") &&
+                (second.equals("King") || second.equals("Prince"))) {
             return true;
-
         }
-        if (second == "Countess" &&
-                (first == "King" || first == "Prince")) {
+        if (second.equals("Countess") &&
+                (first.equals("King")  || first.equals("Prince"))) {
             return true;
         }
         return false;
@@ -227,8 +219,7 @@ public class Round {
     public boolean isRoundFinished() {
         if (cardDeck.isEmpty()) return true;//round ends if deck is empty at the end of a turn
         //A round also ends if all players but one are out of the round, in which case the remaining player wins
-        if (activePlayers.size() < 2) return true; // one player has won
-        return false;
+        return activePlayers.size() < 2; // one player has won
     }
 
     /**
@@ -264,19 +255,6 @@ public class Round {
         }
         winnerList.add(winner);
         return winnerList;
-    }
-
-    /**
-     * this method adds another player to the game.
-     *
-     * @param player player that's supposed to be added.
-     */
-    public void addPlayer(Player player) {
-        if (activePlayers.size() < 4) {
-            activePlayers.add(player);
-        } else {
-            //send message to player: "The game is full, sorry!"
-        }
     }
 
     /**

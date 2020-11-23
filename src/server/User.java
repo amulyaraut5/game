@@ -20,7 +20,7 @@ public class User {
      *
      * @param a first user
      * @param b second user
-     * @return
+     * @return true if they are the same user, otherwise false
      */
     public static boolean isSameUser(User a, User b) {
         return a.thread == b.thread;

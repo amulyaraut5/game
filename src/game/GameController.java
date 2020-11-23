@@ -23,11 +23,10 @@ public class GameController {
                 #start:  starts the game\s
                 #score:  look at current scores\s
                 #choose: 'Card/Player': if you have to choose a card or another player\s""";
-
+    private final ChatServer server;
     public GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;
-    private ChatServer server;
 
     public GameController(ChatServer server) {
         this.server = server;
@@ -38,7 +37,7 @@ public class GameController {
      * Reads and distributes all incoming commands regarding the game.
      * In case the command consists of additional information in choose the command gets cut.
      * It checks if the required additional information is there and then sends only this
-     * additional information to the gameboard to be evaluated.
+     * additional information to the GameBoard to be evaluated.
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
