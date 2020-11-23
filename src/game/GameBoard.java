@@ -85,6 +85,7 @@ public class GameBoard extends Thread {
         ArrayList<Card> deck = createDeck();
         ArrayList<Player> winnerList;
         while (!gameWon()) {
+            gameController.communicateAll("A new round begins. Good luck;)");
             activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(playerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
