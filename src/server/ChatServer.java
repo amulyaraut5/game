@@ -8,7 +8,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * TODO
+ * This class mainly deals with establishing connection between server and client and helps in
+ * communication between different users.
+ * @author louis and amulya
  */
 public class ChatServer {
     private static final ArrayList<User> users = new ArrayList<>(10);

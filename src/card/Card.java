@@ -1,10 +1,15 @@
 package card;
 
+
 import game.GameController;
 import game.Player;
 import game.Round;
-
 import java.util.ArrayList;
+/**
+ * This is the abstract parent class from which the various child classes are extended.
+ * It contains the various methods to be overridden by its child classes.
+ * @author amulya and vossa
+ */
 
 public abstract class Card {
     protected static Round round;

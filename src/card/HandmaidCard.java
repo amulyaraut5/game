@@ -2,6 +2,10 @@ package card;
 
 import game.Player;
 
+/**
+ * This card subclass contains the unique functionality of the Handmaid Card.
+ * @author amulya and vossa
+ */
 public class HandmaidCard extends Card {
     public HandmaidCard(String nameOfCard, int cardValue) {
 

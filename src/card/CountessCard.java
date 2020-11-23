@@ -2,6 +2,10 @@ package card;
 
 import game.Player;
 
+/**
+ *This card subclass contains the unique functionality of the Countess Card.
+ * @author amulya and vossa
+ */
 public class CountessCard extends Card {
     public CountessCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;

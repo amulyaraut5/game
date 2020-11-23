@@ -2,6 +2,10 @@ package card;
 
 import game.Player;
 
+/**
+ * This card subclass contains the unique functionality of the Guard Card.
+ * @author amulya and vossa
+ */
 public class GuardCard extends Card {
     public GuardCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;

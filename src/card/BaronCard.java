@@ -1,4 +1,8 @@
 package card;
+/**
+ * This card subclass contains the unique functionality of the Baron Card.
+ * @author amulya and vossa
+ */
 
 import game.Player;
 
@@ -55,5 +59,6 @@ public class BaronCard extends Card {
                 playerPlayingCard.message("Both the players have same card value.");
             }
         }
+
     }
 }

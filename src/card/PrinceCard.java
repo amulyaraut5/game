@@ -2,6 +2,10 @@ package card;
 
 import game.Player;
 
+/**
+ * This card subclass contains the unique functionality of the Prince Card.
+ * @author amulya and vossa
+ */
 public class PrinceCard extends Card {
     public PrinceCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;

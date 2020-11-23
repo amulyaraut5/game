@@ -1,6 +1,10 @@
 package card;
-
 import game.Player;
+
+/**
+ * This card subclass contains the unique functionality of the King Card.
+ * @author amulya and vossa
+ */
 
 public class KingCard extends Card {
     public KingCard(String nameOfCard, int cardValue) {

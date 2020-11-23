@@ -2,6 +2,10 @@ package card;
 
 import game.Player;
 
+/**
+ * This card subclass contains the unique functionality of the Princess Card.
+ * @author amulya and vossa
+ */
 public class PrincessCard extends Card {
     public PrincessCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
