@@ -103,6 +103,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Reacts to command "score".
+     * This method checks if a GameBoard has already been created then the user gets a message that he cannot
+     * get information about score, otherwise he gets the information about the score
+     * @param user who wants to know the score
+     */
     public void score(User user) {
         if (!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
         else if (!runningGame) {
