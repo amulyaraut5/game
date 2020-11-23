@@ -54,6 +54,7 @@ public class PrinceCard extends Card {
             targetPlayer.getPlayedCards().add(currentCard);
             targetPlayer.setCurrentCard(round.pop());
         }
+        availablePlayers.clear();
     }
 
     @Override

@@ -53,5 +53,6 @@ public class KingCard extends Card {
             playerPlayingCard.message("You have swapped cards with " + targetPlayer + ". Your new card is: " + targetCard.getCardName());
             targetPlayer.message(playerPlayingCard + " swapped cards with you. Your new card is: " + playerCard.getCardName());
         }
+        availablePlayers.clear();
     }
 }

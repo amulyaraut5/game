@@ -49,5 +49,6 @@ public class PriestCard extends Card {
             String lookAtCard = targetPlayer.getCard().getCardName();
             playerPlayingCard.message(targetPlayer + " has the card: " + lookAtCard);
         }
+        availablePlayers.clear();
     }
 }

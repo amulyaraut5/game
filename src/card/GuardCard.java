@@ -71,5 +71,6 @@ public class GuardCard extends Card {
             }
 
         }
+        availablePlayers.clear();
     }
 }
