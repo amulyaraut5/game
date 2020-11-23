@@ -5,6 +5,13 @@ import server.User;
 
 import java.util.ArrayList;
 
+/**
+ * In a newly created game, an instance of the GameBoard class is created in which the
+ * deck of cards is created and a winner of the game is determined by creating
+ * and running instances of the Round class until one player has won.
+ *
+ * @author sarah,
+ */
 public class GameBoard extends Thread {
     private GameController gameController;
     private Round activeRound;

@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * TODO
+ */
 public class ChatServer {
     private static final ArrayList<User> users = new ArrayList<>(10);
     private final int port;

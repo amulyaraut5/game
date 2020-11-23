@@ -7,6 +7,11 @@ import server.User;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * //TODO
+ *
+ * @author sarah,
+ */
 public class Round {
     private GameBoard gameBoard;
 
