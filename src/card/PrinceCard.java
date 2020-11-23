@@ -47,8 +47,10 @@ public class PrinceCard extends Card {
                     "The player is now out of the game!\n" +
                     "*" + targetPlayer + " shakes fist angrily*");
         } else if (round.getCardDeck().size() <= 0) {
-            Card currentCard = round.getFirstCardRemoved();
-            //targetPlayer.setCurrentCard(currentCard);
+            // If the deck is empty, targetPlayer should pick the card which was removed at the beginning of play.
+            Card currentCard = targetPlayer.getCard();
+            targetPlayer.getPlayedCards().add(currentCard);
+            targetPlayer.setCurrentCard(round.getFirstCardRemoved());
         } else {
             //targetPlayer needs to draw a card from the deck
             Card currentCard = targetPlayer.getCard();
