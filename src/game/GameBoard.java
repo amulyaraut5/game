@@ -41,8 +41,10 @@ public class GameBoard extends Thread {
 
     public void getScorePlayer(User user) {
         String score = "";
+        score += "Tokens | Player\n";
+        score += "---------------";
         for (Player pl : playerList) {
-            score += pl + ": " + pl.getTokenCount() + " \n";
+            score += "\n    " + pl.getTokenCount() + "  | " + pl;
         }
         user.message(score);
     }
@@ -74,7 +76,7 @@ public class GameBoard extends Thread {
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
             this.activeRound = null;
-            for (Player resetPlayers : playerList){
+            for (Player resetPlayers : playerList) {
                 resetPlayers.resetRound();
             }
             for (Player player : winnerList) {
@@ -85,7 +87,7 @@ public class GameBoard extends Thread {
             } else {
                 firstPlayer = compareDates(winnerList);
             }
-            gameController.communicateAll("The round has ended. Winner of the round: "+ firstPlayer.getName());
+            gameController.communicateAll("The round has ended. Winner of the round: " + firstPlayer.getName());
         }
         gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #create to create a new game.");

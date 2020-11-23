@@ -105,9 +105,6 @@ public class GameController {
 
     public void score(User user) {
         if (!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
-        else if (!gameBoard.alreadyJoined(user))
-            user.message("You haven´t joined the game. Please type '#join' to join.");
-            //TODO können auch User sich den Score anzeigen lassen, die keine Spieler sind?
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
             gameBoard.getScorePlayer(user);
