@@ -5,13 +5,17 @@ import server.User;
 
 import java.util.ArrayList;
 
+/**
+ * In a newly created game, an instance of the GameBoard class is created in which the
+ * deck of cards is created and a winner of the game is determined by creating
+ * and running instances of the Round class until one player has won.
+ *
+ * @author sarah,
+ */
 public class GameBoard extends Thread {
-    private GameController gameController;
+    private final GameController gameController;
+    private final ArrayList<Player> playerList = new ArrayList<>();
     private Round activeRound;
-    private ArrayList<Player> playerList = new ArrayList<>();
-    private ArrayList<Player> winnerList = new ArrayList<>();
-
-    private boolean started = false;
     private Player gameWinner;
 
 
@@ -19,6 +23,10 @@ public class GameBoard extends Thread {
         this.gameController = gameController;
     }
 
+    /**
+     * It fills a list with all 16 required cards
+     * @return created and already filled deck
+     */
     public static ArrayList<Card> createDeck() {
         ArrayList<Card> stackCards = new ArrayList<>();
         // every card just one time: princess, countess, king
@@ -39,12 +47,18 @@ public class GameBoard extends Thread {
         return stackCards;
     }
 
+    /**
+     * It returns a String that contains information about the token score of each user
+     * @param user
+     */
     public void getScorePlayer(User user) {
-        String score = "";
+        StringBuilder score = new StringBuilder();
+        score.append("Tokens | Player\n");
+        score.append("---------------");
         for (Player pl : playerList) {
-            score += pl + ": " + pl.getTokenCount() + " \n";
+            score.append("\n    ").append(pl.getTokenCount()).append("  | ").append(pl);
         }
-        user.message(score);
+        user.message(score.toString());
     }
 
     /**
@@ -69,12 +83,14 @@ public class GameBoard extends Thread {
     public void playGame() {
         Player firstPlayer = compareDates(playerList);
         ArrayList<Card> deck = createDeck();
+        ArrayList<Player> winnerList;
         while (!gameWon()) {
+            gameController.communicateAll("A new round begins. Good luck;)");
             activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(playerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
             this.activeRound = null;
-            for (Player resetPlayers : playerList){
+            for (Player resetPlayers : playerList) {
                 resetPlayers.resetRound();
             }
             for (Player player : winnerList) {
@@ -85,7 +101,7 @@ public class GameBoard extends Thread {
             } else {
                 firstPlayer = compareDates(winnerList);
             }
-            gameController.communicateAll("The round has ended. Winner of the round: "+ firstPlayer.getName());
+            gameController.communicateAll("The round has ended. Winner of the round: " + firstPlayer.getName());
         }
         gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #create to create a new game.");
@@ -127,15 +143,6 @@ public class GameBoard extends Thread {
     }
 
     /**
-     * checks if round is over who´s the winner depending on value cards/discarded cards
-     *
-     * @return winner
-     */
-    public Player getWinner() {
-        return gameWinner;
-    }
-
-    /**
      * checks whether some Player already has won the whole game
      * If someone has won, the reset Method from gameController is called which enables the start
      * of a new game.
@@ -170,10 +177,6 @@ public class GameBoard extends Thread {
 
     public void deliverMessage(String message, Player player) {
         gameController.communicate(message, player);
-    }
-
-    public void deliverMessageAll(String message) {
-        gameController.communicateAll(message);
     }
 }
 

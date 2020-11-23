@@ -23,11 +23,10 @@ public class GameController {
                 #start:  starts the game\s
                 #score:  look at current scores\s
                 #choose: 'Card/Player': if you have to choose a card or another player\s""";
-
+    private final ChatServer server;
     public GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;
-    private ChatServer server;
 
     public GameController(ChatServer server) {
         this.server = server;
@@ -38,7 +37,7 @@ public class GameController {
      * Reads and distributes all incoming commands regarding the game.
      * In case the command consists of additional information in choose the command gets cut.
      * It checks if the required additional information is there and then sends only this
-     * additional information to the gameboard to be evaluated.
+     * additional information to the GameBoard to be evaluated.
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
@@ -103,11 +102,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Reacts to command "score".
+     * This method checks if a GameBoard has already been created then the user gets a message that he cannot
+     * get information about score, otherwise he gets the information about the score
+     * @param user who wants to know the score
+     */
     public void score(User user) {
         if (!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
-        else if (!gameBoard.alreadyJoined(user))
-            user.message("You haven´t joined the game. Please type '#join' to join.");
-            //TODO können auch User sich den Score anzeigen lassen, die keine Spieler sind?
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
             gameBoard.getScorePlayer(user);
@@ -152,6 +154,12 @@ public class GameController {
         server.communicateAll(message);
     }
 
+    /**
+     * Method to send from GameBoard to Gamecontroller and then it has to find the related user
+     * to the player to send a message
+     * @param message
+     * @param player
+     */
     public void communicate(String message, Player player) {
         ArrayList<User> users = server.getUsers();
         for (User user : users) {

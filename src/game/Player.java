@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 public class Player extends User {
 
+    private final ArrayList<Card> playedCards = new ArrayList<>();
     private boolean guarded = false;
     private int numOfTokens = 0;
     private Card currentCard;
-    private ArrayList<Card> playedCards = new ArrayList<>();
 
     /**
      * Creates new player from given user.
@@ -48,7 +48,7 @@ public class Player extends User {
      * @return Number of tokens after the increase.
      */
     public void increaseNumOfTokens() {
-        numOfTokens+=1;
+        numOfTokens += 1;
     }
 
     /**
@@ -79,7 +79,6 @@ public class Player extends User {
 
 
     /**
-     *
      * @return
      */
     public ArrayList<Card> getPlayedCards() {
@@ -93,10 +92,11 @@ public class Player extends User {
     public void setGuarded(boolean guarded) {
         this.guarded = guarded;
     }
+
     /**
      * Method clears the list of  played cards in a round, the player is not guarded anymore.
      */
-    public void resetRound(){
+    public void resetRound() {
         setGuarded(false);
         playedCards.clear();
         setCurrentCard(null);

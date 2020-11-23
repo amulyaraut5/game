@@ -1,10 +1,15 @@
 package card;
 
+
 import game.GameController;
 import game.Player;
 import game.Round;
-
 import java.util.ArrayList;
+/**
+ * This is the abstract parent class from which the various child classes are extended.
+ * It contains the various methods to be overridden by its child classes.
+ * @author amulya and vossa
+ */
 
 public abstract class Card {
     protected static Round round;
@@ -14,7 +19,6 @@ public abstract class Card {
     public int cardValue;
     public String nameOfCard;
     public Player targetPlayer;
-    public Player playerPlayingCard;
 
     ArrayList<Player> availablePlayers = new ArrayList<>();
 
@@ -36,7 +40,7 @@ public abstract class Card {
      * Adds all not guarded players to the availablePlayers list, except current player
      */
 
-    void setAvailablePlayers(Player playerPlayingCard){
+    void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded() && player != playerPlayingCard) {
                 availablePlayers.add(player);

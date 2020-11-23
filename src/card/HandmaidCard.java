@@ -1,8 +1,11 @@
 package card;
 
 import game.Player;
-import game.Round;
 
+/**
+ * This card subclass contains the unique functionality of the Handmaid Card.
+ * @author amulya and vossa
+ */
 public class HandmaidCard extends Card {
     public HandmaidCard(String nameOfCard, int cardValue) {
 
@@ -22,6 +25,7 @@ public class HandmaidCard extends Card {
 
     /**
      * By calling this method Player cannot be affected by the other players card until the next turn.
+     *
      * @param playerPlayingCard the current player
      */
     @Override

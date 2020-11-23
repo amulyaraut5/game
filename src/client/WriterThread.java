@@ -3,6 +3,12 @@ package client;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * This class reads the input of the user and first gets the username and
+ * then it reads messages until the user types bye
+ *
+ * @author sarah
+ */
 public class WriterThread extends Thread {
 
     private final PrintWriter writer;

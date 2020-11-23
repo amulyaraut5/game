@@ -2,6 +2,10 @@ package card;
 
 import game.Player;
 
+/**
+ * This card subclass contains the unique functionality of the Guard Card.
+ * @author amulya and vossa
+ */
 public class GuardCard extends Card {
     public GuardCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
@@ -36,19 +40,20 @@ public class GuardCard extends Card {
         } else {
             // Display the player name from the availablePlayers so that the player can choose the name
             playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
-            playerPlayingCard.message("Type '#choose <name>' to choose the player");
+            playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer as per users choice from the list of players
             getTargetPlayer();
 
 
-            while(true){
+            while (true) {
                 // Then playerPlayingCard can guess the card of the targetPlayer
-                playerPlayingCard.message("What card do you think the player has?");
+                playerPlayingCard.message("Which card do you think the player has? Type '#choose <card>'");
+                playerPlayingCard.message("Choose one Card: [Priest, Baron, Handmaid, Prince, King, Countess, Princess]");
                 // Read the input of the player
                 String guessCardName = round.readResponse();
                 if (guessCardName.equals(this.nameOfCard)) {
-                    playerPlayingCard.message("You cannot choose the guard card, try again.");
+                    playerPlayingCard.message("You cannot choose the Guard card, try again.");
 
 
                 } else if (guessCardName.equals(targetPlayer.getCard().getCardName())) {
@@ -66,5 +71,6 @@ public class GuardCard extends Card {
             }
 
         }
+        availablePlayers.clear();
     }
 }
