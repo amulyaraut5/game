@@ -1,10 +1,9 @@
 package card;
 
 import game.Player;
-import game.Round;
 
 public class CountessCard extends Card {
-    public CountessCard(String nameOfCard, int cardValue){
+    public CountessCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
 
@@ -24,6 +23,7 @@ public class CountessCard extends Card {
     /**
      * Notifies all players that the countess has been discarded.
      * The Countess takes effect while she is in the hand, which is already handled in Round class.
+     *
      * @param playerPlayingCard the current player
      */
     @Override

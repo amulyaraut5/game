@@ -1,7 +1,6 @@
 package card;
 
 import game.Player;
-import game.Round;
 
 public class HandmaidCard extends Card {
     public HandmaidCard(String nameOfCard, int cardValue) {
@@ -22,6 +21,7 @@ public class HandmaidCard extends Card {
 
     /**
      * By calling this method Player cannot be affected by the other players card until the next turn.
+     *
      * @param playerPlayingCard the current player
      */
     @Override
