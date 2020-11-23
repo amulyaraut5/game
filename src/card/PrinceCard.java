@@ -48,6 +48,7 @@ public class PrinceCard extends Card {
                     "*" + targetPlayer + " shakes fist angrily*");
         } else if (round.getCardDeck().size() <= 0) {
             Card currentCard = round.getFirstCardRemoved();
+            //targetPlayer.setCurrentCard(currentCard);
         } else {
             //targetPlayer needs to draw a card from the deck
             Card currentCard = targetPlayer.getCard();
