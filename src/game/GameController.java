@@ -154,6 +154,12 @@ public class GameController {
         server.communicateAll(message);
     }
 
+    /**
+     * Method to send from GameBoard to Gamecontroller and then it has to find the related user
+     * to the player to send a message
+     * @param message
+     * @param player
+     */
     public void communicate(String message, Player player) {
         ArrayList<User> users = server.getUsers();
         for (User user : users) {

@@ -17,9 +17,8 @@ public class Round {
 
     private final ArrayList<Card> cardDeck; //Remove after getStackCards is created
     private final ArrayList<Player> activePlayers;
-    private ArrayList<Card> faceUpCards;
-
     private final Card firstCardRemoved;
+    private ArrayList<Card> faceUpCards;
     private Player currentPlayer;
 
     private volatile String userResponse;
@@ -197,6 +196,11 @@ public class Round {
 
     }
 
+    /**
+     * @param first
+     * @param second
+     * @return
+     */
     public boolean checkCountess(Card first, Card second) {
         //TODO Card does not yet implement toString,
         // thus the object reference of first is compared with "..."
@@ -205,7 +209,7 @@ public class Round {
             return true;
         }
         if (second.equals("Countess") &&
-                (first.equals("King")  || first.equals("Prince"))) {
+                (first.equals("King") || first.equals("Prince"))) {
             return true;
         }
         return false;

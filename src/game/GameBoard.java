@@ -23,6 +23,10 @@ public class GameBoard extends Thread {
         this.gameController = gameController;
     }
 
+    /**
+     * It fills a list with all 16 required cards
+     * @return created and already filled deck
+     */
     public static ArrayList<Card> createDeck() {
         ArrayList<Card> stackCards = new ArrayList<>();
         // every card just one time: princess, countess, king
@@ -43,6 +47,10 @@ public class GameBoard extends Thread {
         return stackCards;
     }
 
+    /**
+     * It returns a String that contains information about the token score of each user
+     * @param user
+     */
     public void getScorePlayer(User user) {
         StringBuilder score = new StringBuilder();
         score.append("Tokens | Player\n");
