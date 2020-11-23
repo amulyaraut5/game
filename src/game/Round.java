@@ -206,6 +206,12 @@ public class Round {
 
     }
 
+    /**
+     *
+     * @param card1
+     * @param card2
+     * @return
+     */
     public boolean checkCountess(Card card1, Card card2) {
         if (first == "Countess" &&
                 (second == "King" || second == "Prince")) {
