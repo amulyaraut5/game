@@ -80,7 +80,7 @@ public class GameController {
             user.message("You created a new game!\nYour friends can join with '#join'. (2-4 Players)");
             server.communicate(user + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
         }
-        else if (createdGame && !gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
+        else if (!gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             if (gameBoard.getPlayerCount() < 4) {
                 user.message("You've joined the game. If you want to start already type '#start'.");
