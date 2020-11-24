@@ -18,7 +18,6 @@ public class GameController {
 
     private final String COMMANDS = """
             Use the following commands to control the game:\s
-                #create: creates a new game\s
                 #join:   join the game\s
                 #start:  starts the game\s
                 #score:  look at current scores\s
@@ -48,7 +47,6 @@ public class GameController {
             command = message.substring(0, message.indexOf(" "));
         }
         switch (command) {
-            case "#create" -> create(user);
             case "#join" -> join(user);
             case "#start" -> start(user);
             case "#help" -> user.message(COMMANDS);
@@ -65,43 +63,35 @@ public class GameController {
         } //case "#end":
     }
 
+
     /**
-     * Reacts to command "create".
-     * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
-     * If a GameBoard was already created the User gets a message to join the game.
+     * Reacts to command "join".
+     * This method checks if a GameBoard has already been created and/or started.
+     * If the player is the first to join the GameBoard gets created. If he is the 4th player the game starts
+     * automatically.
      *
-     * @param user user who created the game
+     * @param user user who joined the game
      */
-    public void create(User user) {
+    public void join(User user) {
         if (!createdGame) {
             gameBoard = new GameBoard(this);
             createdGame = true;
             gameBoard.addPlayer(user);
             user.message("You created a new game!\nYour friends can join with '#join'. (2-4 Players)");
             server.communicate(user + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
-        } else if (!runningGame) {
-            user.message("Someone has already created a game. Type '#join' if you want to join the game.");
-        } else {
-            user.message("You're friends have started without you. Just wait and join in the next game.");
         }
-    }
-
-    /**
-     * Reacts to command "join".
-     * This method checks if a GameBoard has already been created and/or started.
-     * Also a player can only join if <4 players already joined.
-     *
-     * @param user user who joined the game
-     */
-    public void join(User user) {
-        if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
+        else if (createdGame && !gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
-            user.message("You've joined the game. If you want to start already type '#start'.");
-            server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
+            if (gameBoard.getPlayerCount() < 4) {
+                user.message("You've joined the game. If you want to start already type '#start'.");
+                server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
+            } else {
+                user.message("You've joined the game.");
+                server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4).", user);
+                start(user);
+            }
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start, type '#start'.");
-        } else if (!createdGame) {
-            user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
         } else if (gameBoard.getPlayerCount() >= 4) {
