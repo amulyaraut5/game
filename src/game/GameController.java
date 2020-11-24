@@ -38,6 +38,9 @@ public class GameController {
      * In case the command consists of additional information in choose the command gets cut.
      * It checks if the required additional information is there and then sends only this
      * additional information to the GameBoard to be evaluated.
+     *
+     * @param message command that is received from the Server
+     * @param user user that sent the command
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
@@ -66,6 +69,8 @@ public class GameController {
      * Reacts to command "create".
      * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
      * If a GameBoard was already created the User gets a message to join the game.
+     *
+     * @param user user who created the game
      */
     public void create(User user) {
         if (!createdGame) {
@@ -85,6 +90,8 @@ public class GameController {
      * Reacts to command "join".
      * This method checks if a GameBoard has already been created and/or started.
      * Also a player can only join if <4 players already joined.
+     *
+     * @param user user who joined the game
      */
     public void join(User user) {
         if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
@@ -106,6 +113,7 @@ public class GameController {
      * Reacts to command "score".
      * This method checks if a GameBoard has already been created then the user gets a message that he cannot
      * get information about score, otherwise he gets the information about the score
+     *
      * @param user who wants to know the score
      */
     public void score(User user) {
@@ -121,6 +129,8 @@ public class GameController {
      * Checks if the player has already joined the game, if a game has been created/started
      * and if there are >=2 and <=4 players.
      * If game can be started the method playGame() is called from the GameBoard.
+     *
+     * @param user user who started the game
      */
     public void start(User user) {
         if (!gameBoard.alreadyJoined(user)) {
@@ -148,17 +158,20 @@ public class GameController {
     }
 
     /**
-     * Method to send message from GameBoard to GameController and then to all users
+     * Method to send in Game messages to the Users/Players. This method sends a message to every User.
+     *
+     * @param message String that should be send
      */
     public void communicateAll(String message) {
         server.communicateAll(message);
     }
 
     /**
-     * Method to send from GameBoard to Gamecontroller and then it has to find the related user
-     * to the player to send a message
-     * @param message
-     * @param player
+     * Method to send in Game messages to the Users/Players. This method sends a message to everyone except one specified
+     * Player.
+     *
+     * @param message String that should be send
+     * @param player Player who doesn't get send message
      */
     public void communicate(String message, Player player) {
         ArrayList<User> users = server.getUsers();

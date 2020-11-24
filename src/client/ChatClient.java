@@ -59,7 +59,7 @@ public class ChatClient {
     }
 
     /**
-     *
+     * //TODO
      */
     public void disconnect() {
         readerThread.interrupt();
@@ -72,7 +72,7 @@ public class ChatClient {
     }
 
     /**
-     *
+     * //TODO
      * @param ex
      */
     public void disconnect(Exception ex) {
@@ -88,10 +88,6 @@ public class ChatClient {
         System.out.println("Type \"bye\" to exit.");
     }
 
-    /**
-     *
-     * @param userName
-     */
     void setUserName(String userName) {
         this.userName = userName;
     }
