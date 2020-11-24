@@ -107,7 +107,7 @@ public class GameController {
      * @param user who wants to know the score
      */
     public void score(User user) {
-        if (!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
+        if (!createdGame) user.message("No one has joined the game yet. Please type '#join' to play a game.");
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
             gameBoard.getScorePlayer(user);
