@@ -170,50 +170,40 @@ public class Round {
         //Card secondCard = pop();
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
+        // If a player has countess, then he/she has to play it.
+        if (first.equals("Countess") && (second.equals("king") || second.equals("Prince"))) {
+            currentPlayer.message("You have the cards" + first + "&" + second );
+            currentPlayer.message("You have to play Countess.");
+            card = currentPlayer.getCard();
+            currentPlayer.setCurrentCard(secondCard);
+            return card;
+
+        } else if (second.equals("Countess") && (first.equals("king") || first.equals("Prince"))) {
+            currentPlayer.message("You have the cards" + first + "&" + second );
+            currentPlayer.message("You have to play Countess.");
+            card = secondCard;
+            return card;
+        }
         currentPlayer.message("Which card do you want to play?");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ":");
         gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
         String message = readResponse();
         //TODO change currentCard of active Player
-        boolean mustCountess = checkCountess(currentPlayer.getCard(), secondCard);
+
         if (message.equals("1")) {
+
             card = currentPlayer.getCard();
-            //if (mustCountess && (card.getCardName() != "Countess")) {
-            //    currentPlayer.message("You have to play the Countess. Please try again!");
-            //    return null;
-            //}
+
             currentPlayer.setCurrentCard(secondCard);
         } else if (message.equals("2")) {
             card = secondCard;
-            //if (mustCountess && (card.getCardName() != "Countess")) {
-            //    currentPlayer.message("You have to play the Countess. Please try again!");
-            //    return null;
-            //}
+
         } else {
             currentPlayer.message("Wrong Input. Please choose card 1 or 2:");
         }
         return card;
-
     }
 
-    /**
-     * @param first
-     * @param second
-     * @return
-     */
-    public boolean checkCountess(Card first, Card second) {
-        //TODO Card does not yet implement toString,
-        // thus the object reference of first is compared with "..."
-        if (first.equals("Countess") &&
-                (second.equals("King") || second.equals("Prince"))) {
-            return true;
-        }
-        if (second.equals("Countess") &&
-                (first.equals("King") || first.equals("Prince"))) {
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Check if the round is finished
