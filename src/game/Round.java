@@ -172,14 +172,14 @@ public class Round {
         String second = secondCard.getCardName();
         // If a player has countess, then he/she has to play it.
         if (first.equals("Countess") && (second.equals("king") || second.equals("Prince"))) {
-            currentPlayer.message("You have the cards" + first + "&" + second );
+            currentPlayer.message("You have the cards " + first + " & " + second );
             currentPlayer.message("You have to play Countess.");
             card = currentPlayer.getCard();
             currentPlayer.setCurrentCard(secondCard);
             return card;
 
         } else if (second.equals("Countess") && (first.equals("king") || first.equals("Prince"))) {
-            currentPlayer.message("You have the cards" + first + "&" + second );
+            currentPlayer.message("You have the cards " + first + " & " + second );
             currentPlayer.message("You have to play Countess.");
             card = secondCard;
             return card;
