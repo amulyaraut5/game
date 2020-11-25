@@ -1,9 +1,14 @@
 #Background{
-    -fx-background-color: #880000;
+
+-fx-width: 10;
+    -fx-background-color: #73000d;
 }
-#ServerMessage{
+Label{
     -fx-text-fill:white;
 }
 #Grid{
--fx-background-color: white;
--fx-text-fill:#880000}
+    /*-fx-background-color: #7f350B;*/
+    -fx-text-fill:white;
+    -fx-background-image: url("@/../../images/BackgroundWood.jpg");
+}
+
