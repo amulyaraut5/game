@@ -101,10 +101,12 @@ public class GameBoard extends Thread {
             } else {
                 firstPlayer = compareDates(winnerList);
             }
-            gameController.communicateAll("The round has ended. Winner of the round: " + firstPlayer.getName());
+            gameController.communicate("The round has ended. Winner of the round: " + firstPlayer.getName(), firstPlayer);
+            firstPlayer.message("The round has ended. You won the round! Gratulations!");
         }
-        gameController.communicateAll("Congratulations, " + gameWinner.getName() + " won the game! " +
-                "\nType #create to create a new game.");
+        gameController.communicate("Congratulations, " + gameWinner.getName() + " won the game! " +
+                "\nType #join to create a new game.", gameWinner);
+        gameWinner.message("Congratulations! You won the game! \n Type #join to create a new game.");
         gameController.reset();
     }
 
