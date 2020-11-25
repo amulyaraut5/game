@@ -21,7 +21,7 @@ public class GameController {
                 #join:   join the game\s
                 #start:  starts the game\s
                 #score:  look at current scores\s
-                #choose: 'Card/Player': if you have to choose a card or another player\s""";
+                #choose <card/player>: if you have to choose a card or another player\s""";
     private final ChatServer server;
     public GameBoard gameBoard;
     private boolean createdGame = false;
@@ -39,7 +39,7 @@ public class GameController {
      * additional information to the GameBoard to be evaluated.
      *
      * @param message command that is received from the Server
-     * @param user user that sent the command
+     * @param user    user that sent the command
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
@@ -79,8 +79,7 @@ public class GameController {
             gameBoard.addPlayer(user);
             user.message("You created a new game!\nYour friends can join with '#join'. (2-4 Players)");
             server.communicate(user + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
-        }
-        else if (!gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
+        } else if (!gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             if (gameBoard.getPlayerCount() < 4) {
                 user.message("You've joined the game. If you want to start already type '#start'.");
@@ -161,10 +160,11 @@ public class GameController {
      * Player.
      *
      * @param message String that should be send
-     * @param player Player who doesn't get send message
+     * @param player  Player who doesn't get send message
      */
     public void communicate(String message, Player player) {
         ArrayList<User> users = server.getUsers();
+        message = (char) 27 + "[35" + message;
         for (User user : users) {
             if (User.isSameUser(user, player)) server.communicate(message, user);
         }

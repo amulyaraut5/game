@@ -25,6 +25,7 @@ public class GameBoard extends Thread {
 
     /**
      * It fills a list with all 16 required cards
+     *
      * @return created and already filled deck
      */
     public static ArrayList<Card> createDeck() {
@@ -49,6 +50,7 @@ public class GameBoard extends Thread {
 
     /**
      * It returns a String that contains information about the token score of each user
+     *
      * @param user
      */
     public void getScorePlayer(User user) {
@@ -84,8 +86,9 @@ public class GameBoard extends Thread {
         Player firstPlayer = compareDates(playerList);
         ArrayList<Card> deck = createDeck();
         ArrayList<Player> winnerList;
+        int i = 0;
         while (!gameWon()) {
-            gameController.communicateAll("A new round begins. Good luck;)");
+            gameController.communicateAll("Round " + i++ + " begins! Good luck;)");
             activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(playerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
@@ -102,7 +105,7 @@ public class GameBoard extends Thread {
                 firstPlayer = compareDates(winnerList);
             }
             gameController.communicate("The round has ended. Winner of the round: " + firstPlayer.getName(), firstPlayer);
-            firstPlayer.message("The round has ended. You won the round! Gratulations!");
+            firstPlayer.message("The round has ended. You won the round! Congratulations!");
         }
         gameController.communicate("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #join to create a new game.", gameWinner);
