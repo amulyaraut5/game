@@ -1,0 +1,9 @@
+#Background{
+    -fx-background-color: #880000;
+}
+#ServerMessage{
+    -fx-text-fill:white;
+}
+#Grid{
+-fx-background-color: white;
+-fx-text-fill:#880000}
