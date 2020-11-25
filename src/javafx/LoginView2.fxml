@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Login" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <children>
+                <Button layoutX="355.0" layoutY="188.0" mnemonicParsing="false" text="Submit" />
+                <TextField layoutX="197.0" layoutY="188.0" />
+                <Text layoutX="28.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert date here: (dd mm yy)" />
+                <Text layoutX="159.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Im curious. When was your last date?" />
+            </children></AnchorPane>
+    </content>
+</TitledPane>
