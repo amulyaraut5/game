@@ -4,21 +4,23 @@ package card;
 import game.GameController;
 import game.Player;
 import game.Round;
+
 import java.util.ArrayList;
+
 /**
  * This is the abstract parent class from which the various child classes are extended.
  * It contains the various methods to be overridden by its child classes.
+ *
  * @author amulya and vossa
  */
 
 public abstract class Card {
     protected static Round round;
-
     protected static GameController controller;
 
-    public int cardValue;
-    public String nameOfCard;
-    public Player targetPlayer;
+    protected int cardValue;
+    protected String nameOfCard;
+    protected Player targetPlayer;
 
     ArrayList<Player> availablePlayers = new ArrayList<>();
 
@@ -55,20 +57,21 @@ public abstract class Card {
         boolean playerFound = false;
         boolean first = true;
         while (!playerFound) {
-            if (!first){
+            if (!first) {
                 p.message("This player does not exist. Please try again!");
             }
             String targetPlayerName = round.readResponse();
             for (Player player : availablePlayers) {
                 if (player.getName().equals(targetPlayerName)) {
                     targetPlayer = player;
-                    playerFound=true;
+                    playerFound = true;
                     break;
                 }
             }
-            first=false;
+            first = false;
         }
 
     }
+
 
 }

@@ -12,13 +12,11 @@ import java.net.Socket;
 public class WriterThread extends Thread {
 
     private final PrintWriter writer;
-    private final Socket socket;
     private final ChatClient client;
     private OutputStream output;
     private BufferedReader bReader;
 
     public WriterThread(Socket socket, ChatClient client) {
-        this.socket = socket;
         this.client = client;
 
         try {
@@ -27,6 +25,7 @@ public class WriterThread extends Thread {
             if (!isInterrupted()) client.disconnect(ex);
         }
         writer = new PrintWriter(output, true);
+        bReader = new BufferedReader(new InputStreamReader(System.in));
     }
 
     /**
@@ -35,28 +34,8 @@ public class WriterThread extends Thread {
      */
     @Override
     public void run() {
-        InputStream in = System.in;
-        bReader = new BufferedReader(new InputStreamReader(in));
-
-        if (!isInterrupted()) manageUserName();
         if (!isInterrupted()) manageUserInput();
-
         if (!isInterrupted()) client.disconnect();
-    }
-
-    /**
-     * the user writes his userName in the console, manageUserName() reads it and
-     * transfers it to the server
-     */
-    private void manageUserName() {
-        String userName = "";
-        try {
-            userName = bReader.readLine();
-        } catch (IOException e) {
-            if (!isInterrupted()) client.disconnect(e);
-        }
-        client.setUserName(userName);
-        writer.println(userName);
     }
 
     /**
@@ -64,15 +43,17 @@ public class WriterThread extends Thread {
      * as long if the user doesn't write "bye"
      */
     private void manageUserInput() {
-        String inputUser = "";
-        do {
+        String userInput = "";
+        while (!isInterrupted() && !userInput.equals("bye")) {
             try {
-                inputUser = bReader.readLine();
-            } catch (IOException e) {
-                if (!isInterrupted()) client.disconnect(e);
+                userInput = bReader.readLine();
+            } catch (IOException ex) {
+                if (!isInterrupted()) client.disconnect(ex);
             }
-            writer.println(inputUser);
-        } while (!isInterrupted() && !inputUser.equals("bye"));
+            if (!userInput.isBlank()) {
+                writer.println(userInput);
+            }
+        }
     }
 }
 

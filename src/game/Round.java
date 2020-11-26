@@ -48,7 +48,7 @@ public class Round {
         while (!isRoundFinished()) {
             Card playedCard;
             currentPlayer.message("It's your turn, " + currentPlayer + "!");
-            //Draw card before calling choosecard, to not draw the card multiple times(in case choosecard gets called multiple times)
+            //Draw card before calling chooseCard, to not draw the card multiple times(in case chooseCard gets called multiple times)
             Card secondCard = pop();
             currentPlayer.setGuarded(false);
             playedCard = chooseCard(secondCard);//TODO alles in methode
@@ -66,7 +66,6 @@ public class Round {
      * @param card Card that the player chose to play.
      */
     public void handleTurn(Card card) {
-        Card.setRound(this);//TODO delete because the round is send in the constructor
         card.handleCard(this.currentPlayer);
         nextPlayer();
     }
@@ -172,14 +171,14 @@ public class Round {
         String second = secondCard.getCardName();
         // If a player has countess, then he/she has to play it.
         if (first.equals("Countess") && (second.equals("king") || second.equals("Prince"))) {
-            currentPlayer.message("You have the cards " + first + " & " + second );
+            currentPlayer.message("You have the cards " + first + " & " + second+".");
             currentPlayer.message("You have to play Countess.");
             card = currentPlayer.getCard();
             currentPlayer.setCurrentCard(secondCard);
             return card;
 
         } else if (second.equals("Countess") && (first.equals("king") || first.equals("Prince"))) {
-            currentPlayer.message("You have the cards " + first + " & " + second );
+            currentPlayer.message("You have the cards " + first + " & " + second+".");
             currentPlayer.message("You have to play Countess.");
             card = secondCard;
             return card;

@@ -1,8 +1,10 @@
 package card;
+
 import game.Player;
 
 /**
  * This card subclass contains the unique functionality of the King Card.
+ *
  * @author amulya and vossa
  */
 
@@ -50,7 +52,7 @@ public class KingCard extends Card {
             playerPlayingCard.setCurrentCard(targetCard);
 
             //message to the players
-            playerPlayingCard.message("You have swapped cards with " + targetPlayer + ". Your new card is: " + targetCard.getCardName());
+            playerPlayingCard.message("You have swapped cards with " + targetPlayer + ". Your new card is: " + targetCard.getCardName() + ".");
             targetPlayer.message(playerPlayingCard + " swapped cards with you. Your new card is: " + playerCard.getCardName());
         }
         availablePlayers.clear();
