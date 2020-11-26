@@ -8,10 +8,10 @@
     <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
             <children>
-                <Button layoutX="355.0" layoutY="188.0" mnemonicParsing="false" text="Submit" />
-                <TextField layoutX="197.0" layoutY="188.0" />
-                <Text layoutX="28.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert date here: (dd mm yy)" />
-                <Text layoutX="159.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Im curious. When was your last date?" />
+                <Button layoutX="376.0" layoutY="188.0" mnemonicParsing="false" text="Submit" />
+                <Text layoutX="20.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert date here: (dd mm yy)" />
+                <Text layoutX="170.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Im curious. When was your last date?" />
+            <DatePicker layoutX="181.0" layoutY="188.0" />
             </children></AnchorPane>
     </content>
 </TitledPane>
