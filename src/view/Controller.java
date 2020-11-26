@@ -3,6 +3,7 @@ package view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
@@ -33,7 +34,14 @@ public class Controller  {
         playButton.setTextFill(Color.GRAY);
         playButton.setText("Have Fun!");
     }
+    public Button card1;
+    public ImageView card1Image;
 
+    public void changeImageCard1(){
+        Image image = new Image("/images/king.png");
+        card1Image.setImage(image);
+    }
+    //public void changeImage();
     //public static ActionEvent event;
     public static void playerSetDisabled(ActionEvent event, VBox player) {
         // Button was clicked, do something...

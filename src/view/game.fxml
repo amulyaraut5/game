@@ -34,15 +34,16 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="419.0" prefWidth="478.0">
                <children>
-                  <ImageView accessibleRole="BUTTON" fitHeight="232.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/cardBackside.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Button fx:id="card2" mnemonicParsing="false" onAction="#changeSceneCard" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                  <Button id="cardButton" fx:id="card1" mnemonicParsing="false" onAction="#changeImageCard1" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                     <graphic>
+                        <ImageView fx:id="card1Image" fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/cardBackside.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button id="cardButton" fx:id="card2" mnemonicParsing="false" onAction="#changeSceneCard" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
                         <ImageView fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                            <image>
