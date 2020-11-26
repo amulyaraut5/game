@@ -58,7 +58,7 @@ public abstract class Card {
         boolean first = true;
         while (!playerFound) {
             if (!first) {
-                p.message("This player does not exist. Please try again!");
+                p.message("Please choose a player from the list!");
             }
             String targetPlayerName = round.readResponse();
             for (Player player : availablePlayers) {
