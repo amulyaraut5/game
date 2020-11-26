@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 
 public class UserThread extends Thread {
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yy");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final ChatServer server;
@@ -134,12 +134,12 @@ public class UserThread extends Thread {
      */
     private void logInDate() {
         String datePuffer;
-        //TODO if exception is thrown because date is not valid, the user should be asked to try again
         try {
-            sendMessage("I am curious. When was the last time you were on a date? (dd mm yy)");
+            sendMessage("I am curious. When was the last time you were on a date? (dd.mm.yyyy)");
             datePuffer = reader.readLine();
 
-            while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
+            while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d.\\d{2}.\\d{4}$")) {
+                System.out.println(turnIntoDate(datePuffer));
                 sendMessage("This date is not in the correct format. Please try again. ");
                 datePuffer = reader.readLine();
             }
@@ -158,7 +158,9 @@ public class UserThread extends Thread {
                 Type: 'bye' to leave the room.\s
                       '@<name>' to send a direct message.\s
                       '#help' to list all commands.\s
+                      '#score' to know about the tokens.\s
                       '#join' to play the LoveLetter game.""");
+
         server.communicate(user + " joined the room.", user);
     }
 

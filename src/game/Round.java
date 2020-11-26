@@ -51,7 +51,7 @@ public class Round {
             //Draw card before calling choosecard, to not draw the card multiple times(in case choosecard gets called multiple times)
             Card secondCard = pop();
             currentPlayer.setGuarded(false);
-            playedCard = chooseCard(secondCard);
+            playedCard = chooseCard(secondCard);//TODO alles in methode
             while (playedCard == null) {
                 playedCard = chooseCard(secondCard);
             }
@@ -66,7 +66,7 @@ public class Round {
      * @param card Card that the player chose to play.
      */
     public void handleTurn(Card card) {
-        Card.setRound(this);
+        Card.setRound(this);//TODO delete because the round is send in the constructor
         card.handleCard(this.currentPlayer);
         nextPlayer();
     }

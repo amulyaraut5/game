@@ -47,8 +47,8 @@ public class Player extends User {
      *
      * @return Number of tokens after the increase.
      */
-    public void increaseNumOfTokens() {
-        numOfTokens += 1;
+    public int increaseNumOfTokens() {
+        return ++numOfTokens;
     }
 
     /**
@@ -79,7 +79,8 @@ public class Player extends User {
 
 
     /**
-     * @return
+     *
+     * @return list of cards played by the player.
      */
     public ArrayList<Card> getPlayedCards() {
         return playedCards;
@@ -102,4 +103,8 @@ public class Player extends User {
         setCurrentCard(null);
     }
 
+    @Override
+    public synchronized void message(String message) {
+        super.message((char)27 + "[36"+message);
+    }
 }

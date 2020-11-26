@@ -2,6 +2,8 @@ package card;
 
 import game.Player;
 
+import java.util.Arrays;
+
 /**
  * This card subclass contains the unique functionality of the Guard Card.
  * @author amulya and vossa
@@ -34,7 +36,6 @@ public class GuardCard extends Card {
     public void handleCard(Player playerPlayingCard) {
         setAvailablePlayers(playerPlayingCard);
 
-
         if (availablePlayers.size() <= 0) {
             playerPlayingCard.message("There is no player to choose. Your card is discarded without effect.");
         } else {
@@ -45,8 +46,8 @@ public class GuardCard extends Card {
             // Set the targetPlayer as per users choice from the list of players
             getTargetPlayer();
 
-
             while (true) {
+                String [] cardNames = {"Priest", "Baron", "Handmaid", "Prince", "King","Countess", "Princess"};
                 // Then playerPlayingCard can guess the card of the targetPlayer
                 playerPlayingCard.message("Which card do you think the player has? Type '#choose <card>'");
                 playerPlayingCard.message("Choose one Card: [Priest, Baron, Handmaid, Prince, King, Countess, Princess]");
@@ -54,22 +55,25 @@ public class GuardCard extends Card {
                 String guessCardName = round.readResponse();
                 if (guessCardName.equals(this.nameOfCard)) {
                     playerPlayingCard.message("You cannot choose the Guard card, try again.");
-
-
-                } else if (guessCardName.equals(targetPlayer.getCard().getCardName())) {
-                    playerPlayingCard.message("Your guess was correct!");
-                    //If the guess is correct the player will be out of the round.
-                    round.kickPlayer(targetPlayer);
-                    //Display message to all the players
-                    controller.communicateAll(targetPlayer + " is eliminated from the round.");
-                    break;
-                } else {
-                    playerPlayingCard.message("Your guess was Incorrect.");
-                    break;
                 }
-
+                else if(Arrays.asList(cardNames).contains(guessCardName)){
+                    if (guessCardName.equals(targetPlayer.getCard().getCardName())) {
+                        playerPlayingCard.message("Your guess was correct!");
+                        //If the guess is correct the player will be out of the round.
+                        round.kickPlayer(targetPlayer);
+                        //Display message to all the players
+                        controller.communicateAll(targetPlayer + " is eliminated from the round.");
+                        break;
+                    }
+                    else{
+                        playerPlayingCard.message("Your guess was Incorrect.");
+                        break;
+                    }
+                }
+                else {
+                    playerPlayingCard.message("Your might have misstyped the card name. Please try again!");
+                }
             }
-
         }
         availablePlayers.clear();
     }
