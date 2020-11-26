@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox fx:id="Background" prefHeight="584.0" prefWidth="750.0" stylesheets="@gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="Background" prefHeight="584.0" prefWidth="750.0" stylesheets="@gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
    <children>
       <VBox prefHeight="503.0" prefWidth="478.0">
          <children>
@@ -17,7 +17,7 @@
                         <Image url="@../images/rules.png" />
                      </image>
                   </ImageView>
-                  <Label id="ServerMessage" fx:id="serverMessage" prefHeight="184.0" prefWidth="347.0" stylesheets="@gameview.css" text="It's your turn! Choose a card:">
+                  <Label id="ServerMessage" fx:id="serverMessage" alignment="CENTER" contentDisplay="CENTER" prefHeight="169.0" prefWidth="240.0" stylesheets="@gameview.css" text="It's your turn! &#10;Choose a card:" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -25,11 +25,16 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </Label>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="playButton" alignment="CENTER" contentDisplay="TOP" layoutX="33.0" mnemonicParsing="false" onAction="#handlePlayButton" prefHeight="33.0" prefWidth="101.0" text="Play" />
+                     </children>
+                  </AnchorPane>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="419.0" prefWidth="478.0">
                <children>
-                  <ImageView fitHeight="232.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView accessibleRole="BUTTON" fitHeight="232.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/king.png" />
                      </image>

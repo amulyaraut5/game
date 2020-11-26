@@ -13,6 +13,7 @@ public class Game extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
         primaryStage.setTitle("Love Letter");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
 
         primaryStage.show();
     }

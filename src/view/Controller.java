@@ -1,11 +1,20 @@
 package view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 
 public class Controller {
     public static void main (String [] args){
-        Label serverMessage = new Label();
-        serverMessage.setText("It´s your turn! \n Choose a card:");
+
+    }
+    public  Button playButton;
+    public  void handlePlayButton(){
+        System.out.println("play button clicked");
+        playButton.setTextFill(Color.GRAY);
+        playButton.setText("Have Fun!");
+
 
     }
 }
