@@ -69,17 +69,20 @@
                         <ScrollPane layoutX="1.0" prefHeight="247.0" prefWidth="257.0">
                            <padding>
                               <Insets bottom="10.0" top="10.0" />
-                           </padding></ScrollPane>
+                           </padding>
+                           <content>
+                              <TextArea fx:id="chatWindow" prefHeight="225.0" prefWidth="236.0" />
+                           </content></ScrollPane>
                      </children>
                   </AnchorPane>
                   <HBox prefHeight="33.0" prefWidth="269.0">
                      <children>
-                        <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Type in a message...">
+                        <TextArea fx:id="chatTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Type in a message...">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                         </TextArea>
-                        <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="68.0" text="Submit">
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#chatMessageHandling" prefHeight="41.0" prefWidth="68.0" text="Submit">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

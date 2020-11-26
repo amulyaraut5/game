@@ -22,6 +22,8 @@ public class UserThread extends Thread {
     private final ChatServer server;
     private PrintWriter userOut;
     private BufferedReader reader;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
     private boolean exit = false;
 
     public UserThread(Socket socket, ChatServer server, User user) {
@@ -32,9 +34,9 @@ public class UserThread extends Thread {
         this.user.setThread(this);
 
         try {
-            InputStream input = socket.getInputStream();
+            input = new ObjectInputStream(socket.getInputStream());
             reader = new BufferedReader(new InputStreamReader(input));
-            OutputStream output = socket.getOutputStream();
+            output = new ObjectOutputStream(socket.getOutputStream());
             userOut = new PrintWriter(output, true);
         } catch (IOException ex) {
             disconnect(ex);
@@ -61,6 +63,7 @@ public class UserThread extends Thread {
      */
     @Override
     public void run() {
+
         //before each method call it is checked if run() should be exited.
         if (!exit) logInName();
         //if (!exit) logInDate(); //TODO remove comment-out before submission on monday

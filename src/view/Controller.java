@@ -1,14 +1,19 @@
 package view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,31 +24,54 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Window;
+import server.User;
 
 
-public class Controller  {
-    //public static VBox player0;
+public class Controller{
 
-    public static void main (String [] args){
-
+    public Button submitButton;
+    public TextArea chatTextArea;
+    public TextArea chatWindow;
+    public void chatMessageHandling(){
+        String message;
+        try{
+            message = chatTextArea.getText();
+        } catch (Exception e){
+            message = "wrong";
+        }
+        chatWindow.appendText("You: " + message + "\n");
+        System.out.println(message);
+        chatTextArea.clear();
     }
-
-    //public VBox player0;
+    //play button
     public  Button playButton;
-    public  void handlePlayButton() {
+
+    /**
+     * this methods changes the play button by clicking on it
+     */
+    public void handlePlayButton() {
         System.out.println("play button clicked");
         playButton.setTextFill(Color.GRAY);
         playButton.setText("Have Fun!");
     }
+
+    //card 1
     public Button card1;
     public ImageView card1Image;
 
+    /**
+     * this method changes the image of card1
+     */
     public void changeImageCard1(){
         Image image = new Image("/images/king.png");
         card1Image.setImage(image);
     }
-    //public void changeImage();
-    //public static ActionEvent event;
+
+    /**
+     * this method disables a player vbox
+     * @param event
+     * @param player
+     */
     public static void playerSetDisabled(ActionEvent event, VBox player) {
         // Button was clicked, do something...
         player.setDisable(true);
@@ -81,4 +109,7 @@ public class Controller  {
         //show pop-up and wait until it is dismissed
         popup.showAndWait();
     }
+
+
+
 }

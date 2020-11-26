@@ -1,5 +1,7 @@
 package client;
 
+import view.Game;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,5 +42,8 @@ public class ReaderThread extends Thread {
                 break;
             }
         }
+    }
+    public void message(String m){
+        System.out.println(m);
     }
 }

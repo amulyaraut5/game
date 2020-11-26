@@ -12,28 +12,20 @@ import java.net.UnknownHostException;
  * @author janau
  */
 
-public class ChatClient {
-
+public class ChatClient extends Thread{
     private final int port;
     private final String hostname;
     private String userName;
     private Socket socket;
-    private ReaderThread readerThread;
-    private WriterThread writerThread;
+    public ReaderThread readerThread;
+    public WriterThread writerThread;
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
 
-    public static void main(String[] args) {
 
-        String hostname = "localhost";
-        int port = 4444;
-
-        ChatClient client = new ChatClient(hostname, port);
-        client.establishConnection();
-    }
 
     /**
      * This method establishes the connection between the server and the client using the assigned hostname and port.
