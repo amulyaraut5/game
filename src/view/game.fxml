@@ -186,7 +186,7 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="87.0" text="Player4">
+                        <Label fx:id="player0Label" alignment="CENTER" prefHeight="38.0" prefWidth="87.0" text="Player0">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin></Label>

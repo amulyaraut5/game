@@ -2,6 +2,8 @@ package view;
 
 import client.ChatClient;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +34,6 @@ public class Game extends Application {
         chatClient = new ChatClient(hostname, port);
         chatClient.establishConnection();
         System.out.println("run");
-        controller.handlePlayButton();
 
 
 
@@ -43,6 +44,7 @@ public class Game extends Application {
     public static void main (String[]args){
         launch(args);
     }
+
 
 
 }
