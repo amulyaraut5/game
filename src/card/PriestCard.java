@@ -42,7 +42,7 @@ public class PriestCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer as per users choice from the list of players
-            getTargetPlayer();
+            getTargetPlayer(playerPlayingCard);
 
             // Then playerPlayingCard can look at the card of targetPlayer
             // Get the card of targetPlayer and display this card only to the current player

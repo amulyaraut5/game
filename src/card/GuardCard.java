@@ -44,7 +44,7 @@ public class GuardCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer as per users choice from the list of players
-            getTargetPlayer();
+            getTargetPlayer(playerPlayingCard);
 
             while (true) {
                 String [] cardNames = {"Priest", "Baron", "Handmaid", "Prince", "King","Countess", "Princess"};

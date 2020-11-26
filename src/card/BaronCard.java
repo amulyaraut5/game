@@ -41,7 +41,7 @@ public class BaronCard extends Card {
             playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             // Read the input of the user and return the target player
-            getTargetPlayer();
+            getTargetPlayer(playerPlayingCard);
             // compares the hand to see who has the greater cardValue
             int targetCardValue = targetPlayer.getCard().getCardValue();
             int playerCardValue = playerPlayingCard.getCard().getCardValue();

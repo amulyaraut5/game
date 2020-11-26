@@ -37,7 +37,7 @@ public class PrinceCard extends Card {
         playerPlayingCard.message("Choose one of these players: " + availablePlayers.toString());
         playerPlayingCard.message("Type '#choose <name>' to choose the player.");
         //Read the input of the user and return the target player
-        getTargetPlayer();
+        getTargetPlayer(playerPlayingCard);
 
         //checks if card of selected player is princess and kick the player out of the round.
         if (targetPlayer.getCard().getCardName().equals("Princess")) {

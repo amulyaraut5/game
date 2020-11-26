@@ -51,14 +51,24 @@ public abstract class Card {
     /**
      * reads the input of player and reads the input of player and sets the matching player as target player.
      */
-    void getTargetPlayer() {
+    void getTargetPlayer(Player p) {
+        boolean playerFound = false;
+        boolean first = true;
+        while (!playerFound) {
+            if (!first){
+                p.message("This player does not exist. Please try again!");
+            }
             String targetPlayerName = round.readResponse();
             for (Player player : availablePlayers) {
                 if (player.getName().equals(targetPlayerName)) {
                     targetPlayer = player;
+                    playerFound=true;
                     break;
                 }
             }
+            first=false;
+        }
+
     }
 
 }

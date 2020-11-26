@@ -41,7 +41,7 @@ public class KingCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             // Read the input of the user and set to targetPlayer
             // Set the targetPlayer
-            getTargetPlayer();
+            getTargetPlayer(playerPlayingCard);
 
             //swap cards
             Card playerCard = playerPlayingCard.getCard();
