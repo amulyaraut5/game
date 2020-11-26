@@ -10,18 +10,38 @@ import java.io.IOException;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class Controller {
+
+
+public class Controller  {
+    //public static VBox player0;
+
     public static void main (String [] args){
 
     }
+
+    //public VBox player0;
     public  Button playButton;
     public  void handlePlayButton() {
         System.out.println("play button clicked");
         playButton.setTextFill(Color.GRAY);
         playButton.setText("Have Fun!");
+    }
+
+    //public static ActionEvent event;
+    public static void playerSetDisabled(ActionEvent event, VBox player) {
+        // Button was clicked, do something...
+        player.setDisable(true);
+    }
+    public Pane card1Pane;
+    public void handleCard1(){
+        playButton.setText("Card1");
     }
 
     /**
