@@ -16,7 +16,6 @@ public class ChatClient {
 
     private final int port;
     private final String hostname;
-    private String userName;
     private Socket socket;
     private ReaderThread readerThread;
     private WriterThread writerThread;
@@ -73,6 +72,7 @@ public class ChatClient {
 
     /**
      * //TODO
+     *
      * @param ex
      */
     public void disconnect(Exception ex) {
@@ -87,9 +87,4 @@ public class ChatClient {
         }
         System.out.println("Type \"bye\" to exit.");
     }
-
-    void setUserName(String userName) {
-        this.userName = userName;
-    }
-
 }
