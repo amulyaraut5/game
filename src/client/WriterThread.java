@@ -64,15 +64,17 @@ public class WriterThread extends Thread {
      * as long if the user doesn't write "bye"
      */
     private void manageUserInput() {
-        String inputUser = "";
-        do {
+        String userInput = "";
+        while (!isInterrupted() && !userInput.equals("bye")) {
             try {
-                inputUser = bReader.readLine();
-            } catch (IOException e) {
-                if (!isInterrupted()) client.disconnect(e);
+                userInput = bReader.readLine();
+            } catch (IOException ex) {
+                if (!isInterrupted()) client.disconnect(ex);
             }
-            writer.println(inputUser);
-        } while (!isInterrupted() && !inputUser.equals("bye"));
+            if (!userInput.isBlank()) {
+                writer.println(userInput);
+            }
+        }
     }
 }
 
