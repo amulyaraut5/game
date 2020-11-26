@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * //TODO
+ * This class is responsible for executing one single round.
  *
  * @author sarah,
  */
