@@ -132,7 +132,7 @@ public class GameController {
             user.message("You need at least one more player to start the game.");
         } else {
             runningGame = true;
-            server.communicateAll("The game has started! Please wait until it's your turn.");
+            communicateAll("The game has started! Please wait until it's your turn.");
             gameBoard.start();
         }
     }
@@ -152,6 +152,7 @@ public class GameController {
      * @param message String that should be send
      */
     public void communicateAll(String message) {
+        message = "\033[35m" + message + "\033[0m";
         server.communicateAll(message);
     }
 
@@ -164,7 +165,7 @@ public class GameController {
      */
     public void communicate(String message, Player player) {
         ArrayList<User> users = server.getUsers();
-        message = (char) 27 + "[35" + message;
+        message = "\033[35m" + message + "\033[0m";
         for (User user : users) {
             if (User.isSameUser(user, player)) server.communicate(message, user);
         }

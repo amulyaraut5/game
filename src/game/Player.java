@@ -79,7 +79,6 @@ public class Player extends User {
 
 
     /**
-     *
      * @return list of cards played by the player.
      */
     public ArrayList<Card> getPlayedCards() {
@@ -105,6 +104,6 @@ public class Player extends User {
 
     @Override
     public synchronized void message(String message) {
-        super.message((char)27 + "[36"+message);
+        super.message("\033[33m" + message + "\033[0m");
     }
 }
