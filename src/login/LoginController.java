@@ -25,13 +25,14 @@ public class LoginController {
         }
         date = datePicker.getValue();
         System.out.println(username + date.toString() );
-        Parent popup = FXMLLoader.load(getClass().getResource("/view/game.fxml"));
-        Scene popupScene = new Scene(popup);
+        Parent gameView = FXMLLoader.load(getClass().getResource("/view/game.fxml"));
+
+        Scene gameViewScene = new Scene(gameView);
 
         //this line gets the Stage infomation
         Stage window = (Stage) okButton.getScene().getWindow();
 
-        window.setScene(popupScene);
+        window.setScene(gameViewScene);
         window.show();
     }
 
