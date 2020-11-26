@@ -27,7 +27,7 @@ import javafx.stage.Window;
 import server.User;
 
 
-public class Controller{
+public class Controller implements Initializable{
 
     public Button submitButton;
     public TextArea chatTextArea;
@@ -111,5 +111,12 @@ public class Controller{
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+    public Label player0Label;
+    public void getText(String name){
+        player0Label.setText(name);
+    }
 }

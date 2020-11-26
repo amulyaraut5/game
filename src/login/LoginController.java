@@ -27,14 +27,16 @@ public class LoginController {
             username = "n";
         }
         date = datePicker.getValue();
-        System.out.println(username + date.toString() );
-        Parent gameView = new FXMLLoader().load(getClass().getResource("/view/game.fxml"));
+        //System.out.println(username + date.toString() );
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/game.fxml"));
+        Parent gameView = loader.load();
+        Controller controller = loader.getController();
+        controller.getText(username );
         Scene gameViewScene = new Scene(gameView);
         //this line gets the Stage information
-        Stage window = (Stage) okButton.getScene().getWindow();
-
-        window.setScene(gameViewScene);
-        window.show();
+        Stage stage = new Stage();
+        stage.setScene(gameViewScene);
+        stage.show();
     }
 
 
