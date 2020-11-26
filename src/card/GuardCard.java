@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 /**
  * This card subclass contains the unique functionality of the Guard Card.
+ *
  * @author amulya and vossa
  */
 public class GuardCard extends Card {
@@ -47,16 +48,15 @@ public class GuardCard extends Card {
             getTargetPlayer();
 
             while (true) {
-                String [] cardNames = {"Priest", "Baron", "Handmaid", "Prince", "King","Countess", "Princess"};
+                String[] cardNames = {"Priest", "Baron", "Handmaid", "Prince", "King", "Countess", "Princess"};
                 // Then playerPlayingCard can guess the card of the targetPlayer
-                playerPlayingCard.message("Which card do you think the player has? Type '#choose <card>'");
+                playerPlayingCard.message("Which card do you think the player has? Type '#choose <card>'.");
                 playerPlayingCard.message("Choose one Card: [Priest, Baron, Handmaid, Prince, King, Countess, Princess]");
                 // Read the input of the player
                 String guessCardName = round.readResponse();
                 if (guessCardName.equals(this.nameOfCard)) {
                     playerPlayingCard.message("You cannot choose the Guard card, try again.");
-                }
-                else if(Arrays.asList(cardNames).contains(guessCardName)){
+                } else if (Arrays.asList(cardNames).contains(guessCardName)) {
                     if (guessCardName.equals(targetPlayer.getCard().getCardName())) {
                         playerPlayingCard.message("Your guess was correct!");
                         //If the guess is correct the player will be out of the round.
@@ -64,13 +64,11 @@ public class GuardCard extends Card {
                         //Display message to all the players
                         controller.communicateAll(targetPlayer + " is eliminated from the round.");
                         break;
-                    }
-                    else{
+                    } else {
                         playerPlayingCard.message("Your guess was Incorrect.");
                         break;
                     }
-                }
-                else {
+                } else {
                     playerPlayingCard.message("Your might have misstyped the card name. Please try again!");
                 }
             }
