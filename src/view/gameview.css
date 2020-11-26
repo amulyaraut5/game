@@ -11,4 +11,6 @@ Label{
     -fx-text-fill:white;
     -fx-background-image: url("@/../../images/BackgroundWood.jpg");
 }
+.cardButton{
+-fx-background-color: #73000d;}
 

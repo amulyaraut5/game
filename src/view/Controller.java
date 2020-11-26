@@ -39,10 +39,7 @@ public class Controller  {
         // Button was clicked, do something...
         player.setDisable(true);
     }
-    public Pane card1Pane;
-    public void handleCard1(){
-        playButton.setText("Card1");
-    }
+
 
     /**
      * This method changes the Scene

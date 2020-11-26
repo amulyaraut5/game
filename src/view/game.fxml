@@ -36,17 +36,17 @@
                <children>
                   <ImageView accessibleRole="BUTTON" fitHeight="232.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/king.png" />
+                        <Image url="@../images/cardBackside.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="card2" mnemonicParsing="false" onAction="#changeSceneCard" prefHeight="127.0" prefWidth="102.0">
+                  <Button fx:id="card2" mnemonicParsing="false" onAction="#changeSceneCard" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
-                        <ImageView fitHeight="232.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/princess.png" />
+                              <Image url="@../images/cardBackside.png" />
                            </image>
                         </ImageView>
                      </graphic>
