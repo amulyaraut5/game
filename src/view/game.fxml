@@ -12,11 +12,16 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="ruleCard" fitHeight="169.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/rules.png" />
-                     </image>
-                  </ImageView>
+                  <Button id="cardButton" fx:id="ruleCardButton" mnemonicParsing="false" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                     <graphic>
+                        <ImageView fx:id="ruleCardImage" fitHeight="169.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/rules.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+
                   <Label id="ServerMessage" fx:id="serverMessage" alignment="CENTER" contentDisplay="CENTER" prefHeight="169.0" prefWidth="240.0" stylesheets="@gameview.css" text="It's your turn! &#10;Choose a card:" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />

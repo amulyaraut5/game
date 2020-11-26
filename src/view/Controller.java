@@ -17,7 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
+import javafx.stage.Window;
 
 
 public class Controller  {
@@ -58,7 +58,6 @@ public class Controller  {
         Scene popupScene = new Scene(popup);
         //this line gets the Stage infomation
         Stage window = (Stage) card2.getScene().getWindow();
-
         window.setScene(popupScene);
         window.show();
     }
