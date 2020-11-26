@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
@@ -54,11 +55,14 @@ public class Controller  {
      */
     public Button card2;
     public void changeSceneCard(javafx.event.ActionEvent actionEvent) throws IOException {
-        Parent popup = FXMLLoader.load(getClass().getResource("/popupGame/popup.fxml"));
-        Scene popupScene = new Scene(popup);
-        //this line gets the Stage infomation
-        Stage window = (Stage) card2.getScene().getWindow();
-        window.setScene(popupScene);
-        window.show();
+        Parent root = FXMLLoader.load(getClass().getResource("/popupGame/popup.fxml"));
+        Stage popup = new Stage();
+        popup.setScene(new Scene(root));
+        //for pop-up:
+        popup.initModality(Modality.APPLICATION_MODAL);
+        //reminde popup-window of its "owner"/ gets the popup-window infomation
+        popup.initOwner(card2.getScene().getWindow());
+        //show pop-up and wait until it is dismissed
+        popup.showAndWait();
     }
 }
