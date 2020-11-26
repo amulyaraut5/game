@@ -75,7 +75,7 @@ public class Controller  {
         Stage popup = new Stage();
         popup.setScene(new Scene(root));
         //for pop-up:
-        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.initModality(Modality.NONE);
         //reminde popup-window of its "owner"/ gets the popup-window infomation
         popup.initOwner(ruleCardButton.getScene().getWindow());
         //show pop-up and wait until it is dismissed
