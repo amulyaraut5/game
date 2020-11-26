@@ -158,7 +158,9 @@ public class UserThread extends Thread {
                 Type: 'bye' to leave the room.\s
                       '@<name>' to send a direct message.\s
                       '#help' to list all commands.\s
+                      '#score' to know about the tokens.\s
                       '#join' to play the LoveLetter game.""");
+
         server.communicate(user + " joined the room.", user);
     }
 
