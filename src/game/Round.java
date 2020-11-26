@@ -25,7 +25,7 @@ public class Round {
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
         //remove() function cannot be called in removeDeckCard
-        //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffing and dealing
+        //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffling and dealing
         // delete this message
         this.currentPlayer = firstPlayer;
         this.cardDeck = deck;
@@ -109,7 +109,7 @@ public class Round {
         String response;
         while (userResponse == null && !gameBoard.isInterrupted()) {
             try {
-                gameBoard.sleep(50);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 break;
             }
@@ -121,7 +121,7 @@ public class Round {
 
 
     /**
-     * Shuffles the deck of Gameboard in each new round.
+     * Shuffles the deck of GameBoard in each new round.
      */
     public void shuffleDeck() {
         Collections.shuffle(cardDeck);

@@ -18,7 +18,7 @@ public class GameController {
 
     private final String COMMANDS = """
             Use the following commands to control the game:\s
-                #join:   join the game\s
+                #play:   join the game\s
                 #start:  starts the game\s
                 #score:  look at current scores\s
                 #choose <card/player>: if you have to choose a card or another player\s""";
@@ -47,7 +47,7 @@ public class GameController {
             command = message.substring(0, message.indexOf(" "));
         }
         switch (command) {
-            case "#join" -> join(user);
+            case "#play" -> play(user);
             case "#start" -> start(user);
             case "#help" -> user.message(COMMANDS);
             case "#score" -> score(user);
@@ -65,20 +65,20 @@ public class GameController {
 
 
     /**
-     * Reacts to command "join".
+     * Reacts to command "play".
      * This method checks if a GameBoard has already been created and/or started.
      * If the player is the first to join the GameBoard gets created. If he is the 4th player the game starts
      * automatically.
      *
      * @param user user who joined the game
      */
-    public void join(User user) {
+    public void play(User user) {
         if (!createdGame) {
             gameBoard = new GameBoard(this);
             createdGame = true;
             gameBoard.addPlayer(user);
-            user.message("You created a new game!\nYour friends can join with '#join'. (2-4 Players)");
-            server.communicate(user + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
+            user.message("You created a new game!\nYour friends can join with '#play'. (2-4 Players)");
+            server.communicate(user + " created a game!\nEveryone can join with '#play'. (2-4 Players)", user);
         } else if (!gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
             if (gameBoard.getPlayerCount() < 4) {
@@ -106,7 +106,7 @@ public class GameController {
      * @param user who wants to know the score
      */
     public void score(User user) {
-        if (!createdGame) user.message("No one has joined the game yet. Please type '#join' to play a game.");
+        if (!createdGame) user.message("No one has joined the game yet. Please type '#play' to play a game.");
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
             gameBoard.getScorePlayer(user);
@@ -123,9 +123,9 @@ public class GameController {
      */
     public void start(User user) {
         if (!gameBoard.alreadyJoined(user)) {
-            user.message("You need to join the game to start it. Type '#join' to do so.");
+            user.message("You need to join the game to start it. Type '#play' to do so.");
         } else if (!createdGame) {
-            user.message("Please type '#create' to create a new game.");
+            user.message("Please type '#play' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
         } else if (gameBoard.getPlayerCount() < 2) {

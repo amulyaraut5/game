@@ -9,12 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Handles connection for each connected client,
- * therefore the server is able to handle multiple clients at the same time.
+ * Handles connection for each connected client.
+ * Each UserThread is connected to one client over a specific socket.
+ * Therefore the server is able to handle multiple clients at the same time.
  *
  * @author vossa,
  */
-
 public class UserThread extends Thread {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private final User user; //Connected user, which data has to be filled in logIn()
@@ -138,7 +138,6 @@ public class UserThread extends Thread {
             datePuffer = reader.readLine();
 
             while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d.\\d{2}.\\d{4}$")) {
-                System.out.println(turnIntoDate(datePuffer));
                 sendMessage("This date is not in the correct format. Please try again. ");
                 datePuffer = reader.readLine();
             }
@@ -157,8 +156,7 @@ public class UserThread extends Thread {
                 Type: 'bye' to leave the room.\s
                       '@<name>' to send a direct message.\s
                       '#help' to list all commands.\s
-                      '#score' to know about the tokens.\s
-                      '#join' to play the LoveLetter game.""");
+                      '#play' to play the LoveLetter game.""");
 
         server.communicate(user + " joined the room.", user);
     }
