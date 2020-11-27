@@ -10,9 +10,9 @@ import java.util.Arrays;
  * @author amulya and vossa
  */
 public class GuardCard extends Card {
-    public GuardCard(String nameOfCard, int cardValue) {
-        this.nameOfCard = nameOfCard;
-        this.cardValue = cardValue;
+    public GuardCard() {
+        this.nameOfCard = "Guard";
+        this.cardValue = 1;
     }
 
     /**

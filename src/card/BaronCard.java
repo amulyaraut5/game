@@ -8,9 +8,9 @@ import game.Player;
  * @author amulya and vossa
  */
 public class BaronCard extends Card {
-    public BaronCard(String nameOfCard, int cardValue) {
-        this.nameOfCard = nameOfCard;
-        this.cardValue = cardValue;
+    public BaronCard() {
+        this.nameOfCard = "Baron";
+        this.cardValue = 3;
     }
 
     /**

@@ -9,9 +9,9 @@ import game.Player;
  */
 
 public class KingCard extends Card {
-    public KingCard(String nameOfCard, int cardValue) {
-        this.nameOfCard = nameOfCard;
-        this.cardValue = cardValue;
+    public KingCard() {
+        nameOfCard = "King";
+        cardValue = 6;
     }
 
     /**

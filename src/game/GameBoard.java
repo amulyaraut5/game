@@ -29,23 +29,23 @@ public class GameBoard extends Thread {
      * @return created and already filled deck
      */
     public static ArrayList<Card> createDeck() {
-        ArrayList<Card> stackCards = new ArrayList<>();
+        ArrayList<Card> deck = new ArrayList<>();
         // every card just one time: princess, countess, king
-        stackCards.add(new PrincessCard("Princess", 8));
-        stackCards.add(new CountessCard("Countess", 7));
-        stackCards.add(new KingCard("King", 6));
+        deck.add(new PrincessCard());
+        deck.add(new CountessCard());
+        deck.add(new KingCard());
         //every card two times: prince, handmaid, baron, priest, guard
         for (int i = 0; i < 2; i++) {
-            stackCards.add(new PrinceCard("Prince", 5));
-            stackCards.add(new HandmaidCard("Handmaid", 4));
-            stackCards.add(new BaronCard("Baron", 3));
-            stackCards.add(new PriestCard("Priest", 2));
+            deck.add(new PrinceCard());
+            deck.add(new HandmaidCard());
+            deck.add(new BaronCard());
+            deck.add(new PriestCard());
         }
         //guard five times:
         for (int i = 0; i < 5; i++) {
-            stackCards.add(new GuardCard("Guard", 1));
+            deck.add(new GuardCard());
         }
-        return stackCards;
+        return deck;
     }
 
     /**
@@ -159,7 +159,7 @@ public class GameBoard extends Thread {
         boolean win = false;
         //you win the game if you have enough token
         for (Player player : playerList) {
-            if (playerList.size() == 1){
+            if (playerList.size() == 1) {
                 win = true;
                 gameWinner = player;
             }

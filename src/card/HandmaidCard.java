@@ -8,10 +8,9 @@ import game.Player;
  * @author amulya and vossa
  */
 public class HandmaidCard extends Card {
-    public HandmaidCard(String nameOfCard, int cardValue) {
-
-        this.nameOfCard = nameOfCard;
-        this.cardValue = cardValue;
+    public HandmaidCard() {
+        nameOfCard = "Handmaid";
+        cardValue = 4;
     }
 
     /**
