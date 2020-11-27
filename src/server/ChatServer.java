@@ -125,7 +125,7 @@ public class ChatServer {
      * @param user User to be removed
      */
     public void removeUser(User user) {
-        users.remove(user);
+        //users.remove(user);//TODO remove player also
 
     }
 }

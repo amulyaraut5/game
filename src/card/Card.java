@@ -56,23 +56,16 @@ public abstract class Card {
      * reads the input of player and reads the input of player and sets the matching player as target player.
      */
     public void getTargetPlayer(Player p) {
-        boolean playerFound = false;
-        boolean first = true;
-        while (!playerFound) {
-            if (!first) {
-                p.message("Please choose a player from the list!");
-            }
+        while(true){
             String targetPlayerName = round.readResponse();
             for (Player player : availablePlayers) {
                 if (player.getName().equals(targetPlayerName)) {
                     targetPlayer = player;
-                    playerFound = true;
-                    break;
+                    return;
                 }
             }
-            first = false;
+            p.message("Please choose a player from the list!");
         }
-
     }
 
     @Override

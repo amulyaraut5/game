@@ -45,7 +45,7 @@ public class BaronCard extends Card {
                 round.kickPlayer(targetPlayer);
                 //Display message to all the players
                 targetPlayer.message("You were kicked out of the round.");
-                controller.communicate(targetPlayer + " has been eliminated.", playerPlayingCard);
+                controller.communicate(targetPlayer + " has been eliminated.", targetPlayer);
             } else {
                 playerPlayingCard.message("Both the players have same card value.");
             }
