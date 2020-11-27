@@ -23,7 +23,7 @@ public class GameController {
                 #score:  look at current scores\s
                 #choose <card/player>: if you have to choose a card or another player\s""";
     private final ChatServer server;
-    public GameBoard gameBoard;
+    private GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;
 

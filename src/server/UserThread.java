@@ -184,7 +184,7 @@ public class UserThread extends Thread {
      */
     private void disconnect(Exception ex) {
         exit = true;
-        System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+        System.err.println("Exception in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());

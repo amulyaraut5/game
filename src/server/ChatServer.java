@@ -125,5 +125,6 @@ public class ChatServer {
      */
     public void removeUser(User user) {
         users.remove(user);
+
     }
 }
