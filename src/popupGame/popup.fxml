@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="230.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="popupGame.ControllerPopUp">
+<AnchorPane id="popUpPane" prefHeight="230.0" prefWidth="487.0" stylesheets="@../view/gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="popupGame.ControllerPopUp">
    <children>
       <Label layoutX="26.0" layoutY="20.0" text="Choose a player:" />
       <ChoiceBox layoutX="25.0" layoutY="46.0" prefHeight="27.0" prefWidth="316.0" />

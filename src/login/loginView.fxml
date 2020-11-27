@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.LoginController">
+<AnchorPane id="loginPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../view/gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.LoginController">
    <children>
       <TextField fx:id="textUserName" layoutX="55.0" layoutY="141.0" promptText="enter a username" />
       <DatePicker fx:id="datePicker" layoutX="55.0" layoutY="242.0" />
-      <Button fx:id="okButton" layoutX="438.0" layoutY="311.0" mnemonicParsing="false" onAction="#handleLogIn" text="Ok" />
+      <Button fx:id="okButton" layoutX="402.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLogIn" prefHeight="27.0" prefWidth="175.0" text="Let the journey begin!" />
+      <Label layoutX="55.0" layoutY="109.0" text="Choose a name that the princess should know">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label layoutX="55.0" layoutY="208.0" text="Out of curiosity. When was the last time you were on a date?" />
+      <Label layoutX="55.0" layoutY="35.0" text="Welcome to Love Letter">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="215.0" fitWidth="122.0" layoutX="465.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" rotate="7.0">
+         <image>
+            <Image url="@../images/loginImage.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
