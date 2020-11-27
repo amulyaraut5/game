@@ -8,7 +8,7 @@
 <AnchorPane id="loginPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../view/gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.LoginController">
    <children>
       <TextField fx:id="textUserName" layoutX="55.0" layoutY="141.0" promptText="enter a username" />
-      <DatePicker fx:id="datePicker" layoutX="55.0" layoutY="242.0" />
+      <DatePicker fx:id="datePicker" layoutX="55.0" layoutY="242.0" promptText="dd.MM.yyyy" />
       <Button fx:id="okButton" layoutX="402.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLogIn" prefHeight="27.0" prefWidth="175.0" text="Let the journey begin!" />
       <Label layoutX="55.0" layoutY="109.0" text="Choose a name that the princess should know">
          <font>
