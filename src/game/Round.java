@@ -55,7 +55,7 @@ public class Round {
             while (playedCard == null) {
                 playedCard = chooseCard(secondCard);
             }
-            currentPlayer.message("You chose " + playedCard.getCardName() + "!");
+            currentPlayer.message("You chose " + playedCard + "!");
             handleTurn(playedCard);
         }
     }
@@ -167,8 +167,8 @@ public class Round {
     public Card chooseCard(Card secondCard) {
         Card card = null;
         //Card secondCard = pop();
-        String first = currentPlayer.getCard().getCardName();
-        String second = secondCard.getCardName();
+        String first = currentPlayer.getCard().toString();
+        String second = secondCard.toString();
         // If a player has countess, then he/she has to play it.
         if (first.equals("Countess") && (second.equals("king") || second.equals("Prince"))) {
             currentPlayer.message("You have the cards " + first + " & " + second+".");

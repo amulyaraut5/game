@@ -46,7 +46,7 @@ public class GuardCard extends Card {
                 if (guessCardName.equals(this.nameOfCard)) {
                     playerPlayingCard.message("You cannot choose the Guard card, try again.");
                 } else if (Arrays.asList(cardNames).contains(guessCardName)) {
-                    if (guessCardName.equals(targetPlayer.getCard().getCardName())) {
+                    if (guessCardName.equals(targetPlayer.getCard().toString())) {
                         playerPlayingCard.message("Your guess was correct!");
                         //If the guess is correct the player will be out of the round.
                         round.kickPlayer(targetPlayer);
