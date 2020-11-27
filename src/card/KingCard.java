@@ -14,17 +14,6 @@ public class KingCard extends Card {
         this.cardValue = cardValue;
     }
 
-    @Override
-    public String getCardName() {
-        return nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
-    }
-
-
     /**
      * By calling this method the current player trades card with another player
      *

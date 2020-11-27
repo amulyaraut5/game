@@ -14,16 +14,6 @@ public class HandmaidCard extends Card {
         this.cardValue = cardValue;
     }
 
-    @Override
-    public String getCardName() {
-        return nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
-    }
-
     /**
      * By calling this method Player cannot be affected by the other players card until the next turn.
      *

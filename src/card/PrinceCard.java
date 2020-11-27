@@ -4,6 +4,7 @@ import game.Player;
 
 /**
  * This card subclass contains the unique functionality of the Prince Card.
+ *
  * @author amulya and vossa
  */
 public class PrinceCard extends Card {
@@ -11,17 +12,6 @@ public class PrinceCard extends Card {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
     }
-
-    @Override
-    public String getCardName() {
-        return nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
-    }
-
 
     /**
      * By calling this method player can choose any player including themselves to discard their card
@@ -64,7 +54,7 @@ public class PrinceCard extends Card {
     /**
      * adds all players that are not guarded to the list availablePlayers
      */
-    void setAvailablePlayers(Player playerPlayingCard) {
+    public void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded()) {  // must not be guarded and discarding own card is allowed
                 availablePlayers.add(player);

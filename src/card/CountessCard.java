@@ -3,26 +3,15 @@ package card;
 import game.Player;
 
 /**
- *This card subclass contains the unique functionality of the Countess Card.
+ * This card subclass contains the unique functionality of the Countess Card.
+ *
  * @author amulya and vossa
  */
 public class CountessCard extends Card {
     public CountessCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
-
     }
-
-    @Override
-    public String getCardName() {
-        return nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
-    }
-
 
     /**
      * Notifies all players that the countess has been discarded.
@@ -32,6 +21,6 @@ public class CountessCard extends Card {
      */
     @Override
     public void handleCard(Player playerPlayingCard) {
-        controller.communicate(playerPlayingCard + " has discarded the Countess", playerPlayingCard);
+        controller.communicate(playerPlayingCard + " has discarded the Countess.", playerPlayingCard);
     }
 }

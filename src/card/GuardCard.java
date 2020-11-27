@@ -15,17 +15,6 @@ public class GuardCard extends Card {
         this.cardValue = cardValue;
     }
 
-    @Override
-    public String getCardName() {
-        return nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
-    }
-
-
     /**
      * By calling this method player designates another player and names a type of card. If that players has that card
      * then the player will be out of the round.

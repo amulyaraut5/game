@@ -13,7 +13,6 @@ import java.util.ArrayList;
  *
  * @author amulya and vossa
  */
-
 public abstract class Card {
     protected static Round round;
     protected static GameController controller;
@@ -21,8 +20,7 @@ public abstract class Card {
     protected int cardValue;
     protected String nameOfCard;
     protected Player targetPlayer;
-
-    ArrayList<Player> availablePlayers = new ArrayList<>();
+    protected ArrayList<Player> availablePlayers = new ArrayList<>();
 
     public static void setRound(Round round) {
         Card.round = round;
@@ -32,9 +30,13 @@ public abstract class Card {
         Card.controller = controller;
     }
 
-    public abstract String getCardName();
+    public String getCardName() {
+        return nameOfCard;
+    }
 
-    public abstract int getCardValue();
+    public int getCardValue() {
+        return cardValue;
+    }
 
     abstract public void handleCard(Player playerPlayingCard);
 
@@ -42,7 +44,7 @@ public abstract class Card {
      * Adds all not guarded players to the availablePlayers list, except current player
      */
 
-    void setAvailablePlayers(Player playerPlayingCard) {
+    public void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded() && player != playerPlayingCard) {
                 availablePlayers.add(player);
@@ -53,7 +55,7 @@ public abstract class Card {
     /**
      * reads the input of player and reads the input of player and sets the matching player as target player.
      */
-    void getTargetPlayer(Player p) {
+    public void getTargetPlayer(Player p) {
         boolean playerFound = false;
         boolean first = true;
         while (!playerFound) {
@@ -73,5 +75,8 @@ public abstract class Card {
 
     }
 
-
+    @Override
+    public String toString() {
+        return nameOfCard;
+    }
 }

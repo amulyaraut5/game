@@ -4,6 +4,7 @@ import game.Player;
 
 /**
  * This card subclass contains the unique functionality of the Princess Card.
+ *
  * @author amulya and vossa
  */
 public class PrincessCard extends Card {
@@ -11,16 +12,6 @@ public class PrincessCard extends Card {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
 
-    }
-
-    @Override
-    public String getCardName() {
-        return nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
     }
 
     /**

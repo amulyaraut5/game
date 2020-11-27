@@ -4,22 +4,13 @@ import game.Player;
 
 /**
  * This card subclass contains the unique functionality of the Priest Card.
+ *
  * @author amulya and vossa
  */
 public class PriestCard extends Card {
     public PriestCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
-    }
-
-    @Override
-    public String getCardName() {
-        return this.nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return this.cardValue;
     }
 
     /**

@@ -1,26 +1,16 @@
 package card;
 
-/**
- * This card subclass contains the unique functionality of the Baron Card.
- * @author amulya and vossa
- */
-
 import game.Player;
 
+/**
+ * This card subclass contains the unique functionality of the Baron Card.
+ *
+ * @author amulya and vossa
+ */
 public class BaronCard extends Card {
     public BaronCard(String nameOfCard, int cardValue) {
         this.nameOfCard = nameOfCard;
         this.cardValue = cardValue;
-    }
-
-    @Override
-    public String getCardName() {
-        return this.nameOfCard;
-    }
-
-    @Override
-    public int getCardValue() {
-        return cardValue;
     }
 
     /**
@@ -54,7 +44,7 @@ public class BaronCard extends Card {
             } else if (targetCardValue < playerCardValue) {
                 round.kickPlayer(targetPlayer);
                 //Display message to all the players
-                targetPlayer.message( "You were kicked out of the round.");
+                targetPlayer.message("You were kicked out of the round.");
                 controller.communicate(targetPlayer + " has been eliminated.", playerPlayingCard);
             } else {
                 playerPlayingCard.message("Both the players have same card value.");
