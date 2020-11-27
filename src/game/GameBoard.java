@@ -157,10 +157,14 @@ public class GameBoard extends Thread {
     private boolean gameWon() {
 
         boolean win = false;
-        //you win the game of you have enough token
+        //you win the game if you have enough token
         for (Player player : playerList) {
+            if (playerList.size() == 1){
+                win = true;
+                gameWinner = player;
+            }
             //2 player -> 7 token
-            if ((playerList.size() == 2) && (player.getTokenCount() >= 7)) {
+            else if ((playerList.size() == 2) && (player.getTokenCount() >= 7)) {
                 win = true;
                 gameWinner = player;
             } //3 player -> 5 token
