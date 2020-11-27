@@ -28,7 +28,7 @@ import server.User;
 
 
 public class Controller implements Initializable{
-
+    public String message;
     public Button submitButton;
     public TextArea chatTextArea;
     public TextArea chatWindow;
@@ -53,6 +53,7 @@ public class Controller implements Initializable{
         System.out.println("play button clicked");
         playButton.setTextFill(Color.GRAY);
         playButton.setText("Have Fun!");
+        message ="#join";
     }
 
     //card 1
