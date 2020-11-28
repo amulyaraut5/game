@@ -16,13 +16,13 @@ public class LoginView extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage loginStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("loginView.fxml"));
-        primaryStage.setTitle("Love Letter");
-        primaryStage.setResizable(false);
+        loginStage.setTitle("Love Letter");
+        loginStage.setResizable(false);
 
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-
+        loginStage.setScene(new Scene(root));
+        loginStage.show();
+        LoginController.setStage(loginStage);
     }
 }
