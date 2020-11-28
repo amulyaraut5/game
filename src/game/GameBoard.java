@@ -108,8 +108,8 @@ public class GameBoard extends Thread {
             firstPlayer.message("The round has ended. You won the round! Congratulations!");
         }
         gameController.communicate("Congratulations, " + gameWinner.getName() + " won the game! " +
-                "\nType #join to create a new game.", gameWinner);
-        gameWinner.message("Congratulations! You won the game! \n Type #join to create a new game.");
+                "\nType #play to create a new game.", gameWinner);
+        gameWinner.message("Congratulations! You won the game! \n Type #play to create a new game.");
         gameController.reset();
     }
 
