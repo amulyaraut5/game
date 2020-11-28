@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
@@ -30,13 +31,16 @@ public class ControllerPopUp implements Initializable {
     String player3 = "3";
     ObservableList playerList = FXCollections.observableArrayList(player0, player1, player2, player3);
     public ChoiceBox playerBox;
-
+    public ChoiceBox cardListBox;
+    ObservableList cardList = FXCollections.observableArrayList("Baron", "Countess",
+            "Guard", "Handmaid", "King", "Priest", "Prince", "Princess");
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         playerBox.setValue(player0);
         playerBox.setItems(playerList);
+        cardListBox.setValue("Baron");
+        cardListBox.setItems(cardList);
+
     }
 
-    //ObservableList playerList = FXCollections.observableArrayList("Baron", "Countess",
-    //        "Guard", "Handmaid", "King", "Priest", "Prince", "Princess");
 }
