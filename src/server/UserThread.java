@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 
 public class UserThread extends Thread {
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yy");
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final ChatServer server;
@@ -63,8 +63,7 @@ public class UserThread extends Thread {
     public void run() {
 
         //before each method call it is checked if run() should be exited.
-        if (!exit) logInName();
-        if (!exit) logInDate(); //TODO remove comment-out before submission on monday
+        if (!exit) logIn();
         if (!exit) welcome();
 
         String clientMessage = "";
@@ -91,7 +90,7 @@ public class UserThread extends Thread {
                 }
             }
         } catch (IOException ex) {
-            disconnect(ex);
+            if (!exit) disconnect(ex);
         }
         if (!exit) disconnect();
     }
@@ -106,52 +105,32 @@ public class UserThread extends Thread {
     }
 
     /**
-     * The user is asked to enter a name to log in.
+     * The user is asked to enter a name to log in and to enter the date where he last dated.
      * If the name already exists in the list of assigned usernames, the user is asked to try again.
-     * It also makes sure that the user enters something and not a empty String.
      */
-    private void logInName() {
-        sendMessage("Enter your username:");
-        try {
-            while (true) {
-                String userName = reader.readLine();
-                System.out.println(userName);
-                if (userName.isBlank())
-                    sendMessage("#login " + "You might not have entered a username. Please try again:");
-                else if (userName.contains(" "))
-                    sendMessage("#login " + "Spaces are not allowed in username. Please try again.");
-                else if (!server.isAvailable(userName))
+    private void logIn() {
+        while (!exit) {
+            try {
+                String message = reader.readLine();
+                String userName = message.substring(0, message.indexOf(" "));
+                String dateText = message.substring(message.indexOf(" ") + 1);
+
+                if (turnIntoDate(dateText) == null) {
+                    sendMessage("#login " + "Please check your Date! (dd.mm.yyyy)");
+                } else if (!server.isAvailable(userName)) {
                     sendMessage("#login " + "This username is already taken!");
-                else {
+                } else {
+                    user.setLastDate(LocalDate.parse(dateText, formatter));
                     user.setName(userName);
-                    break;
+                    sendMessage("#login " + "successful");
+                    return;
                 }
+            } catch (IOException ex) {
+                if (!exit) disconnect(ex);
             }
-        } catch (IOException ex) {
-            disconnect(ex);
         }
     }
 
-    /**
-     * The user is asked to enter the date where he last dated.
-     * If the date is not valid he has to do it again.
-     */
-    private void logInDate() {
-        String datePuffer;
-        //TODO if exception is thrown because date is not valid, the user should be asked to try again
-        try {
-            datePuffer = reader.readLine();
-
-            while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
-                sendMessage("#login " + "This date is not in the correct format. Please try again. ");
-                datePuffer = reader.readLine();
-            }
-            user.setLastDate(LocalDate.parse(datePuffer, formatter));
-            sendMessage("#login " + "successful");
-        } catch (IOException ex) {
-            disconnect(ex);
-        }
-    }
 
     /**
      * Sends welcome message to the user and notifies all other users.

@@ -88,10 +88,9 @@ public class ChatClient {
         if (message.contains(" ")) {
             command = message.substring(0, message.indexOf(" "));
         }
-        message.substring(message.indexOf(" ") + 1);
 
+        String finalMessage = message.substring(message.indexOf(" ") + 1);
         String finalCommand = command;
-        String finalMessage = message;
 
         //The methods are not called directly from the controller,
         // the method calls take place in the JavaFX application thread.

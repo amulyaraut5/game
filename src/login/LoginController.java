@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LoginController {
     public LocalDate date;
-    private String username;
+    private String userName;
     private ChatClient client;
 
     @FXML
@@ -42,17 +42,18 @@ public class LoginController {
     @FXML
     void handleLogIn(ActionEvent event) {
         labelResponse.setText("");
-        username = textUserName.getText();
+        userName = textUserName.getText();
         date = datePicker.getValue();
-        if (username.isBlank()) {
+        if (userName.isBlank()) {
             labelResponse.setText("Please insert a Username!");
+        } else if (userName.contains(" ")) {
+            labelResponse.setText("Spaces are not allowed in usernames!");
         } else if (date == null) {
             labelResponse.setText("Please insert a Date!");
         } else {
             try {
-                String dateText = date.format(DateTimeFormatter.ofPattern("dd MM yy"));
-                client.sentUserInput(username);
-                client.sentUserInput(dateText);
+                String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));
+                client.sentUserInput(userName + " " + dateText);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }
@@ -61,9 +62,9 @@ public class LoginController {
 
     public void ServerResponse(String response) {
         System.out.println(response);
-        if(response.equals("successful")){
+        if (response.equals("successful")) {
             startGameView();
-        }else{
+        } else {
             labelResponse.setText(response);
         }
     }
@@ -77,7 +78,7 @@ public class LoginController {
             System.out.println(e.getMessage());
         }
         Controller controller = loader.getController();
-        controller.setUser(username);
+        controller.setUser(userName);
         Scene gameViewScene = new Scene(gameView);
         //this line gets the Stage information
         Stage stage = new Stage();
