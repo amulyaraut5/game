@@ -66,7 +66,7 @@ public abstract class Card {
     }
 
     /**
-     * Reads the input of player  and sets the matching player as target player.
+     * Reads the input of player and sets the matching player as target player.
      * @param p is the player who is playing card
      */
     public void getTargetPlayer(Player p) {
@@ -82,6 +82,10 @@ public abstract class Card {
         }
     }
 
+    /**
+     * Returns the name string representing the card object.
+     * @return the name of the card
+     */
     @Override
     public String toString() {
         return nameOfCard;

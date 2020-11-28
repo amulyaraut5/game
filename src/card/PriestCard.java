@@ -14,7 +14,7 @@ public class PriestCard extends Card {
     }
 
     /**
-     * Player is allowed to see the hand of other player he chooses.
+     * Player is allowed to see the hand of another player of his choice.
      * He needs to choose the player from the set of available players.
      *
      * @param playerPlayingCard the current player

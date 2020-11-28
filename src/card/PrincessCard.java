@@ -15,7 +15,7 @@ public class PrincessCard extends Card {
     }
 
     /**
-     * If a player discard this card, then the player will be out of the round.
+     * If a player discards this card, the player is out of the round.
      * @param playerPlayingCard the current player
      */
     @Override

@@ -15,7 +15,7 @@ public class PrinceCard extends Card {
 
     /**
      * Player can choose any player including themselves to discard their card and draw a new card.
-     * If the discarded card is princess the player will be eliminated from the round.
+     * If the discarded card is Princess the player will be eliminated from the round.
      *
      * @param playerPlayingCard the current player
      */
@@ -54,7 +54,7 @@ public class PrinceCard extends Card {
     /**
      * Exceptional case only for PrinceCard class because a player can target himself to discard the card and choose
      * new one.
-     * @param playerPlayingCard is the player who is playing card.
+     * @param playerPlayingCard the current player
      */
     public void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {

@@ -14,7 +14,7 @@ public class CountessCard extends Card {
     }
 
     /**
-     * Notifies all players that the countess has been discarded.
+     * Notifies all players except the current player that the countess has been discarded.
      * The Countess takes effect while she is in the hand, which is already handled in Round class.
      *
      * @param playerPlayingCard the current player
