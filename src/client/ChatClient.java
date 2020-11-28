@@ -18,7 +18,7 @@ public class ChatClient extends Thread{
     private String userName;
     private Socket socket;
     public ReaderThread readerThread;
-    public WriterThread writerThread;
+    public Writer writer;
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
@@ -37,9 +37,8 @@ public class ChatClient extends Thread{
             socket = new Socket(hostname, port);
 
             readerThread = new ReaderThread(socket, this);
-            writerThread = new WriterThread(socket, this);
+            writer = new Writer(socket, this);
             readerThread.start();
-            writerThread.start();
 
             System.out.println("Connection to server successful.");
 
@@ -55,7 +54,6 @@ public class ChatClient extends Thread{
      */
     public void disconnect() {
         readerThread.interrupt();
-        writerThread.interrupt();
         try {
             socket.close();
         } catch (IOException e) {
@@ -69,7 +67,6 @@ public class ChatClient extends Thread{
      */
     public void disconnect(Exception ex) {
         readerThread.interrupt();
-        writerThread.interrupt();
         System.out.println("The server is no longer reachable: " + ex.getMessage());
         try {
             socket.close();
