@@ -28,13 +28,6 @@ public class Game extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
-        //client
-        String hostname = "localhost";
-        int port = 4444;
-        chatClient = new ChatClient(hostname, port);
-        chatClient.establishConnection();
-        System.out.println("run");
-
 
 
 
