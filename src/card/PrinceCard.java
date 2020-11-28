@@ -44,6 +44,8 @@ public class PrinceCard extends Card {
             Card currentCard = targetPlayer.getCard();
             targetPlayer.getPlayedCards().add(currentCard);
             targetPlayer.setCurrentCard(round.pop());
+            controller.communicate( targetPlayer + " has to draw a new card.", targetPlayer);
+            targetPlayer.message("You have to draw a new card. Your new card is " + playerPlayingCard.getCard() + ".");
         }
         availablePlayers.clear();
     }
