@@ -5,9 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.Background;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -15,61 +18,30 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Window;
-import server.User;
-
-
-public class Controller implements Initializable{
+public class Controller implements Initializable {
     public String message;
     public Button submitButton;
     public TextArea chatTextArea;
     public TextArea chatWindow;
-    public void chatMessageHandling(){
-        String message;
-        try{
-            message = chatTextArea.getText();
-        } catch (Exception e){
-            message = "wrong";
-        }
-        chatWindow.appendText("You: " + message + "\n");
-        System.out.println(message);
-        chatTextArea.clear();
-    }
     //play button
-    public  Button playButton;
-
-    /**
-     * this methods changes the play button by clicking on it
-     */
-    public void handlePlayButton() {
-        System.out.println("play button clicked");
-        playButton.setTextFill(Color.GRAY);
-        playButton.setText("Have Fun!");
-        message ="#join";
-    }
-
+    public Button playButton;
     //card 1
     public Button card1;
     public ImageView card1Image;
-
     /**
-     * this method changes the image of card1
+     * This method changes the Scene
      */
-    public void changeImageCard1(){
-        Image image = new Image("/images/king.png");
-        card1Image.setImage(image);
-    }
+    public Button card2;
+    /**
+     * Handles the pop-up of the rule card
+     */
+    public Button ruleCardButton;
+    public Label player0Label;
 
     /**
      * this method disables a player vbox
+     *
      * @param event
      * @param player
      */
@@ -78,11 +50,33 @@ public class Controller implements Initializable{
         player.setDisable(true);
     }
 
+    public void chatMessageHandling() {
+        String message = chatTextArea.getText();
+
+        chatWindow.appendText("You: " + message + "\n");
+        System.out.println(message);
+        chatTextArea.clear();
+    }
 
     /**
-     * This method changes the Scene
+     * this methods changes the play button by clicking on it
      */
-    public Button card2;
+    public void handlePlayButton() {
+        System.out.println("play button clicked");
+        playButton.setDisable(true);
+        playButton.setText("Have Fun!");
+        message = "#join";
+
+    }
+
+    /**
+     * this method changes the image of card1
+     */
+    public void changeImageCard1() {
+        Image image = new Image("/images/king.png");
+        card1Image.setImage(image);
+    }
+
     public void changeSceneCard(javafx.event.ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/popupGame/popup.fxml"));
         Stage popup = new Stage();
@@ -98,8 +92,7 @@ public class Controller implements Initializable{
     /**
      * Handles the pop-up of the rule card
      */
-    public Button ruleCardButton;
-    public void handleruleCardButton(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void handleRuleCardButton(javafx.event.ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/popupGame/ruleCard.fxml"));
         Stage popup = new Stage();
         popup.setScene(new Scene(root));
@@ -111,13 +104,12 @@ public class Controller implements Initializable{
         popup.showAndWait();
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-    public Label player0Label;
-    public void getText(String name){
+
+    public void setUser(String name) {
         player0Label.setText(name);
     }
 }

@@ -22,8 +22,6 @@ public class UserThread extends Thread {
     private final ChatServer server;
     private PrintWriter userOut;
     private BufferedReader reader;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
     private boolean exit = false;
 
     public UserThread(Socket socket, ChatServer server, User user) {
@@ -34,9 +32,9 @@ public class UserThread extends Thread {
         this.user.setThread(this);
 
         try {
-            input = new ObjectInputStream(socket.getInputStream());
+            InputStream input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));
-            output = new ObjectOutputStream(socket.getOutputStream());
+            OutputStream output = socket.getOutputStream();
             userOut = new PrintWriter(output, true);
         } catch (IOException ex) {
             disconnect(ex);
@@ -66,7 +64,7 @@ public class UserThread extends Thread {
 
         //before each method call it is checked if run() should be exited.
         if (!exit) logInName();
-        //if (!exit) logInDate(); //TODO remove comment-out before submission on monday
+        if (!exit) logInDate(); //TODO remove comment-out before submission on monday
         if (!exit) welcome();
 
         String clientMessage = "";
@@ -104,7 +102,7 @@ public class UserThread extends Thread {
      * @param message the message to be sent
      */
     public void sendMessage(String message) {
-        userOut.println(message);
+        if (!message.isBlank()) userOut.println(message);
     }
 
     /**
@@ -117,10 +115,13 @@ public class UserThread extends Thread {
         try {
             while (true) {
                 String userName = reader.readLine();
-                if (userName.isBlank()) sendMessage("You might not have entered a username. Please try again:");
-                else if (userName.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again.");
+                System.out.println(userName);
+                if (userName.isBlank())
+                    sendMessage("#login " + "You might not have entered a username. Please try again:");
+                else if (userName.contains(" "))
+                    sendMessage("#login " + "Spaces are not allowed in username. Please try again.");
                 else if (!server.isAvailable(userName))
-                    sendMessage("This username is already taken. Please try a different username:");
+                    sendMessage("#login " + "This username is already taken!");
                 else {
                     user.setName(userName);
                     break;
@@ -139,14 +140,14 @@ public class UserThread extends Thread {
         String datePuffer;
         //TODO if exception is thrown because date is not valid, the user should be asked to try again
         try {
-            sendMessage("I am curious. When was the last time you were on a date? (dd mm yy)");
             datePuffer = reader.readLine();
 
             while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d \\d{2} \\d{2}$")) {
-                sendMessage("This date is not in the correct format. Please try again. ");
+                sendMessage("#login " + "This date is not in the correct format. Please try again. ");
                 datePuffer = reader.readLine();
             }
             user.setLastDate(LocalDate.parse(datePuffer, formatter));
+            sendMessage("#login " + "successful");
         } catch (IOException ex) {
             disconnect(ex);
         }

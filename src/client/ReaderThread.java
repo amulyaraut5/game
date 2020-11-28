@@ -1,7 +1,5 @@
 package client;
 
-import view.Game;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,11 +11,9 @@ import java.net.Socket;
  */
 public class ReaderThread extends Thread {
     private final ChatClient client;
-    private final Socket socket;
     private BufferedReader bReader;
 
     public ReaderThread(Socket socket, ChatClient client) {
-        this.socket = socket;
         this.client = client;
 
         try {
@@ -36,14 +32,11 @@ public class ReaderThread extends Thread {
         while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
-                System.out.println(text);
+                if (text != null && !text.isBlank()) client.handleServerMessage(text);
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
             }
         }
-    }
-    public void message(String m){
-        System.out.println(m);
     }
 }

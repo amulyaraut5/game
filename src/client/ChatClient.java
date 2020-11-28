@@ -1,5 +1,9 @@
 package client;
 
+import javafx.application.Platform;
+import login.LoginController;
+import view.Controller;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -12,20 +16,23 @@ import java.net.UnknownHostException;
  * @author janau
  */
 
-public class ChatClient extends Thread{
+public class ChatClient {
     private final int port;
     private final String hostname;
-    private String userName;
     private Socket socket;
-    public ReaderThread readerThread;
-    public Writer writer;
+
+    private ReaderThread readerThread;
+    private Writer writer;
+    private LoginController loginController;
+    private Controller controller;
+
 
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
+
+        establishConnection();
     }
-
-
 
     /**
      * This method establishes the connection between the server and the client using the assigned hostname and port.
@@ -36,8 +43,8 @@ public class ChatClient extends Thread{
         try {
             socket = new Socket(hostname, port);
 
-            readerThread = new ReaderThread(socket, this);
             writer = new Writer(socket, this);
+            readerThread = new ReaderThread(socket, this);
             readerThread.start();
 
             System.out.println("Connection to server successful.");
@@ -62,7 +69,6 @@ public class ChatClient extends Thread{
     }
 
     /**
-     *
      * @param ex
      */
     public void disconnect(Exception ex) {
@@ -77,12 +83,36 @@ public class ChatClient extends Thread{
         System.out.println("Type \"bye\" to exit.");
     }
 
-    /**
-     *
-     * @param userName
-     */
-    void setUserName(String userName) {
-        this.userName = userName;
+    public void handleServerMessage(String message) {
+        String command = message;
+        if (message.contains(" ")) {
+            command = message.substring(0, message.indexOf(" "));
+        }
+        message.substring(message.indexOf(" ") + 1);
+
+        String finalCommand = command;
+        String finalMessage = message;
+
+        //The methods are not called directly from the controller,
+        // the method calls take place in the JavaFX application thread.
+        Platform.runLater(
+                () -> {
+                    switch (finalCommand) {
+                        case "#login" -> loginController.ServerResponse(finalMessage);
+                    }
+                }
+        );
     }
 
+    public void sentUserInput(String input) {
+        writer.sentUserInput(input);
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
 }

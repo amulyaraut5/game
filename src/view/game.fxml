@@ -12,7 +12,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button id="cardButton" fx:id="ruleCardButton" mnemonicParsing="false" onAction="#handleruleCardButton" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                  <Button id="cardButton" fx:id="ruleCardButton" mnemonicParsing="false" onAction="#handleRuleCardButton" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
                         <ImageView fx:id="ruleCardImage" fitHeight="169.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                            <image>
