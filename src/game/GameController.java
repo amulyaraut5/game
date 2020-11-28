@@ -27,6 +27,11 @@ public class GameController {
     private boolean createdGame = false;
     private boolean runningGame = false;
 
+    /**
+     * Constructor for the GameController.
+     *
+     * @param server server connected to the GameBoard which is responsible for the Game commands.
+     */
     public GameController(ChatServer server) {
         this.server = server;
         Card.setController(this);
