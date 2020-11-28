@@ -55,7 +55,7 @@ public class GuardCard extends Card {
                         break;
                     }
                 } else {
-                    playerPlayingCard.message("Your might have misstyped the card name. Please try again!");
+                    playerPlayingCard.message("Your might have mistyped the card name. Please try again!");
                 }
             }
         }

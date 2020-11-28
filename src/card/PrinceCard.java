@@ -50,12 +50,12 @@ public class PrinceCard extends Card {
         availablePlayers.clear();
     }
 
-    @Override
     /**
      * Exceptional case only for PrinceCard class because a player can target himself to discard the card and choose
      * new one.
      * @param playerPlayingCard the current player
      */
+    @Override
     public void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded()) {

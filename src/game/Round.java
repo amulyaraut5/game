@@ -152,12 +152,6 @@ public class Round {
         return faceUpCards;
     }
 
-    /**
-     * shows the three removed cards to the players
-     */
-    public void sendFaceUpCards() {
-        //sendet abgedeckte Karten an alle Spieler
-    }
 
     /**
      * current player can choose between a new card or his old card
