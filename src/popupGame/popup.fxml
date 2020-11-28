@@ -6,7 +6,7 @@
 <AnchorPane id="popUpPane" prefHeight="230.0" prefWidth="487.0" stylesheets="@../view/gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="popupGame.ControllerPopUp">
    <children>
       <Label layoutX="26.0" layoutY="20.0" text="Choose a player:" />
-      <ChoiceBox layoutX="25.0" layoutY="46.0" prefHeight="27.0" prefWidth="316.0" />
+      <ChoiceBox fx:id="playerBox" layoutX="25.0" layoutY="46.0" prefHeight="27.0" prefWidth="316.0" />
       <Label layoutX="39.0" layoutY="89.0" />
       <Button fx:id="closePopUp" layoutX="371.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleOkButton" prefHeight="27.0" prefWidth="87.0" text="Ok" />
       <ListView fixedCellSize="7.0" layoutX="25.0" layoutY="106.0" prefHeight="100.0" prefWidth="316.0" />
