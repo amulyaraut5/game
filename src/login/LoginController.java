@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,7 +17,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class LoginController {
-    public LocalDate date;
+    private static Stage loginStage;
+    private LocalDate date;
     private String userName;
     private ChatClient client;
 
@@ -29,14 +29,15 @@ public class LoginController {
     private DatePicker datePicker;
 
     @FXML
-    private Button okButton;
-
-    @FXML
     private Label labelResponse;
 
     public LoginController() {
         client = new ChatClient("localhost", 4444);
         client.setLoginController(this);
+    }
+
+    public static void setStage(Stage loginStage) {
+        LoginController.loginStage = loginStage;
     }
 
     @FXML
@@ -61,9 +62,9 @@ public class LoginController {
     }
 
     public void ServerResponse(String response) {
-        System.out.println(response);
         if (response.equals("successful")) {
             startGameView();
+            loginStage.close();
         } else {
             labelResponse.setText(response);
         }
@@ -73,21 +74,16 @@ public class LoginController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/game.fxml"));
         Parent gameView = null;
         try {
-            gameView = loader.load();
+            gameView = (Parent) loader.load();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         Controller controller = loader.getController();
-        controller.setUser(userName);
-
-        Scene gameViewScene = new Scene(gameView);
-        //this line gets the Stage information
-        Stage stage = new Stage();
-        stage.setScene(gameViewScene);
-
-        stage.show();
         client.setController(controller);
-        System.out.println("ja");
-
+        Stage gameStage = new Stage();
+        gameStage.setTitle("Love Letter");
+        gameStage.setScene(new Scene(gameView));
+        gameStage.setResizable(false);
+        gameStage.show();
     }
 }
