@@ -1,7 +1,6 @@
 package view;
 
 import client.ChatClient;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -33,8 +31,6 @@ public class Controller implements Initializable {
     //card 1
     public Button card1;
     public ImageView card1Image;
-    private String userName;
-    private ChatClient client;
     /**
      * This method changes the Scene
      */
@@ -44,6 +40,13 @@ public class Controller implements Initializable {
      */
     public Button ruleCardButton;
     public Label player0Label;
+    public Label player1Label;
+    public Label player2Label;
+    public Label player3Label;
+    public Label serverMessage;
+    private String userName;
+    private ChatClient client;
+    private ObservableList playerList;
 
     /**
      * this method disables a player vbox
@@ -59,8 +62,8 @@ public class Controller implements Initializable {
     public void chatMessageHandling() {
         String message = chatTextArea.getText();
 
-        chatWindow.appendText("You: " + message + "\n");
-        System.out.println(message);
+        chatWindow.appendText("[You]: " + message + "\n");
+        client.sentUserInput(message);
         chatTextArea.clear();
     }
 
@@ -109,20 +112,20 @@ public class Controller implements Initializable {
         //show pop-up and wait until it is dismissed
         popup.showAndWait();
     }
-    public Label player1Label;
-    public Label player2Label;
-    public Label player3Label;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
-    public void setClient(ChatClient chatClient){
+
+    public void setClient(ChatClient chatClient) {
         client = chatClient;
     }
+
     public void setUser(String name) {
         player0Label.setText(name);
         userName = name;
     }
-    public Label serverMessage;
+
     public void ServerResponse(String response) {
         System.out.println(response);
         if (response.contains("joined the room")) {
@@ -131,8 +134,8 @@ public class Controller implements Initializable {
             serverMessage.setText(response);
         }
     }
-    private ObservableList playerList;
-    public ObservableList getPlayer(){
+
+    public ObservableList getPlayer() {
         String player1 = player1Label.getText();
         if (player1 == null) player1 = " ";
         String player2 = player2Label.getText();
@@ -141,5 +144,9 @@ public class Controller implements Initializable {
         if (player3 == null) player1 = " ";
         playerList.addAll(player1, player2, player3);
         return playerList;
+    }
+
+    public void appendChatMessage(String message) {
+        chatWindow.appendText(message + "\n");
     }
 }
