@@ -104,7 +104,7 @@ public class ChatClient {
                 () -> {
                     switch (finalCommand) {
                         case "#login" -> loginController.ServerResponse(finalMessage);
-                        case "someone joined" -> controller.ServerResponse(message);
+                        case "someone joined" -> controller.setRoomUser(message.split(" ", 2)[0]);
                         case "#chat" -> controller.appendChatMessage(message);
                         default -> System.out.println(message);
                     }

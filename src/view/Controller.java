@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -47,6 +48,7 @@ public class Controller implements Initializable {
     private String userName;
     private ChatClient client;
     private ObservableList playerList;
+    private ArrayList <String> userList;
 
     /**
      * this method disables a player vbox
@@ -134,16 +136,13 @@ public class Controller implements Initializable {
             serverMessage.setText(response);
         }
     }
-
-    public ObservableList getPlayer() {
-        String player1 = player1Label.getText();
-        if (player1 == null) player1 = " ";
-        String player2 = player2Label.getText();
-        if (player2 == null) player1 = " ";
-        String player3 = player3Label.getText();
-        if (player3 == null) player1 = " ";
-        playerList.addAll(player1, player2, player3);
-        return playerList;
+    public TextArea userArea;
+    /**
+     * each time a new player joins a new label gets filled
+     * @param name who joins
+     */
+    public void setRoomUser(String name){
+       userArea.appendText("\n" + name);
     }
 
     public void appendChatMessage(String message) {
