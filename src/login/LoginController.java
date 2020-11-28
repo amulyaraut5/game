@@ -79,6 +79,7 @@ public class LoginController {
             System.err.println(e.getMessage());
         }
         Controller controller = loader.getController();
+        controller.setUser(userName);
         client.setController(controller);
         Stage gameStage = new Stage();
         gameStage.setTitle("Love Letter");

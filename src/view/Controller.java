@@ -1,6 +1,8 @@
 package view;
 
 import client.ChatClient;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -107,8 +110,8 @@ public class Controller implements Initializable {
         popup.showAndWait();
     }
     public Label player1Label;
-    private Label player2Label;
-    private Label player3Label;
+    public Label player2Label;
+    public Label player3Label;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -127,5 +130,16 @@ public class Controller implements Initializable {
         } else {
             serverMessage.setText(response);
         }
+    }
+    private ObservableList playerList;
+    public ObservableList getPlayer(){
+        String player1 = player1Label.getText();
+        if (player1 == null) player1 = " ";
+        String player2 = player2Label.getText();
+        if (player2 == null) player1 = " ";
+        String player3 = player3Label.getText();
+        if (player3 == null) player1 = " ";
+        playerList.addAll(player1, player2, player3);
+        return playerList;
     }
 }
