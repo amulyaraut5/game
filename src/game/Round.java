@@ -170,19 +170,20 @@ public class Round {
         String first = currentPlayer.getCard().toString();
         String second = secondCard.toString();
         // If a player has countess, then he/she has to play it.
-        if (first.equals("Countess") && (second.equals("king") || second.equals("Prince"))) {
+        if (first.equals("Countess") && (second.equals("King") || second.equals("Prince"))) {
             currentPlayer.message("You have the cards " + first + " & " + second+".");
             currentPlayer.message("You have to play Countess.");
             card = currentPlayer.getCard();
             currentPlayer.setCurrentCard(secondCard);
             return card;
 
-        } else if (second.equals("Countess") && (first.equals("king") || first.equals("Prince"))) {
+        } else if ((first.equals("King") || first.equals("Prince")) && second.equals("Countess")) {
             currentPlayer.message("You have the cards " + first + " & " + second+".");
             currentPlayer.message("You have to play Countess.");
             card = secondCard;
             return card;
         }
+
         currentPlayer.message("Which card do you want to play?");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ":");
         gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
@@ -201,6 +202,7 @@ public class Round {
             currentPlayer.message("Wrong Input. Please choose card 1 or 2:");
         }
         return card;
+
     }
 
 
