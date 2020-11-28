@@ -24,9 +24,7 @@ public class Round {
     private volatile String userResponse;
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
-        //remove() function cannot be called in removeDeckCard
-        //dealing should be also done here because after creating object of round all the things would be taken care of making, shuffling and dealing
-        // delete this message
+
         this.currentPlayer = firstPlayer;
         this.cardDeck = deck;
         shuffleDeck();

@@ -18,10 +18,17 @@ public class ChatServer {
     private final int port;
     private final GameController gameController = new GameController(this);
 
+    /**
+     * Constructor for the ChatServer class which initialises the port number.
+     * @param port port number where the server is bound to listen the client.
+     */
     public ChatServer(int port) {
         this.port = port;
     }
 
+    /**
+     * Main method
+     */
     public static void main(String[] args) {
         int port = 4444;
 
@@ -29,12 +36,17 @@ public class ChatServer {
         server.start();
     }
 
+    /**
+     * Getter method for the Users.
+     * @return returns the list of users.
+     */
     public ArrayList<User> getUsers() {
         return users;
     }
 
     /**
-     * start() method opens a channel for the connection between Server and Client
+     * It opens a channel for the connection between Server and Client.
+     *
      */
     private void start() {
         try {
@@ -56,7 +68,6 @@ public class ChatServer {
         while (accept) {
             try {
                 Socket clientSocket = serverSocket.accept();
-
                 System.out.println("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
                 User user = new User();
                 users.add(user);
@@ -70,7 +81,9 @@ public class ChatServer {
     }
 
     /**
-     * This method sends a message to each client which is connected to the server except the sender itself
+     * This method sends a message to each client which is connected to the server except the sender itself.
+     * @param message the message which is to be sent.
+     * @param sender the user who is responsible for sending the message.
      */
     public void communicate(String message, User sender) {
 
@@ -80,6 +93,7 @@ public class ChatServer {
             }
         }
     }
+
 
     public boolean communicateDirect(String message, User sender) {
         String userName = (message.split(" ", 2)[0]);
@@ -95,10 +109,15 @@ public class ChatServer {
         return false;
     }
 
+
     public void communicateGame(String message, User sender) {
         gameController.readCommand(message, sender);
     }
 
+    /**
+     * It sends messages to all the user.
+     * @param message message to be sent.
+     */
     public void communicateAll(String message) {
         for (User user : users)
             user.message(message);

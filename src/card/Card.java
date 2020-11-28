@@ -57,7 +57,6 @@ public abstract class Card {
      * The case with the PrinceCard is handled separately.
      * @param playerPlayingCard is the player who is playing card
      */
-
     public void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
             if (!player.isGuarded() && player != playerPlayingCard) {
