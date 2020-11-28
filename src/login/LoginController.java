@@ -79,10 +79,15 @@ public class LoginController {
         }
         Controller controller = loader.getController();
         controller.setUser(userName);
+
         Scene gameViewScene = new Scene(gameView);
         //this line gets the Stage information
         Stage stage = new Stage();
         stage.setScene(gameViewScene);
+
         stage.show();
+        client.setController(controller);
+        System.out.println("ja");
+
     }
 }

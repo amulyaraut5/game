@@ -1,5 +1,6 @@
 package view;
 
+import client.ChatClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +30,8 @@ public class Controller implements Initializable {
     //card 1
     public Button card1;
     public ImageView card1Image;
+    private String userName;
+    private ChatClient client;
     /**
      * This method changes the Scene
      */
@@ -103,13 +106,17 @@ public class Controller implements Initializable {
         //show pop-up and wait until it is dismissed
         popup.showAndWait();
     }
-
+    private Label player1Label;
+    private Label player2Label;
+    private Label player3Label;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
-
+    public void setClient(ChatClient chatClient){
+        client = chatClient;
+    }
     public void setUser(String name) {
         player0Label.setText(name);
+        userName = name;
     }
 }
