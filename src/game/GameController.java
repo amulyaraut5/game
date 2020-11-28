@@ -18,16 +18,20 @@ public class GameController {
 
     private final String COMMANDS = """
             Use the following commands to control the game:\s
-                #create: creates a new game\s
-                #join:   join the game\s
+                #play:   join the game\s
                 #start:  starts the game\s
                 #score:  look at current scores\s
-                #choose: 'Card/Player': if you have to choose a card or another player\s""";
+                #choose <card/player>: if you have to choose a card or another player\s""";
     private final ChatServer server;
-    public GameBoard gameBoard;
+    private GameBoard gameBoard;
     private boolean createdGame = false;
     private boolean runningGame = false;
 
+    /**
+     * Constructor for the GameController.
+     *
+     * @param server server connected to the GameBoard which is responsible for the Game commands.
+     */
     public GameController(ChatServer server) {
         this.server = server;
         Card.setController(this);
@@ -38,6 +42,9 @@ public class GameController {
      * In case the command consists of additional information in choose the command gets cut.
      * It checks if the required additional information is there and then sends only this
      * additional information to the GameBoard to be evaluated.
+     *
+     * @param message command that is received from the Server
+     * @param user    user that sent the command
      */
     public synchronized void readCommand(String message, User user) {
         String command = message;
@@ -45,8 +52,7 @@ public class GameController {
             command = message.substring(0, message.indexOf(" "));
         }
         switch (command) {
-            case "#create" -> create(user);
-            case "#join" -> join(user);
+            case "#play" -> play(user);
             case "#start" -> start(user);
             case "#help" -> user.message(COMMANDS);
             case "#score" -> score(user);
@@ -62,39 +68,34 @@ public class GameController {
         } //case "#end":
     }
 
+
     /**
-     * Reacts to command "create".
-     * This method creates a new GameBoard if not already done and adds the User to the ArrayList.
-     * If a GameBoard was already created the User gets a message to join the game.
+     * Reacts to command "play".
+     * This method checks if a GameBoard has already been created and/or started.
+     * If the player is the first to join the GameBoard gets created. If he is the 4th player the game starts
+     * automatically.
+     *
+     * @param user user who joined the game
      */
-    public void create(User user) {
+    public void play(User user) {
         if (!createdGame) {
             gameBoard = new GameBoard(this);
             createdGame = true;
             gameBoard.addPlayer(user);
-            user.message("You created a new game!\nYour friends can join with '#join'. (2-4 Players)");
-            server.communicate(user + " created a game!\nEveryone can join with '#join'. (2-4 Players)", user);
-        } else if (!runningGame) {
-            user.message("Someone has already created a game. Type '#join' if you want to join the game.");
-        } else {
-            user.message("You're friends have started without you. Just wait and join in the next game.");
-        }
-    }
-
-    /**
-     * Reacts to command "join".
-     * This method checks if a GameBoard has already been created and/or started.
-     * Also a player can only join if <4 players already joined.
-     */
-    public void join(User user) {
-        if (!gameBoard.alreadyJoined(user) && createdGame && !runningGame && gameBoard.getPlayerCount() < 4) {
+            user.message("You created a new game!\nYour friends can join with '#play'. (2-4 Players)");
+            server.communicate(user + " created a game!\nEveryone can join with '#play'. (2-4 Players)", user);
+        } else if (!gameBoard.alreadyJoined(user) && !runningGame && gameBoard.getPlayerCount() < 4) {
             gameBoard.addPlayer(user);
-            user.message("You've joined the game. If you want to start already type '#start'.");
-            server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
+            if (gameBoard.getPlayerCount() < 4) {
+                user.message("You've joined the game. If you want to start already type '#start'.");
+                server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4)" + "\nPlayers can start the game by typing '#start'.", user);
+            } else {
+                user.message("You've joined the game.");
+                server.communicate(user + " joined the game! (" + gameBoard.getPlayerCount() + "/4).", user);
+                start(user);
+            }
         } else if (gameBoard.alreadyJoined(user)) {
             user.message("You've already joined the game. If you want to start, type '#start'.");
-        } else if (!createdGame) {
-            user.message("Please type '#create' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
         } else if (gameBoard.getPlayerCount() >= 4) {
@@ -106,10 +107,11 @@ public class GameController {
      * Reacts to command "score".
      * This method checks if a GameBoard has already been created then the user gets a message that he cannot
      * get information about score, otherwise he gets the information about the score
+     *
      * @param user who wants to know the score
      */
     public void score(User user) {
-        if (!createdGame) user.message("No board has been created. Please type '#create' to create a game.");
+        if (!createdGame) user.message("No one has joined the game yet. Please type '#play' to play a game.");
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
             gameBoard.getScorePlayer(user);
@@ -121,19 +123,21 @@ public class GameController {
      * Checks if the player has already joined the game, if a game has been created/started
      * and if there are >=2 and <=4 players.
      * If game can be started the method playGame() is called from the GameBoard.
+     *
+     * @param user user who started the game
      */
     public void start(User user) {
         if (!gameBoard.alreadyJoined(user)) {
-            user.message("You need to join the game to start it. Type '#join' to do so.");
+            user.message("You need to join the game to start it. Type '#play' to do so.");
         } else if (!createdGame) {
-            user.message("Please type '#create' to create a new game.");
+            user.message("Please type '#play' to create a new game.");
         } else if (runningGame) {
             user.message("You're friends have started without you. Just wait and join in the next game.");
         } else if (gameBoard.getPlayerCount() < 2) {
             user.message("You need at least one more player to start the game.");
         } else {
             runningGame = true;
-            server.communicateAll("The game has started! Please wait until it's your turn.");
+            communicateAll("The game has started! Please wait until it's your turn.");
             gameBoard.start();
         }
     }
@@ -148,20 +152,25 @@ public class GameController {
     }
 
     /**
-     * Method to send message from GameBoard to GameController and then to all users
+     * Method to send in Game messages to the Users/Players. This method sends a message to every User.
+     *
+     * @param message String that should be send
      */
     public void communicateAll(String message) {
+        message = "\033[35m" + message + "\033[0m";
         server.communicateAll(message);
     }
 
     /**
-     * Method to send from GameBoard to Gamecontroller and then it has to find the related user
-     * to the player to send a message
-     * @param message
-     * @param player
+     * Method to send in Game messages to the Users/Players. This method sends a message to everyone except one specified
+     * Player.
+     *
+     * @param message String that should be send
+     * @param player  Player who doesn't get send message
      */
     public void communicate(String message, Player player) {
         ArrayList<User> users = server.getUsers();
+        message = "\033[35m" + message + "\033[0m";
         for (User user : users) {
             if (User.isSameUser(user, player)) server.communicate(message, user);
         }

@@ -33,6 +33,7 @@
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="playButton" alignment="CENTER" contentDisplay="TOP" layoutX="33.0" mnemonicParsing="false" onAction="#handlePlayButton" prefHeight="33.0" prefWidth="101.0" text="Play" />
+                        <Button fx:id="startGameButton" layoutX="32.0" layoutY="41.0" mnemonicParsing="false" onAction="#handleStartButton" prefHeight="33.0" prefWidth="101.0" text="Start game" />
                      </children>
                   </AnchorPane>
                </children>

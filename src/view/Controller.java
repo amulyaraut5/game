@@ -47,8 +47,8 @@ public class Controller implements Initializable {
     public Label serverMessage;
     private String userName;
     private ChatClient client;
-    private ObservableList playerList;
-    private ArrayList <String> userList;
+    private ArrayList <String> playerList = new ArrayList<>();
+    private ArrayList <String> userList = new ArrayList<>();
 
     /**
      * this method disables a player vbox
@@ -73,11 +73,17 @@ public class Controller implements Initializable {
      * this methods changes the play button by clicking on it
      */
     public void handlePlayButton() {
+        client.sentUserInput("#play");
         System.out.println("play button clicked");
         playButton.setDisable(true);
         playButton.setText("Have Fun!");
         message = "#join";
-
+    }
+    public void handleStartButton(){
+        client.sentUserInput("#start");
+        System.out.println("start button clicked");
+        playButton.setDisable(true);
+        playButton.setText("Have Fun!");
     }
 
     /**
@@ -124,17 +130,16 @@ public class Controller implements Initializable {
     }
 
     public void setUser(String name) {
-        player0Label.setText(name);
         userName = name;
     }
 
     public void ServerResponse(String response) {
         System.out.println(response);
-        if (response.contains("joined the room")) {
+        /*if (response.contains("joined the room")) {
             player1Label.setText(response.split(" ", 2)[0]);
         } else {
             serverMessage.setText(response);
-        }
+        }*/
     }
     public TextArea userArea;
     /**
@@ -147,5 +152,18 @@ public class Controller implements Initializable {
 
     public void appendChatMessage(String message) {
         chatWindow.appendText(message + "\n");
+    }
+
+    public void setGamePlayer(String s) {
+        if(s.equals("You")){
+            s= userName;
+        }
+        System.out.println("setGame "+s);
+        playerList.add(s);
+        if(playerList.size()==1) player0Label.setText(s);
+        else if(playerList.size()==2) player1Label.setText(s);
+        else if (playerList.size()==3) player2Label.setText(s);
+        else if(playerList.size()==4) player3Label.setText(s);
+
     }
 }

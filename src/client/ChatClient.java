@@ -95,6 +95,10 @@ public class ChatClient {
             command = "someone joined";
         } else if (message.substring(0, 1).equals("[")) {
             command = "#chat";
+        } else if (message.contains("joined the game")){
+            command = "someone plays";
+        } else if (message.contains("created a new game")){
+            command = "someone created a game";
         }
         String finalCommand = command;
 
@@ -106,6 +110,11 @@ public class ChatClient {
                         case "#login" -> loginController.ServerResponse(finalMessage);
                         case "someone joined" -> controller.setRoomUser(message.split(" ", 2)[0]);
                         case "#chat" -> controller.appendChatMessage(message);
+                        case "someone plays"  -> controller.setGamePlayer(message.split(" ", 2)[0]);
+                        case "someone created a game" -> {
+                            controller.setGamePlayer(message.split(" ", 2)[0]);
+                            System.out.println("creeated");
+                        }
                         default -> System.out.println(message);
                     }
                 }
