@@ -33,8 +33,8 @@ public class ControllerPopUp implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        playerBox.setValue(player0);
         playerBox.setItems(playerList);
-        playerBox.setValue("Choose a player");
     }
 
     //ObservableList playerList = FXCollections.observableArrayList("Baron", "Countess",
