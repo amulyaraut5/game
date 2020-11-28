@@ -14,7 +14,7 @@ public class HandmaidCard extends Card {
     }
 
     /**
-     * By calling this method Player cannot be affected by the other players card until the next turn.
+     * Player cannot be affected by the other players card until the next turn.
      *
      * @param playerPlayingCard the current player
      */

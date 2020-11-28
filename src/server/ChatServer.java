@@ -55,12 +55,12 @@ public class ChatServer {
         boolean accept = true;
         while (accept) {
             try {
-                Socket client_socket = serverSocket.accept();
+                Socket clientSocket = serverSocket.accept();
 
-                System.out.println("Accepted the connection from address: " + client_socket.getRemoteSocketAddress());
+                System.out.println("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
                 User user = new User();
                 users.add(user);
-                UserThread thread = new UserThread(client_socket, this, user);
+                UserThread thread = new UserThread(clientSocket, this, user);
                 thread.start();
             } catch (IOException e) {
                 accept = false;

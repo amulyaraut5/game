@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * This is the abstract parent class from which the various child classes are extended.
- * It contains the various methods to be overridden by its child classes.
+ * It mainly contains the handleCard method to be overridden by its child classes.
  *
  * @author amulya and vossa
  */
@@ -30,18 +30,32 @@ public abstract class Card {
         Card.controller = controller;
     }
 
+    /**
+     * Getter method for the CardName
+     * @return upon called returns the respective name of card
+     */
     public String getCardName() {
         return nameOfCard;
     }
 
+    /**
+     * Getter method for the CardValue
+     * @return upon called returns the respective value of card
+     */
     public int getCardValue() {
         return cardValue;
     }
 
+    /**
+     * Abstract method which is different for every card subclasses
+     * @param playerPlayingCard is the player who is playing card
+     */
     abstract public void handleCard(Player playerPlayingCard);
 
     /**
-     * Adds all not guarded players to the availablePlayers list, except current player
+     * Adds all not guarded players to the availablePlayers list, except current player.
+     * The case with the PrinceCard is handled separately.
+     * @param playerPlayingCard is the player who is playing card
      */
 
     public void setAvailablePlayers(Player playerPlayingCard) {
@@ -53,7 +67,8 @@ public abstract class Card {
     }
 
     /**
-     * reads the input of player and reads the input of player and sets the matching player as target player.
+     * Reads the input of player  and sets the matching player as target player.
+     * @param p is the player who is playing card
      */
     public void getTargetPlayer(Player p) {
         while(true){
