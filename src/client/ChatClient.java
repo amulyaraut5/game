@@ -88,16 +88,21 @@ public class ChatClient {
         if (message.contains(" ")) {
             command = message.substring(0, message.indexOf(" "));
         }
+        boolean join = false;
 
         String finalMessage = message.substring(message.indexOf(" ") + 1);
         String finalCommand = command;
-
+        if (message.contains("joined the room")){
+            finalCommand = "someone joined";
+        }
         //The methods are not called directly from the controller,
         // the method calls take place in the JavaFX application thread.
+        String finalCommand1 = finalCommand;
         Platform.runLater(
                 () -> {
-                    switch (finalCommand) {
+                    switch (finalCommand1) {
                         case "#login" -> loginController.ServerResponse(finalMessage);
+                        case "someone joined" -> controller.ServerResponse(message);
                     }
                 }
         );

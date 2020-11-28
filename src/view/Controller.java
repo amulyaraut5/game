@@ -106,7 +106,7 @@ public class Controller implements Initializable {
         //show pop-up and wait until it is dismissed
         popup.showAndWait();
     }
-    private Label player1Label;
+    public Label player1Label;
     private Label player2Label;
     private Label player3Label;
     @Override
@@ -118,5 +118,14 @@ public class Controller implements Initializable {
     public void setUser(String name) {
         player0Label.setText(name);
         userName = name;
+    }
+    public Label serverMessage;
+    public void ServerResponse(String response) {
+        System.out.println(response);
+        if (response.contains("joined the room")) {
+            player1Label.setText(response.split(" ", 2)[0]);
+        } else {
+            serverMessage.setText(response);
+        }
     }
 }

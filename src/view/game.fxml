@@ -127,7 +127,7 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="88.0" text="Player1" textAlignment="CENTER" />
+                        <Label fx:id="player1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="88.0" text="Player1" textAlignment="CENTER" />
                      </children></VBox>
                   <VBox id="Player" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" GridPane.rowIndex="1">
                      <children>
