@@ -41,7 +41,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button layoutX="256.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleOkCardButton" text="Ok" />
+      <Button fx:id="closePopUp" layoutX="256.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleOkCardButton" text="Ok" />
 
    </children>
 </AnchorPane>

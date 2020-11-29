@@ -186,12 +186,17 @@ public class Controller implements Initializable {
      * @throws IOException
      */
     public void openPopUp(ImageView card, String cardName) throws IOException {
-        if (true/*showPopUp.contains(card1Name)*/) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
-            Parent root = loader.load();
+        FXMLLoader loader = null;
+        Parent root = null;
+            if(cardName.equals("Guard")){
+                loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
+                root = loader.load();
+            } else if(cardName.equals("King")||cardName.equals("Prince") || cardName.equals("Baron")|| cardName.equals("Priest")){
+                loader = new FXMLLoader(getClass().getResource("/popupGame/popupSingle.fxml"));
+                root = loader.load();
+            }
             ControllerPopUp controllerPopUp = loader.getController();
             controllerPopUp.setPlayer(playerList);
-            controllerPopUp.setType(cardName);
             controllerPopUp.setClient(client);
             client.setPopUpController(controllerPopUp);
             Stage popup = new Stage();
@@ -202,7 +207,7 @@ public class Controller implements Initializable {
             popup.initOwner(card.getScene().getWindow());
             //show pop-up and wait until it is dismissed
             popup.showAndWait();
-        }
+
     }
 
 
