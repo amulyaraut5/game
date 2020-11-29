@@ -1,6 +1,8 @@
 package view;
 
 import client.ChatClient;
+import game.GameBoard;
+import game.GameController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,9 @@ public class Controller implements Initializable {
     private ArrayList<String> userList = new ArrayList<>();
     private String responseServer;
     private String showPopUp = "Baron Guard King Prince"; //TODO
+    private GameController gameController;
+    private GameBoard gameBoard;
+
 
     public String message;
     public String card1Name = "default";
@@ -124,8 +129,12 @@ public class Controller implements Initializable {
     public void handleStartButton() {
         client.sentUserInput("#start");
         System.out.println("start button clicked");
-        playButton.setDisable(true);
-        playButton.setText("Have Fun!");
+        if (playerList.size() < 2) {
+            serverMessage.setText("You need more player to start."); //Neu hier
+        }else{
+            playButton.setDisable(true);
+            playButton.setText("Have Fun!");
+        }
 
     }
 
