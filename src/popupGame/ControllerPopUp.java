@@ -34,11 +34,14 @@ public class ControllerPopUp implements Initializable {
     ObservableList cardList = FXCollections.observableArrayList("Baron", "Countess",
             "Guard", "Handmaid", "King", "Priest", "Prince", "Princess");
     public Label userMessage;
+    private Controller controller;
+
     public void handleOkButton(javafx.event.ActionEvent actionEvent) {
         String player = playerBox.getValue();
         String card = cardListBox.getValue();
         if (player.equals(null) || card.equals(null)) userMessage.setText("Please select a card and a player");
         else {
+            this.controller.setAnswer(player +" "+ card);
             Stage window = (Stage) closePopUp.getScene().getWindow();
             window.close();
         }
@@ -60,8 +63,8 @@ public class ControllerPopUp implements Initializable {
         cardListBox.setItems(cardList);
 
     }
-
-    public String getAnswer() {
-        return "answer";
+    public void setController(Controller controller){
+        this.controller = controller;
     }
+
 }

@@ -52,8 +52,9 @@ public class Controller implements Initializable {
     public VBox player2Box;
     public VBox player3Box;
     public Label roundLabel;
-    public String card1Name;
+    public String card1Name = "default";
     public String card2Name;
+    private String answerPopUp ="defaultPlayer defaultCard";
 
     public Label serverMessage;
     private String userName;
@@ -61,7 +62,7 @@ public class Controller implements Initializable {
     private ArrayList <String> playerList = new ArrayList<>();
     private ArrayList <String> userList = new ArrayList<>();
     private String responseServer;
-    private String showPopUp= "Baron, Guard, King"; //TODO I don´t know who needs the popup
+    private String showPopUp= "Baron Guard King Prince"; //TODO
 
     /**
      * this method disables a player vbox
@@ -74,6 +75,9 @@ public class Controller implements Initializable {
         player.setDisable(true);
     }
 
+    /**
+     * this method handles the own messages and puts a "You" in front of it
+     */
     public void chatMessageHandling() {
         String message = chatTextArea.getText();
 
@@ -93,6 +97,10 @@ public class Controller implements Initializable {
         playButton.setText("Have Fun!");
         message = "#join";
     }
+
+    /**
+     * this method handles the start button by clicking on it
+     */
     public void handleStartButton(){
         client.sentUserInput("#start");
         System.out.println("start button clicked");
@@ -100,28 +108,80 @@ public class Controller implements Initializable {
         playButton.setText("Have Fun!");
 
     }
+
+    /**
+     * this method prints out the actual round in a label and also updates the
+     * score of each player
+     * @param round
+     */
     public void increaseRoundLabel(String round){
         roundLabel.setText("Round" + round);
         roundLabel.setVisible(true);
+        client.sentUserInput("#score");
     }
 
-    public void changeSceneCard1( ) throws IOException {
-        if (true){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
+    /**
+     * this method gets the actual score String and distributes it on the different labels
+     * @param score
+     */
+    public void actualscore(String score) {
+        /*String exampleString = "";
+        if(playerList.size()==2) {
+            String player1 = exampleString.split("---------------", 2)[1];
+        }
+        System.out.println(score);*/
+    }
 
+    /**
+     * this method opens a popup window by clicking on card1
+     * @throws IOException
+     */
+    public void changeSceneCard1( ) throws IOException {
+        client.sentUserInput("#choose 1");
+        openPopUp(card1);
+    }
+    /**
+     * this method opens a popup window by clicking on card 2
+     * @throws IOException
+     */
+    public void changeSceneCard2( ) throws IOException {
+        client.sentUserInput("#choose 2");
+        openPopUp(card2);
+    }
+
+    /**
+     * this method opens up a pop up button depending which card gets clicked
+     * @param card
+     * @throws IOException
+     */
+    public void openPopUp(Button card) throws IOException {
+        if (true/*showPopUp.contains(card1Name)*/) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
             Parent root = loader.load();
             ControllerPopUp controllerPopUp = loader.getController();
             controllerPopUp.setPlayer(playerList);
+            controllerPopUp.setController(this);
             Stage popup = new Stage();
             popup.setScene(new Scene(root));
             //for pop-up:
             popup.initModality(Modality.APPLICATION_MODAL);
             //reminde popup-window of its "owner"/ gets the popup-window infomation
-            popup.initOwner(card1.getScene().getWindow());
+            popup.initOwner(card.getScene().getWindow());
             //show pop-up and wait until it is dismissed
             popup.showAndWait();
         }
+    }
 
+    /**
+     * the popUpWindow controller can set the answer of the user
+     * and the method sends the answer to the server
+     * @param answerPopUp
+     */
+    public void setAnswer(String answerPopUp) {
+        String player = answerPopUp.split(" ")[0];
+        String card = answerPopUp.split(" ")[1];
+        client.sentUserInput("#choose "+ player);
+        //client.sentUserInput("#choose "+ card);
     }
 
 
@@ -130,13 +190,19 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-    public void begin(){
-        client.sentUserInput("userList");
-    }
+
+    /**
+     * this methods sets the chatClient for the controller
+     * @param chatClient
+     */
     public void setClient(ChatClient chatClient) {
         client = chatClient;
     }
 
+    /**
+     * the method is called in the loginController to pass the username
+     * @param name
+     */
     public void setUser(String name) {
         userName = name;
 
@@ -179,13 +245,15 @@ public class Controller implements Initializable {
     }
     public void chooseCards (String message)  {
         card2Name = message.split(" ")[4];
-        System.out.println(card2Name);
         changeImageCard1(card2Name);
         card2Name = message.split(" ")[9];
         changeImageCard2(card2Name);
-        System.out.println(card2Name);
-
     }
+
+    /**
+     * this method transfers the desired answeres of the server to a label on the GUI
+     * @param response
+     */
     public void serverResponse(String response) {
         responseServer += response;
         System.out.println(response);
@@ -198,7 +266,10 @@ public class Controller implements Initializable {
     }
 
 
-
+    /**
+     * this method adds messages to the chat window
+     * @param message
+     */
     public void appendChatMessage(String message) {
         chatWindow.appendText(message + "\n");
     }
@@ -211,6 +282,12 @@ public class Controller implements Initializable {
     public void setRoomUser(String name){
         userArea.appendText("\n" + name);
     }
+
+    /**
+     * this method adds a player to the playerList, prints the name on the playfield
+     * and also sets it visible
+     * @param s
+     */
     public void setGamePlayer(String s) {
         if(s.equals("You") || s.equals("You've")){
             s= userName;
@@ -237,6 +314,10 @@ public class Controller implements Initializable {
 
     }
 
+    /**
+     * this method loads the player who logged in before the player clicked play
+     * @param formerPlayer
+     */
     public void setFormerPlayer(String formerPlayer) {
         System.out.println(formerPlayer + "former Player");
         String[] former = formerPlayer.split(" ");
@@ -247,7 +328,12 @@ public class Controller implements Initializable {
 
     }
 
-    public void setUserList(String formerUser) {
+    /**
+     * this methods loads the former users
+     *
+     * @param formerUser
+     */
+    public void setUserList(String formerUser) { //TODO
         System.out.println(formerUser + "former Player");
         String[] former = formerUser.split(" ");
         for (int i = 0; i<former.length; i++){
@@ -255,4 +341,7 @@ public class Controller implements Initializable {
             setUserList(former[i]);
         }
     }
+
+
+
 }

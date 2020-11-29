@@ -48,7 +48,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button id="cardButton" fx:id="card2" layoutX="234.0" mnemonicParsing="false" prefHeight="394.0" prefWidth="186.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                  <Button id="cardButton" fx:id="card2" layoutX="234.0" mnemonicParsing="false" onAction="#changeSceneCard2" prefHeight="394.0" prefWidth="186.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
                         <ImageView fx:id="card2Image" fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                            <image>

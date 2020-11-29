@@ -126,6 +126,7 @@ public class ChatClient {
                         case "Round" -> controller.increaseRoundLabel(message.split(" ")[1]);
                         case "your turn", "it´s not your turn" -> controller.serverMessage.setText(message);
                         case "choose cards" -> controller.chooseCards(message);
+                        case "#score: " -> controller.actualscore(finalMessage);
                         default -> System.out.println(message);
                     }
                 }
