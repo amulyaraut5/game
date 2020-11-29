@@ -16,14 +16,28 @@ import java.util.regex.Pattern;
  * @author vossa,
  */
 public class UserThread extends Thread {
+    /** Formatter for printing and parsing date-times, initialised with the pattern dd.mm.yyyy. */
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    private final User user; //Connected user, which data has to be filled in logIn()
+    /** The connected user. */
+    private final User user;
+    /** The socket on which the UserThread interacts. */
     private final Socket socket;
+    /** Server is the ChatServer which starts an instance of UserThread. */
     private final ChatServer server;
+    /** The PrintWriter, which writes the user output. */
     private PrintWriter userOut;
+    /** BufferedReader to read input. */
     private BufferedReader reader;
+    /** Shows whether the user has left the room (when an exception has occurred during the connection). (false = not exited)*/
     private boolean exit = false;
 
+    /**
+     * Constructor of UserThread to assign the socket, the server and the user and to set this thread for the user.
+     * To create an InputStream and OutputStream and to initialize the BufferedReader and the PrintWriter.
+     * @param socket
+     * @param server
+     * @param user
+     */
     public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;
         this.server = server;
@@ -42,7 +56,7 @@ public class UserThread extends Thread {
     }
 
     /**
-     * Turns a String into a date or null
+     * Turns a String into a date or null.
      *
      * @param date as String
      * @return null if String is not a valid date or the date
@@ -96,7 +110,7 @@ public class UserThread extends Thread {
     }
 
     /**
-     * prints a message for specific user
+     * Prints a message for specific user.
      *
      * @param message the message to be sent
      */
@@ -128,8 +142,8 @@ public class UserThread extends Thread {
     }
 
     /**
-     * The user is asked to enter the date where he last dated.
-     * If the date is not valid he has to do it again.
+     * The user is asked to enter the date when he or she was last on a date.
+     * If the date is not valid the user has to try again.
      */
     private void logInDate() {
         String datePuffer;
