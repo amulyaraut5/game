@@ -70,7 +70,7 @@ public class GameController {
                         playerList += pl.getName();
                         playerList += " ";
                     }
-                    communicateAll("#playerList: " + playerList);
+                    user.message("#playerList: " + playerList);
                 }
             }
 

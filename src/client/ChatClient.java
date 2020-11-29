@@ -2,6 +2,7 @@ package client;
 
 import javafx.application.Platform;
 import login.LoginController;
+import popupGame.ControllerPopUp;
 import view.Controller;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class ChatClient {
     private Writer writer;
     private LoginController loginController;
     private Controller controller;
+    private ControllerPopUp controllerPopUp;
     public ChatClient(LoginController loginController, String hostname, int port) {
         this.loginController = loginController;
         this.hostname = hostname;
@@ -111,7 +113,7 @@ public class ChatClient {
             command = "it´s not your turn";
         } else if (message.contains("Type '#choose 1'")) {
             command = "choose cards";
-        }
+        } else if (message.contains("Your guess was Incorrect.")) command="incorrect";
         String finalCommand = command;
 
         //The methods are not called directly from the controller,
@@ -144,7 +146,15 @@ public class ChatClient {
         writer.sentUserInput(input);
     }
 
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
+    }
+
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+
+    public void setPopUpController(ControllerPopUp controllerPopUp) {
+        this.controllerPopUp = controllerPopUp;
     }
 }

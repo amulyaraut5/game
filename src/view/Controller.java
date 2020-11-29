@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -60,20 +61,14 @@ public class Controller implements Initializable {
 
     @FXML
     public Label player0Label;
-    @FXML
     public Label player1Label;
-    @FXML
     public Label player2Label;
-    @FXML
     public Label player3Label;
-    @FXML
     public VBox player0Box;
-    @FXML
     public VBox player1Box;
-    @FXML
     public VBox player2Box;
-    @FXML
     public VBox player3Box;
+
     @FXML
     private Label player0Score;
     @FXML
@@ -82,6 +77,11 @@ public class Controller implements Initializable {
     private Label player2Score;
     @FXML
     private Label player3Score;
+    @FXML
+    public Label bannerLabel;
+    @FXML
+    public Pane bannerPane;
+
 
     /**
      * this method disables a player vbox
@@ -140,7 +140,11 @@ public class Controller implements Initializable {
         roundLabel.setVisible(true);
         client.sentUserInput("#score");
     }
+    public void setWinner(String message){
+        bannerLabel.setText(message);
+        bannerPane.setVisible(true);
 
+    }
     /**
      * this method updates the scores on the different labels.
      *
@@ -167,7 +171,7 @@ public class Controller implements Initializable {
     public void changeSceneCard1() throws IOException {
         client.sentUserInput("#choose 1");
         serverMessage.setText("You discarded \n" + card1Name);
-        openPopUp(card1Image);
+        openPopUp(card1Image, card1Name);
         changeImageCard1("BackOfCard2");
         card1Name = "default";
     }
@@ -180,7 +184,7 @@ public class Controller implements Initializable {
     public void changeSceneCard2() throws IOException {
         client.sentUserInput("#choose 2");
         serverMessage.setText("You discarded \n" + card2Name);
-        openPopUp(card2Image);
+        openPopUp(card2Image, card2Name);
         changeImageCard2("BackOfCard2");
         card2Name = "default";
     }
@@ -191,13 +195,20 @@ public class Controller implements Initializable {
      * @param card
      * @throws IOException
      */
-    public void openPopUp(ImageView card) throws IOException {
-        if (true/*showPopUp.contains(card1Name)*/) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
-            Parent root = loader.load();
+    public void openPopUp(ImageView card, String cardName) throws IOException {
+        FXMLLoader loader = null;
+        Parent root = null;
+            if(cardName.equals("Guard")){
+                loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
+                root = loader.load();
+            } else if(cardName.equals("King")||cardName.equals("Prince") || cardName.equals("Baron")|| cardName.equals("Priest")){
+                loader = new FXMLLoader(getClass().getResource("/popupGame/popupSingle.fxml"));
+                root = loader.load();
+            }
             ControllerPopUp controllerPopUp = loader.getController();
             controllerPopUp.setPlayer(playerList);
-            controllerPopUp.setController(this);
+            controllerPopUp.setClient(client);
+            client.setPopUpController(controllerPopUp);
             Stage popup = new Stage();
             popup.setScene(new Scene(root));
             //for pop-up:
@@ -206,21 +217,11 @@ public class Controller implements Initializable {
             popup.initOwner(card.getScene().getWindow());
             //show pop-up and wait until it is dismissed
             popup.showAndWait();
-        }
+
     }
 
-    /**
-     * the popUpWindow controller can set the answer of the user
-     * and the method sends the answer to the server
-     *
-     * @param answerPopUp
-     */
-    public void setAnswer(String answerPopUp) {
-        String player = answerPopUp.split(" ")[0];
-        String card = answerPopUp.split(" ")[1];
-        client.sentUserInput("#choose " + player);
-        //client.sentUserInput("#choose "+ card);
-    }
+
+
 
 
     @Override

@@ -13,17 +13,12 @@
          </font></Label>
       <ChoiceBox id="choice" fx:id="playerBox" layoutX="39.0" layoutY="62.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" stylesheets="@../view/view.css" />
       <Label layoutX="39.0" layoutY="89.0" />
-      <Label id="label" layoutX="39.0" layoutY="107.0" text="Choose a card:">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <ChoiceBox id="choice" fx:id="cardListBox" layoutX="40.0" layoutY="145.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" stylesheets="@../view/view.css" />
       <Label fx:id="userMessage" layoutX="29.0" layoutY="179.0" text=" ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="256.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleOkPlayerButton" text="Ok">
+      <Button fx:id="closePopUp" layoutX="256.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleOkPlayerButton" text="Ok">
          <textFill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                <stops>
@@ -41,7 +36,6 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button fx:id="closePopUp" layoutX="256.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleOkCardButton" text="Ok" />
 
    </children>
 </AnchorPane>
