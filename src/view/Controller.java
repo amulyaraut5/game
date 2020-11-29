@@ -32,8 +32,6 @@ public class Controller {
     private ArrayList<String> userList = new ArrayList<>();
     private String responseServer;
     private String showPopUp = "Baron Guard King Prince"; //TODO
-    private GameController gameController;
-    private GameBoard gameBoard;
 
 
     public String message;
@@ -130,7 +128,7 @@ public class Controller {
         client.sentUserInput("#start");
         System.out.println("start button clicked");
         if (playerList.size() < 2) {
-            serverMessage.setText("You need more player to start."); //Neu hier
+            serverMessage.setText("You need more player to start.");
         }else{
             playButton.setDisable(true);
             playButton.setText("Have Fun!");
