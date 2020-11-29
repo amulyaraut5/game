@@ -8,12 +8,9 @@ import java.time.LocalDate;
 public class User {
     /** The thread which handles connection for each connected client. */
     private volatile UserThread thread;
-    /** The name of the user */
+    /** The name of the user. */
     private volatile String name = "Unnamed user";
-    /**
-     * A date without a time-zone in the ISO-8601 calendar system,
-     * initialised with the minimum supported LocalDate
-     */
+    /** The date when the user was most recently on a date. (Initialised with the minimum supported LocalDate.) */
     private volatile LocalDate lastDate = LocalDate.MIN;
 
     /** Constructor for the User TODO is empty? default constructor? */
