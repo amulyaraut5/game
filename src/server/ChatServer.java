@@ -20,6 +20,7 @@ public class ChatServer {
 
     /**
      * Constructor for the ChatServer class which initialises the port number.
+     *
      * @param port port number where the server is bound to listen the client.
      */
     public ChatServer(int port) {
@@ -38,6 +39,7 @@ public class ChatServer {
 
     /**
      * Getter method for the Users.
+     *
      * @return returns the list of users.
      */
     public ArrayList<User> getUsers() {
@@ -46,7 +48,6 @@ public class ChatServer {
 
     /**
      * It opens a channel for the connection between Server and Client.
-     *
      */
     private void start() {
         try {
@@ -82,8 +83,9 @@ public class ChatServer {
 
     /**
      * This method sends a message to each client which is connected to the server except the sender itself.
+     *
      * @param message the message which is to be sent.
-     * @param sender the user who is responsible for sending the message.
+     * @param sender  the user who is responsible for sending the message.
      */
     public void communicate(String message, User sender) {
 
@@ -100,7 +102,7 @@ public class ChatServer {
      * corresponds to an existing username.
      *
      * @param message String of user input in form '@<username> text'
-     * @param sender user who sent the direct message
+     * @param sender  user who sent the direct message
      * @return shows if user input for direct message was valid
      */
     public boolean communicateDirect(String message, User sender) {
@@ -118,18 +120,18 @@ public class ChatServer {
     }
 
     /**
-     * Method to send user input including the game commands to the gameController.
+     * Method sends user input including the game commands to the gameController.
      *
      * @param message String of user input including the command for the game
-     * @param sender user who sent the message
+     * @param sender  user who sent the message
      */
-
     public void communicateGame(String message, User sender) {
         gameController.readCommand(message, sender);
     }
 
     /**
      * It sends messages to all the user.
+     *
      * @param message message to be sent.
      */
     public void communicateAll(String message) {
@@ -158,7 +160,8 @@ public class ChatServer {
      * @param user User to be removed
      */
     public void removeUser(User user) {
-        //users.remove(user);//TODO remove player also
+        users.remove(user);
+        gameController.removeUser(user);
 
     }
 }

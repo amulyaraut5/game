@@ -6,16 +6,18 @@ import java.time.LocalDate;
  * @author simon
  */
 public class User {
-    /** The thread which handles connection for each connected client. */
+    /**
+     * The thread which handles connection for each connected client.
+     */
     private volatile UserThread thread;
-    /** The name of the user. */
+    /**
+     * The name of the user.
+     */
     private volatile String name = "Unnamed user";
-    /** The date when the user was most recently on a date. (Initialised with the minimum supported LocalDate.) */
+    /**
+     * The date when the user was most recently on a date. (Initialised with the minimum supported LocalDate.)
+     */
     private volatile LocalDate lastDate = LocalDate.MIN;
-
-    /** Constructor for the User TODO is empty? default constructor? */
-    public User() {
-    }
 
     /**
      * Test if two different objects of User are the same user.
@@ -32,6 +34,7 @@ public class User {
 
     /**
      * Outputs a message to the user via its UserThread.
+     *
      * @param message the message to be sent
      */
     public synchronized void message(String message) {
@@ -40,6 +43,7 @@ public class User {
 
     /**
      * Returns a string representation of the user, i.e. the user's name.
+     *
      * @return the name of the user
      */
     @Override
@@ -49,6 +53,7 @@ public class User {
 
     /**
      * Gets the thread of the user.
+     *
      * @return the related thread
      */
     public UserThread getThread() {
@@ -57,6 +62,7 @@ public class User {
 
     /**
      * Sets the thread of the user.
+     *
      * @param thread the related thread
      */
     public synchronized void setThread(UserThread thread) {
@@ -65,6 +71,7 @@ public class User {
 
     /**
      * Gets the name of the user.
+     *
      * @return the name of user
      */
     public String getName() {
@@ -73,6 +80,7 @@ public class User {
 
     /**
      * Sets the name of the user.
+     *
      * @param name the name of user
      */
     public synchronized void setName(String name) {
@@ -81,6 +89,7 @@ public class User {
 
     /**
      * Gets the date when the user was most recently on a date.
+     *
      * @return time of the user's last date
      */
     public LocalDate getLastDate() {
@@ -89,6 +98,7 @@ public class User {
 
     /**
      * Sets the date when the user was most recently on a date.
+     *
      * @param lastDate date of the user's last date
      */
     public synchronized void setLastDate(LocalDate lastDate) {

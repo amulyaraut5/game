@@ -18,9 +18,13 @@ public class GameController {
 
     private final ChatServer server;
     private GameBoard gameBoard;
-    /** Shows if a game has already been created or not (false = not created) **/
+    /**
+     * Shows if a game has already been created or not (false = not created)
+     **/
     private boolean createdGame = false;
-    /** Shows if a game has already been started or not (false = not running) **/
+    /**
+     * Shows if a game has already been started or not (false = not running)
+     **/
     private boolean runningGame = false;
 
     /**
@@ -38,7 +42,7 @@ public class GameController {
      * In case the command consists of additional information in '#choose' the command gets cut.
      * It checks if the required additional information is there and then sends only this
      * additional information to the GameBoard to be evaluated.
-     *
+     * <p>
      * String COMMANDS: includes all game related commands that are printed out on user input '#help'.
      * String command: saves the message and is needed to read command in case of a multiple word command.
      *
@@ -169,7 +173,7 @@ public class GameController {
     /**
      * Method to send in game messages to the users/players. This method sends a message to all users except
      * one specified player.
-     *
+     * <p>
      * ArrayList<User> users: saves all the users currently connected to the server.
      *
      * @param message String that should be send
@@ -181,5 +185,9 @@ public class GameController {
         for (User user : users) {
             if (User.isSameUser(user, player)) server.communicate(message, user);
         }
+    }
+
+    public void removeUser(User user) {
+        if (gameBoard != null) gameBoard.removePlayer(user);
     }
 }
