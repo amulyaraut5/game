@@ -10,6 +10,9 @@ import java.util.Arrays;
  * @author amulya and vossa
  */
 public class GuardCard extends Card {
+    /**
+     * Assigns the card its name and its value.
+     */
     public GuardCard() {
         this.nameOfCard = "Guard";
         this.cardValue = 1;
@@ -45,7 +48,6 @@ public class GuardCard extends Card {
                 } else if (Arrays.asList(cardNames).contains(guessCardName)) {
                     if (guessCardName.equals(targetPlayer.getCard().toString())) {
                         playerPlayingCard.message("Your guess was correct!");
-                        //If the guess is correct the player will be out of the round.
                         round.kickPlayer(targetPlayer);
 
                         controller.communicateAll(targetPlayer + " is eliminated from the round.");

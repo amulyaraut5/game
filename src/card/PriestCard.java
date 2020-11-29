@@ -8,6 +8,9 @@ import game.Player;
  * @author amulya and vossa
  */
 public class PriestCard extends Card {
+    /**
+     * Assigns the card its name and its value.
+     */
     public PriestCard() {
         nameOfCard = "Priest";
         cardValue = 2;

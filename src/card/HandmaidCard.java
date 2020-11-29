@@ -8,6 +8,9 @@ import game.Player;
  * @author amulya and vossa
  */
 public class HandmaidCard extends Card {
+    /**
+     * Assigns the card its name and its value.
+     */
     public HandmaidCard() {
         nameOfCard = "Handmaid";
         cardValue = 4;

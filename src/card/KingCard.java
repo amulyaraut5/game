@@ -9,6 +9,9 @@ import game.Player;
  */
 
 public class KingCard extends Card {
+    /**
+     * Assigns the card its name and its value.
+     */
     public KingCard() {
         nameOfCard = "King";
         cardValue = 6;
