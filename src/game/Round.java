@@ -17,7 +17,7 @@ public class Round {
 
     private final ArrayList<Card> cardDeck; //Remove after getStackCards is created
     private final ArrayList<Player> activePlayers;
-    private final Card firstCardRemoved;
+    private Card firstCardRemoved;
     private ArrayList<Card> faceUpCards;
     private Player currentPlayer;
 
@@ -35,8 +35,14 @@ public class Round {
         shuffleDeck();
         this.activePlayers = activePlayers;
         this.gameBoard = gameBoard;
-        firstCardRemoved = pop();
-        removeFirstCards();
+        if(activePlayers.size() == 2){
+            removeFirstThreeCards();
+            sendFaceUpCards();
+        }
+        else {
+            removeFirstCard();
+            sendFaceUpCard();
+        }
 
         Card.setRound(this);
     }
@@ -132,19 +138,47 @@ public class Round {
     }
 
     /**
-     * removes one card from  the deck and
      * removes three more cards from the deck, if there are only two players and add them to faceUpCards
      *
      * @return the three removed cards
      */
-    public ArrayList<Card> removeFirstCards() {
+    public ArrayList<Card> removeFirstThreeCards() {
         faceUpCards = new ArrayList<>();
-        if (activePlayers.size() == 2) {
-            for (int i = 0; i < 3; i++) {
-                faceUpCards.add(pop());
-            }
+        for (int i = 0; i < 3; i++) {
+            faceUpCards.add(pop());
         }
         return faceUpCards;
+    }
+
+    /**
+     * It removes one card from th deck
+     */
+    public void removeFirstCard(){
+        firstCardRemoved = pop();
+
+    }
+
+    /**
+     * It shows the removed cards to all players at the beginning of play.
+     */
+    public void sendFaceUpCards(){
+        for(Player player : activePlayers){
+            gameBoard.deliverMessage("The first 3 removed cards are: ", player);
+            for(Card card : faceUpCards){
+                gameBoard.deliverMessage(card.getCardName(), player);
+            }
+
+        }
+    }
+
+    /**
+     * It shows one removed card to both the players at the beginning of play.
+     */
+    public void sendFaceUpCard(){
+        for(Player player : activePlayers){
+            gameBoard.deliverMessage("The first removed card is: ", player);
+            gameBoard.deliverMessage(firstCardRemoved.getCardName(), player);
+        }
     }
 
 
