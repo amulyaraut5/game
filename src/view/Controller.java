@@ -21,12 +21,10 @@ import javafx.stage.Stage;
 import popupGame.ControllerPopUp;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 
-public class Controller implements Initializable {
+public class Controller {
     private String answerPopUp = "defaultPlayer defaultCard";
     private String userName;
     private ChatClient client;
@@ -41,6 +39,7 @@ public class Controller implements Initializable {
     public String message;
     public String card1Name = "default";
     public String card2Name;
+    private int round = 0;
 
     @FXML
     public Button submitButton;
@@ -121,6 +120,7 @@ public class Controller implements Initializable {
         playButton.setDisable(true);
         playButton.setText("Have Fun!");
         message = "#join";
+        increaseRoundLabel();
     }
 
     /**
@@ -142,16 +142,19 @@ public class Controller implements Initializable {
      * this method prints out the actual round in a label and also updates the
      * score of each player
      *
-     * @param round
      */
-    public void increaseRoundLabel(String round) {
+    public void increaseRoundLabel() {
+        round ++;
         roundLabel.setText("Round" + round);
         roundLabel.setVisible(true);
-        client.sentUserInput("#score");
     }
-    public void setWinner(String message){
+
+    public void setWinnerRound(String message) throws InterruptedException {
         bannerLabel.setText(message);
         bannerPane.setVisible(true);
+        wait(50);
+        bannerPane.setVisible(false);
+
 
     }
     /**
@@ -229,12 +232,7 @@ public class Controller implements Initializable {
 
     }
 
-
-
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
 
     }
 
@@ -396,5 +394,9 @@ public class Controller implements Initializable {
             System.out.println(former[i] + "former");
             setUserList(former[i]);
         }
+    }
+
+    public void close() {
+        client.disconnect();
     }
 }

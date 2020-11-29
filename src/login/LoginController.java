@@ -19,10 +19,9 @@ import java.time.format.DateTimeFormatter;
 
 public class LoginController {
     private static Stage loginStage;
+    private static ChatClient client;
     private LocalDate date;
     private String userName;
-    private ChatClient client;
-
     @FXML
     private TextField textUserName;
 
@@ -39,14 +38,22 @@ public class LoginController {
         client = new ChatClient(this, "localhost", 4444);
     }
 
-    public void initialize() {
-        if (!client.isConnection()){
-            noConnection();
-        }
+    public void close() {
+        client.disconnect();
     }
 
     public static void setStage(Stage loginStage) {
         LoginController.loginStage = loginStage;
+    }
+
+    public static void setClient(ChatClient client) {
+        LoginController.client = client;
+    }
+
+    public void initialize() {
+        if (!client.isConnection()) {
+            noConnection();
+        }
     }
 
     @FXML
@@ -88,7 +95,6 @@ public class LoginController {
             System.err.println(e.getMessage());
         }
         Controller controller = loader.getController();
-        controller.setUser(userName);
         controller.setClient(client);
 
         client.setController(controller);
@@ -97,6 +103,8 @@ public class LoginController {
         gameStage.setScene(new Scene(gameView));
         gameStage.setResizable(false);
         gameStage.show();
+
+        gameStage.setOnCloseRequest(event -> controller.close());
     }
 
     /**

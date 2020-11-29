@@ -56,7 +56,6 @@ public class UserThread extends Thread {
     }
 
 
-
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
      * The user disconnects by typing "bye".
@@ -86,15 +85,14 @@ public class UserThread extends Thread {
                     if (!server.communicateDirect(clientMessage, user)) {
                         user.message("Your request does not correspond to the required format. Please try again. @<name> <message>");
                     }
-                } else if(clientMessage.equals("userList")){
+                } else if (clientMessage.equals("userList")) {
                     String userList = "userList: ";
-                    for (User user : server.getUsers()){
+                    for (User user : server.getUsers()) {
                         userList += user.getName();
                         userList += " ";
                     }
                     user.message(userList);
-                }
-                else {
+                } else {
                     serverMessage = "[" + user + "]: " + clientMessage;
                     server.communicate(serverMessage, user);
                 }
@@ -122,18 +120,20 @@ public class UserThread extends Thread {
         while (!exit) {
             try {
                 String message = reader.readLine();
-                String userName = message.substring(0, message.indexOf(" "));
-                String dateText = message.substring(message.indexOf(" ") + 1);
+                if (message != null) {
+                    String userName = message.substring(0, message.indexOf(" "));
+                    String dateText = message.substring(message.indexOf(" ") + 1);
 
-                if (turnIntoDate(dateText) == null) {
-                    sendMessage("#login " + "Please check your Date! (dd.mm.yyyy)");
-                } else if (!server.isAvailable(userName)) {
-                    sendMessage("#login " + "This username is already taken!");
-                } else {
-                    user.setLastDate(LocalDate.parse(dateText, formatter));
-                    user.setName(userName);
-                    sendMessage("#login " + "successful");
-                    return;
+                    if (turnIntoDate(dateText) == null) {
+                        sendMessage("#login " + "Please check your Date! (dd.mm.yyyy)");
+                    } else if (!server.isAvailable(userName)) {
+                        sendMessage("#login " + "This username is already taken!");
+                    } else {
+                        user.setLastDate(LocalDate.parse(dateText, formatter));
+                        user.setName(userName);
+                        sendMessage("#login " + "successful");
+                        return;
+                    }
                 }
             } catch (IOException ex) {
                 if (!exit) disconnect(ex);
