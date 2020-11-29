@@ -135,7 +135,11 @@ public class ChatClient {
                         case "userList:" -> controller.setUserList(finalMessage);
                         case "someone won" -> {
                             controller.increaseRoundLabel();
-                            controller.setWinnerRound(message.split(" ")[(message.split(" ")).length-1]);
+                            try {
+                                controller.setWinnerRound(message.split(" ")[(message.split(" ")).length-1]);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                         case "it´s not your turn" -> controller.serverMessage.setText(message.split(" ", 2)[1]);
                         case "your turn", "incorrect", "correct"  -> controller.serverMessage.setText(message);
