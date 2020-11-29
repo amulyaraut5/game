@@ -17,6 +17,7 @@ public class GameBoard extends Thread {
     private final ArrayList<Player> playerList = new ArrayList<>();
     private Round activeRound;
     private Player gameWinner;
+    private ArrayList<Player> gameWinnerList = new ArrayList<>();
 
 
     public GameBoard(GameController gameController) {
@@ -150,6 +151,7 @@ public class GameBoard extends Thread {
 
     /**
      * checks whether some Player already has won the whole game
+     * If multiple players have enough tokens they play a tiebreaker game.
      * If someone has won, the reset Method from gameController is called which enables the start
      * of a new game.
      *
@@ -161,24 +163,59 @@ public class GameBoard extends Thread {
         //you win the game if you have enough token
         for (Player player : playerList) {
             if (playerList.size() == 1) {
-                win = true;
-                gameWinner = player;
+                gameWinnerList.add(player);
             }
             //2 player -> 7 token
             else if ((playerList.size() == 2) && (player.getTokenCount() >= 7)) {
-                win = true;
-                gameWinner = player;
+                gameWinnerList.add(player);
             } //3 player -> 5 token
             else if ((playerList.size() == 3) && (player.getTokenCount() >= 5)) {
-                win = true;
-                gameWinner = player;
+                gameWinnerList.add(player);
             }  //4 player -> 4 token
             else if ((playerList.size() == 4) && (player.getTokenCount() >= 4)) {
+                gameWinnerList.add(player);
+            }
+            if (gameWinnerList.size() == 1) {
                 win = true;
-                gameWinner = player;
+                gameWinner = gameWinnerList.get(0);
+            } else if (gameWinnerList.size() > 1) {
+
+                tieBreakerRound();
+                win = true;
+                gameWinner = gameWinnerList.get(0);
             }
         }
         return win;
+    }
+
+    /**
+     * Whenever multiple players have enough tokens in one round to win the game, they play a tiebreaker round
+     * to determine the gameWinner.
+     */
+    public void tieBreakerRound () {
+        Player firstPlayer = compareDates(gameWinnerList);
+        ArrayList<Card> deck = createDeck();
+        ArrayList<Player> winnerList;
+        boolean tieBreak = false;
+        while (!tieBreak) {
+            gameController.communicateAll("The tie-breaker round begins! Good luck;)");
+            activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(gameWinnerList), this);
+            activeRound.play();
+            winnerList = activeRound.getRoundWinner();
+            this.activeRound = null;
+            for (Player resetPlayers : gameWinnerList) {
+                resetPlayers.resetRound();
+            }
+            if (winnerList.size() == 1) {
+               tieBreak = true;
+            } else {
+                firstPlayer = compareDates(winnerList);
+                gameController.communicateAll("The round has ended. The winners are: " + winnerList.toString());
+                gameWinnerList = winnerList;
+                tieBreakerRound();
+            }
+        }
+
     }
 
     public Round getActiveRound() {
