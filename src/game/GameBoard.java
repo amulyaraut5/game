@@ -99,13 +99,14 @@ public class GameBoard extends Thread {
             for (Player player : winnerList) {
                 player.increaseNumOfTokens();
             }
-            if (winnerList.size() == 1) {
+                if (winnerList.size() == 1) {
                 firstPlayer = winnerList.get(0);
-            } else {
+                gameController.communicate("The round has ended. Winner of the round: " + firstPlayer.getName(), firstPlayer);
+                firstPlayer.message("The round has ended. You won the round! Congratulations!");
+                } else {
                 firstPlayer = compareDates(winnerList);
-            }
-            gameController.communicate("The round has ended. Winner of the round: " + firstPlayer.getName(), firstPlayer);
-            firstPlayer.message("The round has ended. You won the round! Congratulations!");
+                gameController.communicateAll("The round has ended. The winners are: " + winnerList.toString());
+                }
         }
         gameController.communicate("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #play to create a new game.", gameWinner);
