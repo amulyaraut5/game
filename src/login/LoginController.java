@@ -41,7 +41,7 @@ public class LoginController {
     }
 
     @FXML
-    void handleLogIn(ActionEvent event) {
+    private void handleLogIn(ActionEvent event) {
         labelResponse.setText("");
         userName = textUserName.getText();
         date = datePicker.getValue();

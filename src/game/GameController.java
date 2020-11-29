@@ -55,7 +55,6 @@ public class GameController {
             case "#play" -> play(user);
             case "#start" -> start(user);
             case "#help" -> user.message(COMMANDS);
-            case "#score" -> score(user);
             case "#choose" -> {
                 message = message.substring(message.indexOf(" ") + 1);
                 if (message.contains("#choose")) {
@@ -65,14 +64,15 @@ public class GameController {
                 }
             }
             case "#playerList" -> {
-                if (createdGame){
+                if (createdGame) {
                     String playerList = "";
-                    for (Player pl : gameBoard.getPlayerList()){
+                    for (Player pl : gameBoard.getPlayerList()) {
                         playerList += pl.getName();
                         playerList += " ";
                     }
-                    user.message("#playerList: " + playerList);
-                }}
+                    communicateAll("#playerList: " + playerList);
+                }
+            }
 
             default -> user.message("Unexpected command: " + command + "\nPlease enter a valid command. Type #help to see them.");
         } //case "#end":
@@ -111,21 +111,6 @@ public class GameController {
         } else if (gameBoard.getPlayerCount() >= 4) {
             user.message("All player slots have already been taken. Please wait and join the next game.");
         }
-    }
-
-    /**
-     * Reacts to command "score".
-     * This method checks if a GameBoard has already been created then the user gets a message that he cannot
-     * get information about score, otherwise he gets the information about the score
-     *
-     * @param user who wants to know the score
-     */
-    public void score(User user) {
-        if (!createdGame) user.message("No one has joined the game yet. Please type '#play' to play a game.");
-        else if (!runningGame) {
-            user.message("the game has not been started yet. Type '#start' to start it.");
-            gameBoard.getScorePlayer(user);
-        } else gameBoard.getScorePlayer(user);
     }
 
     /**

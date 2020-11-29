@@ -119,7 +119,7 @@ public class ChatClient {
                         case "someone plays"  -> controller.setGamePlayer(message.split(" ", 2)[0]);
                         case "someone created a game" -> {
                             controller.setGamePlayer(message.split(" ", 2)[0]);
-                            System.out.println("creeated");
+                            System.out.println("created");
                         }
                         case "#playerList:" -> controller.setFormerPlayer(finalMessage);
                         case "userList:" -> controller.setUserList(finalMessage);
@@ -127,7 +127,7 @@ public class ChatClient {
                         case  "it´s not your turn" -> controller.serverMessage.setText(message.split(" ", 2)[1]);
                         case  "your turn" -> controller.serverMessage.setText(message);
                         case "choose cards" -> controller.chooseCards(message);
-                        case "#score: " -> controller.actualscore(finalMessage);
+                        case "#score: " -> controller.updateScore(message.split(" "));
                         default -> System.out.println(message);
                     }
                 }

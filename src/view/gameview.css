@@ -1,28 +1,39 @@
-#Background{
+#Background {
     -fx-width: 10;
     -fx-background-color: #73000d;
 }
-Label{
-    -fx-text-fill:#d7c1a2;
+
+#label {
+    -fx-text-fill: #d7c1a2;
 
 }
-*{
--fx-font-family: "serif";}
-#Grid{
+
+* {
+    -fx-font-family: "serif";
+}
+
+#Grid {
     /*-fx-background-color: #7f350B;*/
-    -fx-text-fill:white;
+    -fx-text-fill: white;
     -fx-background-image: url("@/../../images/BackgroundWood.jpg");
     -fx-background-size: 200%;
 }
-.cardButton{
-    -fx-background-color: #73000d;}
-AnchorPane{
-    -fx-background-color: #73000d;}
 
-Button{
+.cardButton {
+    -fx-background-color: #73000d;
+}
+
+AnchorPane {
+    -fx-background-color: #73000d;
+}
+
+Button {
     -fx-background-color: #d7c1a2;
-    -fx-text-fill: #73000d;}
+    -fx-text-fill: #73000d;
+}
 
 
 #choice {
--fx-text-fill: #73000d;}
+    -fx-background-color: #d7c1a2;
+    -fx-text-fill: #73000d;
+}
