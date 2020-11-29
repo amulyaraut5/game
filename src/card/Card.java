@@ -14,24 +14,38 @@ import java.util.ArrayList;
  * @author amulya and vossa
  */
 public abstract class Card {
+    /** Class variable of round. */
     protected static Round round;
+    /** Class variable of the GameController. */
     protected static GameController controller;
-
+    /** The value of the card. */
     protected int cardValue;
+    /** The name of the card. */
     protected String nameOfCard;
+    /** The player selected by the current player. */
     protected Player targetPlayer;
+    /** The list of players that the current player can select to apply a card effect. */
     protected ArrayList<Player> availablePlayers = new ArrayList<>();
 
+
+    /**
+     * Sets the round.
+     * @param round the game round
+     */
     public static void setRound(Round round) {
         Card.round = round;
     }
 
+    /**
+     * Sets the GameController.
+     * @param controller the GameController
+     */
     public static void setController(GameController controller) {
         Card.controller = controller;
     }
 
     /**
-     * Getter method for the CardName
+     * Gets the card name.
      * @return upon called returns the respective name of card
      */
     public String getCardName() {
@@ -39,7 +53,7 @@ public abstract class Card {
     }
 
     /**
-     * Getter method for the CardValue
+     * Gets the value of the card.
      * @return upon called returns the respective value of card
      */
     public int getCardValue() {
@@ -47,15 +61,16 @@ public abstract class Card {
     }
 
     /**
-     * Abstract method which is different for every card subclasses
-     * @param playerPlayingCard is the player who is playing card
+     * Abstract method which is different for every card subclasses.
+     * In the subclasses it handles the features of each individual card.
+     * @param playerPlayingCard current player
      */
     abstract public void handleCard(Player playerPlayingCard);
 
     /**
-     * Adds all not guarded players to the availablePlayers list, except current player.
+     * Adds all unguarded players to the availablePlayers list, except the current player.
      * The case with the PrinceCard is handled separately.
-     * @param playerPlayingCard is the player who is playing card
+     * @param playerPlayingCard current player
      */
     public void setAvailablePlayers(Player playerPlayingCard) {
         for (Player player : round.getActivePlayers()) {
@@ -67,7 +82,7 @@ public abstract class Card {
 
     /**
      * Reads the input of player and sets the matching player as target player.
-     * @param p is the player who is playing card
+     * @param p is the current player who is playing card
      */
     public void getTargetPlayer(Player p) {
         while(true){
