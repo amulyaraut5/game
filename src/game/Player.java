@@ -94,7 +94,7 @@ public class Player extends User {
     }
 
     /**
-     * Method clears the list of  played cards in a round, the player is not guarded anymore.
+     * Method clears the list of played cards in a round, the player is not guarded anymore.
      */
     public void resetRound() {
         setGuarded(false);
