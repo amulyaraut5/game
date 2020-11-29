@@ -20,6 +20,10 @@ public class Round {
     private final Card firstCardRemoved;
     private ArrayList<Card> faceUpCards;
     private Player currentPlayer;
+    /**
+     * if the current player disconnects the boolean is set and his move ended.
+     */
+    private boolean currentPlayerDisconnected = false;
 
     private volatile String userResponse;
 
@@ -44,28 +48,17 @@ public class Round {
             p.setCurrentCard(pop());
         }
         while (!isRoundFinished()) {
-            Card playedCard;
             currentPlayer.message("It's your turn, " + currentPlayer + "!");
-            //Draw card before calling chooseCard, to not draw the card multiple times(in case chooseCard gets called multiple times)
-            Card secondCard = pop();
-            currentPlayer.setGuarded(false);
-            playedCard = chooseCard(secondCard);//TODO alles in methode
-            while (playedCard == null) {
-                playedCard = chooseCard(secondCard);
-            }
-            currentPlayer.message("You chose " + playedCard + "!");
-            handleTurn(playedCard);
-        }
-    }
+            gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
+            Card playedCard;
 
-    /**
-     * Actual turn gets handled.
-     *
-     * @param card Card that the player chose to play.
-     */
-    public void handleTurn(Card card) {
-        card.handleCard(this.currentPlayer);
-        nextPlayer();
+            currentPlayer.setGuarded(false);
+            playedCard = chooseCard();
+            if (!currentPlayerDisconnected) playedCard.handleCard(currentPlayer);
+
+            nextPlayer();
+            currentPlayerDisconnected = false;
+        }
     }
 
     /**
@@ -105,7 +98,7 @@ public class Round {
      */
     public String readResponse() {
         String response;
-        while (userResponse == null && !gameBoard.isInterrupted()) {
+        while (userResponse == null && !gameBoard.isInterrupted() && !currentPlayerDisconnected) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -156,45 +149,45 @@ public class Round {
     /**
      * current player can choose between a new card or his old card
      */
-    public Card chooseCard(Card secondCard) {
+    public Card chooseCard() {
         Card card = null;
-        //Card secondCard = pop();
+        Card secondCard = pop();
+
         String first = currentPlayer.getCard().toString();
         String second = secondCard.toString();
-        // If a player has countess, then he/she has to play it.
-        if (first.equals("Countess") && (second.equals("King") || second.equals("Prince"))) {
-            currentPlayer.message("You have the cards " + first + " & " + second+".");
-            currentPlayer.message("You have to play Countess.");
-            card = currentPlayer.getCard();
-            currentPlayer.setCurrentCard(secondCard);
-            return card;
-
-        } else if ((first.equals("King") || first.equals("Prince")) && second.equals("Countess")) {
-            currentPlayer.message("You have the cards " + first + " & " + second+".");
-            currentPlayer.message("You have to play Countess.");
-            card = secondCard;
-            return card;
-        }
 
         currentPlayer.message("Which card do you want to play?");
         currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ":");
-        gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
-        String message = readResponse();
-        //TODO change currentCard of active Player
 
-        if (message.equals("1")) {
+        while (card == null) {
+            String message = readResponse();
 
-            card = currentPlayer.getCard();
-
-            currentPlayer.setCurrentCard(secondCard);
-        } else if (message.equals("2")) {
-            card = secondCard;
-
-        } else {
-            currentPlayer.message("Wrong Input. Please choose card 1 or 2:");
+            if (message != null) {
+                if (message.equals("1")) {
+                    card = currentPlayer.getCard();
+                    if (first.equals("Countess") && (second.equals("King") || second.equals("Prince"))) {
+                        currentPlayer.message("You have the cards " + first + " & " + second + ".");
+                        currentPlayer.message("You have to play Countess. Try again!");
+                        card = null;
+                    } else {
+                        currentPlayer.setCurrentCard(secondCard);
+                    }
+                } else if (message.equals("2")) {
+                    card = secondCard;
+                    if (second.equals("Countess") && (first.equals("King") || first.equals("Prince"))) {
+                        currentPlayer.message("You have the cards " + first + " & " + second + ".");
+                        currentPlayer.message("You have to play Countess. Try again!");
+                        card = null;
+                    }
+                } else {
+                    currentPlayer.message("Wrong Input. Please choose card 1 or 2:");
+                }
+            } else {
+                return null;
+            }
         }
+        currentPlayer.message("You chose " + card + "!");
         return card;
-
     }
 
 
@@ -275,5 +268,12 @@ public class Round {
 
     public Card getFirstCardRemoved() {
         return firstCardRemoved;
+    }
+
+    public void removePlayer(Player player) {
+        activePlayers.remove(player);
+        if (currentPlayer == player) {
+            currentPlayerDisconnected = true;
+        }
     }
 }

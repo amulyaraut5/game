@@ -127,14 +127,14 @@ public class GameBoard extends Thread {
             for (Player player : winnerList) {
                 player.increaseNumOfTokens();
             }
-                if (winnerList.size() == 1) {
+            if (winnerList.size() == 1) {
                 firstPlayer = winnerList.get(0);
                 gameController.communicate("The round has ended. Winner of the round: " + firstPlayer.getName(), firstPlayer);
                 firstPlayer.message("The round has ended. You won the round! Congratulations!");
-                } else {
+            } else {
                 firstPlayer = compareDates(winnerList);
                 gameController.communicateAll("The round has ended. The winners are: " + winnerList.toString());
-                }
+            }
         }
         gameController.communicate("Congratulations, " + gameWinner.getName() + " won the game! " +
                 "\nType #play to create a new game.", gameWinner);
@@ -218,7 +218,7 @@ public class GameBoard extends Thread {
      * Whenever multiple players have enough tokens in one round to win the game, they play a tiebreaker round
      * until the gameWinner is determined.
      */
-    public void tieBreakerRound () {
+    public void tieBreakerRound() {
         Player firstPlayer = compareDates(gameWinnerList);
         ArrayList<Card> deck = createDeck();
         ArrayList<Player> winnerList;
@@ -233,7 +233,7 @@ public class GameBoard extends Thread {
                 resetPlayers.resetRound();
             }
             if (winnerList.size() == 1) {
-               tieBreak = true;
+                tieBreak = true;
             } else {
                 firstPlayer = compareDates(winnerList);
                 gameController.communicateAll("The round has ended. The winners are: " + winnerList.toString());
@@ -257,11 +257,23 @@ public class GameBoard extends Thread {
      * Method to send in game messages to every player except one specified player.
      *
      * @param message in game message that should be send
-     * @param player specified player that doesn't receive the message
+     * @param player  specified player that doesn't receive the message
      */
 
     public void deliverMessage(String message, Player player) {
         gameController.communicate(message, player);
+    }
+
+    public void removePlayer(User user) {
+        for (Player pl : playerList) {
+            if (User.isSameUser(pl, user)) {
+                playerList.remove(pl);
+                if (activeRound != null) {
+                    activeRound.removePlayer(pl);
+                }
+                break;
+            }
+        }
     }
 }
 
