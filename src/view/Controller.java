@@ -44,6 +44,11 @@ public class Controller implements Initializable {
     public Label player1Label;
     public Label player2Label;
     public Label player3Label;
+    public VBox player0Box;
+    public VBox player1Box;
+    public VBox player2Box;
+    public VBox player3Box;
+
     public Label serverMessage;
     private String userName;
     private ChatClient client;
@@ -166,10 +171,22 @@ public class Controller implements Initializable {
         System.out.println("setGame "+s);
         playerList.add(s);
         System.out.println(playerList.size());
-        if(playerList.size()==1) player0Label.setText(s);
-        else if(playerList.size()==2) player1Label.setText(s);
-        else if (playerList.size()==3) player2Label.setText(s);
-        else if(playerList.size()==4) player3Label.setText(s);
+        if(playerList.size()==1){
+            player0Label.setText(s);
+            player0Box.setVisible(true);
+        }
+        else if(playerList.size()==2){
+            player1Label.setText(s);
+            player1Box.setVisible(true);
+        }
+        else if (playerList.size()==3){
+            player2Label.setText(s);
+            player2Box.setVisible(true);
+        }
+        else if(playerList.size()==4) {
+            player3Label.setText(s);
+            player3Box.setVisible(true);
+        }
 
     }
 

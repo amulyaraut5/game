@@ -118,7 +118,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <VBox id="Player" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" GridPane.columnIndex="1">
+                  <VBox id="Player" fx:id="player1Box" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" visible="false" GridPane.columnIndex="1">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -136,12 +136,12 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="player1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="88.0" text="Player1" textAlignment="CENTER">
+                        <Label fx:id="player1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="88.0" text=" " textAlignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font></Label>
                      </children></VBox>
-                  <VBox id="Player" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" GridPane.rowIndex="1">
+                  <VBox id="Player" fx:id="player2Box" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" visible="false" GridPane.rowIndex="1">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -159,7 +159,7 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="player2Label" alignment="CENTER" prefHeight="37.0" prefWidth="87.0" text="Player2">
+                        <Label fx:id="player2Label" alignment="CENTER" prefHeight="37.0" prefWidth="87.0" text=" ">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -168,7 +168,7 @@
                            </font></Label>
                      </children>
                   </VBox>
-                  <VBox id="Player" prefHeight="200.0" prefWidth="100.0" stylesheets="@gameview.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <VBox id="Player" fx:id="player3Box" prefHeight="200.0" prefWidth="100.0" stylesheets="@gameview.css" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -186,7 +186,7 @@
                                  </font></Label>
                            </children>
                         </HBox>
-                        <Label fx:id="player3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="88.0" text="Player3">
+                        <Label fx:id="player3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="88.0" text=" ">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -195,7 +195,7 @@
                            </font></Label>
                      </children>
                   </VBox>
-                  <VBox id="Player" prefHeight="200.0" prefWidth="100.0" stylesheets="@gameview.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <VBox id="Player" fx:id="player0Box" prefHeight="200.0" prefWidth="100.0" stylesheets="@gameview.css" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -213,7 +213,7 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="player0Label" alignment="CENTER" prefHeight="38.0" prefWidth="87.0" text="Player0">
+                        <Label fx:id="player0Label" alignment="CENTER" prefHeight="38.0" prefWidth="87.0" text=" ">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
