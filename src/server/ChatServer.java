@@ -14,8 +14,17 @@ import java.util.ArrayList;
  * @author louis and amulya
  */
 public class ChatServer {
+    /**
+     * list of users that gets added after every new instance of user is created
+     */
     private static final ArrayList<User> users = new ArrayList<>(10);
+    /**
+     * port where the server is bound to listen
+     */
     private final int port;
+    /**
+     * instance of GameController for the communication between the ChatServer and GameController
+     */
     private final GameController gameController = new GameController(this);
 
     /**
@@ -38,7 +47,7 @@ public class ChatServer {
     }
 
     /**
-     * Getter method for the Users.
+     * Getter for the Users.
      *
      * @return returns the list of users.
      */
