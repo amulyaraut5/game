@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -76,6 +77,11 @@ public class Controller implements Initializable {
     private Label player2Score;
     @FXML
     private Label player3Score;
+    @FXML
+    public Label bannerLabel;
+    @FXML
+    public Pane bannerPane;
+
 
     /**
      * this method disables a player vbox
@@ -134,7 +140,11 @@ public class Controller implements Initializable {
         roundLabel.setVisible(true);
         client.sentUserInput("#score");
     }
+    public void setWinner(String message){
+        bannerLabel.setText(message);
+        bannerPane.setVisible(true);
 
+    }
     /**
      * this method updates the scores on the different labels.
      *
