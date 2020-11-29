@@ -12,6 +12,7 @@ Label{
     /*-fx-background-color: #7f350B;*/
     -fx-text-fill:white;
     -fx-background-image: url("@/../../images/BackgroundWood.jpg");
+    -fx-background-size: 200%;
 }
 .cardButton{
     -fx-background-color: #73000d;}

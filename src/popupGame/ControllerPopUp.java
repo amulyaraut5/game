@@ -27,8 +27,8 @@ public class ControllerPopUp implements Initializable {
     String player1 = "1";
     String player2 = "2";
     String player3 = "3";
-    public ChoiceBox playerBox;
-    public ChoiceBox cardListBox;
+    public ChoiceBox playerBox = new ChoiceBox();
+    public ChoiceBox cardListBox = new ChoiceBox();
     ObservableList playerList = FXCollections.observableArrayList(" ");
     ObservableList cardList = FXCollections.observableArrayList("Baron", "Countess",
             "Guard", "Handmaid", "King", "Priest", "Prince", "Princess");
@@ -43,7 +43,6 @@ public class ControllerPopUp implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         playerBox.setValue(player0);
         playerBox.setItems(playerList);
         cardListBox.setValue("Baron");
