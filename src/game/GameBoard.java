@@ -179,7 +179,7 @@ public class GameBoard extends Thread {
                 win = true;
                 gameWinner = gameWinnerList.get(0);
             } else if (gameWinnerList.size() > 1) {
-
+                //TODO: compare card value
                 tieBreakerRound();
                 win = true;
                 gameWinner = gameWinnerList.get(0);
