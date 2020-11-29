@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="popUpPane" prefHeight="230.0" prefWidth="400.0" stylesheets="@../view/view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="popupGame.ControllerPopUp">
+   <children>
+      <Label id="label" layoutX="40.0" layoutY="36.0" text="Choose a player:">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <ChoiceBox id="choice" fx:id="playerBox" layoutX="39.0" layoutY="62.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" stylesheets="@../view/view.css" />
+      <Label layoutX="39.0" layoutY="89.0" />
+      <Label fx:id="userMessage" layoutX="29.0" layoutY="179.0" text=" ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="closePopUp" layoutX="256.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleOkPlayerButton" text="Ok">
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+
+   </children>
+</AnchorPane>
