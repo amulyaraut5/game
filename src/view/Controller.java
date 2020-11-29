@@ -138,7 +138,10 @@ public class Controller implements Initializable {
      */
     public void changeSceneCard1( ) throws IOException {
         client.sentUserInput("#choose 1");
+        serverMessage.setText("You discarded \n" + card1Name);
         openPopUp(card1);
+        changeImageCard1("BackOfCard2");
+        card1Name = "default";
     }
     /**
      * this method opens a popup window by clicking on card 2
@@ -146,7 +149,10 @@ public class Controller implements Initializable {
      */
     public void changeSceneCard2( ) throws IOException {
         client.sentUserInput("#choose 2");
+        serverMessage.setText("You discarded \n" + card2Name);
         openPopUp(card2);
+        changeImageCard2("BackOfCard2");
+        card2Name = "default";
     }
 
     /**
@@ -244,8 +250,8 @@ public class Controller implements Initializable {
         card2Image.setImage(image);
     }
     public void chooseCards (String message)  {
-        card2Name = message.split(" ")[4];
-        changeImageCard1(card2Name);
+        card1Name = message.split(" ")[4];
+        changeImageCard1(card1Name);
         card2Name = message.split(" ")[9];
         changeImageCard2(card2Name);
     }
