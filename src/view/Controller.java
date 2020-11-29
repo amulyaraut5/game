@@ -36,6 +36,7 @@ public class Controller implements Initializable {
     public String message;
     public String card1Name = "default";
     public String card2Name;
+    private int round = 0;
 
     @FXML
     public Button submitButton;
@@ -133,14 +134,14 @@ public class Controller implements Initializable {
      * this method prints out the actual round in a label and also updates the
      * score of each player
      *
-     * @param round
      */
-    public void increaseRoundLabel(String round) {
+    public void increaseRoundLabel() {
+        round ++;
         roundLabel.setText("Round" + round);
         roundLabel.setVisible(true);
-        client.sentUserInput("#score");
     }
-    public void setWinner(String message){
+
+    public void setWinnerRound(String message){
         bannerLabel.setText(message);
         bannerPane.setVisible(true);
 

@@ -113,7 +113,9 @@ public class ChatClient {
             command = "it´s not your turn";
         } else if (message.contains("Type '#choose 1'")) {
             command = "choose cards";
-        } else if (message.contains("Your guess was Incorrect.")) command="incorrect";
+        } else if (message.contains("Your guess was Incorrect.")) command = "incorrect";
+        else if(message.contains("Winner of the round")) command = "someone won";
+        else if(message.contains("Your guess was correct!")) command = "correct";
         String finalCommand = command;
 
         //The methods are not called directly from the controller,
@@ -131,9 +133,12 @@ public class ChatClient {
                         }
                         case "#playerList:" -> controller.setFormerPlayer(finalMessage);
                         case "userList:" -> controller.setUserList(finalMessage);
-                        case "Round" -> controller.increaseRoundLabel(message.split(" ")[1]);
+                        case "someone won" -> {
+                            controller.increaseRoundLabel();
+                            controller.setWinnerRound(message.split(" ")[(message.split(" ")).length-1]);
+                        }
                         case "it´s not your turn" -> controller.serverMessage.setText(message.split(" ", 2)[1]);
-                        case "your turn" -> controller.serverMessage.setText(message);
+                        case "your turn", "incorrect", "correct"  -> controller.serverMessage.setText(message);
                         case "choose cards" -> controller.chooseCards(message);
                         case "#score: " -> controller.updateScore(message.split(" "));
                         default -> System.out.println(message);
