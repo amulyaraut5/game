@@ -189,7 +189,7 @@ public class GameBoard extends Thread {
 
     /**
      * Whenever multiple players have enough tokens in one round to win the game, they play a tiebreaker round
-     * to determine the gameWinner.
+     * until the gameWinner is determined.
      */
     public void tieBreakerRound () {
         Player firstPlayer = compareDates(gameWinnerList);
@@ -220,6 +220,13 @@ public class GameBoard extends Thread {
     public Round getActiveRound() {
         return activeRound;
     }
+
+    /**
+     * Method to send in game messages to every player except one specified player.
+     *
+     * @param message in game message that should be send
+     * @param player specified player that doesn't receive the message
+     */
 
     public void deliverMessage(String message, Player player) {
         gameController.communicate(message, player);
