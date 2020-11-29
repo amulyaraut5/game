@@ -38,28 +38,31 @@
                   </AnchorPane>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="419.0" prefWidth="478.0">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button id="cardButton" fx:id="card1" mnemonicParsing="false" onAction="#changeImageCard1" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                  <Button id="cardButton" fx:id="card1" layoutX="42.0" layoutY="76.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
                         <ImageView fx:id="card1Image" fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/cardBackside.png" />
                            </image>
                         </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button id="cardButton" fx:id="card2" mnemonicParsing="false" onAction="#changeSceneCard" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                     </graphic></Button>
+                  <Button id="cardButton" fx:id="card2" layoutX="234.0" mnemonicParsing="false" prefHeight="394.0" prefWidth="186.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
-                        <ImageView fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="card2Image" fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/cardBackside.png" />
                            </image>
                         </ImageView>
-                     </graphic>
-                  </Button>
+                     </graphic></Button>
+                  <Label fx:id="roundLabel" layoutX="23.0" layoutY="14.0" text="Round" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
-            </HBox>
+            </AnchorPane>
          </children></VBox>
       <VBox prefHeight="529.0" prefWidth="272.0">
          <children>

@@ -32,6 +32,7 @@ public class Controller implements Initializable {
     //card 1
     public Button card1;
     public ImageView card1Image;
+    public ImageView card2Image;
     /**
      * This method changes the Scene
      */
@@ -48,12 +49,14 @@ public class Controller implements Initializable {
     public VBox player1Box;
     public VBox player2Box;
     public VBox player3Box;
+    public Label roundLabel;
 
     public Label serverMessage;
     private String userName;
     private ChatClient client;
     private ArrayList <String> playerList = new ArrayList<>();
     private ArrayList <String> userList = new ArrayList<>();
+    private String responseServer;
 
     /**
      * this method disables a player vbox
@@ -90,15 +93,15 @@ public class Controller implements Initializable {
         System.out.println("start button clicked");
         playButton.setDisable(true);
         playButton.setText("Have Fun!");
+
+    }
+    public void increaseRoundLabel(String round){
+        roundLabel.setText("Round" + round);
+        roundLabel.setVisible(true);
     }
 
-    /**
-     * this method changes the image of card1
-     */
-    public void changeImageCard1() {
-        Image image = new Image("/images/king.png");
-        card1Image.setImage(image);
-    }
+
+
 
     public void changeSceneCard(javafx.event.ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/popupGame/popup.fxml"));
@@ -142,9 +145,33 @@ public class Controller implements Initializable {
         userName = name;
 
     }
+    /**
+     * this method changes the image of card1
+     */
+    public void changeImageCard1(String card) {
+        Image image = new Image("/images/cards/" +card + ".png");
+        card1Image.setImage(image);
+    }
+    /**
+     * this method changes the image of card2
+     */
+    public void changeImageCard2(String card) {
+        Image image = new Image("/images/cards/" +card + ".png");
+        card2Image.setImage(image);
+    }
+    public void chooseCards (String message){
+        String card1 = message.split(" ")[4];
+        System.out.println(card1);
+        changeImageCard1(card1);
+        String card2 = message.split(" ")[9];
+        changeImageCard2(card2);
+        System.out.println(card2);
 
-    public void ServerResponse(String response) {
+    }
+    public void serverResponse(String response) {
+        responseServer += response;
         System.out.println(response);
+        serverMessage.setText(responseServer);
         /*if (response.contains("joined the room")) {
             player1Label.setText(response.split(" ", 2)[0]);
         } else {
@@ -190,7 +217,7 @@ public class Controller implements Initializable {
 
     }
 
-    public  void setFormerPlayer(String formerPlayer) {
+    public void setFormerPlayer(String formerPlayer) {
         System.out.println(formerPlayer + "former Player");
         String[] former = formerPlayer.split(" ");
         for (int i = 0; i<former.length; i++){

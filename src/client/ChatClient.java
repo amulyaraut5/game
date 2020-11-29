@@ -99,6 +99,12 @@ public class ChatClient {
             command = "someone plays";
         } else if (message.contains("created a new game")){
             command = "someone created a game";
+        } else if(message.contains("your turn,")){
+            command = "your turn";
+        } else if(message.contains("turn!")){
+            command = "it´s not your turn";
+        } else if (message.contains("Type '#choose 1'")){
+            command = "choose cards";
         }
         String finalCommand = command;
 
@@ -117,6 +123,10 @@ public class ChatClient {
                         }
                         case "#playerList:" -> controller.setFormerPlayer(finalMessage);
                         case "userList:" -> controller.setUserList(finalMessage);
+                        case "Round" -> controller.increaseRoundLabel(message.split(" ")[1]);
+                        case "your turn" -> controller.serverMessage.setText(message);
+                        case "it´s not your turn" -> controller.serverMessage.setText(message);
+                        case "choose cards" -> controller.chooseCards(message);
                         default -> System.out.println(message);
                     }
                 }

@@ -55,6 +55,8 @@ public class UserThread extends Thread {
         }
     }
 
+
+
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
      * The user disconnects by typing "bye".

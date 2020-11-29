@@ -171,7 +171,7 @@ public class Round {
         String first = currentPlayer.getCard().getCardName();
         String second = secondCard.getCardName();
         currentPlayer.message("Which card do you want to play?");
-        currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + ":");
+        currentPlayer.message("Type '#choose 1' for " + first + " and '#choose 2' for " + second + " :");
         gameBoard.deliverMessage("It´s " + currentPlayer + "'s turn!", currentPlayer);
         String message = readResponse();
         //TODO change currentCard of active Player
