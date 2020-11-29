@@ -115,6 +115,8 @@ public class ChatClient {
                             controller.setGamePlayer(message.split(" ", 2)[0]);
                             System.out.println("creeated");
                         }
+                        case "#playerList:" -> controller.setFormerPlayer(finalMessage);
+                        case "userList:" -> controller.setUserList(finalMessage);
                         default -> System.out.println(message);
                     }
                 }

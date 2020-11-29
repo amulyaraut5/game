@@ -178,6 +178,10 @@ public class GameBoard extends Thread {
     public void deliverMessage(String message, Player player) {
         gameController.communicate(message, player);
     }
+
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
 }
 
 

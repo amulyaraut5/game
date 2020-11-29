@@ -84,7 +84,15 @@ public class UserThread extends Thread {
                     if (!server.communicateDirect(clientMessage, user)) {
                         user.message("Your request does not correspond to the required format. Please try again. @<name> <message>");
                     }
-                } else {
+                } else if(clientMessage.equals("userList")){
+                    String userList = "userList: ";
+                    for (User user : server.getUsers()){
+                        userList += user.getName();
+                        userList += " ";
+                    }
+                    user.message(userList);
+                }
+                else {
                     serverMessage = "[" + user + "]: " + clientMessage;
                     server.communicate(serverMessage, user);
                 }

@@ -64,6 +64,16 @@ public class GameController {
                     gameBoard.getActiveRound().writeResponse(message, user);
                 }
             }
+            case "#playerList" -> {
+                if (createdGame){
+                    String playerList = "";
+                    for (Player pl : gameBoard.getPlayerList()){
+                        playerList += pl.getName();
+                        playerList += " ";
+                    }
+                    user.message("#playerList: " + playerList);
+                }}
+
             default -> user.message("Unexpected command: " + command + "\nPlease enter a valid command. Type #help to see them.");
         } //case "#end":
     }

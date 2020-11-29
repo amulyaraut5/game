@@ -73,6 +73,7 @@ public class Controller implements Initializable {
      * this methods changes the play button by clicking on it
      */
     public void handlePlayButton() {
+        client.sentUserInput("#playerList");
         client.sentUserInput("#play");
         System.out.println("play button clicked");
         playButton.setDisable(true);
@@ -123,14 +124,18 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
 
+    }
+    public void begin(){
+        client.sentUserInput("userList");
+    }
     public void setClient(ChatClient chatClient) {
         client = chatClient;
     }
 
     public void setUser(String name) {
         userName = name;
+
     }
 
     public void ServerResponse(String response) {
@@ -155,15 +160,35 @@ public class Controller implements Initializable {
     }
 
     public void setGamePlayer(String s) {
-        if(s.equals("You")){
+        if(s.equals("You") || s.equals("You've")){
             s= userName;
         }
         System.out.println("setGame "+s);
         playerList.add(s);
+        System.out.println(playerList.size());
         if(playerList.size()==1) player0Label.setText(s);
         else if(playerList.size()==2) player1Label.setText(s);
         else if (playerList.size()==3) player2Label.setText(s);
         else if(playerList.size()==4) player3Label.setText(s);
 
+    }
+
+    public  void setFormerPlayer(String formerPlayer) {
+        System.out.println(formerPlayer + "former Player");
+        String[] former = formerPlayer.split(" ");
+        for (int i = 0; i<former.length; i++){
+            System.out.println(former[i] + "former");
+            setGamePlayer(former[i]);
+        }
+
+    }
+
+    public void setUserList(String formerUser) {
+        System.out.println(formerUser + "former Player");
+        String[] former = formerUser.split(" ");
+        for (int i = 0; i<former.length; i++){
+            System.out.println(former[i] + "former");
+            setUserList(former[i]);
+        }
     }
 }
