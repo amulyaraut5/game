@@ -19,12 +19,10 @@ import javafx.stage.Stage;
 import popupGame.ControllerPopUp;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 
-public class Controller implements Initializable {
+public class Controller {
     private String answerPopUp = "defaultPlayer defaultCard";
     private String userName;
     private ChatClient client;
@@ -225,12 +223,7 @@ public class Controller implements Initializable {
 
     }
 
-
-
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
 
     }
 
@@ -392,5 +385,9 @@ public class Controller implements Initializable {
             System.out.println(former[i] + "former");
             setUserList(former[i]);
         }
+    }
+
+    public void close() {
+        client.disconnect();
     }
 }

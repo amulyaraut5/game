@@ -27,6 +27,7 @@ public class ChatClient {
     private LoginController loginController;
     private Controller controller;
     private ControllerPopUp controllerPopUp;
+
     public ChatClient(LoginController loginController, String hostname, int port) {
         this.loginController = loginController;
         this.hostname = hostname;
