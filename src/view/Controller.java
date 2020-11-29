@@ -60,20 +60,14 @@ public class Controller implements Initializable {
 
     @FXML
     public Label player0Label;
-    @FXML
     public Label player1Label;
-    @FXML
     public Label player2Label;
-    @FXML
     public Label player3Label;
-    @FXML
     public VBox player0Box;
-    @FXML
     public VBox player1Box;
-    @FXML
     public VBox player2Box;
-    @FXML
     public VBox player3Box;
+
     @FXML
     private Label player0Score;
     @FXML
@@ -167,7 +161,7 @@ public class Controller implements Initializable {
     public void changeSceneCard1() throws IOException {
         client.sentUserInput("#choose 1");
         serverMessage.setText("You discarded \n" + card1Name);
-        openPopUp(card1Image);
+        openPopUp(card1Image, card1Name);
         changeImageCard1("BackOfCard2");
         card1Name = "default";
     }
@@ -180,7 +174,7 @@ public class Controller implements Initializable {
     public void changeSceneCard2() throws IOException {
         client.sentUserInput("#choose 2");
         serverMessage.setText("You discarded \n" + card2Name);
-        openPopUp(card2Image);
+        openPopUp(card2Image, card2Name);
         changeImageCard2("BackOfCard2");
         card2Name = "default";
     }
@@ -191,13 +185,15 @@ public class Controller implements Initializable {
      * @param card
      * @throws IOException
      */
-    public void openPopUp(ImageView card) throws IOException {
+    public void openPopUp(ImageView card, String cardName) throws IOException {
         if (true/*showPopUp.contains(card1Name)*/) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
             Parent root = loader.load();
             ControllerPopUp controllerPopUp = loader.getController();
             controllerPopUp.setPlayer(playerList);
-            controllerPopUp.setController(this);
+            controllerPopUp.setType(cardName);
+            controllerPopUp.setClient(client);
+            client.setPopUpController(controllerPopUp);
             Stage popup = new Stage();
             popup.setScene(new Scene(root));
             //for pop-up:
@@ -209,18 +205,8 @@ public class Controller implements Initializable {
         }
     }
 
-    /**
-     * the popUpWindow controller can set the answer of the user
-     * and the method sends the answer to the server
-     *
-     * @param answerPopUp
-     */
-    public void setAnswer(String answerPopUp) {
-        String player = answerPopUp.split(" ")[0];
-        String card = answerPopUp.split(" ")[1];
-        client.sentUserInput("#choose " + player);
-        //client.sentUserInput("#choose "+ card);
-    }
+
+
 
 
     @Override

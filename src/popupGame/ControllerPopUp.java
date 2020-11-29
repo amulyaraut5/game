@@ -1,5 +1,6 @@
 package popupGame;
 
+import client.ChatClient;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,11 +24,14 @@ import java.util.ResourceBundle;
 public class ControllerPopUp implements Initializable {
 
     public Button closePopUp;
-
+    public ChatClient client;
     String player0 = " ";
     String player1 = "1";
     String player2 = "2";
     String player3 = "3";
+    public String actualCard;
+    public boolean playerChoosed = false;
+    public boolean cardChoosed = false;
     public ChoiceBox <String> playerBox = new ChoiceBox();
     public ChoiceBox <String> cardListBox = new ChoiceBox();
     ObservableList playerList = FXCollections.observableArrayList(" ");
@@ -35,19 +39,48 @@ public class ControllerPopUp implements Initializable {
             "Guard", "Handmaid", "King", "Priest", "Prince", "Princess");
     public Label userMessage;
     private Controller controller;
-
-    public void handleOkButton(javafx.event.ActionEvent actionEvent) {
-        String player = playerBox.getValue();
-        String card = cardListBox.getValue();
-        if (player.equals(null) || card.equals(null)) userMessage.setText("Please select a card and a player");
-        else {
-            this.controller.setAnswer(player +" "+ card);
-            Stage window = (Stage) closePopUp.getScene().getWindow();
-            window.close();
-        }
-
-
+    /**
+     * this methods sets the chatClient for the popupcontroller
+     * @param chatClient
+     */
+    public void setClient(ChatClient chatClient) {
+        client = chatClient;
     }
+    public void handleOkPlayerButton(javafx.event.ActionEvent actionEvent) {
+        String player = playerBox.getValue();
+        if (player.equals(null)) {
+            userMessage.setVisible(true);
+            userMessage.setText("Please select a player");
+        }
+        else {
+            userMessage.setVisible(false);
+            client.sentUserInput("#choose "+ player);
+            playerChoosed= true;
+
+        }
+    }
+    public void handleOkCardButton(javafx.event.ActionEvent actionEvent) {
+        String card = cardListBox.getValue();
+        if (card.equals(null)) {
+            userMessage.setVisible(true);
+            userMessage.setText("Please select a player");
+        }
+        else {
+            if(playerChoosed){
+                userMessage.setVisible(false);
+                client.sentUserInput("#choose "+ card);
+                cardChoosed= true;
+                Stage window = (Stage) closePopUp.getScene().getWindow();
+                window.close();
+
+            } else{
+                userMessage.setVisible(true);
+                userMessage.setText("You have to make clear choices");
+            }
+
+        }
+    }
+
     public void setPlayer(ArrayList<String> playerL){
         for (String player : playerL){
             playerList.add(player);
@@ -67,4 +100,11 @@ public class ControllerPopUp implements Initializable {
         this.controller = controller;
     }
 
+    public void setType(String cardName) {
+        actualCard = cardName;
+        if(actualCard.equals("Priest") || actualCard.equals("King")) {
+            cardListBox.setVisible(false);
+            cardChoosed= true;
+        }
+    }
 }
