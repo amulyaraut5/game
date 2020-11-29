@@ -117,7 +117,7 @@ public class GameBoard extends Thread {
         int i = 0;
         while (!gameWon()) {
             gameController.communicateAll("Round " + ++i + " begins! Good luck;)");
-            activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(playerList), this);
+            activeRound = new Round(firstPlayer, new ArrayList<>(deck), new ArrayList<>(playerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
             this.activeRound = null;
@@ -225,7 +225,7 @@ public class GameBoard extends Thread {
         boolean tieBreak = false;
         while (!tieBreak) {
             gameController.communicateAll("The tie-breaker round begins! Good luck;)");
-            activeRound = new Round(firstPlayer, new ArrayList(deck), new ArrayList(gameWinnerList), this);
+            activeRound = new Round(firstPlayer, new ArrayList<>(deck), new ArrayList<>(gameWinnerList), this);
             activeRound.play();
             winnerList = activeRound.getRoundWinner();
             this.activeRound = null;
