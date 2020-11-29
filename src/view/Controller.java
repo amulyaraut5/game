@@ -99,9 +99,10 @@ public class Controller implements Initializable {
      */
     public void chatMessageHandling() {
         String message = chatTextArea.getText();
-
-        chatWindow.appendText("[You]: " + message + "\n");
-        client.sentUserInput(message);
+        if(!message.isBlank()){
+            chatWindow.appendText("[You]: " + message + "\n");
+            client.sentUserInput(message);
+        }
         chatTextArea.clear();
     }
 
