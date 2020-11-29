@@ -34,15 +34,16 @@ public class KingCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
 
             getTargetPlayer(playerPlayingCard);
+            if (round.isCurrentPlayerConnected()) {
+                //Swapping of cards between the players.
+                Card playerCard = playerPlayingCard.getCard();
+                Card targetCard = targetPlayer.getCard();
+                targetPlayer.setCurrentCard(playerCard);
+                playerPlayingCard.setCurrentCard(targetCard);
 
-            //Swapping of  cards between the players.
-            Card playerCard = playerPlayingCard.getCard();
-            Card targetCard = targetPlayer.getCard();
-            targetPlayer.setCurrentCard(playerCard);
-            playerPlayingCard.setCurrentCard(targetCard);
-
-            playerPlayingCard.message("You have swapped cards with " + targetPlayer + ". Your new card is: " + targetCard + ".");
-            targetPlayer.message(playerPlayingCard + " swapped cards with you. Your new card is: " + playerCard);
+                playerPlayingCard.message("You have swapped cards with " + targetPlayer + ". Your new card is: " + targetCard + ".");
+                targetPlayer.message(playerPlayingCard + " swapped cards with you. Your new card is: " + playerCard);
+            }
         }
         availablePlayers.clear();
     }

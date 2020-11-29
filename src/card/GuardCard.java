@@ -36,28 +36,30 @@ public class GuardCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             getTargetPlayer(playerPlayingCard);
 
-            while (true) {
+            while (round.isCurrentPlayerConnected()) {
                 String[] cardNames = {"Priest", "Baron", "Handmaid", "Prince", "King", "Countess", "Princess"};
 
                 playerPlayingCard.message("Which card do you think the player has? Type '#choose <card>'.");
                 playerPlayingCard.message("Choose one Card: [Priest, Baron, Handmaid, Prince, King, Countess, Princess]");
 
                 String guessCardName = round.readResponse();
-                if (guessCardName.equals(this.nameOfCard)) {
-                    playerPlayingCard.message("You cannot choose the Guard card, try again.");
-                } else if (Arrays.asList(cardNames).contains(guessCardName)) {
-                    if (guessCardName.equals(targetPlayer.getCard().toString())) {
-                        playerPlayingCard.message("Your guess was correct!");
-                        round.kickPlayer(targetPlayer);
+                if (round.isCurrentPlayerConnected()) {
+                    if (guessCardName.equals(this.nameOfCard)) {
+                        playerPlayingCard.message("You cannot choose the Guard card, try again.");
+                    } else if (Arrays.asList(cardNames).contains(guessCardName)) {
+                        if (guessCardName.equals(targetPlayer.getCard().toString())) {
+                            playerPlayingCard.message("Your guess was correct!");
+                            round.kickPlayer(targetPlayer);
 
-                        controller.communicateAll(targetPlayer + " is eliminated from the round.");
-                        break;
+                            controller.communicateAll(targetPlayer + " is eliminated from the round.");
+                            break;
+                        } else {
+                            playerPlayingCard.message("Your guess was Incorrect.");
+                            break;
+                        }
                     } else {
-                        playerPlayingCard.message("Your guess was Incorrect.");
-                        break;
+                        playerPlayingCard.message("Your might have mistyped the card name. Please try again!");
                     }
-                } else {
-                    playerPlayingCard.message("Your might have mistyped the card name. Please try again!");
                 }
             }
         }

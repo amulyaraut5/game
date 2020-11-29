@@ -8,19 +8,27 @@ import java.net.Socket;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console
+ *
  * @author simon
  */
 public class ReaderThread extends Thread {
-    /** client is the related ChatClient which starts an instance of ReaderThread*/
+    /**
+     * client is the related ChatClient which starts an instance of ReaderThread
+     */
     private final ChatClient client;
-    /** the socket on which the Reader Threads listens*/
+    /**
+     * the socket on which the Reader Threads listens
+     */
     private final Socket socket;
-    /**BufferedReader to read input*/
+    /**
+     * BufferedReader to read input
+     */
     private BufferedReader bReader;
 
     /**
      * constructor of ReaderThread to initialize the attributes socket and the client
      * and to create an InputStream and to initialize the BufferedReader
+     *
      * @param socket
      * @param client
      */

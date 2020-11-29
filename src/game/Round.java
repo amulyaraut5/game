@@ -20,10 +20,11 @@ public class Round {
     private final Card firstCardRemoved;
     private ArrayList<Card> faceUpCards;
     private Player currentPlayer;
+
     /**
      * if the current player disconnects the boolean is set and his move ended.
      */
-    private boolean currentPlayerDisconnected = false;
+    private volatile boolean currentPlayerConnected = true;
 
     private volatile String userResponse;
 
@@ -54,10 +55,10 @@ public class Round {
 
             currentPlayer.setGuarded(false);
             playedCard = chooseCard();
-            if (!currentPlayerDisconnected) playedCard.handleCard(currentPlayer);
+            if (currentPlayerConnected) playedCard.handleCard(currentPlayer);
 
             nextPlayer();
-            currentPlayerDisconnected = false;
+            currentPlayerConnected = true;
         }
     }
 
@@ -98,7 +99,7 @@ public class Round {
      */
     public String readResponse() {
         String response;
-        while (userResponse == null && !gameBoard.isInterrupted() && !currentPlayerDisconnected) {
+        while (userResponse == null && !gameBoard.isInterrupted() && currentPlayerConnected) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -139,7 +140,7 @@ public class Round {
         faceUpCards = new ArrayList<>();
         if (activePlayers.size() == 2) {
             for (int i = 0; i < 3; i++) {
-                faceUpCards.add(pop()); //show?
+                faceUpCards.add(pop());
             }
         }
         return faceUpCards;
@@ -162,7 +163,7 @@ public class Round {
         while (card == null) {
             String message = readResponse();
 
-            if (message != null) {
+            if (currentPlayerConnected) {
                 if (message.equals("1")) {
                     card = currentPlayer.getCard();
                     if (first.equals("Countess") && (second.equals("King") || second.equals("Prince"))) {
@@ -270,10 +271,14 @@ public class Round {
         return firstCardRemoved;
     }
 
+    public boolean isCurrentPlayerConnected() {
+        return currentPlayerConnected;
+    }
+
     public void removePlayer(Player player) {
         activePlayers.remove(player);
         if (currentPlayer == player) {
-            currentPlayerDisconnected = true;
+            currentPlayerConnected = false;
         }
     }
 }

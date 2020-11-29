@@ -34,23 +34,25 @@ public class BaronCard extends Card {
 
             getTargetPlayer(playerPlayingCard);
 
-            // Comparing the hand of two players to see who has the greater cardValue
-            int targetCardValue = targetPlayer.getCard().getCardValue();
-            int playerCardValue = playerPlayingCard.getCard().getCardValue();
+            if (round.isCurrentPlayerConnected()) {
+                // Comparing the hand of two players to see who has the greater cardValue
+                int targetCardValue = targetPlayer.getCard().getCardValue();
+                int playerCardValue = playerPlayingCard.getCard().getCardValue();
 
-            if (targetCardValue > playerCardValue) {
-                // The one with lower value will be kicked out of the round.
-                round.kickPlayer(playerPlayingCard);
-                playerPlayingCard.message("You were kicked out of the round.");
-                controller.communicate(playerPlayingCard + " has been eliminated.", playerPlayingCard);
+                if (targetCardValue > playerCardValue) {
+                    // The one with lower value will be kicked out of the round.
+                    round.kickPlayer(playerPlayingCard);
+                    playerPlayingCard.message("You were kicked out of the round.");
+                    controller.communicate(playerPlayingCard + " has been eliminated.", playerPlayingCard);
 
-            } else if (targetCardValue < playerCardValue) {
-                round.kickPlayer(targetPlayer);
+                } else if (targetCardValue < playerCardValue) {
+                    round.kickPlayer(targetPlayer);
 
-                targetPlayer.message("You were kicked out of the round.");
-                controller.communicate(targetPlayer + " has been eliminated.", targetPlayer);
-            } else {
-                playerPlayingCard.message("Both the players have same card value.");
+                    targetPlayer.message("You were kicked out of the round.");
+                    controller.communicate(targetPlayer + " has been eliminated.", targetPlayer);
+                } else {
+                    playerPlayingCard.message("Both the players have same card value.");
+                }
             }
         }
         availablePlayers.clear();
