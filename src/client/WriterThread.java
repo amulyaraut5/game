@@ -10,12 +10,20 @@ import java.net.Socket;
  * @author sarah
  */
 public class WriterThread extends Thread {
-
+    /** */
     private final PrintWriter writer;
+    /** */
     private final ChatClient client;
+    /** */
     private OutputStream output;
+    /** */
     private BufferedReader bReader;
 
+    /**
+     * 
+     * @param socket
+     * @param client
+     */
     public WriterThread(Socket socket, ChatClient client) {
         this.client = client;
 

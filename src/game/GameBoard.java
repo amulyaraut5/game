@@ -8,18 +8,39 @@ import java.util.ArrayList;
 /**
  * In a newly created game, an instance of the GameBoard class is created in which the
  * deck of cards is created and a winner of the game is determined by creating
- * and running instances of the Round class until one player has won.
+ * and running instances of the Round class until one player has won. It also determines the player
+ * who begins each round (first date date/ last winner of round)
  *
  * @author sarah,
  */
 public class GameBoard extends Thread {
+    /**
+     * gameController is the related GameController which delivers and translates the users inputs
+     * towards the game
+     */
     private final GameController gameController;
+    /**
+     * playerList is a list of current players (max. 4)
+     */
     private final ArrayList<Player> playerList = new ArrayList<>();
+    /**
+     * activeRound is an instance of the current round, e.g. to get the winner of the round
+     */
     private Round activeRound;
+    /**
+     * gameWinner is the winner of the game at the end, who gets declared in the method gameWon()
+     */
     private Player gameWinner;
+    /**
+     * gameWinnerList is necessary to declare the game winner/winners, because there have to be a lot
+     * of comparisons in the gameWon() method
+     */
     private ArrayList<Player> gameWinnerList = new ArrayList<>();
 
-
+    /**
+     * the constructor which sets the gameController
+     * @param gameController
+     */
     public GameBoard(GameController gameController) {
         this.gameController = gameController;
     }
@@ -52,7 +73,7 @@ public class GameBoard extends Thread {
     /**
      * It returns a String that contains information about the token score of each user
      *
-     * @param user
+     * @param user who asked for the information
      */
     public void getScorePlayer(User user) {
         StringBuilder score = new StringBuilder();
@@ -75,13 +96,19 @@ public class GameBoard extends Thread {
         return false;
     }
 
+    /**
+     * run method to start the Thread and start the game
+     */
     @Override
     public void run() {
         playGame();
     }
 
     /**
-     * method to play rounds until someone has won the whole game
+     * method to play rounds and declare the winner of each round and
+     * increase their token number until someone has won the whole game.
+     * In the end it resets the whole gameBoard by calling the reset() method
+     * of GameController
      */
     public void playGame() {
         Player firstPlayer = compareDates(playerList);
@@ -217,6 +244,11 @@ public class GameBoard extends Thread {
 
     }
 
+    /**
+     * it returns the active round
+     *
+     * @return activeRound
+     */
     public Round getActiveRound() {
         return activeRound;
     }
