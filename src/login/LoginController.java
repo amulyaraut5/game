@@ -38,16 +38,16 @@ public class LoginController {
         client = new ChatClient(this, "localhost", 4444);
     }
 
-    public void close() {
-        client.disconnect();
-    }
-
     public static void setStage(Stage loginStage) {
         LoginController.loginStage = loginStage;
     }
 
     public static void setClient(ChatClient client) {
         LoginController.client = client;
+    }
+
+    public void close() {
+        client.disconnect();
     }
 
     public void initialize() {
@@ -104,7 +104,11 @@ public class LoginController {
         gameStage.setResizable(false);
         gameStage.show();
 
-        gameStage.setOnCloseRequest(event -> controller.close());
+        gameStage.setOnCloseRequest(event -> {
+            controller.close();
+            gameStage.close();
+            loginStage.close();
+        });
     }
 
     /**

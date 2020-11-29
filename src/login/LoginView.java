@@ -26,6 +26,9 @@ public class LoginView extends Application {
         loginStage.show();
         LoginController.setStage(loginStage);
 
-        loginStage.setOnCloseRequest(event -> loginController.close());
+        loginStage.setOnCloseRequest(event -> {
+            loginController.close();
+            loginStage.close();
+        });
     }
 }
