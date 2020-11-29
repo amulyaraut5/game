@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -31,9 +32,17 @@ public class LoginController {
     @FXML
     private Label labelResponse;
 
+    @FXML
+    private Button okButton;
+
     public LoginController() {
-        client = new ChatClient("localhost", 4444);
-        client.setLoginController(this);
+        client = new ChatClient(this, "localhost", 4444);
+    }
+
+    public void initialize() {
+        if (!client.isConnection()){
+            noConnection();
+        }
     }
 
     public static void setStage(Stage loginStage) {
@@ -88,5 +97,13 @@ public class LoginController {
         gameStage.setScene(new Scene(gameView));
         gameStage.setResizable(false);
         gameStage.show();
+    }
+
+    /**
+     * Methods gets called by the ChatClient if no connection to the server could be established.
+     */
+    public void noConnection() {
+        okButton.setDisable(true);
+        labelResponse.setText("No connection to the server!");
     }
 }

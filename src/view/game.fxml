@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="Background" prefHeight="584.0" prefWidth="750.0" stylesheets="@gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
+<HBox fx:id="Background" prefHeight="584.0" prefWidth="750.0" stylesheets="@view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
    <children>
       <VBox prefHeight="503.0" prefWidth="478.0">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button id="cardButton" fx:id="ruleCardButton" mnemonicParsing="false" onAction="#handleRuleCardButton" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                  <Button id="cardButton" fx:id="ruleCardButton" mnemonicParsing="false" onAction="#handleRuleCardButton" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@view.css" textFill="#ebebeb">
                      <graphic>
                         <ImageView fx:id="ruleCardImage" fitHeight="169.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -31,7 +31,7 @@
                      </graphic>
                   </Button>
 
-                  <Label id="label" fx:id="serverMessage" alignment="CENTER" contentDisplay="CENTER" prefHeight="169.0" prefWidth="240.0" stylesheets="@gameview.css" text="It's your turn! &#10;Choose a card:" textAlignment="CENTER">
+                  <Label id="label" fx:id="serverMessage" alignment="CENTER" contentDisplay="CENTER" prefHeight="169.0" prefWidth="240.0" stylesheets="@view.css" text="It's your turn! &#10;Choose a card:" textAlignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -112,7 +112,7 @@
                   <Insets bottom="5.0" />
                </padding>
             </VBox>
-            <GridPane id="Grid" prefHeight="271.0" prefWidth="272.0" stylesheets="@gameview.css">
+            <GridPane id="Grid" prefHeight="271.0" prefWidth="272.0" stylesheets="@view.css">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -124,7 +124,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <VBox id="Player" fx:id="player1Box" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" visible="false" GridPane.columnIndex="1">
+                  <VBox id="Player" fx:id="player1Box" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@view.css" visible="false" GridPane.columnIndex="1">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -133,7 +133,7 @@
                                     <Image url="@../images/token_herz.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player1Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
+                              <Label id="label" fx:id="player1Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Label>
@@ -142,12 +142,12 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="player1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="88.0" text=" " textAlignment="CENTER">
+                        <Label id="label" fx:id="player1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="88.0" text=" " textAlignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font></Label>
                      </children></VBox>
-                  <VBox id="Player" fx:id="player2Box" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@gameview.css" visible="false" GridPane.rowIndex="1">
+                  <VBox id="Player" fx:id="player2Box" prefHeight="200.0" prefWidth="100.0" styleClass="Player" stylesheets="@view.css" visible="false" GridPane.rowIndex="1">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -156,7 +156,7 @@
                                     <Image url="@../images/token_herz.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player2Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
+                              <Label id="label" fx:id="player2Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Label>
@@ -165,7 +165,7 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="player2Label" alignment="CENTER" prefHeight="37.0" prefWidth="87.0" text=" ">
+                        <Label id="label" fx:id="player2Label" alignment="CENTER" prefHeight="37.0" prefWidth="87.0" text=" ">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -174,7 +174,7 @@
                            </font></Label>
                      </children>
                   </VBox>
-                  <VBox id="Player" fx:id="player3Box" prefHeight="200.0" prefWidth="100.0" stylesheets="@gameview.css" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <VBox id="Player" fx:id="player3Box" prefHeight="200.0" prefWidth="100.0" stylesheets="@view.css" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -186,13 +186,13 @@
                                     <Insets top="5.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <Label fx:id="player3Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
+                              <Label id="label" fx:id="player3Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Label>
                            </children>
                         </HBox>
-                        <Label fx:id="player3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="88.0" text=" ">
+                        <Label id="label" fx:id="player3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="88.0" text=" ">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -201,7 +201,7 @@
                            </font></Label>
                      </children>
                   </VBox>
-                  <VBox id="Player" fx:id="player0Box" prefHeight="200.0" prefWidth="100.0" stylesheets="@gameview.css" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <VBox id="Player" fx:id="player0Box" prefHeight="200.0" prefWidth="100.0" stylesheets="@view.css" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <HBox alignment="TOP_RIGHT" prefHeight="19.0" prefWidth="91.0">
                            <children>
@@ -210,7 +210,7 @@
                                     <Image url="@../images/token_herz.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="player0Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
+                              <Label id="label" fx:id="player0Score" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="12.0" text="0">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Label>
@@ -219,7 +219,7 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="player0Label" alignment="CENTER" prefHeight="38.0" prefWidth="87.0" text=" ">
+                        <Label id="label" fx:id="player0Label" alignment="CENTER" prefHeight="38.0" prefWidth="87.0" text=" ">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>

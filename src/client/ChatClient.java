@@ -20,18 +20,21 @@ public class ChatClient {
     private final int port;
     private final String hostname;
     private Socket socket;
-
+    private boolean connection;
     private ReaderThread readerThread;
     private Writer writer;
     private LoginController loginController;
     private Controller controller;
-
-
-    public ChatClient(String hostname, int port) {
+    public ChatClient(LoginController loginController, String hostname, int port) {
+        this.loginController = loginController;
         this.hostname = hostname;
         this.port = port;
 
         establishConnection();
+    }
+
+    public boolean isConnection() {
+        return connection;
     }
 
     /**
@@ -48,11 +51,14 @@ public class ChatClient {
             readerThread.start();
 
             System.out.println("Connection to server successful.");
+            connection = true;
 
         } catch (UnknownHostException e) {
             System.out.println("Connection failed - IP-address of host could not be determined: " + e.getMessage());
+            connection = false;
         } catch (IOException e) {
             System.out.println("Connection failed - General I/O exception: " + e.getMessage());
+            connection = false;
         }
     }
 
@@ -95,15 +101,15 @@ public class ChatClient {
             command = "someone joined";
         } else if (message.substring(0, 1).equals("[")) {
             command = "#chat";
-        } else if (message.contains("joined the game")){
+        } else if (message.contains("joined the game")) {
             command = "someone plays";
-        } else if (message.contains("created a new game")){
+        } else if (message.contains("created a new game")) {
             command = "someone created a game";
-        } else if(message.contains("your turn,")){
+        } else if (message.contains("your turn,")) {
             command = "your turn";
-        } else if(message.contains("turn!")){
+        } else if (message.contains("turn!")) {
             command = "it´s not your turn";
-        } else if (message.contains("Type '#choose 1'")){
+        } else if (message.contains("Type '#choose 1'")) {
             command = "choose cards";
         }
         String finalCommand = command;
@@ -116,7 +122,7 @@ public class ChatClient {
                         case "#login" -> loginController.ServerResponse(finalMessage);
                         case "someone joined" -> controller.setRoomUser(message.split(" ", 2)[0]);
                         case "#chat" -> controller.appendChatMessage(message);
-                        case "someone plays"  -> controller.setGamePlayer(message.split(" ", 2)[0]);
+                        case "someone plays" -> controller.setGamePlayer(message.split(" ", 2)[0]);
                         case "someone created a game" -> {
                             controller.setGamePlayer(message.split(" ", 2)[0]);
                             System.out.println("created");
@@ -124,8 +130,8 @@ public class ChatClient {
                         case "#playerList:" -> controller.setFormerPlayer(finalMessage);
                         case "userList:" -> controller.setUserList(finalMessage);
                         case "Round" -> controller.increaseRoundLabel(message.split(" ")[1]);
-                        case  "it´s not your turn" -> controller.serverMessage.setText(message.split(" ", 2)[1]);
-                        case  "your turn" -> controller.serverMessage.setText(message);
+                        case "it´s not your turn" -> controller.serverMessage.setText(message.split(" ", 2)[1]);
+                        case "your turn" -> controller.serverMessage.setText(message);
                         case "choose cards" -> controller.chooseCards(message);
                         case "#score: " -> controller.updateScore(message.split(" "));
                         default -> System.out.println(message);
@@ -136,10 +142,6 @@ public class ChatClient {
 
     public void sentUserInput(String input) {
         writer.sentUserInput(input);
-    }
-
-    public void setLoginController(LoginController loginController) {
-        this.loginController = loginController;
     }
 
     public void setController(Controller controller) {
