@@ -12,7 +12,6 @@ import java.net.Socket;
  */
 public class ReaderThread extends Thread {
     /** client is the related ChatClient which starts an instance of ReaderThread*/
-
     private final ChatClient client;
     /** the socket on which the Reader Threads listens*/
     private final Socket socket;
