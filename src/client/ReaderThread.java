@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- * It rea
+ * It reads (for the client) the servers input constantly and prints it out on the console
  * @author simon
  */
 public class ReaderThread extends Thread {
