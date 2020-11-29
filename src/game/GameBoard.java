@@ -39,6 +39,7 @@ public class GameBoard extends Thread {
 
     /**
      * the constructor which sets the gameController
+     *
      * @param gameController
      */
     public GameBoard(GameController gameController) {
