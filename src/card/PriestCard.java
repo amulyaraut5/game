@@ -33,7 +33,7 @@ public class PriestCard extends Card {
             playerPlayingCard.message("Choose the player whose card you wish to look at: " + availablePlayers.toString());
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             getTargetPlayer(playerPlayingCard);
-            if (round.isCurrentPlayerConnected()) {
+            if (!round.isTurnEnded()) {
                 // Then playerPlayingCard can look at the card of targetPlayer
                 String lookAtCard = targetPlayer.getCard().toString();
                 playerPlayingCard.message(targetPlayer + " has the card: " + lookAtCard);

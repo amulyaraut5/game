@@ -24,7 +24,7 @@ public class Round {
     /**
      * if the current player disconnects the boolean is set and his move ended.
      */
-    private volatile boolean currentPlayerConnected = true;
+    private volatile boolean endTurn = false;
 
     private volatile String userResponse;
 
@@ -55,11 +55,12 @@ public class Round {
 
             currentPlayer.setGuarded(false);
             playedCard = chooseCard();
-            if (currentPlayerConnected) playedCard.handleCard(currentPlayer);
 
-            nextPlayer();
-            currentPlayerConnected = true;
+            if (!endTurn) playedCard.handleCard(currentPlayer);
+            if (!endTurn) nextPlayer();
+            endTurn = false;
         }
+
     }
 
     /**
@@ -99,7 +100,7 @@ public class Round {
      */
     public String readResponse() {
         String response;
-        while (userResponse == null && !gameBoard.isInterrupted() && currentPlayerConnected) {
+        while (userResponse == null && !gameBoard.isInterrupted() && !endTurn) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -163,7 +164,7 @@ public class Round {
         while (card == null) {
             String message = readResponse();
 
-            if (currentPlayerConnected) {
+            if (!endTurn) {
                 if (message.equals("1")) {
                     card = currentPlayer.getCard();
                     if (first.equals("Countess") && (second.equals("King") || second.equals("Prince"))) {
@@ -271,14 +272,23 @@ public class Round {
         return firstCardRemoved;
     }
 
-    public boolean isCurrentPlayerConnected() {
-        return currentPlayerConnected;
+    public boolean isTurnEnded() {
+        return endTurn;
     }
 
+    /**
+     * If method is called, the given player is removed from the list of active players.
+     * If the player currently has his turn, the turn ends.
+     * The turn also ends if only one player is left.
+     *
+     * @param player
+     */
     public void removePlayer(Player player) {
-        activePlayers.remove(player);
         if (currentPlayer == player) {
-            currentPlayerConnected = false;
+            endTurn = true;
+            nextPlayer();
         }
+        activePlayers.remove(player);
+        if (activePlayers.size() == 1) endTurn = true;
     }
 }

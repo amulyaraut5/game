@@ -265,11 +265,17 @@ public class GameBoard extends Thread {
         gameController.communicate(message, player);
     }
 
+    /**
+     * If the user which disconnected is a player in the playerList, he gets removed from it.
+     * If the player is currently in a round, he gets removed from it in activeRound.removePlayer().
+     *
+     * @param user
+     */
     public void removePlayer(User user) {
         for (Player pl : playerList) {
             if (User.isSameUser(pl, user)) {
                 playerList.remove(pl);
-                if (activeRound != null) {
+                if (activeRound != null && activeRound.getActivePlayers().contains(pl)) {
                     activeRound.removePlayer(pl);
                 }
                 break;

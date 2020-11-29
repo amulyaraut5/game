@@ -34,7 +34,7 @@ public class BaronCard extends Card {
 
             getTargetPlayer(playerPlayingCard);
 
-            if (round.isCurrentPlayerConnected()) {
+            if (!round.isTurnEnded()) {
                 // Comparing the hand of two players to see who has the greater cardValue
                 int targetCardValue = targetPlayer.getCard().getCardValue();
                 int playerCardValue = playerPlayingCard.getCard().getCardValue();

@@ -34,7 +34,7 @@ public class KingCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
 
             getTargetPlayer(playerPlayingCard);
-            if (round.isCurrentPlayerConnected()) {
+            if (!round.isTurnEnded()) {
                 //Swapping of cards between the players.
                 Card playerCard = playerPlayingCard.getCard();
                 Card targetCard = targetPlayer.getCard();

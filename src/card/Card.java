@@ -106,7 +106,7 @@ public abstract class Card {
     public void getTargetPlayer(Player p) {
         while (true) {
             String targetPlayerName = round.readResponse();
-            if (round.isCurrentPlayerConnected()) {
+            if (!round.isTurnEnded()) {
                 for (Player player : availablePlayers) {
                     if (player.getName().equals(targetPlayerName)) {
                         targetPlayer = player;

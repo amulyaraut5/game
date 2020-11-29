@@ -36,14 +36,14 @@ public class GuardCard extends Card {
             playerPlayingCard.message("Type '#choose <name>' to choose the player.");
             getTargetPlayer(playerPlayingCard);
 
-            while (round.isCurrentPlayerConnected()) {
+            while (!round.isTurnEnded()) {
                 String[] cardNames = {"Priest", "Baron", "Handmaid", "Prince", "King", "Countess", "Princess"};
 
                 playerPlayingCard.message("Which card do you think the player has? Type '#choose <card>'.");
                 playerPlayingCard.message("Choose one Card: [Priest, Baron, Handmaid, Prince, King, Countess, Princess]");
 
                 String guessCardName = round.readResponse();
-                if (round.isCurrentPlayerConnected()) {
+                if (!round.isTurnEnded()) {
                     if (guessCardName.equals(this.nameOfCard)) {
                         playerPlayingCard.message("You cannot choose the Guard card, try again.");
                     } else if (Arrays.asList(cardNames).contains(guessCardName)) {
