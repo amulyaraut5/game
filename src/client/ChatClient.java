@@ -124,8 +124,7 @@ public class ChatClient {
                         case "#playerList:" -> controller.setFormerPlayer(finalMessage);
                         case "userList:" -> controller.setUserList(finalMessage);
                         case "Round" -> controller.increaseRoundLabel(message.split(" ")[1]);
-                        case "your turn" -> controller.serverMessage.setText(message);
-                        case "it´s not your turn" -> controller.serverMessage.setText(message);
+                        case "your turn", "it´s not your turn" -> controller.serverMessage.setText(message);
                         case "choose cards" -> controller.chooseCards(message);
                         default -> System.out.println(message);
                     }

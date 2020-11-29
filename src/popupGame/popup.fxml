@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="popUpPane" prefHeight="230.0" prefWidth="487.0" stylesheets="@../view/gameview.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="popupGame.ControllerPopUp">
    <children>
@@ -11,5 +12,10 @@
       <Button fx:id="closePopUp" layoutX="371.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleOkButton" prefHeight="27.0" prefWidth="87.0" text="Ok" />
       <Label layoutX="31.0" layoutY="89.0" text="Choose a card:" />
       <ChoiceBox id="choice" fx:id="cardListBox" layoutX="29.0" layoutY="115.0" prefWidth="150.0" stylesheets="@../view/gameview.css" />
+      <Label fx:id="userMessage" layoutX="29.0" layoutY="179.0" text=" ">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import popupGame.ControllerPopUp;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +34,7 @@ public class Controller implements Initializable {
     public Button card1;
     public ImageView card1Image;
     public ImageView card2Image;
+    public TextArea userArea;
     /**
      * This method changes the Scene
      */
@@ -50,6 +52,8 @@ public class Controller implements Initializable {
     public VBox player2Box;
     public VBox player3Box;
     public Label roundLabel;
+    public String card1Name;
+    public String card2Name;
 
     public Label serverMessage;
     private String userName;
@@ -57,6 +61,7 @@ public class Controller implements Initializable {
     private ArrayList <String> playerList = new ArrayList<>();
     private ArrayList <String> userList = new ArrayList<>();
     private String responseServer;
+    private String showPopUp= "Baron, Guard, King"; //TODO I don´t know who needs the popup
 
     /**
      * this method disables a player vbox
@@ -100,35 +105,26 @@ public class Controller implements Initializable {
         roundLabel.setVisible(true);
     }
 
+    public void changeSceneCard1( ) throws IOException {
+        if (true){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/popup.fxml"));
 
+            Parent root = loader.load();
+            ControllerPopUp controllerPopUp = loader.getController();
+            controllerPopUp.setPlayer(playerList);
+            Stage popup = new Stage();
+            popup.setScene(new Scene(root));
+            //for pop-up:
+            popup.initModality(Modality.APPLICATION_MODAL);
+            //reminde popup-window of its "owner"/ gets the popup-window infomation
+            popup.initOwner(card1.getScene().getWindow());
+            //show pop-up and wait until it is dismissed
+            popup.showAndWait();
+        }
 
-
-    public void changeSceneCard(javafx.event.ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/popupGame/popup.fxml"));
-        Stage popup = new Stage();
-        popup.setScene(new Scene(root));
-        //for pop-up:
-        popup.initModality(Modality.APPLICATION_MODAL);
-        //reminde popup-window of its "owner"/ gets the popup-window infomation
-        popup.initOwner(card2.getScene().getWindow());
-        //show pop-up and wait until it is dismissed
-        popup.showAndWait();
     }
 
-    /**
-     * Handles the pop-up of the rule card
-     */
-    public void handleRuleCardButton(javafx.event.ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/popupGame/ruleCard.fxml"));
-        Stage popup = new Stage();
-        popup.setScene(new Scene(root));
-        //for pop-up:
-        popup.initModality(Modality.NONE);
-        //reminde popup-window of its "owner"/ gets the popup-window infomation
-        popup.initOwner(ruleCardButton.getScene().getWindow());
-        //show pop-up and wait until it is dismissed
-        popup.showAndWait();
-    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -145,6 +141,28 @@ public class Controller implements Initializable {
         userName = name;
 
     }
+
+    //change and handle cards
+    /**
+     * Handles the pop-up of the rule card
+     */
+    public void handleRuleCardButton(javafx.event.ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/popupGame/ruleCard.fxml"));
+        Parent root = loader.load();
+        Stage popup = new Stage();
+        ControllerPopUp controllerPopUp = loader.getController();
+
+        popup.setScene(new Scene(root));
+        //for pop-up:
+        popup.initModality(Modality.NONE);
+        //reminde popup-window of its "owner"/ gets the popup-window infomation
+        popup.initOwner(ruleCardButton.getScene().getWindow());
+        //show pop-up and wait until it is dismissed
+
+        popup.showAndWait();
+
+
+    }
     /**
      * this method changes the image of card1
      */
@@ -159,13 +177,13 @@ public class Controller implements Initializable {
         Image image = new Image("/images/cards/" +card + ".png");
         card2Image.setImage(image);
     }
-    public void chooseCards (String message){
-        String card1 = message.split(" ")[4];
-        System.out.println(card1);
-        changeImageCard1(card1);
-        String card2 = message.split(" ")[9];
-        changeImageCard2(card2);
-        System.out.println(card2);
+    public void chooseCards (String message)  {
+        card2Name = message.split(" ")[4];
+        System.out.println(card2Name);
+        changeImageCard1(card2Name);
+        card2Name = message.split(" ")[9];
+        changeImageCard2(card2Name);
+        System.out.println(card2Name);
 
     }
     public void serverResponse(String response) {
@@ -178,19 +196,21 @@ public class Controller implements Initializable {
             serverMessage.setText(response);
         }*/
     }
-    public TextArea userArea;
-    /**
-     * each time a new player joins a new label gets filled
-     * @param name who joins
-     */
-    public void setRoomUser(String name){
-       userArea.appendText("\n" + name);
-    }
+
+
 
     public void appendChatMessage(String message) {
         chatWindow.appendText(message + "\n");
     }
 
+    //change and handle players & users
+    /**
+     * each time a new player joins a new label gets filled
+     * @param name who joins
+     */
+    public void setRoomUser(String name){
+        userArea.appendText("\n" + name);
+    }
     public void setGamePlayer(String s) {
         if(s.equals("You") || s.equals("You've")){
             s= userName;

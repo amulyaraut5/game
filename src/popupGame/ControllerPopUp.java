@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import view.Controller;
@@ -27,18 +28,28 @@ public class ControllerPopUp implements Initializable {
     String player1 = "1";
     String player2 = "2";
     String player3 = "3";
-    public ChoiceBox playerBox = new ChoiceBox();
-    public ChoiceBox cardListBox = new ChoiceBox();
+    public ChoiceBox <String> playerBox = new ChoiceBox();
+    public ChoiceBox <String> cardListBox = new ChoiceBox();
     ObservableList playerList = FXCollections.observableArrayList(" ");
     ObservableList cardList = FXCollections.observableArrayList("Baron", "Countess",
             "Guard", "Handmaid", "King", "Priest", "Prince", "Princess");
-
+    public Label userMessage;
     public void handleOkButton(javafx.event.ActionEvent actionEvent) {
-        Stage window = (Stage) closePopUp.getScene().getWindow();
-        window.close();
+        String player = playerBox.getValue();
+        String card = cardListBox.getValue();
+        if (player.equals(null) || card.equals(null)) userMessage.setText("Please select a card and a player");
+        else {
+            Stage window = (Stage) closePopUp.getScene().getWindow();
+            window.close();
+        }
+
+
     }
-    public void setPlayer(ObservableList<String> playerL){
-        playerList.addAll(playerL);
+    public void setPlayer(ArrayList<String> playerL){
+        for (String player : playerL){
+            playerList.add(player);
+        }
+
     }
 
     @Override
@@ -50,4 +61,7 @@ public class ControllerPopUp implements Initializable {
 
     }
 
+    public String getAnswer() {
+        return "answer";
+    }
 }

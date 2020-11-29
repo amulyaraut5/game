@@ -40,7 +40,7 @@
             </HBox>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button id="cardButton" fx:id="card1" layoutX="42.0" layoutY="76.0" mnemonicParsing="false" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
+                  <Button id="cardButton" fx:id="card1" layoutX="42.0" layoutY="76.0" mnemonicParsing="false" onAction="#changeSceneCard1" prefHeight="121.0" prefWidth="45.0" styleClass="cardButton" stylesheets="@gameview.css" textFill="#ebebeb">
                      <graphic>
                         <ImageView fx:id="card1Image" fitHeight="232.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                            <image>
