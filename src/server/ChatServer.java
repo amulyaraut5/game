@@ -94,7 +94,15 @@ public class ChatServer {
         }
     }
 
-
+    /**
+     * Method to check if input for sending a direct message is valid.
+     * It cuts the assigns username out of the message and checks if it was entered and/or
+     * corresponds to an existing username.
+     *
+     * @param message String of user input in form '@<username> text'
+     * @param sender user who sent the direct message
+     * @return shows if user input for direct message was valid
+     */
     public boolean communicateDirect(String message, User sender) {
         String userName = (message.split(" ", 2)[0]);
         String destinationUser = userName.substring(1);
@@ -109,6 +117,12 @@ public class ChatServer {
         return false;
     }
 
+    /**
+     * Method to send user input including the game commands to the gameController.
+     *
+     * @param message String of user input including the command for the game
+     * @param sender user who sent the message
+     */
 
     public void communicateGame(String message, User sender) {
         gameController.readCommand(message, sender);
