@@ -81,7 +81,7 @@ public class ChatServer {
      *
      * @param serverSocket socket from which connection is to be established
      */
-    public void acceptClients(ServerSocket serverSocket) {
+    private void acceptClients(ServerSocket serverSocket) {
         boolean accept = true;
         while (accept) {
             try {
