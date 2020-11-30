@@ -306,18 +306,34 @@ public class Round {
         this.activePlayers.remove(player);
     }
 
+    /**
+     * Gets the active players in the round.
+     * @return a list of the active players of this round
+     */
     public ArrayList<Player> getActivePlayers() {
         return this.activePlayers;
     }
 
+    /**
+     * Gets the current card deck.
+     * @return list of cards in the deck
+     */
     public ArrayList<Card> getCardDeck() {
         return cardDeck;
     }
 
+    /**
+     * Gets the first card from the deck, which is removed.
+     * @return the first card from the deck, which is removed
+     */
     public Card getFirstCardRemoved() {
         return firstCardRemoved;
     }
 
+    /**
+     * Checks if the turn ended.
+     * @return whether the turn is over
+     */
     public boolean isTurnEnded() {
         return endTurn;
     }

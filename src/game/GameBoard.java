@@ -40,7 +40,7 @@ public class GameBoard extends Thread {
     /**
      * the constructor which sets the gameController
      *
-     * @param gameController
+     * @param gameController the GameController which delivers and translates the users inputs towards the game
      */
     public GameBoard(GameController gameController) {
         this.gameController = gameController;
@@ -269,7 +269,7 @@ public class GameBoard extends Thread {
      * If the user which disconnected is a player in the playerList, he gets removed from it.
      * If the player is currently in a round, he gets removed from it in activeRound.removePlayer().
      *
-     * @param user
+     * @param user the user which disconnects
      */
     public void removePlayer(User user) {
         for (Player pl : playerList) {

@@ -73,6 +73,10 @@ public class Player extends User {
         this.currentCard = currentCard;
     }
 
+    /**
+     * Adds up the card values of the discarded cards.
+     * @return the added up card values
+     */
     public int getSumPlayedCards() {
         int sum = 0;
         for (Card card : playedCards) {
@@ -83,16 +87,25 @@ public class Player extends User {
 
 
     /**
+     * Gets the discarded cards.
      * @return list of cards played by the player.
      */
     public ArrayList<Card> getPlayedCards() {
         return playedCards;
     }
 
+    /**
+     * Gets whether the player is protected by a handmaid card.
+     * @return whether the player is protected
+     */
     public boolean isGuarded() {
         return guarded;
     }
 
+    /**
+     * Sets whether the player is protected by a handmaid card.
+     * @param guarded whether the player is protected
+     */
     public void setGuarded(boolean guarded) {
         this.guarded = guarded;
     }
