@@ -61,7 +61,7 @@ public class UserThread extends Thread {
      * @param date as String
      * @return null if String is not a valid date or the date
      */
-    public static LocalDate turnIntoDate(String date) {
+    private static LocalDate turnIntoDate(String date) {
         try {
             return LocalDate.parse(date, formatter);
         } catch (DateTimeParseException e) {
