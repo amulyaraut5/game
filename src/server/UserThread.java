@@ -130,6 +130,9 @@ public class UserThread extends Thread {
         try {
             while (true) {
                 String userName = reader.readLine();
+                if(userName==null){
+                    throw new IOException();
+                }
                 if (userName.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again:");
                 else if (!server.isAvailable(userName))
                     sendMessage("This username is already taken. Please try a different username:");
@@ -152,7 +155,9 @@ public class UserThread extends Thread {
         try {
             sendMessage("I am curious. When was the last time you were on a date? (dd.mm.yyyy)");
             datePuffer = reader.readLine();
-
+            if(datePuffer==null){
+                throw new IOException();
+            }
             while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d.\\d{2}.\\d{4}$")) {
                 sendMessage("This date is not in the correct format. Please try again. ");
                 datePuffer = reader.readLine();
