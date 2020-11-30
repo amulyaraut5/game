@@ -187,6 +187,11 @@ public class GameController {
         }
     }
 
+    /**
+     * removes a user from the gamer if he stops being a player in the game
+     *
+     * @param user user who gets removed from the Game
+     */
     public void removeUser(User user) {
         if (gameBoard != null) gameBoard.removePlayer(user);
     }
