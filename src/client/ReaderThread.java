@@ -7,33 +7,28 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- * It reads (for the client) the servers input constantly and prints it out on the console
+ * It reads (for the client) the servers input constantly and prints it out on the console.
  *
  * @author simon
  */
 public class ReaderThread extends Thread {
     /**
-     * client is the related ChatClient which starts an instance of ReaderThread
+     * client is the related ChatClient which starts an instance of ReaderThread.
      */
     private final ChatClient client;
     /**
-     * the socket on which the Reader Threads listens
-     */
-    private final Socket socket;
-    /**
-     * BufferedReader to read input
+     * BufferedReader which is wrap around the InputStream of the socket.
      */
     private BufferedReader bReader;
 
     /**
-     * constructor of ReaderThread to initialize the attributes socket and the client
-     * and to create an InputStream and to initialize the BufferedReader
+     * Constructor of ReaderThread initializes the attributes socket and client
+     * and creates a BufferedReader which is wrap upon the InputStream of the Socket.
      *
-     * @param socket
-     * @param client
+     * @param socket Socket connected to the server
+     * @param client Instance of ChatClient which handles the connection and disconnection to the server
      */
     public ReaderThread(Socket socket, ChatClient client) {
-        this.socket = socket;
         this.client = client;
 
         try {
