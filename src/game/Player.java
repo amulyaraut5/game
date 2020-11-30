@@ -16,9 +16,13 @@ import java.util.ArrayList;
  */
 public class Player extends User {
 
+    /**Cards that the player played so far.(In one round) **/
     private final ArrayList<Card> playedCards = new ArrayList<>();
+    /**True if player is being protected by Handmaid, false otherwise. **/
     private boolean guarded = false;
+    /**Number of tokens the player has.(=Number of rounds won in one game) **/
     private int numOfTokens = 0;
+    /**Card the player currently has. **/
     private Card currentCard;
 
     /**

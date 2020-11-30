@@ -86,7 +86,7 @@ public class GameController {
      *
      * @param user user wants to join the game
      */
-    public void play(User user) {
+    private void play(User user) {
         if (!createdGame) {
             gameBoard = new GameBoard(this);
             createdGame = true;
@@ -119,7 +119,7 @@ public class GameController {
      *
      * @param user user who wants to know the score
      */
-    public void score(User user) {
+    private void score(User user) {
         if (!createdGame) user.message("No one has joined the game yet. Please type '#play' to play a game.");
         else if (!runningGame) {
             user.message("the game has not been started yet. Type '#start' to start it.");
@@ -135,7 +135,7 @@ public class GameController {
      *
      * @param user user who wants to start the game
      */
-    public void start(User user) {
+    private void start(User user) {
         if (!gameBoard.alreadyJoined(user)) {
             user.message("You need to join the game to start it. Type '#play' to do so.");
         } else if (!createdGame) {
@@ -187,6 +187,11 @@ public class GameController {
         }
     }
 
+    /**
+     * removes a user from the gamer if he stops being a player in the game
+     *
+     * @param user user who gets removed from the Game
+     */
     public void removeUser(User user) {
         if (gameBoard != null) gameBoard.removePlayer(user);
     }

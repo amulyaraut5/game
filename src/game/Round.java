@@ -10,24 +10,36 @@ import java.util.Collections;
 /**
  * This class is responsible for executing one single round.
  *
- * @author sarah,
+ * @author sarah, Louis
  */
 public class Round {
+    /**Reference on gameboard object **/
     private final GameBoard gameBoard;
-
+    /**List that represents the card deck **/
     private final ArrayList<Card> cardDeck; //Remove after getStackCards is created
+    /**Active players(Players that were kicked from the round are no longer active) **/
     private final ArrayList<Player> activePlayers;
+    /**Card that always gets removed first **/
     private Card firstCardRemoved;
+    /**List of cards that only gets filled if it's a 2 player game(3 more cards get removed) **/
     private ArrayList<Card> faceUpCards;
+    /**Player whose turn it currently is **/
     private Player currentPlayer;
 
     /**
      * if the current player disconnects the boolean is set and his move ended.
      */
     private volatile boolean endTurn = false;
-
+    /**Current user response that can be read. **/
     private volatile String userResponse;
 
+    /**
+     * Creates new round object.
+     * @param firstPlayer Player that begins.
+     * @param deck Arraylist that contains the cards required for the round.
+     * @param activePlayers Players participate in the round.
+     * @param gameBoard Gameboard object the round belongs to.(Game gets handled there)
+     **/
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
 
         this.currentPlayer = firstPlayer;
@@ -122,7 +134,7 @@ public class Round {
     /**
      * Shuffles the deck of GameBoard in each new round.
      */
-    public void shuffleDeck() {
+    private void shuffleDeck() {
         Collections.shuffle(cardDeck);
     }
 
@@ -142,7 +154,7 @@ public class Round {
      *
      * @return the three removed cards
      */
-    public ArrayList<Card> removeFirstThreeCards() {
+    private ArrayList<Card> removeFirstThreeCards() {
         faceUpCards = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             faceUpCards.add(pop());
@@ -153,7 +165,7 @@ public class Round {
     /**
      * It removes one card from th deck
      */
-    public void removeFirstCard(){
+    private void removeFirstCard(){
         firstCardRemoved = pop();
 
     }
@@ -161,11 +173,11 @@ public class Round {
     /**
      * It shows the removed cards to all players at the beginning of play.
      */
-    public void sendFaceUpCards(){
+    private void sendFaceUpCards(){
         for(Player player : activePlayers){
-            gameBoard.deliverMessage("The first 3 removed cards are: ", player);
+            player.message("The first 3 removed cards are: ");
             for(Card card : faceUpCards){
-                gameBoard.deliverMessage(card.getCardName(), player);
+                player.message(card.getCardName());
             }
 
         }
@@ -174,7 +186,7 @@ public class Round {
     /**
      * It shows one removed card to both the players at the beginning of play.
      */
-    public void sendFaceUpCard(){
+    private void sendFaceUpCard(){
         for(Player player : activePlayers){
             player.message("The first removed card is: ");
             player.message(firstCardRemoved.getCardName());
@@ -185,7 +197,7 @@ public class Round {
     /**
      * current player can choose between a new card or his old card
      */
-    public Card chooseCard() {
+    private Card chooseCard() {
         Card card = null;
         Card secondCard = pop();
 
@@ -232,7 +244,7 @@ public class Round {
      *
      * @return true when round is finished
      */
-    public boolean isRoundFinished() {
+    private boolean isRoundFinished() {
         if (cardDeck.isEmpty()) return true;//round ends if deck is empty at the end of a turn
         //A round also ends if all players but one are out of the round, in which case the remaining player wins
         return activePlayers.size() < 2; // one player has won
@@ -276,7 +288,7 @@ public class Round {
     /**
      * this method changes the currentPlayer attribute(which determines which player's turn it is).
      */
-    public void nextPlayer() {
+    private void nextPlayer() {
         int temp = this.activePlayers.indexOf(this.currentPlayer);
         if (temp < (activePlayers.size() - 1)) {
             currentPlayer = activePlayers.get(temp + 1);

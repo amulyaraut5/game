@@ -61,7 +61,7 @@ public class UserThread extends Thread {
      * @param date as String
      * @return null if String is not a valid date or the date
      */
-    public static LocalDate turnIntoDate(String date) {
+    private static LocalDate turnIntoDate(String date) {
         try {
             return LocalDate.parse(date, formatter);
         } catch (DateTimeParseException e) {
@@ -77,7 +77,7 @@ public class UserThread extends Thread {
     public void run() {
         //before each method call it is checked if run() should be exited.
         if (!exit) logInName();
-        //if (!exit) logInDate(); //TODO remove comment-out before submission on monday
+        if (!exit) logInDate();
         if (!exit) welcome();
 
         String clientMessage = "";
@@ -85,7 +85,9 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-
+                if (clientMessage== null){
+                    throw new IOException();
+                }
                 Pattern gamePattern = Pattern.compile("^#+");
                 Matcher gameMatcher = gamePattern.matcher(clientMessage);
 

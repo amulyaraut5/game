@@ -44,7 +44,7 @@ Hier eine kurze Anleitung:
 - mit #play ein Spiel erstellen bzw. beitreten
 - mit #choose <name> bzw. #choose <card> kann ein Spieler/eine Karte ausgewählt werden
 - durch #help können mögliche Kommandos angezeigt werden
-- mit "bye" kann der Raum verlassen werden
+- mit "bye" wird der Raum verlassen 
 
 Viel Spaß! :)
 
