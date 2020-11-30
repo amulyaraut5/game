@@ -63,7 +63,7 @@ public class ChatClient {
      * This method establishes the connection between the server and the client using the assigned hostname and port.
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
      */
-    public void establishConnection() {
+    private void establishConnection() {
         try {
             socket = new Socket(hostname, port);
 
