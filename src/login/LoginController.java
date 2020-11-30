@@ -95,6 +95,7 @@ public class LoginController {
             System.err.println(e.getMessage());
         }
         Controller controller = loader.getController();
+        controller.setUser(userName);
         controller.setClient(client);
 
         client.setController(controller);

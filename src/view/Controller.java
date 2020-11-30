@@ -147,14 +147,7 @@ public class Controller {
         roundLabel.setVisible(true);
     }
 
-    public void setWinnerRound(String message) throws InterruptedException {
-        bannerLabel.setText(message);
-        bannerPane.setVisible(true);
-        wait(50);
-        bannerPane.setVisible(false);
 
-
-    }
     /**
      * this method updates the scores on the different labels.
      *
