@@ -13,19 +13,24 @@ import java.util.Collections;
  * @author sarah,
  */
 public class Round {
+    /**Reference on gameboard object **/
     private final GameBoard gameBoard;
-
+    /**List that represents the card deck **/
     private final ArrayList<Card> cardDeck; //Remove after getStackCards is created
+    /**Active players(Players that were kicked from the round are no longer active) **/
     private final ArrayList<Player> activePlayers;
+    /**Card that always gets removed first **/
     private Card firstCardRemoved;
+    /**List of cards that only gets filled if it's a 2 player game(3 more cards get removed) **/
     private ArrayList<Card> faceUpCards;
+    /**Player whose turn it currently is **/
     private Player currentPlayer;
 
     /**
      * if the current player disconnects the boolean is set and his move ended.
      */
     private volatile boolean endTurn = false;
-
+    /**Current user response that can be read. **/
     private volatile String userResponse;
 
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
