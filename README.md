@@ -41,7 +41,8 @@ Spiel starten:
 (Die Schritte bitte einmal für die Jar Datei des Servers ausführen. Wiederholt für die jar Datei des Clients, je nach 
 gewünschter Anzahl an Mitspielern.)
 
-Nachdem Sie den Server und anschließend den Client geöffnet haben, folgen Sie bitte den Spielanweisungen. 
+Nachdem Sie den Server und anschließend den Client geöffnet haben, folgen Sie bitte den Spielanweisungen. Sie müssen 
+diesen strikt folgen und können nicht cheaten. 
 Hier eine kurze Anleitung:
 
 - Username eingeben
