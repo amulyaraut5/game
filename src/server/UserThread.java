@@ -24,7 +24,7 @@ public class UserThread extends Thread {
     private final Socket socket;
     /** Server is the ChatServer which starts an instance of UserThread. */
     private final ChatServer server;
-    /** The PrintWriter, which writes messages from the server onto the socket connected to the client */
+    /** PrintWriter to write output. */
     private PrintWriter writer;
     /** BufferedReader to read input. */
     private BufferedReader reader;
@@ -34,9 +34,9 @@ public class UserThread extends Thread {
     /**
      * Constructor of UserThread to assign the socket, the server and the user and to set this thread for the user.
      * To create an InputStream and OutputStream and to initialize the BufferedReader and the PrintWriter.
-     * @param socket
-     * @param server
-     * @param user
+     * @param socket the socket on which the UserThread interacts
+     * @param server the ChatServer which starts an instance of UserThread
+     * @param user the connected user
      */
     public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;
