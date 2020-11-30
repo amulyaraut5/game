@@ -59,7 +59,8 @@ Anmerkungen:
 
 -Es wurde auch an einer View mittels JavaFx gearbeitet, der aktuelle Stand befindet sich im View-branch. Da es noch Bugs
  im Hauptprogramm gab, auf die wir uns fokussieren wollten, konnten wir diese Version des Spiels allerdings nicht 
- vollständig fertigstellen.
+ vollständig fertigstellen. Zur kurzen Übersicht unseres bisherigen Standes, liegen in diesem Projekt auf dem Master 
+ branch 4 Beispiel Bilder bereit.
 
 -Um das Design etwas vielseitiger zu gestalten, werden Serverdurchsagen in verschiedenen Farben ausgegeben. 
 Im Windows Terminal sind wir auf ein Problem gestoßen, bei dem der Text nicht wie gewünscht in den Farben ausgegeben 
