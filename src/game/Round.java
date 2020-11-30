@@ -176,8 +176,8 @@ public class Round {
      */
     public void sendFaceUpCard(){
         for(Player player : activePlayers){
-            gameBoard.deliverMessage("The first removed card is: ", player);
-            gameBoard.deliverMessage(firstCardRemoved.getCardName(), player);
+            player.message("The first removed card is: ");
+            player.message(firstCardRemoved.getCardName());
         }
     }
 
