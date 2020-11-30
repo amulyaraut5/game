@@ -85,7 +85,9 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-
+                if (clientMessage== null){
+                    throw new IOException();
+                }
                 Pattern gamePattern = Pattern.compile("^#+");
                 Matcher gameMatcher = gamePattern.matcher(clientMessage);
 
