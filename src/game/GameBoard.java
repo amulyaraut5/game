@@ -51,7 +51,7 @@ public class GameBoard extends Thread {
      *
      * @return created and already filled deck
      */
-    public static ArrayList<Card> createDeck() {
+    private static ArrayList<Card> createDeck() {
         ArrayList<Card> deck = new ArrayList<>();
         // every card just one time: princess, countess, king
         deck.add(new PrincessCard());
@@ -111,7 +111,7 @@ public class GameBoard extends Thread {
      * In the end it resets the whole gameBoard by calling the reset() method
      * of GameController
      */
-    public void playGame() {
+    private void playGame() {
         Player firstPlayer = compareDates(playerList);
         ArrayList<Card> deck = createDeck();
         ArrayList<Player> winnerList;
@@ -148,7 +148,7 @@ public class GameBoard extends Thread {
      *
      * @return this player
      */
-    public Player compareDates(ArrayList<Player> plList) {
+    private Player compareDates(ArrayList<Player> plList) {
         Player player = plList.get(0);
         for (int i = 1; i <= plList.size() - 1; i++) {
             if (plList.get(i).getLastDate().isAfter(player.getLastDate())) {
@@ -219,7 +219,7 @@ public class GameBoard extends Thread {
      * Whenever multiple players have enough tokens in one round to win the game, they play a tiebreaker round
      * until the gameWinner is determined.
      */
-    public void tieBreakerRound() {
+    private void tieBreakerRound() {
         Player firstPlayer = compareDates(gameWinnerList);
         ArrayList<Card> deck = createDeck();
         ArrayList<Player> winnerList;
