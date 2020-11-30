@@ -13,17 +13,11 @@ import java.net.Socket;
  * @author sarah
  */
 public class WriterThread extends Thread {
-    /**
-     * client is the related ChatClient which starts an instance of ReaderThread.
-     */
+    /** client is the related ChatClient which starts an instance of ReaderThread.*/
     private final ChatClient client;
-    /**
-     * the printWriter which writes messages onto the socket connected to the server.
-     */
+    /** the printWriter which writes messages onto the socket connected to the server.*/
     private PrintWriter writer;
-    /**
-     * BufferedReader to read input.
-     */
+    /** BufferedReader to read input.*/
     private BufferedReader bReader;
 
     /**
