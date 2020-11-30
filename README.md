@@ -38,7 +38,8 @@ Solltet ihr im Laufe des Praktikums dazu entscheiden mit Branches zu arbeiten, w
 Spiel starten:
 1. Terminal öffnen.
 2. Befehl java -jar <Dateipfad Jar Datei> eingeben
-(Die Schritte bitte einmal für die Jar Datei des Servers ausführen. Wiederholt für die jar Datei des Clients, je nach gewünschter Anzahl an Mitspielern.)
+(Die Schritte bitte einmal für die Jar Datei des Servers ausführen. Wiederholt für die jar Datei des Clients, je nach 
+gewünschter Anzahl an Mitspielern.)
 
 Nachdem Sie den Server und anschließend den Client geöffnet haben, folgen Sie bitte den Spielanweisungen. 
 Hier eine kurze Anleitung:
@@ -56,9 +57,11 @@ Viel Spaß! :)
 
 Anmerkungen:
 
--Es wurde auch an einer View mittels JavaFx gearbeitet, der aktuelle Stand befindet sich im View-branch. Da es noch einige Bugs im 
-Hauptprogramm gab, konnten wir diese Version des Spiels allerdings nicht vollständig fertigstellen.
+-Es wurde auch an einer View mittels JavaFx gearbeitet, der aktuelle Stand befindet sich im View-branch. Da es noch Bugs
+ im Hauptprogramm gab, auf die wir uns fokussieren wollten, konnten wir diese Version des Spiels allerdings nicht 
+ vollständig fertigstellen.
 
--Um das Design etwas vielseitiger zu gestalten, werden Serverdurchsagen in verschiedenen Farben ausgegeben. Im Windows Terminal sind
-wir auf ein Problem gestoßen, bei dem der Text nicht wie gewünscht in den Farben ausgegeben wird. Stattdessen sind eigenartige Zeichenfolgen vor und
-nach den Nachrichten vorzufinden. Das Feature wurde bewusst nicht entfernt, da es auf MacOS und in IntelliJ einwandfrei funktioniert. 
+-Um das Design etwas vielseitiger zu gestalten, werden Serverdurchsagen in verschiedenen Farben ausgegeben. 
+Im Windows Terminal sind wir auf ein Problem gestoßen, bei dem der Text nicht wie gewünscht in den Farben ausgegeben 
+wird. Stattdessen sind eigenartige Zeichenfolgen vor und nach den Nachrichten vorzufinden. Das Feature wurde bewusst 
+nicht entfernt, da es auf MacOS und in IntelliJ einwandfrei funktioniert. 
