@@ -163,9 +163,9 @@ public class Round {
      */
     public void sendFaceUpCards(){
         for(Player player : activePlayers){
-            gameBoard.deliverMessage("The first 3 removed cards are: ", player);
+            player.message("The first 3 removed cards are: ");
             for(Card card : faceUpCards){
-                gameBoard.deliverMessage(card.getCardName(), player);
+                player.message(card.getCardName());
             }
 
         }
