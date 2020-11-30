@@ -85,12 +85,10 @@ public class ChatClient {
      * methods ends the client program. The reader and writer threads get interrupted and the socket is closed.
      */
     public void disconnect() {
-        System.out.println("hier ist der Fehler");
         readerThread.interrupt();
         writerThread.interrupt();
         try {
             socket.close();
-            System.out.println("hier ist der Fehler");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
