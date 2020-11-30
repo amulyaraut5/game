@@ -62,6 +62,14 @@ public class ChatServer {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Chat server is waiting for clients to connect to port " + port + ".");
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    try {
+                        serverSocket.close();
+                        System.out.println("The server is shut down!");
+                    } catch (IOException e) { /* failed */ }
+                }
+            });
             acceptClients(serverSocket);
         } catch (IOException e) {
             System.err.println("could not connect: " + e.getMessage());
