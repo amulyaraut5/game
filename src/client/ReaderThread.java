@@ -47,6 +47,9 @@ public class ReaderThread extends Thread {
         while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
+                if(text==null){
+                    throw new IOException();
+                }
                 System.out.println(text);
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
