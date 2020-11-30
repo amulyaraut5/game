@@ -10,7 +10,7 @@ import java.util.Collections;
 /**
  * This class is responsible for executing one single round.
  *
- * @author sarah,
+ * @author sarah, Louis
  */
 public class Round {
     /**Reference on gameboard object **/
@@ -33,6 +33,13 @@ public class Round {
     /**Current user response that can be read. **/
     private volatile String userResponse;
 
+    /**
+     * Creates new round object.
+     * @param firstPlayer Player that begins.
+     * @param deck Arraylist that contains the cards required for the round.
+     * @param activePlayers Players participate in the round.
+     * @param gameBoard Gameboard object the round belongs to.(Game gets handled there)
+     **/
     public Round(Player firstPlayer, ArrayList<Card> deck, ArrayList<Player> activePlayers, GameBoard gameBoard) {
 
         this.currentPlayer = firstPlayer;

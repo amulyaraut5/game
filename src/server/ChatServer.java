@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * This class mainly deals with establishing connection between server and client and helps in
  * communication between different users.
  *
- * @author louis and amulya
+ * @author Louis and amulya
  */
 public class ChatServer {
     /**
