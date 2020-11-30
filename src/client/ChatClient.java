@@ -11,20 +11,45 @@ import java.net.UnknownHostException;
  *
  * @author janau
  */
-
 public class ChatClient {
-
-    private final int port;
+    /**
+     * hostname of the server is saved here for the socket creation.
+     */
     private final String hostname;
+    /**
+     * port of the server on the named host is saved here for the socket creation.
+     */
+    private final int port;
+    /**
+     * Stream socket which get connected to the specified port number on the named host of the server.
+     */
     private Socket socket;
+    /**
+     * The readerThread reads the input of the user from given socket.
+     */
     private ReaderThread readerThread;
+    /**
+     * The writerThread writes the console input of the user from given socket.
+     */
     private WriterThread writerThread;
 
+    /**
+     * constructor of ChatClient to initialize the attributes hostname and port.
+     *
+     * @param hostname Hostname of the server.
+     * @param port     Port of the server on the named host.
+     */
     public ChatClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
 
+    /**
+     * Main method for the client program. A new ChatClient is created
+     * and an attempt is made to establish the connection.
+     *
+     * @param args unused arguments
+     */
     public static void main(String[] args) {
 
         String hostname = "localhost";
@@ -38,7 +63,6 @@ public class ChatClient {
      * This method establishes the connection between the server and the client using the assigned hostname and port.
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
      */
-
     public void establishConnection() {
         try {
             socket = new Socket(hostname, port);
@@ -58,7 +82,7 @@ public class ChatClient {
     }
 
     /**
-     * //TODO
+     * methods ends the client program. The reader and writer threads get interrupted and the socket is closed.
      */
     public void disconnect() {
         readerThread.interrupt();
@@ -71,9 +95,10 @@ public class ChatClient {
     }
 
     /**
-     * //TODO
+     * Method should be called if a critical exception occurs in the client. (e.g. socket closed)
+     * The reader and writer threads get interrupted and the socket is closed.
      *
-     * @param ex
+     * @param ex The exception which occurred
      */
     public void disconnect(Exception ex) {
         readerThread.interrupt();
