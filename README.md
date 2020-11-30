@@ -59,4 +59,4 @@ nicht entfernt, da es auf MacOS und in IntelliJ einwandfrei funktioniert.
 | `#choose <card>` | wähle eine gegebene Karte |
 | `#choose <player>` | wähle einen den gegebenen Spieler |
 
-![Show Login View Picture](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-astreine-akazien/-/blob/master/GUI%20Pictures/viewPicture1.png "Login View Picture")
+![Show Login View Picture](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-astreine-akazien/-/raw/master/GUI%20Pictures/viewPicture1.png "Login View Picture")
