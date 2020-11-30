@@ -20,7 +20,7 @@ Sie müssen diesen strikt folgen und können nicht cheaten.
 - mit `@<name>` kann eine Direktnachricht gesendet werden, Eingaben ohne Vorzeichen werden an alle User im Chat gesendet
  
 - mit #play ein Spiel erstellen bzw. beitreten
-- mit `#choose <name>` bzw. `#choose <card>` kann ein Spieler/eine Karte ausgewählt werden
+- mit `#choose <1/2>` bzw. `#choose <name>` bzw. `#choose <card>` kann ein Spieler/eine Karte ausgewählt werden
 - durch #help können mögliche Kommandos angezeigt werden
 - mit "bye" wird der Raum verlassen 
 
@@ -52,9 +52,10 @@ nicht entfernt, da es auf MacOS und in IntelliJ einwandfrei funktioniert.
 | `@<name> <message>` | Schickt einem User eine Privatnachricht |
 | `bye` | Du verlässt den Chatraum |
 | `#help` | listet alle Befehle im Spiel auf |
-| `#play` | du trittst einem neuen Spiel bei |
-| `#start` | Spiel wird gestartet, wenn 2-4 Spieler begetreten sind |
+| `#play` | du trittst einem neuen Spiel bei/erstellst ein neues Spiel |
+| `#start` | Spiel wird gestartet, wenn 2-4 Spieler beigetreten sind |
 | `#score` | Zeigt den aktuellen Punktestand an |
+| `#choose <1/2>` | lege eine deiner beiden Karten ab |
 | `#choose <card>` | wähle eine gegebene Karte |
 | `#choose <player>` | wähle einen den gegebenen Spieler |
 
