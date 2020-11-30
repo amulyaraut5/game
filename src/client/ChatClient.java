@@ -53,7 +53,7 @@ public class ChatClient {
     public static void main(String[] args) {
 
         String hostname = "localhost";
-        int port = 4444;
+        int port = 5444;
 
         ChatClient client = new ChatClient(hostname, port);
         client.establishConnection();

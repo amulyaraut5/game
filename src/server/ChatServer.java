@@ -40,7 +40,7 @@ public class ChatServer {
      * Main method
      */
     public static void main(String[] args) {
-        int port = 4444;
+        int port = 5444;
 
         ChatServer server = new ChatServer(port);
         server.start();

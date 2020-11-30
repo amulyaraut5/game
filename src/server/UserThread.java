@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * Each UserThread is connected to one client over a specific socket.
  * Therefore the server is able to handle multiple clients at the same time.
  *
- * @author vossa,
+ * @author vossa
  */
 public class UserThread extends Thread {
     /** Formatter for printing and parsing date-times, initialised with the pattern dd.mm.yyyy. */
@@ -24,8 +24,8 @@ public class UserThread extends Thread {
     private final Socket socket;
     /** Server is the ChatServer which starts an instance of UserThread. */
     private final ChatServer server;
-    /** The PrintWriter, which writes the user output. */
-    private PrintWriter userOut;
+    /** The PrintWriter, which writes messages from the server onto the socket connected to the client */
+    private PrintWriter writer;
     /** BufferedReader to read input. */
     private BufferedReader reader;
     /** Shows whether the user has left the room (when an exception has occurred during the connection). (false = not exited)*/
@@ -49,7 +49,7 @@ public class UserThread extends Thread {
             InputStream input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));
             OutputStream output = socket.getOutputStream();
-            userOut = new PrintWriter(output, true);
+            writer = new PrintWriter(output, true);
         } catch (IOException ex) {
             disconnect(ex);
         }
@@ -115,7 +115,7 @@ public class UserThread extends Thread {
      * @param message the message to be sent
      */
     public void sendMessage(String message) {
-        userOut.println(message);
+        writer.println(message);
     }
 
     /**

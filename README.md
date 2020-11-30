@@ -31,3 +31,20 @@ Dies setzt einen von euch erstellten SSH Schlüssel voraus. Informiert euch bitt
 Git und GitLab bieten eine Menge an Funktionen. Wir möchten euch ermutigen diese zu erkunden und zu experimentieren. Solltet ihr Hemmungen haben an diesem Repository zu werkeln, könnt ihr euch auch gerne beliebig viele eigene Repositorys hier im GitLab erstellen und dort euer Wissen erweitern.
 
 Solltet ihr im Laufe des Praktikums dazu entscheiden mit Branches zu arbeiten, würden wir euch bitten diese nicht mutwillig zu löschen. Um die schlimmsten Unfälle zu verhindern, ist in diesem Repository das Löschen des `master` Branches sowie `git push --force` auf diesem Branch nicht möglich. Falls ihr zusätzliche Branches geschützt haben möchtet, wendet euch bitte an euren Tutor.
+
+
+## Anleitung:
+Nachdem Sie den Server und anschließend den Client geöffnet haben, folgen Sie bitte den Spielanweisungen. 
+Hier eine kurze Anleitung:
+
+- Username eingeben
+- Datum Ihres letzten Dates eingeben
+- mit @<name> kann eine Direktnachricht gesendet werden, Eingaben ohne Vorzeichen werden an alle User im Chat gesendet
+ 
+- mit #play ein Spiel erstellen bzw. beitreten
+- mit #choose <name> bzw. #choose <card> kann ein Spieler/eine Karte ausgewählt werden
+- durch #help können mögliche Kommandos angezeigt werden
+- mit "bye" kann der Raum verlassen werden
+
+Viel Spaß! :)
+
