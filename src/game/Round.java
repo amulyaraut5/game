@@ -10,7 +10,7 @@ import java.util.Collections;
 /**
  * This class is responsible for executing one single round.
  *
- * @author sarah,
+ * @author sarah, Louis
  */
 public class Round {
     /**Reference on gameboard object **/
