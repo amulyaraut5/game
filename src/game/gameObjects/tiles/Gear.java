@@ -1,8 +1,10 @@
 package game.gameObjects.tiles;
 
+import game.gameObjects.Utilities;
+
 public class Gear extends Attribute {
 
-	private boolean rotateRight;
+	private Utilities.Rotation rotation;
 
 	/* While instantiating the object we have to mention the direction of rotation.
 	public Gear(){
@@ -24,7 +26,7 @@ public class Gear extends Attribute {
             First: We need the direction at which the gear rotates
 
             Second: We need the direction of Robot.
-            switch(direction) {
+            switch(rotation) {
                 case RIGHT:
                 switch (player.getRobot().getDirection()) {
                     case NORTH:

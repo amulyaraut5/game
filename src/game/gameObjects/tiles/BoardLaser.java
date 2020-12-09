@@ -1,8 +1,10 @@
 package game.gameObjects.tiles;
 
+import game.gameObjects.Utilities;
+
 public class BoardLaser extends Attribute {
 
-	private String direction;
+	private Utilities.Direction direction;
 	private int LaserCount;
 
 	/*
