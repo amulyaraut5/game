@@ -28,31 +28,31 @@ public class Gear extends Attribute {
                 case RIGHT:
                 switch (player.getRobot().getDirection()) {
                     case NORTH:
-                        player.setDirection(EAST);
+                        player.getRobot().setDirection(EAST);
                         break;
                     case EAST:
-                        player.setDirection(SOUTH);
+                        player.getRobot().setDirection(SOUTH);
                         break;
                     case SOUTH:
-                        player.setDirection(WEST);
+                        player.getRobot().setDirection(WEST);
                         break;
                     case WEST:
-                        player.setDirection(NORTH);
+                        player.getRobot().setDirection(NORTH);
                 }
                 break;
                 case LEFT:
-                switch (player.getDirection()) {
+                switch (player.getRobot().getDirection()) {
                     case NORTH:
-                        player.setDirection(WEST);
+                        player.getRobot().setDirection(WEST);
                         break;
                     case WEST:
-                        player.setDirection(SOUTH);
+                        player.getRobot().setDirection(SOUTH);
                         break;
                     case SOUTH:
-                        player.setDirection(EAST);
+                        player.getRobot().setDirection(EAST);
                         break;
                     case EAST:
-                        player.setDirection(NORTH);
+                        player.getRobot().setDirection(NORTH);
                         break;
                 }
                 break;

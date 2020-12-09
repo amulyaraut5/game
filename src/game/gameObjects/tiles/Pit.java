@@ -5,9 +5,8 @@ public class Pit extends Attribute {
     @Override
     void performAction(Player player) {
 
-        // player.getRobot().robot();
+        // player.getRobot().reboot();
 
     }
-
      */
 }
