@@ -1,13 +1,12 @@
 package game.gameObjects.tiles;
 
+import game.Player;
+
 public abstract class Attribute {
 
-	private String name;
+	public String name;
 
-	public void performAction() {
-		// TODO - implement Attribute.performAction
-		throw new UnsupportedOperationException();
-	}
+	public abstract void performAction(Player player);
 
 	public boolean checkPlayer() {
 		// TODO - implement Attribute.checkPlayer

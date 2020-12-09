@@ -1,5 +1,12 @@
 package game.gameObjects.tiles;
 
+import game.Player;
+
+/**
+ *
+ * @author Amulya
+ */
+
 public class CheckPoint extends Attribute {
 	private int checkPointID;
 
@@ -7,20 +14,20 @@ public class CheckPoint extends Attribute {
 	 * Helps in creating multiple instances of Checkpoints with different ID
 	 * @param id
 	 */
-	/*
+
 	public CheckPoint(int id){
 		this.checkPointID = id;
-		this.nameOfElement = "CheckPoint";
+		this.name = "CheckPoint";
 	}
 
 	public int getCheckPointID() {
 		return checkPointID;
 	}
-	/*
+
     @Override
-    void performAction(Player player) {
+    public void performAction(Player player) {
 
-
+		/*
         First : Check how many checkpoints are there
         Second:
            if(gameBoard.getNoOfCheckPoints()==1){
@@ -50,7 +57,7 @@ public class CheckPoint extends Attribute {
                     }
                 }
             }
-
+		*/
     }
-    */
+
 }
