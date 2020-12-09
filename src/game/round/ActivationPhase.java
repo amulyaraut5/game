@@ -1,4 +1,4 @@
-package game.round;
+package src.game.round;
 
 import game.Player;
 
@@ -11,6 +11,10 @@ public class ActivationPhase {
 	public ActivationPhase() {
 		// TODO - implement ActivationPhase.ActivationPhase
 		//throw new UnsupportedOperationException();
+	}
+
+	public void startActivationPhase() {
+
 	}
 
 	private void activateRobots() {
@@ -27,6 +31,8 @@ public class ActivationPhase {
 
 	private void activateBoard() {
 		// TODO - implement ActivationPhase.activateBoard
+		//blueConveyor.performAction();
+
 		//throw new UnsupportedOperationException();
 	}
 
