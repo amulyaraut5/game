@@ -2,6 +2,10 @@ package game.gameObjects.tiles;
 
 import game.Player;
 
+/**
+ * @author Amulya
+ */
+
 public abstract class Attribute {
 
 	public String name;

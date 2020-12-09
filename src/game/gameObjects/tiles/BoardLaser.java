@@ -38,14 +38,43 @@ public class BoardLaser extends Attribute {
 
     ArrayList<Tile> determineLaserPaths(){
         /*
-        // First:
-        // Second: Direction at which laser is facing.
+        /*
+        // First: Find position of laser.
+        // Second: Direction at which laser is facing. This can be found from our instance variable.
         // Third: Add all horizontal or vertical tiles to  Arraylist
         // Here we should check if checkingTile is whether wall, antenna or not
         // And if the robot is standing ahead, the laser cannot traverse through robot.
 
+        if(direction == Utilities.Direction.SOUTH){
+			//TODO
+
+        	laserAffectedTiles.add(Tile);
+    		return laserAffectedTiles;
+    		break;
+		}
+		else if(direction == Utilities.Direction.SOUTH){
+			//TODO
+
+    		laserAffectedTiles.add(Tile);
+    		return laserAffectedTiles;
+    		break;
+		}
+		else if(direction == Utilities.Direction.SOUTH){
+			//TODO
+
+
+    		laserAffectedTiles.add(Tile);
+    		return laserAffectedTiles;
+    		break;
+		}
+		else if(direction == Utilities.Direction.SOUTH){
+
+    		laserAffectedTiles.add(Tile);
+    		return laserAffectedTiles;
+    		break;
+		}
          */
-        return null;
+		return null;
 
 	}
 	/**

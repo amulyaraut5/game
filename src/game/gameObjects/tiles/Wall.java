@@ -3,6 +3,10 @@ package game.gameObjects.tiles;
 import game.Player;
 import game.gameObjects.Utilities;
 
+/**
+ * @author Amulya
+ */
+
 public class Wall extends Attribute {
     private Utilities.Direction direction,direction2;
 
@@ -25,6 +29,11 @@ public class Wall extends Attribute {
         this.direction2 = direction2;
     }
 
+    /**
+     * Wall itself does not have any functionality but robots cannot
+     * move through walls and board lasers cannot pass through walls.
+     * @param player
+     */
     @Override
     public void performAction(Player player) {
         // Does nothing

@@ -12,16 +12,24 @@ public class GreenConveyor extends Attribute {
 	private Utilities.Direction direction;
 	private int speed = 1;
 
-
+	/**
+	 * The GreenConveyor belt pushes the robot in the direction of tile by
+	 * one space.
+	 * Once a robot has moved off a belt, the belt has no longer effect.
+	 * @param player
+	 */
 	@Override
 	public void performAction(Player player) {
 		/*
 		//TODO
 
             First: Know the position and direction of Robot facing.
-            Location location = player.getRobot().getLocation();
+            int xCoordinate = player.getRobot().getCoordinate().getX();
+		    int yCoordinate = player.getRobot().getCoordinate().getY();
+
+            // Second: Find the direction of robot and currentTile
             Direction dir = player.getRobot().getDirection();
-            Direction currentTileDir = player.getRobot().getCurrentTile.getDirection();
+            currentTileDir = player.getRobot().getCurrentTile.getDirection();
 
             Then check the whether there is collision point exist or not.
             Then we update the location of Robot in the direction of Conveyor.
@@ -30,9 +38,8 @@ public class GreenConveyor extends Attribute {
                 // No movement
              else{
                 // Need of location of robot and direction of tile.
-                updateRobotPosition(location);
+                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir);
              }
-
 
 	*/
 	}
@@ -55,21 +62,21 @@ public class GreenConveyor extends Attribute {
 	 * This method updated the position of robot to new position.
 	 */
 
-	private void updateRobotCoordinates(Utilities.Direction direction){
+	private void updateRobotCoordinates(int x, int y, Utilities.Direction direction){
 		/*
 		//TODO
 		switch (direction) {
             case NORTH:
-                player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX(), player.getRobot().getCoordinate().getY() - 1));
+                player.setCoordinates(new Coordinate(x, y - 1));
                 break;
             case SOUTH:
-                player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX(), player.getRobot().getCoordinate().getY() + 1));
+                player.setCoordinates(new Coordinate(x, y + 1));
                 break;
             case EAST:
-                player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX() + 1, player.getRobot().getCoordinate().getY()));
+                player.setCoordinates(new Coordinate(x + 1, y);
                 break;
             case WEST:
-                player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX() - 1, player.getRobot().getCoordinate().getY()));
+                player.setCoordinates(new Coordinate(x - 1, y));
                 break;
         }
 

@@ -11,7 +11,7 @@ public class CheckPoint extends Attribute {
 	private int checkPointID;
 
 	/**
-	 * Helps in creating multiple instances of Checkpoints with different ID
+	 * Constructor that helps in creating multiple instances of Checkpoints with different ID
 	 * @param id
 	 */
 
@@ -24,6 +24,12 @@ public class CheckPoint extends Attribute {
 		return checkPointID;
 	}
 
+	/**
+	 * Checkpoint is the final destination of the game and player wins the game as
+	 * soon as the player has reached all the checkpoints.
+	 * The player gets the checkpoint token.
+	 * @param player
+	 */
     @Override
     public void performAction(Player player) {
 

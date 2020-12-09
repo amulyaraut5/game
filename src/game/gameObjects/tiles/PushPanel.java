@@ -40,18 +40,21 @@ public class PushPanel extends Attribute {
 
 	private void updateRobotCoordinates(Utilities.Direction direction){
 		/*
+		int xCoordinate = player.getRobot().getCoordinate().getX();
+		int yCoordinate = player.getRobot().getCoordinate().getY();
+
 		switch (direction) {
 			case NORTH:
-				player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX(), player.getRobot().getCoordinate().getY() - 1));
+				player.setCoordinates(new Coordinate(xCoordinate, yCoordinate - 1));
 				break;
 			case SOUTH:
-				player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX(), player.getRobot().getCoordinate().getY() + 1));
+				player.setCoordinates(new Coordinate(xCoordinate, yCoordinate + 1));
 				break;
 			case EAST:
-				player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX() + 1, player.getRobot().getCoordinate().getY()));
+				player.setCoordinates(new Coordinate(xCoordinate + 1, yCoordinate));
 				break;
 			case WEST:
-				player.setCoordinates(new Coordinate(player.getRobot().getCoordinate().getX() - 1, player.getRobot().getCoordinate().getY()));
+				player.setCoordinates(new Coordinate(xCoordinate - 1, yCoordinate));
 				break;
 		}
 		 */
