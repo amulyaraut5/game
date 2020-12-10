@@ -1,5 +1,6 @@
 package src.game.round;
 
+import game.Game;
 import game.Player;
 
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ public class ActivationPhase extends game.round.Round {
 
 	private ArrayList<Player> priorityList;
 
-	public ActivationPhase() {
-		// TODO - implement ActivationPhase.ActivationPhase
-		//throw new UnsupportedOperationException();
+	public ActivationPhase(Game game) {
+		super(game);
 	}
+
 
 	/**
 	 * starts the ActivationPhase.

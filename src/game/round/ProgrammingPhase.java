@@ -1,5 +1,6 @@
 package game.round;
 
+import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.ProgrammingCard;
@@ -18,10 +19,15 @@ public class ProgrammingPhase extends Round {
 	 */
 	public ArrayList<Player> notReadyPlayers = new ArrayList<>();
 
-	public ProgrammingPhase() {
-
+	public ProgrammingPhase(Game game) {
+		super(game);
 	}
 
+
+	public void startProgrammingPhase(){
+		//start programming phase
+
+	}
 	/**
 	 * every player can look at their programming cards
 	 */

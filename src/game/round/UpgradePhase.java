@@ -1,5 +1,7 @@
 package game.round;
 
+import game.Game;
+
 /**
  * UpgradePhase, where the Upgrade Shop is filled/refilled and Upgrades can be purchased.
  */
@@ -7,11 +9,8 @@ package game.round;
 public class UpgradePhase extends game.round.Round {
 
 
-	public UpgradePhase() {
-		/* TODO - implement UpgradePhase.UpgradePhase
-
-		 */
-		//throw new UnsupportedOperationException();
+	public UpgradePhase(Game game) {
+		super(game);
 	}
 
 	/**
