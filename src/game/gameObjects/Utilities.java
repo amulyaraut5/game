@@ -8,4 +8,7 @@ public class Utilities {
     public enum Rotation {
         LEFT, RIGHT
     }
+    public enum Difficulty{
+        BEGINNER, ADVANCED, EXTREME
+    }
 }
