@@ -1,4 +1,4 @@
-package game.round;
+package src.game.round;
 
 import game.Player;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author janau
  */
 
-public class ActivationPhase extends Round {
+public class ActivationPhase extends game.round.Round {
 
 	private ArrayList<Player> priorityList;
 
