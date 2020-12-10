@@ -13,7 +13,7 @@ public abstract class Robot {
 
     protected String name;
     protected Color color;
-    protected String imageLocation;
+    protected String imagePath;
 
     /**
      * direction in which the robot is facing
@@ -24,8 +24,8 @@ public abstract class Robot {
      */
     protected Coordinate position;
 
-    protected void draw(GraphicsContext gc) {
-        final Image image = new Image(imageLocation);
+    public void draw(GraphicsContext gc) {
+        final Image image = new Image(imagePath);
         final int size = 100;//TODO define size (w,h)
         gc.drawImage(image, size * position.getX(), size * position.getY(), size, size);
     }

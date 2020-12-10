@@ -7,6 +7,6 @@ public class Hulk extends Robot {
     public Hulk() {
         name = " Hulk x90";
         color = Color.RED;
-        imageLocation = "";
+        imagePath = "";
     }
 }

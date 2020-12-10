@@ -7,6 +7,6 @@ public class HammerBot extends Robot {
     public HammerBot() {
         name = "Hammer Bot";
         color = Color.PURPLE;
-        imageLocation = "";
+        imagePath = "";
     }
 }
