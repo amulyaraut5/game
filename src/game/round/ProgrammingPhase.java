@@ -23,6 +23,10 @@ public class ProgrammingPhase extends Round {
 		super(game);
 	}
 
+	public ProgrammingPhase() {
+		super();
+	}
+
 
 	public void startProgrammingPhase(){
 		//start programming phase

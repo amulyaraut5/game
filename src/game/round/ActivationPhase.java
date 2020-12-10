@@ -1,4 +1,4 @@
-package src.game.round;
+package game.round;
 
 import game.Game;
 import game.Player;

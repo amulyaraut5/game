@@ -9,6 +9,7 @@ import game.Player;
 public class GameTimer extends ProgrammingPhase{
 
 	public GameTimer(Player callingPlayer){
+		super();
 		//start 30 sec timer
 		startTimer();
 		//after 30 sec call for every player in notReadyPlayers of ProgrammingPhase the method timerunout

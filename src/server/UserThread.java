@@ -1,5 +1,7 @@
 package server;
 
+import netscape.javascript.JSObject;
+
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
@@ -72,6 +74,7 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
+
 
                 Pattern gamePattern = Pattern.compile("^#+");
                 Matcher gameMatcher = gamePattern.matcher(clientMessage);
