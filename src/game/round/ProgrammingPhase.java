@@ -1,32 +1,60 @@
 package game.round;
 
-public class ProgrammingPhase extends Round {
+import game.Player;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.ProgrammingCard;
 
-	private int attribute;
+import java.util.ArrayList;
+import java.util.Map;
+
+public class ProgrammingPhase extends Round {
+	/**
+	 * timerIsRunning will get true if a player creates an instance of timer
+	 */
+	private boolean timerIsRunning = false;
+
+	/**
+	 * a player gets removed if he has already chose 5 cards in the time
+	 */
+	public ArrayList<Player> notReadyPlayers = new ArrayList<>();
 
 	public ProgrammingPhase() {
-		// TODO - implement ProgrammingPhase.ProgrammingPhase
-		throw new UnsupportedOperationException();
+
 	}
 
+	/**
+	 * every player can look at their programming cards
+	 */
 	private void showCards() {
-		// TODO - implement ProgrammingPhase.showCards
-		throw new UnsupportedOperationException();
+
 	}
 
-	private void setRegisterCards() {
-		// TODO - implement ProgrammingPhase.setRegisterCards
-		throw new UnsupportedOperationException();
+	/**
+	 * a player can choose 5 cards and then a timer starts
+	 */
+	private void setRegisterCards(Player player, Map<Integer, Card> mapCards){
+		player.setRegisterAndCards(mapCards);
+		if(!timerIsRunning){
+			timerIsRunning = true;
+			GameTimer timer = new GameTimer(player);
+		}
+
 	}
 
-	private void changeCards() {
-		// TODO - implement ProgrammingPhase.changeCards
-		throw new UnsupportedOperationException();
-	}
-
+	/**
+	 * a method which handles the players who didn´t choose cards in time
+	 */
 	private void timeRunOut() {
-		// TODO - implement ProgrammingPhase.timeRunOut
-		throw new UnsupportedOperationException();
+		// random set the programming cards of players´ deck to the registerAndCard Map
+	}
+
+	/**
+	 * this method gets called after every Round to reset the attributes
+	 */
+	private void resetProgrammingPhase(){
+		timerIsRunning = false;
+		notReadyPlayers = null;
+
 	}
 
 }

@@ -1,12 +1,20 @@
 package game;
 
+import com.sun.jdi.Value;
 import game.gameObjects.robot.*;
 import game.gameObjects.cards.*;
 import server.User;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Player extends User {
+	/**
+	 * a Map which connects the register and the related card the user chooses
+	 */
+	private Map<Integer, Card> registerAndCards;
+
+
 
 	private Robot robot;
 
@@ -20,5 +28,9 @@ public class Player extends User {
 
 	private ArrayList<PermUpgradeCard> installedUpgrades;
 	private ArrayList<TempUpgradeCard> tempUpgradeCards;
+
+	public void setRegisterAndCards(Map<Integer, Card> mapCards){
+		registerAndCards = mapCards;
+	}
 
 }
