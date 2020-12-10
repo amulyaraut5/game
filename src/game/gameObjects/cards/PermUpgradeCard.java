@@ -10,5 +10,5 @@ public class PermUpgradeCard extends UpgradeCard {
     public void handleCard() {
 
     }
-    
+
 }
