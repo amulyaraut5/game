@@ -1,4 +1,6 @@
-package client;
+package client.model;
+
+import client.model.ReaderThread;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -11,7 +13,7 @@ import java.net.UnknownHostException;
  *
  * @author janau
  */
-public class ChatClient {
+public class Client {
     /**
      * hostname of the server is saved here for the socket creation.
      */
@@ -39,7 +41,7 @@ public class ChatClient {
      * @param hostname Hostname of the server.
      * @param port     Port of the server on the named host.
      */
-    public ChatClient(String hostname, int port) {
+    public Client(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
@@ -55,7 +57,7 @@ public class ChatClient {
         String hostname = "localhost";
         int port = 5444;
 
-        ChatClient client = new ChatClient(hostname, port);
+        Client client = new Client(hostname, port);
         client.establishConnection();
     }
 
@@ -69,7 +71,6 @@ public class ChatClient {
 
             readerThread = new ReaderThread(socket, this);
             readerThread.start();
-            writerThread.start();
 
             System.out.println("Connection to server successful.");
 
