@@ -1,6 +1,6 @@
 package game.round;
 
-public class ProgrammingPhase {
+public class ProgrammingPhase extends Round {
 
 	private int attribute;
 

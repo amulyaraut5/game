@@ -1,6 +1,6 @@
-package src.game.round;
+package game.round;
 
-public class UpgradePhase {
+public class UpgradePhase extends Round {
 
 
 	public UpgradePhase() {
