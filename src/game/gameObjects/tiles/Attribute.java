@@ -29,4 +29,10 @@ public abstract class Attribute {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public String toString() {
+		return "Attribute{" +
+				"name='" + name + '\'' +
+				'}';
+	}
 }

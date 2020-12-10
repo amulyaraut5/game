@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import game.gameObjects.Coordinate;
 import game.gameObjects.Utilities;
 /**
  *
@@ -38,7 +39,7 @@ public class GreenConveyor extends Attribute {
                 // No movement
              else{
                 // Need of location of robot and direction of tile.
-                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir);
+                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir,player);
              }
 
 	*/
@@ -59,28 +60,28 @@ public class GreenConveyor extends Attribute {
 
 
 	/**
-	 * This method updated the position of robot to new position.
+	 * This method relocates the robot to new position based on the speed and
+	 * direction of conveyor belt.
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param direction direction of conveyor belt
 	 */
 
-	private void updateRobotCoordinates(int x, int y, Utilities.Direction direction){
-		/*
-		//TODO
+	private void updateRobotCoordinates(int x, int y, Utilities.Direction direction,Player player){
 		switch (direction) {
             case NORTH:
-                player.setCoordinates(new Coordinate(x, y - 1));
+                player.getRobot().setPosition(x, y - 1);
                 break;
             case SOUTH:
-                player.setCoordinates(new Coordinate(x, y + 1));
+                player.getRobot().setPosition(x, y + 1);
                 break;
             case EAST:
-                player.setCoordinates(new Coordinate(x + 1, y);
+                player.getRobot().setPosition(x + 1, y);
                 break;
             case WEST:
-                player.setCoordinates(new Coordinate(x - 1, y));
+                player.getRobot().setPosition(x - 1, y);
                 break;
         }
-
-		 */
 	}
 
 }

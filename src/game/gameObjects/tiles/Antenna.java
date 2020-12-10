@@ -19,9 +19,10 @@ public class Antenna extends Attribute {
 	 * north in the specific tile.
 	 */
 	Antenna(){
-
 		this.direction = Utilities.Direction.NORTH;
+		// TODO change x and y coordinate
 		this.position = new Coordinate(4,5);
+
 		this.name = "Antenna";
 	}
 

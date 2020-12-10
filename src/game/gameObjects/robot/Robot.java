@@ -50,7 +50,8 @@ public abstract class Robot {
         return position;
     }
 
-    public void setPosition(Coordinate position) {
-        this.position = position;
+    //changed -->
+    public Coordinate setPosition(int x, int y) {
+        return new Coordinate(x,y);
     }
 }

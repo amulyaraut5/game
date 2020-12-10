@@ -18,6 +18,12 @@ public class BlueConveyor extends Attribute {
 		this.name = "BlueConveyor";
 	}
 
+	/**
+	 * The GreenConveyor belt pushes the robot in the direction of tile by
+	 * one space.
+	 * Once a robot has moved off a belt, the belt has no longer effect.
+	 * @param player
+	 */
 	@Override
 	public void performAction(Player player) {
 		/*
@@ -38,45 +44,45 @@ public class BlueConveyor extends Attribute {
                 // No movement
              else{
                 // Need of location of robot and direction of tile.
-                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir);
+                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir, player);
              }
 	}
 	*/
 	}
-		/**
-		 * This method checks if two robots converge at the same point or not.
-		 * @return
-		 */
-	/*
-	private boolean collisionPointExist(){
+	/**
+	 * This method checks if two robots converge at the same point or not.
+	 * @return
+	 */
+	 /*
+	 private boolean collisionPointExist(){
 		//TODO
 		return true;
 	}
 
 	 */
 
-		/**
-		 * This method updated the position of robot to new position.
-		 */
-
-	private void updateRobotCoordinates(int x, int y,Utilities.Direction direction){
-		/*
-		//TODO
-		switch (direction) {
-            case NORTH:
-                player.setCoordinates(new Coordinate(x, y - 2));
-                break;
-            case SOUTH:
-                player.setCoordinates(new Coordinate(x, y + 2));
-                break;
-            case EAST:
-                player.setCoordinates(new Coordinate(x + 2, y));
-                break;
-            case WEST:
-                player.setCoordinates(new Coordinate(x - 2, y));
-                break;
-        }
-	}
+	/**
+	 * This method relocates the robot to new position based on the speed and
+	 * direction of conveyor belt.
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param direction direction of conveyor belt
 	 */
+
+	private void updateRobotCoordinates(int x, int y, Utilities.Direction direction,Player player){
+		switch (direction) {
+			case NORTH:
+				player.getRobot().setPosition(x, y - 1);
+				break;
+			case SOUTH:
+				player.getRobot().setPosition(x, y + 1);
+				break;
+			case EAST:
+				player.getRobot().setPosition(x + 1, y);
+				break;
+			case WEST:
+				player.getRobot().setPosition(x - 1, y);
+				break;
+		}
 	}
 }

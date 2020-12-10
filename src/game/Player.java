@@ -33,4 +33,9 @@ public class Player extends User {
 		registerAndCards = mapCards;
 	}
 
+
+	public Robot getRobot(){
+		return this.robot;
+	}
+
 }
