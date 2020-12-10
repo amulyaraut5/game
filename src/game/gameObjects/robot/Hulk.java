@@ -1,6 +1,6 @@
 package game.gameObjects.robot;
 
-        import javafx.scene.paint.Color;
+import javafx.scene.paint.Color;
 
 public class Hulk extends Robot {
 

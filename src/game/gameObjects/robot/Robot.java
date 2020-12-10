@@ -7,7 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
- *
  * @author simon
  */
 public abstract class Robot {
@@ -27,8 +26,8 @@ public abstract class Robot {
 
     protected void draw(GraphicsContext gc) {
         final Image image = new Image(imageLocation);
-        //TODO set x and y (each with the multiplier of the size) define size (w,h)
-        gc.drawImage(image, x, y, w, h);
+        final int size = 100;//TODO define size (w,h)
+        gc.drawImage(image, size * position.getX(), size * position.getY(), size, size);
     }
 
     public String getName() {
