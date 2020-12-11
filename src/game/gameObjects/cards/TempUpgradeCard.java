@@ -1,5 +1,7 @@
 package game.gameObjects.cards;
 
+import game.Player;
+
 public class TempUpgradeCard extends UpgradeCard {
 
     /**
@@ -17,6 +19,5 @@ public class TempUpgradeCard extends UpgradeCard {
     public boolean isUsed(){
         return true;
     }
-
 
 }
