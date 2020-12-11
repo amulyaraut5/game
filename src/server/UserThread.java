@@ -1,5 +1,10 @@
 package server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
@@ -9,21 +14,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Handles connection for each connected client,
- * therefore the server is able to handle multiple clients at the same time.
+ * Handles connection for each connected client.
+ * Each UserThread is connected to one client over a specific socket.
+ * Therefore the server is able to handle multiple clients at the same time.
  *
- * @author vossa,
+ * @author vossa
  */
-
 public class UserThread extends Thread {
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
-    private final User user; //Connected user, which data has to be filled in logIn()
+    /** Formatter for printing and parsing date-times, initialised with the pattern dd.mm.yyyy. */
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    /** The connected user. */
+    private final User user;
+    /** The socket on which the UserThread interacts. */
     private final Socket socket;
+    /** Server is the ChatServer which starts an instance of UserThread. */
     private final ChatServer server;
-    private PrintWriter userOut;
+    /** PrintWriter to write output. */
+    private PrintWriter writer;
+    /** BufferedReader to read input. */
     private BufferedReader reader;
+    /** Shows whether the user has left the room (when an exception has occurred during the connection). (false = not exited)*/
     private boolean exit = false;
 
+    /**
+     * Constructor of UserThread to assign the socket, the server and the user and to set this thread for the user.
+     * To create an InputStream and OutputStream and to initialize the BufferedReader and the PrintWriter.
+     * @param socket the socket on which the UserThread interacts
+     * @param server the ChatServer which starts an instance of UserThread
+     * @param user the connected user
+     */
     public UserThread(Socket socket, ChatServer server, User user) {
         this.socket = socket;
         this.server = server;
@@ -35,19 +54,19 @@ public class UserThread extends Thread {
             InputStream input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));
             OutputStream output = socket.getOutputStream();
-            userOut = new PrintWriter(output, true);
+            writer = new PrintWriter(output, true);
         } catch (IOException ex) {
             disconnect(ex);
         }
     }
 
     /**
-     * Turns a String into a date or null
+     * Turns a String into a date or null.
      *
      * @param date as String
      * @return null if String is not a valid date or the date
      */
-    public static LocalDate turnIntoDate(String date) {
+    private static LocalDate turnIntoDate(String date) {
         try {
             return LocalDate.parse(date, formatter);
         } catch (DateTimeParseException e) {
@@ -55,92 +74,105 @@ public class UserThread extends Thread {
         }
     }
 
-
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
      * The user disconnects by typing "bye".
      */
     @Override
     public void run() {
-
         //before each method call it is checked if run() should be exited.
-        if (!exit) logIn();
+        if (!exit) logInName();
+        //if (!exit) logInDate();
         if (!exit) welcome();
 
         String clientMessage = "";
         String serverMessage;
+        System.out.println("type message");
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-
-                Pattern gamePattern = Pattern.compile("^#+");
-                Matcher gameMatcher = gamePattern.matcher(clientMessage);
-
-                Pattern directPattern = Pattern.compile("^@+");
-                Matcher directMatcher = directPattern.matcher(clientMessage);
-
-                if (gameMatcher.lookingAt()) {
-                    server.communicateGame(clientMessage, user);
-                } else if (directMatcher.lookingAt()) {
-                    if (!server.communicateDirect(clientMessage, user)) {
-                        user.message("Your request does not correspond to the required format. Please try again. @<name> <message>");
-                    }
-                } else if (clientMessage.equals("userList")) {
-                    String userList = "userList: ";
-                    for (User user : server.getUsers()) {
-                        userList += user.getName();
-                        userList += " ";
-                    }
-                    user.message(userList);
-                } else {
-                    serverMessage = "[" + user + "]: " + clientMessage;
+                System.out.println(clientMessage);
+                Gson gson = new Gson();
+                JsonElement jelement = JsonParser.parseReader(new StringReader(clientMessage));
+                JsonObject json = jelement.getAsJsonObject();
+                JSONMessage jsonMessage = new JSONMessage(json.get("type").toString(), json.get("messagebody").toString());
+                System.out.println(jsonMessage.getMessageType());
+                if (clientMessage== null){
+                    throw new IOException();
+                }
+                if(jsonMessage.getMessageType().equals("\"usermessage\"")){
+                    serverMessage = "[" + user + "]: " + jsonMessage.getMessageBody();
+                    System.out.println(serverMessage + "sv");
                     server.communicate(serverMessage, user);
                 }
+
             }
+
         } catch (IOException ex) {
-            if (!exit) disconnect(ex);
+            disconnect(ex);
         }
         if (!exit) disconnect();
     }
 
     /**
-     * prints a message for specific user
+     * Prints a message for specific user.
      *
      * @param message the message to be sent
      */
     public void sendMessage(String message) {
-        if (!message.isBlank()) userOut.println(message);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "serverMessage");
+        jsonObject.addProperty("messagebody", message);
+        writer.println(jsonObject.toString());
     }
 
     /**
-     * The user is asked to enter a name to log in and to enter the date where he last dated.
+     * The user is asked to enter a name to log in.
      * If the name already exists in the list of assigned usernames, the user is asked to try again.
+     * It also makes sure that the user enters something and not a empty String.
      */
-    private void logIn() {
-        while (!exit) {
-            try {
-                String message = reader.readLine();
-                if (message != null) {
-                    String userName = message.substring(0, message.indexOf(" "));
-                    String dateText = message.substring(message.indexOf(" ") + 1);
-
-                    if (turnIntoDate(dateText) == null) {
-                        sendMessage("#login " + "Please check your Date! (dd.mm.yyyy)");
-                    } else if (!server.isAvailable(userName)) {
-                        sendMessage("#login " + "This username is already taken!");
-                    } else {
-                        user.setLastDate(LocalDate.parse(dateText, formatter));
-                        user.setName(userName);
-                        sendMessage("#login " + "successful");
-                        return;
-                    }
+    private void logInName() {
+        sendMessage("Enter your username:");
+        try {
+            while (true) {
+                String userName = reader.readLine();
+                if(userName==null){
+                    throw new IOException();
                 }
-            } catch (IOException ex) {
-                if (!exit) disconnect(ex);
+                if (userName.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again:");
+                else if (!server.isAvailable(userName))
+                    sendMessage("This username is already taken. Please try a different username:");
+                else {
+                    user.setName(userName);
+                    break;
+                }
             }
+        } catch (IOException ex) {
+            disconnect(ex);
         }
     }
 
+    /**
+     * The user is asked to enter the date when he or she was last on a date.
+     * If the date is not valid the user has to try again.
+     */
+    private void logInDate() {
+        String datePuffer;
+        try {
+            sendMessage("I am curious. When was the last time you were on a date? (dd.mm.yyyy)");
+            datePuffer = reader.readLine();
+            if(datePuffer==null){
+                throw new IOException();
+            }
+            while (turnIntoDate(datePuffer) == null || !datePuffer.matches("^\\d?\\d.\\d{2}.\\d{4}$")) {
+                sendMessage("This date is not in the correct format. Please try again. ");
+                datePuffer = reader.readLine();
+            }
+            user.setLastDate(LocalDate.parse(datePuffer, formatter));
+        } catch (IOException ex) {
+            disconnect(ex);
+        }
+    }
 
     /**
      * Sends welcome message to the user and notifies all other users.
@@ -151,7 +183,8 @@ public class UserThread extends Thread {
                 Type: 'bye' to leave the room.\s
                       '@<name>' to send a direct message.\s
                       '#help' to list all commands.\s
-                      '#create' to play the LoveLetter game.""");
+                      '#play' to play the LoveLetter game.""");
+
         server.communicate(user + " joined the room.", user);
     }
 
@@ -178,7 +211,7 @@ public class UserThread extends Thread {
      */
     private void disconnect(Exception ex) {
         exit = true;
-        System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+        System.err.println("Exception in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());

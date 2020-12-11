@@ -103,7 +103,7 @@ public class Controller {
         String message = chatTextArea.getText();
         if(!message.isBlank()){
             chatWindow.appendText("[You]: " + message + "\n");
-            client.sentUserInput(message);
+            //client.sentUserInput(message);
         }
         chatTextArea.clear();
     }
@@ -112,8 +112,8 @@ public class Controller {
      * this methods changes the play button by clicking on it
      */
     public void handlePlayButton() {
-        client.sentUserInput("#playerList");
-        client.sentUserInput("#play");
+        //client.sentUserInput("#playerList");
+        //client.sentUserInput("#play");
         System.out.println("play button clicked");
         playButton.setDisable(true);
         playButton.setText("Have Fun!");
@@ -125,7 +125,7 @@ public class Controller {
      * this method handles the start button by clicking on it
      */
     public void handleStartButton() {
-        client.sentUserInput("#start");
+        //client.sentUserInput("#start");
         System.out.println("start button clicked");
         if (playerList.size() < 2) {
             serverMessage.setText("You need more player to start.");
@@ -172,7 +172,7 @@ public class Controller {
      * @throws IOException
      */
     public void changeSceneCard1() throws IOException {
-        client.sentUserInput("#choose 1");
+        //client.sentUserInput("#choose 1");
         serverMessage.setText("You discarded \n" + card1Name);
         openPopUp(card1Image, card1Name);
         changeImageCard1("BackOfCard2");
@@ -185,7 +185,7 @@ public class Controller {
      * @throws IOException
      */
     public void changeSceneCard2() throws IOException {
-        client.sentUserInput("#choose 2");
+        //client.sentUserInput("#choose 2");
         serverMessage.setText("You discarded \n" + card2Name);
         openPopUp(card2Image, card2Name);
         changeImageCard2("BackOfCard2");
@@ -211,7 +211,7 @@ public class Controller {
             ControllerPopUp controllerPopUp = loader.getController();
             controllerPopUp.setPlayer(playerList);
             controllerPopUp.setClient(client);
-            client.setPopUpController(controllerPopUp);
+            //client.setPopUpController(controllerPopUp);
             Stage popup = new Stage();
             popup.setScene(new Scene(root));
             //for pop-up:

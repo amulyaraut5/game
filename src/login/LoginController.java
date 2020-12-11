@@ -50,11 +50,11 @@ public class LoginController {
         client.disconnect();
     }
 
-    public void initialize() {
+    /*public void initialize() {
         if (!client.isConnection()) {
             noConnection();
         }
-    }
+    }*/
 
     @FXML
     private void handleLogIn(ActionEvent event) {
@@ -70,7 +70,7 @@ public class LoginController {
         } else {
             try {
                 String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));
-                client.sentUserInput(userName + " " + dateText);
+                //client.sentUserInput(userName + " " + dateText);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }

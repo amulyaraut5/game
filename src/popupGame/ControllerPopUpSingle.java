@@ -42,7 +42,7 @@ public class ControllerPopUpSingle implements Initializable {
         }
         else {
             userMessage.setVisible(false);
-            client.sentUserInput("#choose "+ player);
+            //client.sentUserInput("#choose "+ player);
             playerChoosed= true;
             Stage window = (Stage) closePopUp.getScene().getWindow();
             window.close();

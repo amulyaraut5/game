@@ -54,7 +54,7 @@ public class ControllerPopUp implements Initializable {
         }
         else {
             userMessage.setVisible(false);
-            client.sentUserInput("#choose "+ player);
+            //client.sentUserInput("#choose "+ player);
             playerChoosed= true;
 
         }
@@ -68,7 +68,7 @@ public class ControllerPopUp implements Initializable {
         else {
             if(playerChoosed){
                 userMessage.setVisible(false);
-                client.sentUserInput("#choose "+ card);
+                //client.sentUserInput("#choose "+ card);
                 cardChoosed= true;
                 Stage window = (Stage) closePopUp.getScene().getWindow();
                 window.close();
