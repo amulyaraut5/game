@@ -19,6 +19,11 @@
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts-tiles</artifactId>
             <version>1.3.8</version>
@@ -29,9 +34,8 @@
             <version>2.8.6</version>
         </dependency>
 
-        <!-- Uncomment for cross-platform fat jar-->
-        <!--
-          <dependency>
+
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
@@ -49,7 +53,6 @@
             <version>${javafx.version}</version>
             <classifier>mac</classifier>
         </dependency>
-        -->
     </dependencies>
 
     <build>

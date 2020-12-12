@@ -1,7 +1,5 @@
 package server;
 
-import netscape.javascript.JSObject;
-
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;

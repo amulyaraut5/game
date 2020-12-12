@@ -94,10 +94,10 @@ public class LoginController {
             System.err.println(e.getMessage());
         }
         //Controller controller = loader.getController();
-        setUser(userName);
+        //setUser(userName);
         setClient(client);
 
-        client.setController(controller);
+        //client.setController(controller);
         Stage gameStage = new Stage();
         gameStage.setTitle("Love Letter");
         gameStage.setScene(new Scene(gameView));
@@ -105,7 +105,7 @@ public class LoginController {
         gameStage.show();
 
         gameStage.setOnCloseRequest(event -> {
-            controller.close();
+            //controller.close();
             gameStage.close();
             loginStage.close();
         });
