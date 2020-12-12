@@ -16,7 +16,7 @@ public class LoginView extends Application {
 
     @Override
     public void start(Stage loginStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginView.fxml"));
         Parent root = loader.load();
         LoginController loginController = loader.getController();
 
