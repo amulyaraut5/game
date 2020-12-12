@@ -13,6 +13,8 @@ public class Tile {
 	private Attribute attribute;
 	private Attribute attribute2;
 
+
+
 	/**
 	 * Constructor for tiles with one attribute.
 	 * @param attribute first attribute
