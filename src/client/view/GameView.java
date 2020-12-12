@@ -24,6 +24,11 @@ public class GameView extends Application {
         gameStage.show();
         gameController.setStage(gameStage);
 
+        gameStage.setOnCloseRequest(event -> {
+            gameController.close();
+            gameStage.close();
+        });
+
 
     }
 }

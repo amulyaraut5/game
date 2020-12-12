@@ -9,8 +9,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class GameViewController {
 
@@ -23,6 +25,8 @@ public class GameViewController {
     public TextArea chatTextArea;
     @FXML
     public TextArea chatWindow;
+
+    private static Stage stage;
 
 
 
@@ -46,5 +50,9 @@ public class GameViewController {
         GameViewController controller = loader.getController();
 
 
+    }
+
+    public void setStage(Stage s){
+        this.stage = s;
     }
 }
