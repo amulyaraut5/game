@@ -20,6 +20,7 @@ public class GameView extends Application {
         GameViewController gameController = loader.getController();
 
         gameStage.setTitle("Robo Rally");
+        gameStage.setResizable(false);
         gameStage.setScene(new Scene(root));
         gameStage.show();
         gameController.setStage(gameStage);
@@ -28,7 +29,8 @@ public class GameView extends Application {
             gameController.close();
             gameStage.close();
         });
-
-
     }
+
+
+
 }
