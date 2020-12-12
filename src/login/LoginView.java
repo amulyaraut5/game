@@ -16,12 +16,19 @@ public class LoginView extends Application {
 
     @Override
     public void start(Stage loginStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("loginView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginView.fxml"));
+        Parent root = loader.load();
+        LoginController loginController = loader.getController();
+
         loginStage.setTitle("Love Letter");
         loginStage.setResizable(false);
-
         loginStage.setScene(new Scene(root));
         loginStage.show();
         LoginController.setStage(loginStage);
+
+        loginStage.setOnCloseRequest(event -> {
+            loginController.close();
+            loginStage.close();
+        });
     }
 }
