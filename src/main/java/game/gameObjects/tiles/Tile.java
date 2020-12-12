@@ -11,9 +11,24 @@ public class Tile {
 
 	protected String imagePath;
 	private Attribute attribute;
+	private Attribute attribute2;
 
+	/**
+	 * Constructor for tiles with one attribute.
+	 * @param attribute first attribute
+	 */
 	public Tile(Attribute attribute){
 		this.attribute = attribute;
+	}
+
+	/**
+	 * Cnstructor for tiles with two attributes.
+	 * @param attribute1 first attribute
+	 * @param attribute2 second attribute
+	 */
+	public Tile (Attribute attribute1,Attribute attribute2){
+		this.attribute = attribute1;
+		this.attribute2 = attribute2;
 	}
 
 	public Attribute getAttribute() {
@@ -24,17 +39,33 @@ public class Tile {
 		this.attribute = attribute;
 	}
 
+	/**
+	 * It sets the priority order of execution of different attributes of tiles.
+	 */
+	public void priorityOrder(){
+		//TODO
+	}
+
 	public void draw(GraphicsContext gc, Coordinate position) {
 		//TODO define image path
 		final Image image = new Image(imagePath);
 		final int size = 100;//TODO define size (w,h)
 		gc.drawImage(image, size * position.getX(), size * position.getY(), size, size);
 	}
-	
+
+	/**
+	 * This method creates the tile with specific attribute.
+	 * Every tile has then it's own specific id which can be called while laying out the map structure.
+	 * Depending upon the needs of map, we can create our own tile with multiple attributes with different orientations.
+	 * @param tileID
+	 * @return tile
+	 */
 	public Tile createTile(int tileID){
 		Tile tile = null;
 		switch(tileID){
-			case 0: tile = new Tile(new Antenna());
+			case 00: tile = new Tile(new EmptyAttribute());
+
+			case 01: tile = new Tile(new Antenna());
 					// draw();
 			case 11: tile = new Tile(new BlueConveyor(Utilities.Direction.SOUTH));
 			case 12: tile = new Tile(new BlueConveyor(Utilities.Direction.NORTH));
