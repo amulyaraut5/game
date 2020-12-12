@@ -57,6 +57,6 @@ public class GameViewController {
     }
 
     public void close() {
-        client.disconnect();
+        //client.disconnect(); TODO disconnect client on closure of window
     }
 }

@@ -1,8 +1,7 @@
 package client.model;
 
-import client.model.ReaderThread;
 import client.view.GameViewController;
-import client.view.login.LoginController;
+import client.view.LoginController;
 
 import java.io.IOException;
 import java.net.Socket;

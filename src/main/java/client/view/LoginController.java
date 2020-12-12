@@ -1,4 +1,4 @@
-package client.view.login;
+package client.view;
 
 import client.model.Client;
 import javafx.event.ActionEvent;
@@ -46,7 +46,7 @@ public class LoginController {
     }
 
     public void close() {
-        client.disconnect();
+        //client.disconnect(); TODO disconnect client on closure of window
     }
 
    /* public void initialize() {
