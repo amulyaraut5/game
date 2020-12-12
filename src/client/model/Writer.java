@@ -32,7 +32,7 @@ public class Writer {
      * The Methods transfers given input from the client to the server.
      * @param userInput message to the server
      */
-    public void sentUserInput(String userInput) {
+    public void sendUserInput(String userInput) {
         if (!userInput.isBlank()) {
             writer.println(userInput);
         }

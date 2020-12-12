@@ -1,5 +1,6 @@
 package client.view;
 
+import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.image.ImageView;
 
 public class GameViewController {
 
+    public Client client;
     @FXML
     public Button submitButton;
     @FXML
@@ -24,7 +26,7 @@ public class GameViewController {
         String message = chatTextArea.getText();
         if(!message.isBlank()){
             chatWindow.appendText("[You]: " + message + "\n");
-            //client.sentUserInput(message);
+            client.sendUserInput(message);
         }
         chatTextArea.clear();
     }

@@ -112,4 +112,7 @@ public class Client {
         }
         System.out.println("Type \"bye\" to exit.");
     }
+    public void sendUserInput(String message){
+        writer.sendUserInput(message);
+        }
 }
