@@ -1,6 +1,9 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import game.gameObjects.Utilities;
+
+import java.lang.reflect.UndeclaredThrowableException;
 
 /**
  * @author Amulya
@@ -9,6 +12,8 @@ import game.Player;
 public abstract class Attribute {
 
 	public String name;
+	public Utilities.Direction direction;
+	public Utilities.Rotation rotation;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called
@@ -27,6 +32,14 @@ public abstract class Attribute {
 	public boolean checkPlayer() {
 		// TODO - implement Attribute.checkPlayer
 		throw new UnsupportedOperationException();
+	}
+
+	public Utilities.Direction getDirection() {
+		return direction;
+	}
+
+	public Utilities.Rotation getRotation() {
+		return rotation;
 	}
 
 	@Override

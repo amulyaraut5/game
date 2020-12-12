@@ -10,7 +10,7 @@ import game.gameObjects.Utilities;
 
 public class PushPanel extends Attribute {
 
-	private Utilities.Direction direction;
+
 	private int registerValue;
 
 	PushPanel(Utilities.Direction direction,int registerValue){

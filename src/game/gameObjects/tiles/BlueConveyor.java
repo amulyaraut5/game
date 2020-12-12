@@ -10,7 +10,7 @@ import game.gameObjects.Utilities;
 
 public class BlueConveyor extends Attribute {
 
-	private Utilities.Direction direction;
+
 	private int speed ;
 
 	BlueConveyor(Utilities.Direction direction){
