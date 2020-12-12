@@ -27,40 +27,35 @@ public class BlueConveyor extends Attribute {
 	 */
 	@Override
 	public void performAction(Player player) {
-		/*
-		//TODO
 
-            First: Know the position and direction of Robot facing.
-            int xCoordinate = player.getRobot().getCoordinate().getX();
-		    int yCoordinate = player.getRobot().getCoordinate().getY();
+		int xCoordinate = player.getRobot().getPosition().getX();
+		int yCoordinate = player.getRobot().getPosition().getY();
 
-            // Second: Find the direction of robot
-            Direction dir = player.getRobot().getDirection();
-            // Conveyor does not really change the direction of robot  unless......
+		Utilities.Direction dir = player.getRobot().getDirection();
+		// Conveyor does not really change the direction of robot  unless......
 
-            Then check the whether there is collision point exist or not.
-            Then we update the location of Robot in the direction of Conveyor.
+		// Then check the whether there is collision point exist or not.
+		// Then we update the location of Robot in the direction of Conveyor.
 
-            if(collisionPointExist()){
-                // No movement
-             else{
+            if(collisionPointExist()) {
+				// No movement
+			}else{
                 // Need of location of robot and direction of tile.
-                updateRobotCoOrdinates(xCoordinate,yCoordinate,player);
+				updateRobotCoordinates(xCoordinate,yCoordinate,player);
              }
 	}
-	*/
-	}
+
 	/**
 	 * This method checks if two robots converge at the same point or not.
 	 * @return
 	 */
-	 /*
+
 	 private boolean collisionPointExist(){
 		//TODO
-		return true;
+		return false;
 	}
 
-	 */
+
 
 	/**
 	 * This method relocates the robot to new position based on the speed and

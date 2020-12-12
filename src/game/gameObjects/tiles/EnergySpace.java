@@ -9,7 +9,6 @@ import game.Player;
 
 public class EnergySpace extends Attribute {
 
-	private int energyCubes;
 
 	EnergySpace(){
 		this.name = "EnergySpace";
@@ -20,6 +19,7 @@ public class EnergySpace extends Attribute {
 	 * @param player The player that is positioned on the tile
 	 *
 	 */
+
 	@Override
 	public void performAction(Player player) {
 		// player.increaseEnergyCube();

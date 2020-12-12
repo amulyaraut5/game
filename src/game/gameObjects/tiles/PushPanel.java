@@ -11,7 +11,7 @@ import game.gameObjects.Utilities;
 public class PushPanel extends Attribute {
 
 	private Utilities.Direction direction;
-	int registerValue;
+	private int registerValue;
 
 	PushPanel(Utilities.Direction direction,int registerValue){
 		this.direction = direction;
@@ -26,37 +26,36 @@ public class PushPanel extends Attribute {
 
 	@Override
 	public void performAction(Player player) {
-		/*
-		if(player.getRegister() == registerValue){
-			updateRobotCoordinates(direction);
+
+		if(player.getCurrentRegister() == registerValue){
+			updateRobotCoordinates(direction, player);
 		}
 		else{
 			// Do nothing
-			Print message saying that this push panel has no effect for current register.
+			// Print message saying that this push panel has no effect for current register.
 		}
-		 */
+
 
 	}
 
-	private void updateRobotCoordinates(Utilities.Direction direction){
-		/*
-		int xCoordinate = player.getRobot().getCoordinate().getX();
-		int yCoordinate = player.getRobot().getCoordinate().getY();
+	private void updateRobotCoordinates(Utilities.Direction direction, Player player){
+
+		int xCoordinate = player.getRobot().getPosition().getX();
+		int yCoordinate = player.getRobot().getPosition().getY();
 
 		switch (direction) {
 			case NORTH:
-				player.setCoordinates(new Coordinate(xCoordinate, yCoordinate - 1));
+				player.getRobot().setPosition(xCoordinate, yCoordinate - 1);
 				break;
 			case SOUTH:
-				player.setCoordinates(new Coordinate(xCoordinate, yCoordinate + 1));
+				player.getRobot().setPosition(xCoordinate, yCoordinate + 1);
 				break;
 			case EAST:
-				player.setCoordinates(new Coordinate(xCoordinate + 1, yCoordinate));
+				player.getRobot().setPosition(xCoordinate + 1, yCoordinate);
 				break;
 			case WEST:
-				player.setCoordinates(new Coordinate(xCoordinate - 1, yCoordinate));
+				player.getRobot().setPosition(xCoordinate - 1, yCoordinate);
 				break;
 		}
-		 */
 	}
 }

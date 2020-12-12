@@ -8,8 +8,9 @@ import game.gameObjects.Utilities;
  */
 
 public class Wall extends Attribute {
-    private Utilities.Direction direction,direction2;
 
+    private Utilities.Direction direction;
+    private Utilities.Direction direction2;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.

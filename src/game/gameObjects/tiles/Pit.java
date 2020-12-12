@@ -7,6 +7,8 @@ import game.Player;
  * @author Amulya
  */
 public class Pit extends Attribute {
+
+
     Pit(){
         this.name = "Pit";
     }

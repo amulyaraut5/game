@@ -26,28 +26,24 @@ public class GreenConveyor extends Attribute {
 	 */
 	@Override
 	public void performAction(Player player) {
-		/*
-		//TODO
 
-            First: Know the position and direction of Robot facing.
-            int xCoordinate = player.getRobot().getCoordinate().getX();
-		    int yCoordinate = player.getRobot().getCoordinate().getY();
 
-            // Second: Find the direction of robot and currentTile
-            Direction dir = player.getRobot().getDirection();
-            currentTileDir = player.getRobot().getCurrentTile.getDirection();
+			int xCoordinate = player.getRobot().getPosition().getX();
+			int yCoordinate = player.getRobot().getPosition().getY();
 
-            Then check the whether there is collision point exist or not.
-            Then we update the location of Robot in the direction of Conveyor.
+			Utilities.Direction dir = player.getRobot().getDirection();
+			// Conveyor does not really change the direction of robot  unless......
 
-            if(collisionPointExist()){
-                // No movement
-             else{
-                // Need of location of robot and direction of tile.
-                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir,player);
-             }
+			// Then check the whether there is collision point exist or not.
+			// Then we update the location of Robot in the direction of Conveyor.
 
-	*/
+			if(collisionPointExist()) {
+				// No movement
+			}else{
+				// Need of location of robot and direction of tile.
+				updateRobotCoordinates(xCoordinate,yCoordinate,player);
+			}
+
 	}
 	/**
 	 * This method checks if two robots converge at the same point or not.
@@ -55,11 +51,9 @@ public class GreenConveyor extends Attribute {
 	 */
 
 	private boolean collisionPointExist(){
-		/*
 		//TODO
 
-		 */
-		return true;
+		return false;
 	}
 
 
@@ -69,10 +63,9 @@ public class GreenConveyor extends Attribute {
 	 * direction of conveyor belt.
 	 * @param x x coordinate
 	 * @param y y coordinate
-	 * @param direction direction of conveyor belt
 	 */
 
-	private void updateRobotCoordinates(int x, int y, Utilities.Direction direction,Player player){
+	private void updateRobotCoordinates(int x, int y,Player player){
 		switch (direction) {
             case NORTH:
                 player.getRobot().setPosition(x, y - 1);

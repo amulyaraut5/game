@@ -14,6 +14,7 @@ public class BoardLaser extends Attribute {
 
 	private Utilities.Direction direction;
 	private int LaserCount;
+	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
 	BoardLaser(Utilities.Direction direction){
 		this.direction = direction;
@@ -37,9 +38,9 @@ public class BoardLaser extends Attribute {
 	 * @return return the tiles
 	 */
 
-    ArrayList<Tile> determineLaserPaths(){
-        /*
-        /*
+    private ArrayList<Tile> determineLaserPaths(){
+
+		Tile tile = null;
         // First: Find position of laser.
         // Second: Direction at which laser is facing. This can be found from our instance variable.
         // Third: Add all horizontal or vertical tiles to  Arraylist
@@ -49,32 +50,33 @@ public class BoardLaser extends Attribute {
         if(direction == Utilities.Direction.SOUTH){
 			//TODO
 
-        	laserAffectedTiles.add(Tile);
+        	laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
-    		break;
+
+		}
+
+		else if(direction == Utilities.Direction.SOUTH){
+			//TODO
+
+			laserAffectedTiles.add(tile);
+    		return laserAffectedTiles;
+
 		}
 		else if(direction == Utilities.Direction.SOUTH){
 			//TODO
 
-    		laserAffectedTiles.add(Tile);
+			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
-    		break;
+
 		}
 		else if(direction == Utilities.Direction.SOUTH){
 			//TODO
 
-
-    		laserAffectedTiles.add(Tile);
+			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
-    		break;
-		}
-		else if(direction == Utilities.Direction.SOUTH){
 
-    		laserAffectedTiles.add(Tile);
-    		return laserAffectedTiles;
-    		break;
 		}
-         */
+
 		return null;
 
 	}
@@ -105,8 +107,7 @@ public class BoardLaser extends Attribute {
         // It gonna shoot the player.
         // Here we need to find the target Player.
         // targetPlayer.getRobot().getSpamCard();
-
-     */
+		*/
 	}
 
 }

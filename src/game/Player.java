@@ -17,6 +17,7 @@ public class Player extends User {
 
 
 	private Robot robot;
+	private int currentRegister;
 
 	private int lastCheckpoint;
 	private int energyReserve;
@@ -38,4 +39,5 @@ public class Player extends User {
 		return this.robot;
 	}
 
+	public int getCurrentRegister(){ return this.currentRegister; }
 }
