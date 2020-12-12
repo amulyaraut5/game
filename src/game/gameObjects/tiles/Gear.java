@@ -10,7 +10,7 @@ import game.gameObjects.Utilities;
 
 public class Gear extends Attribute {
 
-	private Utilities.Rotation rotation;
+
 
 	public Gear(Utilities.Rotation rotation){
 		this.name = "Gear";

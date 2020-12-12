@@ -17,6 +17,14 @@ public class Tile {
 		this.attribute = attribute;
 	}
 
+	public Attribute getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(Attribute attribute) {
+		this.attribute = attribute;
+	}
+
 	public void draw(GraphicsContext gc, Coordinate position) {
 		//TODO define image path
 		final Image image = new Image(imagePath);

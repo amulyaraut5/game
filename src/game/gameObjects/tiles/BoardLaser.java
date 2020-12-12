@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class BoardLaser extends Attribute {
 
-	private Utilities.Direction direction;
+
 	private int LaserCount;
 	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
