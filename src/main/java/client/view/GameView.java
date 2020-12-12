@@ -22,14 +22,11 @@ public class GameView extends Application {
         gameStage.setResizable(false);
         gameStage.setScene(new Scene(root));
         gameStage.show();
-        GameViewController.setStage(gameStage);
+        gameController.setStage(gameStage);
 
         gameStage.setOnCloseRequest(event -> {
             gameController.close();
             gameStage.close();
         });
     }
-
-
-
 }
