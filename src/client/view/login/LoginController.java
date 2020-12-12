@@ -78,14 +78,14 @@ public class LoginController {
 
     public void ServerResponse(String response) {
         if (response.equals("successful")) {
-            startGameView();
+            startLoginView();
             loginStage.close();
         } else {
             labelResponse.setText(response);
         }
     }
 
-    private void startGameView() {
+    private void startLoginView() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
         Parent gameView = null;
         try {
