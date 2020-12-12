@@ -2,6 +2,6 @@ module roborally {
         requires javafx.controls;
         requires javafx.fxml;
 
-        opens client.view.login to javafx.fxml;
-        exports client.view.login;
+        opens client.view to javafx.fxml;
+        exports client.view;
         }
