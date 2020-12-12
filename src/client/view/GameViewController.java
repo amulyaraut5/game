@@ -55,4 +55,8 @@ public class GameViewController {
     public void setStage(Stage s){
         this.stage = s;
     }
+
+    public void close() {
+        client.disconnect();
+    }
 }
