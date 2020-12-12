@@ -1,6 +1,8 @@
 package client.model;
 
 import client.model.ReaderThread;
+import client.view.GameViewController;
+import client.view.login.LoginController;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -34,6 +36,10 @@ public class Client {
      * The writerThread writes the console input of the user from given socket.
      */
     private Writer writer;
+
+    private GameViewController gameViewController;
+
+    private LoginController loginController;
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -112,7 +118,17 @@ public class Client {
         }
         System.out.println("Type \"bye\" to exit.");
     }
-    public void sendUserInput(String message){
+
+    public void sendUserInput(String message) {
         writer.sendUserInput(message);
-        }
+
+    }
+
+    public void setLoginController(LoginController controller){
+        this.loginController = controller;
+    }
+
+    public void setGameViewController(GameViewController controller){
+        this.gameViewController = controller;
+    }
 }

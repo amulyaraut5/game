@@ -86,7 +86,7 @@ public class LoginController {
     }
 
     private void startGameView() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
         Parent gameView = null;
         try {
             gameView = (Parent) loader.load();
