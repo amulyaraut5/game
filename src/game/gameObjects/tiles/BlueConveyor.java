@@ -13,9 +13,10 @@ public class BlueConveyor extends Attribute {
 	private Utilities.Direction direction;
 	private int speed ;
 
-	BlueConveyor(){
+	BlueConveyor(Utilities.Direction direction){
 		this.speed = 2;
 		this.name = "BlueConveyor";
+		this.direction = direction;
 	}
 
 	/**
@@ -33,9 +34,9 @@ public class BlueConveyor extends Attribute {
             int xCoordinate = player.getRobot().getCoordinate().getX();
 		    int yCoordinate = player.getRobot().getCoordinate().getY();
 
-            // Second: Find the direction of robot and currentTile
+            // Second: Find the direction of robot
             Direction dir = player.getRobot().getDirection();
-            currentTileDir = player.getRobot().getCurrentTile.getDirection();
+            // Conveyor does not really change the direction of robot  unless......
 
             Then check the whether there is collision point exist or not.
             Then we update the location of Robot in the direction of Conveyor.
@@ -44,7 +45,7 @@ public class BlueConveyor extends Attribute {
                 // No movement
              else{
                 // Need of location of robot and direction of tile.
-                updateRobotCoOrdinates(xCoordinate,yCoordinate,currentTileDir, player);
+                updateRobotCoOrdinates(xCoordinate,yCoordinate,player);
              }
 	}
 	*/
@@ -66,10 +67,9 @@ public class BlueConveyor extends Attribute {
 	 * direction of conveyor belt.
 	 * @param x x coordinate
 	 * @param y y coordinate
-	 * @param direction direction of conveyor belt
 	 */
 
-	private void updateRobotCoordinates(int x, int y, Utilities.Direction direction,Player player){
+	private void updateRobotCoordinates(int x, int y,Player player){
 		switch (direction) {
 			case NORTH:
 				player.getRobot().setPosition(x, y - 1);

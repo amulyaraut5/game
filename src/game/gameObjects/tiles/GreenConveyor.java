@@ -11,8 +11,13 @@ import game.gameObjects.Utilities;
 public class GreenConveyor extends Attribute {
 
 	private Utilities.Direction direction;
-	private int speed = 1;
+	private int speed ;
 
+	GreenConveyor(Utilities.Direction direction){
+		this.direction = direction;
+		this.name= "Green Conveyor";
+		this.speed = 1;
+	}
 	/**
 	 * The GreenConveyor belt pushes the robot in the direction of tile by
 	 * one space.

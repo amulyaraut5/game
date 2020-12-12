@@ -15,7 +15,8 @@ public class BoardLaser extends Attribute {
 	private Utilities.Direction direction;
 	private int LaserCount;
 
-	BoardLaser(){
+	BoardLaser(Utilities.Direction direction){
+		this.direction = direction;
 		this.name = "BoardLaser";
 	}
 
