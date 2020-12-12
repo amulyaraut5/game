@@ -1,5 +1,10 @@
 package server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import json.Message;
+
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
@@ -109,6 +114,43 @@ public class UserThread extends Thread {
      */
     public void sendMessage(String message) {
         if (!message.isBlank()) userOut.println(message);
+    }
+
+    /**
+     * Server processes the message which is send
+     */
+    protected void processMessage(User user, String msg) {
+        JsonObject jsonObject = new JsonParser().parse(msg).getAsJsonObject();
+
+        if (jsonObject.has("TextMessage")) {
+            jsonObject = jsonObject.getAsJsonObject("TextMessage");
+            sendMessage(jsonObject);
+        }
+    }
+
+    /**
+     * sends a message to the client
+     * if Receiver contains user the message will be send only to these users
+     * otherwise it will be send to all users
+     */
+    private void sendMessage(JsonObject jsonObject) {
+        Gson gson = new Gson();
+        if (jsonObject.has("Message")) {
+            String strMessage = jsonObject.get("Message").getAsString();
+            Message textMessage = gson.fromJson(strMessage, Message.class);
+            server.communicate(textMessage.getMessage(), user);
+        } else {
+            //nothing
+        }
+    }
+
+    /**
+     * creating an object TextMessage and set the message
+     */
+    private Message getTextMessage(String text) {
+        Message message = new Message();
+        message.setMessage(text);
+        return message;
     }
 
     /**

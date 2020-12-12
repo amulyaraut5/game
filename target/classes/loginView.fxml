@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="loginPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.login.LoginController">
+    <children>
+        <TextField fx:id="textUserName" layoutX="225.0" layoutY="151.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Enter a username..." />
+        <DatePicker fx:id="datePicker" layoutX="225.0" layoutY="187.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="dd.mm.yyyy" />
+        <Button fx:id="okButton" layoutX="402.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLogIn" prefHeight="27.0" prefWidth="175.0" text="Validate your input" />
+        <Label id="label" layoutX="109.0" layoutY="125.0" text="Before we begin we need to implement your Player class">
+            <font>
+                <Font size="14.0" />
+            </font></Label>
+        <Label id="label" layoutX="102.0" layoutY="36.0" text="Welcome to Roborally">
+            <font>
+                <Font size="37.0" />
+            </font>
+        </Label>
+        <Label id="label" fx:id="labelResponse" layoutX="87.0" layoutY="328.0" prefWidth="289.0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+      <Label layoutX="163.0" layoutY="155.0" text="Username" />
+      <Label layoutX="149.0" layoutY="191.0" text="Date of birth" />
+    </children>
+</AnchorPane>

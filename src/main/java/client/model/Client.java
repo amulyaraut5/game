@@ -1,8 +1,13 @@
 package client.model;
 
-import client.model.ReaderThread;
 import client.view.GameViewController;
 import client.view.login.LoginController;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import json.Commands;
+import json.Message;
+import server.User;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -41,6 +46,8 @@ public class Client {
 
     private LoginController loginController;
 
+    private User user;
+
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
@@ -51,6 +58,18 @@ public class Client {
         this.hostname = hostname;
         this.port = port;
     }
+
+    /**
+     * The Constructor sets viewModel and calls establishConnection()
+     */
+    /*public Client(PrimaryViewModel vModel, String hostname, int port) {
+        this.hostname = hostname;
+        this.port = port;
+        this.vModel = vModel;
+        establishConnection();
+    }
+
+     */
 
     /**
      * Main method for the client program. A new ChatClient is created
@@ -81,11 +100,9 @@ public class Client {
             System.out.println("Connection to server successful.");
 
         } catch (UnknownHostException e) {
-            //TODO
-            //System.out.println("Connection failed - IP-address of host could not be determined: " + e.getMessage());
+            System.out.println("Connection failed - IP-address of host could not be determined: " + e.getMessage());
         } catch (IOException e) {
-            //TODO
-            //System.out.println("Connection failed - General I/O exception: " + e.getMessage());
+            System.out.println("Connection failed - General I/O exception: " + e.getMessage());
         }
     }
 
@@ -122,6 +139,55 @@ public class Client {
     public void sendUserInput(String message) {
         writer.sendUserInput(message);
 
+    }
+
+    /**
+     * Method that gets called by view.PrimaryViewModel.sendMessage().
+     * It contains the Logic for interpreting the messages sent by the user and also sends them off to the server.
+     * messages are sent to the server.
+     */
+    public void processViewMessage(String message) throws Exception {
+        if (message != null) {
+            writer.send(Commands.Message(getMessage(message)));
+        }
+    }
+
+    /**
+     * The Text message will be posted in the view
+     */
+    private void processTextMessage(JsonObject jsonObject) {
+        Gson gson = new Gson();
+        if (jsonObject.has("Message")) {
+            String strMessage = jsonObject.get("Message").getAsString();
+            Message textMessage = gson.fromJson(strMessage, Message.class);
+            //viewModel.postMessage(textMessage.getMessage());
+        }
+    }
+
+    /**
+     * processes the server messages and depending on it, it calls the specified methods
+     */
+    protected void ServerMessage(String text) throws Exception {
+        JsonObject jsonObject = new JsonParser().parse(text).getAsJsonObject();
+
+        if (jsonObject.has("TextMessage")) {
+            jsonObject = jsonObject.getAsJsonObject("TextMessage");
+            processTextMessage(jsonObject);
+        } else {
+            //nothing
+        }
+    }
+
+    /**
+     * creating an object Message and set the message
+     * it should be send to all users
+     */
+    private Message getMessage(String msg) {
+        Message textMessage = new Message();
+        textMessage.setSender(user.getName());
+
+        textMessage.setMessage(msg);
+        return textMessage;
     }
 
     public void setLoginController(LoginController controller){

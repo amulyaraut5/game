@@ -1,11 +1,17 @@
 package server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import json.Message;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
+
 
     /**
      * list of users that gets added after every new instance of user is created
@@ -90,6 +96,8 @@ public class Server {
             }
         }
     }
+
+
 
     /**
      * This method sends a message to each client which is connected to the server except the sender itself.

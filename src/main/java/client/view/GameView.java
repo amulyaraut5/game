@@ -1,6 +1,5 @@
 package client.view;
 
-import client.view.login.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +14,7 @@ public class GameView extends Application {
 
     @Override
     public void start(Stage gameStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameView.fxml"));
         Parent root = loader.load();
         GameViewController gameController = loader.getController();
 
@@ -23,7 +22,7 @@ public class GameView extends Application {
         gameStage.setResizable(false);
         gameStage.setScene(new Scene(root));
         gameStage.show();
-        gameController.setStage(gameStage);
+        GameViewController.setStage(gameStage);
 
         gameStage.setOnCloseRequest(event -> {
             gameController.close();

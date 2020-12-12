@@ -1,5 +1,7 @@
 package client.model;
 
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -26,6 +28,14 @@ public class Writer {
             client.disconnect(ex);
         }
         writer = new PrintWriter(output, true);
+    }
+
+    /**
+     * A client message is sent to the server
+     */
+    public void send(JsonObject jsonObject) throws Exception {
+        writer.println(jsonObject.toString());
+        writer.flush();
     }
 
     /**

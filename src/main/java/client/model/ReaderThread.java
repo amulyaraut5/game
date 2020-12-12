@@ -1,5 +1,7 @@
 package client.model;
 
+import com.google.gson.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,19 +41,22 @@ public class ReaderThread extends Thread {
         }
     }
 
+
     /**
      * run() method to start Thread and read input from the server and print it out on the console
      */
     @Override
     public void run() {
+        String text;
         while (!isInterrupted()) {
             try {
-                String text = bReader.readLine();
+                text = bReader.readLine();
                 if(text==null){
                     throw new IOException();
                 }
+                client.ServerMessage(text);
                 System.out.println(text);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
             }

@@ -1,6 +1,7 @@
 package client.view;
 
 import client.model.Client;
+import client.view.login.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 
 public class GameViewController {
 
+    private static Stage s;
     public Client client;
     @FXML
     public Button submitButton;
@@ -52,8 +54,8 @@ public class GameViewController {
 
     }
 
-    public void setStage(Stage s){
-        this.stage = s;
+    public static void setStage(Stage s){
+        GameViewController.s = s;
     }
 
     public void close() {
