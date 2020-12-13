@@ -57,7 +57,7 @@ public class LoginController {
     } */
 
     @FXML
-    private void handleLogIn(ActionEvent event) {
+    private void fxButtonClicked(ActionEvent event) {
         System.out.println("ok Button clicked");
         labelResponse.setText("");
         userName = textUserName.getText();
