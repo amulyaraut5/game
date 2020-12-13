@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class creates the socket for the client.
@@ -19,6 +21,10 @@ import java.net.UnknownHostException;
  * @author janau
  */
 public class Client {
+    /**
+     * Logger to log information/warning
+     */
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
      * hostname of the server is saved here for the socket creation.
      */
@@ -54,6 +60,7 @@ public class Client {
      * @param port     Port of the server on the named host.
      */
     public Client(LoginController loginController, String hostname, int port) {
+        logger.setLevel(Level.ALL);
         this.hostname = hostname;
         this.port = port;
         this.loginController = loginController;
@@ -81,7 +88,7 @@ public class Client {
         readerThread.start();
         //writerThread.start();
 
-        System.out.println("Connection to server successful.");
+        logger.info("Connection to server successful.");
 
     }
 
@@ -93,7 +100,7 @@ public class Client {
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            logger.severe(e.getMessage());
         }
     }
 
@@ -105,19 +112,14 @@ public class Client {
      */
     public void disconnect(Exception ex) {
         readerThread.interrupt();
-        System.out.println("The server is no longer reachable: " + ex.getMessage());
+        logger.info("The server is no longer reachable: " + ex.getMessage());
         try {
             socket.close();
-            System.out.println("The connection with the server is closed.");
+            logger.info("The connection with the server is closed.");
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            logger.severe(e.getMessage());
         }
         System.out.println("Type \"bye\" to exit.");
-    }
-
-
-    public void setLoginController(LoginController controller){
-        this.loginController = controller;
     }
 
     public void setGameViewController(GameViewController controller){
@@ -131,8 +133,6 @@ public class Client {
     public void callServerResponse(boolean taken ) throws IOException {
         loginController.serverResponse(taken);
     }
-
-
 
     public void chatMessage(String messageBody) {
         gameViewController.setTextArea(messageBody);

@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
@@ -14,6 +16,10 @@ import java.net.Socket;
  * @author simon
  */
 public class ReaderThread extends Thread {
+    /**
+     * Logger to log information/warning
+     */
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
      * client is the related ChatClient which starts an instance of ReaderThread.
      */
@@ -31,6 +37,7 @@ public class ReaderThread extends Thread {
      * @param client Instance of ChatClient which handles the connection and disconnection to the server
      */
     public ReaderThread(Socket socket, Client client) {
+        logger.setLevel(Level.ALL);
         this.client = client;
 
         try {
@@ -58,21 +65,20 @@ public class ReaderThread extends Thread {
                 if (jsonMessage.getMessageType().equals("\"serverMessage\"")){
                     String messagebody = jsonMessage.getMessageBody();
                     client.chatMessage(jsonMessage.getMessageBody());
-                    System.out.println(messagebody);
+                    logger.info(messagebody);
                 }
                 if (jsonMessage.getMessageType().equals("\"chatMessage\"")){
                     String messagebody = jsonMessage.getMessageBody();
                     client.chatMessage(jsonMessage.getMessageBody());
-                    System.out.println(messagebody);
+                    logger.info(messagebody);
                 }
                 if (jsonMessage.getMessageType().equals("\"userNameTaken\"")) {
                     if (jsonMessage.getMessageBody().equals("true")) {
                         client.callServerResponse(true);
                     } else if (jsonMessage.getMessageBody().equals("false")) {
                         client.callServerResponse(false);
-
                     } else {
-                        System.out.println("falsch gelaufen");
+                        //
                     }
                 }
             } catch (IOException e) {
