@@ -93,6 +93,7 @@ public class LoginController {
         Parent gameView = loader.load();
         GameViewController controller = loader.getController();
         controller.setClient(client);
+        client.setGameViewController(controller);
         //setUser(userName);
 
         loginStage.getScene().setRoot(gameView);
