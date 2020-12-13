@@ -32,11 +32,7 @@
                                 </AnchorPane>
                                 <HBox prefHeight="33.0" prefWidth="269.0">
                                     <children>
-                                        <TextArea fx:id="chatTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Type in a message...">
-                                            <HBox.margin>
-                                                <Insets right="5.0" />
-                                            </HBox.margin>
-                                        </TextArea>
+                              <TextField fx:id="chatTextArea" onAction="#onEnter" prefHeight="42.0" prefWidth="203.0" />
                                         <Button fx:id="submitButton" mnemonicParsing="false" onAction="#chatMessageHandling" prefHeight="41.0" prefWidth="68.0" text="Submit">
                                             <HBox.margin>
                                                 <Insets />

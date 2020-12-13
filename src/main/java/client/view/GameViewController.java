@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -23,7 +24,7 @@ public class GameViewController {
     @FXML
     public TextArea userArea;
     @FXML
-    public TextArea chatTextArea;
+    public TextField chatTextArea;
     @FXML
     public TextArea chatWindow;
 
@@ -32,6 +33,19 @@ public class GameViewController {
 
 
     public void chatMessageHandling(ActionEvent actionEvent) {
+        String message = chatTextArea.getText();
+        if(!message.isBlank()){
+            chatWindow.appendText("[You]: " + message + "\n");
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("type", "usermessage");
+            jsonObject.addProperty("messagebody", message);
+            client.sentUserInput(jsonObject);
+        }
+        chatTextArea.clear();
+    }
+
+    @FXML
+    public void onEnter(ActionEvent ae) throws Exception {
         String message = chatTextArea.getText();
         if(!message.isBlank()){
             chatWindow.appendText("[You]: " + message + "\n");
