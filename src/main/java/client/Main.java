@@ -21,7 +21,7 @@ public class Main extends Application {
 		Parent root = loader.load();
 		LoginController loginController = loader.getController();
 
-		loginStage.setTitle("Love Letter");
+		loginStage.setTitle("Roborally");
 		loginStage.setResizable(false);
 		loginStage.setScene(new Scene(root));
 		loginStage.show();
