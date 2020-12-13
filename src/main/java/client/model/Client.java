@@ -2,8 +2,12 @@ package client.model;
 
 import client.view.GameViewController;
 import client.view.LoginController;
+import com.google.gson.JsonObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -31,6 +35,8 @@ public class Client {
      * The readerThread reads the input of the user from given socket.
      */
     private ReaderThread readerThread;
+    /** the printWriter which writes messages onto the socket connected to the server.*/
+    private PrintWriter writer;
     /**
      * The writerThread writes the console input of the user from given socket.
      */
@@ -43,51 +49,40 @@ public class Client {
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
+     * @param loginController
      * @param hostname Hostname of the server.
      * @param port     Port of the server on the named host.
      */
-    public Client(String hostname, int port) {
+    public Client(LoginController loginController, String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
+        this.loginController = loginController;
+
+        try {
+            socket = new Socket(hostname, port);
+            writer = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException ex) {
+            //
+        }
+        establishConnection();
     }
 
-    /**
-     * Main method for the client program. A new ChatClient is created
-     * and an attempt is made to establish the connection.
-     *
-     * @param args unused arguments
-     */
-    public static void main(String[] args) {
 
-        String hostname = "localhost";
-        int port = 5444;
-
-        Client client = new Client(hostname, port);
-        client.establishConnection();
-    }
 
     /**
      * This method establishes the connection between the server and the client using the assigned hostname and port.
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
      */
     private void establishConnection() {
-        try {
-            socket = new Socket(hostname, port);
 
-            readerThread = new ReaderThread(socket, this);
-            writerThread = new WriterThread(socket, this);
-            readerThread.start();
-            writerThread.start();
 
-            System.out.println("Connection to server successful.");
+        readerThread = new ReaderThread(socket, this);
+        //writerThread = new WriterThread(socket, this);
+        readerThread.start();
+        //writerThread.start();
 
-        } catch (UnknownHostException e) {
-            //TODO
-            //System.out.println("Connection failed - IP-address of host could not be determined: " + e.getMessage());
-        } catch (IOException e) {
-            //TODO
-            //System.out.println("Connection failed - General I/O exception: " + e.getMessage());
-        }
+        System.out.println("Connection to server successful.");
+
     }
 
     /**
@@ -120,10 +115,6 @@ public class Client {
         System.out.println("Type \"bye\" to exit.");
     }
 
-    public void sendUserInput(String message) {
-        //writerThread.sendUserInput(message);
-
-    }
 
     public void setLoginController(LoginController controller){
         this.loginController = controller;
@@ -131,5 +122,19 @@ public class Client {
 
     public void setGameViewController(GameViewController controller){
         this.gameViewController = controller;
+    }
+
+    public void sentUserInput(JsonObject jsonObject) {
+            writer.println(jsonObject.toString());
+    }
+
+    public void callServerResponse(boolean taken ) throws IOException {
+        loginController.serverResponse(taken);
+    }
+
+
+
+    public void chatMessage(String messageBody) {
+        gameViewController.setTextArea(messageBody);
     }
 }

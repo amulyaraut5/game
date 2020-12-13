@@ -54,8 +54,9 @@ public class User {
      *
      * @param message the message to be sent
      */
+
     public synchronized void message(String message) {
-        thread.sendMessage(message);
+        thread.sendMessage("chatMessage", message);
     }
 
     /**

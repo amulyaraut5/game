@@ -1,6 +1,7 @@
 package client.view;
 
 import client.model.Client;
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,10 @@ public class GameViewController {
         String message = chatTextArea.getText();
         if(!message.isBlank()){
             chatWindow.appendText("[You]: " + message + "\n");
-            client.sendUserInput(message);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("type", "usermessage");
+            jsonObject.addProperty("messagebody", message);
+            client.sentUserInput(jsonObject);
         }
         chatTextArea.clear();
     }
@@ -58,5 +62,13 @@ public class GameViewController {
 
     public void close() {
         //client.disconnect(); TODO disconnect client on closure of window
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setTextArea(String messageBody) {
+        chatTextArea.appendText(messageBody);
     }
 }
