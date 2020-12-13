@@ -65,13 +65,13 @@ public class GameViewController {
 
     @FXML
     private void chatMessageHandling(ActionEvent event) throws Exception {
-        submitButton.setDisable(true);
+        //submitButton.setDisable(true);
         String message = chatTextArea.getText();
         if(!message.isBlank()) {
             client.processViewMessage(message);
         }
         chatTextArea.clear();
-        submitButton.setDisable(false);
+        //submitButton.setDisable(false);
     }
 
     /**

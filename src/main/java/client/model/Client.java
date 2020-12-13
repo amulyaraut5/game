@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import static client.view.GameViewController.*;
+import static json.Commands.Message;
 
 /**
  * This class creates the socket for the client.
@@ -52,8 +53,6 @@ public class Client {
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
-     * @param hostname Hostname of the server.
-     * @param port     Port of the server on the named host.
      */
     /*public Client(String hostname, int port) {
         this.hostname = hostname;
@@ -62,9 +61,7 @@ public class Client {
 
      */
 
-    /**
-     * The Constructor sets viewModel and calls establishConnection()
-     */
+
     public Client(GameViewController gController) {
         this.gController = gController;
         establishConnection();
@@ -92,10 +89,12 @@ public class Client {
      */
     private void establishConnection() {
         try {
-            socket = new Socket(hostname, port);
+            socket = new Socket("localhost", 5444);
 
             readerThread = new ReaderThread(socket, this);
+            writer = new Writer(socket, this);
             readerThread.start();
+            writer.start();
 
             System.out.println("Connection to server successful.");
 
@@ -136,22 +135,23 @@ public class Client {
         System.out.println("Type \"bye\" to exit.");
     }
 
+    /*
     public void sendUserInput(String message) {
         writer.sendUserInput(message);
 
     }
+     */
 
     /**
-     * Method that gets called by view.PrimaryViewModel.sendMessage().
-     * It contains the Logic for interpreting the messages sent by the user and also sends them off to the server.
+     * Method that gets called by view.GameViewController.chatMessageHandling().
      * messages are sent to the server.
      */
     public void processViewMessage(String message) throws Exception {
-            writer.send(Commands.Message(getMessage(message)));
+            writer.send(Message(getMessage(message)));
     }
 
     /**
-     * The Text message will be posted in the view
+     * message will be displayed in the view
      */
     private void processTextMessage(JsonObject jsonObject) {
         Gson gson = new Gson();
@@ -163,17 +163,13 @@ public class Client {
     }
 
     /**
-     * processes the server messages and depending on it, it calls the specified methods
+     * server messages
      */
     protected void ServerMessage(String text) throws Exception {
         JsonObject jsonObject = JsonParser.parseString(text).getAsJsonObject();
 
-        if (jsonObject.has("TextMessage")) {
             jsonObject = jsonObject.getAsJsonObject("TextMessage");
             processTextMessage(jsonObject);
-        } else {
-            //nothing
-        }
     }
 
     /**

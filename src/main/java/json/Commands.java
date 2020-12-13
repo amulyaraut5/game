@@ -5,10 +5,9 @@ import com.google.gson.JsonObject;
 
 
 /**
- * This class contains the JSON commands which are send between client and server
+ * This class contains the JSON commands send between client and server
  */
 public class Commands {
-
 
         /**
          * creates a Message JSON object
@@ -19,7 +18,7 @@ public class Commands {
             Gson gson = new Gson();
 
             try {
-                String strTextMessage = gson.toJson(textMessage);
+                String strTextMessage = gson.toJson(textMessage); // serializes textMessage to Json
                 jsubmsg.addProperty("Message", strTextMessage);
                 jmsg.add("TextMessage", jsubmsg);
             } catch (Exception e) {
