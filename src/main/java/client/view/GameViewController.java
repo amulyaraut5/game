@@ -31,7 +31,6 @@ public class GameViewController {
     private static Stage stage;
 
 
-
     public void chatMessageHandling(ActionEvent actionEvent) {
         String message = chatTextArea.getText();
         if(!message.isBlank()){
@@ -57,18 +56,6 @@ public class GameViewController {
         chatTextArea.clear();
     }
 
-    public void startGameView(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/GameView.fxml"));
-        Parent gameView = null;
-        try {
-            gameView = (Parent) loader.load();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-        GameViewController controller = loader.getController();
-
-
-    }
 
     public void setStage(Stage s){
         this.stage = s;
