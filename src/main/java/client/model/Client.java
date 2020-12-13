@@ -41,7 +41,9 @@ public class Client {
      * The readerThread reads the input of the user from given socket.
      */
     private ReaderThread readerThread;
-    /** the printWriter which writes messages onto the socket connected to the server.*/
+    /**
+     * the printWriter which writes messages onto the socket connected to the server.
+     */
     private PrintWriter writer;
     /**
      * The writerThread writes the console input of the user from given socket.
@@ -60,20 +62,14 @@ public class Client {
      * @param port     Port of the server on the named host.
      */
     public Client(LoginController loginController, String hostname, int port) {
-        logger.setLevel(Level.ALL);
         this.hostname = hostname;
         this.port = port;
         this.loginController = loginController;
 
-        try {
-            socket = new Socket(hostname, port);
-            writer = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException ex) {
-            //
-        }
+        logger.setLevel(Level.ALL);
+
         establishConnection();
     }
-
 
 
     /**
@@ -81,12 +77,19 @@ public class Client {
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
      */
     private void establishConnection() {
+        while (true) {
+            try {
+                socket = new Socket(hostname, port);
+                writer = new PrintWriter(socket.getOutputStream(), true);
+                break;
+            } catch (IOException ex) {
+                logger.warning("No connection.");
+            }
+        }
 
 
         readerThread = new ReaderThread(socket, this);
-        //writerThread = new WriterThread(socket, this);
         readerThread.start();
-        //writerThread.start();
 
         logger.info("Connection to server successful.");
 
@@ -122,15 +125,20 @@ public class Client {
         System.out.println("Type \"bye\" to exit.");
     }
 
-    public void setGameViewController(GameViewController controller){
+
+    public void setLoginController(LoginController controller) {
+        this.loginController = controller;
+    }
+
+    public void setGameViewController(GameViewController controller) {
         this.gameViewController = controller;
     }
 
     public void sentUserInput(JsonObject jsonObject) {
-            writer.println(jsonObject.toString());
+        writer.println(jsonObject.toString());
     }
 
-    public void callServerResponse(boolean taken ) throws IOException {
+    public void callServerResponse(boolean taken) throws IOException {
         loginController.serverResponse(taken);
     }
 
