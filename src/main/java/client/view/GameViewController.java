@@ -69,6 +69,6 @@ public class GameViewController {
     }
 
     public void setTextArea(String messageBody) {
-        chatTextArea.appendText(messageBody);
+        chatWindow.appendText(messageBody+ "\n");
     }
 }
