@@ -14,9 +14,6 @@ public class JSONMessage {
         this.messageBody = messageBody;
     }
 
-    public void setMessageType(String type) {
-        messageType = type;
-    }
     public String getMessageType() {
         return messageType;
     }
