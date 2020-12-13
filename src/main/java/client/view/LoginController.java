@@ -35,7 +35,6 @@ public class LoginController {
     private Button okButton;
 
     public LoginController() {
-        client = new Client(this, "localhost", 5445);
     }
 
     public static void setStage(Stage loginStage) {
@@ -50,11 +49,9 @@ public class LoginController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-   /* public void initialize() {
-        if (!client.isConnection()) {
-            noConnection();
-        }
-    } */
+   public void initialize() {
+       client = new Client(this, "localhost", 5445);
+    }
 
     @FXML
     private void fxButtonClicked(ActionEvent event) {
