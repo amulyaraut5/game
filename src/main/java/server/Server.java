@@ -4,8 +4,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class Server {
+
+    /**
+     * Logger to log information/warning
+     */
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     /**
      * list of users that gets added after every new instance of user is created
@@ -15,10 +21,12 @@ public class Server {
      * port where the server is bound to listen
      */
     private final int port;
+
     /**
      * instance of GameController for the communication between the ChatServer and GameController
      */
     //private final GameController gameController = new GameController(this);
+
 
     /**
      * Constructor for the ChatServer class which initialises the port number.
@@ -54,18 +62,19 @@ public class Server {
     private void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Chat server is waiting for clients to connect to port " + port + ".");
+            logger.info("Chat server is waiting for clients to connect to port " + port + ".");
             Runtime.getRuntime().addShutdownHook(new Thread() {
+
                 public void run() {
                     try {
                         serverSocket.close();
-                        System.out.println("The server is shut down!");
+                        logger.info("The server is shut down!");
                     } catch (IOException e) { /* failed */ }
                 }
             });
             acceptClients(serverSocket);
         } catch (IOException e) {
-            System.err.println("could not connect: " + e.getMessage());
+            logger.severe("could not connect: " + e.getMessage());
         }
     }
 
@@ -79,14 +88,14 @@ public class Server {
         while (accept) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
+                logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
                 User user = new User();
                 users.add(user);
                 UserThread thread = new UserThread(clientSocket, this, user);
                 thread.start();
             } catch (IOException e) {
                 accept = false;
-                System.out.println("Accept failed on: " + port);
+                logger.info("Accept failed on: " + port);
             }
         }
     }
