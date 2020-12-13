@@ -1,6 +1,7 @@
 package client.view;
 
 import client.model.Client;
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,7 @@ public class LoginController {
     private Button okButton;
 
     public LoginController() {
-        client = new Client("localhost", 5444);
+        client = new Client(this, "localhost", 5445);
     }
 
     public static void setStage(Stage loginStage) {
@@ -57,58 +58,56 @@ public class LoginController {
 
     @FXML
     private void handleLogIn(ActionEvent event) {
+        System.out.println("ok Button clicked");
         labelResponse.setText("");
         userName = textUserName.getText();
         date = datePicker.getValue();
-        if (userName.isBlank()) {
-            labelResponse.setText("Please insert a Username!");
-        } else if (userName.contains(" ")) {
-            labelResponse.setText("Spaces are not allowed in usernames!");
-        } else if (date == null) {
-            labelResponse.setText("Please insert a Date!");
-        } else {
+        if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
+        else if (userName.contains(" ")) labelResponse.setText("Spaces are not allowed in usernames!");
+        else if (date == null) labelResponse.setText("Please insert a Date!");
+        else {
             try {
                 String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));
-                //client.sentUserInput(userName + " " + dateText);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("type", "checkName");
+                jsonObject.addProperty("messagebody", userName);
+                client.sentUserInput(jsonObject);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }
         }
     }
 
-    public void ServerResponse(String response) {
-        if (response.equals("successful")) {
+    public void serverResponse(boolean taken) throws IOException {
+        if (!taken) {
             startLoginView();
-            loginStage.close();
+            //loginStage.close();
         } else {
-            labelResponse.setText(response);
+            labelResponse.setText("Already taken, try again");
         }
     }
 
-    private void startLoginView() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
-        Parent gameView = null;
-        try {
-            gameView = (Parent) loader.load();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-        //Controller controller = loader.getController();
+    private void startLoginView() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameView.fxml"));
+        Parent gameView = loader.load();
+        GameViewController controller = loader.getController();
+        controller.setClient(client);
         //setUser(userName);
-        setClient(client);
 
+        loginStage.getScene().setRoot(gameView);
         //client.setController(controller);
-        Stage gameStage = new Stage();
-        gameStage.setTitle("Love Letter");
-        gameStage.setScene(new Scene(gameView));
-        gameStage.setResizable(false);
-        gameStage.show();
+        //loginStage.setScene(new Scene(gameView));
+        //gameStage.setTitle("Love Letter");
+        //gameStage.setScene(new Scene(gameView));
+        //gameStage.setResizable(false);
+        //gameStage.show();
 
-        gameStage.setOnCloseRequest(event -> {
+        /*gameStage.setOnCloseRequest(event -> {
             //controller.close();
             gameStage.close();
             loginStage.close();
-        });
+        });*/
     }
 
     /**

@@ -11,7 +11,7 @@
     <children>
         <TextField fx:id="textUserName" layoutX="226.0" layoutY="186.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Enter a username..." />
         <DatePicker fx:id="datePicker" layoutX="226.0" layoutY="222.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="dd.mm.yyyy" />
-        <Button fx:id="okButton" layoutX="371.0" layoutY="328.0" mnemonicParsing="false" onAction="#loginButtonPressed" prefHeight="27.0" prefWidth="175.0" text="Validate your input" />
+        <Button fx:id="okButton" layoutX="371.0" layoutY="328.0" mnemonicParsing="false"  prefHeight="27.0" prefWidth="175.0" text="Validate your input" />
         <Label id="label" layoutX="109.0" layoutY="146.0" text="Before we begin we need to implement your Player class">
             <font>
                 <Font size="14.0" />

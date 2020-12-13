@@ -33,7 +33,7 @@ public class Server {
      * Main method
      */
     public static void main(String[] args) {
-        int port = 5444;
+        int port = 5445;
 
         Server server = new Server(port);
         server.start();
@@ -115,6 +115,7 @@ public class Server {
      * @param sender  user who sent the direct message
      * @return shows if user input for direct message was valid
      */
+    /*
     public boolean communicateDirect(String message, User sender) {
         String userName = (message.split(" ", 2)[0]);
         String destinationUser = userName.substring(1);
@@ -127,7 +128,7 @@ public class Server {
             }
         }
         return false;
-    }
+    }*/
 
 
     /**
@@ -135,10 +136,11 @@ public class Server {
      *
      * @param message message to be sent.
      */
+    /*
     public void communicateAll(String message) {
         for (User user : users)
             user.message(message);
-    }
+    }*/
 
     /**
      * It checks if the username is already used of another user.
