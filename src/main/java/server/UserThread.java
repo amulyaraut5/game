@@ -10,8 +10,6 @@ import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Handles connection for each connected client,
@@ -69,19 +67,20 @@ public class UserThread extends Thread {
     public void run() {
 
         //before each method call it is checked if run() should be exited.
-        if (!exit) logIn();
-        if (!exit) welcome();
 
         String clientMessage = "";
         String serverMessage;
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-                clientMessage = reader.readLine();
-                System.out.println(clientMessage);
-                JSONMessage jsonMessage = castStringInJsonMessage(clientMessage);
                 if (clientMessage== null){
                     throw new IOException();
+                }
+                System.out.println(clientMessage);
+                JSONMessage jsonMessage = castStringInJsonMessage(clientMessage);
+                if(jsonMessage.getMessageType().equals("\"checkName\"")){
+                    System.out.println(jsonMessage.getMessageBody());
+                    logIn(jsonMessage.getMessageBody());
                 }
                 if(jsonMessage.getMessageType().equals("\"usermessage\"")){
                     serverMessage = "[" + user + "]: " + jsonMessage.getMessageBody();
@@ -108,37 +107,25 @@ public class UserThread extends Thread {
      *
      * @param message the message to be sent
      */
-    public void sendMessage(String message) {
+    public void sendMessage(String type, String message) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", "serverMessage");
+        jsonObject.addProperty("type", type);
         jsonObject.addProperty("messagebody", message);
         userOut.println(jsonObject.toString());
     }
-    /**
-     * The user is asked to enter a name to log in and to enter the date where he last dated.
-     * If the name already exists in the list of assigned usernames, the user is asked to try again.
-     */
-    private void logIn() {
-        while (!exit) {
-            try {
-                String userName = reader.readLine();
-                JSONMessage jsonMessage = castStringInJsonMessage(userName);
-                String userNameComplete = jsonMessage.getMessageBody().toString();
-                System.out.println("unC: " + userNameComplete);
-                if(userNameComplete==null){
-                    throw new IOException();
-                }
-                if (userNameComplete.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again:");
-                else if (!server.isAvailable(userNameComplete))
-                    sendMessage("This username is already taken. Please try a different username:");
-                else {
-                    user.setName(userNameComplete);
-                    break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+
+    private void logIn(String userNameCheck) {
+
+            System.out.println("unC: " + userNameCheck);
+            if (!server.isAvailable(userNameCheck))
+                sendMessage("userNameTaken", "true");
+            else {
+                sendMessage("userNameTaken", "false");
+                user.setName(userNameCheck);
+                welcome();
             }
-        }
+
     }
 
 
@@ -146,12 +133,6 @@ public class UserThread extends Thread {
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
-        sendMessage("Thank you! Welcome " + user + "!");
-        sendMessage("""
-                Type: 'bye' to leave the room.\s
-                      '@<name>' to send a direct message.\s
-                      '#help' to list all commands.\s
-                      '#create' to play the LoveLetter game.""");
         server.communicate(user + " joined the room.", user);
     }
 
@@ -159,7 +140,7 @@ public class UserThread extends Thread {
      * The connection is closed and other users get notified that the user left.
      */
     private void disconnect() {
-        sendMessage("Bye " + user);
+        //sendMessage("Bye " + user);
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
         System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());

@@ -56,8 +56,24 @@ public class ReaderThread extends Thread {
                     throw new IOException();
                 }
                 if (jsonMessage.getMessageType().equals("\"serverMessage\"")){
-                    String messagebody = jsonMessage.getMessageBody().toString();
+                    String messagebody = jsonMessage.getMessageBody();
+                    client.chatMessage(jsonMessage.getMessageBody());
                     System.out.println(messagebody);
+                }
+                if (jsonMessage.getMessageType().equals("\"chatMessage\"")){
+                    String messagebody = jsonMessage.getMessageBody();
+                    client.chatMessage(jsonMessage.getMessageBody());
+                    System.out.println(messagebody);
+                }
+                if (jsonMessage.getMessageType().equals("\"userNameTaken\"")) {
+                    if (jsonMessage.getMessageBody().equals("true")) {
+                        client.callServerResponse(true);
+                    } else if (jsonMessage.getMessageBody().equals("false")) {
+                        client.callServerResponse(false);
+
+                    } else {
+                        System.out.println("falsch gelaufen");
+                    }
                 }
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
