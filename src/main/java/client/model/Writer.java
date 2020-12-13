@@ -13,7 +13,7 @@ import java.net.Socket;
  *
  * @author sarah
  */
-public class Writer {
+public class Writer extends Thread{
     private final PrintWriter writer;
     private final Client client;
     //TODO

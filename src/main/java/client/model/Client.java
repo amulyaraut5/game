@@ -147,9 +147,7 @@ public class Client {
      * messages are sent to the server.
      */
     public void processViewMessage(String message) throws Exception {
-        if (message != null) {
             writer.send(Commands.Message(getMessage(message)));
-        }
     }
 
     /**
@@ -184,7 +182,7 @@ public class Client {
      */
     private Message getMessage(String msg) {
         Message textMessage = new Message();
-        textMessage.setSender(user.getName());
+        //textMessage.setSender(user.getName());
 
         textMessage.setMessage(msg);
         return textMessage;

@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameViewController">
     <children>
         <HBox fx:id="Background" alignment="TOP_RIGHT" prefHeight="584.0" prefWidth="750.0">
@@ -33,7 +32,7 @@
                                 </AnchorPane>
                                 <HBox prefHeight="33.0" prefWidth="269.0">
                                     <children>
-                              <TextField prefHeight="39.0" prefWidth="161.0" />
+                              <TextField fx:id="chatTextArea" prefHeight="39.0" prefWidth="161.0" />
                                         <Button fx:id="submitButton" mnemonicParsing="false" onAction="#chatMessageHandling" prefHeight="41.0" prefWidth="68.0" text="Submit">
                                             <HBox.margin>
                                                 <Insets />
