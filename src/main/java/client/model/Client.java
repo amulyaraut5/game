@@ -1,7 +1,7 @@
 package client.model;
 
 import client.view.GameViewController;
-import client.view.login.LoginController;
+import client.view.LoginController;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -12,6 +12,8 @@ import server.User;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import static client.view.GameViewController.*;
 
 /**
  * This class creates the socket for the client.
@@ -24,11 +26,12 @@ public class Client {
     /**
      * hostname of the server is saved here for the socket creation.
      */
-    private final String hostname;
+    private String hostname;
     /**
      * port of the server on the named host is saved here for the socket creation.
      */
-    private final int port;
+    private int port;
+    private final GameViewController gController;
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -44,8 +47,6 @@ public class Client {
 
     private GameViewController gameViewController;
 
-    private LoginController loginController;
-
     private User user;
 
     /**
@@ -54,22 +55,21 @@ public class Client {
      * @param hostname Hostname of the server.
      * @param port     Port of the server on the named host.
      */
-    public Client(String hostname, int port) {
+    /*public Client(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
+
+     */
 
     /**
      * The Constructor sets viewModel and calls establishConnection()
      */
-    /*public Client(PrimaryViewModel vModel, String hostname, int port) {
-        this.hostname = hostname;
-        this.port = port;
-        this.vModel = vModel;
+    public Client(GameViewController gController) {
+        this.gController = gController;
         establishConnection();
     }
 
-     */
 
     /**
      * Main method for the client program. A new ChatClient is created
@@ -82,8 +82,8 @@ public class Client {
         String hostname = "localhost";
         int port = 5444;
 
-        Client client = new Client(hostname, port);
-        client.establishConnection();
+        //Client client = new Client(hostname, port);
+        //client.establishConnection();
     }
 
     /**
@@ -160,7 +160,7 @@ public class Client {
         if (jsonObject.has("Message")) {
             String strMessage = jsonObject.get("Message").getAsString();
             Message textMessage = gson.fromJson(strMessage, Message.class);
-            //viewModel.postMessage(textMessage.getMessage());
+            gameViewController.displayInChat(textMessage.getMessage());
         }
     }
 
@@ -168,7 +168,7 @@ public class Client {
      * processes the server messages and depending on it, it calls the specified methods
      */
     protected void ServerMessage(String text) throws Exception {
-        JsonObject jsonObject = new JsonParser().parse(text).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(text).getAsJsonObject();
 
         if (jsonObject.has("TextMessage")) {
             jsonObject = jsonObject.getAsJsonObject("TextMessage");
@@ -191,7 +191,6 @@ public class Client {
     }
 
     public void setLoginController(LoginController controller){
-        this.loginController = controller;
     }
 
     public void setGameViewController(GameViewController controller){

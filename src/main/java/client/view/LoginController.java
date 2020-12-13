@@ -1,4 +1,4 @@
-package client.view.login;
+package client.view;
 
 import client.model.Client;
 import javafx.event.ActionEvent;
@@ -34,7 +34,7 @@ public class LoginController {
     private Button okButton;
 
     public LoginController() {
-        client = new Client("localhost", 5444);
+       // client = new Client("localhost", 5444);
     }
 
     public static void setStage(Stage loginStage) {
