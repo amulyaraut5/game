@@ -1,9 +1,11 @@
 package client.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -47,10 +49,16 @@ public class ReaderThread extends Thread {
         while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
+                JsonElement jelement = JsonParser.parseReader(new StringReader(text));
+                JsonObject json = jelement.getAsJsonObject();
+                JSONMessage jsonMessage = new JSONMessage(json.get("type").toString(), json.get("messagebody").toString());
                 if(text==null){
                     throw new IOException();
                 }
-                System.out.println(text);
+                if (jsonMessage.getMessageType().equals("\"serverMessage\"")){
+                    String messagebody = jsonMessage.getMessageBody().toString();
+                    System.out.println(messagebody);
+                }
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
