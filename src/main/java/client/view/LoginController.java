@@ -55,7 +55,6 @@ public class LoginController {
 
     @FXML
     private void fxButtonClicked(ActionEvent event) {
-        System.out.println("ok Button clicked");
         labelResponse.setText("");
         userName = textUserName.getText();
         date = datePicker.getValue();

@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handles connection for each connected client,
@@ -19,6 +21,12 @@ import java.time.format.DateTimeParseException;
  */
 
 public class UserThread extends Thread {
+
+    /**
+     * Logger to log information/warning
+     */
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
@@ -28,6 +36,8 @@ public class UserThread extends Thread {
     private boolean exit = false;
 
     public UserThread(Socket socket, Server server, User user) {
+        logger.setLevel(Level.ALL);
+
         this.socket = socket;
         this.server = server;
         this.user = user;
@@ -76,15 +86,15 @@ public class UserThread extends Thread {
                 if (clientMessage== null){
                     throw new IOException();
                 }
-                System.out.println(clientMessage);
+                logger.info(clientMessage);
                 JSONMessage jsonMessage = castStringInJsonMessage(clientMessage);
                 if(jsonMessage.getMessageType().equals("\"checkName\"")){
-                    System.out.println(jsonMessage.getMessageBody());
+                    logger.info(jsonMessage.getMessageBody());
                     logIn(jsonMessage.getMessageBody());
                 }
                 if(jsonMessage.getMessageType().equals("\"usermessage\"")){
                     serverMessage = "[" + user + "]: " + jsonMessage.getMessageBody();
-                    System.out.println(serverMessage + "sv");
+                    logger.info(serverMessage + "sv");
                     server.communicate(serverMessage, user);
                 }
 
@@ -117,7 +127,7 @@ public class UserThread extends Thread {
 
     private void logIn(String userNameCheck) {
 
-            System.out.println("unC: " + userNameCheck);
+            logger.info("unC: " + userNameCheck);
             if (!server.isAvailable(userNameCheck))
                 sendMessage("userNameTaken", "true");
             else {
@@ -143,11 +153,11 @@ public class UserThread extends Thread {
         //sendMessage("Bye " + user);
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
-        System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+        logger.warning("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            logger.severe(e.getMessage());
         }
     }
 
@@ -159,14 +169,14 @@ public class UserThread extends Thread {
      */
     private void disconnect(Exception ex) {
         exit = true;
-        System.err.println("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+        logger.severe("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
-        System.out.println("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+        logger.severe("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            logger.severe(e.getMessage());
         }
     }
 }
