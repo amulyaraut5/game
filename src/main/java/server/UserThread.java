@@ -1,5 +1,10 @@
 package server;
 
+import client.model.JSONMessage;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
@@ -72,45 +77,43 @@ public class UserThread extends Thread {
         try {
             while (!exit && !clientMessage.equals("bye")) {
                 clientMessage = reader.readLine();
-
-
-                Pattern gamePattern = Pattern.compile("^#+");
-                Matcher gameMatcher = gamePattern.matcher(clientMessage);
-
-                Pattern directPattern = Pattern.compile("^@+");
-                Matcher directMatcher = directPattern.matcher(clientMessage);
-
-                 if (directMatcher.lookingAt()) {
-                    if (!server.communicateDirect(clientMessage, user)) {
-                        user.message("Your request does not correspond to the required format. Please try again. @<name> <message>");
-                    }
-                } else if (clientMessage.equals("userList")) {
-                    String userList = "userList: ";
-                    for (User user : server.getUsers()) {
-                        userList += user.getName();
-                        userList += " ";
-                    }
-                    user.message(userList);
-                } else {
-                    serverMessage = "[" + user + "]: " + clientMessage;
+                clientMessage = reader.readLine();
+                System.out.println(clientMessage);
+                JSONMessage jsonMessage = castStringInJsonMessage(clientMessage);
+                if (clientMessage== null){
+                    throw new IOException();
+                }
+                if(jsonMessage.getMessageType().equals("\"usermessage\"")){
+                    serverMessage = "[" + user + "]: " + jsonMessage.getMessageBody();
+                    System.out.println(serverMessage + "sv");
                     server.communicate(serverMessage, user);
                 }
+
             }
+
         } catch (IOException ex) {
-            if (!exit) disconnect(ex);
+            disconnect(ex);
         }
         if (!exit) disconnect();
     }
 
+    private JSONMessage castStringInJsonMessage(String message){
+        JsonElement jsonelement = JsonParser.parseReader(new StringReader(message));
+        JsonObject json = jsonelement.getAsJsonObject();
+        JSONMessage jsonMessage = new JSONMessage(json.get("type").toString(), json.get("messagebody").toString());
+        return jsonMessage;
+    }
     /**
      * prints a message for specific user
      *
      * @param message the message to be sent
      */
     public void sendMessage(String message) {
-        if (!message.isBlank()) userOut.println(message);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "serverMessage");
+        jsonObject.addProperty("messagebody", message);
+        userOut.println(jsonObject.toString());
     }
-
     /**
      * The user is asked to enter a name to log in and to enter the date where he last dated.
      * If the name already exists in the list of assigned usernames, the user is asked to try again.
@@ -118,23 +121,22 @@ public class UserThread extends Thread {
     private void logIn() {
         while (!exit) {
             try {
-                String message = reader.readLine();
-                if (message != null) {
-                    String userName = message.substring(0, message.indexOf(" "));
-                    String dateText = message.substring(message.indexOf(" ") + 1);
-
-                    if (turnIntoDate(dateText) == null) {
-                        sendMessage("#login " + "Please check your Date! (dd.mm.yyyy)");
-                    } else if (!server.isAvailable(userName)) {
-                        sendMessage("#login " + "This username is already taken!");
-                    } else {
-                        user.setName(userName);
-                        sendMessage("#login " + "successful");
-                        return;
-                    }
+                String userName = reader.readLine();
+                JSONMessage jsonMessage = castStringInJsonMessage(userName);
+                String userNameComplete = jsonMessage.getMessageBody().toString();
+                System.out.println("unC: " + userNameComplete);
+                if(userNameComplete==null){
+                    throw new IOException();
                 }
-            } catch (IOException ex) {
-                if (!exit) disconnect(ex);
+                if (userNameComplete.contains(" ")) sendMessage("Spaces are not allowed in username. Please try again:");
+                else if (!server.isAvailable(userNameComplete))
+                    sendMessage("This username is already taken. Please try a different username:");
+                else {
+                    user.setName(userNameComplete);
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

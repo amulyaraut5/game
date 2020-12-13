@@ -34,7 +34,7 @@ public class Client {
     /**
      * The writerThread writes the console input of the user from given socket.
      */
-    private Writer writer;
+    private WriterThread writerThread;
 
     private GameViewController gameViewController;
 
@@ -75,7 +75,9 @@ public class Client {
             socket = new Socket(hostname, port);
 
             readerThread = new ReaderThread(socket, this);
+            writerThread = new WriterThread(socket, this);
             readerThread.start();
+            writerThread.start();
 
             System.out.println("Connection to server successful.");
 
@@ -119,7 +121,7 @@ public class Client {
     }
 
     public void sendUserInput(String message) {
-        writer.sendUserInput(message);
+        //writerThread.sendUserInput(message);
 
     }
 
