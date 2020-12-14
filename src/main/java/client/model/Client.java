@@ -130,7 +130,7 @@ public class Client {
         this.gameViewController = controller;
     }
 
-    public void sentUserInput(JSONMessage msg) {
+    public void sendUserInput(JSONMessage msg) {
         Gson gson = new Gson();
         String json = gson.toJson(msg);
         writer.println(json);

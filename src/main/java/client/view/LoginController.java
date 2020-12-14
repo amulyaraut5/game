@@ -2,12 +2,10 @@ package client.view;
 
 import client.model.Client;
 import client.model.JSONMessage;
-import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -66,7 +64,7 @@ public class LoginController {
             try {
                 String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));//TODO send date also over JSON
                 JSONMessage msg = new JSONMessage("checkName", userName);
-                client.sentUserInput(msg);
+                client.sendUserInput(msg);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }
