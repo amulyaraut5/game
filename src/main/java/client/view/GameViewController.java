@@ -1,6 +1,7 @@
 package client.view;
 
 import client.model.Client;
+import client.model.JSONMessage;
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,10 +27,8 @@ public class GameViewController {
         String message = chatTextArea.getText();
         if (!message.isBlank()) {
             chatWindow.appendText("[You]: " + message + "\n");
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("type", "userMessage");
-            jsonObject.addProperty("body", message);
-            client.sentUserInput(jsonObject);
+            JSONMessage msg = new JSONMessage("userMessage", message);
+            client.sentUserInput(msg);
         }
         chatTextArea.clear();
     }

@@ -61,30 +61,24 @@ public class ReaderThread extends Thread {
                     throw new IOException();
                 }
                 JSONMessage msg = gson.fromJson(text, JSONMessage.class);
+                handleMessage(msg);
 
-                if (msg.getType().equals("serverMessage")) {
-                    Object body = msg.getBody();
-                    client.chatMessage((String) msg.getBody());
-                    logger.info(body.toString());
-                }
-                if (msg.getType().equals("chatMessage")) {
-                    Object body = msg.getBody();
-                    client.chatMessage((String) msg.getBody());
-                    logger.info(body.toString());
-                }
-                if (msg.getType().equals("userNameTaken")) {
-                    if (msg.getBody().equals("true")) {
-                        client.callServerResponse(true);
-                    } else if (msg.getBody().equals("false")) {
-                        client.callServerResponse(false);
-                    } else {
-                        //
-                    }
-                }
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
             }
+        }
+    }
+
+    private void handleMessage(JSONMessage msg) throws IOException {
+        String type = msg.getType();
+        switch (type) {
+            case "serverMessage":
+                client.chatMessage((String) msg.getBody());
+            case "chatMessage":
+                client.chatMessage((String) msg.getBody());
+            case "userNameTaken":
+                client.callServerResponse((boolean) msg.getBody());
         }
     }
 }

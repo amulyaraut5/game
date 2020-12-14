@@ -2,7 +2,6 @@ package server;
 
 import client.model.JSONMessage;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -29,7 +28,7 @@ public class UserThread extends Thread {
      * Logger to log information/warning
      */
     private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private PrintWriter userOut;
+    private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
 
@@ -46,7 +45,7 @@ public class UserThread extends Thread {
             InputStream input = socket.getInputStream();
             reader = new BufferedReader(new InputStreamReader(input));
             OutputStream output = socket.getOutputStream();
-            userOut = new PrintWriter(output, true);
+            writer = new PrintWriter(output, true);
         } catch (IOException ex) {
             disconnect(ex);
         }
@@ -84,15 +83,13 @@ public class UserThread extends Thread {
                 }
                 JSONMessage msg = gson.fromJson(text, JSONMessage.class);
 
-                if (msg.getType().equals("checkName")) {
-                    logger.info(msg.getBody().toString());
-                    logIn((String) msg.getBody());
+                String type = msg.getType();
+                switch (type) {
+                    case "checkName":
+                        logIn((String) msg.getBody());
+                    case "userMessage":
+                        server.communicate("[" + user + "]: " + msg.getBody(), user);
                 }
-                if (msg.getType().equals("userMessage")) {
-                    serverMessage = "[" + user + "]: " + msg.getBody();
-                    server.communicate(serverMessage, user);
-                }
-
             }
 
         } catch (IOException ex) {
@@ -104,21 +101,20 @@ public class UserThread extends Thread {
     /**
      * prints a message for specific user
      *
-     * @param message the message to be sent
+     * @param msg the message to be sent
      */
-    public void sendMessage(String type, String message) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", type);
-        jsonObject.addProperty("body", message);
-        userOut.println(jsonObject.toString());
+    public void sendMessage(JSONMessage msg) {
+        Gson gson = new Gson();
+        writer.println(gson.toJson(msg));
     }
 
 
     private void logIn(String userName) {
         if (!server.isAvailable(userName))
-            sendMessage("userNameTaken", "true");
+
+            sendMessage(new JSONMessage("userNameTaken", true));
         else {
-            sendMessage("userNameTaken", "false");
+            sendMessage(new JSONMessage("userNameTaken", false));
             user.setName(userName);
             welcome();
         }

@@ -1,5 +1,7 @@
 package server;
 
+import client.model.JSONMessage;
+
 import java.time.LocalDate;
 
 /**
@@ -56,7 +58,7 @@ public class User {
      */
 
     public synchronized void message(String message) {
-        thread.sendMessage("chatMessage", message);
+        thread.sendMessage(new JSONMessage("chatMessage", message));
     }
 
     /**

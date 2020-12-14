@@ -1,6 +1,7 @@
 package client.view;
 
 import client.model.Client;
+import client.model.JSONMessage;
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,11 +64,9 @@ public class LoginController {
         else if (date == null) labelResponse.setText("Please insert a Date!");
         else {
             try {
-                String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("type", "checkName");
-                jsonObject.addProperty("body", userName);
-                client.sentUserInput(jsonObject);
+                String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));//TODO send date also over JSON
+                JSONMessage msg = new JSONMessage("checkName", userName);
+                client.sentUserInput(msg);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }

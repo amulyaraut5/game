@@ -9,9 +9,9 @@ public class JSONMessage {
 
     private Object body;
 
-    public JSONMessage(String messageType, String messageBody) {
-        this.type = messageType;
-        this.body = messageBody;
+    public JSONMessage(String type, Object body) {
+        this.type = type;
+        this.body = body;
     }
 
     @Override

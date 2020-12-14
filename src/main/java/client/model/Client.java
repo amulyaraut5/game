@@ -2,14 +2,11 @@ package client.model;
 
 import client.view.GameViewController;
 import client.view.LoginController;
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,10 +19,6 @@ import java.util.logging.Logger;
  */
 public class Client {
     /**
-     * Logger to log information/warning
-     */
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    /**
      * hostname of the server is saved here for the socket creation.
      */
     private final String hostname;
@@ -33,6 +26,10 @@ public class Client {
      * port of the server on the named host is saved here for the socket creation.
      */
     private final int port;
+    /**
+     * Logger to log information/warning
+     */
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -57,8 +54,8 @@ public class Client {
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
      * @param loginController
-     * @param hostname Hostname of the server.
-     * @param port     Port of the server on the named host.
+     * @param hostname        Hostname of the server.
+     * @param port            Port of the server on the named host.
      */
     public Client(LoginController loginController, String hostname, int port) {
         this.hostname = hostname;
@@ -133,11 +130,15 @@ public class Client {
         this.gameViewController = controller;
     }
 
-    public void sentUserInput(JsonObject jsonObject) {
-        writer.println(jsonObject.toString());
+    public void sentUserInput(JSONMessage msg) {
+        Gson gson = new Gson();
+        String json = gson.toJson(msg);
+        writer.println(json);
     }
 
     public void callServerResponse(boolean taken) throws IOException {
+        //TODO methods from the javafx controllers should only be called
+        // from the FX application thread (with the Platform.runLater method)
         loginController.serverResponse(taken);
     }
 
