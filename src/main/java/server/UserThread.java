@@ -1,9 +1,8 @@
 package server;
 
 import client.model.JSONMessage;
-import com.google.gson.JsonElement;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.*;
 import java.net.Socket;
@@ -22,15 +21,14 @@ import java.util.logging.Logger;
 
 public class UserThread extends Thread {
 
-    /**
-     * Logger to log information/warning
-     */
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
     public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
+    /**
+     * Logger to log information/warning
+     */
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private PrintWriter userOut;
     private BufferedReader reader;
     private boolean exit = false;
@@ -75,26 +73,23 @@ public class UserThread extends Thread {
      */
     @Override
     public void run() {
+        Gson gson = new Gson();
 
-        //before each method call it is checked if run() should be exited.
-
-        String clientMessage = "";
         String serverMessage;
         try {
-            while (!exit && !clientMessage.equals("bye")) {
-                clientMessage = reader.readLine();
-                if (clientMessage== null){
+            while (!exit) {
+                String text = reader.readLine();
+                if (text == null) {
                     throw new IOException();
                 }
-                logger.info(clientMessage);
-                JSONMessage jsonMessage = castStringInJsonMessage(clientMessage);
-                if(jsonMessage.getMessageType().equals("\"checkName\"")){
-                    logger.info(jsonMessage.getMessageBody());
-                    logIn(jsonMessage.getMessageBody());
+                JSONMessage msg = gson.fromJson(text, JSONMessage.class);
+
+                if (msg.getType().equals("checkName")) {
+                    logger.info(msg.getBody().toString());
+                    logIn((String) msg.getBody());
                 }
-                if(jsonMessage.getMessageType().equals("\"usermessage\"")){
-                    serverMessage = "[" + user + "]: " + jsonMessage.getMessageBody();
-                    logger.info(serverMessage + "sv");
+                if (msg.getType().equals("userMessage")) {
+                    serverMessage = "[" + user + "]: " + msg.getBody();
                     server.communicate(serverMessage, user);
                 }
 
@@ -106,12 +101,6 @@ public class UserThread extends Thread {
         if (!exit) disconnect();
     }
 
-    private JSONMessage castStringInJsonMessage(String message){
-        JsonElement jsonelement = JsonParser.parseReader(new StringReader(message));
-        JsonObject json = jsonelement.getAsJsonObject();
-        JSONMessage jsonMessage = new JSONMessage(json.get("type").toString(), json.get("messagebody").toString());
-        return jsonMessage;
-    }
     /**
      * prints a message for specific user
      *
@@ -120,21 +109,19 @@ public class UserThread extends Thread {
     public void sendMessage(String type, String message) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("type", type);
-        jsonObject.addProperty("messagebody", message);
+        jsonObject.addProperty("body", message);
         userOut.println(jsonObject.toString());
     }
 
 
-    private void logIn(String userNameCheck) {
-
-            logger.info("unC: " + userNameCheck);
-            if (!server.isAvailable(userNameCheck))
-                sendMessage("userNameTaken", "true");
-            else {
-                sendMessage("userNameTaken", "false");
-                user.setName(userNameCheck);
-                welcome();
-            }
+    private void logIn(String userName) {
+        if (!server.isAvailable(userName))
+            sendMessage("userNameTaken", "true");
+        else {
+            sendMessage("userNameTaken", "false");
+            user.setName(userName);
+            welcome();
+        }
 
     }
 

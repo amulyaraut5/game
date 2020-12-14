@@ -4,20 +4,14 @@ import client.model.Client;
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.time.LocalDate;
 
 public class GameViewController {
 
+    private static Stage stage;
     public Client client;
     @FXML
     public Button submitButton;
@@ -28,36 +22,20 @@ public class GameViewController {
     @FXML
     public TextArea chatWindow;
 
-    private static Stage stage;
-
-
-    public void chatMessageHandling(ActionEvent actionEvent) {
+    public void sendChatMessage(ActionEvent actionEvent) {
         String message = chatTextArea.getText();
-        if(!message.isBlank()){
+        if (!message.isBlank()) {
             chatWindow.appendText("[You]: " + message + "\n");
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("type", "usermessage");
-            jsonObject.addProperty("messagebody", message);
-            client.sentUserInput(jsonObject);
-        }
-        chatTextArea.clear();
-    }
-
-    @FXML
-    public void onEnter(ActionEvent ae) throws Exception {
-        String message = chatTextArea.getText();
-        if(!message.isBlank()){
-            chatWindow.appendText("[You]: " + message + "\n");
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("type", "usermessage");
-            jsonObject.addProperty("messagebody", message);
+            jsonObject.addProperty("type", "userMessage");
+            jsonObject.addProperty("body", message);
             client.sentUserInput(jsonObject);
         }
         chatTextArea.clear();
     }
 
 
-    public void setStage(Stage s){
+    public void setStage(Stage s) {
         this.stage = s;
     }
 
@@ -70,6 +48,6 @@ public class GameViewController {
     }
 
     public void setTextArea(String messageBody) {
-        chatWindow.appendText(messageBody+ "\n");
+        chatWindow.appendText(messageBody + "\n");
     }
 }

@@ -66,7 +66,7 @@ public class LoginController {
                 String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("type", "checkName");
-                jsonObject.addProperty("messagebody", userName);
+                jsonObject.addProperty("body", userName);
                 client.sentUserInput(jsonObject);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
