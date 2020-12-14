@@ -5,4 +5,5 @@ module roborally {
     exports client.view to javafx.graphics;
     opens client.view to javafx.fxml;
     opens client to javafx.fxml;
+    opens client.model to com.google.gson;
 }

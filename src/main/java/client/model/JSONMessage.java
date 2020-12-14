@@ -5,25 +5,33 @@ package client.model;
  */
 public class JSONMessage {
 
-    private String messageType = "default";
+    private String type = "default";
 
-    private String messageBody; //TODO cast to object
+    private Object body;
 
     public JSONMessage(String messageType, String messageBody) {
-        this.messageType = messageType;
-        this.messageBody = messageBody;
-    }
-
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public String getMessageBody() {
-        return messageBody.substring(1, messageBody.length()-1);
+        this.type = messageType;
+        this.body = messageBody;
     }
 
     @Override
     public String toString() {
-        return messageType;
+        return type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Object getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

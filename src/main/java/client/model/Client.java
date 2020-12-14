@@ -48,7 +48,6 @@ public class Client {
     /**
      * The writerThread writes the console input of the user from given socket.
      */
-    private WriterThread writerThread;
 
     private GameViewController gameViewController;
 
