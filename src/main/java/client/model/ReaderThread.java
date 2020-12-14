@@ -1,11 +1,11 @@
 package client.model;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.Gson;
 
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,13 +17,13 @@ import java.util.logging.Logger;
  */
 public class ReaderThread extends Thread {
     /**
-     * Logger to log information/warning
-     */
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    /**
      * client is the related ChatClient which starts an instance of ReaderThread.
      */
     private final Client client;
+    /**
+     * Logger to log information/warning
+     */
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     /**
      * BufferedReader which is wrap around the InputStream of the socket.
      */
@@ -53,29 +53,29 @@ public class ReaderThread extends Thread {
      */
     @Override
     public void run() {
+        Gson gson = new Gson();
         while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
-                JsonElement jelement = JsonParser.parseReader(new StringReader(text));
-                JsonObject json = jelement.getAsJsonObject();
-                JSONMessage jsonMessage = new JSONMessage(json.get("type").toString(), json.get("messagebody").toString());
-                if(text==null){
+                if (text == null) {
                     throw new IOException();
                 }
-                if (jsonMessage.getMessageType().equals("\"serverMessage\"")){
-                    String messagebody = jsonMessage.getMessageBody();
-                    client.chatMessage(jsonMessage.getMessageBody());
-                    logger.info(messagebody);
+                JSONMessage msg = gson.fromJson(text, JSONMessage.class);
+
+                if (msg.getType().equals("serverMessage")) {
+                    Object body = msg.getBody();
+                    client.chatMessage((String) msg.getBody());
+                    logger.info(body.toString());
                 }
-                if (jsonMessage.getMessageType().equals("\"chatMessage\"")){
-                    String messagebody = jsonMessage.getMessageBody();
-                    client.chatMessage(jsonMessage.getMessageBody());
-                    logger.info(messagebody);
+                if (msg.getType().equals("chatMessage")) {
+                    Object body = msg.getBody();
+                    client.chatMessage((String) msg.getBody());
+                    logger.info(body.toString());
                 }
-                if (jsonMessage.getMessageType().equals("\"userNameTaken\"")) {
-                    if (jsonMessage.getMessageBody().equals("true")) {
+                if (msg.getType().equals("userNameTaken")) {
+                    if (msg.getBody().equals("true")) {
                         client.callServerResponse(true);
-                    } else if (jsonMessage.getMessageBody().equals("false")) {
+                    } else if (msg.getBody().equals("false")) {
                         client.callServerResponse(false);
                     } else {
                         //
