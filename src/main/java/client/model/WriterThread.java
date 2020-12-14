@@ -1,7 +1,5 @@
 package client.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
@@ -15,13 +13,22 @@ import java.net.Socket;
  * then it reads messages until the user types bye.
  *
  * @author sarah
+ * @deprecated WriterThread is unnecessary as a Thread. The functionality of writing messages
+ * on the socked is implemented in the {@link Client} class.
  */
+@Deprecated
 public class WriterThread extends Thread {
-    /** client is the related ChatClient which starts an instance of ReaderThread.*/
+    /**
+     * client is the related ChatClient which starts an instance of ReaderThread.
+     */
     private final Client client;
-    /** the printWriter which writes messages onto the socket connected to the server.*/
+    /**
+     * the printWriter which writes messages onto the socket connected to the server.
+     */
     private PrintWriter writer;
-    /** BufferedReader to read input.*/
+    /**
+     * BufferedReader to read input.
+     */
     private BufferedReader bReader;
 
     /**
