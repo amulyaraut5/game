@@ -1,9 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import game.gameObjects.Utilities;
-
-import java.lang.reflect.UndeclaredThrowableException;
+import Utilities.Utilities;
 
 /**
  * @author Amulya

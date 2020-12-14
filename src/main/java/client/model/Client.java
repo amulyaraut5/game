@@ -1,5 +1,6 @@
 package client.model;
 
+import Utilities.JSONProtocol.JSONMessage;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;

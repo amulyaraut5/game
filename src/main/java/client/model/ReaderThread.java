@@ -1,5 +1,6 @@
 package client.model;
 
+import Utilities.JSONProtocol.JSONMessage;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -78,7 +79,11 @@ public class ReaderThread extends Thread {
             case "chatMessage":
                 client.chatMessage((String) msg.getBody());
             case "userNameTaken":
-                client.callServerResponse((boolean) msg.getBody());
+                if (msg.getBody().equals("true")) {
+                    client.callServerResponse(true);
+                } else if (msg.getBody().equals("false")) {
+                    client.callServerResponse(false);
+                }
         }
     }
 }

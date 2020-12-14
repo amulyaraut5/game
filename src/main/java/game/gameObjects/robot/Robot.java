@@ -1,7 +1,7 @@
 package game.gameObjects.robot;
 
 import game.gameObjects.Coordinate;
-import game.gameObjects.Utilities.Direction;
+import Utilities.Utilities.Direction;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;

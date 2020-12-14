@@ -1,4 +1,6 @@
-package client.model;
+package Utilities.JSONProtocol;
+
+import Utilities.Utilities;
 
 /**
  * This class is a JSON message which is seperated in messagetype and messagebody

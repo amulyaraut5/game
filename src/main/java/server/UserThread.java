@@ -1,6 +1,6 @@
 package server;
 
-import client.model.JSONMessage;
+import Utilities.JSONProtocol.JSONMessage;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -112,9 +112,9 @@ public class UserThread extends Thread {
     private void logIn(String userName) {
         if (!server.isAvailable(userName))
 
-            sendMessage(new JSONMessage("userNameTaken", true));
+            sendMessage(new JSONMessage("userNameTaken", "true"));
         else {
-            sendMessage(new JSONMessage("userNameTaken", false));
+            sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
             welcome();
         }

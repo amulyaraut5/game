@@ -1,4 +1,4 @@
-package game.gameObjects;
+package Utilities;
 
 public class Utilities {
     public enum Direction {

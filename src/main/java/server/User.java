@@ -1,6 +1,6 @@
 package server;
 
-import client.model.JSONMessage;
+import Utilities.JSONProtocol.JSONMessage;
 
 import java.time.LocalDate;
 

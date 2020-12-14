@@ -1,7 +1,7 @@
 package client.view;
 
 import client.model.Client;
-import client.model.JSONMessage;
+import Utilities.JSONProtocol.JSONMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

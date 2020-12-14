@@ -7,4 +7,5 @@ module roborally {
     opens client.view to javafx.fxml;
     opens client to javafx.fxml;
     opens client.model to com.google.gson;
+    opens Utilities to com.google.gson;
 }

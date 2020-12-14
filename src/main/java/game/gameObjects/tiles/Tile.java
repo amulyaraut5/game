@@ -1,11 +1,9 @@
 package game.gameObjects.tiles;
 
 import game.gameObjects.Coordinate;
-import game.gameObjects.Utilities;
+import Utilities.Utilities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
-import java.util.ArrayList;
 
 public class Tile {
 
