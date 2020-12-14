@@ -3,6 +3,7 @@ module roborally {
     requires javafx.fxml;
     requires com.google.gson;
     exports client.view to javafx.graphics;
+    exports client to javafx.graphics;
     opens client.view to javafx.fxml;
     opens client to javafx.fxml;
     opens client.model to com.google.gson;
