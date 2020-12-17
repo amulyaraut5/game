@@ -22,12 +22,13 @@ public class GameViewController {
     @FXML
     public TextArea chatWindow;
 
+    //TODO
     public void sendChatMessage(ActionEvent actionEvent) {
         String message = chatTextArea.getText();
         if (!message.isBlank()) {
             chatWindow.appendText("[You]: " + message + "\n");
-            JSONMessage msg = new JSONMessage("userMessage", message);
-            client.sendUserInput(msg);
+            //JSONMessage msg = new JSONMessage("userMessage", message);
+            //client.sendUserInput(msg);
         }
         chatTextArea.clear();
     }

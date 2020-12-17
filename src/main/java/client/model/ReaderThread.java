@@ -62,7 +62,7 @@ public class ReaderThread extends Thread {
                     throw new IOException();
                 }
                 JSONMessage msg = gson.fromJson(text, JSONMessage.class);
-                handleMessage(msg);
+                //handleMessage(msg);
 
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
@@ -71,6 +71,8 @@ public class ReaderThread extends Thread {
         }
     }
 
+    //TODO
+    /*
     private void handleMessage(JSONMessage msg) throws IOException {
         String type = msg.getType();
         switch (type) {
@@ -86,4 +88,6 @@ public class ReaderThread extends Thread {
                 }
         }
     }
+
+     */
 }

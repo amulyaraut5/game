@@ -1,5 +1,8 @@
 package server;
 
+import Utilities.JSONProtocol.chat.ReceivedChat;
+import Utilities.JSONProtocol.chat.SendChat;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -41,7 +44,11 @@ public class Server {
      * Main method
      */
     public static void main(String[] args) {
-        int port = 5445;
+        //To try out if serialization works:
+        ReceivedChat receivedChat = new ReceivedChat("Hallo", "Annika", true);
+        System.out.println(receivedChat.serialize());
+
+        int port = 5444;
 
         Server server = new Server(port);
         server.start();

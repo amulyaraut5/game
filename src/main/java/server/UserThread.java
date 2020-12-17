@@ -86,9 +86,9 @@ public class UserThread extends Thread {
                 String type = msg.getType();
                 switch (type) {
                     case "checkName":
-                        logIn((String) msg.getBody());
+                       //TODO logIn((String) msg.getBody());
                     case "userMessage":
-                        server.communicate("[" + user + "]: " + msg.getBody(), user);
+                        //TODO server.communicate("[" + user + "]: " + msg.getBody(), user);
                 }
             }
 
@@ -110,11 +110,11 @@ public class UserThread extends Thread {
 
 
     private void logIn(String userName) {
-        if (!server.isAvailable(userName))
+        if (!server.isAvailable(userName)){
 
-            sendMessage(new JSONMessage("userNameTaken", "true"));
-        else {
-            sendMessage(new JSONMessage("userNameTaken", "false"));
+            //TODO sendMessage(new JSONMessage("userNameTaken", "true"));
+        //else {
+            //sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
             welcome();
         }

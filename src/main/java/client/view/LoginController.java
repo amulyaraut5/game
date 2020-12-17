@@ -62,9 +62,10 @@ public class LoginController {
         else if (date == null) labelResponse.setText("Please insert a Date!");
         else {
             try {
+                //TODO
                 String dateText = date.format(DateTimeFormatter.ofPattern("dd.MM.yy"));//TODO send date also over JSON
-                JSONMessage msg = new JSONMessage("checkName", userName);
-                client.sendUserInput(msg);
+                //JSONMessage msg = new JSONMessage("checkName", userName);
+                //client.sendUserInput(msg);
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }

@@ -8,4 +8,6 @@ module roborally {
     opens client to javafx.fxml;
     opens client.model to com.google.gson;
     opens Utilities to com.google.gson;
+    opens Utilities.JSONProtocol to com.google.gson;
+    opens Utilities.JSONProtocol.chat to com.google.gson;
 }
