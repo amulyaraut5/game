@@ -1,11 +1,8 @@
 package client.view;
 
 import client.model.Client;
-import Utilities.JSONProtocol.JSONMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -48,8 +45,8 @@ public class LoginController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-   public void initialize() {
-       client = new Client(this, "localhost", 5445);
+    public void initialize() {
+        client = new Client(this, "localhost", 5444);
     }
 
     @FXML
@@ -74,35 +71,11 @@ public class LoginController {
 
     public void serverResponse(boolean taken) throws IOException {
         if (!taken) {
-            startLoginView();
+            //startLoginView();
             //loginStage.close();
         } else {
             labelResponse.setText("Already taken, try again");
         }
-    }
-
-    private void startLoginView() throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameView.fxml"));
-        Parent gameView = loader.load();
-        GameViewController controller = loader.getController();
-        controller.setClient(client);
-        client.setGameViewController(controller);
-        //setUser(userName);
-
-        loginStage.getScene().setRoot(gameView);
-        //client.setController(controller);
-        //loginStage.setScene(new Scene(gameView));
-        //gameStage.setTitle("Love Letter");
-        //gameStage.setScene(new Scene(gameView));
-        //gameStage.setResizable(false);
-        //gameStage.show();
-
-        /*gameStage.setOnCloseRequest(event -> {
-            //controller.close();
-            gameStage.close();
-            loginStage.close();
-        });*/
     }
 
     /**

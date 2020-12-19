@@ -1,7 +1,9 @@
 package client;
 
+import client.view.GameViewController;
 import client.view.LoginController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,25 +13,71 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    private static Stage menuStage;
+    private static Stage gameStage;
+    private static Scene menuScene;
+    private static Scene loginScene;
+    private static Scene gameScene;
 
-	@Override
-	public void start(Stage loginStage) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginView.fxml"));
-		Parent root = loader.load();
-		LoginController loginController = loader.getController();
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-		loginStage.setTitle("Roborally");
-		loginStage.setResizable(false);
-		loginStage.setScene(new Scene(root));
-		loginStage.show();
-		LoginController.setStage(loginStage);
+    @Override
+    public void start(Stage menuStage) throws IOException {
+        this.menuStage = menuStage;
+        Platform.runLater(() -> {
+            constructGameStage();
+            constructMenuStage();
+        });
+        constructGameStage();
+        constructMenuStage();
+        menuStage.show();
+    }
 
-		loginStage.setOnCloseRequest(event -> {
-			loginController.close();
-			loginStage.close();
-		});
-	}
+    public void constructMenuStage() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginView.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LoginController loginController = loader.getController();
+
+        menuStage.setTitle("Roborally");
+        menuStage.setResizable(false);
+        menuStage.setScene(new Scene(root));
+        LoginController.setStage(menuStage);
+
+        menuStage.setOnCloseRequest(event -> {
+            loginController.close();
+            menuStage.close();
+        });
+
+    }
+
+    public void constructGameStage() {
+        if (gameStage == null) {
+            gameStage = new Stage();
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gameView.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        GameViewController gameController = loader.getController();
+
+        gameStage.setTitle("Robo Rally");
+        gameStage.setResizable(false);
+        gameStage.setScene(new Scene(root));
+        gameController.setStage(gameStage);
+
+        gameStage.setOnCloseRequest(event -> {
+            gameController.close();
+            gameStage.close();
+        });
+    }
 }
