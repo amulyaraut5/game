@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class GameViewController {
 
-    private static Stage stage;
+    private Stage stage;
     public Client client;
     @FXML
     public Button submitButton;

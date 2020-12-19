@@ -19,7 +19,7 @@ public class Server {
     /**
      * list of users that gets added after every new instance of user is created
      */
-    private static final ArrayList<User> users = new ArrayList<>(10);
+    private final ArrayList<User> users = new ArrayList<>(10);
     /**
      * port where the server is bound to listen
      */
