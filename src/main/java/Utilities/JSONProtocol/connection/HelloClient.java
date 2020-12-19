@@ -1,11 +1,17 @@
 package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONMessage;
+import com.google.gson.annotations.Expose;
 
 public class HelloClient extends JSONMessage {
 
-    private class MessageBody{
-        public double protocol;
+    public static class MessageBody{
+        public  double protocol;
+
+        public  double getProtocol() {
+            return protocol;
+        }
+
     }
 
     MessageBody messageBody = new MessageBody();
@@ -14,6 +20,7 @@ public class HelloClient extends JSONMessage {
         setType("HelloClient");
         messageBody.protocol = protocol;
     }
+
 
     @Override
     public void clientMessage() {
@@ -24,4 +31,6 @@ public class HelloClient extends JSONMessage {
     public void serverMessage() {
 
     }
+
+
 }

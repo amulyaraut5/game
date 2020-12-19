@@ -32,4 +32,6 @@ public class ReceivedChat extends JSONMessage {
     @Override
     public void serverMessage() {
     }
+
+
 }

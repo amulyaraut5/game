@@ -1,6 +1,7 @@
 package server;
 
 import Utilities.JSONProtocol.JSONMessage;
+import Utilities.JSONProtocol.connection.HelloClient;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -76,15 +77,22 @@ public class UserThread extends Thread {
 
         String serverMessage;
         try {
+
+            //<------------------------->
+            double protocolVersion =  0.1;
+            HelloClient helloClient = new HelloClient(protocolVersion);
+            writer.println(helloClient.serialize());
+            writer.flush();
+            //<------------------------->
+
             while (!exit) {
                 String text = reader.readLine();
                 if (text == null) {
                     throw new IOException();
                 }
-                JSONMessage msg = gson.fromJson(text, JSONMessage.class);
+                JSONMessage jsonMessage = JSONMessage.deserialize(text);
 
-                String type = msg.getType();
-                switch (type) {
+                switch (jsonMessage.getType()) {
                     case "checkName":
                        //TODO logIn((String) msg.getBody());
                     case "userMessage":

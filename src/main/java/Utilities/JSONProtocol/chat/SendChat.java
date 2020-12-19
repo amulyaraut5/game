@@ -29,4 +29,5 @@ public class SendChat extends JSONMessage {
     @Override
     public void serverMessage() {
     }
+
 }

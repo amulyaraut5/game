@@ -1,6 +1,7 @@
 package client.model;
 
 import Utilities.JSONProtocol.JSONMessage;
+import Utilities.JSONProtocol.connection.HelloClient;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -61,9 +62,9 @@ public class ReaderThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
-                JSONMessage msg = gson.fromJson(text, JSONMessage.class);
-                handleMessage(msg);
+                JSONMessage jsonMessage = JSONMessage.deserialize(text);
 
+                handleMessage(jsonMessage);
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
@@ -72,6 +73,19 @@ public class ReaderThread extends Thread {
     }
 
     private void handleMessage(JSONMessage msg) throws IOException {
+        String type = msg.getType();
+
+        switch (type) {
+            case "HelloClient":
+
+                System.out.println("Received Protocol:");
+                HelloClient.MessageBody messageBody = new HelloClient.MessageBody();
+                System.out.println(msg.getType());
+                System.out.println("Protocol: "+ messageBody.getProtocol());
+
+                break;
+        }       // show message in chatbox instead of console
+        /*
         String type = msg.getType().toString();
         String test = msg.serialize();
 
@@ -83,5 +97,7 @@ public class ReaderThread extends Thread {
             case "userNameTaken":
                 logger.info("userNameTaken" + " " + test);//client.callServerResponse(msg.getBody());
         }
+
+         */
     }
 }

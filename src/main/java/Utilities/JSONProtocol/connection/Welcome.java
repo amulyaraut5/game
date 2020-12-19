@@ -28,4 +28,6 @@ public class Welcome extends JSONMessage {
     public void serverMessage() {
 
     }
+
+
 }

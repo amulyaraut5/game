@@ -1,5 +1,6 @@
 package Utilities.JSONProtocol;
 
+import Utilities.JSONProtocol.connection.HelloClient;
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 
@@ -12,23 +13,24 @@ public abstract class JSONMessage {
 
     public String serialize(){
         Gson gson = new Gson();
-        String json;
-        json = gson.toJson(this);
+        String json = gson.toJson(this);
         return json;
     }
-
-    //change laster
-    public void deserialize(String jsonString){
+    //--------->
+    //change later
+    public static JSONMessage deserialize(String jsonString){
         Gson gson = new Gson();
-        Object obj = gson.fromJson(jsonString, (Type) this);
+        JSONMessage obj = gson.fromJson(jsonString, JSONMessage.class);
+        return obj;
     }
 
+
+    //---------->
 
     //handle the received messages for client side and server side
     //Maybe with switch case, different methods in classes for different cases of messages
     public abstract void clientMessage();
     public abstract void serverMessage();
-
 
     @Override
     public String toString() {
@@ -43,4 +45,7 @@ public abstract class JSONMessage {
         this.messageTyp = type;
     }
 
+    //<-------------------------->
+
+    //<-------------------------->
 }
