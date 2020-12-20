@@ -1,17 +1,12 @@
 package Utilities.JSONProtocol.connection;
 
-public class Welcome {
-    /*
-    Random r = new Random();
-    int low = 10;
-    int high = 100;
-    int result = r.nextInt(high-low) + low;
+import Utilities.JSONProtocol.JSONMessage;
 
- */
+public class Welcome  {
+
     public String message;
     private int id;
-
-    public Welcome(String message, int id) {
+    public Welcome(String message, int id){
         this.message = message;
         this.id = id;
     }
@@ -31,7 +26,7 @@ public class Welcome {
     public void setId(int id) {
         this.id = id;
     }
-    /*
+/*
     package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONMessage;
