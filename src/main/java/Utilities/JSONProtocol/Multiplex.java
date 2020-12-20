@@ -9,7 +9,18 @@ import com.google.gson.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+/**
+ * This class contains 2 important methods namely serialize and deserialize whose functionality are described
+ * in respective method.
+ */
 public class Multiplex {
+
+    /**
+     * This method converts a Java Object into Json String with the use of Gson library.
+     * @param messageObj
+     * @return
+     * @throws IOException
+     */
 
     public static String serialize(JSONMessage messageObj) throws IOException {
         Gson gson = new Gson();
@@ -17,12 +28,23 @@ public class Multiplex {
         return json;
     }
 
+    /**
+     * This method converts Json String back to Java Object with the use of custom
+     * gson deserializer.
+     * @param jsonString
+     * @return
+     */
 
     public static JSONMessage deserialize(String jsonString) {
         Gson gson = new GsonBuilder().registerTypeAdapter(JSONMessage.class, new Deserializer()).create();
         JSONMessage obj = gson.fromJson(jsonString, JSONMessage.class);
         return obj;
     }
+
+    /**
+     *  This class contains an overriden deserialize method from interface JsonDeserializer</> in order to parse messageBody
+     *  of different classes correctly.
+     */
 
     static class Deserializer implements JsonDeserializer<JSONMessage> {
 
@@ -36,14 +58,11 @@ public class Multiplex {
             if (type != null) {
                 switch (type.getAsString()) {
                     case "HelloServer":
-                        //return jsonDeserializationContext.deserialize(jsonObject,HelloClient.class);
-
                         HelloServer hs = new HelloServer(messageBody.get("protocol").getAsDouble(),
                                 messageBody.get("group").getAsString(),
                                 messageBody.get("isAI").getAsBoolean());
                         return new JSONMessage("HelloServer", hs);
                     case "HelloClient":
-                        //return jsonDeserializationContext.deserialize(jsonObject,HelloClient.class);
 
                         HelloClient hc = new HelloClient((messageBody.get("protocol").getAsDouble()));
                         return new JSONMessage("HelloClient", hc);
@@ -97,31 +116,6 @@ public class Multiplex {
             return null;
         }
     };
-
      */
-
-
-
-    /*
-    public static JSONMessage  deserialize(String jsonString){
-        Gson gson = new Gson();
-        JSONMessage msg = gson.fromJson(jsonString, JSONMessage.class);
-
-
-        String type = msg.getMessageType();
-        Object messagebody = msg.getMessageBody();
-        switch (type){
-            case "HelloClient":
-                msg = new JSONMessage("HelloClient", messagebody);
-                return msg;
-
-            case "HelloServer":
-                msg = new JSONMessage("HelloServer", messagebody);
-                return msg;
-        }
-        return msg;
-    }
-
-      */
 
 }
