@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -114,25 +113,13 @@ public class UserThread extends Thread {
 
         switch (type) {
             case "HelloServer":
-                logger.info("Received Protocol:");
-                logger.info(type);
-                //System.out.println(messageBody);
-
                 // The messageBody which is Object is then downcasted to HelloServer class
                 HelloServer hs = (HelloServer) message.getMessageBody();
-                logger.info("Group: " + hs.getGroup());
-                logger.info("Protocol: " + hs.getProtocol());
-                logger.info("isAI: "+ hs.isAI());
+                logger.info("Received Protocol: " +type+ "\nGroup: " + hs.getGroup()+"\nProtocol: " + hs.getProtocol()+"\nisAI: "+ hs.isAI() );
 
-
-                Random r = new Random();
-                int low = 10;
-                int high = 100;
-                int result = r.nextInt(high-low) + low;
 
                 //Welcome Protocol
-
-                JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome("Your ID: ", result));
+                JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome(111));
                 logger.info(Multiplex.serialize(jsonMessage));
                 writer.println(Multiplex.serialize(jsonMessage));
                 writer.flush();

@@ -99,7 +99,7 @@ public class ReaderThread extends Thread {
             case "Welcome":
                 logger.info("Protocol: " + type);
                 Welcome wc = (Welcome) message.getMessageBody();
-                logger.info("ID: " + wc.getMessage() + wc.getId());
+                logger.info("ID: "+ wc.getId());
                 break;
 
         }

@@ -1,23 +1,12 @@
 package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONBody;
-import Utilities.JSONProtocol.JSONMessage;
 
 public class Welcome extends JSONBody {
 
-    public String message;
     private int id;
-    public Welcome(String message, int id){
-        this.message = message;
+    public Welcome(int id){
         this.id = id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public int getId() {
