@@ -87,16 +87,13 @@ public class ReaderThread extends Thread {
 
         switch (type) {
             case "HelloClient":
-                logger.info("Received Protocol:");
-                logger.info("Protocol: " + type);
-                //System.out.println(messageBody);
                 HelloClient hc = (HelloClient) message.getMessageBody();
-                logger.info("Protocol: " + hc.getProtocol());
+                logger.info("\n Received Protocol: "+type+ "\n Protocol#: "+hc.getProtocol());
                 client.connect(hc);
                 break;
             case "Welcome":
                 Welcome wc = (Welcome) message.getMessageBody();
-                logger.info("Protocol: " + type+"\n ID: "+ wc.getId());
+                logger.info("\n Received Protocol: " + type+"\n ID: "+ wc.getId());
                 break;
 
         }

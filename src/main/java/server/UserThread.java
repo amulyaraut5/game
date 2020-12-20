@@ -114,7 +114,7 @@ public class UserThread extends Thread {
             case "HelloServer":
                 // The messageBody which is Object is then downcasted to HelloServer class
                 HelloServer hs = (HelloServer) message.getMessageBody();
-                logger.info("Received Protocol: " + type + "\nGroup: " + hs.getGroup() + "\nProtocol: " + hs.getProtocol() + "\nisAI: " + hs.isAI());
+                logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
                     logger.warning("Protocols are not matching!");
