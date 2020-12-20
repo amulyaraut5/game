@@ -2,15 +2,33 @@ package Utilities.JSONProtocol;
 
 import Utilities.JSONProtocol.connection.HelloClient;
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+
 import java.lang.reflect.Type;
 
 /**
  * This abstract class is for serialization and deserialization of every message
  */
-public abstract class JSONMessage {
+public  class JSONMessage {
 
-    private String messageTyp = "default";
+    private String messageType = "default";
 
+    private Object messageBody;
+
+    public JSONMessage(String messageType, Object messageBody) {
+        this.messageType = messageType;
+        this.messageBody = messageBody;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public Object getMessageBody() {
+        return messageBody;
+    }
+
+    /*
     public String serialize(){
         Gson gson = new Gson();
         String json = gson.toJson(this);
@@ -45,7 +63,6 @@ public abstract class JSONMessage {
         this.messageTyp = type;
     }
 
-    //<-------------------------->
+     */
 
-    //<-------------------------->
 }
