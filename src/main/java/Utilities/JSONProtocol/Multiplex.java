@@ -1,7 +1,6 @@
 package Utilities.JSONProtocol;
 
 
-
 import Utilities.JSONProtocol.connection.HelloClient;
 import Utilities.JSONProtocol.connection.HelloServer;
 import Utilities.JSONProtocol.connection.Welcome;
@@ -9,23 +8,23 @@ import com.google.gson.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class Multiplex {
 
-    public static  String serialize(JSONMessage messageObj) throws IOException {
+    public static String serialize(JSONMessage messageObj) throws IOException {
         Gson gson = new Gson();
         String json = gson.toJson(messageObj);
         return json;
     }
 
 
-    public static JSONMessage deserialize(String jsonString){
-        Gson gson = new GsonBuilder().registerTypeAdapter(JSONMessage.class,new Deserializer()).create();
+    public static JSONMessage deserialize(String jsonString) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(JSONMessage.class, new Deserializer()).create();
         JSONMessage obj = gson.fromJson(jsonString, JSONMessage.class);
         return obj;
     }
-    static class Deserializer implements JsonDeserializer<JSONMessage>{
+
+    static class Deserializer implements JsonDeserializer<JSONMessage> {
 
         @Override
         public JSONMessage deserialize(JsonElement jsonElement, Type typeofT,
@@ -34,14 +33,14 @@ public class Multiplex {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonElement type = jsonObject.get("messageType");
             JsonObject messageBody = jsonObject.get("messageBody").getAsJsonObject();
-            if(type!= null){
-                switch(type.getAsString()){
+            if (type != null) {
+                switch (type.getAsString()) {
                     case "HelloServer":
                         //return jsonDeserializationContext.deserialize(jsonObject,HelloClient.class);
 
-                        HelloServer hs =new HelloServer(messageBody.get("group").getAsString(),
-                                messageBody.get("isAI").getAsBoolean(),
-                                messageBody.get("protocol").getAsString());
+                        HelloServer hs = new HelloServer(messageBody.get("protocol").getAsDouble(),
+                                messageBody.get("group").getAsString(),
+                                messageBody.get("isAI").getAsBoolean());
                         return new JSONMessage("HelloServer", hs);
                     case "HelloClient":
                         //return jsonDeserializationContext.deserialize(jsonObject,HelloClient.class);
