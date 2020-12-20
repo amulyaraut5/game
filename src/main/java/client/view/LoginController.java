@@ -49,7 +49,7 @@ public class LoginController {
     }
 
    public void initialize() {
-       client = new Client(this, "localhost", 5444);
+       client = new Client(this, "localhost", 5544);
     }
 
     @FXML

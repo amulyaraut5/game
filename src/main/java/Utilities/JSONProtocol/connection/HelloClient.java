@@ -1,6 +1,23 @@
 package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONMessage;
+public class HelloClient {
+    String protocol;
+
+    public HelloClient(String protocol) {
+
+        this.protocol = protocol;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+}
+
+/*
+package Utilities.JSONProtocol.connection;
+
+import Utilities.JSONProtocol.JSONMessage;
 
 public class HelloClient extends JSONMessage {
 
@@ -26,3 +43,4 @@ public class HelloClient extends JSONMessage {
 
 
 }
+ */
