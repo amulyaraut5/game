@@ -3,13 +3,7 @@ package Utilities.JSONProtocol.connection;
 import Utilities.JSONProtocol.JSONMessage;
 
 public class Welcome  {
-    /*
-    Random r = new Random();
-    int low = 10;
-    int high = 100;
-    int result = r.nextInt(high-low) + low;
 
- */
     public String message;
     private int id;
     public Welcome(String message, int id){
