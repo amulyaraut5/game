@@ -104,6 +104,12 @@ public class UserThread extends Thread {
         }
         if (!exit) disconnect();
     }
+    /**
+     * Based on the messageType the various protocol are differentiated and Object class type
+     * is downcasted to respective class.
+     * @param message
+     * @throws ClassNotFoundException
+     */
 
     private void handleMessage(JSONMessage message) throws IOException {
         String type = message.getMessageType();
