@@ -81,5 +81,3 @@ import com.google.gson.Gson;
             this.messageTyp = type;
         }
     }*/
-
-}
