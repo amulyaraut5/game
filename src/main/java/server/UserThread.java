@@ -60,6 +60,8 @@ public class UserThread extends Thread {
      * Turns a String into a date or null
      *
      * @param date as String
+     *
+     *
      * @return null if String is not a valid date or the date
      */
     public static LocalDate turnIntoDate(String date) {
@@ -77,14 +79,10 @@ public class UserThread extends Thread {
      */
     @Override
     public void run() {
-        Gson gson = new Gson();
-
-        String serverMessage;
         try {
 
-            //<------------------------->
+            // HelloClient protocol is first serialized and sent through socket to Client.
             System.out.println("Sent Protocol:");
-
             JSONMessage jsonMessage = new JSONMessage("HelloClient",new HelloClient("0.1"));
             System.out.println(Multiplex.serialize(jsonMessage));
             writer.println(Multiplex.serialize(jsonMessage));
@@ -96,6 +94,8 @@ public class UserThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
+                // After the reader object reads the serialized message from the socket it is then
+                // deserialized and handled in handleMessage method.
                 JSONMessage msg = Multiplex.deserialize(text);
                 handleMessage(msg);
 
@@ -112,23 +112,26 @@ public class UserThread extends Thread {
 
         //Object messageBody = message.getMessageBody();
 
-
-
         switch (type) {
             case "HelloServer":
                 System.out.println("Received Protocol:");
                 System.out.println(type);
                 //System.out.println(messageBody);
+
+                // The messageBody which is Object is then downcasted to HelloServer class
                 HelloServer hs = (HelloServer) message.getMessageBody();
                 System.out.println("Group: " + hs.getGroup());
                 System.out.println("Protocol: " + hs.getProtocol());
                 System.out.println("isAI: "+ hs.isAI());
 
-                //Welcome Protocol
+
                 Random r = new Random();
                 int low = 10;
                 int high = 100;
                 int result = r.nextInt(high-low) + low;
+
+                //Welcome Protocol
+
                 JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome("Your ID: ", result));
                 System.out.println(Multiplex.serialize(jsonMessage));
                 writer.println(Multiplex.serialize(jsonMessage));
