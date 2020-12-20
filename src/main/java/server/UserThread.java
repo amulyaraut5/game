@@ -82,9 +82,9 @@ public class UserThread extends Thread {
         try {
 
             // HelloClient protocol is first serialized and sent through socket to Client.
-            System.out.println("Sent Protocol:");
+            logger.info("Sent Protocol:");
             JSONMessage jsonMessage = new JSONMessage("HelloClient",new HelloClient("0.1"));
-            System.out.println(Multiplex.serialize(jsonMessage));
+            logger.info(Multiplex.serialize(jsonMessage));
             writer.println(Multiplex.serialize(jsonMessage));
             writer.flush();
             //<------------------------->
@@ -114,15 +114,15 @@ public class UserThread extends Thread {
 
         switch (type) {
             case "HelloServer":
-                System.out.println("Received Protocol:");
-                System.out.println(type);
+                logger.info("Received Protocol:");
+                logger.info(type);
                 //System.out.println(messageBody);
 
                 // The messageBody which is Object is then downcasted to HelloServer class
                 HelloServer hs = (HelloServer) message.getMessageBody();
-                System.out.println("Group: " + hs.getGroup());
-                System.out.println("Protocol: " + hs.getProtocol());
-                System.out.println("isAI: "+ hs.isAI());
+                logger.info("Group: " + hs.getGroup());
+                logger.info("Protocol: " + hs.getProtocol());
+                logger.info("isAI: "+ hs.isAI());
 
 
                 Random r = new Random();
@@ -133,7 +133,7 @@ public class UserThread extends Thread {
                 //Welcome Protocol
 
                 JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome("Your ID: ", result));
-                System.out.println(Multiplex.serialize(jsonMessage));
+                logger.info(Multiplex.serialize(jsonMessage));
                 writer.println(Multiplex.serialize(jsonMessage));
                 writer.flush();
                 break;

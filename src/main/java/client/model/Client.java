@@ -126,7 +126,7 @@ public class Client {
         } catch (IOException e) {
             logger.severe(e.getMessage());
         }
-        System.out.println("Type \"bye\" to exit.");
+        logger.info("Type \"bye\" to exit.");
     }
 
 
