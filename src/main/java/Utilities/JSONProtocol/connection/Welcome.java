@@ -1,8 +1,9 @@
 package Utilities.JSONProtocol.connection;
 
+import Utilities.JSONProtocol.JSONBody;
 import Utilities.JSONProtocol.JSONMessage;
 
-public class Welcome {
+public class Welcome extends JSONBody {
 
     public String message;
     private int id;

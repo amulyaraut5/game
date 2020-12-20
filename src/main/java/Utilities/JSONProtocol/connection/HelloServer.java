@@ -1,6 +1,8 @@
 package Utilities.JSONProtocol.connection;
 
-public class HelloServer {
+import Utilities.JSONProtocol.JSONBody;
+
+public class HelloServer extends JSONBody {
 
     private String group;
 

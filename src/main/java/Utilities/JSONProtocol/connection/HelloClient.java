@@ -1,7 +1,8 @@
 package Utilities.JSONProtocol.connection;
 
+import Utilities.JSONProtocol.JSONBody;
 import Utilities.JSONProtocol.JSONMessage;
-public class HelloClient {
+public class HelloClient extends JSONBody {
     String protocol;
 
     public HelloClient(String protocol) {

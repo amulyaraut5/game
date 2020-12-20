@@ -1,11 +1,12 @@
 package Utilities.JSONProtocol.chat;
 
+import Utilities.JSONProtocol.JSONBody;
 import Utilities.JSONProtocol.JSONMessage;
 
 /**
  * Class for messages with the type SendChat
  */
-public class SendChat {
+public class SendChat extends JSONBody {
 }
 
 /*

@@ -1,11 +1,12 @@
 package Utilities.JSONProtocol.chat;
 
+import Utilities.JSONProtocol.JSONBody;
 import Utilities.JSONProtocol.JSONMessage;
 
 /**
  *
  */
-public class ReceivedChat {
+public class ReceivedChat extends JSONBody {
 }
     /*
     package Utilities.JSONProtocol.chat;
