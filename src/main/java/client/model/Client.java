@@ -1,6 +1,8 @@
 package client.model;
 
 import Utilities.JSONProtocol.JSONMessage;
+import Utilities.JSONProtocol.connection.HelloClient;
+import Utilities.JSONProtocol.connection.HelloServer;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;
@@ -66,6 +68,11 @@ public class Client {
         logger.setLevel(Level.ALL);
 
         establishConnection();
+    }
+
+    public void connect(HelloClient hc) {
+        JSONMessage msg = new JSONMessage("HelloServer", new HelloServer(0.1, "TolleTrolle", false));
+        sendUserInput(msg);
     }
 
 

@@ -2,7 +2,7 @@ package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONMessage;
 
-public class Welcome  {
+public class Welcome {
 
     public String message;
     private int id;

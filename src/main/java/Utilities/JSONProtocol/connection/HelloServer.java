@@ -1,19 +1,17 @@
 package Utilities.JSONProtocol.connection;
 
-import Utilities.JSONProtocol.JSONMessage;
-
 public class HelloServer {
 
     private String group;
 
     private Boolean isAI;
 
-    private String protocol;
+    private double protocol;
 
-    public HelloServer(String group, Boolean isAI, String protocol) {
+    public HelloServer(double protocol, String group, Boolean isAI) {
+        this.protocol = protocol;
         this.group = group;
         this.isAI = isAI;
-        this.protocol = protocol;
     }
 
     public String getGroup() {
@@ -24,7 +22,7 @@ public class HelloServer {
         return isAI;
     }
 
-    public String getProtocol() {
+    public double getProtocol() {
         return protocol;
     }
 }

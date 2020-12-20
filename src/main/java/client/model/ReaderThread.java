@@ -4,7 +4,6 @@ import Utilities.JSONProtocol.JSONMessage;
 import Utilities.JSONProtocol.Multiplex;
 import Utilities.JSONProtocol.connection.HelloClient;
 import Utilities.JSONProtocol.connection.Welcome;
-import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -83,13 +82,14 @@ public class ReaderThread extends Thread {
         switch (type) {
             case "HelloClient":
                 System.out.println("Received Protocol:");
-                System.out.println("Protocol: "+ type);
+                System.out.println("Protocol: " + type);
                 //System.out.println(messageBody);
                 HelloClient hc = (HelloClient) message.getMessageBody();
                 System.out.println("Protocol: " + hc.getProtocol());
+                client.connect(hc);
                 break;
             case "Welcome":
-                System.out.println("Protocol: "+ type);
+                System.out.println("Protocol: " + type);
                 Welcome wc = (Welcome) message.getMessageBody();
                 System.out.println("ID: " + wc.getMessage() + wc.getId());
                 break;
