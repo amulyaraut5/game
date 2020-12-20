@@ -21,13 +21,4 @@ public class SendChat extends JSONMessage {
         messageBody.message = message;
         messageBody.to = to;
     }
-
-    @Override
-    public void clientMessage() {
-    }
-
-    @Override
-    public void serverMessage() {
-    }
-
 }

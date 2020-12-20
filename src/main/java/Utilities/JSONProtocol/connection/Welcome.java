@@ -6,7 +6,7 @@ public class Welcome extends JSONMessage {
 
     private ID messageBody = new ID();
 
-    public Welcome(){
+    public Welcome() {
         setType("Welcome");
         messageBody.setId(); //TODO generate ID!
     }
@@ -18,16 +18,4 @@ public class Welcome extends JSONMessage {
     public void setMessageBody(ID messageBody) {
         this.messageBody = messageBody;
     }
-
-    @Override
-    public void clientMessage() {
-
-    }
-
-    @Override
-    public void serverMessage() {
-
-    }
-
-
 }

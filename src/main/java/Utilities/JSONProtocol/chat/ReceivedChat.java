@@ -23,15 +23,4 @@ public class ReceivedChat extends JSONMessage {
         messageBody.from = from;
         messageBody.privat = privat;
     }
-
-
-    @Override
-    public void clientMessage() {
-    }
-
-    @Override
-    public void serverMessage() {
-    }
-
-
 }

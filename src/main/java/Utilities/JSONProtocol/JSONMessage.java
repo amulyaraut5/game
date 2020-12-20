@@ -1,36 +1,41 @@
 package Utilities.JSONProtocol;
 
 import Utilities.JSONProtocol.connection.HelloClient;
+import Utilities.JSONProtocol.connection.HelloServer;
 import com.google.gson.Gson;
-import java.lang.reflect.Type;
 
 /**
  * This abstract class is for serialization and deserialization of every message
  */
-public abstract class JSONMessage {
+public class JSONMessage {
 
     private String messageTyp = "default";
+    private static Gson gson = new Gson();
 
-    public String serialize(){
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
-        return json;
-    }
-    //--------->
-    //change later
-    public static JSONMessage deserialize(String jsonString){
-        Gson gson = new Gson();
-        JSONMessage obj = gson.fromJson(jsonString, JSONMessage.class);
-        return obj;
+    public String serialize() {
+        return gson.toJson(this);//TODO test if this works correctly for specific JSON-Messages
     }
 
+    public static JSONMessage deserialize(String jsonString) {
+        System.out.println(jsonString);
+        JSONMessage msg = gson.fromJson(jsonString, JSONMessage.class);
 
-    //---------->
+        String type = msg.getType();
 
-    //handle the received messages for client side and server side
-    //Maybe with switch case, different methods in classes for different cases of messages
-    public abstract void clientMessage();
-    public abstract void serverMessage();
+        JSONMessage concreteMessage;
+
+        switch (type) {
+            case "HelloClient":
+                concreteMessage = gson.fromJson(jsonString, HelloClient.class);
+                break;
+            case "HelloServer":
+                concreteMessage = gson.fromJson(jsonString, HelloServer.class);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+        return concreteMessage;
+    }
 
     @Override
     public String toString() {
@@ -44,8 +49,4 @@ public abstract class JSONMessage {
     public void setType(String type) {
         this.messageTyp = type;
     }
-
-    //<-------------------------->
-
-    //<-------------------------->
 }

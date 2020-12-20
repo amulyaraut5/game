@@ -55,16 +55,15 @@ public class ReaderThread extends Thread {
      */
     @Override
     public void run() {
-        Gson gson = new Gson();
         while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
-                if (text == null) {
+                if (text == null) { //IOS does not throw an IOException instead of Windows
                     throw new IOException();
                 }
                 JSONMessage jsonMessage = JSONMessage.deserialize(text);
-
                 handleMessage(jsonMessage);
+
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
@@ -79,9 +78,10 @@ public class ReaderThread extends Thread {
             case "HelloClient":
 
                 System.out.println("Received Protocol:");
-                HelloClient.MessageBody messageBody = new HelloClient.MessageBody();
+                HelloClient helloClient = (HelloClient) msg;
+                HelloClient.MessageBody messageBody = helloClient.getMessageBody();
                 System.out.println(msg.getType());
-                System.out.println("Protocol: "+ messageBody.getProtocol());
+                System.out.println("Protocol: " + messageBody.getProtocol());
 
                 break;
         }       // show message in chatbox instead of console

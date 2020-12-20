@@ -20,18 +20,4 @@ public class HelloServer extends JSONMessage {
         messageBody.isAI = isAI;
 
     }
-
-    @Override
-    public void clientMessage() {
-
-    }
-
-    @Override
-    public void serverMessage() {
-
-    }
-
-
-
-
 }
