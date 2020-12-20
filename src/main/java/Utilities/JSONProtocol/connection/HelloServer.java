@@ -14,7 +14,6 @@ public class HelloServer extends JSONMessage {
 
     public HelloServer(double protocol, String group, boolean isAI){
         setType("HelloServer");
-
         messageBody.protocol = protocol;
         messageBody.group = group;
         messageBody.isAI = isAI;

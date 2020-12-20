@@ -1,8 +1,5 @@
 package server;
 
-import Utilities.JSONProtocol.JSONMessage;
-import Utilities.JSONProtocol.chat.ReceivedChat;
-
 import java.time.LocalDate;
 
 /**

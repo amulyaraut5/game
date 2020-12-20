@@ -1,4 +1,4 @@
-package Utilities.JSONProtocol.chat;
+package Utilities.JSONProtocol;
 
 import Utilities.JSONProtocol.JSONMessage;
 
@@ -8,7 +8,16 @@ import Utilities.JSONProtocol.JSONMessage;
 public class ReceivedChat extends JSONMessage {
 
     //class for the Body of the ReceivedChat
-    private class MessageBody{
+    public class MessageBody{
+        @Override
+        public String toString() {
+            return "MessageBody{" +
+                    "message='" + message + '\'' +
+                    ", from='" + from + '\'' +
+                    ", privat=" + privat +
+                    '}';
+        }
+
         public String message;
         public String from;
         public boolean privat;
@@ -31,5 +40,12 @@ public class ReceivedChat extends JSONMessage {
 
     @Override
     public void serverMessage() {
+    }
+
+    @Override
+    public String toString() {
+        return "ReceivedChat{" +
+                  messageBody +
+                '}';
     }
 }
