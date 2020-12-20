@@ -45,7 +45,7 @@ public class Multiplex {
                     case "HelloClient":
                         //return jsonDeserializationContext.deserialize(jsonObject,HelloClient.class);
 
-                        HelloClient hc = new HelloClient((messageBody.get("protocol").getAsString()));
+                        HelloClient hc = new HelloClient((messageBody.get("protocol").getAsDouble()));
                         return new JSONMessage("HelloClient", hc);
                     case "Welcome":
                         Welcome wc = new Welcome(messageBody.get("id").getAsInt());

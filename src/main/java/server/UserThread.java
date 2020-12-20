@@ -81,7 +81,7 @@ public class UserThread extends Thread {
 
             // HelloClient protocol is first serialized and sent through socket to Client.
             logger.info("Sent Protocol:");
-            JSONMessage jsonMessage = new JSONMessage("HelloClient", new HelloClient("0.1"));
+            JSONMessage jsonMessage = new JSONMessage("HelloClient", new HelloClient(0.1));
             logger.info(Multiplex.serialize(jsonMessage));
             writer.println(Multiplex.serialize(jsonMessage));
             writer.flush();

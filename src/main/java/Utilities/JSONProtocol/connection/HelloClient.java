@@ -1,16 +1,15 @@
 package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONBody;
-import Utilities.JSONProtocol.JSONMessage;
 public class HelloClient extends JSONBody {
-    String protocol;
+    double protocol;
 
-    public HelloClient(String protocol) {
+    public HelloClient(double protocol) {
 
         this.protocol = protocol;
     }
 
-    public String getProtocol() {
+    public double getProtocol() {
         return protocol;
     }
 }
