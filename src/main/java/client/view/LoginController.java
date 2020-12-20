@@ -17,8 +17,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class LoginController {
-    private static Stage loginStage;
-    private static Client client;
+    private Stage loginStage;
+    private Client client;
     private LocalDate date;
     private String userName;
     @FXML
@@ -36,12 +36,12 @@ public class LoginController {
     public LoginController() {
     }
 
-    public static void setStage(Stage loginStage) {
-        LoginController.loginStage = loginStage;
+    public void setStage(Stage loginStage) {
+        this.loginStage = loginStage;
     }
 
-    public static void setClient(Client client) {
-        LoginController.client = client;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void close() {
@@ -49,7 +49,7 @@ public class LoginController {
     }
 
    public void initialize() {
-       client = new Client(this, "localhost", 5445);
+       client = new Client(this, "localhost", 5544);
     }
 
     @FXML

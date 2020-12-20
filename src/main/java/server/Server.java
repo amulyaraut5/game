@@ -1,7 +1,7 @@
 package server;
 
-import Utilities.JSONProtocol.Deserialize;
-import Utilities.JSONProtocol.ReceivedChat;
+import Utilities.JSONProtocol.chat.ReceivedChat;
+import Utilities.JSONProtocol.chat.SendChat;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,7 +19,7 @@ public class Server {
     /**
      * list of users that gets added after every new instance of user is created
      */
-    private static final ArrayList<User> users = new ArrayList<>(10);
+    private final ArrayList<User> users = new ArrayList<>(10);
     /**
      * port where the server is bound to listen
      */
@@ -44,15 +44,8 @@ public class Server {
      * Main method
      */
     public static void main(String[] args) {
-        //To try out if serialization works:
-        ReceivedChat receivedChat = new ReceivedChat("Hallo", "Annika", true);
-        System.out.println(receivedChat.serialize());
-        //To try out if deserialization works:
-        String json;
-        json = receivedChat.serialize();
-        System.out.println(receivedChat.deserialize(json));
 
-        int port = 5444;
+        int port = 5544;
 
         Server server = new Server(port);
         server.start();

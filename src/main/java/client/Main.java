@@ -25,7 +25,7 @@ public class Main extends Application {
 		loginStage.setResizable(false);
 		loginStage.setScene(new Scene(root));
 		loginStage.show();
-		LoginController.setStage(loginStage);
+		loginController.setStage(loginStage);
 
 		loginStage.setOnCloseRequest(event -> {
 			loginController.close();

@@ -1,6 +1,10 @@
 package server;
 
 import Utilities.JSONProtocol.JSONMessage;
+import Utilities.JSONProtocol.Multiplex;
+import Utilities.JSONProtocol.connection.HelloClient;
+import Utilities.JSONProtocol.connection.HelloServer;
+import Utilities.JSONProtocol.connection.Welcome;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -8,6 +12,7 @@ import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,26 +81,61 @@ public class UserThread extends Thread {
 
         String serverMessage;
         try {
+
+            //<------------------------->
+            System.out.println("Sent Protocol:");
+
+            JSONMessage jsonMessage = new JSONMessage("HelloClient",new HelloClient("0.1"));
+            System.out.println(Multiplex.serialize(jsonMessage));
+            writer.println(Multiplex.serialize(jsonMessage));
+            writer.flush();
+            //<------------------------->
+
             while (!exit) {
                 String text = reader.readLine();
                 if (text == null) {
                     throw new IOException();
                 }
-                JSONMessage msg = gson.fromJson(text, JSONMessage.class);
+                JSONMessage msg = Multiplex.deserialize(text);
+                handleMessage(msg);
 
-                String type = msg.getType();
-                switch (type) {
-                    case "checkName":
-                       //TODO logIn((String) msg.getBody());
-                    case "userMessage":
-                        //TODO server.communicate("[" + user + "]: " + msg.getBody(), user);
-                }
             }
 
         } catch (IOException ex) {
             disconnect(ex);
         }
         if (!exit) disconnect();
+    }
+
+    private void handleMessage(JSONMessage message) throws IOException {
+        String type = message.getMessageType();
+
+        //Object messageBody = message.getMessageBody();
+
+
+
+        switch (type) {
+            case "HelloServer":
+                System.out.println("Received Protocol:");
+                System.out.println(type);
+                //System.out.println(messageBody);
+                HelloServer hs = (HelloServer) message.getMessageBody();
+                System.out.println("Group: " + hs.getGroup());
+                System.out.println("Protocol: " + hs.getProtocol());
+                System.out.println("isAI: "+ hs.isAI());
+
+                //Welcome Protocol
+                Random r = new Random();
+                int low = 10;
+                int high = 100;
+                int result = r.nextInt(high-low) + low;
+                JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome("Your ID: ", result));
+                System.out.println(Multiplex.serialize(jsonMessage));
+                writer.println(Multiplex.serialize(jsonMessage));
+                writer.flush();
+                break;
+        }
+
     }
 
     /**

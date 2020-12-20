@@ -10,4 +10,5 @@ module roborally {
     opens Utilities to com.google.gson;
     opens Utilities.JSONProtocol to com.google.gson;
     opens Utilities.JSONProtocol.chat to com.google.gson;
+    opens Utilities.JSONProtocol.connection to com.google.gson;
 }
