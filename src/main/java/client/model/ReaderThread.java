@@ -1,7 +1,9 @@
 package client.model;
 
 import Utilities.JSONProtocol.JSONMessage;
+import Utilities.JSONProtocol.Multiplex;
 import Utilities.JSONProtocol.connection.HelloClient;
+import Utilities.JSONProtocol.connection.Welcome;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -55,36 +57,46 @@ public class ReaderThread extends Thread {
      */
     @Override
     public void run() {
-        Gson gson = new Gson();
+
         while (!isInterrupted()) {
             try {
                 String text = bReader.readLine();
                 if (text == null) {
                     throw new IOException();
                 }
-                JSONMessage jsonMessage = JSONMessage.deserialize(text);
+                JSONMessage jsonMessage = Multiplex.deserialize(text);
 
                 handleMessage(jsonMessage);
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
             }
         }
     }
 
-    private void handleMessage(JSONMessage msg) throws IOException {
-        String type = msg.getType();
+    private void handleMessage(JSONMessage message) throws ClassNotFoundException {
+
+        String type = message.getMessageType();
+
+        //Object messageBody = message.getMessageBody();
 
         switch (type) {
             case "HelloClient":
-
                 System.out.println("Received Protocol:");
-                HelloClient.MessageBody messageBody = new HelloClient.MessageBody();
-                System.out.println(msg.getType());
-                System.out.println("Protocol: "+ messageBody.getProtocol());
-
+                System.out.println("Protocol: "+ type);
+                //System.out.println(messageBody);
+                HelloClient hc = (HelloClient) message.getMessageBody();
+                System.out.println("Protocol: " + hc.getProtocol());
                 break;
-        }       // show message in chatbox instead of console
+            case "Welcome":
+                System.out.println("Protocol: "+ type);
+                Welcome wc = (Welcome) message.getMessageBody();
+                System.out.println("ID: " + wc.getMessage() + wc.getId());
+                break;
+
+        }
+
+    }       // show message in chatbox instead of console
         /*
         String type = msg.getType().toString();
         String test = msg.serialize();
@@ -99,5 +111,4 @@ public class ReaderThread extends Thread {
         }
 
          */
-    }
 }

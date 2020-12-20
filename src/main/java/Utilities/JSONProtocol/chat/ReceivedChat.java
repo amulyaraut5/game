@@ -3,10 +3,10 @@ package Utilities.JSONProtocol.chat;
 import Utilities.JSONProtocol.JSONMessage;
 
 /**
- * Class for messages with the type ReceivedChat
+ *
  */
-public class ReceivedChat extends JSONMessage {
-
+public class ReceivedChat {
+    /*
     //class for the Body of the ReceivedChat
     private class MessageBody{
         public String message;
@@ -32,6 +32,8 @@ public class ReceivedChat extends JSONMessage {
     @Override
     public void serverMessage() {
     }
+
+     */
 
 
 }

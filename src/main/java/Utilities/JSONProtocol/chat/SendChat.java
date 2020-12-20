@@ -5,8 +5,8 @@ import Utilities.JSONProtocol.JSONMessage;
 /**
  * Class for messages with the type SendChat
  */
-public class SendChat extends JSONMessage {
-
+public class SendChat  {
+    /*
     //class for the Body of SendChat
     private class MessageBody{
         public String message;
@@ -29,5 +29,7 @@ public class SendChat extends JSONMessage {
     @Override
     public void serverMessage() {
     }
+
+     */
 
 }

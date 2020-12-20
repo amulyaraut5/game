@@ -2,8 +2,37 @@ package Utilities.JSONProtocol.connection;
 
 import Utilities.JSONProtocol.JSONMessage;
 
-public class HelloServer extends JSONMessage {
+public class HelloServer  {
 
+    private String group;
+
+    private Boolean isAI;
+
+    private String protocol;
+
+    public HelloServer(String group, Boolean isAI, String protocol) {
+        this.group = group;
+        this.isAI = isAI;
+        this.protocol = protocol;
+    }
+    public String getGroup() {
+        return group;
+    }
+
+    public Boolean isAI() {
+        return isAI;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+
+
+
+
+
+    /*
     private class MessageBody{
         public double protocol;
         public String group;
@@ -30,6 +59,8 @@ public class HelloServer extends JSONMessage {
     public void serverMessage() {
 
     }
+
+     */
 
 
 

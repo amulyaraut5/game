@@ -44,11 +44,8 @@ public class Server {
      * Main method
      */
     public static void main(String[] args) {
-        //To try out if serialization works:
-        ReceivedChat receivedChat = new ReceivedChat("Hallo", "Annika", true);
-        System.out.println(receivedChat.serialize());
 
-        int port = 5444;
+        int port = 5544;
 
         Server server = new Server(port);
         server.start();
