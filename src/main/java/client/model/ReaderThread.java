@@ -63,8 +63,10 @@ public class ReaderThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
-                JSONMessage jsonMessage = Multiplex.deserialize(text);
+                // After the reader object reads the serialized message from the socket it is then
+                // deserialized and handled in handleMessage method.
 
+                JSONMessage jsonMessage = Multiplex.deserialize(text);
                 handleMessage(jsonMessage);
             } catch (IOException | ClassNotFoundException e) {
                 if (!isInterrupted()) client.disconnect(e);
@@ -73,6 +75,12 @@ public class ReaderThread extends Thread {
         }
     }
 
+    /**
+     * Based on the messageType the various protocol are differentiated and Object class type
+     * is downcasted to respective class.
+     * @param message
+     * @throws ClassNotFoundException
+     */
     private void handleMessage(JSONMessage message) throws ClassNotFoundException {
 
         String type = message.getMessageType();
