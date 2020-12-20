@@ -97,9 +97,8 @@ public class ReaderThread extends Thread {
                 client.connect(hc);
                 break;
             case "Welcome":
-                logger.info("Protocol: " + type);
                 Welcome wc = (Welcome) message.getMessageBody();
-                logger.info("ID: "+ wc.getId());
+                logger.info("Protocol: " + type+"\n ID: "+ wc.getId());
                 break;
 
         }

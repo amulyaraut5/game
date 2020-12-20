@@ -28,6 +28,7 @@ public class UserThread extends Thread {
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
+    private final double protocol = 0.1;
     /**
      * Logger to log information/warning
      */
@@ -59,8 +60,6 @@ public class UserThread extends Thread {
      * Turns a String into a date or null
      *
      * @param date as String
-     *
-     *
      * @return null if String is not a valid date or the date
      */
     public static LocalDate turnIntoDate(String date) {
@@ -82,7 +81,7 @@ public class UserThread extends Thread {
 
             // HelloClient protocol is first serialized and sent through socket to Client.
             logger.info("Sent Protocol:");
-            JSONMessage jsonMessage = new JSONMessage("HelloClient",new HelloClient("0.1"));
+            JSONMessage jsonMessage = new JSONMessage("HelloClient", new HelloClient("0.1"));
             logger.info(Multiplex.serialize(jsonMessage));
             writer.println(Multiplex.serialize(jsonMessage));
             writer.flush();
@@ -115,15 +114,18 @@ public class UserThread extends Thread {
             case "HelloServer":
                 // The messageBody which is Object is then downcasted to HelloServer class
                 HelloServer hs = (HelloServer) message.getMessageBody();
-                logger.info("Received Protocol: " +type+ "\nGroup: " + hs.getGroup()+"\nProtocol: " + hs.getProtocol()+"\nisAI: "+ hs.isAI() );
-
-
-                //Welcome Protocol
-                JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome(111));
-                logger.info(Multiplex.serialize(jsonMessage));
-                writer.println(Multiplex.serialize(jsonMessage));
-                writer.flush();
-                break;
+                logger.info("Received Protocol: " + type + "\nGroup: " + hs.getGroup() + "\nProtocol: " + hs.getProtocol() + "\nisAI: " + hs.isAI());
+                if (!(hs.getProtocol() == protocol)) {
+                    //TODO send Error and disconnect the client
+                    logger.warning("Protocols are not matching!");
+                } else {
+                    //TODO set ID
+                    JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome(111));
+                    logger.info(Multiplex.serialize(jsonMessage));
+                    writer.println(Multiplex.serialize(jsonMessage));
+                    writer.flush();
+                    break;
+                }
         }
 
     }
@@ -140,10 +142,10 @@ public class UserThread extends Thread {
 
 
     private void logIn(String userName) {
-        if (!server.isAvailable(userName)){
+        if (!server.isAvailable(userName)) {
 
             //TODO sendMessage(new JSONMessage("userNameTaken", "true"));
-        //else {
+            //else {
             //sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
             welcome();
