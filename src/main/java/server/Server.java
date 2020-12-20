@@ -1,8 +1,5 @@
 package server;
 
-import Utilities.JSONProtocol.chat.ReceivedChat;
-import Utilities.JSONProtocol.chat.SendChat;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,12 +21,6 @@ public class Server {
      * port where the server is bound to listen
      */
     private final int port;
-
-    /**
-     * instance of GameController for the communication between the ChatServer and GameController
-     */
-    //private final GameController gameController = new GameController(this);
-
 
     /**
      * Constructor for the ChatServer class which initialises the port number.
@@ -118,42 +109,6 @@ public class Server {
             }
         }
     }
-
-    /**
-     * Method to check if input for sending a direct message is valid.
-     * It cuts the assigns username out of the message and checks if it was entered and/or
-     * corresponds to an existing username.
-     *
-     * @param message String of user input in form '@<username> text'
-     * @param sender  user who sent the direct message
-     * @return shows if user input for direct message was valid
-     */
-    /*
-    public boolean communicateDirect(String message, User sender) {
-        String userName = (message.split(" ", 2)[0]);
-        String destinationUser = userName.substring(1);
-        String messageUser = message.split(" ", 2)[1];
-        if (messageUser.length() == 0) return false;
-        for (User user : users) {
-            if (user.getName().equals(destinationUser)) {
-                user.message("[" + sender + " (direct)]: " + messageUser);
-                return true;
-            }
-        }
-        return false;
-    }*/
-
-
-    /**
-     * It sends messages to all the user.
-     *
-     * @param message message to be sent.
-     */
-    /*
-    public void communicateAll(String message) {
-        for (User user : users)
-            user.message(message);
-    }*/
 
     /**
      * It checks if the username is already used of another user.

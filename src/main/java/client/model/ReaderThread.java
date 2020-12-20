@@ -85,8 +85,6 @@ public class ReaderThread extends Thread {
 
         String type = message.getMessageType();
 
-        //Object messageBody = message.getMessageBody();
-
         switch (type) {
             case "HelloClient":
                 logger.info("Received Protocol:");

@@ -104,21 +104,5 @@ public class User {
         this.name = name;
     }
 
-    /**
-     * Gets the users date of birth
-     *
-     * @return time of the user's last date
-     */
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
 
-    /**
-     * Sets the users date of birth
-     *
-     * @param lastDate date of the user's birth
-     */
-    public synchronized void setBirthDate(LocalDate lastDate) {
-        this.birthDate = lastDate;
-    }
 }
