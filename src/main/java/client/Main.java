@@ -68,6 +68,7 @@ public class Main extends Application {
         });
 
     }
+
     public void constructLoginStage() {
         menuStage.setTitle("RoboRally - Login");
         menuStage.setResizable(false);
@@ -103,7 +104,7 @@ public class Main extends Application {
         //login
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginView.fxml"));
         login = loginLoader.load();
-         loginController = loginLoader.getController();
+        loginController = loginLoader.getController();
         loginController.setMain(this);
 
         //game

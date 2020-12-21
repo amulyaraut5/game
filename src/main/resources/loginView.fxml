@@ -10,19 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="client.view.LoginController">
+<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LoginController">
     <children>
-      <VBox alignment="CENTER" layoutX="319.0" layoutY="230.0" spacing="40.0">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="40.0">
          <children>
-            <VBox spacing="20.0">
+            <VBox alignment="CENTER" prefWidth="0.0" spacing="20.0">
                <children>
-                    <Label id="label" text="Welcome to Roborally">
+                    <Label id="label" alignment="CENTER" contentDisplay="CENTER" text="Welcome to Roborally">
                         <font>
                             <Font size="37.0" />
                         </font>
                     </Label>
-                    <Label id="label" text="Before we begin we need to implement your Player class">
+                    <Label id="label" alignment="CENTER" contentDisplay="CENTER" text="Before we begin we need to implement your Player class">
                         <font>
                             <Font size="14.0" />
                         </font>
