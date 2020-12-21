@@ -97,6 +97,13 @@ public class ReaderThread extends Thread {
                 client.printMessage(labelMessage);
                 logger.info(labelMessage);
                 break;
+            case "Error":
+                logger.info("error!");
+                break;
+            default:
+                logger.info("Something went wrong");
+                //TODO
+
 
         }
 
