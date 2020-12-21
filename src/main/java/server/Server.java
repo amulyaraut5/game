@@ -142,7 +142,10 @@ public class Server {
         users.remove(user);
     }
 
-
+    /**
+     * This method creates an id which is not assigned to any user yet
+     * @return a new ID for the user
+     */
     public int getNewID() {
         int newID;
         do {
