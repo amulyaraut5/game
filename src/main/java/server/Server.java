@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class Server {
@@ -21,7 +22,14 @@ public class Server {
      * port where the server is bound to listen
      */
     private final int port;
-
+    /**
+     * idGenerator to give id´s to the users
+     */
+    private Random idGenerator = new Random();
+    /**
+     * Array with all the id´s that already exist
+     */
+    ArrayList<Integer> idNumbers = new ArrayList<>();
     /**
      * Constructor for the ChatServer class which initialises the port number.
      *
@@ -132,5 +140,16 @@ public class Server {
      */
     public void removeUser(User user) {
         users.remove(user);
+    }
+
+
+    public int getNewID() {
+        int newID;
+        do {
+            newID = idGenerator.nextInt(Integer.MAX_VALUE);
+            idNumbers.add(newID);
+            return newID;
+        } while (idNumbers.contains(newID));
+
     }
 }

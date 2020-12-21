@@ -125,8 +125,8 @@ public class UserThread extends Thread {
                     //TODO send Error and disconnect the client
                     logger.warning("Protocols are not matching!");
                 } else {
-                    //TODO set ID
-                    JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome(111));
+                    int id = server.getNewID();
+                    JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome(id));
                     logger.info(Multiplex.serialize(jsonMessage));
                     writer.println(Multiplex.serialize(jsonMessage));
                     writer.flush();
