@@ -3,14 +3,12 @@ package client.view;
 import client.Main;
 import client.model.Client;
 import Utilities.JSONProtocol.JSONMessage;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,6 +34,18 @@ public class LoginController {
     @FXML
     private Button okButton;
 
+    @FXML
+    private ListView listView;
+
+    @FXML
+    private ListView robot1;
+
+    @FXML
+    private ListView robot2;
+
+    @FXML
+    private ListView robot3;
+
     private Main main;
 
     public LoginController() {
@@ -52,7 +62,10 @@ public class LoginController {
     public void close() {
         //client.disconnect(); TODO disconnect client on closure of window
     }
+    public void initialize(){
 
+        listView.getItems().addAll("1", "2", "3");
+    }
    public void begin() {
        client = new Client(this, "localhost", PORT);
     }
