@@ -112,4 +112,8 @@ public class LoginController {
         okButton.setDisable(true);
         labelResponse.setText("No connection to the server!");
     }
+
+    public void write(String message) {
+        labelResponse.setText(message);
+    }
 }

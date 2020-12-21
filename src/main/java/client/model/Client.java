@@ -130,10 +130,10 @@ public class Client {
     }
 
 
-    public void setLoginController(LoginController controller) {
-        this.loginController = controller;
-    }
-
+    /**
+     * set the game view controller
+     * @param controller
+     */
     public void setGameViewController(GameViewController controller) {
         this.gameViewController = controller;
     }
@@ -152,5 +152,9 @@ public class Client {
 
     public void chatMessage(String messageBody) {
         gameViewController.setTextArea(messageBody);
+    }
+
+    public void printMessage(String message) {
+        loginController.write(message);
     }
 }
