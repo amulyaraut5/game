@@ -11,4 +11,6 @@ public class Utilities {
     public enum Difficulty{
         BEGINNER, ADVANCED, EXTREME
     }
+
+    public static final int PORT = 5555;
 }
