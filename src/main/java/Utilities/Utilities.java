@@ -12,5 +12,12 @@ public class Utilities {
         BEGINNER, ADVANCED, EXTREME
     }
 
+    public enum MessageType {
+        HelloClient, HelloServer, Welcome,
+        PlayerValues, PlayerAdded, SetStatus,
+        PlayerStatus, GameStarted, SendChat,
+        ReceivedChat, Error, ConnectionUpdate
+    }
+
     public static final int PORT = 5555;
 }

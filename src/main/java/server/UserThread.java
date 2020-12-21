@@ -5,6 +5,7 @@ import Utilities.JSONProtocol.Multiplex;
 import Utilities.JSONProtocol.connection.HelloClient;
 import Utilities.JSONProtocol.connection.HelloServer;
 import Utilities.JSONProtocol.connection.Welcome;
+import Utilities.Utilities.MessageType;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -81,7 +82,7 @@ public class UserThread extends Thread {
 
             // HelloClient protocol is first serialized and sent through socket to Client.
             logger.info("Sent Protocol:");
-            JSONMessage jsonMessage = new JSONMessage("HelloClient", new HelloClient(protocol));
+            JSONMessage jsonMessage = new JSONMessage(MessageType.HelloClient, new HelloClient(protocol));
             logger.info(Multiplex.serialize(jsonMessage));
             writer.println(Multiplex.serialize(jsonMessage));
             writer.flush();
@@ -104,27 +105,27 @@ public class UserThread extends Thread {
         }
         if (!exit) disconnect();
     }
+
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is downcasted to respective class.
+     *
      * @param message
      * @throws ClassNotFoundException
      */
 
     private void handleMessage(JSONMessage message) throws IOException {
-        String type = message.getMessageType();
-
-        //Object messageBody = message.getMessageBody();
+        MessageType type = message.getMessageType();
 
         switch (type) {
-            case "HelloServer":
+            case HelloServer:
                 // The messageBody which is Object is then downcasted to HelloServer class
                 HelloServer hs = (HelloServer) message.getMessageBody();
                 logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 logger.info(String.valueOf(hs.getProtocol() == protocol));
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
-                    JSONMessage jsonMessage = new JSONMessage("Error", new Utilities.JSONProtocol.specialMessages.Error("Ups! That did not work. Try to adjust something."));
+                    JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new Utilities.JSONProtocol.specialMessages.Error("Ups! That did not work. Try to adjust something."));
                     logger.info(Multiplex.serialize(jsonMessage));
                     logger.info("Protocols don´t match");
                     writer.println(Multiplex.serialize(jsonMessage));
@@ -133,7 +134,7 @@ public class UserThread extends Thread {
                     break;
                 } else {
                     int id = server.getNewID();
-                    JSONMessage jsonMessage = new JSONMessage("Welcome", new Welcome(id));
+                    JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(id));
                     logger.info(Multiplex.serialize(jsonMessage));
                     writer.println(Multiplex.serialize(jsonMessage));
                     writer.flush();

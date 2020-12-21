@@ -1,20 +1,22 @@
 package Utilities.JSONProtocol;
 
+import Utilities.Utilities.MessageType;
+
 /**
  * This abstract class is for serialization and deserialization of every message
  */
-public  class JSONMessage {
+public class JSONMessage {
 
-    private String messageType = "default";
+    private MessageType messageType;
 
     private JSONBody messageBody;
 
-    public JSONMessage(String messageType, JSONBody messageBody) {
+    public JSONMessage(MessageType messageType, JSONBody messageBody) {
         this.messageType = messageType;
         this.messageBody = messageBody;
     }
 
-    public String getMessageType() {
+    public MessageType getMessageType() {
         return messageType;
     }
 

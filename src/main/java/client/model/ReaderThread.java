@@ -4,6 +4,7 @@ import Utilities.JSONProtocol.JSONMessage;
 import Utilities.JSONProtocol.Multiplex;
 import Utilities.JSONProtocol.connection.HelloClient;
 import Utilities.JSONProtocol.connection.Welcome;
+import Utilities.Utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -84,21 +85,21 @@ public class ReaderThread extends Thread {
      */
     private void handleMessage(JSONMessage message) throws ClassNotFoundException {
 
-        String type = message.getMessageType();
+        Utilities.MessageType type = message.getMessageType();
 
         switch (type) {
-            case "HelloClient":
+            case HelloClient:
                 HelloClient hc = (HelloClient) message.getMessageBody();
                 logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
                 client.connect(hc);
                 break;
-            case "Welcome":
+            case Welcome:
                 Welcome wc = (Welcome) message.getMessageBody();
                 String labelMessage = "\n Received Protocol: " + type + "\n ID: " + wc.getId();
                 client.printMessage(labelMessage);
                 logger.info(labelMessage);
                 break;
-            case "Error":
+            case Error:
                 logger.info("error!");
                 break;
             default:

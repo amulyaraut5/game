@@ -3,6 +3,7 @@ package client.model;
 import Utilities.JSONProtocol.JSONMessage;
 import Utilities.JSONProtocol.connection.HelloClient;
 import Utilities.JSONProtocol.connection.HelloServer;
+import Utilities.Utilities.MessageType;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  * This class creates the socket for the client.
@@ -72,7 +74,7 @@ public class Client {
     }
 
     public void connect(HelloClient hc) {
-        JSONMessage msg = new JSONMessage("HelloServer", new HelloServer(0.1, "TolleTrolle", false));
+        JSONMessage msg = new JSONMessage(MessageType.HelloServer, new HelloServer(0.1, "TolleTrolle", false));
         sendUserInput(msg);
     }
 

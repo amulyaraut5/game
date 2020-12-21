@@ -4,6 +4,7 @@ package Utilities.JSONProtocol;
 import Utilities.JSONProtocol.connection.HelloClient;
 import Utilities.JSONProtocol.connection.HelloServer;
 import Utilities.JSONProtocol.connection.Welcome;
+import Utilities.Utilities.MessageType;
 import com.google.gson.*;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class Multiplex {
 
     /**
      * This method converts a Java Object into Json String with the use of Gson library.
+     *
      * @param messageObj
      * @return
      * @throws IOException
@@ -31,6 +33,7 @@ public class Multiplex {
     /**
      * This method converts Json String back to Java Object with the use of custom
      * gson deserializer.
+     *
      * @param jsonString
      * @return
      */
@@ -42,8 +45,8 @@ public class Multiplex {
     }
 
     /**
-     *  This class contains an overriden deserialize method from interface JsonDeserializer</> in order to parse messageBody
-     *  of different classes correctly.
+     * This class contains an overriden deserialize method from interface JsonDeserializer</> in order to parse messageBody
+     * of different classes correctly.
      */
 
     static class Deserializer implements JsonDeserializer<JSONMessage> {
@@ -61,21 +64,19 @@ public class Multiplex {
                         HelloServer hs = new HelloServer(messageBody.get("protocol").getAsDouble(),
                                 messageBody.get("group").getAsString(),
                                 messageBody.get("isAI").getAsBoolean());
-                        return new JSONMessage("HelloServer", hs);
+                        return new JSONMessage(MessageType.HelloServer, hs);
                     case "HelloClient":
 
                         HelloClient hc = new HelloClient((messageBody.get("protocol").getAsDouble()));
-                        return new JSONMessage("HelloClient", hc);
+                        return new JSONMessage(MessageType.HelloClient, hc);
                     case "Welcome":
                         Welcome wc = new Welcome(messageBody.get("id").getAsInt());
-                        return new JSONMessage("Welcome", wc);
+                        return new JSONMessage(MessageType.Welcome, wc);
                 }
             }
             return null;
         }
     }
-
-
 
     /* <-----This version works too.--------->
     public static JSONMessage deserialize(String jsonString) {
@@ -117,5 +118,4 @@ public class Multiplex {
         }
     };
      */
-
 }
