@@ -1,5 +1,6 @@
 package client.view;
 
+import client.Main;
 import client.model.Client;
 import Utilities.JSONProtocol.JSONMessage;
 import javafx.event.ActionEvent;
@@ -33,6 +34,8 @@ public class LoginController {
     @FXML
     private Button okButton;
 
+    private Main main;
+
     public LoginController() {
     }
 
@@ -48,7 +51,7 @@ public class LoginController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-   public void initialize() {
+   public void begin() {
        client = new Client(this, "localhost", 5544);
     }
 
@@ -88,21 +91,9 @@ public class LoginController {
         GameViewController controller = loader.getController();
         controller.setClient(client);
         client.setGameViewController(controller);
-        //setUser(userName);
 
         loginStage.getScene().setRoot(gameView);
-        //client.setController(controller);
-        //loginStage.setScene(new Scene(gameView));
-        //gameStage.setTitle("Love Letter");
-        //gameStage.setScene(new Scene(gameView));
-        //gameStage.setResizable(false);
-        //gameStage.show();
 
-        /*gameStage.setOnCloseRequest(event -> {
-            //controller.close();
-            gameStage.close();
-            loginStage.close();
-        });*/
     }
 
     /**
@@ -115,5 +106,9 @@ public class LoginController {
 
     public void write(String message) {
         labelResponse.setText(message);
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
     }
 }

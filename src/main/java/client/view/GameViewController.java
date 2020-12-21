@@ -1,5 +1,6 @@
 package client.view;
 
+import client.Main;
 import client.model.Client;
 import Utilities.JSONProtocol.JSONMessage;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ public class GameViewController {
     public TextField chatTextArea;
     @FXML
     public TextArea chatWindow;
+
+    private Main main;
 
     //TODO
     public void sendChatMessage(ActionEvent actionEvent) {
@@ -48,5 +51,9 @@ public class GameViewController {
 
     public void setTextArea(String messageBody) {
         chatWindow.appendText(messageBody + "\n");
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
     }
 }
