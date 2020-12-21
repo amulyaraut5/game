@@ -1,38 +1,29 @@
 package Utilities.JSONProtocol.chat;
 
 import Utilities.JSONProtocol.JSONBody;
-import Utilities.JSONProtocol.JSONMessage;
 
-/**
- *
- */
 public class ReceivedChat extends JSONBody {
-}
-    /*
-    package Utilities.JSONProtocol.chat;
+    String message;
 
-import Utilities.JSONProtocol.JSONMessage;
+    String from;
 
-/**
- * Class for messages with the type ReceivedChat
+    boolean privat;
 
-    public class ReceivedChat extends JSONMessage {
-
-        //class for the Body of the ReceivedChat
-        private class MessageBody{
-            public String message;
-            public String from;
-            public boolean privat;
-        }
-
-        //create MessageBody object which is used in the constructor of ReceivedChat
-        MessageBody messageBody = new MessageBody();
-
-        public ReceivedChat(String message, String from, boolean privat){
-            setType("ReceivedChat");
-            messageBody.message = message;
-            messageBody.from = from;
-            messageBody.privat = privat;
-        }
+    public ReceivedChat(String message, String from, boolean privat) {
+        this.message = message;
+        this.from = from;
+        this.privat = privat;
     }
-*/
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public String getFrom() {
+        return this.from;
+    }
+
+    public boolean isPrivat() {
+        return this.privat;
+    }
+}

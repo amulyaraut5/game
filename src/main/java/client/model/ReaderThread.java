@@ -78,6 +78,7 @@ public class ReaderThread extends Thread {
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is downcasted to respective class.
+     *
      * @param message
      * @throws ClassNotFoundException
      */
@@ -88,12 +89,12 @@ public class ReaderThread extends Thread {
         switch (type) {
             case "HelloClient":
                 HelloClient hc = (HelloClient) message.getMessageBody();
-                logger.info("\n Received Protocol: "+type+ "\n Protocol#: "+hc.getProtocol());
+                logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
                 client.connect(hc);
                 break;
             case "Welcome":
                 Welcome wc = (Welcome) message.getMessageBody();
-                String labelMessage = "\n Received Protocol: " + type+"\n ID: "+ wc.getId();
+                String labelMessage = "\n Received Protocol: " + type + "\n ID: " + wc.getId();
                 client.printMessage(labelMessage);
                 logger.info(labelMessage);
                 break;
@@ -103,9 +104,6 @@ public class ReaderThread extends Thread {
             default:
                 logger.info("Something went wrong");
                 //TODO
-
-
         }
-
     }
 }
