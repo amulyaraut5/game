@@ -24,6 +24,8 @@ public class Main extends Application {
     private Parent game = null;
     private Parent menu = null;
 
+    private static Stage currentStage = menuStage;
+
     private LoginController loginController;
 
     public static void main(String[] args) {
@@ -32,7 +34,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage menuStage) throws IOException {
-        this.menuStage = menuStage;
+        Main.menuStage = menuStage;
 
         Platform.runLater(() -> {
             try {
@@ -112,5 +114,16 @@ public class Main extends Application {
         game = gameLoader.load();
         GameViewController gameController = gameLoader.getController();
         gameController.setMain(this);
+    }
+
+    public static void showGameStage() {
+        menuStage.close();
+        gameStage.show();
+    }
+
+    public static void showMenuStage(){
+        gameStage.close();
+        menuStage.setScene(loginScene);
+        menuStage.show();
     }
 }

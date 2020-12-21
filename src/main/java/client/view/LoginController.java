@@ -75,25 +75,13 @@ public class LoginController {
         }
     }
 
-    public void serverResponse(boolean taken) throws IOException {
+    public void serverResponse(boolean taken) {
         if (!taken) {
-            startLoginView();
+            main.showGameStage();
             //loginStage.close();
         } else {
             labelResponse.setText("Already taken, try again");
         }
-    }
-
-    private void startLoginView() throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameView.fxml"));
-        Parent gameView = loader.load();
-        GameViewController controller = loader.getController();
-        controller.setClient(client);
-        client.setGameViewController(controller);
-
-        loginStage.getScene().setRoot(gameView);
-
     }
 
     /**

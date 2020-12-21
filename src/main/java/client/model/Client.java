@@ -6,6 +6,7 @@ import Utilities.JSONProtocol.connection.HelloServer;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -132,6 +133,7 @@ public class Client {
 
     /**
      * set the game view controller
+     *
      * @param controller
      */
     public void setGameViewController(GameViewController controller) {
@@ -144,10 +146,10 @@ public class Client {
         writer.println(json);
     }
 
-    public void callServerResponse(boolean taken) throws IOException {
-        //TODO methods from the javafx controllers should only be called
-        // from the FX application thread (with the Platform.runLater method)
-        loginController.serverResponse(taken);
+    public void callServerResponse(boolean taken) {
+        Platform.runLater(() -> {
+            loginController.serverResponse(taken);
+        });
     }
 
     public void chatMessage(String messageBody) {
@@ -155,6 +157,9 @@ public class Client {
     }
 
     public void printMessage(String message) {
-        loginController.write(message);
+        //TODO Platform.runLater
+        Platform.runLater(() -> {
+            loginController.write(message);
+        });
     }
 }
