@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static Utilities.Utilities.PORT;
+
 public class LoginController {
     private Stage loginStage;
     private Client client;
@@ -52,7 +54,7 @@ public class LoginController {
     }
 
    public void begin() {
-       client = new Client(this, "localhost", 5544);
+       client = new Client(this, "localhost", PORT);
     }
 
     @FXML

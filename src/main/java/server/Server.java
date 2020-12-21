@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import static Utilities.Utilities.PORT;
+
 public class Server {
 
     /**
@@ -43,10 +45,7 @@ public class Server {
      * Main method
      */
     public static void main(String[] args) {
-
-        int port = 5544;
-
-        Server server = new Server(port);
+        Server server = new Server(PORT);
         server.start();
     }
 
@@ -62,7 +61,7 @@ public class Server {
     /**
      * It opens a channel for the connection between Server and Client.
      */
-    private void start() {
+    public void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             logger.info("Chat server is waiting for clients to connect to port " + port + ".");
