@@ -4,18 +4,18 @@ import Utilities.JSONProtocol.JSONBody;
 
 public class ConnectionUpdate extends JSONBody {
 
-    private int id;
+    private int playerID;
     private boolean connected;
     private String action;
 
     public ConnectionUpdate(int id, boolean connected, String action) {
-        this.id = id;
+        this.playerID = id;
         this.connected = connected;
         this.action = action;
     }
 
     public int getId() {
-        return id;
+        return playerID;
     }
 
     public boolean isConnected() {

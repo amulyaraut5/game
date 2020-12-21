@@ -5,21 +5,21 @@ import Utilities.JSONProtocol.JSONBody;
 public class Welcome extends JSONBody {
 
     private static int idCounter = 0;
-    private int id;
+    private int playerID;
 
     public Welcome() {
-        id = idCounter++;
+        playerID = idCounter++;
     }
 
     public Welcome(int id) {
-        this.id = id;
+        this.playerID = id;
     }
 
     public int getId() {
-        return id;
+        return playerID;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.playerID = id;
     }
 }
