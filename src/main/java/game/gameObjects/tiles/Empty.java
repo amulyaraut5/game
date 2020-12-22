@@ -2,9 +2,9 @@ package game.gameObjects.tiles;
 
 import game.Player;
 
-public class EmptyAttribute extends Attribute {
+public class Empty extends Attribute {
 
-    EmptyAttribute(){
+    Empty(){
         this.name = "Empty Attribute";
     }
 

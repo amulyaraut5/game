@@ -11,6 +11,7 @@ import Utilities.Utilities;
 public class Gear extends Attribute {
 
 	// Orientation from Gear should be interpreted as Rotation
+	// Clockwise--RIGHT Anticlockwise--LEFT
 
 	public Gear(Utilities.Orientation orientation){
 		this.name = "Gear";

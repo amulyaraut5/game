@@ -10,7 +10,10 @@ import Utilities.Utilities;
 
 public class Belt extends Attribute {
 
+	// Orientation in this context means the direction in which
+	// belt pushes the robot.
 
+	// speed for belt 1-Blue Conveyor 2- Green Conveyor
 	private int speed ;
 
 	Belt(Utilities.Orientation orientation){

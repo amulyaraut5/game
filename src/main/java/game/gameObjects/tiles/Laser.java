@@ -10,13 +10,14 @@ import java.util.ArrayList;
  * @author Amulya
  */
 
-public class BoardLaser extends Attribute {
+public class Laser extends Attribute {
 
+	// Count attribute to count the no of lasers that is being fired form laser
+	private int count;
 
-	private int LaserCount;
 	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
-	BoardLaser(Utilities.Orientation orientation){
+	Laser(Utilities.Orientation orientation){
 		this.orientation = orientation;
 		this.name = "BoardLaser";
 	}

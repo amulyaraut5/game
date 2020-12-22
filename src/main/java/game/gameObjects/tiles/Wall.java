@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import Utilities.Utilities;
+import Utilities.Utilities.Orientation;
 
 /**
  * @author Amulya
@@ -9,14 +9,14 @@ import Utilities.Utilities;
 
 public class Wall extends Attribute {
 
-    private Utilities.Orientation orientation;
-    private Utilities.Orientation orientation1;
+    private Orientation orientation;
+    private Orientation orientation1;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
      * @param orientation
      */
-    Wall(Utilities.Orientation orientation){
+    Wall(Orientation orientation){
         this.orientation = orientation;
     }
 
@@ -25,7 +25,7 @@ public class Wall extends Attribute {
      * @param orientation
      * @param orientation1
      */
-    Wall(Utilities.Orientation orientation,Utilities.Orientation orientation1){
+    Wall(Orientation orientation,Orientation orientation1){
         this.orientation = orientation;
         this.orientation1 = orientation1;
     }

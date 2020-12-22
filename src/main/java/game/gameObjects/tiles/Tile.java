@@ -63,7 +63,7 @@ public class Tile {
 	public Tile createTile(int tileID){
 		Tile tile = null;
 		switch(tileID){
-			case 00: tile = new Tile(new EmptyAttribute());
+			case 00: tile = new Tile(new Empty());
 
 			case 01: tile = new Tile(new Antenna());
 					// draw();
@@ -72,15 +72,15 @@ public class Tile {
 			case 13: tile = new Tile(new Belt(Utilities.Orientation.LEFT));
 			case 14: tile = new Tile(new Belt(Utilities.Orientation.RIGHT));
 			// draw();
-			case 21: tile = new Tile(new GreenConveyor(Utilities.Orientation.DOWN));
-			case 22: tile = new Tile(new GreenConveyor(Utilities.Orientation.UP));
-			case 23: tile = new Tile(new GreenConveyor(Utilities.Orientation.LEFT));
-			case 24: tile = new Tile(new GreenConveyor(Utilities.Orientation.RIGHT));
+			case 21: tile = new Tile(new RotatingBelt(Utilities.Orientation.DOWN));
+			case 22: tile = new Tile(new RotatingBelt(Utilities.Orientation.UP));
+			case 23: tile = new Tile(new RotatingBelt(Utilities.Orientation.LEFT));
+			case 24: tile = new Tile(new RotatingBelt(Utilities.Orientation.RIGHT));
 			// draw();
-			case 31: tile = new Tile(new BoardLaser(Utilities.Orientation.DOWN));
-			case 32: tile = new Tile(new BoardLaser(Utilities.Orientation.UP));
-			case 33: tile = new Tile(new BoardLaser(Utilities.Orientation.LEFT));
-			case 34: tile = new Tile(new BoardLaser(Utilities.Orientation.RIGHT));
+			case 31: tile = new Tile(new Laser(Utilities.Orientation.DOWN));
+			case 32: tile = new Tile(new Laser(Utilities.Orientation.UP));
+			case 33: tile = new Tile(new Laser(Utilities.Orientation.LEFT));
+			case 34: tile = new Tile(new Laser(Utilities.Orientation.RIGHT));
 			// draw();
 			case 41: tile = new Tile(new EnergySpace());
 			// draw();

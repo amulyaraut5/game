@@ -9,6 +9,8 @@ import game.Player;
 
 public class EnergySpace extends Attribute {
 
+	// Count attribute to count the energy cubes
+	private int count;
 
 	EnergySpace(){
 		this.name = "EnergySpace";

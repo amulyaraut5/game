@@ -3,6 +3,8 @@ package game.gameObjects.tiles;
 import game.Player;
 import Utilities.Utilities;
 
+import java.util.List;
+
 /**
  *
  * @author Amulya
@@ -11,11 +13,14 @@ import Utilities.Utilities;
 public class PushPanel extends Attribute {
 
 
-	private int registerValue;
+	private List registerValue;
+
+	// Orientation in this context means the direction in which
+	// belt pushes the robot.
 
 	PushPanel(Utilities.Utilities.Orientation orientation, int registerValue){
 		this.orientation = orientation;
-		this.registerValue = registerValue;
+
 	}
 	/**
 	 * Push panels push any robots resting on them into the next space in the direction the push
@@ -27,7 +32,7 @@ public class PushPanel extends Attribute {
 	@Override
 	public void performAction(Player player) {
 
-		if(player.getCurrentRegister() == registerValue){
+		if(true){
 			updateRobotCoordinates(orientation, player);
 		}
 		else{

@@ -1,18 +1,20 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import Utilities.Utilities;
+import Utilities.Utilities.Orientation;
 /**
  *
  * @author Amulya
  */
 
-public class GreenConveyor extends Attribute {
+public class RotatingBelt extends Attribute {
 
+	// TODO Implementation needs to be changed
+	// Was meant for Green Conveyor
 
 	private int speed ;
 
-	GreenConveyor(Utilities.Orientation orientation){
+	RotatingBelt(Orientation orientation){
 		this.orientation = orientation;
 		this.name= "Green Conveyor";
 		this.speed = 1;
@@ -35,7 +37,7 @@ public class GreenConveyor extends Attribute {
 		int xCoordinate = player.getRobot().getPosition().getX();
 		int yCoordinate = player.getRobot().getPosition().getY();
 
-		Utilities.Orientation orientation = player.getRobot().getOrientation();
+		Orientation orientation = player.getRobot().getOrientation();
 		// Conveyor does not really change the direction of robot  unless......
 
 		// Then check the whether there is collision point exist or not.

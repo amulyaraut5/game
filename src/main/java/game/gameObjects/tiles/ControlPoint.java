@@ -7,21 +7,23 @@ import game.Player;
  * @author Amulya
  */
 
-public class CheckPoint extends Attribute {
-	private int checkPointID;
+public class ControlPoint extends Attribute {
+
+	// Nummer des Punktes
+	private int count;
 
 	/**
 	 * Constructor that helps in creating multiple instances of Checkpoints with different ID
 	 * @param id
 	 */
 
-	public CheckPoint(int id){
-		this.checkPointID = id;
+	public ControlPoint(int id){
+		this.count = id;
 		this.name = "CheckPoint";
 	}
 
 	public int getCheckPointID() {
-		return checkPointID;
+		return count;
 	}
 
 	/**
