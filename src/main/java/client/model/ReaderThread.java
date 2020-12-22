@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
  *
- * @author simon
  */
 public class ReaderThread extends Thread {
     /**
@@ -95,7 +94,7 @@ public class ReaderThread extends Thread {
                 break;
             case Welcome:
                 Welcome wc = (Welcome) message.getMessageBody();
-                String labelMessage = "\n Received Protocol: " + type + "\n ID: " + wc.getPlayerId();
+                String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
                 client.printMessage(labelMessage);
                 logger.info(labelMessage);
                 break;

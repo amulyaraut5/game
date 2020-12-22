@@ -160,8 +160,8 @@ public class Client {
 
     public void printMessage(String message) {
         //TODO Platform.runLater
-        //Platform.runLater(() -> {
+        Platform.runLater(() -> {
             loginController.write(message);
-        //});
+        });
     }
 }

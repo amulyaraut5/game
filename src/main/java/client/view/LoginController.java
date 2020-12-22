@@ -67,6 +67,7 @@ public class LoginController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
     public void initialize(){
+        labelResponse.setText("test");
         robotList.addAll("robot1", "robot2", "robot3");
         listView.setItems(robotList);
     }
@@ -110,7 +111,11 @@ public class LoginController {
     }
 
     public void write(String message) {
+
         labelResponse.setText(message);
+    }
+    public Label getLabelResponse (){
+        return labelResponse;
     }
 
     public void setMain(Main main) {
