@@ -133,8 +133,9 @@ public class UserThread extends Thread {
                     //disconnect();
                     break;
                 } else {
-                    int id = server.getNewID();
-                    JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(id));
+                    int playerID = server.getNewID();
+                    JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(playerID));
+                    System.out.println(jsonMessage);
                     logger.info(Multiplex.serialize(jsonMessage));
                     writer.println(Multiplex.serialize(jsonMessage));
                     writer.flush();

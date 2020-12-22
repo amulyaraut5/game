@@ -74,7 +74,7 @@ public class Client {
     }
 
     public void connect(HelloClient hc) {
-        JSONMessage msg = new JSONMessage(MessageType.HelloServer, new HelloServer(0.1, "TolleTrolle", false));
+        JSONMessage msg = new JSONMessage(MessageType.HelloServer, new HelloServer(0.1, "Astreine Akazien", false));
         sendUserInput(msg);
     }
 
@@ -160,8 +160,8 @@ public class Client {
 
     public void printMessage(String message) {
         //TODO Platform.runLater
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
             loginController.write(message);
-        });
+        //});
     }
 }

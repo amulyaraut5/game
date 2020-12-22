@@ -95,7 +95,7 @@ public class ReaderThread extends Thread {
                 break;
             case Welcome:
                 Welcome wc = (Welcome) message.getMessageBody();
-                String labelMessage = "\n Received Protocol: " + type + "\n ID: " + wc.getId();
+                String labelMessage = "\n Received Protocol: " + type + "\n ID: " + wc.getPlayerId();
                 client.printMessage(labelMessage);
                 logger.info(labelMessage);
                 break;

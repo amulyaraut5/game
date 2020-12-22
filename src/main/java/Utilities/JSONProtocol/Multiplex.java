@@ -70,7 +70,7 @@ public class Multiplex {
                         HelloClient hc = new HelloClient((messageBody.get("protocol").getAsDouble()));
                         return new JSONMessage(MessageType.HelloClient, hc);
                     case "Welcome":
-                        Welcome wc = new Welcome(messageBody.get("id").getAsInt());
+                        Welcome wc = new Welcome(messageBody.get("playerID").getAsInt());
                         return new JSONMessage(MessageType.Welcome, wc);
                 }
             }

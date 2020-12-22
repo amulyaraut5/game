@@ -3,6 +3,7 @@ package client.view;
 import client.Main;
 import client.model.Client;
 import Utilities.JSONProtocol.JSONMessage;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +38,9 @@ public class LoginController {
     @FXML
     private ListView listView;
 
+    private ObservableList<String> robotList = FXCollections.observableArrayList();
+
+
     @FXML
     private ListView robot1;
 
@@ -63,8 +67,8 @@ public class LoginController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
     public void initialize(){
-
-        listView.getItems().addAll("1", "2", "3");
+        robotList.addAll("robot1", "robot2", "robot3");
+        listView.setItems(robotList);
     }
    public void begin() {
        client = new Client(this, "localhost", PORT);

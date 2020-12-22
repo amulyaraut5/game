@@ -11,15 +11,15 @@ public class Welcome extends JSONBody {
         playerID = idCounter++;
     }
 
-    public Welcome(int id) {
-        this.playerID = id;
+    public Welcome(int playerID) {
+        this.playerID = playerID;
     }
 
-    public int getId() {
-        return playerID;
+    public int getPlayerId() {
+        return this.playerID;
     }
 
     public void setId(int id) {
-        this.playerID = id;
+        this.playerID = playerID;
     }
 }
