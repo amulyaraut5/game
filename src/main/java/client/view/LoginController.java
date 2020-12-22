@@ -21,68 +21,132 @@ import java.util.ArrayList;
 
 import static Utilities.Utilities.PORT;
 
+
+/**
+ * This class controls the loginView.fxml view, it takes the name and the chosed robot, sends it to
+ * client and switches to the game view
+ * @author sarah,
+ */
 public class LoginController {
+    /**
+     * This private class represents a robot with its name and id
+     */
     private class RobotPrivate{
         int id = 0;
         String name = "default";
 
-        public RobotPrivate(String name, int id) {
-            this.id = id +1;
-            this.name = name;
+        /**
+         * constructor of RobotPrivate
+         * @param robotName of the robot
+         * @param robotId of the robot
+         */
+        public RobotPrivate(String robotName, int robotId) {
+            this.id = robotId +1;
+            this.name = robotName;
         }
-
-        public String getName() {
+        public String getRobotName() {
             return this.name;
         }
-
-        public int getID() {
+        public int getRobotID() {
             return this.id;
         }
     }
+
+    /**
+     *
+     */
     private Stage loginStage;
+    /**
+     *
+     */
     private Client client;
+    /**
+     *
+     */
     private LocalDate date;
+    /**
+     *
+     */
     private String userName;
+    /**
+     *
+     */
     @FXML
     private TextField textUserName;
-
+    /**
+     *
+     */
     @FXML
     private DatePicker datePicker;
-
+    /**
+     *
+     */
     @FXML
     private Label labelResponse;
-
+    /**
+     *
+     */
     @FXML
     private Button okButton;
-
+    /**
+     *
+     */
     @FXML
     private ListView listView;
 
 
-
+    /**
+     *
+     */
     private ObservableList<ImageView> robotImageViewList =FXCollections.observableArrayList ();
+    /**
+     *
+     */
     private ObservableList<RobotPrivate> robotList =FXCollections.observableArrayList ();
 
+    /**
+     *
+     */
     private String [] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
-
+    /**
+     *
+     */
     private Main main;
 
+    /**
+     *
+     */
     public LoginController() {
     }
 
+    /**
+     *
+     * @param loginStage
+     */
     public void setStage(Stage loginStage) {
         this.loginStage = loginStage;
     }
 
+    /**
+     *
+     * @param client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     *
+     */
     public void close() {
         //client.disconnect(); TODO disconnect client on closure of window
     }
+
+    /**
+     *
+     */
     public void initialize(){
         createRobotList();
         labelResponse.setText("test");
@@ -90,10 +154,17 @@ public class LoginController {
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
+
+    /**
+     *
+     */
    public void begin() {
        client = new Client(this, "localhost", PORT);
-    }
+   }
 
+    /**
+     *
+     */
    private void createRobotList(){
         ImageView robot;
         Image robotImage;
@@ -117,10 +188,12 @@ public class LoginController {
             robotImageViewList.add(robot);
         }
 
-
-
-
     }
+
+    /**
+     *
+     * @param event
+     */
     @FXML
     private void fxButtonClicked(ActionEvent event) {
 
@@ -132,7 +205,7 @@ public class LoginController {
         else if (choosedRobot<0) labelResponse.setText("You have to choose a robot");
         else {
             try {
-                labelResponse.setText("you chose " + robotList.get(choosedRobot).getName() + " with id " + robotList.get(choosedRobot).getID());
+                labelResponse.setText("you chose " + robotList.get(choosedRobot).getRobotName() + " with id " + robotList.get(choosedRobot).getRobotID());
                 //TODO
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
@@ -140,6 +213,10 @@ public class LoginController {
         }
     }
 
+    /**
+     *
+     * @param taken
+     */
     public void serverResponse(boolean taken) {
         if (!taken) {
             main.showGameStage();
@@ -157,14 +234,27 @@ public class LoginController {
         labelResponse.setText("No connection to the server!");
     }
 
+    /**
+     *
+     * @param message
+     */
     public void write(String message) {
 
         labelResponse.setText(message);
     }
+
+    /**
+     *
+     * @return
+     */
     public Label getLabelResponse (){
         return labelResponse;
     }
 
+    /**
+     *
+     * @param main
+     */
     public void setMain(Main main) {
         this.main = main;
     }
