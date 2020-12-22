@@ -10,11 +10,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import static Utilities.Utilities.PORT;
 
@@ -38,17 +41,8 @@ public class LoginController {
     @FXML
     private ListView listView;
 
-    private ObservableList<String> robotList = FXCollections.observableArrayList();
+    private ObservableList<ImageView> robotList =FXCollections.observableArrayList ();
 
-
-    @FXML
-    private ListView robot1;
-
-    @FXML
-    private ListView robot2;
-
-    @FXML
-    private ListView robot3;
 
     private Main main;
 
@@ -67,14 +61,30 @@ public class LoginController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
     public void initialize(){
+        createRobotList();
         labelResponse.setText("test");
-        robotList.addAll("robot1", "robot2", "robot3");
         listView.setItems(robotList);
+
     }
    public void begin() {
        client = new Client(this, "localhost", PORT);
     }
+    private void createRobotList(){
+        ObservableList<String> robotNames = FXCollections.observableArrayList ("hulkX90", "hammerbot", "smashbot",
+                "twonky", "spinbot", "zoombot");
+        ImageView robot;
+        Image robotImage;
+        double scaleSize = 50;
+        for (String robotName: robotNames){
+            robotImage = new Image("/choose-robot-" + robotName +".png");
+            robot = new ImageView(robotImage);
+            robot.setFitHeight(scaleSize);
+            robot.setFitWidth(scaleSize);
+            robotList.add(robot);
+        }
 
+
+    }
     @FXML
     private void fxButtonClicked(ActionEvent event) {
         labelResponse.setText("");
