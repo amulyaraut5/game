@@ -27,7 +27,7 @@ public class LoginController {
         String name = "default";
 
         public RobotPrivate(String name, int id) {
-            this.id = id++;
+            this.id = id +1;
             this.name = name;
         }
 
