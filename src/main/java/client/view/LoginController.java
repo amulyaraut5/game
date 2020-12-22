@@ -53,50 +53,47 @@ public class LoginController {
     }
 
     /**
-     *
+     *  the stage gets saved
      */
     private Stage loginStage;
+
     /**
-     *
+     * the client which gets created and who gets informed about actions
      */
     private Client client;
+
     /**
-     *
-     */
-    private LocalDate date;
-    /**
-     *
+     * the user can choose an username which gets saved and passed on to the client
      */
     private String userName;
+
     /**
-     *
+     * the user can type in its name
      */
     @FXML
     private TextField textUserName;
+
     /**
-     *
-     */
-    @FXML
-    private DatePicker datePicker;
-    /**
-     *
+     * a label to check if everything works //TODO delete or change purpose
      */
     @FXML
     private Label labelResponse;
+
     /**
-     *
+     * the button for checking whether input is valid
      */
     @FXML
     private Button okButton;
+
     /**
-     *
+     *  the listView for choosing one robot, it stores different ImageViews
      */
     @FXML
     private ListView listView;
 
 
     /**
-     *
+     * it stores the imageViews of the different robots
      */
     private ObservableList<ImageView> robotImageViewList =FXCollections.observableArrayList ();
     /**
@@ -129,13 +126,6 @@ public class LoginController {
         this.loginStage = loginStage;
     }
 
-    /**
-     *
-     * @param client
-     */
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     /**
      *
