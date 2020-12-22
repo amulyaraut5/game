@@ -10,8 +10,8 @@ import Utilities.Utilities;
 public abstract class Attribute {
 
 	public String name;
-	public Utilities.Direction direction;
-	public Utilities.Rotation rotation;
+	public Utilities.Orientation orientation;
+	//public Utilities.Rotation rotation;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called
@@ -32,13 +32,15 @@ public abstract class Attribute {
 		throw new UnsupportedOperationException();
 	}
 
-	public Utilities.Direction getDirection() {
-		return direction;
+	public Utilities.Orientation getOrientation() {
+		return orientation;
 	}
-
+	/*
 	public Utilities.Rotation getRotation() {
 		return rotation;
 	}
+
+	 */
 
 	@Override
 	public String toString() {

@@ -9,25 +9,25 @@ import Utilities.Utilities;
 
 public class Wall extends Attribute {
 
-    private Utilities.Direction direction;
-    private Utilities.Direction direction2;
+    private Utilities.Orientation orientation;
+    private Utilities.Orientation orientation1;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
-     * @param direction
+     * @param orientation
      */
-    Wall(Utilities.Direction direction){
-        this.direction = direction;
+    Wall(Utilities.Orientation orientation){
+        this.orientation = orientation;
     }
 
     /**
      * Constructor for Wall for those tiles which have  two walls in two different direction.
-     * @param direction
-     * @param direction2
+     * @param orientation
+     * @param orientation1
      */
-    Wall(Utilities.Direction direction,Utilities.Direction direction2){
-        this.direction = direction;
-        this.direction2 = direction2;
+    Wall(Utilities.Orientation orientation,Utilities.Orientation orientation1){
+        this.orientation = orientation;
+        this.orientation1 = orientation1;
     }
 
     /**

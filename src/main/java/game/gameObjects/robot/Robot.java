@@ -1,7 +1,8 @@
 package game.gameObjects.robot;
 
+import Utilities.Utilities;
 import game.gameObjects.Coordinate;
-import Utilities.Utilities.Direction;
+import Utilities.Utilities.Orientation;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -18,7 +19,7 @@ public abstract class Robot {
     /**
      * direction in which the robot is facing
      */
-    protected Direction direction;
+    protected Orientation orientation;
     /**
      * position of the robot on the map
      */
@@ -38,13 +39,15 @@ public abstract class Robot {
         return color;
     }
 
-    public Direction getDirection() {
-        return direction;
+    public Orientation getOrientation() {
+        return orientation;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
     }
+
+
 
     public Coordinate getPosition() {
         return position;

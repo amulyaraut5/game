@@ -11,7 +11,7 @@ import Utilities.Utilities;
 
 public class Antenna extends Attribute {
 
-	private Utilities.Direction direction;
+	private Utilities.Orientation direction;
 	private Coordinate position;
 
 	/**
@@ -19,7 +19,7 @@ public class Antenna extends Attribute {
 	 * north in the specific tile.
 	 */
 	Antenna(){
-		this.direction = Utilities.Direction.NORTH;
+		this.direction = Utilities.Orientation.UP;// means hier north
 		// TODO change x and y coordinate
 		this.position = new Coordinate(4,5);
 

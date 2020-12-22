@@ -8,15 +8,15 @@ import Utilities.Utilities;
  * @author Amulya
  */
 
-public class BlueConveyor extends Attribute {
+public class Belt extends Attribute {
 
 
 	private int speed ;
 
-	BlueConveyor(Utilities.Direction direction){
+	Belt(Utilities.Orientation orientation){
 		this.speed = 2;
 		this.name = "BlueConveyor";
-		this.direction = direction;
+		this.orientation = orientation;
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class BlueConveyor extends Attribute {
 		int xCoordinate = player.getRobot().getPosition().getX();
 		int yCoordinate = player.getRobot().getPosition().getY();
 
-		Utilities.Direction dir = player.getRobot().getDirection();
+		Utilities.Orientation orientation = player.getRobot().getOrientation();
 		// Conveyor does not really change the direction of robot  unless......
 
 		// Then check the whether there is collision point exist or not.
@@ -65,17 +65,17 @@ public class BlueConveyor extends Attribute {
 	 */
 
 	private void updateRobotCoordinates(int x, int y,Player player){
-		switch (direction) {
-			case NORTH:
+		switch (orientation) {
+			case UP: //NORTH
 				player.getRobot().setPosition(x, y - 1);
 				break;
-			case SOUTH:
+			case DOWN: //SOUTH
 				player.getRobot().setPosition(x, y + 1);
 				break;
-			case EAST:
+			case LEFT: //EAST
 				player.getRobot().setPosition(x + 1, y);
 				break;
-			case WEST:
+			case RIGHT: //WEST
 				player.getRobot().setPosition(x - 1, y);
 				break;
 		}

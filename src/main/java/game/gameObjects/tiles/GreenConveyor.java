@@ -12,8 +12,8 @@ public class GreenConveyor extends Attribute {
 
 	private int speed ;
 
-	GreenConveyor(Utilities.Direction direction){
-		this.direction = direction;
+	GreenConveyor(Utilities.Orientation orientation){
+		this.orientation = orientation;
 		this.name= "Green Conveyor";
 		this.speed = 1;
 	}
@@ -23,27 +23,32 @@ public class GreenConveyor extends Attribute {
 	 * Once a robot has moved off a belt, the belt has no longer effect.
 	 * @param player
 	 */
+	/**
+	 * The GreenConveyor belt pushes the robot in the direction of tile by
+	 * one space.
+	 * Once a robot has moved off a belt, the belt has no longer effect.
+	 * @param player
+	 */
 	@Override
 	public void performAction(Player player) {
 
+		int xCoordinate = player.getRobot().getPosition().getX();
+		int yCoordinate = player.getRobot().getPosition().getY();
 
-			int xCoordinate = player.getRobot().getPosition().getX();
-			int yCoordinate = player.getRobot().getPosition().getY();
+		Utilities.Orientation orientation = player.getRobot().getOrientation();
+		// Conveyor does not really change the direction of robot  unless......
 
-			Utilities.Direction dir = player.getRobot().getDirection();
-			// Conveyor does not really change the direction of robot  unless......
+		// Then check the whether there is collision point exist or not.
+		// Then we update the location of Robot in the direction of Conveyor.
 
-			// Then check the whether there is collision point exist or not.
-			// Then we update the location of Robot in the direction of Conveyor.
-
-			if(collisionPointExist()) {
-				// No movement
-			}else{
-				// Need of location of robot and direction of tile.
-				updateRobotCoordinates(xCoordinate,yCoordinate,player);
-			}
-
+		if(collisionPointExist()) {
+			// No movement
+		}else{
+			// Need of location of robot and direction of tile.
+			updateRobotCoordinates(xCoordinate,yCoordinate,player);
+		}
 	}
+
 	/**
 	 * This method checks if two robots converge at the same point or not.
 	 * @return
@@ -51,7 +56,6 @@ public class GreenConveyor extends Attribute {
 
 	private boolean collisionPointExist(){
 		//TODO
-
 		return false;
 	}
 
@@ -65,20 +69,19 @@ public class GreenConveyor extends Attribute {
 	 */
 
 	private void updateRobotCoordinates(int x, int y,Player player){
-		switch (direction) {
-            case NORTH:
-                player.getRobot().setPosition(x, y - 1);
-                break;
-            case SOUTH:
-                player.getRobot().setPosition(x, y + 1);
-                break;
-            case EAST:
-                player.getRobot().setPosition(x + 1, y);
-                break;
-            case WEST:
-                player.getRobot().setPosition(x - 1, y);
-                break;
-        }
+		switch (orientation) {
+			case UP: //NORTH
+				player.getRobot().setPosition(x, y - 1);
+				break;
+			case DOWN: //SOUTH
+				player.getRobot().setPosition(x, y + 1);
+				break;
+			case LEFT: //EAST
+				player.getRobot().setPosition(x + 1, y);
+				break;
+			case RIGHT: //WEST
+				player.getRobot().setPosition(x - 1, y);
+				break;
+		}
 	}
-
 }

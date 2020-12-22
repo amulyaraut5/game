@@ -10,11 +10,11 @@ import Utilities.Utilities;
 
 public class Gear extends Attribute {
 
+	// Orientation from Gear should be interpreted as Rotation
 
-
-	public Gear(Utilities.Rotation rotation){
+	public Gear(Utilities.Orientation orientation){
 		this.name = "Gear";
-		this.rotation = rotation;
+		this.orientation = orientation;
 	}
 
 	/**
@@ -27,35 +27,35 @@ public class Gear extends Attribute {
 	@Override
 	public void performAction(Player player) {
 
-		switch(rotation) {
+		switch(orientation) {
 			case RIGHT:
-				switch (player.getRobot().getDirection()) {
-					case NORTH:
-						player.getRobot().setDirection(Utilities.Direction.EAST);
+				switch (player.getRobot().getOrientation()) {
+					case UP: //NORTH
+						player.getRobot().setOrientation(Utilities.Orientation.LEFT);
 						break;
-					case EAST:
-						player.getRobot().setDirection(Utilities.Direction.SOUTH);
+					case LEFT: //EAST
+						player.getRobot().setOrientation(Utilities.Orientation.DOWN);
 						break;
-					case SOUTH:
-						player.getRobot().setDirection(Utilities.Direction.WEST);
+					case DOWN: //SOUTH
+						player.getRobot().setOrientation(Utilities.Orientation.RIGHT);
 						break;
-					case WEST:
-						player.getRobot().setDirection(Utilities.Direction.NORTH);
+					case RIGHT: //WEST
+						player.getRobot().setOrientation(Utilities.Orientation.UP);
 				}
 				break;
 			case LEFT:
-				switch (player.getRobot().getDirection()) {
-					case NORTH:
-						player.getRobot().setDirection(Utilities.Direction.WEST);
+				switch (player.getRobot().getOrientation()) {
+					case UP: //NORTH
+						player.getRobot().setOrientation(Utilities.Orientation.RIGHT);
 						break;
-					case WEST:
-						player.getRobot().setDirection(Utilities.Direction.SOUTH);
+					case LEFT: //EAST
+						player.getRobot().setOrientation(Utilities.Orientation.DOWN);
 						break;
-					case SOUTH:
-						player.getRobot().setDirection(Utilities.Direction.EAST);
+					case DOWN: //SOUTH
+						player.getRobot().setOrientation(Utilities.Orientation.LEFT);
 						break;
-					case EAST:
-						player.getRobot().setDirection(Utilities.Direction.NORTH);
+					case RIGHT: //WEST
+						player.getRobot().setOrientation(Utilities.Orientation.UP);
 						break;
 				}
 				break;

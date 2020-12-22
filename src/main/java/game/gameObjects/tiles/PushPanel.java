@@ -13,8 +13,8 @@ public class PushPanel extends Attribute {
 
 	private int registerValue;
 
-	PushPanel(Utilities.Direction direction,int registerValue){
-		this.direction = direction;
+	PushPanel(Utilities.Utilities.Orientation orientation, int registerValue){
+		this.orientation = orientation;
 		this.registerValue = registerValue;
 	}
 	/**
@@ -28,7 +28,7 @@ public class PushPanel extends Attribute {
 	public void performAction(Player player) {
 
 		if(player.getCurrentRegister() == registerValue){
-			updateRobotCoordinates(direction, player);
+			updateRobotCoordinates(orientation, player);
 		}
 		else{
 			// Do nothing
@@ -38,22 +38,22 @@ public class PushPanel extends Attribute {
 
 	}
 
-	private void updateRobotCoordinates(Utilities.Direction direction, Player player){
+	private void updateRobotCoordinates(Utilities.Orientation orientation, Player player){
 
 		int xCoordinate = player.getRobot().getPosition().getX();
 		int yCoordinate = player.getRobot().getPosition().getY();
 
-		switch (direction) {
-			case NORTH:
+		switch (orientation) {
+			case UP:
 				player.getRobot().setPosition(xCoordinate, yCoordinate - 1);
 				break;
-			case SOUTH:
+			case DOWN:
 				player.getRobot().setPosition(xCoordinate, yCoordinate + 1);
 				break;
-			case EAST:
+			case LEFT:
 				player.getRobot().setPosition(xCoordinate + 1, yCoordinate);
 				break;
-			case WEST:
+			case RIGHT:
 				player.getRobot().setPosition(xCoordinate - 1, yCoordinate);
 				break;
 		}

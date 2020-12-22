@@ -16,8 +16,8 @@ public class BoardLaser extends Attribute {
 	private int LaserCount;
 	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
-	BoardLaser(Utilities.Direction direction){
-		this.direction = direction;
+	BoardLaser(Utilities.Orientation orientation){
+		this.orientation = orientation;
 		this.name = "BoardLaser";
 	}
 
@@ -47,7 +47,8 @@ public class BoardLaser extends Attribute {
         // Here we should check if checkingTile is whether wall, antenna or not
         // And if the robot is standing ahead, the laser cannot traverse through robot.
 
-        if(direction == Utilities.Direction.SOUTH){
+        if(orientation == Utilities.Orientation.DOWN)//SOUTH
+        {
 			//TODO
 
         	laserAffectedTiles.add(tile);
@@ -55,21 +56,21 @@ public class BoardLaser extends Attribute {
 
 		}
 
-		else if(direction == Utilities.Direction.SOUTH){
+		else if(orientation == Utilities.Orientation.UP){
 			//TODO
 
 			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
 
 		}
-		else if(direction == Utilities.Direction.SOUTH){
+		else if(orientation == Utilities.Orientation.LEFT){
 			//TODO
 
 			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
 
 		}
-		else if(direction == Utilities.Direction.SOUTH){
+		else if(orientation == Utilities.Orientation.RIGHT){
 			//TODO
 
 			laserAffectedTiles.add(tile);
