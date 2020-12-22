@@ -19,7 +19,7 @@ public class Laser extends Attribute {
 
 	Laser(Utilities.Orientation orientation){
 		this.orientation = orientation;
-		this.name = "BoardLaser";
+		this.type = "BoardLaser";
 	}
 
     @Override

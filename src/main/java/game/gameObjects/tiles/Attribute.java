@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import Utilities.Utilities;
+import Utilities.Utilities.Orientation;
 
 /**
  * @author Amulya
@@ -9,9 +9,9 @@ import Utilities.Utilities;
 
 public abstract class Attribute {
 
-	public String name;
-	public Utilities.Orientation orientation;
-	//public Utilities.Rotation rotation;
+	public String type;
+	public Orientation orientation;
+	public Orientation orientation1;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called
@@ -20,6 +20,7 @@ public abstract class Attribute {
 	 *
 	 * Another Idea : We can also Robot instead of Player.
 	 */
+
 	public abstract void performAction(Player player);
 
 	/**
@@ -27,25 +28,21 @@ public abstract class Attribute {
 	 * This can be used to shoot a laser or push oa
 	 * @return
 	 */
+
 	public boolean checkPlayer() {
 		// TODO - implement Attribute.checkPlayer
 		throw new UnsupportedOperationException();
 	}
 
-	public Utilities.Orientation getOrientation() {
+	public Orientation getOrientation() {
 		return orientation;
 	}
-	/*
-	public Utilities.Rotation getRotation() {
-		return rotation;
-	}
 
-	 */
 
 	@Override
 	public String toString() {
 		return "Attribute{" +
-				"name='" + name + '\'' +
+				"name='" + type + '\'' +
 				'}';
 	}
 }

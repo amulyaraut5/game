@@ -14,15 +14,14 @@ public class Gear extends Attribute {
 	// Clockwise--RIGHT Anticlockwise--LEFT
 
 	public Gear(Utilities.Orientation orientation){
-		this.name = "Gear";
+		this.type = "Gear";
 		this.orientation = orientation;
 	}
 
 	/**
 	 * Rotates the robot in anti-clockwise direction and clock wise direction.
-	 * Direction is initialized by constructor.
+	 * Orientation is initialized by constructor.
 	 * @param player
-	 *
 	 */
 
 	@Override

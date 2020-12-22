@@ -10,7 +10,7 @@ public class Pit extends Attribute {
 
 
     Pit(){
-        this.name = "Pit";
+        this.type = "Pit";
     }
 
     /**

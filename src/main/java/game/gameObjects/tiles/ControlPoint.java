@@ -19,7 +19,7 @@ public class ControlPoint extends Attribute {
 
 	public ControlPoint(int id){
 		this.count = id;
-		this.name = "CheckPoint";
+		this.type = "CheckPoint";
 	}
 
 	public int getCheckPointID() {

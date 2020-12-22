@@ -11,13 +11,15 @@ public class RotatingBelt extends Attribute {
 
 	// TODO Implementation needs to be changed
 	// Was meant for Green Conveyor
+	private boolean isCurve;
 
-	private int speed ;
 
-	RotatingBelt(Orientation orientation){
+	RotatingBelt(Orientation orientation, Orientation orientation1, boolean isCurve){
 		this.orientation = orientation;
-		this.name= "Green Conveyor";
-		this.speed = 1;
+		this.orientation1 = orientation1;
+		this.isCurve = isCurve;
+		this.type = "RotatingBelt";
+
 	}
 	/**
 	 * The GreenConveyor belt pushes the robot in the direction of tile by

@@ -13,7 +13,7 @@ public class EnergySpace extends Attribute {
 	private int count;
 
 	EnergySpace(){
-		this.name = "EnergySpace";
+		this.type = "EnergySpace";
 	}
 
 	/**

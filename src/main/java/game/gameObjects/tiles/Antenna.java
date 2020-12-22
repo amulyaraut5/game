@@ -1,7 +1,6 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import game.gameObjects.Coordinate;
 import Utilities.Utilities;
 
 /**
@@ -11,19 +10,17 @@ import Utilities.Utilities;
 
 public class Antenna extends Attribute {
 
-	private Utilities.Orientation direction;
-	private Coordinate position;
+	private Utilities.Orientation orientation;
+
 
 	/**
 	 * Constructor for Antenna that basically sets the antenna facing
 	 * north in the specific tile.
 	 */
 	Antenna(){
-		this.direction = Utilities.Orientation.UP;// means hier north
-		// TODO change x and y coordinate
-		this.position = new Coordinate(4,5);
+		this.orientation = Utilities.Orientation.UP;// means hier north
 
-		this.name = "Antenna";
+		this.type = "Antenna";
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.gameObjects.Coordinate;
-import Utilities.Utilities;
+import Utilities.Utilities.Orientation;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -67,13 +67,18 @@ public class Tile {
 
 			case 01: tile = new Tile(new Antenna());
 					// draw();
-			case 11: tile = new Tile(new Belt(Utilities.Orientation.DOWN));
-			case 12: tile = new Tile(new Belt(Utilities.Orientation.UP));
+				// TODO should be changed
+				// Belt constructor has 2 attributes.
+				/*
+			case 11: tile = new Tile(new Belt(Orientation.DOWN));
+			case 12: tile = new Tile(new Belt(Orientation.UP));
 			case 13: tile = new Tile(new Belt(Utilities.Orientation.LEFT));
 			case 14: tile = new Tile(new Belt(Utilities.Orientation.RIGHT));
+
+
 			// draw();
-			case 21: tile = new Tile(new RotatingBelt(Utilities.Orientation.DOWN));
-			case 22: tile = new Tile(new RotatingBelt(Utilities.Orientation.UP));
+			case 21: tile = new Tile(new RotatingBelt(Orientation.DOWN));
+			case 22: tile = new Tile(new RotatingBelt(Orientation.UP));
 			case 23: tile = new Tile(new RotatingBelt(Utilities.Orientation.LEFT));
 			case 24: tile = new Tile(new RotatingBelt(Utilities.Orientation.RIGHT));
 			// draw();
@@ -110,6 +115,8 @@ public class Tile {
 			case 84: tile = new Tile(new Wall(Utilities.Orientation.RIGHT));
 
 			// Tile with two walls
+
+				 */
 
 		}
 		return tile;

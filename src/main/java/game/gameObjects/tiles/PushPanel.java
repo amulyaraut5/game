@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import Utilities.Utilities;
+import Utilities.Utilities.Orientation;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class PushPanel extends Attribute {
 	// Orientation in this context means the direction in which
 	// belt pushes the robot.
 
-	PushPanel(Utilities.Utilities.Orientation orientation, int registerValue){
+	PushPanel(Orientation orientation, int registerValue){
 		this.orientation = orientation;
 
 	}
@@ -43,7 +43,7 @@ public class PushPanel extends Attribute {
 
 	}
 
-	private void updateRobotCoordinates(Utilities.Orientation orientation, Player player){
+	private void updateRobotCoordinates(Orientation orientation, Player player){
 
 		int xCoordinate = player.getRobot().getPosition().getX();
 		int yCoordinate = player.getRobot().getPosition().getY();
