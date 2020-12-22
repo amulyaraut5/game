@@ -1,6 +1,9 @@
 package Utilities;
 
+import java.util.ArrayList;
+
 public class Utilities {
+
     public enum Direction {
         NORTH, EAST, SOUTH, WEST
     }
