@@ -14,17 +14,16 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    private static Stage menuStage;
-    private static Stage loginStage;
-    private static Stage gameStage;
-    private static Scene menuScene;
-    private static Scene loginScene;
-    private static Scene gameScene;
+    private Stage menuStage;
+    private Stage gameStage;
+    private Scene menuScene;
+    private Scene loginScene;
+    private Scene gameScene;
     private Parent login = null;
     private Parent game = null;
     private Parent menu = null;
 
-    private static Stage currentStage = menuStage;
+    private Stage currentStage = menuStage;
 
     private LoginController loginController;
 
@@ -34,7 +33,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage menuStage) throws IOException {
-        Main.menuStage = menuStage;
+        this.menuStage = menuStage;//TODO test, if this works, because no object of Main is jet created
 
         Platform.runLater(() -> {
             try {
@@ -115,12 +114,13 @@ public class Main extends Application {
         gameController.setMain(this);
     }
 
-    public static void showGameStage() {
+    public void showGameStage() {
         menuStage.close();
+
         gameStage.show();
     }
 
-    public static void showMenuStage(){
+    public void showMenuStage(){
         gameStage.close();
         menuStage.setScene(loginScene);
         menuStage.show();
