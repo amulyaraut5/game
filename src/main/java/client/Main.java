@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -27,8 +29,12 @@ public class Main extends Application {
 
     private LoginController loginController;
 
+    static final Logger logger = LogManager.getLogger();
+
     public static void main(String[] args) {
+        logger.info("Main Method started");
         launch(args);
+        logger.info("Main Method ended");
     }
 
     @Override
@@ -120,7 +126,7 @@ public class Main extends Application {
         gameStage.show();
     }
 
-    public void showMenuStage(){
+    public void showMenuStage() {
         gameStage.close();
         menuStage.setScene(loginScene);
         menuStage.show();

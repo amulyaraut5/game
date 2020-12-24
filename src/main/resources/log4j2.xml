@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="ConsoleLogger" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg (in thread %t at %logger{36} %M)%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.aa" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleLogger"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="ConsoleLogger"/>
+        </Root>
+    </Loggers>
+</Configuration>
