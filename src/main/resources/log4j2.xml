@@ -2,15 +2,20 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="ConsoleLogger" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg (in thread %t at %logger{36} %M)%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg ([%t] at %logger{36} %M)%n"/>
         </Console>
+        <File name="FileLogger" fileName="logfile.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg ([%t] at %logger{36} %M)%n">
+            </PatternLayout>
+        </File>
     </Appenders>
     <Loggers>
         <Logger name="com.aa" level="debug" additivity="false">
+            <AppenderRef ref="FileLogger"/>
             <AppenderRef ref="ConsoleLogger"/>
         </Logger>
         <Root level="info">
-            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="FileLogger"/>
             <AppenderRef ref="ConsoleLogger"/>
         </Root>
     </Loggers>
