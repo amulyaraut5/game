@@ -21,8 +21,13 @@ public class MenuController {
 
     @FXML
     public void hostGameClicked(ActionEvent event) {
-        //Server server = new Server(PORT);
-        //server.start();
+        logger.info("Host Game Clicked");
+        Thread one = new Thread(() -> {
+            Server server = new Server(PORT);
+            server.start();
+        });
+        one.setName("Server Thread");
+        one.start();
 
         main.constructLoginStage();
     }

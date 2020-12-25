@@ -1,5 +1,7 @@
 package server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.connection.HelloClient;
@@ -13,8 +15,6 @@ import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Handles connection for each connected client,
@@ -33,13 +33,12 @@ public class UserThread extends Thread {
     /**
      * Logger to log information/warning
      */
-    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger = LogManager.getLogger();
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
 
     public UserThread(Socket socket, Server server, User user) {
-        logger.setLevel(Level.ALL);
 
         this.socket = socket;
         this.server = server;
@@ -115,32 +114,28 @@ public class UserThread extends Thread {
      */
 
     private void handleMessage(JSONMessage message) throws IOException {
-        MessageType type = message.getMessageType();
+        MessageType type = message.getType();
 
         switch (type) {
             case HelloServer:
                 // The messageBody which is Object is then downcasted to HelloServer class
-                HelloServer hs = (HelloServer) message.getMessageBody();
-                logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
-                logger.info(String.valueOf(hs.getProtocol() == protocol));
+                HelloServer hs = (HelloServer) message.getBody();
+                //logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
-                    JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new utilities.JSONProtocol.specialMessages.Error("Ups! That did not work. Try to adjust something."));
-                    logger.info(Multiplex.serialize(jsonMessage));
-                    logger.info("Protocols don´t match");
+                    JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new utilities.JSONProtocol.specialMessages.Error("Protocols don´t match"));
+                    logger.warn("Protocols don´t match");
+                    logger.warn(Multiplex.serialize(jsonMessage));
                     writer.println(Multiplex.serialize(jsonMessage));
-                    writer.flush();
                     //disconnect();
-                    break;
                 } else {
                     int playerID = server.getNewID();
                     JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(playerID));
                     System.out.println(jsonMessage);
-                    logger.info(Multiplex.serialize(jsonMessage));
                     writer.println(Multiplex.serialize(jsonMessage));
-                    writer.flush();
-                    break;
                 }
+                writer.flush();
+                break;
         }
 
     }
@@ -183,11 +178,11 @@ public class UserThread extends Thread {
         //sendMessage("Bye " + user);
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
-        logger.warning("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+        logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
-            logger.severe(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -199,14 +194,14 @@ public class UserThread extends Thread {
      */
     private void disconnect(Exception ex) {
         exit = true;
-        logger.severe("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+        logger.fatal("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(user);
         server.communicate(user + " left the room.", user);
-        logger.severe("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+        logger.fatal("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
         } catch (IOException e) {
-            logger.severe(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 }
