@@ -2,12 +2,23 @@
 <Configuration status="WARN">
     <Appenders>
         <Console name="ConsoleLogger" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg ([%t] at %logger{36} %M)%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg ([%t] at %C{1} %M)%n"/>
         </Console>
         <File name="FileLogger" fileName="logfile.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg ([%t] at %logger{36} %M)%n">
-            </PatternLayout>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %msg ([%t] at %C{1} %M)%n"/>
         </File>
+        <RollingFile name="RollingFile" fileName="log/testlog.log"
+                     filePattern="log/testlog_%d{yyyy-MM-dd}_%i.log">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <pattern>%level\t%d{yyyy-MM-dd HH:mm:ss} %c: %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="32 MB"/>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Logger name="com.aa" level="debug" additivity="false">

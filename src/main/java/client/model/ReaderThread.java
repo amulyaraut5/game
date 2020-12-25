@@ -1,9 +1,12 @@
 package client.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.Welcome;
+import utilities.JSONProtocol.specialMessages.Error;
 import utilities.Utilities;
 
 import java.io.BufferedReader;
@@ -11,12 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
- *
  */
 public class ReaderThread extends Thread {
     /**
@@ -26,7 +26,7 @@ public class ReaderThread extends Thread {
     /**
      * Logger to log information/warning
      */
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger = LogManager.getLogger();
     /**
      * BufferedReader which is wrap around the InputStream of the socket.
      */
@@ -40,7 +40,6 @@ public class ReaderThread extends Thread {
      * @param client Instance of ChatClient which handles the connection and disconnection to the server
      */
     public ReaderThread(Socket socket, Client client) {
-        logger.setLevel(Level.ALL);
         this.client = client;
 
         try {
@@ -84,22 +83,24 @@ public class ReaderThread extends Thread {
      */
     private void handleMessage(JSONMessage message) throws ClassNotFoundException {
 
-        Utilities.MessageType type = message.getMessageType();
+        Utilities.MessageType type = message.getType();
 
         switch (type) {
             case HelloClient:
-                HelloClient hc = (HelloClient) message.getMessageBody();
-                logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
+                HelloClient hc = (HelloClient) message.getBody();
+
+                //logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
                 client.connect(hc);
                 break;
             case Welcome:
-                Welcome wc = (Welcome) message.getMessageBody();
+                Welcome wc = (Welcome) message.getBody();
                 String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
                 client.printMessage(labelMessage);
-                logger.info(labelMessage);
+                //logger.info(labelMessage);
                 break;
             case Error:
-                logger.info("error!");
+                Error error = (Error) message.getBody();
+                logger.info("Error Message: "+ error.getError());
                 break;
             default:
                 logger.info("Something went wrong");

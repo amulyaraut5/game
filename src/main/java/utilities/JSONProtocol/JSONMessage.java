@@ -14,13 +14,15 @@ public class JSONMessage {
     public JSONMessage(MessageType messageType, JSONBody messageBody) {
         this.messageType = messageType;
         this.messageBody = messageBody;
+        //System.out.println(messageType);
+        //System.out.println(messageBody.getClass().getSimpleName());//TODO should we use the classname as messageType?
     }
 
-    public MessageType getMessageType() {
+    public MessageType getType() {
         return messageType;
     }
 
-    public Object getMessageBody() {
+    public Object getBody() {
         return messageBody;
     }
 }

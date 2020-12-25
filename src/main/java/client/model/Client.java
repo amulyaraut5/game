@@ -1,20 +1,19 @@
 package client.model;
 
-import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.connection.HelloClient;
-import utilities.JSONProtocol.connection.HelloServer;
-import utilities.Utilities.MessageType;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.connection.HelloClient;
+import utilities.JSONProtocol.connection.HelloServer;
+import utilities.Utilities.MessageType;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 /**
  * This class creates the socket for the client.
@@ -35,7 +34,7 @@ public class Client {
     /**
      * Logger to log information/warning
      */
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger = LogManager.getLogger();
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -68,8 +67,6 @@ public class Client {
         this.port = port;
         this.loginController = loginController;
 
-        logger.setLevel(Level.ALL);
-
         establishConnection();
     }
 
@@ -90,7 +87,7 @@ public class Client {
                 writer = new PrintWriter(socket.getOutputStream(), true);
                 break;
             } catch (IOException ex) {
-                logger.warning("No connection.");
+                logger.warn("No connection.");
             }
         }
 
@@ -110,7 +107,7 @@ public class Client {
         try {
             socket.close();
         } catch (IOException e) {
-            logger.severe(e.getMessage());
+            logger.fatal(e.getMessage());
         }
     }
 
@@ -127,7 +124,7 @@ public class Client {
             socket.close();
             logger.info("The connection with the server is closed.");
         } catch (IOException e) {
-            logger.severe(e.getMessage());
+            logger.fatal(e.getMessage());
         }
         logger.info("Type \"bye\" to exit.");
     }

@@ -1,11 +1,13 @@
 package server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import static utilities.Utilities.PORT;
 
@@ -14,7 +16,7 @@ public class Server {
     /**
      * Logger to log information/warning
      */
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * list of users that gets added after every new instance of user is created
@@ -32,6 +34,7 @@ public class Server {
      * Array with all the id´s that already exist
      */
     ArrayList<Integer> idNumbers = new ArrayList<>();
+
     /**
      * Constructor for the ChatServer class which initialises the port number.
      *
@@ -76,7 +79,7 @@ public class Server {
             });
             acceptClients(serverSocket);
         } catch (IOException e) {
-            logger.severe("could not connect: " + e.getMessage());
+            logger.fatal("could not connect: " + e.getMessage());
         }
     }
 
@@ -143,6 +146,7 @@ public class Server {
 
     /**
      * This method creates an id which is not assigned to any user yet
+     *
      * @return a new ID for the user
      */
     public int getNewID() {
