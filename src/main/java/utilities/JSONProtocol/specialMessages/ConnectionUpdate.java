@@ -1,6 +1,6 @@
-package Utilities.JSONProtocol.specialMessages;
+package utilities.JSONProtocol.specialMessages;
 
-import Utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.JSONBody;
 
 public class ConnectionUpdate extends JSONBody {
 

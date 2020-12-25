@@ -1,7 +1,6 @@
 package game.gameObjects.tiles;
 
 import game.gameObjects.Coordinate;
-import Utilities.Utilities.Orientation;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 

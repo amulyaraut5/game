@@ -14,7 +14,7 @@ public class GameView extends Application {
 
     @Override
     public void start(Stage gameStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gameView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
         Parent root = loader.load();
         GameViewController gameController = loader.getController();
 

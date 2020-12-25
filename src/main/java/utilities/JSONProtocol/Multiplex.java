@@ -1,10 +1,10 @@
-package Utilities.JSONProtocol;
+package utilities.JSONProtocol;
 
 
-import Utilities.JSONProtocol.connection.HelloClient;
-import Utilities.JSONProtocol.connection.HelloServer;
-import Utilities.JSONProtocol.connection.Welcome;
-import Utilities.Utilities.MessageType;
+import utilities.JSONProtocol.connection.HelloClient;
+import utilities.JSONProtocol.connection.HelloServer;
+import utilities.JSONProtocol.connection.Welcome;
+import utilities.Utilities.MessageType;
 import com.google.gson.*;
 
 import java.io.IOException;

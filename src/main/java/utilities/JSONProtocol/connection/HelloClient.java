@@ -1,6 +1,6 @@
-package Utilities.JSONProtocol.connection;
+package utilities.JSONProtocol.connection;
 
-import Utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.JSONBody;
 
 public class HelloClient extends JSONBody {
     double protocol;

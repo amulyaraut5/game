@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import static Utilities.Utilities.PORT;
+import static utilities.Utilities.PORT;
 
 public class Server {
 

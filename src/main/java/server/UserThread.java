@@ -1,11 +1,11 @@
 package server;
 
-import Utilities.JSONProtocol.JSONMessage;
-import Utilities.JSONProtocol.Multiplex;
-import Utilities.JSONProtocol.connection.HelloClient;
-import Utilities.JSONProtocol.connection.HelloServer;
-import Utilities.JSONProtocol.connection.Welcome;
-import Utilities.Utilities.MessageType;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
+import utilities.JSONProtocol.connection.HelloClient;
+import utilities.JSONProtocol.connection.HelloServer;
+import utilities.JSONProtocol.connection.Welcome;
+import utilities.Utilities.MessageType;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -125,7 +125,7 @@ public class UserThread extends Thread {
                 logger.info(String.valueOf(hs.getProtocol() == protocol));
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
-                    JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new Utilities.JSONProtocol.specialMessages.Error("Ups! That did not work. Try to adjust something."));
+                    JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new utilities.JSONProtocol.specialMessages.Error("Ups! That did not work. Try to adjust something."));
                     logger.info(Multiplex.serialize(jsonMessage));
                     logger.info("Protocols don´t match");
                     writer.println(Multiplex.serialize(jsonMessage));

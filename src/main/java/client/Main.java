@@ -102,19 +102,19 @@ public class Main extends Application {
 
     private void createControllerAndParents() throws IOException {
         //menu
-        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/menuView.fxml"));
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
         menu = menuLoader.load();
         MenuController menuController = menuLoader.getController();
         menuController.setMain(this);
 
         //login
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginView.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
         login = loginLoader.load();
         loginController = loginLoader.getController();
         loginController.setMain(this);
 
         //game
-        FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/gameView.fxml"));
+        FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
         game = gameLoader.load();
         GameViewController gameController = gameLoader.getController();
         gameController.setMain(this);

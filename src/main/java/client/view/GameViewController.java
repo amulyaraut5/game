@@ -2,7 +2,6 @@ package client.view;
 
 import client.Main;
 import client.model.Client;
-import Utilities.JSONProtocol.JSONMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

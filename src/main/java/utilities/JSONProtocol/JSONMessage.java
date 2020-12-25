@@ -1,6 +1,6 @@
-package Utilities.JSONProtocol;
+package utilities.JSONProtocol;
 
-import Utilities.Utilities.MessageType;
+import utilities.Utilities.MessageType;
 
 /**
  * This abstract class is for serialization and deserialization of every message

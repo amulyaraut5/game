@@ -1,7 +1,7 @@
 package game.gameObjects.maps;
 
 import game.gameObjects.Coordinate;
-import Utilities.Utilities;
+import utilities.Utilities;
 
 import java.util.ArrayList;
 

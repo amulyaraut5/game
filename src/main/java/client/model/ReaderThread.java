@@ -1,10 +1,10 @@
 package client.model;
 
-import Utilities.JSONProtocol.JSONMessage;
-import Utilities.JSONProtocol.Multiplex;
-import Utilities.JSONProtocol.connection.HelloClient;
-import Utilities.JSONProtocol.connection.Welcome;
-import Utilities.Utilities;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
+import utilities.JSONProtocol.connection.HelloClient;
+import utilities.JSONProtocol.connection.Welcome;
+import utilities.Utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;

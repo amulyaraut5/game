@@ -1,9 +1,9 @@
 package client.model;
 
-import Utilities.JSONProtocol.JSONMessage;
-import Utilities.JSONProtocol.connection.HelloClient;
-import Utilities.JSONProtocol.connection.HelloServer;
-import Utilities.Utilities.MessageType;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.connection.HelloClient;
+import utilities.JSONProtocol.connection.HelloServer;
+import utilities.Utilities.MessageType;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;

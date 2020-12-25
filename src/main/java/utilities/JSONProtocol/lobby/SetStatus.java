@@ -1,6 +1,6 @@
-package Utilities.JSONProtocol.lobby;
+package utilities.JSONProtocol.lobby;
 
-import Utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.JSONBody;
 
 public class SetStatus extends JSONBody {
     private boolean ready;

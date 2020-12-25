@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import Utilities.Utilities;
+import utilities.Utilities;
 
 /**
  *

@@ -1,6 +1,6 @@
-package Utilities.JSONProtocol.chat;
+package utilities.JSONProtocol.chat;
 
-import Utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.JSONBody;
 
 public class ReceivedChat extends JSONBody {
     String message;

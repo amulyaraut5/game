@@ -1,6 +1,4 @@
-package Utilities;
-
-import java.util.ArrayList;
+package utilities;
 
 public class Utilities {
 
