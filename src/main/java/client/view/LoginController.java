@@ -17,35 +17,39 @@ import static utilities.Utilities.PORT;
 /**
  * This class controls the loginView.fxml view, it takes the name and the chosed robot, sends it to
  * client and switches to the game view
+ *
  * @author sarah,
  */
 public class LoginController {
     /**
      * This private class represents a robot with its name and id
      */
-    private class RobotPrivate{
+    private class RobotPrivate {
         int id = 0;
         String name = "default";
 
         /**
          * constructor of RobotPrivate
+         *
          * @param robotName of the robot
-         * @param robotId of the robot
+         * @param robotId   of the robot
          */
         public RobotPrivate(String robotName, int robotId) {
-            this.id = robotId +1;
+            this.id = robotId + 1;
             this.name = robotName;
         }
+
         public String getRobotName() {
             return this.name;
         }
+
         public int getRobotID() {
             return this.id;
         }
     }
 
     /**
-     *  the stage gets saved
+     * the stage gets saved
      */
     private Stage loginStage;
 
@@ -78,7 +82,7 @@ public class LoginController {
     private Button okButton;
 
     /**
-     *  the listView for choosing one robot, it stores different ImageViews
+     * the listView for choosing one robot, it stores different ImageViews
      */
     @FXML
     private ListView listView;
@@ -87,16 +91,16 @@ public class LoginController {
     /**
      * it stores the imageViews of the different robots
      */
-    private ObservableList<ImageView> robotImageViewList =FXCollections.observableArrayList ();
+    private ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
     /**
      *
      */
-    private ObservableList<RobotPrivate> robotList =FXCollections.observableArrayList ();
+    private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
 
     /**
      *
      */
-    private String [] robotNames = {"hulkX90", "hammerbot", "smashbot",
+    private String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
     /**
@@ -111,7 +115,6 @@ public class LoginController {
     }
 
     /**
-     *
      * @param loginStage
      */
     public void setStage(Stage loginStage) {
@@ -129,7 +132,7 @@ public class LoginController {
     /**
      *
      */
-    public void initialize(){
+    public void initialize() {
         createRobotList();
         labelResponse.setText("test");
         listView.setItems(robotImageViewList);
@@ -140,14 +143,14 @@ public class LoginController {
     /**
      *
      */
-   public void begin() {
-       client = new Client(this, "localhost", PORT);
-   }
+    public void begin() {
+        client = new Client(this, "localhost", PORT);
+    }
 
     /**
      *
      */
-   private void createRobotList(){
+    private void createRobotList() {
         ImageView robot;
         Image robotImage;
         double scaleSize = 50;
@@ -159,8 +162,8 @@ public class LoginController {
             robot.setFitWidth(scaleSize);
             robotList.add(robot);
         }*/
-        for (int i = 0; i<robotNames.length; i++){
-            robotImage = new Image("/choose-robot-" + robotNames[i] +".png");
+        for (int i = 0; i < robotNames.length; i++) {
+            robotImage = new Image("/choose-robot-" + robotNames[i] + ".png");
             robot = new ImageView(robotImage);
             robot.setFitHeight(scaleSize);
             robot.setFitWidth(scaleSize);
@@ -173,7 +176,6 @@ public class LoginController {
     }
 
     /**
-     *
      * @param event
      */
     @FXML
@@ -184,7 +186,7 @@ public class LoginController {
         int choosedRobot = listView.getSelectionModel().getSelectedIndex();
         if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
         else if (userName.contains(" ")) labelResponse.setText("Spaces are not allowed in usernames!");
-        else if (choosedRobot<0) labelResponse.setText("You have to choose a robot");
+        else if (choosedRobot < 0) labelResponse.setText("You have to choose a robot");
         else {
             try {
                 labelResponse.setText("you chose " + robotList.get(choosedRobot).getRobotName() + " with id " + robotList.get(choosedRobot).getRobotID());
@@ -196,7 +198,6 @@ public class LoginController {
     }
 
     /**
-     *
      * @param taken
      */
     public void serverResponse(boolean taken) {
@@ -217,7 +218,6 @@ public class LoginController {
     }
 
     /**
-     *
      * @param message
      */
     public void write(String message) {
@@ -226,15 +226,13 @@ public class LoginController {
     }
 
     /**
-     *
      * @return
      */
-    public Label getLabelResponse (){
+    public Label getLabelResponse() {
         return labelResponse;
     }
 
     /**
-     *
      * @param main
      */
     public void setMain(Main main) {
