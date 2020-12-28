@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class GameViewController {
@@ -48,7 +50,19 @@ public class GameViewController {
      */
     private Main main;
 
+    public Button readyButton;
 
+    public void readyButton(){
+        String ready = "I'm ready!";
+        String notReady = "I'm not ready!";
+        if(readyButton.getText().equals(ready)){
+            readyButton.setText(notReady);
+            readyButton.setOpacity(0.5);
+        } else {
+            readyButton.setText(ready);
+            readyButton.setOpacity(100);
+        }
+    }
     /**
      *
      * @param actionEvent
