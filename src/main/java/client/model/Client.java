@@ -20,9 +20,9 @@ import java.util.ArrayList;
 /**
  * This class creates the socket for the client.
  * It handles the connection and disconnection to the server.
- * In this process it creates or interrupts the WriterThread and ReaderThread.
+ * Also it handles the connection to the view through the main class
  *
- * @author janau
+ *
  */
 public class Client {
     /**

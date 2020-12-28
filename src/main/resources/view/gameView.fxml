@@ -18,7 +18,7 @@
                           </AnchorPane>
                           <HBox prefHeight="37.0" prefWidth="212.0">
                               <children>
-                        <TextField fx:id="chatTextArea" onAction="#sendChatMessage" prefHeight="27.0" prefWidth="147.0">
+                        <TextField fx:id="chatTextField" onAction="#sendChatMessage" prefHeight="27.0" prefWidth="147.0">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -26,7 +26,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </TextField>
-                                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#sendChatMessage" prefHeight="27.0" prefWidth="63.0" text="Submit">
+                                  <Button mnemonicParsing="false" onAction="#sendChatMessage" prefHeight="27.0" prefWidth="63.0" text="Submit">
                                       <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                       </HBox.margin>

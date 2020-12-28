@@ -16,48 +16,50 @@ import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 import utilities.Utilities;
 
+/**
+ * The GameViewController class controls the GameView and the Chat of the game
+ *
+ * @author Sarah,
+ */
 public class GameViewController {
+
     /**
-     *
-     */
-    private Stage stage;
-    /**
-     *
+     * client who plays the game and has access to the main class
      */
     public Client client;
 
-    /**
-     *
-     */
-    @FXML
-    public Button submitButton;
 
     /**
-     *
+     * The TextField where the player can type in its message to one user/other users
      */
     @FXML
-    public TextArea userArea;
+    public TextField chatTextField;
 
     /**
-     *
-     */
-    @FXML
-    public TextField chatTextArea;
-
-    /**
-     *
+     * The TextArea which displays the chat history with other players
      */
     @FXML
     public TextArea chatWindow;
 
+    /**
+     * The TextArea which displays the users who already joined the lobby
+     */
     public TextArea joinedUsersTextArea;
     /**
-     *
+     * the main class
      */
     private Main main;
 
+    /**
+     * the ready Button which can be clicked to show the availability for playing the game
+     */
     public Button readyButton;
 
+    /**
+     * by clicking on the button the player can select if he/she is ready to start the game
+     * the method also sends a SetStatus protocol method with the current status of the button
+     *
+     */
     public void readyButton(){
         String ready = "I'm ready!";
         String notReady = "I'm not ready!";
@@ -77,27 +79,23 @@ public class GameViewController {
 
     }
     /**
-     *
+     * The method gets called by clicking on the submit button
+     * it casts the message of the user to a JSONMessage (private/not private) and
+     * clears the textField and displays the message in the textArea
      * @param actionEvent
      */
-    //TODO
+    //TODO direct
     public void sendChatMessage(ActionEvent actionEvent) {
-        String message = chatTextArea.getText();
+        String message = chatTextField.getText();
         if (!message.isBlank()) {
-            chatWindow.appendText("[You]: " + message + "\n");
+            setTextArea("[You]: " + message);
             JSONMessage msg = new JSONMessage(new SendChat(message, -1));
             client.sendMessage(msg);
         }
-        chatTextArea.clear();
+        chatTextField.clear();
     }
 
-    /**
-     *
-     * @param s
-     */
-    public void setStage(Stage s) {
-        this.stage = s;
-    }
+
 
     /**
      *
@@ -108,7 +106,7 @@ public class GameViewController {
 
 
     /**
-     *
+     * This message adds a String to the chatTextArea
      * @param messageBody
      */
     public void setTextArea(String messageBody) {
@@ -116,7 +114,7 @@ public class GameViewController {
     }
 
     /**
-     *
+     *  this method displays an user who joined to the lobby
      * @param body
      */
     public void setUsersTextArea(String body) {
@@ -124,13 +122,17 @@ public class GameViewController {
     }
 
     /**
-     *
+     * This method sets the main class
      * @param main
      */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * This method sets the client
+     * @param client
+     */
     public void setClient(Client client) {
         this.client = client;
     }

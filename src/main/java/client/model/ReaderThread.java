@@ -16,6 +16,8 @@ import java.net.Socket;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
+ *
+ * @author sarah,
  */
 public class ReaderThread extends Thread {
     /**
