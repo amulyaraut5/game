@@ -145,11 +145,10 @@ public class Main extends Application {
 
 
     public void sendChatMessage(String body, String type) {
-        if(type.equals("receivedChat")){
-            gameViewController.setTextArea(body);
-        } else if(type.equals("playerAdded")){
-            gameViewController.setUsersTextArea(body);
-        }
+        if(type.equals("loginController")) loginController.write(body);
+        else if(type.equals("receivedChat")) gameViewController.setTextArea(body);
+        else if(type.equals("playerAdded")) gameViewController.setUsersTextArea(body);
 
     }
+
 }

@@ -90,7 +90,6 @@ public class ReaderThread extends Thread {
         switch (type) {
             case HelloClient:
                 HelloClient hc = (HelloClient) message.getBody();
-
                 //logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
                 client.connect(hc);
                 break;
@@ -98,14 +97,14 @@ public class ReaderThread extends Thread {
                 Welcome wc = (Welcome) message.getBody();
                 playerId= wc.getPlayerId();
                 String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
-                client.printMessage(labelMessage);
+                client.sendToMain(labelMessage, "loginController");
                 //logger.info(labelMessage);
                 break;
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
                 if(pa.getId()!= playerId)
-                    client.sendToGameView(pa.getName(), "playerAdded");
+                    client.sendToMain(pa.getName(), "playerAdded");
                 break;
             case Error:
                 Error error = (Error) message.getBody();
@@ -121,7 +120,7 @@ public class ReaderThread extends Thread {
             case ReceivedChat:
                 ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                 logger.info(receivedChat.getMessage());
-                client.sendToGameView(receivedChat.getFrom() + ": "+receivedChat.getMessage(), "receivedChat");
+                client.sendToMain(receivedChat.getFrom() + ": "+receivedChat.getMessage(), "receivedChat");
             default:
                 logger.info("Something went wrong");
                 //TODO

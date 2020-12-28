@@ -49,34 +49,39 @@ public class Client {
      * the printWriter which writes messages onto the socket connected to the server.
      */
     private PrintWriter writer;
-    /**
-     * The writerThread writes the console input of the user from given socket.
-     */
 
+    /**
+     * main is the class who can be used to communicate with the viewmodel
+     */
     private Main main;
-    private LoginController loginController;
+
+    /**
+     * readyList is the
+     */
     //TODO handle case that id of player that already connected changes
     private ArrayList<String> readyList = new ArrayList<>();
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
-     * @param loginController
      * @param hostname        Hostname of the server.
      * @param port            Port of the server on the named host.
      */
-    public Client(LoginController loginController, String hostname, int port) {
+    public Client( String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
-        this.loginController = loginController;
 
         establishConnection();
     }
 
-    public void connect(HelloClient hc) {
+    /**
+     * This method creates a HelloServer protocol message and sends it to server
+     * it gets called when client gets a HelloClient message
+     * @param helloClient //TODO more than protocol possible?
+     */
+    public void connect(HelloClient helloClient) {
         JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
         sendMessage(msg);
     }
-
 
     /**
      * This method establishes the connection between the server and the client using the assigned hostname and port.
@@ -93,7 +98,6 @@ public class Client {
             }
         }
 
-
         readerThread = new ReaderThread(socket, this);
         readerThread.setName("ReaderThread");
         readerThread.start();
@@ -103,7 +107,7 @@ public class Client {
     }
 
     /**
-     * methods ends the client program. The reader and writer threads get interrupted and the socket is closed.
+     * This methods ends the client program. The reader and writer threads get interrupted and the socket is closed.
      */
     public void disconnect() {
         readerThread.interrupt();
@@ -115,7 +119,7 @@ public class Client {
     }
 
     /**
-     * Method should be called if a critical exception occurs in the client. (e.g. socket closed)
+     * This method should be called if a critical exception occurs in the client. (e.g. socket closed)
      * The reader and writer threads get interrupted and the socket is closed.
      *
      * @param ex The exception which occurred
@@ -132,32 +136,28 @@ public class Client {
         logger.info("Type \"bye\" to exit.");
     }
 
-
-
-
-    public void sendMessage(JSONMessage msg) {
+    /**
+     * This message changes a JSONMessage so that it's possible
+     * to send it as a String over the socket to the server
+     * @param message
+     */
+    public void sendMessage(JSONMessage message) {
         Gson gson = new Gson();
-        String json = gson.toJson(msg);
+        String json = gson.toJson(message);
         logger.debug("Protocol sent: " + json);
         writer.println(json);
     }
 
-    public void callServerResponse(boolean taken) {
-        Platform.runLater(() -> {
-            loginController.serverResponse(taken);
-        });
-    }
-
-    public void sendToGameView(String messageBody, String type) {
+    /**
+     * This method receives a String and a type and sends it to main
+     * @param messageBody the specified message
+     * @param type the type of the message
+     */
+    public void sendToMain(String messageBody, String type) {
         main.sendChatMessage(messageBody, type);
     }
 
-    public void printMessage(String message) {
-        //TODO Platform.runLater
-        Platform.runLater(() -> {
-            loginController.write(message);
-        });
-    }
+
 
     public void addToReadyList(String id){
         readyList.add(id);
@@ -167,6 +167,10 @@ public class Client {
         readyList.remove(id);
     }
 
+    /**
+     * setter of the main attribute
+     * @param main
+     */
     public void setMain(Main main) {
         this.main = main;
     }
