@@ -16,7 +16,7 @@ public class Antenna extends Attribute {
 	 * north in the specific tile.
 	 */
 	Antenna(){
-		this.orientationY = Utilities.Orientation.UP;// means hier north
+		this.orientation = Utilities.Orientation.UP;// means hier north
 
 		this.type = "Antenna";
 	}

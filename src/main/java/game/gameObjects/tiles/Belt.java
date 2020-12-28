@@ -13,14 +13,15 @@ public class Belt extends Attribute {
 	// Orientation in this context means the direction in which
 	// belt pushes the robot.
 
+
 	// speed for belt 1-Blue Conveyor 2- Green Conveyor
-	private int speed ;
-	private boolean isCrossing;
+
+	private int speed;
 
 	Belt(Orientation orientation, int speed){
 		this.speed = speed;
 		this.type = "Belt";
-		this.orientationY = orientation;
+		this.orientation = orientation;
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class Belt extends Attribute {
 	 */
 
 	private void updateRobotCoordinates(int x, int y,Player player){
-		switch (orientationY) {
+		switch (orientation) {
 			case UP: //NORTH
 				player.getRobot().setPosition(x, y - 1);
 				break;

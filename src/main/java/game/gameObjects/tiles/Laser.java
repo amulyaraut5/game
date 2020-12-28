@@ -18,7 +18,7 @@ public class Laser extends Attribute {
 	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
 	Laser(Utilities.Orientation orientation){
-		this.orientationY = orientation;
+		this.orientation = orientation;
 		this.type = "BoardLaser";
 	}
 
@@ -48,7 +48,7 @@ public class Laser extends Attribute {
         // Here we should check if checkingTile is whether wall, antenna or not
         // And if the robot is standing ahead, the laser cannot traverse through robot.
 
-        if(orientationY == Utilities.Orientation.DOWN)//SOUTH
+        if(orientation == Utilities.Orientation.DOWN)//SOUTH
         {
 			//TODO
 
@@ -57,21 +57,21 @@ public class Laser extends Attribute {
 
 		}
 
-		else if(orientationY == Utilities.Orientation.UP){
+		else if(orientation == Utilities.Orientation.UP){
 			//TODO
 
 			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
 
 		}
-		else if(orientationY == Utilities.Orientation.LEFT){
+		else if(orientation == Utilities.Orientation.LEFT){
 			//TODO
 
 			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
 
 		}
-		else if(orientationY == Utilities.Orientation.RIGHT){
+		else if(orientation == Utilities.Orientation.RIGHT){
 			//TODO
 
 			laserAffectedTiles.add(tile);
