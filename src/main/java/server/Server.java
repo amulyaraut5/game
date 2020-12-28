@@ -36,6 +36,16 @@ public class Server {
     ArrayList<Integer> idNumbers = new ArrayList<>();
 
     /**
+     *
+     */
+    private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
+
+    /**
+     *
+     */
+    private ArrayList<UserThread> addedPlayerList = new ArrayList<>();
+
+    /**
      * Constructor for the ChatServer class which initialises the port number.
      *
      * @param port port number where the server is bound to listen the client.
@@ -61,6 +71,19 @@ public class Server {
         return users;
     }
 
+    public void changeReadyPlayerList(int change, UserThread userThread){
+        //remove this userThread
+        if(change==0){
+            readyPlayerList.remove(userThread);
+        }
+        //add  this userThread
+        else if(change ==1){
+            readyPlayerList.add(userThread);
+        }
+        if(readyPlayerList.size()>=2 ){
+            logger.info("Tiles can be initialized");
+        }
+    }
     /**
      * It opens a channel for the connection between Server and Client.
      */

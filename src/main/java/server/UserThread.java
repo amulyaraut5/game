@@ -101,7 +101,7 @@ public class UserThread extends Thread {
                 //logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
-                    JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don´t match"));
+                    JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don't match"));
                     logger.warn("Protocols don´t match");
                     logger.warn(Multiplex.serialize(jsonMessage));
                     sendMessage(jsonMessage);
@@ -122,6 +122,12 @@ public class UserThread extends Thread {
             case SetStatus:
                 SetStatus st = (SetStatus) message.getBody();
                 JSONMessage jsonMessagePlayerStatus = new JSONMessage(new PlayerStatus(playerID, st.isReady()));
+                if(st.isReady()){
+                    server.changeReadyPlayerList(1, this);
+                } else {
+                    server.changeReadyPlayerList(0, this);
+
+                }
                 sendMessage(jsonMessagePlayerStatus);
                 break;
 
