@@ -6,7 +6,9 @@ import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.HelloServer;
 import utilities.JSONProtocol.connection.Welcome;
 import utilities.JSONProtocol.lobby.PlayerAdded;
+import utilities.JSONProtocol.lobby.PlayerStatus;
 import utilities.JSONProtocol.lobby.PlayerValues;
+import utilities.JSONProtocol.lobby.SetStatus;
 import utilities.Utilities.MessageType;
 
 import java.io.IOException;
@@ -87,6 +89,12 @@ public class Multiplex {
                     case "PlayerAdded":
                         PlayerAdded ac = new PlayerAdded(messageBody.get("playerID").getAsInt(), messageBody.get("name").getAsString(), messageBody.get("figure").getAsInt());
                         return new JSONMessage(MessageType.PlayerAdded, ac);
+                    case "SetStatus":
+                        SetStatus st = new SetStatus(messageBody.get("ready").getAsBoolean());
+                        return new JSONMessage(MessageType.SetStatus, st);
+                    case "PlayerStatus":
+                        PlayerStatus ps = new PlayerStatus (messageBody.get("playerID").getAsInt(),messageBody.get("ready").getAsBoolean());
+                        return new JSONMessage(MessageType.PlayerStatus, ps);
                 }
             }
             return null;

@@ -7,6 +7,7 @@ import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.Welcome;
 import utilities.JSONProtocol.lobby.PlayerAdded;
+import utilities.JSONProtocol.lobby.PlayerStatus;
 import utilities.JSONProtocol.specialMessages.Error;
 import utilities.Utilities;
 
@@ -107,6 +108,11 @@ public class ReaderThread extends Thread {
             case Error:
                 Error error = (Error) message.getBody();
                 logger.info("Error Message: " + error.getError());
+                break;
+            case PlayerStatus:
+                PlayerStatus playerStatus = (PlayerStatus) message.getBody();
+                logger.info("PlayerStatus: " + playerStatus.isReady());
+
                 break;
             default:
                 logger.info("Something went wrong");
