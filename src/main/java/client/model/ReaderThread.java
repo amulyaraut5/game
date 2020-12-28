@@ -4,11 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.connection.HelloClient;
-import utilities.JSONProtocol.connection.Welcome;
-import utilities.JSONProtocol.lobby.PlayerAdded;
-import utilities.JSONProtocol.lobby.PlayerStatus;
-import utilities.JSONProtocol.specialMessages.Error;
+import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Error;
 import utilities.Utilities;
 
 import java.io.BufferedReader;

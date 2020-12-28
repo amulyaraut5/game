@@ -1,14 +1,20 @@
-package utilities.JSONProtocol.lobby;
+package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
 
-public class PlayerValues extends JSONBody {
+public class PlayerAdded extends JSONBody {
+    private int playerID;
     private String name;
     private int figure;
 
-    public PlayerValues(String name, int figure){
+    public PlayerAdded(int id, String name, int figure) {
+        this.playerID = id;
         this.name = name;
         this.figure = figure;
+    }
+
+    public int getId() {
+        return playerID;
     }
 
     public String getName() {

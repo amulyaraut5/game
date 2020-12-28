@@ -7,9 +7,8 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.connection.HelloClient;
-import utilities.JSONProtocol.connection.HelloServer;
-import utilities.Utilities.MessageType;
+import utilities.JSONProtocol.body.HelloClient;
+import utilities.JSONProtocol.body.HelloServer;
 
 import java.io.IOException;
 import java.io.PrintWriter;

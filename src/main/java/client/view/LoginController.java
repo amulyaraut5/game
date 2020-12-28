@@ -11,9 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.connection.HelloServer;
-import utilities.JSONProtocol.lobby.PlayerValues;
-import utilities.Utilities;
+import utilities.JSONProtocol.body.*;
 
 import static utilities.Utilities.PORT;
 

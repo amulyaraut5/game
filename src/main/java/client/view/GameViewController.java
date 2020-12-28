@@ -11,7 +11,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.lobby.SetStatus;
+import utilities.JSONProtocol.body.SetStatus;
 import utilities.Utilities;
 
 public class GameViewController {
@@ -69,7 +69,7 @@ public class GameViewController {
             readyButton.setOpacity(100);
             status = false;
         }
-        jsonMessage = new JSONMessage(Utilities.MessageType.SetStatus, new SetStatus(status));
+        jsonMessage = new JSONMessage(new SetStatus(status));
         client.sendMessage(jsonMessage);
 
     }

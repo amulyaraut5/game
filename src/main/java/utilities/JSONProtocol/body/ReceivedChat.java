@@ -1,4 +1,4 @@
-package utilities.JSONProtocol.chat;
+package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
 

@@ -1,4 +1,4 @@
-package utilities.JSONProtocol.lobby;
+package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
 
