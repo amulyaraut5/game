@@ -97,26 +97,20 @@ public class LoginController {
      */
     private ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
     /**
-     *
+     * this list stores the different robots (with name and id)
      */
     private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
 
     /**
-     *  it stores a list of
+     *  it stores a list of names of the robots
      */
     private String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
     /**
-     *
+     * the main class
      */
     private Main main;
-
-    /**
-     *
-     */
-    public LoginController() {
-    }
 
     /**
      * @param loginStage
@@ -134,7 +128,8 @@ public class LoginController {
     }
 
     /**
-     *
+     * by initializing the view the listView gets filled with the imageViews of the robots and
+     * it makes sure that only one item of the listView can get clicked
      */
     public void initialize() {
         createRobotList();
@@ -144,16 +139,17 @@ public class LoginController {
     }
 
     /**
-     *
+     * This method initializes a client and set its main class and also sets the client of the main class
      */
     public void createClient() {
         client = new Client( "localhost", PORT);
-        main.setClient(client);
         client.setMain(main);
+        main.setClient(client);
     }
 
     /**
-     *
+     * This method creates a list with the robots and additional it
+     * adds imageViews for each robot to another list
      */
     private void createRobotList() {
         ImageView robot;
@@ -181,6 +177,9 @@ public class LoginController {
     }
 
     /**
+     * This method gets called by clicking on the button, it checks if the username is
+     * valid and if a robot is selected and then it sends a PlayerValues protocol message
+     * and switches to the gameStage
      * @param event
      */
     @FXML
@@ -228,7 +227,6 @@ public class LoginController {
      * @param message
      */
     public void write(String message) {
-
         labelResponse.setText(message);
     }
 
@@ -240,6 +238,7 @@ public class LoginController {
     }
 
     /**
+     * it sets the main attribute
      * @param main
      */
     public void setMain(Main main) {
