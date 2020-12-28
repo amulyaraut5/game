@@ -89,6 +89,12 @@ public class Multiplex {
                     case "PlayerAdded":
                         PlayerAdded ac = new PlayerAdded(messageBody.get("playerID").getAsInt(), messageBody.get("name").getAsString(), messageBody.get("figure").getAsInt());
                         return new JSONMessage(ac);
+                    case "SetStatus":
+                        SetStatus st = new SetStatus(messageBody.get("ready").getAsBoolean());
+                        return new JSONMessage(st);
+                    case "PlayerStatus":
+                        PlayerStatus ps = new PlayerStatus (messageBody.get("playerID").getAsInt(),messageBody.get("ready").getAsBoolean());
+                        return new JSONMessage(ps);
                 }
             }
             return null;

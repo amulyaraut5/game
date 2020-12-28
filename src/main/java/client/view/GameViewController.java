@@ -69,7 +69,7 @@ public class GameViewController {
             readyButton.setOpacity(100);
             status = false;
         }
-        jsonMessage = new JSONMessage(Utilities.MessageType.SetStatus, new SetStatus(status));
+        jsonMessage = new JSONMessage(new SetStatus(status));
         client.sendMessage(jsonMessage);
 
     }
