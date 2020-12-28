@@ -15,6 +15,7 @@ public class Belt extends Attribute {
 
 	// speed for belt 1-Blue Conveyor 2- Green Conveyor
 	private int speed ;
+	private boolean isCrossing;
 
 	Belt(Orientation orientation, int speed){
 		this.speed = speed;
