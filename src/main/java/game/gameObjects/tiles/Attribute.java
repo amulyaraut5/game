@@ -3,6 +3,8 @@ package game.gameObjects.tiles;
 import game.Player;
 import utilities.Utilities.Orientation;
 
+import java.util.ArrayList;
+
 /**
  * @author Amulya
  */
@@ -11,7 +13,7 @@ public abstract class Attribute {
 
 	public String type;
 	public Orientation orientation;
-	public Orientation orientation1;
+	public ArrayList<Orientation> orientations;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called
@@ -37,6 +39,8 @@ public abstract class Attribute {
 	public Orientation getOrientation() {
 		return orientation;
 	}
+
+	public ArrayList<Orientation> getOrientations() {return orientations;}
 
 
 	@Override
