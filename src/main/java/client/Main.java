@@ -78,7 +78,7 @@ public class Main extends Application {
     public void constructLoginStage() {
         menuStage.setTitle("RoboRally - Login");
         menuStage.setResizable(false);
-        loginController.begin();
+        loginController.createClient();
         menuStage.setScene(loginScene);
 
         menuStage.setOnCloseRequest(event -> {

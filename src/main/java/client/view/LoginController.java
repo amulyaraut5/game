@@ -89,7 +89,9 @@ public class LoginController {
 
 
     /**
-     * it stores the imageViews of the different robots
+     * it stores the imageViews of the different robots,
+     * so that name and id from the choosed robot
+     * can be recognized
      */
     private ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
     /**
@@ -98,7 +100,7 @@ public class LoginController {
     private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
 
     /**
-     *
+     *  it stores a list of
      */
     private String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
@@ -143,7 +145,7 @@ public class LoginController {
     /**
      *
      */
-    public void begin() {
+    public void createClient() {
         client = new Client(this, "localhost", PORT);
     }
 
