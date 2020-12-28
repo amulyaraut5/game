@@ -197,7 +197,7 @@ public class LoginController {
                 labelResponse.setText("you chose " + robotList.get(choosedRobot).getRobotName() + " with id " + robotList.get(choosedRobot).getRobotID());
                 JSONMessage msg = new JSONMessage(Utilities.MessageType.PlayerValues, new PlayerValues(userName, robotList.get(choosedRobot).getRobotID()));
                 client.sendMessage(msg);
-                //main.constructGameStage();
+                main.constructGameStage();
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }
