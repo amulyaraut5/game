@@ -3,6 +3,8 @@ package game.gameObjects.tiles;
 import game.Player;
 import utilities.Utilities.Orientation;
 
+import java.util.ArrayList;
+
 /**
  * @author Amulya
  */
@@ -19,12 +21,10 @@ public class Wall extends Attribute {
 
     /**
      * Constructor for Wall for those tiles which have  two walls in two different direction.
-     * @param orientation
-     * @param orientation1
+     * @param orientations saves the x and y orientations of the wall
      */
-    Wall(Orientation orientation,Orientation orientation1){
-        this.orientation = orientation;
-        this.orientation1 = orientation1;
+    Wall(ArrayList<Orientation> orientations){
+        this.orientations = orientations;
     }
 
     /**
