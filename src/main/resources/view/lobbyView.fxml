@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
@@ -10,5 +11,6 @@
                 <Image url="@loginBackground.png" />
             </image>
         </ImageView>
+      <CheckBox fx:id="readyCheckbox" layoutX="517.0" layoutY="346.0" mnemonicParsing="false" text="Ready" onAction="#checkBoxAction" />
     </children>
 </AnchorPane>
