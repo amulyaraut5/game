@@ -92,6 +92,7 @@ public class Main extends Application {
     }
 
     public void constructGameStage() {
+        menuStage.close();
         if (gameStage == null) {
             gameStage = new Stage();
         }
