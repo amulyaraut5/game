@@ -108,6 +108,8 @@ public class ReaderThread extends Thread {
                 break;
             case PlayerStatus:
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
+                //TODO extract player id
+                //if playerStatus.
                 logger.info("PlayerStatus: " + playerStatus.isReady());
 
                 break;

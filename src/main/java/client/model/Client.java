@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import server.UserThread;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.HelloClient;
 import utilities.JSONProtocol.body.HelloServer;
@@ -13,6 +14,7 @@ import utilities.JSONProtocol.body.HelloServer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * This class creates the socket for the client.
@@ -53,7 +55,8 @@ public class Client {
     private GameViewController gameViewController;
 
     private LoginController loginController;
-
+    //TODO handle case that id of player that already connected changes
+    private ArrayList<String> readyList = new ArrayList<>();
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
@@ -161,5 +164,13 @@ public class Client {
         Platform.runLater(() -> {
             loginController.write(message);
         });
+    }
+
+    public void addToReadyList(String id){
+        readyList.add(id);
+    }
+
+    public void deleteFromReadyList(String id){
+        readyList.remove(id);
     }
 }

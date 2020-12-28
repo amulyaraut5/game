@@ -130,7 +130,6 @@ public class UserThread extends Thread {
                 }
                 sendMessage(jsonMessagePlayerStatus);
                 break;
-
         }
     }
 
