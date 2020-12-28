@@ -5,6 +5,8 @@ import com.google.gson.*;
 import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.HelloServer;
 import utilities.JSONProtocol.connection.Welcome;
+import utilities.JSONProtocol.lobby.PlayerAdded;
+import utilities.JSONProtocol.lobby.PlayerValues;
 import utilities.Utilities.MessageType;
 
 import java.io.IOException;
@@ -78,6 +80,13 @@ public class Multiplex {
                     case "Welcome":
                         Welcome wc = new Welcome(messageBody.get("playerID").getAsInt());
                         return new JSONMessage(MessageType.Welcome, wc);
+
+                    case "PlayerValues":
+                        PlayerValues pc = new PlayerValues(messageBody.get("name").getAsString(), messageBody.get("figure").getAsInt());
+                        return new JSONMessage(MessageType.PlayerValues, pc);
+                    case "PlayerAdded":
+                        PlayerAdded ac = new PlayerAdded(messageBody.get("playerID").getAsInt(), messageBody.get("name").getAsString(), messageBody.get("figure").getAsInt());
+                        return new JSONMessage(MessageType.PlayerAdded, ac);
                 }
             }
             return null;

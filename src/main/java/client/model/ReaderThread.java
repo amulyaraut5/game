@@ -6,6 +6,7 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.Welcome;
+import utilities.JSONProtocol.lobby.PlayerAdded;
 import utilities.JSONProtocol.specialMessages.Error;
 import utilities.Utilities;
 
@@ -98,6 +99,10 @@ public class ReaderThread extends Thread {
                 String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
                 client.printMessage(labelMessage);
                 //logger.info(labelMessage);
+                break;
+            case PlayerAdded:
+                PlayerAdded pa = (PlayerAdded) message.getBody();
+                logger.info("Player Added: " + pa.getId());
                 break;
             case Error:
                 Error error = (Error) message.getBody();

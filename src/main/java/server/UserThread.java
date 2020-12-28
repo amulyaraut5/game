@@ -7,6 +7,8 @@ import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.HelloServer;
 import utilities.JSONProtocol.connection.Welcome;
+import utilities.JSONProtocol.lobby.PlayerAdded;
+import utilities.JSONProtocol.lobby.PlayerValues;
 import utilities.Utilities.MessageType;
 
 import java.io.*;
@@ -25,6 +27,7 @@ public class UserThread extends Thread {
     private final Socket socket;
     private final Server server;
     private final double protocol = 0.1;
+    private int playerID;
     /**
      * Logger to log information/warning
      */
@@ -107,12 +110,18 @@ public class UserThread extends Thread {
                     sendMessage(jsonMessage);
                     //disconnect();
                 } else {
-                    int playerID = server.getNewID();
+                    playerID = server.getNewID();
                     JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(playerID));
                     currentThread().setName("UserThread-" + playerID);
                     sendMessage(jsonMessage);
                 }
                 break;
+            case PlayerValues:
+                    // The messageBody which is Object is then casted down to HelloServer class
+                    PlayerValues ps = (PlayerValues) message.getBody();
+                    JSONMessage jsonMessage = new JSONMessage(MessageType.PlayerAdded, new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
+                    sendMessage(jsonMessage);
+
         }
     }
 

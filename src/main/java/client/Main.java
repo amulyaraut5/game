@@ -94,7 +94,7 @@ public class Main extends Application {
         gameStage.setTitle("RoboRally - Game");
         gameStage.setResizable(false);
         gameStage.setScene(gameScene);
-
+        gameStage.show();
         gameStage.setOnCloseRequest(event -> {
             gameStage.close();
         });

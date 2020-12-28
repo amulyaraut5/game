@@ -10,6 +10,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.connection.HelloServer;
+import utilities.JSONProtocol.lobby.PlayerValues;
+import utilities.Utilities;
 
 import static utilities.Utilities.PORT;
 
@@ -139,7 +143,6 @@ public class LoginController {
         labelResponse.setText("test");
         listView.setItems(robotImageViewList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
     }
 
     /**
@@ -192,7 +195,9 @@ public class LoginController {
         else {
             try {
                 labelResponse.setText("you chose " + robotList.get(choosedRobot).getRobotName() + " with id " + robotList.get(choosedRobot).getRobotID());
-                //TODO
+                JSONMessage msg = new JSONMessage(Utilities.MessageType.PlayerValues, new PlayerValues(userName, robotList.get(choosedRobot).getRobotID()));
+                client.sendMessage(msg);
+                //main.constructGameStage();
             } catch (IllegalArgumentException ex) {
                 labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
             }
