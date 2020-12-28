@@ -114,8 +114,9 @@ public class UserThread extends Thread {
                 }
                 break;
             case PlayerValues:
-                    // The messageBody which is Object is then casted down to HelloServer class
+                    // The messageBody which is Object is then casted down to PlayerValues class
                 PlayerValues ps = (PlayerValues) message.getBody();
+                user.setName(ps.getName());
                 JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
                 sendMessage(jsonMessage);
                 break;
@@ -131,6 +132,7 @@ public class UserThread extends Thread {
                 break;
             case SendChat:
                 SendChat sc = (SendChat) message.getBody();
+                logger.info(this.user.getName());
                 if(sc.getTo()<0){
                     server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
                 }
