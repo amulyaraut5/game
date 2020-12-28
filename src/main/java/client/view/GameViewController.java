@@ -5,6 +5,7 @@ import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -49,6 +50,7 @@ public class GameViewController {
     @FXML
     public TextArea chatWindow;
 
+    public TextArea joinedUsersTextArea;
     /**
      *
      */
@@ -115,6 +117,14 @@ public class GameViewController {
 
     /**
      *
+     * @param body
+     */
+    public void setUsersTextArea(String body) {
+        joinedUsersTextArea.appendText(body+ "\n");
+    }
+
+    /**
+     *
      * @param main
      */
     public void setMain(Main main) {
@@ -124,4 +134,5 @@ public class GameViewController {
     public void setClient(Client client) {
         this.client = client;
     }
+
 }

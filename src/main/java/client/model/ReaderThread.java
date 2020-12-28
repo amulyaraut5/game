@@ -101,6 +101,7 @@ public class ReaderThread extends Thread {
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
+                client.sendToGameView(pa.getName(), "playerAdded");
                 break;
             case Error:
                 Error error = (Error) message.getBody();
@@ -116,7 +117,7 @@ public class ReaderThread extends Thread {
             case ReceivedChat:
                 ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                 logger.info(receivedChat.getMessage());
-                client.chatMessage(receivedChat.getFrom() + ": "+receivedChat.getMessage());
+                client.sendToGameView(receivedChat.getFrom() + ": "+receivedChat.getMessage(), "receivedChat");
             default:
                 logger.info("Something went wrong");
                 //TODO

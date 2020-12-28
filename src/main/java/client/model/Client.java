@@ -148,8 +148,8 @@ public class Client {
         });
     }
 
-    public void chatMessage(String messageBody) {
-        main.sendChatMessage(messageBody);
+    public void sendToGameView(String messageBody, String type) {
+        main.sendChatMessage(messageBody, type);
     }
 
     public void printMessage(String message) {
@@ -170,4 +170,6 @@ public class Client {
     public void setMain(Main main) {
         this.main = main;
     }
+
+
 }

@@ -10,6 +10,7 @@ import utilities.Utilities.MessageType;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Handles connection for each connected client,
@@ -32,6 +33,7 @@ public class UserThread extends Thread {
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
+    private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
 
     public UserThread(Socket socket, Server server, User user) {
 
@@ -118,7 +120,11 @@ public class UserThread extends Thread {
                 PlayerValues ps = (PlayerValues) message.getBody();
                 user.setName(ps.getName());
                 JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
-                sendMessage(jsonMessage);
+                for (JSONMessage jM : playerValuesList){
+                    sendMessage(jM);
+                }
+                playerValuesList.add(jsonMessage);
+                server.communicateUsers(jsonMessage, this);
                 break;
             case SetStatus:
                 SetStatus st = (SetStatus) message.getBody();
@@ -135,6 +141,8 @@ public class UserThread extends Thread {
                 logger.info(this.user.getName());
                 if(sc.getTo()<0){
                     server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
+                } else{
+                    // TODO private Message
                 }
         }
     }
