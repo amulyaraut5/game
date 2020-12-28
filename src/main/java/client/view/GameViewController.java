@@ -4,17 +4,19 @@ import client.Main;
 import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 import utilities.Utilities;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class GameViewController {
     /**
@@ -50,6 +52,15 @@ public class GameViewController {
     @FXML
     public TextArea chatWindow;
 
+    public Label player1Label;
+    public Label player2Label;
+    public Label player3Label;
+    public Label player4Label;
+    public Label player5Label;
+    public Label player6Label;
+    private ArrayList<Label> labelForPlayer = new ArrayList<>();
+    private Label currentLabel = player1Label;
+
     public TextArea joinedUsersTextArea;
     /**
      *
@@ -75,6 +86,15 @@ public class GameViewController {
         jsonMessage = new JSONMessage(new SetStatus(status));
         client.sendMessage(jsonMessage);
 
+    }
+
+    public void initialize(){
+        labelForPlayer.add(player1Label);
+        labelForPlayer.add(player2Label);
+        labelForPlayer.add(player3Label);
+        labelForPlayer.add(player4Label);
+        labelForPlayer.add(player5Label);
+        labelForPlayer.add(player6Label);
     }
     /**
      *
@@ -121,6 +141,9 @@ public class GameViewController {
      */
     public void setUsersTextArea(String body) {
         joinedUsersTextArea.appendText(body+ "\n");
+        currentLabel.setText(body);
+        int index = labelForPlayer.indexOf(currentLabel);
+        currentLabel = labelForPlayer.get(index);
     }
 
     /**
