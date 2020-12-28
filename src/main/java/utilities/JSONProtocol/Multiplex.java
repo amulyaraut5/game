@@ -1,11 +1,11 @@
 package utilities.JSONProtocol;
 
 
+import com.google.gson.*;
 import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.HelloServer;
 import utilities.JSONProtocol.connection.Welcome;
 import utilities.Utilities.MessageType;
-import com.google.gson.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -24,7 +24,7 @@ public class Multiplex {
      * @throws IOException
      */
 
-    public static String serialize(JSONMessage messageObj) throws IOException {
+    public static String serialize(JSONMessage messageObj) {
         Gson gson = new Gson();
         String json = gson.toJson(messageObj);
         return json;
@@ -55,16 +55,22 @@ public class Multiplex {
         public JSONMessage deserialize(JsonElement jsonElement, Type typeofT,
                                        JsonDeserializationContext jsonDeserializationContext)
                 throws JsonParseException {
+            Gson gson = new Gson();
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            JsonElement type = jsonObject.get("messageType");
+            String type = jsonObject.get("messageType").getAsString();
             JsonObject messageBody = jsonObject.get("messageBody").getAsJsonObject();
             if (type != null) {
-                switch (type.getAsString()) {
+                switch (type) {
                     case "HelloServer":
-                        HelloServer hs = new HelloServer(messageBody.get("protocol").getAsDouble(),
+                        HelloServer msg = gson.fromJson(messageBody, HelloServer.class); //TODO Class.forName(type)
+                        return new JSONMessage(MessageType.HelloServer, msg);
+                        /*
+                        HelloServer hs = new HelloServer(
+                                messageBody.get("protocol").getAsDouble(),
                                 messageBody.get("group").getAsString(),
                                 messageBody.get("isAI").getAsBoolean());
                         return new JSONMessage(MessageType.HelloServer, hs);
+                         */
                     case "HelloClient":
 
                         HelloClient hc = new HelloClient((messageBody.get("protocol").getAsDouble()));

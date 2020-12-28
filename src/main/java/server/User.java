@@ -18,11 +18,8 @@ public class User {
     /**
      * The name of the user.
      */
-    private volatile String name = "Unnamed user";
-    /**
-     * The birth date of the user. (Initialised with the minimum supported LocalDate.)
-     */
-    private volatile LocalDate birthDate = LocalDate.MIN;
+    private volatile String name;
+    private volatile int id;//TODO
 
     /**
      * Test if two different objects of User are the same user.
@@ -104,5 +101,11 @@ public class User {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

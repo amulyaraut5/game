@@ -29,7 +29,7 @@ public class Server {
     /**
      * idGenerator to give id´s to the users
      */
-    private Random idGenerator = new Random();
+    private final Random idGenerator = new Random();
     /**
      * Array with all the id´s that already exist
      */
@@ -68,15 +68,12 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             logger.info("Chat server is waiting for clients to connect to port " + port + ".");
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-
-                public void run() {
-                    try {
-                        serverSocket.close();
-                        logger.info("The server is shut down!");
-                    } catch (IOException e) { /* failed */ }
-                }
-            });
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    serverSocket.close();
+                    logger.info("The server is shut down!");
+                } catch (IOException e) { /* failed */ }
+            }));
             acceptClients(serverSocket);
         } catch (IOException e) {
             logger.fatal("could not connect: " + e.getMessage());

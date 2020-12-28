@@ -8,13 +8,9 @@ import utilities.JSONProtocol.connection.HelloClient;
 import utilities.JSONProtocol.connection.HelloServer;
 import utilities.JSONProtocol.connection.Welcome;
 import utilities.Utilities.MessageType;
-import com.google.gson.Gson;
 
 import java.io.*;
 import java.net.Socket;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * Handles connection for each connected client,
@@ -25,7 +21,6 @@ import java.time.format.DateTimeParseException;
 
 public class UserThread extends Thread {
 
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
@@ -55,21 +50,6 @@ public class UserThread extends Thread {
             disconnect(ex);
         }
     }
-
-    /**
-     * Turns a String into a date or null
-     *
-     * @param date as String
-     * @return null if String is not a valid date or the date
-     */
-    public static LocalDate turnIntoDate(String date) {
-        try {
-            return LocalDate.parse(date, formatter);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
-    }
-
 
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.

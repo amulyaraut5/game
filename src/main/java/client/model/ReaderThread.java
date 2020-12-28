@@ -101,7 +101,7 @@ public class ReaderThread extends Thread {
                 break;
             case Error:
                 Error error = (Error) message.getBody();
-                logger.info("Error Message: "+ error.getError());
+                logger.info("Error Message: " + error.getError());
                 break;
             default:
                 logger.info("Something went wrong");
