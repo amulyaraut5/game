@@ -11,11 +11,23 @@ public class JSONMessage {
 
     private JSONBody messageBody;
 
-    public JSONMessage(MessageType messageType, JSONBody messageBody) {
-        this.messageType = messageType;
+    public JSONMessage(JSONBody messageBody) {
         this.messageBody = messageBody;
-        //System.out.println(messageType);
-        //System.out.println(messageBody.getClass().getSimpleName());//TODO should we use the classname as messageType?
+
+        var type = messageBody.getClass().getSimpleName();
+        messageType = MessageType.valueOf(type);
+    }
+
+    public JSONMessage() {
+
+    }
+
+    public static JSONMessage create(JSONBody messageBody) {
+        var msg = new JSONMessage();
+        msg.messageBody = messageBody;
+        var type = messageBody.getClass().getSimpleName();
+        msg.messageType = MessageType.valueOf(type);
+        return msg;
     }
 
     public MessageType getType() {

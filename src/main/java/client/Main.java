@@ -43,7 +43,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage menuStage) throws IOException {
-        this.menuStage = menuStage;//TODO test, if this works, because no object of Main is jet created
+        this.menuStage = menuStage;//TODO test, if this works, because no object of Main is yet created
 
         Platform.runLater(() -> {
             try {

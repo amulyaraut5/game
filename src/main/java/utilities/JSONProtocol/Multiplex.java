@@ -67,7 +67,7 @@ public class Multiplex {
                 switch (type) {
                     case "HelloServer":
                         HelloServer msg = gson.fromJson(messageBody, HelloServer.class); //TODO Class.forName(type)
-                        return new JSONMessage(MessageType.HelloServer, msg);
+                        return new JSONMessage(msg);
                         /*
                         HelloServer hs = new HelloServer(
                                 messageBody.get("protocol").getAsDouble(),
@@ -78,23 +78,17 @@ public class Multiplex {
                     case "HelloClient":
 
                         HelloClient hc = new HelloClient((messageBody.get("protocol").getAsDouble()));
-                        return new JSONMessage(MessageType.HelloClient, hc);
+                        return new JSONMessage(hc);
                     case "Welcome":
                         Welcome wc = new Welcome(messageBody.get("playerID").getAsInt());
-                        return new JSONMessage(MessageType.Welcome, wc);
+                        return new JSONMessage(wc);
 
                     case "PlayerValues":
                         PlayerValues pc = new PlayerValues(messageBody.get("name").getAsString(), messageBody.get("figure").getAsInt());
-                        return new JSONMessage(MessageType.PlayerValues, pc);
+                        return new JSONMessage(pc);
                     case "PlayerAdded":
                         PlayerAdded ac = new PlayerAdded(messageBody.get("playerID").getAsInt(), messageBody.get("name").getAsString(), messageBody.get("figure").getAsInt());
-                        return new JSONMessage(MessageType.PlayerAdded, ac);
-                    case "SetStatus":
-                        SetStatus st = new SetStatus(messageBody.get("ready").getAsBoolean());
-                        return new JSONMessage(MessageType.SetStatus, st);
-                    case "PlayerStatus":
-                        PlayerStatus ps = new PlayerStatus (messageBody.get("playerID").getAsInt(),messageBody.get("ready").getAsBoolean());
-                        return new JSONMessage(MessageType.PlayerStatus, ps);
+                        return new JSONMessage(ac);
                 }
             }
             return null;

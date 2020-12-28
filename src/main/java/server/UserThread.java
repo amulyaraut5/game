@@ -65,7 +65,7 @@ public class UserThread extends Thread {
         try {
 
             // HelloClient protocol is first serialized and sent through socket to Client.
-            JSONMessage jsonMessage = new JSONMessage(MessageType.HelloClient, new HelloClient(protocol));
+            JSONMessage jsonMessage = new JSONMessage(new HelloClient(protocol));
             sendMessage(jsonMessage);
             //<------------------------->
 
@@ -106,14 +106,14 @@ public class UserThread extends Thread {
                 //logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
-                    JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new utilities.JSONProtocol.specialMessages.Error("Protocols don´t match"));
+                    JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don´t match"));
                     logger.warn("Protocols don´t match");
                     logger.warn(Multiplex.serialize(jsonMessage));
                     sendMessage(jsonMessage);
                     //disconnect();
                 } else {
                     playerID = server.getNewID();
-                    JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(playerID));
+                    JSONMessage jsonMessage = new JSONMessage(new Welcome(playerID));
                     currentThread().setName("UserThread-" + playerID);
                     sendMessage(jsonMessage);
                 }
@@ -121,12 +121,12 @@ public class UserThread extends Thread {
             case PlayerValues:
                     // The messageBody which is Object is then casted down to HelloServer class
                 PlayerValues ps = (PlayerValues) message.getBody();
-                JSONMessage jsonMessage = new JSONMessage(MessageType.PlayerAdded, new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
+                JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
                 sendMessage(jsonMessage);
                 break;
             case SetStatus:
                 SetStatus st = (SetStatus) message.getBody();
-                JSONMessage jsonMessagePlayerStatus = new JSONMessage(MessageType.PlayerStatus, new PlayerStatus(playerID, st.isReady()));
+                JSONMessage jsonMessagePlayerStatus = new JSONMessage(new PlayerStatus(playerID, st.isReady()));
                 sendMessage(jsonMessagePlayerStatus);
                 break;
 

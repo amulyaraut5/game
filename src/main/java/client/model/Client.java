@@ -71,7 +71,7 @@ public class Client {
     }
 
     public void connect(HelloClient hc) {
-        JSONMessage msg = new JSONMessage(MessageType.HelloServer, new HelloServer(0.1, "Astreine Akazien", false));
+        JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
         sendMessage(msg);
     }
 
