@@ -7,13 +7,14 @@ public class Field {
     private String type;
     private Integer speed;
     private Boolean isCrossing;
-    private String orientations;
+    private String orientation;
+    private ArrayList<String> orientations;
     private ArrayList<Integer> registers;
     private Integer count;
 
 
     /**
-     * Getter ans Setter
+     * Getter and Setter
      */
     public String getType() {
         return type;
@@ -27,7 +28,11 @@ public class Field {
         return isCrossing;
     }
 
-    public String getOrientations() {
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public ArrayList<String> getOrientations() {
         return orientations;
     }
 
@@ -51,7 +56,11 @@ public class Field {
         isCrossing = crossing;
     }
 
-    public void setOrientations(String orientations) {
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
+
+    public void setOrientations(ArrayList<String> orientations) {
         this.orientations = orientations;
     }
 

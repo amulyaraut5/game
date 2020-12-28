@@ -1,11 +1,11 @@
 package utilities.JSONProtocol.body.gameStarted;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import utilities.JSONProtocol.body.gameStarted.Field;
 
 public class Maps {
     private int position;
-    private ArrayList<java.lang.reflect.Field> field;
+    private ArrayList<Field> field;
 
     public Maps(int position, ArrayList<Field> field){
         this.position = position;
