@@ -1,5 +1,6 @@
 package client;
 
+import client.model.Client;
 import client.view.GameViewController;
 import client.view.LoginController;
 import client.view.MenuController;
@@ -24,12 +25,15 @@ public class Main extends Application {
     private Parent login = null;
     private Parent game = null;
     private Parent menu = null;
+    private GameViewController gameViewController;
 
     private Stage currentStage = menuStage;
 
     private LoginController loginController;
 
     static final Logger logger = LogManager.getLogger();
+
+    private Client client;
 
     public static void main(String[] args) {
         logger.info("Main Method started");
@@ -91,6 +95,7 @@ public class Main extends Application {
         if (gameStage == null) {
             gameStage = new Stage();
         }
+        gameViewController.setClient(client);
         gameStage.setTitle("RoboRally - Game");
         gameStage.setResizable(false);
         gameStage.setScene(gameScene);
@@ -116,8 +121,9 @@ public class Main extends Application {
         //game
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
         game = gameLoader.load();
-        GameViewController gameController = gameLoader.getController();
-        gameController.setMain(this);
+        gameViewController = gameLoader.getController();
+        gameViewController.setMain(this);
+
     }
 
     public void showGameStage() {
@@ -131,4 +137,11 @@ public class Main extends Application {
         menuStage.setScene(loginScene);
         menuStage.show();
     }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+
+
 }

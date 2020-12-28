@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.lobby.SetStatus;
+import utilities.Utilities;
 
 public class GameViewController {
     /**
@@ -55,13 +58,20 @@ public class GameViewController {
     public void readyButton(){
         String ready = "I'm ready!";
         String notReady = "I'm not ready!";
+        boolean status = false;
+        JSONMessage jsonMessage;
         if(readyButton.getText().equals(ready)){
             readyButton.setText(notReady);
             readyButton.setOpacity(0.5);
+            status = true;
         } else {
             readyButton.setText(ready);
             readyButton.setOpacity(100);
+            status = false;
         }
+        jsonMessage = new JSONMessage(Utilities.MessageType.SetStatus, new SetStatus(status));
+        client.sendMessage(jsonMessage);
+
     }
     /**
      *
@@ -93,13 +103,6 @@ public class GameViewController {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-    /**
-     *
-     * @param client
-     */
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     /**
      *
@@ -115,5 +118,9 @@ public class GameViewController {
      */
     public void setMain(Main main) {
         this.main = main;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
