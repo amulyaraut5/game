@@ -31,6 +31,8 @@ public class ReaderThread extends Thread {
      */
     private BufferedReader bReader;
 
+    private int playerId;
+
     /**
      * Constructor of ReaderThread initializes the attributes socket and client
      * and creates a BufferedReader which is wrap upon the InputStream of the Socket.
@@ -94,6 +96,7 @@ public class ReaderThread extends Thread {
                 break;
             case Welcome:
                 Welcome wc = (Welcome) message.getBody();
+                playerId= wc.getPlayerId();
                 String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
                 client.printMessage(labelMessage);
                 //logger.info(labelMessage);
@@ -101,7 +104,8 @@ public class ReaderThread extends Thread {
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
-                client.sendToGameView(pa.getName(), "playerAdded");
+                if(pa.getId()!= playerId)
+                    client.sendToGameView(pa.getName(), "playerAdded");
                 break;
             case Error:
                 Error error = (Error) message.getBody();

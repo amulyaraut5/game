@@ -33,7 +33,6 @@ public class UserThread extends Thread {
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
-    private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
 
     public UserThread(Socket socket, Server server, User user) {
 
@@ -120,11 +119,13 @@ public class UserThread extends Thread {
                 PlayerValues ps = (PlayerValues) message.getBody();
                 user.setName(ps.getName());
                 JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
-                for (JSONMessage jM : playerValuesList){
-                    sendMessage(jM);
-                }
-                playerValuesList.add(jsonMessage);
+                server.addToPlayerValuesList(jsonMessage);
+
                 server.communicateUsers(jsonMessage, this);
+                for (JSONMessage jM : server.getPlayerValuesList()){
+                    sendMessage(jM);
+                    logger.info(jM.toString());
+                }
                 break;
             case SetStatus:
                 SetStatus st = (SetStatus) message.getBody();

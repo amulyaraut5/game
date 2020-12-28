@@ -41,6 +41,9 @@ public class Server {
      */
     private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
 
+    private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
+
+
     /**
      *
      */
@@ -175,5 +178,12 @@ public class Server {
             return newID;
         } while (idNumbers.contains(newID));
 
+    }
+    public ArrayList<JSONMessage> getPlayerValuesList() {
+        return playerValuesList;
+    }
+
+    public void addToPlayerValuesList(JSONMessage playerAddedMessage) {
+        this.playerValuesList.add(playerAddedMessage);
     }
 }
