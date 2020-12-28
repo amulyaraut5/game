@@ -62,6 +62,7 @@ public class ReaderThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
+                logger.debug("Protocol received: " + text);
                 // After the reader object reads the serialized message from the socket it is then
                 // deserialized and handled in handleMessage method.
 

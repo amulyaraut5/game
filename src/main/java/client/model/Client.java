@@ -72,7 +72,7 @@ public class Client {
 
     public void connect(HelloClient hc) {
         JSONMessage msg = new JSONMessage(MessageType.HelloServer, new HelloServer(0.1, "Astreine Akazien", false));
-        sendUserInput(msg);
+        sendMessage(msg);
     }
 
 
@@ -93,6 +93,7 @@ public class Client {
 
 
         readerThread = new ReaderThread(socket, this);
+        readerThread.setName("ReaderThread");
         readerThread.start();
 
         logger.info("Connection to server successful.");
@@ -139,9 +140,10 @@ public class Client {
         this.gameViewController = controller;
     }
 
-    public void sendUserInput(JSONMessage msg) {
+    public void sendMessage(JSONMessage msg) {
         Gson gson = new Gson();
         String json = gson.toJson(msg);
+        logger.debug("Protocol sent: " + json);
         writer.println(json);
     }
 

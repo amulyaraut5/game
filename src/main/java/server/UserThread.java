@@ -80,11 +80,8 @@ public class UserThread extends Thread {
         try {
 
             // HelloClient protocol is first serialized and sent through socket to Client.
-            logger.info("Sent Protocol:");
             JSONMessage jsonMessage = new JSONMessage(MessageType.HelloClient, new HelloClient(protocol));
-            logger.info(Multiplex.serialize(jsonMessage));
-            writer.println(Multiplex.serialize(jsonMessage));
-            writer.flush();
+            sendMessage(jsonMessage);
             //<------------------------->
 
             while (!exit) {
@@ -92,6 +89,8 @@ public class UserThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
+                logger.debug("Protocol received: " + text);
+
                 // After the reader object reads the serialized message from the socket it is then
                 // deserialized and handled in handleMessage method.
                 JSONMessage msg = Multiplex.deserialize(text);
@@ -107,18 +106,17 @@ public class UserThread extends Thread {
 
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
-     * is downcasted to respective class.
+     * is casted down to respective class.
      *
-     * @param message
-     * @throws ClassNotFoundException
+     * @param message received Object of JSONMessage
      */
 
-    private void handleMessage(JSONMessage message) throws IOException {
+    private void handleMessage(JSONMessage message) {
         MessageType type = message.getType();
 
         switch (type) {
             case HelloServer:
-                // The messageBody which is Object is then downcasted to HelloServer class
+                // The messageBody which is Object is then casted down to HelloServer class
                 HelloServer hs = (HelloServer) message.getBody();
                 //logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 if (!(hs.getProtocol() == protocol)) {
@@ -126,18 +124,16 @@ public class UserThread extends Thread {
                     JSONMessage jsonMessage = new JSONMessage(MessageType.Error, new utilities.JSONProtocol.specialMessages.Error("Protocols don´t match"));
                     logger.warn("Protocols don´t match");
                     logger.warn(Multiplex.serialize(jsonMessage));
-                    writer.println(Multiplex.serialize(jsonMessage));
+                    sendMessage(jsonMessage);
                     //disconnect();
                 } else {
                     int playerID = server.getNewID();
                     JSONMessage jsonMessage = new JSONMessage(MessageType.Welcome, new Welcome(playerID));
-                    System.out.println(jsonMessage);
-                    writer.println(Multiplex.serialize(jsonMessage));
+                    currentThread().setName("UserThread-" + playerID);
+                    sendMessage(jsonMessage);
                 }
-                writer.flush();
                 break;
         }
-
     }
 
     /**
@@ -146,8 +142,10 @@ public class UserThread extends Thread {
      * @param msg the message to be sent
      */
     public void sendMessage(JSONMessage msg) {
-        Gson gson = new Gson();
-        writer.println(gson.toJson(msg));
+        String json = Multiplex.serialize(msg);
+        logger.debug("Protocol sent:" + json);
+        writer.println(json);
+        writer.flush();
     }
 
 
