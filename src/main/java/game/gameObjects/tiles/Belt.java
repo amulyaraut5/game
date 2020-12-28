@@ -20,7 +20,7 @@ public class Belt extends Attribute {
 	Belt(Orientation orientation, int speed){
 		this.speed = speed;
 		this.type = "Belt";
-		this.orientation = orientation;
+		this.orientationY = orientation;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Belt extends Attribute {
 	 */
 
 	private void updateRobotCoordinates(int x, int y,Player player){
-		switch (orientation) {
+		switch (orientationY) {
 			case UP: //NORTH
 				player.getRobot().setPosition(x, y - 1);
 				break;

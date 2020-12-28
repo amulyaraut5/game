@@ -10,8 +10,8 @@ import utilities.Utilities.Orientation;
 public abstract class Attribute {
 
 	public String type;
-	public Orientation orientation;
-	public Orientation orientation1;
+	public Orientation orientationY;
+	public Orientation orientationX;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called
@@ -35,7 +35,7 @@ public abstract class Attribute {
 	}
 
 	public Orientation getOrientation() {
-		return orientation;
+		return orientationY;
 	}
 
 

@@ -10,15 +10,13 @@ import utilities.Utilities;
 
 public class Antenna extends Attribute {
 
-	private Utilities.Orientation orientation;
-
 
 	/**
 	 * Constructor for Antenna that basically sets the antenna facing
 	 * north in the specific tile.
 	 */
 	Antenna(){
-		this.orientation = Utilities.Orientation.UP;// means hier north
+		this.orientationY = Utilities.Orientation.UP;// means hier north
 
 		this.type = "Antenna";
 	}

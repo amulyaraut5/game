@@ -14,7 +14,7 @@ public class Wall extends Attribute {
      * @param orientation
      */
     Wall(Orientation orientation){
-        this.orientation = orientation;
+        this.orientationY = orientation;
     }
 
     /**
@@ -23,8 +23,8 @@ public class Wall extends Attribute {
      * @param orientation1
      */
     Wall(Orientation orientation,Orientation orientation1){
-        this.orientation = orientation;
-        this.orientation1 = orientation1;
+        this.orientationY = orientation;
+        this.orientationX = orientation1;
     }
 
     /**

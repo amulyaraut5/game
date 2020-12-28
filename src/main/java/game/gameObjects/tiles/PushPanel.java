@@ -19,7 +19,7 @@ public class PushPanel extends Attribute {
 	// belt pushes the robot.
 
 	PushPanel(Orientation orientation, int registerValue){
-		this.orientation = orientation;
+		this.orientationY = orientation;
 
 	}
 	/**
@@ -33,7 +33,7 @@ public class PushPanel extends Attribute {
 	public void performAction(Player player) {
 
 		if(true){
-			updateRobotCoordinates(orientation, player);
+			updateRobotCoordinates(orientationY, player);
 		}
 		else{
 			// Do nothing

@@ -15,8 +15,8 @@ public class RotatingBelt extends Attribute {
 
 
 	RotatingBelt(Orientation orientation, Orientation orientation1, boolean isCurve){
-		this.orientation = orientation;
-		this.orientation1 = orientation1;
+		this.orientationY = orientation;
+		this.orientationX = orientation1;
 		this.isCurve = isCurve;
 		this.type = "RotatingBelt";
 
@@ -73,7 +73,7 @@ public class RotatingBelt extends Attribute {
 	 */
 
 	private void updateRobotCoordinates(int x, int y,Player player){
-		switch (orientation) {
+		switch (orientationY) {
 			case UP: //NORTH
 				player.getRobot().setPosition(x, y - 1);
 				break;

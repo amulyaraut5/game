@@ -15,7 +15,7 @@ public class Gear extends Attribute {
 
 	public Gear(Utilities.Orientation orientation){
 		this.type = "Gear";
-		this.orientation = orientation;
+		this.orientationY = orientation;
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class Gear extends Attribute {
 	@Override
 	public void performAction(Player player) {
 
-		switch(orientation) {
+		switch(orientationY) {
 			case RIGHT:
 				switch (player.getRobot().getOrientation()) {
 					case UP: //NORTH
