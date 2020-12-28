@@ -126,10 +126,14 @@ public class UserThread extends Thread {
                     server.changeReadyPlayerList(1, this);
                 } else {
                     server.changeReadyPlayerList(0, this);
-
                 }
                 sendMessage(jsonMessagePlayerStatus);
                 break;
+            case SendChat:
+                SendChat sc = (SendChat) message.getBody();
+                if(sc.getTo()<0){
+                    server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
+                }
         }
     }
 
@@ -153,6 +157,7 @@ public class UserThread extends Thread {
             //else {
             //sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
+            user.setId(playerID);
             welcome();
         }
 
@@ -163,7 +168,7 @@ public class UserThread extends Thread {
      * Sends welcome message to the user and notifies all other users.
      */
     private void welcome() {
-        server.communicate(user + " joined the room.", user);
+        //server.communicate(user + " joined the room.", user);
     }
 
     /**
@@ -172,7 +177,7 @@ public class UserThread extends Thread {
     private void disconnect() {
         //sendMessage("Bye " + user);
         server.removeUser(user);
-        server.communicate(user + " left the room.", user);
+        //server.communicate(user + " left the room.", user);
         logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();
@@ -191,7 +196,7 @@ public class UserThread extends Thread {
         exit = true;
         logger.fatal("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
         server.removeUser(user);
-        server.communicate(user + " left the room.", user);
+        //server.communicate(user + " left the room.", user);
         logger.fatal("Closed the connection with address:   " + socket.getRemoteSocketAddress());
         try {
             socket.close();

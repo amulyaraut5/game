@@ -1,5 +1,6 @@
 package client.model;
 
+import client.Main;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;
@@ -52,8 +53,7 @@ public class Client {
      * The writerThread writes the console input of the user from given socket.
      */
 
-    private GameViewController gameViewController;
-
+    private Main main;
     private LoginController loginController;
     //TODO handle case that id of player that already connected changes
     private ArrayList<String> readyList = new ArrayList<>();
@@ -133,14 +133,7 @@ public class Client {
     }
 
 
-    /**
-     * set the game view controller
-     *
-     * @param controller
-     */
-    public void setGameViewController(GameViewController controller) {
-        this.gameViewController = controller;
-    }
+
 
     public void sendMessage(JSONMessage msg) {
         Gson gson = new Gson();
@@ -156,7 +149,7 @@ public class Client {
     }
 
     public void chatMessage(String messageBody) {
-        gameViewController.setTextArea(messageBody);
+        main.sendChatMessage(messageBody);
     }
 
     public void printMessage(String message) {
@@ -172,5 +165,9 @@ public class Client {
 
     public void deleteFromReadyList(String id){
         readyList.remove(id);
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 import utilities.Utilities;
 
@@ -82,8 +83,8 @@ public class GameViewController {
         String message = chatTextArea.getText();
         if (!message.isBlank()) {
             chatWindow.appendText("[You]: " + message + "\n");
-            //JSONMessage msg = new JSONMessage("userMessage", message);
-            //client.sendUserInput(msg);
+            JSONMessage msg = new JSONMessage(new SendChat(message, -1));
+            client.sendMessage(msg);
         }
         chatTextArea.clear();
     }

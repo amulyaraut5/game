@@ -149,6 +149,7 @@ public class LoginController {
     public void createClient() {
         client = new Client(this, "localhost", PORT);
         main.setClient(client);
+        client.setMain(main);
     }
 
     /**

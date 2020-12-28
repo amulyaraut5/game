@@ -143,5 +143,7 @@ public class Main extends Application {
     }
 
 
-
+    public void sendChatMessage(String messageBody) {
+        gameViewController.setTextArea(messageBody);
+    }
 }

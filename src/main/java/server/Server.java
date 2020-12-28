@@ -2,6 +2,7 @@ package server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -82,6 +83,8 @@ public class Server {
         }
         if(readyPlayerList.size()>=2 ){
             logger.info("Tiles can be initialized");
+            //JSONMessage jsonMessage = new JSONMessage(new GameStarted("test"));
+            //communicateUsers();
         }
     }
     /**
@@ -125,18 +128,13 @@ public class Server {
         }
     }
 
-    /**
-     * This method sends a message to each client which is connected to the server except the sender itself.
-     *
-     * @param message the message which is to be sent.
-     * @param sender  the user who is responsible for sending the message.
-     */
-    public void communicate(String message, User sender) {
 
+    public void communicateUsers(JSONMessage jsonMessage, UserThread sender){
         for (User user : users) {
-            if (user != sender) {
-                user.message(message);
+            if(user.getThread()!=sender){
+                user.message(jsonMessage);
             }
+
         }
     }
 

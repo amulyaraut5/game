@@ -1,5 +1,7 @@
 package server;
 
+import utilities.JSONProtocol.JSONMessage;
+
 import java.time.LocalDate;
 
 /**
@@ -51,8 +53,8 @@ public class User {
      *
      * @param message the message to be sent
      */
-    public synchronized void message(String message) {
-        //TODO thread.sendMessage(new JSONMessage("chatMessage", message));
+    public synchronized void message(JSONMessage message) {
+        thread.sendMessage(message);
     }
 
     /**

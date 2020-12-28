@@ -113,6 +113,10 @@ public class ReaderThread extends Thread {
                 logger.info("PlayerStatus: " + playerStatus.isReady());
 
                 break;
+            case ReceivedChat:
+                ReceivedChat receivedChat = (ReceivedChat) message.getBody();
+                logger.info(receivedChat.getMessage());
+                client.chatMessage(receivedChat.getFrom() + ": "+receivedChat.getMessage());
             default:
                 logger.info("Something went wrong");
                 //TODO
