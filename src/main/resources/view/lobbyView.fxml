@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 
 <AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
     <children>
@@ -21,26 +23,74 @@
          <children>
             <VBox prefHeight="214.0" prefWidth="94.0">
                <children>
-                  <ImageView fx:id="robot1ImageView" fitHeight="77.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="robot1Label" prefHeight="28.0" prefWidth="93.0" />
-                  <ImageView fx:id="robot4ImageView" fitHeight="69.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="robot4Label" prefHeight="24.0" prefWidth="93.0" />
+                  <ImageView fx:id="robot1ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="robot1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0" text="aff">
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     </Label>
+                  <ImageView fx:id="robot4ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="robot4Label" prefHeight="24.0" prefWidth="90.0">
+                      <effect>
+                          <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                              <color>
+                                  <Color red="1.0" green="1.0" blue="1.0" />
+                              </color>
+                          </DropShadow>
+                      </effect>
+                  </Label>
                </children>
             </VBox>
             <VBox prefHeight="214.0" prefWidth="94.0">
                  <children>
-                     <ImageView fx:id="robot2ImageView" fitHeight="77.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot2Label" prefHeight="28.0" prefWidth="93.0" />
-                     <ImageView fx:id="robot5ImageView" fitHeight="69.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot5Label" prefHeight="24.0" prefWidth="93.0" />
+                     <ImageView fx:id="robot2ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot2Label" prefHeight="28.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
+                     <ImageView fx:id="robot5ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot5Label" prefHeight="24.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
                  </children>
             </VBox>
             <VBox prefHeight="214.0" prefWidth="94.0">
                  <children>
-                     <ImageView fx:id="robot3ImageView" fitHeight="77.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot3Label" prefHeight="28.0" prefWidth="93.0" />
-                     <ImageView fx:id="robot6ImageView" fitHeight="69.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot6Label" prefHeight="24.0" prefWidth="93.0" />
+                     <ImageView fx:id="robot3ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot3Label" prefHeight="28.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
+                     <ImageView fx:id="robot6ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot6Label" prefHeight="24.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
                  </children>
             </VBox>
          </children></HBox>
