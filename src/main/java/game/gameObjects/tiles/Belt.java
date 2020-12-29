@@ -3,8 +3,6 @@ package game.gameObjects.tiles;
 import game.Player;
 import utilities.Utilities.Orientation;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Amulya
@@ -20,7 +18,7 @@ public class Belt extends Attribute {
 
 	private int speed;
 
-	Belt(ArrayList<Orientation> orientations, int speed){
+	Belt(Orientation[] orientations, int speed){
 		this.speed = speed;
 		this.orientations = orientations;
 		this.type = "Belt";

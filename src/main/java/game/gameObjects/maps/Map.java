@@ -1,6 +1,6 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.Coordinate;
+import utilities.Position;
 import utilities.Utilities;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public abstract class Map {
     protected int maxPlayers;
     protected Utilities.Difficulty difficulty;
 
-    protected ArrayList<Coordinate> startPositions;
-    protected int[][] MapBlueprint;
+    protected ArrayList<Position> startPositions;
+    protected int[] MapBlueprint;
 
 }
