@@ -114,7 +114,7 @@ public class LobbyController extends Controller {
      * @param joinedUser
      */
     public void setJoinedUsersTextArea(String joinedUser, int figure) {
-        currentImageView.setImage(new Image("/choose-robot-" + robotNames[figure] + ".png"));
+        currentImageView.setImage(new Image("/choose-robot-" + robotNames[figure-1] + ".png"));
         currentLabel.setText(joinedUser);
         joinedUsersTextArea.appendText(joinedUser + "\n");
         nextRobot();
