@@ -5,10 +5,13 @@ import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 import utilities.JSONProtocol.body.gameStarted.Field;
 import utilities.JSONProtocol.body.gameStarted.Maps;
@@ -19,21 +22,37 @@ import java.util.ArrayList;
 public class LobbyController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
-    private Client client;
 
     @FXML
-    private CheckBox readyCheckbox;
+    public TextArea lobbyTextAreaChat;
+    @FXML
+    public TextField lobbyTextFieldChat;
+
+    @FXML
+    public CheckBox readyCheckbox;
 
     @FXML
     private void checkBoxAction(ActionEvent event) {
-
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
         client.sendMessage(msg);
-        ArrayList<Maps> map = new ArrayList<Maps>();
-        ArrayList<Field> field = new ArrayList<Field>();
-        field.add(new Field());
-
-        map.add(new Maps(0, field));
-        client.sendMessage(new JSONMessage(new GameStarted(map)));
     }
+
+    /**
+     * send chat Message
+     * @param event
+     */
+    @FXML
+    private void submitChatMessage(ActionEvent event) {
+            String message = lobbyTextFieldChat.getText();
+            if (!message.isBlank()) {
+                lobbyTextAreaChat.appendText("[You]: " + message);
+                JSONMessage msg = new JSONMessage(new SendChat(message, -1));
+                client.sendMessage(msg);
+            }
+            lobbyTextFieldChat.clear();
+        }
+
 }
+
+
+

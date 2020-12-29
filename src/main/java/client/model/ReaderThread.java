@@ -20,10 +20,12 @@ import java.net.Socket;
  * @author sarah,
  */
 public class ReaderThread extends Thread {
+
     /**
      * Logger to log information/warning
      */
     private static final Logger logger = LogManager.getLogger();
+
     /**
      * client is the related ChatClient which starts an instance of ReaderThread.
      */
@@ -88,7 +90,6 @@ public class ReaderThread extends Thread {
     private void handleMessage(JSONMessage message) throws ClassNotFoundException {
 
         Utilities.MessageType type = message.getType();
-
         switch (type) {
             case HelloClient:
                 HelloClient hc = (HelloClient) message.getBody();
@@ -117,7 +118,6 @@ public class ReaderThread extends Thread {
                 //TODO extract player id
                 //if playerStatus.
                 logger.info("PlayerStatus: " + playerStatus.isReady());
-
                 break;
             case ReceivedChat:
                 ReceivedChat receivedChat = (ReceivedChat) message.getBody();
