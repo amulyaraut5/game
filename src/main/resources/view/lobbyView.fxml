@@ -17,14 +17,13 @@
       <TextArea fx:id="lobbyTextAreaChat" layoutX="390.0" layoutY="20.0" prefHeight="183.0" prefWidth="201.0" />
       <TextField fx:id="lobbyTextFieldChat" layoutX="390.0" layoutY="217.0" prefHeight="27.0" prefWidth="128.0" />
       <Button layoutX="529.0" layoutY="217.0" mnemonicParsing="false" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="62.0" text="Submit" />
-      <TextArea fx:id="joinedUsersTextArea" layoutX="60.0" layoutY="256.0" prefHeight="114.0" prefWidth="128.0" text="joined users&#10;" />
-      <TextArea fx:id="readyUsersTextArea" layoutX="258.0" layoutY="256.0" prefHeight="114.0" prefWidth="110.0" text="readyPlayer&#10;" />
-      <HBox layoutX="60.0" layoutY="41.0" prefHeight="214.0" prefWidth="308.0">
+      <TextArea fx:id="readyUsersTextArea" layoutX="399.0" layoutY="255.0" prefHeight="114.0" prefWidth="110.0" text="readyPlayer&#10;" />
+      <HBox layoutX="56.0" layoutY="85.0" prefHeight="237.0" prefWidth="317.0">
          <children>
             <VBox prefHeight="214.0" prefWidth="94.0">
                <children>
                   <ImageView fx:id="robot1ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="robot1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0" text="aff">
+                  <Label fx:id="robot1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0">
                      <effect>
                         <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                            <color>
