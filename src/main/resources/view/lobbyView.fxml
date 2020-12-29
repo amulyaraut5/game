@@ -11,6 +11,9 @@
                 <Image url="@loginBackground.png" />
             </image>
         </ImageView>
-      <CheckBox fx:id="readyCheckbox" layoutX="517.0" layoutY="346.0" mnemonicParsing="false" text="Ready" onAction="#checkBoxAction" />
+      <CheckBox fx:id="readyCheckbox" layoutX="517.0" layoutY="346.0" mnemonicParsing="false" onAction="#checkBoxAction" text="Ready" />
+      <TextArea fx:id="lobbyTextAreaChat" layoutX="390.0" layoutY="20.0" prefHeight="183.0" prefWidth="201.0" />
+      <TextField fx:id="lobbyTextFieldChat" layoutX="390.0" layoutY="217.0" prefHeight="27.0" prefWidth="128.0" />
+      <Button layoutX="529.0" layoutY="217.0" mnemonicParsing="false" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="62.0" text="Submit" />
     </children>
 </AnchorPane>
