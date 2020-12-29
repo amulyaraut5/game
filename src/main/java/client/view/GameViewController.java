@@ -33,34 +33,9 @@ public class GameViewController extends Controller {
      */
     @FXML
     private TextArea chatWindow;
-    /**
-     * The TextArea which displays the users who already joined the lobby
-     */
-    @FXML
-    private TextArea joinedUsersTextArea;
 
-    /**
-     * by clicking on the button the player can select if he/she is ready to start the game
-     * the method also sends a SetStatus protocol method with the current status of the button
-     */
-    public void readyButton() {
-        String ready = "I'm ready!";
-        String notReady = "I'm not ready!";
-        boolean status = false;
-        JSONMessage jsonMessage;
-        if (readyButton.getText().equals(ready)) {
-            readyButton.setText(notReady);
-            readyButton.setOpacity(0.5);
-            status = true;
-        } else {
-            readyButton.setText(ready);
-            readyButton.setOpacity(100);
-            status = false;
-        }
-        jsonMessage = new JSONMessage(new SetStatus(status));
-        client.sendMessage(jsonMessage);
 
-    }
+
 
     /**
      * The method gets called by clicking on the submit button
