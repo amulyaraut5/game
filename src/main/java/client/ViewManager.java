@@ -1,7 +1,9 @@
 package client;
 
 import client.model.Client;
+import client.view.Controller;
 import client.view.GameViewController;
+import client.view.LobbyController;
 import client.view.LoginController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * ViewManager is a Singleton. Class handles all diffent views and their transitions. ViewManager is Singleton.
@@ -35,8 +38,10 @@ public class ViewManager {
     private Scene loginScene;
     private Scene lobbyScene;
     private Scene gameScene;
+    private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
+    private ArrayList<Controller> controllerList = new ArrayList<>();
 
     private ViewManager() {
         Platform.runLater(() -> {
@@ -61,7 +66,7 @@ public class ViewManager {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
             else if (menuStage.getScene() == loginScene)
-                menuStage.setScene(gameScene);//TODO menuStage.setScene(lobbyScene);
+                menuStage.setScene(lobbyScene);//TODO menuStage.setScene(lobbyScene);
             else if (menuStage.getScene() == lobbyScene) showGameStage();
         } else {
             logger.warn("There is no next Scene!");
@@ -143,11 +148,16 @@ public class ViewManager {
         gameScene = new Scene(gameLoader.load());
 
         loginController = loginLoader.getController();
+        lobbyController = lobbyLoader.getController();
         gameViewController = gameLoader.getController();
 
         //TODO client.setController
-        client.setLoginController(loginController);
-        client.setGameViewController(gameViewController);
+        //client.setLoginController(loginController);
+        //client.setGameViewController(gameViewController);
+        controllerList.add(loginController);
+        controllerList.add(lobbyController);
+        controllerList.add(gameViewController);
+        client.setController(controllerList);
     }
 
     public void displayErrorMessage(String error) {

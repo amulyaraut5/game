@@ -1,6 +1,8 @@
 package client.model;
 
+import client.view.Controller;
 import client.view.GameViewController;
+import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
 import javafx.application.Platform;
@@ -54,6 +56,7 @@ public class Client {
     private ArrayList<String> readyList = new ArrayList<>();
     private GameViewController gameViewController;
     private LoginController loginController;
+    private LobbyController lobbyController;
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -170,10 +173,16 @@ public class Client {
     }
 
     public void setGameViewController(GameViewController gameViewController) {
-        this.gameViewController = gameViewController;
+        //this.gameViewController = gameViewController;
     }
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
+    }
+
+    public void setController(ArrayList<Controller> controllerList) {
+        loginController = (LoginController)controllerList.get(0);
+        lobbyController = (LobbyController) controllerList.get(1);
+        gameViewController = (GameViewController) controllerList.get(2);
     }
 }
