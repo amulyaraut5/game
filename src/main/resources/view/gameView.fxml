@@ -40,7 +40,7 @@
                 </VBox>
          </children>
       </HBox>
-      <AnchorPane layoutX="193.0" layoutY="160.0" prefHeight="464.0" prefWidth="585.0">
+      <AnchorPane layoutX="147.0" layoutY="101.0" prefHeight="529.0" prefWidth="661.0">
          <children>
             <TextArea fx:id="joinedUsersTextArea" prefHeight="200.0" prefWidth="200.0" text="Joined Users:&#10;" />
             <Button fx:id="readyButton" layoutX="264.0" layoutY="205.0" mnemonicParsing="false" onAction="#readyButton" text="I'm ready!" />
