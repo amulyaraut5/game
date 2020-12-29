@@ -9,7 +9,8 @@ public class Utilities {
     public enum Rotation {
         LEFT, RIGHT
     }
-    public enum Difficulty{
+
+    public enum Difficulty {
         BEGINNER, ADVANCED, EXTREME
     }
 
@@ -21,4 +22,5 @@ public class Utilities {
     }
 
     public static final int PORT = 5555;
+
 }
