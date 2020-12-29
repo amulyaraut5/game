@@ -10,17 +10,17 @@ import java.util.ArrayList;
 public class Tile {
 
 	protected String imagePath;
-	private Attribute attribute;
+	private Attribute attribute1;
 	private Attribute attribute2;
 
 
 
 	/**
 	 * Constructor for tiles with one attribute.
-	 * @param attribute first attribute
+	 * @param attribute1 first attribute
 	 */
-	public Tile(Attribute attribute){
-		this.attribute = attribute;
+	public Tile(Attribute attribute1){
+		this.attribute1 = attribute1;
 	}
 
 	/**
@@ -29,16 +29,16 @@ public class Tile {
 	 * @param attribute2 second attribute
 	 */
 	public Tile (Attribute attribute1,Attribute attribute2){
-		this.attribute = attribute1;
+		this.attribute1 = attribute1;
 		this.attribute2 = attribute2;
 	}
 
 	public Attribute getAttribute() {
-		return attribute;
+		return attribute1;
 	}
 
-	public void setAttribute(Attribute attribute) {
-		this.attribute = attribute;
+	public void setAttribute(Attribute attribute1) {
+		this.attribute1 = attribute1;
 	}
 
 	/**
