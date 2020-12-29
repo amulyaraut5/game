@@ -121,11 +121,10 @@ public class LobbyController extends Controller {
     }
     public void setReadyUsersTextArea(String readyUser, boolean isReady){
             if (isReady){
-                //readyUsers anzeigen
+                //TODO readyUsers anzeigen
                 for(int i = 0; i<robotLabels.size();i++){
                     if(readyUser.equals(robotLabels.get(i))){
                         robotImageViews.get(i).setVisible(false);
-
                     }
                 }
 
