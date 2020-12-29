@@ -10,13 +10,13 @@ import utilities.Utilities.Orientation;
 public class PushPanel extends Attribute {
 
 
-    private int registerValue; //maybe better as Array?
+    private int[] registerValue; //maybe better as Array?
     public Orientation orientation;
 
     // Orientation in this context means the direction in which
     // belt pushes the robot.
 
-    PushPanel(Orientation orientation, int registerValue) {
+    PushPanel(Orientation orientation, int[] registerValue) {
         this.orientation = orientation;
         this.registerValue = registerValue;
     }
