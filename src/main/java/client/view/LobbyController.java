@@ -73,8 +73,12 @@ public class LobbyController extends Controller {
     public void setJoinedUsersTextArea(String joinedUser) {
         joinedUsersTextArea.appendText(joinedUser + "\n");
     }
-    public void setReadyUsersTextArea(String readyUser){
-            readyUsersTextArea.appendText(readyUser + "\n");
+    public void setReadyUsersTextArea(String readyUser, boolean isReady){
+            if (isReady){
+                readyUsersTextArea.appendText(readyUser + "\n");
+            } else {
+                //remove ready user -> better implement it later
+            }
     }
 
 }

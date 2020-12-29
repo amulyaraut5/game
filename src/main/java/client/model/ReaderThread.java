@@ -119,6 +119,8 @@ public class ReaderThread extends Thread {
                 //TODO extract player id
                 if (playerStatus.isReady() && playerStatus.getId()!=playerId){
                     client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsReady");
+                } else if (!playerStatus.isReady() && playerStatus.getId()!=playerId){
+                    client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsNotReady");
                 }
                 logger.info("PlayerStatus: " + playerStatus.isReady());
                 break;

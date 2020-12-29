@@ -164,8 +164,8 @@ public class Client {
             if (type.equals("loginController")) loginController.write(messageBody);
             else if (type.equals("receivedChat")) lobbyController.setTextArea(messageBody);
             else if (type.equals("playerAdded")) lobbyController.setJoinedUsersTextArea(messageBody);
-            else if(type.equals("playerStatusIsReady")) lobbyController.setReadyUsersTextArea(messageBody);
-
+            else if(type.equals("playerStatusIsReady")) lobbyController.setReadyUsersTextArea(messageBody, true);
+            else if(type.equals("playerStatusIsNotReady")) lobbyController.setReadyUsersTextArea(messageBody, false);
         });
     }
 
