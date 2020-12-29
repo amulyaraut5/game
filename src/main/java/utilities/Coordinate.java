@@ -1,4 +1,4 @@
-package game.gameObjects;
+package utilities;
 
 /**
  * A Coordinate saves the 2 dimensional x and y position of gameObjects on the map.
