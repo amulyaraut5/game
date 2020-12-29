@@ -24,7 +24,7 @@ public class Tile {
 	}
 
 	/**
-	 * Cnstructor for tiles with two attributes.
+	 * Constructor for tiles with two attributes.
 	 * @param attribute1 first attribute
 	 * @param attribute2 second attribute
 	 */
