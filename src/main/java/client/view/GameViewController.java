@@ -1,6 +1,5 @@
 package client.view;
 
-import client.Main;
 import client.ViewManager;
 import client.model.Client;
 import javafx.event.ActionEvent;
@@ -22,32 +21,32 @@ import utilities.JSONProtocol.body.SetStatus;
 public class GameViewController {
     private static final Logger logger = LogManager.getLogger();
     /**
+     * the ready Button which can be clicked to show the availability for playing the game
+     */
+    @FXML
+    public Button readyButton;
+    /**
      * client who plays the game and has access to the main class
      */
-    public Client client;
+    private Client client;
     /**
      * The TextField where the player can type in its message to one user/other users
      */
     @FXML
-    public TextField chatTextField;
+    private TextField chatTextField;
     /**
      * The TextArea which displays the chat history with other players
      */
     @FXML
-    public TextArea chatWindow;
+    private TextArea chatWindow;
     /**
      * The TextArea which displays the users who already joined the lobby
      */
-    public TextArea joinedUsersTextArea;
+    private TextArea joinedUsersTextArea;
     /**
-     * the ready Button which can be clicked to show the availability for playing the game
+     * instance of the ViewManager to return to the menu
      */
-    public Button readyButton;
     private ViewManager viewManager = ViewManager.getInstance();
-    /**
-     * the main class
-     */
-    private Main main;
 
     /**
      * by clicking on the button the player can select if he/she is ready to start the game
@@ -118,20 +117,12 @@ public class GameViewController {
     }
 
     /**
-     * This method sets the main class
-     *
-     * @param main
-     */
-    public void setMain(Main main) {
-        this.main = main;
-    }
-
-    /**
      * This method sets the client
      *
      * @param client
      */
     public void setClient(Client client) {
+        //TODO remove
         this.client = client;
     }
 

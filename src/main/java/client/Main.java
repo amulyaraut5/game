@@ -22,13 +22,4 @@ public class Main extends Application {
     public void start(Stage menuStage) throws IOException {
         ViewManager.getInstance();
     }
-
-
-    public void sendChatMessage(String body, String type) {
-        /*if(type.equals("loginController")) loginController.write(body);
-        else if(type.equals("receivedChat")) gameViewController.setTextArea(body);
-        else if(type.equals("playerAdded")) gameViewController.setUsersTextArea(body);*/
-
-    }
-
 }

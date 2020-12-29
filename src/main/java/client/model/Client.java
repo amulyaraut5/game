@@ -1,5 +1,7 @@
 package client.model;
 
+import client.view.GameViewController;
+import client.view.LoginController;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +50,8 @@ public class Client {
      */
     //TODO handle case that id of player that already connected changes
     private ArrayList<String> readyList = new ArrayList<>();
+    private GameViewController gameViewController;
+    private LoginController loginController;
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -147,6 +151,11 @@ public class Client {
      */
     public void sendToMain(String messageBody, String type) {
         //TODO main.sendChatMessage(messageBody, type);
+
+        System.out.println("messageBody = " + messageBody + ", type = " + type);
+        if(type.equals("loginController")) loginController.write(messageBody);
+        else if(type.equals("receivedChat")) gameViewController.setTextArea(messageBody);
+        else if(type.equals("playerAdded")) gameViewController.setUsersTextArea(messageBody);
     }
 
     public void addToReadyList(String id) {
@@ -155,5 +164,13 @@ public class Client {
 
     public void deleteFromReadyList(String id) {
         readyList.remove(id);
+    }
+
+    public void setGameViewController(GameViewController gameViewController) {
+        this.gameViewController = gameViewController;
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
     }
 }

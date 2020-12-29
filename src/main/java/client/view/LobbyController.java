@@ -29,7 +29,6 @@ public class LobbyController {
     private void checkBoxAction(ActionEvent event) {
 
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
-        client = viewManager.getClient();
         client.sendMessage(msg);
         ArrayList<Maps> map = new ArrayList<Maps>();
         ArrayList<Field> field = new ArrayList<Field>();
