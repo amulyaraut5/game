@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import utilities.Utilities;
+import utilities.Utilities.Orientation;
 
 import java.util.ArrayList;
 
@@ -17,8 +17,9 @@ public class Laser extends Attribute {
 
 	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
-	Laser(Utilities.Orientation orientation){
+	Laser(Orientation orientation, int count){
 		this.orientation = orientation;
+		this.count = count;
 		this.type = "BoardLaser";
 	}
 
@@ -48,7 +49,7 @@ public class Laser extends Attribute {
         // Here we should check if checkingTile is whether wall, antenna or not
         // And if the robot is standing ahead, the laser cannot traverse through robot.
 
-        if(orientation == Utilities.Orientation.DOWN)//SOUTH
+        if(orientation ==Orientation.DOWN)//SOUTH
         {
 			//TODO
 
@@ -57,21 +58,21 @@ public class Laser extends Attribute {
 
 		}
 
-		else if(orientation == Utilities.Orientation.UP){
+		else if(orientation == Orientation.UP){
 			//TODO
 
 			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
 
 		}
-		else if(orientation == Utilities.Orientation.LEFT){
+		else if(orientation == Orientation.LEFT){
 			//TODO
 
 			laserAffectedTiles.add(tile);
     		return laserAffectedTiles;
 
 		}
-		else if(orientation == Utilities.Orientation.RIGHT){
+		else if(orientation == Orientation.RIGHT){
 			//TODO
 
 			laserAffectedTiles.add(tile);

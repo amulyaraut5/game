@@ -22,8 +22,8 @@ public class Belt extends Attribute {
 
 	Belt(ArrayList<Orientation> orientations, int speed){
 		this.speed = speed;
-		this.type = "Belt";
 		this.orientations = orientations;
+		this.type = "Belt";
 	}
 
 	/**

@@ -3,7 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import utilities.Utilities.Orientation;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Amulya
@@ -12,12 +12,12 @@ import java.util.ArrayList;
 public class PushPanel extends Attribute {
 
 
-    private ArrayList<Integer> registerValue;
+    private List<Integer> registerValue; //maybe better as Array?
 
     // Orientation in this context means the direction in which
     // belt pushes the robot.
 
-    PushPanel(Orientation orientation, ArrayList<Integer> registerValue) {
+    PushPanel(Orientation orientation, List<Integer> registerValue) {
         this.orientation = orientation;
         this.registerValue = registerValue;
     }
