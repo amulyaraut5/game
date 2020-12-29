@@ -74,23 +74,23 @@ public class Tile {
 				// Belt constructor has 2 attributes.
 
 			case 11: tile = new Tile(new Belt(Utilities.upLeft, 1));
-			case 12: tile = new Tile(new Belt(Utilities.Orientation.UP));
-			case 13: tile = new Tile(new Belt(Utilities.Orientation.LEFT));
-			case 14: tile = new Tile(new Belt(Utilities.Orientation.RIGHT));
+			case 12: tile = new Tile(new Belt(Utilities.upRight, 1));
+			case 13: tile = new Tile(new Belt(Utilities.downLeft, 1));
+			case 14: tile = new Tile(new Belt(Utilities.downRight, 1));
 
 
 			// draw();
-			case 21: tile = new Tile(new RotatingBelt(Utilities.Orientation.DOWN, false));
-			case 22: tile = new Tile(new RotatingBelt(Utilities.Orientation.UP, false));
-			case 23: tile = new Tile(new RotatingBelt(Utilities.Orientation.LEFT, false));
-			case 24: tile = new Tile(new RotatingBelt(Utilities.Orientation.RIGHT, false));
+			case 21: tile = new Tile(new RotatingBelt(Utilities.upLeft, false));
+			case 22: tile = new Tile(new RotatingBelt(Utilities.upRight, false));
+			case 23: tile = new Tile(new RotatingBelt(Utilities.downLeft, false));
+			case 24: tile = new Tile(new RotatingBelt(Utilities.downRight, false));
 			// draw();
 			case 31: tile = new Tile(new Laser(Utilities.Orientation.DOWN, 1));
 			case 32: tile = new Tile(new Laser(Utilities.Orientation.UP,1));
 			case 33: tile = new Tile(new Laser(Utilities.Orientation.LEFT,1));
 			case 34: tile = new Tile(new Laser(Utilities.Orientation.RIGHT,1));
 			// draw();
-			case 41: tile = new Tile(new EnergySpace());
+			case 41: tile = new Tile(new EnergySpace(1));
 			// draw();
 			case 51: tile = new Tile(new Pit());
 
@@ -118,8 +118,6 @@ public class Tile {
 			case 84: tile = new Tile(new Wall(Utilities.Orientation.RIGHT));
 
 			// Tile with two walls
-
-				 */
 
 		}
 		return tile;
