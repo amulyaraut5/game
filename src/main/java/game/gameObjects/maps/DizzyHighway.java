@@ -12,6 +12,8 @@ public class DizzyHighway extends Map {
         this.difficulty = Utilities.Difficulty.BEGINNER;
         this.minPlayers = 2;
         this.maxPlayers = 6;
+        this.width = 10;
+        this.length = 10;
 
 
         mapBlueprint = new int[][] {
@@ -27,4 +29,5 @@ public class DizzyHighway extends Map {
                 {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
         };
     }
+
 }
