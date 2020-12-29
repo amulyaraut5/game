@@ -12,8 +12,7 @@ public class Tile {
 	protected String imagePath;
 	private Attribute attribute1;
 	private Attribute attribute2;
-
-
+	//private Image image;
 
 
 	/**
@@ -23,6 +22,33 @@ public class Tile {
 	public Tile(Attribute attribute1){
 		this.attribute1 = attribute1;
 	}
+
+	/*
+	// Alternative for GraphicsContext for rendering images of Tile
+	// Constructor of Tile takes two parameter
+
+	    public Tile(Attribute attribute, Image image){
+	       this.attribute1 = attribute;
+	       this.image = image;
+
+	 // Getter for image
+	     public Image getImage(){
+	        return this.image;
+	     }
+
+	  // While creating tile, we set path for new Image, which gonna load the image
+	  // Since we have individual images we can even resize the image, which takes additional two parameters
+
+	  Example:
+
+	   public Tile createTile(int tileID){
+	       Tile tile = null;
+	       switch(tileID){
+	           case 00 : tile = new Tile(new Empty(), new Image("imagepath"));
+	       }
+	   }
+	 */
+
 
 	/**
 	 * Constructor for tiles with two attributes.
