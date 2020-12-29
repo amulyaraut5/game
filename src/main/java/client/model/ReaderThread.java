@@ -107,7 +107,7 @@ public class ReaderThread extends Thread {
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
                 client.addNewPlayer(pa.getId(), pa.getName());
-                    client.sendToMain(pa, "playerAdded");
+                client.sendToMain(pa, "playerAdded");
 
                 break;
             case Error:
@@ -117,9 +117,9 @@ public class ReaderThread extends Thread {
             case PlayerStatus:
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                 //TODO extract player id
-                if (playerStatus.isReady() && playerStatus.getId()!=playerId){
+                if (playerStatus.isReady() ){
                     client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsReady");
-                } else if (!playerStatus.isReady() && playerStatus.getId()!=playerId){
+                } else if (!playerStatus.isReady()){
                     client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsNotReady");
                 }
                 logger.info("PlayerStatus: " + playerStatus.isReady());

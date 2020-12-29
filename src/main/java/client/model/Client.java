@@ -82,6 +82,7 @@ public class Client {
     public void connect(HelloClient helloClient) {
         JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
         sendMessage(msg);
+
     }
 
     /**
