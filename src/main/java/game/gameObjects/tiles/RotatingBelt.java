@@ -3,8 +3,6 @@ package game.gameObjects.tiles;
 import game.Player;
 import utilities.Utilities.Orientation;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Amulya
@@ -17,7 +15,7 @@ public class RotatingBelt extends Attribute {
 	private boolean isCurve;
 
 
-	RotatingBelt(ArrayList<Orientation> orientations, boolean isCurve){
+	RotatingBelt(Orientation[] orientations, boolean isCurve){
 		this.orientations = orientations;
 		this.isCurve = isCurve;
 		this.type = "RotatingBelt";
