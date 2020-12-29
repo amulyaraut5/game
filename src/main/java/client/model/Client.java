@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.HelloClient;
 import utilities.JSONProtocol.body.HelloServer;
+import utilities.JSONProtocol.body.PlayerAdded;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -163,11 +164,16 @@ public class Client {
         Platform.runLater(() -> {
             if (type.equals("loginController")) loginController.write(messageBody);
             else if (type.equals("receivedChat")) lobbyController.setTextArea(messageBody);
-            else if (type.equals("playerAdded")) lobbyController.setJoinedUsersTextArea(messageBody);
             else if(type.equals("playerStatusIsReady")) lobbyController.setReadyUsersTextArea(messageBody, true);
             else if(type.equals("playerStatusIsNotReady")) lobbyController.setReadyUsersTextArea(messageBody, false);
         });
     }
+    public void sendToMain(PlayerAdded playerAdded, String type) {
+        Platform.runLater(()->{
+            lobbyController.setJoinedUsersTextArea(playerAdded.getName(), playerAdded.getFigure());
+        });
+    }
+
 
     public void addToReadyList(String id) {
         readyList.add(id);

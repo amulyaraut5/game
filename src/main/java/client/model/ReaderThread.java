@@ -107,8 +107,8 @@ public class ReaderThread extends Thread {
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
                 client.addNewPlayer(pa.getId(), pa.getName());
-                if (pa.getId() != playerId)
-                    client.sendToMain(pa.getName(), "playerAdded");
+                    client.sendToMain(pa, "playerAdded");
+
                 break;
             case Error:
                 Error error = (Error) message.getBody();
