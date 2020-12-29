@@ -22,9 +22,8 @@ import utilities.JSONProtocol.body.PlayerValues;
  *
  * @author sarah,
  */
-public class LoginController {
+public class LoginController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    private ViewManager viewManager = ViewManager.getInstance();
     /**
      * the stage gets saved
      */

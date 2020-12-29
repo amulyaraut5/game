@@ -16,9 +16,8 @@ import utilities.JSONProtocol.body.gameStarted.Maps;
 import java.util.ArrayList;
 
 
-public class LobbyController {
+public class LobbyController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    private ViewManager viewManager = ViewManager.getInstance();
 
     private Client client;
 

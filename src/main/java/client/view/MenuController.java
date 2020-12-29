@@ -14,9 +14,8 @@ import static utilities.Utilities.PORT;
  *
  * @author simon
  */
-public class MenuController {
+public class MenuController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    private ViewManager viewManager = ViewManager.getInstance();
 
     /**
      * Method creates a new Server and Client and opens the Login view

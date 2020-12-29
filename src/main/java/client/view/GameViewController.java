@@ -18,7 +18,7 @@ import utilities.JSONProtocol.body.SetStatus;
  *
  * @author Sarah,
  */
-public class GameViewController {
+public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
     /**
      * the ready Button which can be clicked to show the availability for playing the game
@@ -43,10 +43,6 @@ public class GameViewController {
      * The TextArea which displays the users who already joined the lobby
      */
     private TextArea joinedUsersTextArea;
-    /**
-     * instance of the ViewManager to return to the menu
-     */
-    private ViewManager viewManager = ViewManager.getInstance();
 
     /**
      * by clicking on the button the player can select if he/she is ready to start the game
