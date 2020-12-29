@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
 
 import java.io.BufferedReader;
@@ -21,13 +21,13 @@ import java.net.Socket;
  */
 public class ReaderThread extends Thread {
     /**
-     * client is the related ChatClient which starts an instance of ReaderThread.
-     */
-    private final Client client;
-    /**
      * Logger to log information/warning
      */
     private static final Logger logger = LogManager.getLogger();
+    /**
+     * client is the related ChatClient which starts an instance of ReaderThread.
+     */
+    private final Client client;
     /**
      * BufferedReader which is wrap around the InputStream of the socket.
      */
@@ -97,7 +97,7 @@ public class ReaderThread extends Thread {
                 break;
             case Welcome:
                 Welcome wc = (Welcome) message.getBody();
-                playerId= wc.getPlayerId();
+                playerId = wc.getPlayerId();
                 String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
                 client.sendToMain(labelMessage, "loginController");
                 //logger.info(labelMessage);
@@ -105,7 +105,7 @@ public class ReaderThread extends Thread {
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
-                if(pa.getId()!= playerId)
+                if (pa.getId() != playerId)
                     client.sendToMain(pa.getName(), "playerAdded");
                 break;
             case Error:
@@ -122,7 +122,7 @@ public class ReaderThread extends Thread {
             case ReceivedChat:
                 ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                 logger.info(receivedChat.getMessage());
-                client.sendToMain(receivedChat.getFrom() + ": "+receivedChat.getMessage(), "receivedChat");
+                client.sendToMain(receivedChat.getFrom() + ": " + receivedChat.getMessage(), "receivedChat");
             default:
                 logger.info("Something went wrong");
                 //TODO

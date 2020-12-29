@@ -64,7 +64,7 @@ public class Multiplex {
                     JSONBody body = gson.fromJson(messageBody, (Type) Class.forName("utilities.JSONProtocol.body." + messageType));
                     return new JSONMessage(body);
                 } catch (ClassNotFoundException e) {
-                    logger.error("messageType could not be converted to a JSONBody: " + e.getMessage());
+                    logger.error("messageType could not be converted to a JSONBody Class: " + e.getMessage());
                 }
             }
             return null;

@@ -4,13 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.Utilities.MessageType;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * Handles connection for each connected client,
@@ -21,15 +20,15 @@ import java.util.ArrayList;
 
 public class UserThread extends Thread {
 
+    /**
+     * Logger to log information/warning
+     */
+    private static final Logger logger = LogManager.getLogger();
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
     private final double protocol = 0.1;
     private int playerID;
-    /**
-     * Logger to log information/warning
-     */
-    private static final Logger logger = LogManager.getLogger();
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
@@ -70,7 +69,7 @@ public class UserThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
-                logger.debug("Protocol received: " + text);
+                //logger.debug("Protocol received: " + text);
 
                 // After the reader object reads the serialized message from the socket it is then
                 // deserialized and handled in handleMessage method.
@@ -99,7 +98,6 @@ public class UserThread extends Thread {
             case HelloServer:
                 // The messageBody which is Object is then casted down to HelloServer class
                 HelloServer hs = (HelloServer) message.getBody();
-                //logger.info("\n Received Protocol: " + type + "\n Group: " + hs.getGroup() + "\n Protocol: " + hs.getProtocol() + "\n isAI: " + hs.isAI());
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
                     JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don't match"));
@@ -115,14 +113,14 @@ public class UserThread extends Thread {
                 }
                 break;
             case PlayerValues:
-                    // The messageBody which is Object is then casted down to PlayerValues class
+                // The messageBody which is Object is then casted down to PlayerValues class
                 PlayerValues ps = (PlayerValues) message.getBody();
                 user.setName(ps.getName());
-                JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure() ));
+                JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure()));
                 server.addToPlayerValuesList(jsonMessage);
 
                 server.communicateUsers(jsonMessage, this);
-                for (JSONMessage jM : server.getPlayerValuesList()){
+                for (JSONMessage jM : server.getPlayerValuesList()) {
                     sendMessage(jM);
                     logger.info(jM.toString());
                 }
@@ -130,7 +128,7 @@ public class UserThread extends Thread {
             case SetStatus:
                 SetStatus st = (SetStatus) message.getBody();
                 JSONMessage jsonMessagePlayerStatus = new JSONMessage(new PlayerStatus(playerID, st.isReady()));
-                if(st.isReady()){
+                if (st.isReady()) {
                     server.changeReadyPlayerList(1, this);
                 } else {
                     server.changeReadyPlayerList(0, this);
@@ -140,9 +138,9 @@ public class UserThread extends Thread {
             case SendChat:
                 SendChat sc = (SendChat) message.getBody();
                 logger.info(this.user.getName());
-                if(sc.getTo()<0){
+                if (sc.getTo() < 0) {
                     server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
-                } else{
+                } else {
                     // TODO private Message
                 }
         }
@@ -155,7 +153,7 @@ public class UserThread extends Thread {
      */
     public void sendMessage(JSONMessage msg) {
         String json = Multiplex.serialize(msg);
-        logger.debug("Protocol sent:" + json);
+        //logger.debug("Protocol sent:" + json);
         writer.println(json);
         writer.flush();
     }

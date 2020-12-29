@@ -75,25 +75,27 @@ public class Server {
         return users;
     }
 
-    public void changeReadyPlayerList(int change, UserThread userThread){
+    public void changeReadyPlayerList(int change, UserThread userThread) {
         //remove this userThread
-        if(change==0){
+        if (change == 0) {
             readyPlayerList.remove(userThread);
         }
         //add  this userThread
-        else if(change ==1){
+        else if (change == 1) {
             readyPlayerList.add(userThread);
         }
-        if(readyPlayerList.size()>=2 ){
+        if (readyPlayerList.size() >= 2) {
             logger.info("Tiles can be initialized");
             //JSONMessage jsonMessage = new JSONMessage(new GameStarted("test"));
             //communicateUsers();
         }
     }
+
     /**
      * It opens a channel for the connection between Server and Client.
      */
     public void start() {
+        logger.info("Server started!");
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             logger.info("Chat server is waiting for clients to connect to port " + port + ".");
@@ -107,6 +109,7 @@ public class Server {
         } catch (IOException e) {
             logger.fatal("could not connect: " + e.getMessage());
         }
+        logger.warn("Server closed!");
     }
 
     /**
@@ -132,9 +135,9 @@ public class Server {
     }
 
 
-    public void communicateUsers(JSONMessage jsonMessage, UserThread sender){
+    public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
         for (User user : users) {
-            if(user.getThread()!=sender){
+            if (user.getThread() != sender) {
                 user.message(jsonMessage);
             }
 
@@ -179,6 +182,7 @@ public class Server {
         } while (idNumbers.contains(newID));
 
     }
+
     public ArrayList<JSONMessage> getPlayerValuesList() {
         return playerValuesList;
     }

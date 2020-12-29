@@ -21,10 +21,12 @@ import java.util.ArrayList;
  * This class creates the socket for the client.
  * It handles the connection and disconnection to the server.
  * Also it handles the connection to the view through the main class
- *
- *
  */
 public class Client {
+    /**
+     * Logger to log information/warning
+     */
+    private static final Logger logger = LogManager.getLogger();
     /**
      * hostname of the server is saved here for the socket creation.
      */
@@ -33,10 +35,6 @@ public class Client {
      * port of the server on the named host is saved here for the socket creation.
      */
     private final int port;
-    /**
-     * Logger to log information/warning
-     */
-    private static final Logger logger = LogManager.getLogger();
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -51,22 +49,18 @@ public class Client {
     private PrintWriter writer;
 
     /**
-     * main is the class who can be used to communicate with the viewmodel
-     */
-    private Main main;
-
-    /**
      * readyList is the
      */
     //TODO handle case that id of player that already connected changes
     private ArrayList<String> readyList = new ArrayList<>();
+
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      *
-     * @param hostname        Hostname of the server.
-     * @param port            Port of the server on the named host.
+     * @param hostname Hostname of the server.
+     * @param port     Port of the server on the named host.
      */
-    public Client( String hostname, int port) {
+    public Client(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
 
@@ -76,6 +70,7 @@ public class Client {
     /**
      * This method creates a HelloServer protocol message and sends it to server
      * it gets called when client gets a HelloClient message
+     *
      * @param helloClient //TODO more than protocol possible?
      */
     public void connect(HelloClient helloClient) {
@@ -107,7 +102,7 @@ public class Client {
     }
 
     /**
-     * This methods ends the client program. The reader and writer threads get interrupted and the socket is closed.
+     * This method ends the client program. The reader and writer threads get interrupted and the socket is closed.
      */
     public void disconnect() {
         readerThread.interrupt();
@@ -139,6 +134,7 @@ public class Client {
     /**
      * This message changes a JSONMessage so that it's possible
      * to send it as a String over the socket to the server
+     *
      * @param message
      */
     public void sendMessage(JSONMessage message) {
@@ -150,20 +146,19 @@ public class Client {
 
     /**
      * This method receives a String and a type and sends it to main
+     *
      * @param messageBody the specified message
-     * @param type the type of the message
+     * @param type        the type of the message
      */
     public void sendToMain(String messageBody, String type) {
-        main.sendChatMessage(messageBody, type);
+        //TODO main.sendChatMessage(messageBody, type);
     }
 
-
-
-    public void addToReadyList(String id){
+    public void addToReadyList(String id) {
         readyList.add(id);
     }
 
-    public void deleteFromReadyList(String id){
+    public void deleteFromReadyList(String id) {
         readyList.remove(id);
     }
 

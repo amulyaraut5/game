@@ -1,20 +1,18 @@
 package client.view;
 
 import client.Main;
+import client.ViewManager;
 import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
-import utilities.Utilities;
 
 /**
  * The GameViewController class controls the GameView and the Chat of the game
@@ -22,50 +20,45 @@ import utilities.Utilities;
  * @author Sarah,
  */
 public class GameViewController {
-
+    private static final Logger logger = LogManager.getLogger();
     /**
      * client who plays the game and has access to the main class
      */
     public Client client;
-
-
     /**
      * The TextField where the player can type in its message to one user/other users
      */
     @FXML
     public TextField chatTextField;
-
     /**
      * The TextArea which displays the chat history with other players
      */
     @FXML
     public TextArea chatWindow;
-
     /**
      * The TextArea which displays the users who already joined the lobby
      */
     public TextArea joinedUsersTextArea;
+    /**
+     * the ready Button which can be clicked to show the availability for playing the game
+     */
+    public Button readyButton;
+    private ViewManager viewManager = ViewManager.getInstance();
     /**
      * the main class
      */
     private Main main;
 
     /**
-     * the ready Button which can be clicked to show the availability for playing the game
-     */
-    public Button readyButton;
-
-    /**
      * by clicking on the button the player can select if he/she is ready to start the game
      * the method also sends a SetStatus protocol method with the current status of the button
-     *
      */
-    public void readyButton(){
+    public void readyButton() {
         String ready = "I'm ready!";
         String notReady = "I'm not ready!";
         boolean status = false;
         JSONMessage jsonMessage;
-        if(readyButton.getText().equals(ready)){
+        if (readyButton.getText().equals(ready)) {
             readyButton.setText(notReady);
             readyButton.setOpacity(0.5);
             status = true;
@@ -78,10 +71,12 @@ public class GameViewController {
         client.sendMessage(jsonMessage);
 
     }
+
     /**
      * The method gets called by clicking on the submit button
      * it casts the message of the user to a JSONMessage (private/not private) and
      * clears the textField and displays the message in the textArea
+     *
      * @param actionEvent
      */
     //TODO direct
@@ -96,7 +91,6 @@ public class GameViewController {
     }
 
 
-
     /**
      *
      */
@@ -107,6 +101,7 @@ public class GameViewController {
 
     /**
      * This message adds a String to the chatTextArea
+     *
      * @param messageBody
      */
     public void setTextArea(String messageBody) {
@@ -114,15 +109,17 @@ public class GameViewController {
     }
 
     /**
-     *  this method displays an user who joined to the lobby
+     * this method displays an user who joined to the lobby
+     *
      * @param body
      */
     public void setUsersTextArea(String body) {
-        joinedUsersTextArea.appendText(body+ "\n");
+        joinedUsersTextArea.appendText(body + "\n");
     }
 
     /**
      * This method sets the main class
+     *
      * @param main
      */
     public void setMain(Main main) {
@@ -131,6 +128,7 @@ public class GameViewController {
 
     /**
      * This method sets the client
+     *
      * @param client
      */
     public void setClient(Client client) {
