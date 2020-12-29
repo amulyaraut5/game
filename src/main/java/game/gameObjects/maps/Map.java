@@ -12,19 +12,7 @@ public abstract class Map {
     protected int minPlayers;
     protected int maxPlayers;
     protected Utilities.Difficulty difficulty;
-
     protected ArrayList<Coordinate> startPositions;
-    protected int[][] MapBlueprint = {
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-    };
+    protected int[][] mapBlueprint;
 
 }
