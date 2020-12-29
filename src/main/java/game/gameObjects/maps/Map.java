@@ -14,6 +14,6 @@ public abstract class Map {
     protected Utilities.Difficulty difficulty;
 
     protected ArrayList<Position> startPositions;
-    protected int[] MapBlueprint;
+    protected int[][] MapBlueprint;
 
 }
