@@ -1,8 +1,13 @@
 package server;
 
+import game.gameObjects.maps.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
+import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.body.gameStarted.Field;
+import utilities.JSONProtocol.body.gameStarted.Maps;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -99,6 +104,22 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             logger.info("Chat server is waiting for clients to connect to port " + port + ".");
+            //try out "GameStarted":
+            ArrayList<String> orientations = new ArrayList<>();
+            orientations.add("up");
+            orientations.add("left");
+            Field field = new Field();
+            field.setType("Rotating Belt");
+            field.setSpeed(2);
+            field.setCrossing(true);
+            ArrayList<Field> fieldList = new ArrayList<>();
+            fieldList.add(field);
+            Maps map = new Maps(1,fieldList);
+            ArrayList<Maps> mapList = new ArrayList<>();
+            mapList.add(map);
+            JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
+            System.out.println(Multiplex.serialize(jMessage));
+
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     serverSocket.close();
@@ -179,7 +200,7 @@ public class Server {
             newID = idGenerator.nextInt(Integer.MAX_VALUE);
             idNumbers.add(newID);
             return newID;
-        } while (idNumbers.contains(newID));
+        } while (!idNumbers.contains(newID));
 
     }
 
