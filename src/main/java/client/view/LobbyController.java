@@ -52,6 +52,10 @@ public class LobbyController extends Controller {
             lobbyTextFieldChat.clear();
         }
 
+    public  void setTextArea(String messageBody){
+        lobbyTextAreaChat.appendText(messageBody);
+    }
+
 }
 
 

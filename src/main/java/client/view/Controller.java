@@ -17,4 +17,6 @@ public abstract class Controller {
      * instance of the client to transfer inputs
      */
     protected Client client = Client.getInstance();
+
+
 }

@@ -159,7 +159,7 @@ public class Client {
         //System.out.println("messageBody = " + messageBody + ", type = " + type);
         Platform.runLater(() -> {
             if (type.equals("loginController")) loginController.write(messageBody);
-            else if (type.equals("receivedChat")) gameViewController.setTextArea(messageBody);
+            else if (type.equals("receivedChat")) lobbyController.setTextArea(messageBody);
             else if (type.equals("playerAdded")) gameViewController.setUsersTextArea(messageBody);
         });
     }

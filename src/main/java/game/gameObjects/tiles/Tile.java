@@ -84,10 +84,10 @@ public class Tile {
 
 
 			// draw();
-			case 21: tile = new Tile(new RotatingBelt(Utilities.upLeft, false));
+			/*case 21: tile = new Tile(new RotatingBelt(Utilities.upLeft, false));
 			case 22: tile = new Tile(new RotatingBelt(Utilities.upRight, false));
 			case 23: tile = new Tile(new RotatingBelt(Utilities.downLeft, false));
-			case 24: tile = new Tile(new RotatingBelt(Utilities.downRight, false));
+			case 24: tile = new Tile(new RotatingBelt(Utilities.downRight, false));*/
 			// draw();
 			case 31: tile = new Tile(new Laser(Utilities.Orientation.DOWN, 1));
 			case 32: tile = new Tile(new Laser(Utilities.Orientation.UP,1));
