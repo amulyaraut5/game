@@ -3,6 +3,9 @@ package game.gameObjects.tiles;
 import game.gameObjects.Coordinate;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import utilities.Utilities;
+
+import java.util.ArrayList;
 
 public class Tile {
 
@@ -61,6 +64,7 @@ public class Tile {
 	 */
 	public Tile createTile(int tileID){
 		Tile tile = null;
+		ArrayList<Utilities.Orientation> orientations;
 		switch(tileID){
 			case 00: tile = new Tile(new Empty());
 
@@ -68,23 +72,23 @@ public class Tile {
 					// draw();
 				// TODO should be changed
 				// Belt constructor has 2 attributes.
-				/*
-			case 11: tile = new Tile(new Belt(Orientation.DOWN));
-			case 12: tile = new Tile(new Belt(Orientation.UP));
+
+			case 11: tile = new Tile(new Belt(Utilities.upLeft, 1));
+			case 12: tile = new Tile(new Belt(Utilities.Orientation.UP));
 			case 13: tile = new Tile(new Belt(Utilities.Orientation.LEFT));
 			case 14: tile = new Tile(new Belt(Utilities.Orientation.RIGHT));
 
 
 			// draw();
-			case 21: tile = new Tile(new RotatingBelt(Orientation.DOWN));
-			case 22: tile = new Tile(new RotatingBelt(Orientation.UP));
-			case 23: tile = new Tile(new RotatingBelt(Utilities.Orientation.LEFT));
-			case 24: tile = new Tile(new RotatingBelt(Utilities.Orientation.RIGHT));
+			case 21: tile = new Tile(new RotatingBelt(Utilities.Orientation.DOWN, false));
+			case 22: tile = new Tile(new RotatingBelt(Utilities.Orientation.UP, false));
+			case 23: tile = new Tile(new RotatingBelt(Utilities.Orientation.LEFT, false));
+			case 24: tile = new Tile(new RotatingBelt(Utilities.Orientation.RIGHT, false));
 			// draw();
-			case 31: tile = new Tile(new Laser(Utilities.Orientation.DOWN));
-			case 32: tile = new Tile(new Laser(Utilities.Orientation.UP));
-			case 33: tile = new Tile(new Laser(Utilities.Orientation.LEFT));
-			case 34: tile = new Tile(new Laser(Utilities.Orientation.RIGHT));
+			case 31: tile = new Tile(new Laser(Utilities.Orientation.DOWN, 1));
+			case 32: tile = new Tile(new Laser(Utilities.Orientation.UP,1));
+			case 33: tile = new Tile(new Laser(Utilities.Orientation.LEFT,1));
+			case 34: tile = new Tile(new Laser(Utilities.Orientation.RIGHT,1));
 			// draw();
 			case 41: tile = new Tile(new EnergySpace());
 			// draw();
