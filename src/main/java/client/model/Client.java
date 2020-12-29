@@ -3,6 +3,7 @@ package client.model;
 import client.view.GameViewController;
 import client.view.LoginController;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -27,11 +28,7 @@ public class Client {
     /**
      * hostname of the server is saved here for the socket creation.
      */
-    private final String hostname;
-    /**
-     * port of the server on the named host is saved here for the socket creation.
-     */
-    private final int port;
+    private final String hostname = "localhost";
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -84,7 +81,7 @@ public class Client {
     private void establishConnection() {
         while (true) {
             try {
-                socket = new Socket(hostname, port);
+                socket = new Socket(hostname, PORT);
                 writer = new PrintWriter(socket.getOutputStream(), true);
                 break;
             } catch (IOException ex) {
@@ -107,8 +104,9 @@ public class Client {
         readerThread.interrupt();
         try {
             socket.close();
+            logger.info("The connection with the server is closed.");
         } catch (IOException e) {
-            logger.fatal(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -152,10 +150,12 @@ public class Client {
     public void sendToMain(String messageBody, String type) {
         //TODO main.sendChatMessage(messageBody, type);
 
-        System.out.println("messageBody = " + messageBody + ", type = " + type);
-        if(type.equals("loginController")) loginController.write(messageBody);
-        else if(type.equals("receivedChat")) gameViewController.setTextArea(messageBody);
-        else if(type.equals("playerAdded")) gameViewController.setUsersTextArea(messageBody);
+        //System.out.println("messageBody = " + messageBody + ", type = " + type);
+        Platform.runLater(() -> {
+            if (type.equals("loginController")) loginController.write(messageBody);
+            else if (type.equals("receivedChat")) gameViewController.setTextArea(messageBody);
+            else if (type.equals("playerAdded")) gameViewController.setUsersTextArea(messageBody);
+        });
     }
 
     public void addToReadyList(String id) {

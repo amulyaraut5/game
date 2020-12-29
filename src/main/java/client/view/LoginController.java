@@ -73,13 +73,6 @@ public class LoginController extends Controller {
             "twonky", "spinbot", "zoombot"};
 
     /**
-     * @param loginStage
-     */
-    public void setStage(Stage loginStage) {
-        this.loginStage = loginStage;
-    }
-
-    /**
      *
      */
     public void close() {
@@ -141,7 +134,7 @@ public class LoginController extends Controller {
 
         if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
         else if (userName.contains(" "))
-            labelResponse.setText("Spaces are not allowed in usernames!"); //TODO should we allow usernames? (because we have the id)
+            labelResponse.setText("Spaces are not allowed in usernames!");
         else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot");
         else {
             labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());

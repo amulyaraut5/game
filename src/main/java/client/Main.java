@@ -13,9 +13,9 @@ public class Main extends Application {
     static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
-        logger.info("Main Method started");
+        logger.info("MAIN METHOD STARTED");
         launch(args);
-        logger.info("Main Method ended");
+        logger.info("MAIN METHOD ENDED");
     }
 
     @Override

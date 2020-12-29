@@ -42,6 +42,7 @@ public class GameViewController extends Controller {
     /**
      * The TextArea which displays the users who already joined the lobby
      */
+    @FXML
     private TextArea joinedUsersTextArea;
 
     /**

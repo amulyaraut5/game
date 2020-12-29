@@ -8,7 +8,7 @@ import game.Player;
 
 public abstract class Attribute {
 
-	public String type;
+	protected String type;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called

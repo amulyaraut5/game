@@ -29,10 +29,6 @@ public class Server {
      */
     private final ArrayList<User> users = new ArrayList<>(10);
     /**
-     * port where the server is bound to listen
-     */
-    private final int port;
-    /**
      * idGenerator to give id´s to the users
      */
     private final Random idGenerator = new Random();
@@ -55,20 +51,16 @@ public class Server {
     private ArrayList<UserThread> addedPlayerList = new ArrayList<>();
 
     /**
-     * Constructor for the ChatServer class which initialises the port number.
-     *
-     * @param port port number where the server is bound to listen the client.
+     * Constructor for the ChatServer class
      */
-    public Server(int port) {
-        this.port = port;
+    public Server() {
     }
 
     /**
      * Main method
      */
     public static void main(String[] args) {
-        Server server = new Server(PORT);
-        server.start();
+        new Server().start();
     }
 
     /**
@@ -100,15 +92,18 @@ public class Server {
      * It opens a channel for the connection between Server and Client.
      */
     public void start() {
-        logger.info("Server started!");
+        logger.info("SERVER STARTED");
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            logger.info("Chat server is waiting for clients to connect to port " + port + ".");
+            ServerSocket serverSocket = new ServerSocket(PORT);
+            logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
+
+
             //try out "GameStarted":
             ArrayList<String> orientations = new ArrayList<>();
             orientations.add("up");
             orientations.add("left");
             Field field = new Field();
+            field.setOrientations(orientations);
             field.setType("Rotating Belt");
             field.setSpeed(2);
             field.setCrossing(true);
@@ -128,9 +123,9 @@ public class Server {
             }));
             acceptClients(serverSocket);
         } catch (IOException e) {
-            logger.fatal("could not connect: " + e.getMessage());
+            logger.error("could not connect: " + e.getMessage());
         }
-        logger.warn("Server closed!");
+        logger.info("SERVER CLOSED");
     }
 
     /**
@@ -150,7 +145,7 @@ public class Server {
                 thread.start();
             } catch (IOException e) {
                 accept = false;
-                logger.info("Accept failed on: " + port);
+                logger.info("Accept failed on: " + PORT);
             }
         }
     }

@@ -22,6 +22,9 @@ import java.io.IOException;
  */
 public class ViewManager {
     private static final Logger logger = LogManager.getLogger();
+    /**
+     * Singleton instance of ViewManager
+     */
     private static ViewManager instance;
 
     private Client client;
@@ -150,5 +153,7 @@ public class ViewManager {
         client.setGameViewController(gameViewController);
         client.setLoginController(loginController);
 
+    public void displayErrorMessage(String error) {
+        //TODO
     }
 }
