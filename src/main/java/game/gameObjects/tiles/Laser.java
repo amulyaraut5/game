@@ -14,6 +14,7 @@ public class Laser extends Attribute {
 
 	// Count attribute to count the no of lasers that is being fired form laser
 	private int count;
+	public Orientation orientation;
 
 	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 

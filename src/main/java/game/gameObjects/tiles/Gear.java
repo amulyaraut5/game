@@ -13,6 +13,8 @@ public class Gear extends Attribute {
 	// Orientation from Gear should be interpreted as Rotation
 	// Clockwise--RIGHT Anticlockwise--LEFT
 
+	public Utilities.Orientation orientation;
+
 	public Gear(Utilities.Orientation orientation){
 		this.type = "Gear";
 		this.orientation = orientation;

@@ -11,6 +11,7 @@ public class PushPanel extends Attribute {
 
 
     private int registerValue; //maybe better as Array?
+    public Orientation orientation;
 
     // Orientation in this context means the direction in which
     // belt pushes the robot.

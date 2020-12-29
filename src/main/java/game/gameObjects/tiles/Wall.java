@@ -9,6 +9,9 @@ import utilities.Utilities.Orientation;
 
 public class Wall extends Attribute {
 
+    public Orientation orientation;
+    public Orientation[] orientations;
+
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
      * @param orientation

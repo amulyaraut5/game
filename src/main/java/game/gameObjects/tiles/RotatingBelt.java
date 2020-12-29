@@ -13,6 +13,8 @@ public class RotatingBelt extends Attribute {
 	// TODO Implementation needs to be changed
 	// Was meant for Green Conveyor
 	private boolean isCurve;
+	public Orientation orientation;
+	public Orientation[] orientations;
 
 
 	RotatingBelt(Orientation[] orientations, boolean isCurve){

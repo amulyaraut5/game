@@ -1,7 +1,6 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import utilities.Utilities.Orientation;
 
 /**
  * @author Amulya
@@ -10,8 +9,6 @@ import utilities.Utilities.Orientation;
 public abstract class Attribute {
 
 	public String type;
-	public Orientation orientation;
-	public Orientation[] orientations;
 
 	/**
 	 * All elements on the board must have a performAction method that can be called
@@ -33,12 +30,6 @@ public abstract class Attribute {
 		// TODO - implement Attribute.checkPlayer
 		throw new UnsupportedOperationException();
 	}
-
-	public Orientation getOrientation() {
-		return orientation;
-	}
-
-	public Orientation[] getOrientations() {return orientations;}
 
 
 	@Override
