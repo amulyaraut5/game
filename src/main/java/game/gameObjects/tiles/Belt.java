@@ -24,6 +24,12 @@ public class Belt extends Attribute {
 		this.type = "Belt";
 	}
 
+	Belt(Orientation orientation, int speed) {
+		this.speed = speed;
+		this.orientation = orientation;
+		this.type = "Belt";
+	}
+
 	/**
 	 * The GreenConveyor belt pushes the robot in the direction of tile by
 	 * one space.

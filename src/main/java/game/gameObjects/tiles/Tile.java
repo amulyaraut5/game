@@ -77,6 +77,10 @@ public class Tile {
 			case 12: tile = new Tile(new Belt(Utilities.upRight, 1));
 			case 13: tile = new Tile(new Belt(Utilities.downLeft, 1));
 			case 14: tile = new Tile(new Belt(Utilities.downRight, 1));
+			case 15: tile = new Tile(new Belt(Utilities.Orientation.UP, 1));
+			case 16: tile = new Tile(new Belt(Utilities.Orientation.DOWN, 1));
+			case 17: tile = new Tile(new Belt(Utilities.Orientation.LEFT, 1));
+			case 18: tile = new Tile(new Belt(Utilities.Orientation.RIGHT, 1));
 
 
 			// draw();
