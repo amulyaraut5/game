@@ -12,14 +12,14 @@ public class RotatingBelt extends Attribute {
 
 	// TODO Implementation needs to be changed
 	// Was meant for Green Conveyor
-	private boolean isCurve;
+	private boolean isCrossing;
 	public Orientation orientation;
 	public Orientation[] orientations;
 
 
-	RotatingBelt(Orientation[] orientations, boolean isCurve){
+	RotatingBelt(Orientation[] orientations, boolean isCrossing){
 		this.orientations = orientations;
-		this.isCurve = isCurve;
+		this.isCrossing = isCrossing;
 		this.type = "RotatingBelt";
 
 	}
