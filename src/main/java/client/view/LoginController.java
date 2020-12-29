@@ -1,7 +1,5 @@
 package client.view;
 
-import client.ViewManager;
-import client.model.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -24,14 +21,6 @@ import utilities.JSONProtocol.body.PlayerValues;
  */
 public class LoginController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    /**
-     * the stage gets saved
-     */
-    private Stage loginStage;
-    /**
-     * the client which gets created and who gets informed about actions
-     */
-    private Client client;
     /**
      * the user can choose an username which gets saved and passed on to the client
      */
@@ -169,18 +158,6 @@ public class LoginController extends Controller {
      */
     public void write(String message) {
         labelResponse.setText(message);
-    }
-
-    /**
-     * @return
-     */
-    public Label getLabelResponse() {
-        return labelResponse;
-    }
-
-    public void setClient(Client client) {
-        //TODO remove
-        this.client = client;
     }
 
     /**

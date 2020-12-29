@@ -15,16 +15,21 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static utilities.Utilities.PORT;
+
 /**
- * This class creates the socket for the client.
- * It handles the connection and disconnection to the server.
- * Also it handles the connection to the view through the main class
+ * This Singleton Class handles the connection and disconnection to the server.
+ * It also communicates between ViewModel and server.
  */
 public class Client {
     /**
      * Logger to log information/warning
      */
     private static final Logger logger = LogManager.getLogger();
+    /**
+     * Singleton instance of Client
+     */
+    private static Client instance;
     /**
      * hostname of the server is saved here for the socket creation.
      */
@@ -52,15 +57,13 @@ public class Client {
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
-     *
-     * @param hostname Hostname of the server.
-     * @param port     Port of the server on the named host.
      */
-    public Client(String hostname, int port) {
-        this.hostname = hostname;
-        this.port = port;
+    private Client() {
+    }
 
-        establishConnection();
+    public static Client getInstance() {
+        if (instance == null) instance = new Client();
+        return instance;
     }
 
     /**
@@ -78,7 +81,7 @@ public class Client {
      * This method establishes the connection between the server and the client using the assigned hostname and port.
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
      */
-    private void establishConnection() {
+    public void establishConnection() {
         while (true) {
             try {
                 socket = new Socket(hostname, PORT);
@@ -123,7 +126,7 @@ public class Client {
             socket.close();
             logger.info("The connection with the server is closed.");
         } catch (IOException e) {
-            logger.fatal(e.getMessage());
+            logger.error(e.getMessage());
         }
         logger.info("Type \"bye\" to exit.");
     }

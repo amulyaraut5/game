@@ -1,7 +1,5 @@
 package client.view;
 
-import client.ViewManager;
-import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,10 +23,6 @@ public class GameViewController extends Controller {
      */
     @FXML
     public Button readyButton;
-    /**
-     * client who plays the game and has access to the main class
-     */
-    private Client client;
     /**
      * The TextField where the player can type in its message to one user/other users
      */
@@ -112,15 +106,4 @@ public class GameViewController extends Controller {
     public void setUsersTextArea(String body) {
         joinedUsersTextArea.appendText(body + "\n");
     }
-
-    /**
-     * This method sets the client
-     *
-     * @param client
-     */
-    public void setClient(Client client) {
-        //TODO remove
-        this.client = client;
-    }
-
 }

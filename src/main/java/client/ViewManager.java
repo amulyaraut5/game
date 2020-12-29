@@ -27,7 +27,7 @@ public class ViewManager {
      */
     private static ViewManager instance;
 
-    private Client client;
+    private Client client = Client.getInstance();
 
     private Stage menuStage = new Stage();
     private Stage gameStage = new Stage();
@@ -144,14 +144,11 @@ public class ViewManager {
 
         loginController = loginLoader.getController();
         gameViewController = gameLoader.getController();
-    }
 
-    public void setClient(Client client) {
-        this.client = client;
-        gameViewController.setClient(client);
-        loginController.setClient(client);
-        client.setGameViewController(gameViewController);
+        //TODO client.setController
         client.setLoginController(loginController);
+        client.setGameViewController(gameViewController);
+    }
 
     public void displayErrorMessage(String error) {
         //TODO

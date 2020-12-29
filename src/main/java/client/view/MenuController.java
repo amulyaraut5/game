@@ -31,8 +31,7 @@ public class MenuController extends Controller {
         t.setName("Server Thread");
         t.start();
 
-        Client client = new Client("localhost", PORT);
-        viewManager.setClient(client);
+        client.establishConnection();
         viewManager.nextScene();
     }
 
@@ -43,8 +42,7 @@ public class MenuController extends Controller {
     public void joinGameClicked() {
         logger.info("Join Game Clicked");
 
-        Client client = new Client("localhost", PORT);
-        viewManager.setClient(client);
+        client.establishConnection();
         viewManager.nextScene();
     }
 }
