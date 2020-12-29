@@ -1,6 +1,8 @@
 package client.view;
 
 import client.Main;
+import client.ViewManager;
+import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.apache.logging.log4j.LogManager;
@@ -10,29 +12,32 @@ import server.Server;
 import static utilities.Utilities.PORT;
 
 public class MenuController {
-    private Main main;
     private static final Logger logger = LogManager.getLogger();
+    private ViewManager viewManager = ViewManager.getInstance();
 
     @FXML
     public void joinGameClicked(ActionEvent event) {
-        logger.info("join Game Clicked");
-        main.constructLoginStage();
+        logger.info("Join Game Clicked");
+
+        Client client = new Client("localhost", PORT);
+        viewManager.setClient(client);
+        viewManager.nextScene();
     }
 
     @FXML
     public void hostGameClicked(ActionEvent event) {
         logger.info("Host Game Clicked");
-        Thread one = new Thread(() -> {
+
+        //TODO test if a server already exists on localhost? or print out that the user only joined
+        Thread t = new Thread(() -> {
             Server server = new Server(PORT);
             server.start();
         });
-        one.setName("Server Thread");
-        one.start();
+        t.setName("Server Thread");
+        t.start();
 
-        main.constructLoginStage();
-    }
-
-    public void setMain(Main main) {
-        this.main = main;
+        Client client = new Client("localhost", PORT);
+        viewManager.setClient(client);
+        viewManager.nextScene();
     }
 }

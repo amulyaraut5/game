@@ -1,50 +1,41 @@
 package client.view;
-import client.Main;
+
+import client.ViewManager;
 import client.model.Client;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import javafx.scene.control.CheckBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStatus;
-import utilities.Utilities;
+import utilities.JSONProtocol.body.gameStarted.Field;
+import utilities.JSONProtocol.body.gameStarted.Maps;
 
-import static utilities.Utilities.PORT;
-
-
+import java.util.ArrayList;
 
 
 public class LobbyController {
-
-    private Stage lobbyStage;
+    private static final Logger logger = LogManager.getLogger();
+    private ViewManager viewManager = ViewManager.getInstance();
 
     private Client client;
-
-    private String userName;
 
     @FXML
     private CheckBox readyCheckbox;
 
-
     @FXML
-    private void checkBoxAction() {
+    private void checkBoxAction(ActionEvent event) {
 
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
+        client = viewManager.getClient();
         client.sendMessage(msg);
+        ArrayList<Maps> map = new ArrayList<Maps>();
+        ArrayList<Field> field = new ArrayList<Field>();
+        field.add(new Field());
 
-
-
-    }
-
-    public void setStage(Stage lobbyStage) {
-        this.lobbyStage = lobbyStage;
-    }
-
-    public void close() {
-        //TODO
+        map.add(new Maps(0, field));
+        client.sendMessage(new JSONMessage(new GameStarted(map)));
     }
 }

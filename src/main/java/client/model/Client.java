@@ -1,13 +1,8 @@
 package client.model;
 
-import client.Main;
-import client.view.GameViewController;
-import client.view.LoginController;
 import com.google.gson.Gson;
-import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import server.UserThread;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.HelloClient;
 import utilities.JSONProtocol.body.HelloServer;
@@ -161,14 +156,4 @@ public class Client {
     public void deleteFromReadyList(String id) {
         readyList.remove(id);
     }
-
-    /**
-     * setter of the main attribute
-     * @param main
-     */
-    public void setMain(Main main) {
-        this.main = main;
-    }
-
-
 }

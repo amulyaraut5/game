@@ -1,5 +1,7 @@
 package client;
 
+import client.model.Client;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,6 +14,8 @@ public class ViewManager {
     private static final Logger logger = LogManager.getLogger();
     private static ViewManager instance;
 
+    private Client client;
+
     private Stage menuStage = new Stage();
     private Stage gameStage = new Stage();
     private Scene menuScene;
@@ -20,15 +24,16 @@ public class ViewManager {
     private Scene gameScene;
 
     private ViewManager() {
-        constructMenuStage();
-        constructGameStage();
-
-        try {
-            constructScenes();
-        } catch (IOException e) {
-            logger.error("Constructing Scenes failed: " + e.getMessage());
-        }
-        menuStage.show();
+        Platform.runLater(() -> {
+            try {
+                constructScenes();
+                constructMenuStage();
+                constructGameStage();
+                menuStage.show();
+            } catch (IOException e) {
+                logger.error("Constructing Scenes failed: " + e.getMessage());
+            }
+        });
     }
 
     public static ViewManager getInstance() {
@@ -57,7 +62,14 @@ public class ViewManager {
     }
 
     public void showMenu() {
-        //TODO if game finished because server went down or if user closed the lobby/login window
+        if (gameStage.isShowing()) {
+            menuStage.setScene(menuScene);
+            showMenuStage();
+        } else {
+            if (menuStage.getScene() == loginScene || menuStage.getScene() == lobbyScene) {
+                menuStage.setScene(menuScene);
+            } else logger.warn("The menuScene is already the currently shown Scene!");
+        }
     }
 
     private void showGameStage() {
@@ -80,21 +92,26 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
-            menuStage.close();
+            if (menuStage.getScene() == menuScene) {
+                menuStage.close();
+            } else {
+                menuStage.setScene(menuScene);
+            }
         });
     }
 
     private void constructGameStage() {
-        menuStage.setTitle("RoboRally - Game");
-        menuStage.setResizable(false);
-        menuStage.setScene(gameScene);
+        gameStage.setTitle("RoboRally - Game");
+        gameStage.setResizable(false);
+        gameStage.setScene(gameScene);
 
-        menuStage.setOnCloseRequest(event -> {
-            menuStage.close();
+        gameStage.setOnCloseRequest(event -> {
+            //TODO leave game
+            showMenuStage();
         });
     }
 
-    public void constructScenes() throws IOException {
+    private void constructScenes() throws IOException {
         /*String[] views = {"menuView", "loginView", "lobbyView", "gameView"};
         for (int i = 0; i < views.length; i++) {
             FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("/view/" + views[i] + ".fxml"));
@@ -108,5 +125,13 @@ public class ViewManager {
         loginScene = new Scene(loginLoader.load());
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Client getClient() {
+        return client;
     }
 }

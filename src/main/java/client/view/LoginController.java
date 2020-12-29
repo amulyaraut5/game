@@ -1,6 +1,6 @@
 package client.view;
 
-import client.Main;
+import client.ViewManager;
 import client.model.Client;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,10 +10,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.*;
-
-import static utilities.Utilities.PORT;
+import utilities.JSONProtocol.body.PlayerValues;
 
 
 /**
@@ -23,73 +23,40 @@ import static utilities.Utilities.PORT;
  * @author sarah,
  */
 public class LoginController {
-    /**
-     * This private class represents a robot with its name and id
-     */
-    private class RobotPrivate {
-        int id = 0;
-        String name = "default";
-
-        /**
-         * constructor of RobotPrivate
-         *
-         * @param robotName of the robot
-         * @param robotId   of the robot
-         */
-        public RobotPrivate(String robotName, int robotId) {
-            this.id = robotId + 1;
-            this.name = robotName;
-        }
-
-        public String getRobotName() {
-            return this.name;
-        }
-
-        public int getRobotID() {
-            return this.id;
-        }
-    }
-
+    private static final Logger logger = LogManager.getLogger();
+    private ViewManager viewManager = ViewManager.getInstance();
     /**
      * the stage gets saved
      */
     private Stage loginStage;
-
     /**
      * the client which gets created and who gets informed about actions
      */
     private Client client;
-
     /**
      * the user can choose an username which gets saved and passed on to the client
      */
     private String userName;
-
     /**
      * the user can type in its name
      */
     @FXML
     private TextField textUserName;
-
     /**
      * a label to check if everything works //TODO delete or change purpose
      */
     @FXML
     private Label labelResponse;
-
     /**
      * the button for checking whether input is valid
      */
     @FXML
     private Button okButton;
-
     /**
      * the listView for choosing one robot, it stores different ImageViews
      */
     @FXML
     private ListView listView;
-
-
     /**
      * it stores the imageViews of the different robots,
      * so that name and id from the choosed robot
@@ -100,17 +67,11 @@ public class LoginController {
      * this list stores the different robots (with name and id)
      */
     private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
-
     /**
-     *  it stores a list of names of the robots
+     * it stores a list of names of the robots
      */
     private String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
-
-    /**
-     * the main class
-     */
-    private Main main;
 
     /**
      * @param loginStage
@@ -118,7 +79,6 @@ public class LoginController {
     public void setStage(Stage loginStage) {
         this.loginStage = loginStage;
     }
-
 
     /**
      *
@@ -136,15 +96,6 @@ public class LoginController {
         labelResponse.setText("test");
         listView.setItems(robotImageViewList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-    }
-
-    /**
-     * This method initializes a client and set its main class and also sets the client of the main class
-     */
-    public void createClient() {
-        client = new Client( "localhost", PORT);
-        client.setMain(main);
-        main.setClient(client);
     }
 
     /**
@@ -180,26 +131,25 @@ public class LoginController {
      * This method gets called by clicking on the button, it checks if the username is
      * valid and if a robot is selected and then it sends a PlayerValues protocol message
      * and switches to the gameStage
+     *
      * @param event
      */
     @FXML
     private void fxButtonClicked(ActionEvent event) {
-
         labelResponse.setText("");
         userName = textUserName.getText();
-        int choosedRobot = listView.getSelectionModel().getSelectedIndex();
+        int chosenRobot = listView.getSelectionModel().getSelectedIndex();
+
         if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
-        else if (userName.contains(" ")) labelResponse.setText("Spaces are not allowed in usernames!");
-        else if (choosedRobot < 0) labelResponse.setText("You have to choose a robot");
+        else if (userName.contains(" "))
+            labelResponse.setText("Spaces are not allowed in usernames!"); //TODO should we allow usernames? (because we have the id)
+        else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot");
         else {
-            try {
-                labelResponse.setText("you chose " + robotList.get(choosedRobot).getRobotName() + " with id " + robotList.get(choosedRobot).getRobotID());
-                JSONMessage msg = new JSONMessage(new PlayerValues(userName, robotList.get(choosedRobot).getRobotID()));
-                client.sendMessage(msg);
-                main.constructGameStage();
-            } catch (IllegalArgumentException ex) {
-                labelResponse.setText("Please check your Date! (dd.mm.yyyy)");
-            }
+            labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());
+            JSONMessage msg = new JSONMessage(new PlayerValues(userName, robotList.get(chosenRobot).getRobotID()));
+            client = viewManager.getClient();
+            viewManager.nextScene();
+            client.sendMessage(msg);
         }
     }
 
@@ -207,11 +157,11 @@ public class LoginController {
      * @param taken
      */
     public void serverResponse(boolean taken) {
-        if (!taken) {
-            main.showGameStage();
-            //loginStage.close();
-        } else {
+        //TODO username can't be already taken, only robot could be taken
+        if (taken) {
             labelResponse.setText("Already taken, try again");
+        } else {
+            viewManager.nextScene();
         }
     }
 
@@ -238,10 +188,29 @@ public class LoginController {
     }
 
     /**
-     * it sets the main attribute
-     * @param main
+     * This private class represents a robot with its name and id
      */
-    public void setMain(Main main) {
-        this.main = main;
+    private class RobotPrivate {
+        int id = 0;
+        String name = "default";
+
+        /**
+         * constructor of RobotPrivate
+         *
+         * @param robotName of the robot
+         * @param robotId   of the robot
+         */
+        public RobotPrivate(String robotName, int robotId) {
+            this.id = robotId + 1;
+            this.name = robotName;
+        }
+
+        public String getRobotName() {
+            return this.name;
+        }
+
+        public int getRobotID() {
+            return this.id;
+        }
     }
 }
