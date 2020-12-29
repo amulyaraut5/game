@@ -1,6 +1,6 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.Coordinate;
+import utilities.Coordinate;
 import utilities.Utilities;
 
 import java.util.ArrayList;

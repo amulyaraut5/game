@@ -1,6 +1,6 @@
 package game.gameObjects.robot;
 
-import game.gameObjects.Coordinate;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
