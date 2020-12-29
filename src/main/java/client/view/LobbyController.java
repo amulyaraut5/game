@@ -18,7 +18,11 @@ import utilities.JSONProtocol.body.gameStarted.Maps;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class displays the joined and ready users and already has the possibility to chat with other users
+ *
+ * @author sarah, louis
+ */
 public class LobbyController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
@@ -30,6 +34,12 @@ public class LobbyController extends Controller {
 
     @FXML
     public CheckBox readyCheckbox;
+
+    public TextArea joinedUsersTextArea;
+
+    public TextArea readyUsersTextArea;
+
+
 
     @FXML
     private void checkBoxAction(ActionEvent event) {
@@ -45,7 +55,7 @@ public class LobbyController extends Controller {
     private void submitChatMessage(ActionEvent event) {
             String message = lobbyTextFieldChat.getText();
             if (!message.isBlank()) {
-                lobbyTextAreaChat.appendText("[You]: " + message);
+                lobbyTextAreaChat.appendText("[You]: " + message + "\n");
                 JSONMessage msg = new JSONMessage(new SendChat(message, -1));
                 client.sendMessage(msg);
             }
@@ -53,7 +63,18 @@ public class LobbyController extends Controller {
         }
 
     public  void setTextArea(String messageBody){
-        lobbyTextAreaChat.appendText(messageBody);
+        lobbyTextAreaChat.appendText(messageBody + "\n");
+    }
+    /**
+     * this method displays an user who joined to the lobby
+     *
+     * @param joinedUser
+     */
+    public void setJoinedUsersTextArea(String joinedUser) {
+        joinedUsersTextArea.appendText(joinedUser + "\n");
+    }
+    public void setReadyUsersTextArea(String readyUser){
+            readyUsersTextArea.appendText(readyUser + "\n");
     }
 
 }

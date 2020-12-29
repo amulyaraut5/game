@@ -98,12 +98,5 @@ public class GameViewController extends Controller {
         chatWindow.appendText(messageBody + "\n");
     }
 
-    /**
-     * this method displays an user who joined to the lobby
-     *
-     * @param body
-     */
-    public void setUsersTextArea(String body) {
-        joinedUsersTextArea.appendText(body + "\n");
-    }
+
 }

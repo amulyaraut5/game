@@ -15,5 +15,7 @@
       <TextArea fx:id="lobbyTextAreaChat" layoutX="390.0" layoutY="20.0" prefHeight="183.0" prefWidth="201.0" />
       <TextField fx:id="lobbyTextFieldChat" layoutX="390.0" layoutY="217.0" prefHeight="27.0" prefWidth="128.0" />
       <Button layoutX="529.0" layoutY="217.0" mnemonicParsing="false" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="62.0" text="Submit" />
+      <TextArea fx:id="joinedUsersTextArea" layoutX="60.0" layoutY="131.0" prefHeight="200.0" prefWidth="128.0" text="joined users&#10;" />
+      <TextArea fx:id="readyUsersTextArea" layoutX="255.0" layoutY="117.0" prefHeight="200.0" prefWidth="110.0" text="readyPlayer&#10;" />
     </children>
 </AnchorPane>

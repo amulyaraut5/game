@@ -133,6 +133,7 @@ public class UserThread extends Thread {
                 } else {
                     server.changeReadyPlayerList(0, this);
                 }
+                server.communicateUsers(jsonMessagePlayerStatus, this);
                 sendMessage(jsonMessagePlayerStatus);
                 break;
             case SendChat:

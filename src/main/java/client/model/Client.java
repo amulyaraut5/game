@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static utilities.Utilities.PORT;
 
@@ -57,6 +59,7 @@ public class Client {
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
+    private Map<Integer, String> otherPlayerMap = new HashMap<>();
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -160,7 +163,9 @@ public class Client {
         Platform.runLater(() -> {
             if (type.equals("loginController")) loginController.write(messageBody);
             else if (type.equals("receivedChat")) lobbyController.setTextArea(messageBody);
-            else if (type.equals("playerAdded")) gameViewController.setUsersTextArea(messageBody);
+            else if (type.equals("playerAdded")) lobbyController.setJoinedUsersTextArea(messageBody);
+            else if(type.equals("playerStatusIsReady")) lobbyController.setReadyUsersTextArea(messageBody);
+
         });
     }
 
@@ -184,5 +189,13 @@ public class Client {
         loginController = (LoginController)controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameViewController = (GameViewController) controllerList.get(2);
+    }
+
+    public void addNewPlayer(int id, String name) {
+        otherPlayerMap.put(id, name);
+    }
+
+    public String getIDFrom(int id) {
+        return otherPlayerMap.get(id);
     }
 }

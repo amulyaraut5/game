@@ -106,6 +106,7 @@ public class ReaderThread extends Thread {
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
+                client.addNewPlayer(pa.getId(), pa.getName());
                 if (pa.getId() != playerId)
                     client.sendToMain(pa.getName(), "playerAdded");
                 break;
@@ -116,7 +117,9 @@ public class ReaderThread extends Thread {
             case PlayerStatus:
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                 //TODO extract player id
-                //if playerStatus.
+                if (playerStatus.isReady() && playerStatus.getId()!=playerId){
+                    client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsReady");
+                }
                 logger.info("PlayerStatus: " + playerStatus.isReady());
                 break;
             case ReceivedChat:
