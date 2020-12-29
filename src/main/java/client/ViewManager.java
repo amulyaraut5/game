@@ -1,6 +1,8 @@
 package client;
 
 import client.model.Client;
+import client.view.GameViewController;
+import client.view.LoginController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +12,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
+/**
+ * ViewManager is a Singleton. Class handles all diffent views and their transitions. ViewManager is Singleton.
+ * The instance is initially created in getInstance() with lazy initialization.
+ * <p>
+ * The Scenes of the view can be changed with nextScenes() and previousScene(). showMenu() return to the main menu.
+ *
+ * @author simon
+ */
 public class ViewManager {
     private static final Logger logger = LogManager.getLogger();
     private static ViewManager instance;
@@ -22,6 +32,8 @@ public class ViewManager {
     private Scene loginScene;
     private Scene lobbyScene;
     private Scene gameScene;
+    private GameViewController gameViewController;
+    private LoginController loginController;
 
     private ViewManager() {
         Platform.runLater(() -> {
@@ -45,7 +57,8 @@ public class ViewManager {
         if (menuStage.isShowing()) {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
-            else if (menuStage.getScene() == loginScene) menuStage.setScene(lobbyScene);
+            else if (menuStage.getScene() == loginScene)
+                menuStage.setScene(gameScene);//TODO menuStage.setScene(lobbyScene);
             else if (menuStage.getScene() == lobbyScene) showGameStage();
         } else {
             logger.warn("There is no next Scene!");
@@ -125,13 +138,17 @@ public class ViewManager {
         loginScene = new Scene(loginLoader.load());
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
+
+        loginController = loginLoader.getController();
+        gameViewController = gameLoader.getController();
     }
 
     public void setClient(Client client) {
         this.client = client;
-    }
+        gameViewController.setClient(client);
+        loginController.setClient(client);
+        client.setGameViewController(gameViewController);
+        client.setLoginController(loginController);
 
-    public Client getClient() {
-        return client;
     }
 }

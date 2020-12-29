@@ -147,7 +147,6 @@ public class LoginController {
         else {
             labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());
             JSONMessage msg = new JSONMessage(new PlayerValues(userName, robotList.get(chosenRobot).getRobotID()));
-            client = viewManager.getClient();
             viewManager.nextScene();
             client.sendMessage(msg);
         }
@@ -185,6 +184,11 @@ public class LoginController {
      */
     public Label getLabelResponse() {
         return labelResponse;
+    }
+
+    public void setClient(Client client) {
+        //TODO remove
+        this.client = client;
     }
 
     /**
