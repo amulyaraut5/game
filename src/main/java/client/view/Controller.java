@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 /**
  * Abstract super class of all view-controller
  *
- * @author simon
+ * @author simon, sarah
  */
 public abstract class Controller {
     /**
