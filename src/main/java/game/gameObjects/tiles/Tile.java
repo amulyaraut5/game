@@ -101,15 +101,15 @@ public class Tile {
 			// draw();
 
 			//Blue Rotating Conveyor Belts
-			case 31: tile = new Tile(new RotatingBelt(Utilities.upLeft, false, 1)); break;
-			case 32: tile = new Tile(new RotatingBelt(Utilities.upRight, false, 1)); break;
-			case 33: tile = new Tile(new RotatingBelt(Utilities.downLeft, false, 1)); break;
-			case 34: tile = new Tile(new RotatingBelt(Utilities.downRight, false, 1)); break;
+			case 31: tile = new Tile(new RotatingBelt(Utilities.upLeft, false, 2)); break;
+			case 32: tile = new Tile(new RotatingBelt(Utilities.upRight, false, 2)); break;
+			case 33: tile = new Tile(new RotatingBelt(Utilities.downLeft, false, 2)); break;
+			case 34: tile = new Tile(new RotatingBelt(Utilities.downRight, false, 2)); break;
 
-			case 35: tile = new Tile(new RotatingBelt(Utilities.upLeft, true, 1)); break;
-			case 36: tile = new Tile(new RotatingBelt(Utilities.upRight, true, 1)); break;
-			case 37: tile = new Tile(new RotatingBelt(Utilities.downLeft, true, 1)); break;
-			case 38: tile = new Tile(new RotatingBelt(Utilities.downRight, true, 1)); break;
+			case 35: tile = new Tile(new RotatingBelt(Utilities.upLeft, true, 2)); break;
+			case 36: tile = new Tile(new RotatingBelt(Utilities.upRight, true, 2)); break;
+			case 37: tile = new Tile(new RotatingBelt(Utilities.downLeft, true, 2)); break;
+			case 38: tile = new Tile(new RotatingBelt(Utilities.downRight, true, 2)); break;
 			// draw();
 
 			//Push Panels
