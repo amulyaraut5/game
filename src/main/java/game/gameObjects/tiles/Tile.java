@@ -10,13 +10,15 @@ import java.util.ArrayList;
 public class Tile {
 
 	protected String imagePath;
+
+	/** saves one or multiple Attributes for one tile */
 	private ArrayList<Attribute> attributes;
+
 	//private Image image;
 
 
 	/**
-	 * Constructor for tiles with one attribute.
-	 * @param attribute1 first attribute
+	 * Constructor for tiles.
 	 */
 	public Tile(){
 		attributes = new ArrayList<>();
@@ -48,18 +50,14 @@ public class Tile {
 	   }
 	 */
 
-
-	/**
-	 * Constructor for tiles with two attributes.
-     * @param attribute1 first attribute
-     * @param attribute2 second attribute
-     * @return
-     */
-
 	public ArrayList<Attribute> getAttribute() {
 		return attributes;
 	}
 
+	/** Adds an Attribute to a tile by saving it in the ArrayList of attributes
+	 *
+	 * @param attribute added Attribute
+	 */
 	public void addAttribute(Attribute attribute) {
 		attributes.add(attribute);
 	}
@@ -70,6 +68,12 @@ public class Tile {
 	public void priorityOrder(){
 		//TODO
 	}
+
+	/**
+	 * TODO
+	 * @param gc
+	 * @param position
+	 */
 
 	public void draw(GraphicsContext gc, Coordinate position) {
 		//TODO define image path
