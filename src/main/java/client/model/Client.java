@@ -65,7 +65,7 @@ public class Client {
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private Map<Integer, String> otherPlayerMap = new HashMap<>();
+    private Map<Integer, String> playerMap = new HashMap<>();
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -229,10 +229,10 @@ public class Client {
     }
 
     public void addNewPlayer(int id, String name) {
-        otherPlayerMap.put(id, name);
+        playerMap.put(id, name);
     }
 
     public String getIDFrom(int id) {
-        return otherPlayerMap.get(id);
+        return playerMap.get(id);
     }
 }

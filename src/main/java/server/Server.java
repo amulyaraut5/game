@@ -1,11 +1,13 @@
 package server;
 
+import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.gameStarted.Field;
 import utilities.JSONProtocol.body.gameStarted.Maps;
+import utilities.Utilities;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,7 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static utilities.Utilities.PORT;
+import static utilities.Utilities.*;
 
 public class Server {
 
@@ -97,21 +99,28 @@ public class Server {
 
 
             //try out "GameStarted":
-            ArrayList<String> orientations = new ArrayList<>();
-            orientations.add("up");
-            orientations.add("left");
-            Field field = new Field();
-            field.setOrientations(orientations);
-            field.setType("Rotating Belt");
-            field.setSpeed(2);
-            field.setCrossing(true);
-            ArrayList<Field> fieldList = new ArrayList<>();
-            fieldList.add(field);
-            Maps map = new Maps(1, fieldList);
+            Attribute attributeA = new RotatingBelt(upLeft, true, 2);
+            int[] registers = {2, 4};
+            Attribute attributeB = new PushPanel(Utilities.Orientation.LEFT, registers);
+            Attribute attributeC = new Wall(upRight);
+            Attribute attributeD = new Laser(Orientation.DOWN, 1);
+
+            ArrayList<Attribute> fieldList1 = new ArrayList<>();
+            ArrayList<Attribute> fieldList2 = new ArrayList<>();
+            ArrayList<Attribute> fieldList3 = new ArrayList<>();
+            fieldList1.add(attributeA);
+            fieldList2.add(attributeB);
+            fieldList3.add(attributeC);
+            fieldList3.add(attributeD);
+
             ArrayList<Maps> mapList = new ArrayList<>();
-            mapList.add(map);
+            mapList.add(new Maps(1, fieldList1));
+            mapList.add(new Maps(2, fieldList2));
+            mapList.add(new Maps(3, fieldList3));
+
+
             JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
-            //System.out.println(Multiplex.serialize(jMessage));
+            System.out.println(Multiplex.serialize(jMessage));
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
