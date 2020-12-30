@@ -8,10 +8,10 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.HelloClient;
-import utilities.JSONProtocol.body.HelloServer;
-import utilities.JSONProtocol.body.PlayerAdded;
+import utilities.JSONProtocol.body.*;
+import utilities.Utilities;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -155,25 +155,28 @@ public class Client {
     /**
      * This method receives a String and a type and sends it to main
      *
-     * @param messageBody the specified message
+     * @param jsonBody the jsonBody of the message the readerThred gets
      * @param type        the type of the message
      */
-    public void sendToMain(String messageBody, String type) {
+    public void sendToMain(JSONBody jsonBody, String type) {
         //TODO main.sendChatMessage(messageBody, type);
-
         //System.out.println("messageBody = " + messageBody + ", type = " + type);
         Platform.runLater(() -> {
-            if (type.equals("loginController")) loginController.write(messageBody);
-            else if (type.equals("receivedChat")) lobbyController.setTextArea(messageBody);
-            else if(type.equals("playerStatusIsReady")) lobbyController.setReadyUsersTextArea(messageBody, true);
-            else if(type.equals("playerStatusIsNotReady")) lobbyController.setReadyUsersTextArea(messageBody, false);
+            switch (type){
+                case "ReceivedChat":
+                    ReceivedChat receivedChat = (ReceivedChat) jsonBody;
+                    lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                case "PlayerStatus":
+                    SetStatus setStatus = (SetStatus) jsonBody;
+                    lobbyController.setReadyUsersTextArea(setStatus);
+                case "PlayerAdded":
+                    PlayerAdded playerAdded = (PlayerAdded) jsonBody;
+                    lobbyController.setJoinedUsersTextArea(playerAdded);
+            }
+
         });
     }
-    public void sendToMain(PlayerAdded playerAdded, String type) {
-        Platform.runLater(()->{
-            lobbyController.setJoinedUsersTextArea(playerAdded.getName(), playerAdded.getFigure());
-        });
-    }
+
 
 
     public void addToReadyList(String id) {

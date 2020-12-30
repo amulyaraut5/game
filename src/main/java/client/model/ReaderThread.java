@@ -99,15 +99,15 @@ public class ReaderThread extends Thread {
             case Welcome:
                 Welcome wc = (Welcome) message.getBody();
                 playerId = wc.getPlayerId();
-                String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
-                client.sendToMain(labelMessage, "loginController");
+                //String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
+                //client.sendToMain(labelMessage, "loginController");
                 //logger.info(labelMessage);
                 break;
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
                 client.addNewPlayer(pa.getId(), pa.getName());
-                client.sendToMain(pa, "playerAdded");
+                client.sendToMain(pa, "PlayerAdded");
 
                 break;
             case Error:
@@ -117,17 +117,14 @@ public class ReaderThread extends Thread {
             case PlayerStatus:
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                 //TODO extract player id
-                if (playerStatus.isReady() ){
-                    client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsReady");
-                } else if (!playerStatus.isReady()){
-                    client.sendToMain(client.getIDFrom(playerStatus.getId()), "playerStatusIsNotReady");
-                }
+                client.sendToMain(playerStatus, "PlayerStatus");
+
                 logger.info("PlayerStatus: " + playerStatus.isReady());
                 break;
             case ReceivedChat:
                 ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                 logger.info(receivedChat.getMessage());
-                client.sendToMain(receivedChat.getFrom() + ": " + receivedChat.getMessage(), "receivedChat");
+                client.sendToMain(receivedChat, "ReceivedChat");
             default:
                 logger.info("Something went wrong");
                 //TODO

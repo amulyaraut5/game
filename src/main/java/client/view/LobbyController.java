@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 import utilities.JSONProtocol.body.gameStarted.Field;
@@ -60,6 +61,7 @@ public class LobbyController extends Controller {
 
     private ArrayList<ImageView> robotImageViews = new ArrayList<>();
     private ArrayList<Label> robotLabels = new ArrayList<>();
+    private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
     public void initialize(){
         robotImageViews.add(robot1ImageView);
@@ -111,29 +113,66 @@ public class LobbyController extends Controller {
     /**
      * this method displays an user who joined to the lobby
      *
-     * @param joinedUser
+     * @param playerAdded
      */
-    public void setJoinedUsersTextArea(String joinedUser, int figure) {
-        currentImageView.setImage(new Image("/choose-robot-" + robotNames[figure-1] + ".png"));
-        currentLabel.setText(joinedUser);
-        joinedUsersTextArea.appendText(joinedUser + "\n");
+    public void setJoinedUsersTextArea(PlayerAdded playerAdded) {
+        currentImageView.setImage(new Image("/choose-robot-" + robotNames[playerAdded.getFigure()-1] + ".png"));
+        currentLabel.setText(playerAdded.getName());
+        //ImageView imageViewPuffer = currentImageView;
+        //Label labelPuffer = currentLabel;
+        //RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView)+1, playerAdded.getId(), playerAdded.getName(),imageViewPuffer, labelPuffer );
+        //robotIcons.add(robotIcon);
         nextRobot();
     }
-    public void setReadyUsersTextArea(String readyUser, boolean isReady){
-            if (isReady){
+    public void setReadyUsersTextArea(SetStatus setStatus){
+            if (setStatus.isReady()){
                 //TODO readyUsers anzeigen
-                for(int i = 0; i<robotLabels.size();i++){
-                    if(readyUser.equals(robotLabels.get(i))){
-                        robotImageViews.get(i).setVisible(false);
-                    }
-                }
 
-                readyUsersTextArea.appendText(readyUser + "\n");
+
+                //readyUsersTextArea.appendText(readyUser + "\n");
             } else {
                 //remove ready user -> better implement it later
             }
     }
+    private class RobotIcon{
 
+
+        String userName;
+        int userID;
+        int position;
+
+        ImageView imageViewofRobot;
+        Label labelOfUser;
+
+        public RobotIcon(int position, int id, String name, ImageView imageViewPuffer, Label labelPuffer) {
+            this.position =position;
+            this.userID = id;
+            this.userName = name;
+            this.imageViewofRobot = imageViewPuffer;
+            this.labelOfUser = labelPuffer;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public int getUserID() {
+            return userID;
+        }
+
+        public ImageView getImageViewofRobot() {
+            return imageViewofRobot;
+        }
+
+        public Label getLabelOfUser() {
+            return labelOfUser;
+        }
+
+        public void setLabelOfUser(Label labelOfUser) {
+            this.labelOfUser = labelOfUser;
+        }
+
+    }
 }
 
 
