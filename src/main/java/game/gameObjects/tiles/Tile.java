@@ -132,10 +132,20 @@ public class Tile {
 			case 33: tile.addAttribute(new RotatingBelt(Utilities.downLeft, false, 2)); break;
 			case 34: tile.addAttribute(new RotatingBelt(Utilities.downRight, false, 2)); break;
 
+			case 101: tile.addAttribute(new RotatingBelt(Utilities.leftUp, false, 2)); break;
+			case 102: tile.addAttribute(new RotatingBelt(Utilities.rightUp, false, 2)); break;
+			case 103: tile.addAttribute(new RotatingBelt(Utilities.leftDown, false, 2)); break;
+			case 104: tile.addAttribute(new RotatingBelt(Utilities.rightDown, false, 2)); break;
+
 			case 35: tile.addAttribute(new RotatingBelt(Utilities.upLeft, true, 2)); break;
 			case 36: tile.addAttribute(new RotatingBelt(Utilities.upRight, true, 2)); break;
 			case 37: tile.addAttribute(new RotatingBelt(Utilities.downLeft, true, 2)); break;
 			case 38: tile.addAttribute(new RotatingBelt(Utilities.downRight, true, 2)); break;
+
+			case 105: tile.addAttribute(new RotatingBelt(Utilities.leftUp, true, 2)); break;
+			case 106: tile.addAttribute(new RotatingBelt(Utilities.rightUp, true, 2)); break;
+			case 107: tile.addAttribute(new RotatingBelt(Utilities.leftDown, true, 2)); break;
+			case 108: tile.addAttribute(new RotatingBelt(Utilities.rightDown, true, 2)); break;
 			// draw();
 
 			//Push Panels
