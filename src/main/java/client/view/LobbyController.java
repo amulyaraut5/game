@@ -13,10 +13,7 @@ import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.PlayerAdded;
-import utilities.JSONProtocol.body.SendChat;
-import utilities.JSONProtocol.body.SetStatus;
+import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.gameStarted.Field;
 import utilities.JSONProtocol.body.gameStarted.Maps;
 
@@ -118,21 +115,27 @@ public class LobbyController extends Controller {
     public void setJoinedUsersTextArea(PlayerAdded playerAdded) {
         currentImageView.setImage(new Image("/choose-robot-" + robotNames[playerAdded.getFigure()-1] + ".png"));
         currentLabel.setText(playerAdded.getName());
-        //ImageView imageViewPuffer = currentImageView;
-        //Label labelPuffer = currentLabel;
-        //RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView)+1, playerAdded.getId(), playerAdded.getName(),imageViewPuffer, labelPuffer );
-        //robotIcons.add(robotIcon);
+        ImageView imageViewPuffer = currentImageView;
+        Label labelPuffer = currentLabel;
+        RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView)+1, playerAdded,imageViewPuffer, labelPuffer );
+        robotIcons.add(robotIcon);
         nextRobot();
     }
-    public void setReadyUsersTextArea(SetStatus setStatus){
-            if (setStatus.isReady()){
+    public void setReadyUsersTextArea(PlayerStatus playerStatus){
+
                 //TODO readyUsers anzeigen
+                for (RobotIcon robotIcon: robotIcons){
+                    if(robotIcon.getUserID()==playerStatus.getId()){
+                        String link;
+                        if(playerStatus.isReady()){
+                            link = "/choose-robot-" + robotNames[robotIcon.getFigure()-1] + "-ready.png";
+                        } else {
+                            link = "/choose-robot-" + robotNames[robotIcon.getFigure()-1] + ".png";
+                        }
+                        robotIcon.getImageViewofRobot().setImage(new Image(link));
+                    }
+                }
 
-
-                //readyUsersTextArea.appendText(readyUser + "\n");
-            } else {
-                //remove ready user -> better implement it later
-            }
     }
     private class RobotIcon{
 
@@ -140,18 +143,21 @@ public class LobbyController extends Controller {
         String userName;
         int userID;
         int position;
-
+        int figure;
         ImageView imageViewofRobot;
         Label labelOfUser;
 
-        public RobotIcon(int position, int id, String name, ImageView imageViewPuffer, Label labelPuffer) {
+        public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer) {
             this.position =position;
-            this.userID = id;
-            this.userName = name;
+            this.userID = playerAdded.getId();
+            this.userName = playerAdded.getName();
+            this.figure = playerAdded.getFigure();
             this.imageViewofRobot = imageViewPuffer;
             this.labelOfUser = labelPuffer;
         }
-
+        public int getFigure(){
+            return figure;
+        }
         public String getUserName() {
             return userName;
         }

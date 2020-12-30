@@ -166,12 +166,15 @@ public class Client {
                 case "ReceivedChat":
                     ReceivedChat receivedChat = (ReceivedChat) jsonBody;
                     lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                    break;
                 case "PlayerStatus":
-                    SetStatus setStatus = (SetStatus) jsonBody;
-                    lobbyController.setReadyUsersTextArea(setStatus);
+                    PlayerStatus playerStatus = (PlayerStatus) jsonBody;
+                    lobbyController.setReadyUsersTextArea(playerStatus);
+                    break;
                 case "PlayerAdded":
                     PlayerAdded playerAdded = (PlayerAdded) jsonBody;
                     lobbyController.setJoinedUsersTextArea(playerAdded);
+                    break;
             }
 
         });
