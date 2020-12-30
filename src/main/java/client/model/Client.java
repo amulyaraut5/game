@@ -173,15 +173,11 @@ public class Client {
             switch (type) {
                 case HelloClient:
                     HelloClient hc = (HelloClient) message.getBody();
-                    //logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
                     connect(hc);
                     break;
                 case Welcome:
                     Welcome wc = (Welcome) message.getBody();
                     playerId = wc.getPlayerId();
-                    //String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
-                    //client.sendToMain(labelMessage, "loginController");
-                    //logger.info(labelMessage);
                     break;
                 case PlayerAdded:
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
@@ -195,7 +191,6 @@ public class Client {
                     break;
                 case PlayerStatus:
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    //TODO extract player id
                     logger.info("PlayerStatus: " + playerStatus.isReady());
                     lobbyController.setReadyUsersTextArea(playerStatus);
 
@@ -206,7 +201,6 @@ public class Client {
                     lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
                 default:
                     logger.info("Something went wrong");
-                    //TODO
             }
         });
         }
