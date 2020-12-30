@@ -122,8 +122,6 @@ public class LobbyController extends Controller {
         nextRobot();
     }
     public void setReadyUsersTextArea(PlayerStatus playerStatus){
-
-                //TODO readyUsers anzeigen
                 for (RobotIcon robotIcon: robotIcons){
                     if(robotIcon.getUserID()==playerStatus.getId()){
                         String link;
@@ -135,11 +133,9 @@ public class LobbyController extends Controller {
                         robotIcon.getImageViewofRobot().setImage(new Image(link));
                     }
                 }
-
     }
+
     private class RobotIcon{
-
-
         String userName;
         int userID;
         int position;

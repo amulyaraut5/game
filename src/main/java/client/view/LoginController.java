@@ -69,7 +69,6 @@ public class LoginController extends Controller {
      */
     public void initialize() {
         createRobotList();
-        labelResponse.setText("test");
         listView.setItems(robotImageViewList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
