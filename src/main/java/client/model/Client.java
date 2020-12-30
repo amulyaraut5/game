@@ -106,7 +106,6 @@ public class Client {
         }
 
         readerThread = new ReaderThread(socket, this);
-        readerThread.setName("ReaderThread");
         readerThread.start();
 
         logger.info("Connection to server successful.");
