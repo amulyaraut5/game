@@ -46,6 +46,8 @@ public class ReaderThread extends Thread {
      */
     public ReaderThread(Socket socket, Client client) {
         this.client = client;
+        setName("ReaderThread");
+        setDaemon(true);
 
         try {
             InputStream in = socket.getInputStream();
