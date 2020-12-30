@@ -195,6 +195,11 @@ public class Tile {
 			case 93: tile.addAttribute(new Wall(Utilities.Orientation.LEFT)); break;
 			case 94: tile.addAttribute(new Wall(Utilities.Orientation.RIGHT)); break;
 
+			case 95: tile.addAttribute(new Wall(Utilities.upLeft)); break;
+			case 96: tile.addAttribute(new Wall(Utilities.upRight)); break;
+			case 97: tile.addAttribute(new Wall(Utilities.downLeft)); break;
+			case 98: tile.addAttribute(new Wall(Utilities.downRight)); break;
+
 			// Tile with two walls
 
 		}
