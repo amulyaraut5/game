@@ -2,10 +2,6 @@ package client.view;
 
 import client.ViewManager;
 import client.model.Client;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * Abstract super class of all view-controller

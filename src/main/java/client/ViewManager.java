@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * ViewManager is a Singleton. Class handles all diffent views and their transitions. ViewManager is Singleton.
+ * ViewManager is a Singleton. Class handles all different views and their transitions. ViewManager is Singleton.
  * The instance is initially created in getInstance() with lazy initialization.
  * <p>
  * The Scenes of the view can be changed with nextScenes() and previousScene(). showMenu() return to the main menu.
@@ -66,7 +66,7 @@ public class ViewManager {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
             else if (menuStage.getScene() == loginScene)
-                menuStage.setScene(lobbyScene);//TODO menuStage.setScene(lobbyScene);
+                menuStage.setScene(lobbyScene);
             else if (menuStage.getScene() == lobbyScene) showGameStage();
         } else {
             logger.warn("There is no next Scene!");
@@ -93,6 +93,10 @@ public class ViewManager {
         }
     }
 
+    public void displayErrorMessage(String error) {
+        //TODO
+    }
+
     private void showGameStage() {
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
@@ -113,10 +117,16 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
+            System.err.println("Close");
             if (menuStage.getScene() == menuScene) {
+                System.err.println("menuScene");
                 menuStage.close();
+                //TODO close ReaderThread
             } else {
+                System.err.println("!menuScene");
+                //TODO menuStage.show();
                 menuStage.setScene(menuScene);
+                gameStage.show();
             }
         });
     }
@@ -158,9 +168,5 @@ public class ViewManager {
         controllerList.add(lobbyController);
         controllerList.add(gameViewController);
         client.setController(controllerList);
-    }
-
-    public void displayErrorMessage(String error) {
-        //TODO
     }
 }

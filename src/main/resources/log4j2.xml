@@ -25,7 +25,7 @@
             <AppenderRef ref="FileLogger"/>
             <AppenderRef ref="ConsoleLogger"/>
         </Logger>
-        <Root level="info">
+        <Root level="debug">
             <AppenderRef ref="FileLogger"/>
             <AppenderRef ref="ConsoleLogger"/>
         </Root>

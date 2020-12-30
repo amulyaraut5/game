@@ -1,7 +1,5 @@
 package client.view;
 
-import client.ViewManager;
-import client.model.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -13,9 +11,10 @@ import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.*;
-import utilities.JSONProtocol.body.gameStarted.Field;
-import utilities.JSONProtocol.body.gameStarted.Maps;
+import utilities.JSONProtocol.body.PlayerAdded;
+import utilities.JSONProtocol.body.PlayerStatus;
+import utilities.JSONProtocol.body.SendChat;
+import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
 
@@ -46,21 +45,20 @@ public class LobbyController extends Controller {
     public ImageView robot4ImageView;
     public ImageView robot5ImageView;
     public ImageView robot6ImageView;
-    private ImageView currentImageView;
-
     public Label robot1Label;
     public Label robot2Label;
     public Label robot3Label;
     public Label robot4Label;
     public Label robot5Label;
     public Label robot6Label;
+    private ImageView currentImageView;
     private Label currentLabel;
 
     private ArrayList<ImageView> robotImageViews = new ArrayList<>();
     private ArrayList<Label> robotLabels = new ArrayList<>();
     private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
-    public void initialize(){
+    public void initialize() {
         robotImageViews.add(robot1ImageView);
         robotImageViews.add(robot2ImageView);
         robotImageViews.add(robot3ImageView);
@@ -78,11 +76,46 @@ public class LobbyController extends Controller {
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
     }
-    private void nextRobot(){
-        currentImageView = robotImageViews.get(robotImageViews.indexOf(currentImageView)+1);
-        currentLabel = robotLabels.get(robotLabels.indexOf(currentLabel)+1);
+
+    public void setTextArea(String messageBody) {
+        lobbyTextAreaChat.appendText(messageBody + "\n");
+    }
+
+    /**
+     * this method displays an user who joined to the lobby
+     *
+     * @param playerAdded
+     */
+    public void setJoinedUsersTextArea(PlayerAdded playerAdded) {
+        currentImageView.setImage(new Image("/choose-robot-" + robotNames[playerAdded.getFigure() - 1] + ".png"));
+        currentLabel.setText(playerAdded.getName());
+        ImageView imageViewPuffer = currentImageView;
+        Label labelPuffer = currentLabel;
+        RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer);
+        robotIcons.add(robotIcon);
+        nextRobot();
+    }
+
+    public void setReadyUsersTextArea(PlayerStatus playerStatus) {
+        for (RobotIcon robotIcon : robotIcons) {
+            if (robotIcon.getUserID() == playerStatus.getId()) {
+                String link;
+                if (playerStatus.isReady()) {
+                    link = "/choose-robot-" + robotNames[robotIcon.getFigure() - 1] + "-ready.png";
+                } else {
+                    link = "/choose-robot-" + robotNames[robotIcon.getFigure() - 1] + ".png";
+                }
+                robotIcon.getImageViewofRobot().setImage(new Image(link));
+            }
+        }
+    }
+
+    private void nextRobot() {
+        currentImageView = robotImageViews.get(robotImageViews.indexOf(currentImageView) + 1);
+        currentLabel = robotLabels.get(robotLabels.indexOf(currentLabel) + 1);
 
     }
+
     @FXML
     private void checkBoxAction(ActionEvent event) {
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
@@ -91,51 +124,21 @@ public class LobbyController extends Controller {
 
     /**
      * send chat Message
+     *
      * @param event
      */
     @FXML
     private void submitChatMessage(ActionEvent event) {
-            String message = lobbyTextFieldChat.getText();
-            if (!message.isBlank()) {
-                lobbyTextAreaChat.appendText("[You]: " + message + "\n");
-                JSONMessage msg = new JSONMessage(new SendChat(message, -1));
-                client.sendMessage(msg);
-            }
-            lobbyTextFieldChat.clear();
+        String message = lobbyTextFieldChat.getText();
+        if (!message.isBlank()) {
+            lobbyTextAreaChat.appendText("[You]: " + message + "\n");
+            JSONMessage msg = new JSONMessage(new SendChat(message, -1));
+            client.sendMessage(msg);
         }
-
-    public  void setTextArea(String messageBody){
-        lobbyTextAreaChat.appendText(messageBody + "\n");
-    }
-    /**
-     * this method displays an user who joined to the lobby
-     *
-     * @param playerAdded
-     */
-    public void setJoinedUsersTextArea(PlayerAdded playerAdded) {
-        currentImageView.setImage(new Image("/choose-robot-" + robotNames[playerAdded.getFigure()-1] + ".png"));
-        currentLabel.setText(playerAdded.getName());
-        ImageView imageViewPuffer = currentImageView;
-        Label labelPuffer = currentLabel;
-        RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView)+1, playerAdded,imageViewPuffer, labelPuffer );
-        robotIcons.add(robotIcon);
-        nextRobot();
-    }
-    public void setReadyUsersTextArea(PlayerStatus playerStatus){
-                for (RobotIcon robotIcon: robotIcons){
-                    if(robotIcon.getUserID()==playerStatus.getId()){
-                        String link;
-                        if(playerStatus.isReady()){
-                            link = "/choose-robot-" + robotNames[robotIcon.getFigure()-1] + "-ready.png";
-                        } else {
-                            link = "/choose-robot-" + robotNames[robotIcon.getFigure()-1] + ".png";
-                        }
-                        robotIcon.getImageViewofRobot().setImage(new Image(link));
-                    }
-                }
+        lobbyTextFieldChat.clear();
     }
 
-    private class RobotIcon{
+    private class RobotIcon {
         String userName;
         int userID;
         int position;
@@ -144,16 +147,18 @@ public class LobbyController extends Controller {
         Label labelOfUser;
 
         public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer) {
-            this.position =position;
+            this.position = position;
             this.userID = playerAdded.getId();
             this.userName = playerAdded.getName();
             this.figure = playerAdded.getFigure();
             this.imageViewofRobot = imageViewPuffer;
             this.labelOfUser = labelPuffer;
         }
-        public int getFigure(){
+
+        public int getFigure() {
             return figure;
         }
+
         public String getUserName() {
             return userName;
         }

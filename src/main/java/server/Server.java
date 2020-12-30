@@ -1,10 +1,8 @@
 package server;
 
-import game.gameObjects.maps.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.gameStarted.Field;
 import utilities.JSONProtocol.body.gameStarted.Maps;
@@ -35,7 +33,7 @@ public class Server {
     /**
      * Array with all the id´s that already exist
      */
-    ArrayList<Integer> idNumbers = new ArrayList<>();
+    private ArrayList<Integer> idNumbers = new ArrayList<>();
 
     /**
      *
@@ -109,11 +107,11 @@ public class Server {
             field.setCrossing(true);
             ArrayList<Field> fieldList = new ArrayList<>();
             fieldList.add(field);
-            Maps map = new Maps(1,fieldList);
+            Maps map = new Maps(1, fieldList);
             ArrayList<Maps> mapList = new ArrayList<>();
             mapList.add(map);
             JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
-            System.out.println(Multiplex.serialize(jMessage));
+            //System.out.println(Multiplex.serialize(jMessage));
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
@@ -127,29 +125,6 @@ public class Server {
         }
         logger.info("SERVER CLOSED");
     }
-
-    /**
-     * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
-     *
-     * @param serverSocket socket from which connection is to be established
-     */
-    private void acceptClients(ServerSocket serverSocket) {
-        boolean accept = true;
-        while (accept) {
-            try {
-                Socket clientSocket = serverSocket.accept();
-                logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
-                User user = new User();
-                users.add(user);
-                UserThread thread = new UserThread(clientSocket, this, user);
-                thread.start();
-            } catch (IOException e) {
-                accept = false;
-                logger.info("Accept failed on: " + PORT);
-            }
-        }
-    }
-
 
     public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
         for (User user : users) {
@@ -204,5 +179,27 @@ public class Server {
 
     public void addToPlayerValuesList(JSONMessage playerAddedMessage) {
         this.playerValuesList.add(playerAddedMessage);
+    }
+
+    /**
+     * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
+     *
+     * @param serverSocket socket from which connection is to be established
+     */
+    private void acceptClients(ServerSocket serverSocket) {
+        boolean accept = true;
+        while (accept) {
+            try {
+                Socket clientSocket = serverSocket.accept();
+                logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
+                User user = new User();
+                users.add(user);
+                UserThread thread = new UserThread(clientSocket, this, user);
+                thread.start();
+            } catch (IOException e) {
+                accept = false;
+                logger.info("Accept failed on: " + PORT);
+            }
+        }
     }
 }
