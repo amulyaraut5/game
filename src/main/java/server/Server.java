@@ -94,25 +94,6 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
-
-
-            //try out "GameStarted":
-            ArrayList<String> orientations = new ArrayList<>();
-            orientations.add("up");
-            orientations.add("left");
-            Field field = new Field();
-            field.setOrientations(orientations);
-            field.setType("Rotating Belt");
-            field.setSpeed(2);
-            field.setCrossing(true);
-            ArrayList<Field> fieldList = new ArrayList<>();
-            fieldList.add(field);
-            Maps map = new Maps(1, fieldList);
-            ArrayList<Maps> mapList = new ArrayList<>();
-            mapList.add(map);
-            JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
-            //System.out.println(Multiplex.serialize(jMessage));
-
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     serverSocket.close();
