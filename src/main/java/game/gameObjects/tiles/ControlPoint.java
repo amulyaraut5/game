@@ -3,35 +3,36 @@ package game.gameObjects.tiles;
 import game.Player;
 
 /**
- *
  * @author Amulya
  */
 
 public class ControlPoint extends Attribute {
 
-	// Nummer des Punktes
-	private int count;
+    // Nummer des Punktes
+    private int count;
 
-	/**
-	 * Constructor that helps in creating multiple instances of Checkpoints with different ID
-	 * @param count
-	 */
+    /**
+     * Constructor that helps in creating multiple instances of Checkpoints with different ID
+     *
+     * @param count
+     */
 
-	public ControlPoint(int count){
-		this.count = count;
-		this.type = "ControlPoint";
-	}
+    public ControlPoint(int count) {
+        this.count = count;
+        this.type = "ControlPoint";
+    }
 
-	public int getCheckPointID() {
-		return count;
-	}
+    public int getCheckPointID() {
+        return count;
+    }
 
-	/**
-	 * Checkpoint is the final destination of the game and player wins the game as
-	 * soon as the player has reached all the checkpoints.
-	 * The player gets the checkpoint token.
-	 * @param player
-	 */
+    /**
+     * Checkpoint is the final destination of the game and player wins the game as
+     * soon as the player has reached all the checkpoints.
+     * The player gets the checkpoint token.
+     *
+     * @param player
+     */
     @Override
     public void performAction(Player player) {
 

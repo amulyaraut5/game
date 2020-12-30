@@ -3,13 +3,12 @@ package game.gameObjects.tiles;
 import game.Player;
 
 /**
- *
  * @author Amulya
  */
 public class Pit extends Attribute {
 
 
-    Pit(){
+    public Pit() {
         this.type = "Pit";
     }
 
