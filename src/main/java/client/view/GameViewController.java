@@ -2,14 +2,19 @@ package client.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
-import utilities.JSONProtocol.body.SetStatus;
+
+import java.io.IOException;
 
 /**
  * The GameViewController class controls the GameView and the Chat of the game
@@ -18,11 +23,12 @@ import utilities.JSONProtocol.body.SetStatus;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
+    int i = 0;
     /**
      * the ready Button which can be clicked to show the availability for playing the game
      */
     @FXML
-    public Button readyButton;
+    private Button readyButton;
     /**
      * The TextField where the player can type in its message to one user/other users
      */
@@ -33,33 +39,25 @@ public class GameViewController extends Controller {
      */
     @FXML
     private TextArea chatWindow;
-    /**
-     * The TextArea which displays the users who already joined the lobby
-     */
     @FXML
-    private TextArea joinedUsersTextArea;
+    private BorderPane outerPane;
+    @FXML
+    private Canvas fxCanvas;
 
     /**
-     * by clicking on the button the player can select if he/she is ready to start the game
-     * the method also sends a SetStatus protocol method with the current status of the button
+     *
      */
-    public void readyButton() {
-        String ready = "I'm ready!";
-        String notReady = "I'm not ready!";
-        boolean status = false;
-        JSONMessage jsonMessage;
-        if (readyButton.getText().equals(ready)) {
-            readyButton.setText(notReady);
-            readyButton.setOpacity(0.5);
-            status = true;
-        } else {
-            readyButton.setText(ready);
-            readyButton.setOpacity(100);
-            status = false;
-        }
-        jsonMessage = new JSONMessage(new SetStatus(status));
-        client.sendMessage(jsonMessage);
+    public void close() {
+        //client.disconnect(); TODO disconnect client on closure of window
+    }
 
+    /**
+     * This message adds a String to the chatTextArea
+     *
+     * @param messageBody
+     */
+    private void setTextArea(String messageBody) {
+        chatWindow.appendText(messageBody + "\n");
     }
 
     /**
@@ -67,10 +65,10 @@ public class GameViewController extends Controller {
      * it casts the message of the user to a JSONMessage (private/not private) and
      * clears the textField and displays the message in the textArea
      *
-     * @param actionEvent
+     * @param event
      */
-    //TODO direct
-    public void sendChatMessage(ActionEvent actionEvent) {
+    @FXML
+    private void sendChatMessage(ActionEvent event) {
         String message = chatTextField.getText();
         if (!message.isBlank()) {
             setTextArea("[You]: " + message);
@@ -80,30 +78,28 @@ public class GameViewController extends Controller {
         chatTextField.clear();
     }
 
+    @FXML
+    private void changeInnerView(ActionEvent event) {
+        Pane innerPane = setNextPane();
+        outerPane.setCenter(innerPane);
+    }
 
-    /**
-     *
-     */
-    public void close() {
-        //client.disconnect(); TODO disconnect client on closure of window
+    private Pane setNextPane() {
+        Pane innerPane = null;
+        String path = null;
+        i = ++i % 3;
+
+        if (i == 0) path = "/view/innerViews/upgradeView.fxml";
+        else if (i == 1) path = "/view/innerViews/programmingView.fxml";
+        else if (i == 2) path = "/view/innerViews/activationView.fxml";
+
+        try {
+            innerPane = FXMLLoader.load(getClass().getResource(path));
+        } catch (IOException e) {
+
+        }
+        return innerPane;
     }
 
 
-    /**
-     * This message adds a String to the chatTextArea
-     *
-     * @param messageBody
-     */
-    public void setTextArea(String messageBody) {
-        chatWindow.appendText(messageBody + "\n");
-    }
-
-    /**
-     * this method displays an user who joined to the lobby
-     *
-     * @param body
-     */
-    public void setUsersTextArea(String body) {
-        joinedUsersTextArea.appendText(body + "\n");
-    }
 }

@@ -1,19 +1,24 @@
 package client.model;
 
+import client.view.Controller;
 import client.view.GameViewController;
+import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.HelloClient;
-import utilities.JSONProtocol.body.HelloServer;
+import utilities.JSONProtocol.body.*;
+import utilities.Utilities;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static utilities.Utilities.PORT;
 
@@ -54,6 +59,8 @@ public class Client {
     private ArrayList<String> readyList = new ArrayList<>();
     private GameViewController gameViewController;
     private LoginController loginController;
+    private LobbyController lobbyController;
+    private Map<Integer, String> otherPlayerMap = new HashMap<>();
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -75,6 +82,7 @@ public class Client {
     public void connect(HelloClient helloClient) {
         JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
         sendMessage(msg);
+
     }
 
     /**
@@ -147,19 +155,32 @@ public class Client {
     /**
      * This method receives a String and a type and sends it to main
      *
-     * @param messageBody the specified message
+     * @param jsonBody the jsonBody of the message the readerThred gets
      * @param type        the type of the message
      */
-    public void sendToMain(String messageBody, String type) {
+    public void sendToMain(JSONBody jsonBody, String type) {
         //TODO main.sendChatMessage(messageBody, type);
-
         //System.out.println("messageBody = " + messageBody + ", type = " + type);
         Platform.runLater(() -> {
-            if (type.equals("loginController")) loginController.write(messageBody);
-            else if (type.equals("receivedChat")) gameViewController.setTextArea(messageBody);
-            else if (type.equals("playerAdded")) gameViewController.setUsersTextArea(messageBody);
+            switch (type){
+                case "ReceivedChat":
+                    ReceivedChat receivedChat = (ReceivedChat) jsonBody;
+                    lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                    break;
+                case "PlayerStatus":
+                    PlayerStatus playerStatus = (PlayerStatus) jsonBody;
+                    lobbyController.setReadyUsersTextArea(playerStatus);
+                    break;
+                case "PlayerAdded":
+                    PlayerAdded playerAdded = (PlayerAdded) jsonBody;
+                    lobbyController.setJoinedUsersTextArea(playerAdded);
+                    break;
+            }
+
         });
     }
+
+
 
     public void addToReadyList(String id) {
         readyList.add(id);
@@ -170,10 +191,24 @@ public class Client {
     }
 
     public void setGameViewController(GameViewController gameViewController) {
-        this.gameViewController = gameViewController;
+        //this.gameViewController = gameViewController;
     }
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
+    }
+
+    public void setController(ArrayList<Controller> controllerList) {
+        loginController = (LoginController)controllerList.get(0);
+        lobbyController = (LobbyController) controllerList.get(1);
+        gameViewController = (GameViewController) controllerList.get(2);
+    }
+
+    public void addNewPlayer(int id, String name) {
+        otherPlayerMap.put(id, name);
+    }
+
+    public String getIDFrom(int id) {
+        return otherPlayerMap.get(id);
     }
 }

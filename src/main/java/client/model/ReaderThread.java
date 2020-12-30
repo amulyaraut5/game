@@ -20,10 +20,12 @@ import java.net.Socket;
  * @author sarah,
  */
 public class ReaderThread extends Thread {
+
     /**
      * Logger to log information/warning
      */
     private static final Logger logger = LogManager.getLogger();
+
     /**
      * client is the related ChatClient which starts an instance of ReaderThread.
      */
@@ -88,7 +90,6 @@ public class ReaderThread extends Thread {
     private void handleMessage(JSONMessage message) throws ClassNotFoundException {
 
         Utilities.MessageType type = message.getType();
-
         switch (type) {
             case HelloClient:
                 HelloClient hc = (HelloClient) message.getBody();
@@ -98,15 +99,16 @@ public class ReaderThread extends Thread {
             case Welcome:
                 Welcome wc = (Welcome) message.getBody();
                 playerId = wc.getPlayerId();
-                String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
-                client.sendToMain(labelMessage, "loginController");
+                //String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
+                //client.sendToMain(labelMessage, "loginController");
                 //logger.info(labelMessage);
                 break;
             case PlayerAdded:
                 PlayerAdded pa = (PlayerAdded) message.getBody();
                 logger.info("Player Added: " + pa.getId());
-                if (pa.getId() != playerId)
-                    client.sendToMain(pa.getName(), "playerAdded");
+                client.addNewPlayer(pa.getId(), pa.getName());
+                client.sendToMain(pa, "PlayerAdded");
+
                 break;
             case Error:
                 Error error = (Error) message.getBody();
@@ -115,14 +117,14 @@ public class ReaderThread extends Thread {
             case PlayerStatus:
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                 //TODO extract player id
-                //if playerStatus.
-                logger.info("PlayerStatus: " + playerStatus.isReady());
+                client.sendToMain(playerStatus, "PlayerStatus");
 
+                logger.info("PlayerStatus: " + playerStatus.isReady());
                 break;
             case ReceivedChat:
                 ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                 logger.info(receivedChat.getMessage());
-                client.sendToMain(receivedChat.getFrom() + ": " + receivedChat.getMessage(), "receivedChat");
+                client.sendToMain(receivedChat, "ReceivedChat");
             default:
                 logger.info("Something went wrong");
                 //TODO

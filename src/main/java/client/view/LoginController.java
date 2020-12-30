@@ -55,11 +55,6 @@ public class LoginController extends Controller {
      * this list stores the different robots (with name and id)
      */
     private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
-    /**
-     * it stores a list of names of the robots
-     */
-    private String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
-            "twonky", "spinbot", "zoombot"};
 
     /**
      *
@@ -74,7 +69,6 @@ public class LoginController extends Controller {
      */
     public void initialize() {
         createRobotList();
-        labelResponse.setText("test");
         listView.setItems(robotImageViewList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
@@ -160,30 +154,5 @@ public class LoginController extends Controller {
         labelResponse.setText(message);
     }
 
-    /**
-     * This private class represents a robot with its name and id
-     */
-    private class RobotPrivate {
-        int id = 0;
-        String name = "default";
 
-        /**
-         * constructor of RobotPrivate
-         *
-         * @param robotName of the robot
-         * @param robotId   of the robot
-         */
-        public RobotPrivate(String robotName, int robotId) {
-            this.id = robotId + 1;
-            this.name = robotName;
-        }
-
-        public String getRobotName() {
-            return this.name;
-        }
-
-        public int getRobotID() {
-            return this.id;
-        }
-    }
 }
