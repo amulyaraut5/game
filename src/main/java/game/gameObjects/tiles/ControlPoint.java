@@ -8,8 +8,7 @@ import game.Player;
 
 public class ControlPoint extends Attribute {
 
-    // Nummer des Punktes
-    private int count;
+    private int count; //number of the ControlPoint
 
     /**
      * Constructor that helps in creating multiple instances of Checkpoints with different ID

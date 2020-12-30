@@ -19,6 +19,7 @@ public class Wall extends Attribute {
      */
     public Wall(Orientation orientation) {
         this.orientation = orientation;
+        this.type = "Wall";
     }
 
     /**
@@ -28,6 +29,7 @@ public class Wall extends Attribute {
      */
     public Wall(Orientation[] orientations) {
         this.orientations = orientations;
+        this.type = "Wall";
     }
 
     /**

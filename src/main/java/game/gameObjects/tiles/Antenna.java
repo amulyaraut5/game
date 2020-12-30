@@ -17,7 +17,6 @@ public class Antenna extends Attribute {
      */
     public Antenna() {
         this.orientation = Orientation.UP;// means here north
-
         this.type = "Antenna";
     }
 

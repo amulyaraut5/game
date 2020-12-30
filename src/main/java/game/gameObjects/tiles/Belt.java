@@ -9,21 +9,8 @@ import utilities.Utilities.Orientation;
 
 public class Belt extends Attribute {
 
-    // Orientation in this context means the direction in which
-    // belt pushes the robot.
-
-
-    // speed for belt 1-Blue Conveyor 2- Green Conveyor
-
-    private int speed;
-    private Orientation orientation;
-    private Orientation[] orientations;
-
-    public Belt(Orientation[] orientations, int speed) {
-        this.speed = speed;
-        this.orientations = orientations;
-        this.type = "Belt";
-    }
+    private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
+    private Orientation orientation; //direction in which the belt runs
 
     public Belt(Orientation orientation, int speed) {
         this.speed = speed;

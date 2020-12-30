@@ -9,16 +9,13 @@ import utilities.Utilities.Orientation;
 
 public class RotatingBelt extends Attribute {
 
-    private Orientation orientation;
-    private Orientation[] orientations;
-    // TODO Implementation needs to be changed
-    // Was meant for Green Conveyor
-    private int speed;
-    private boolean isCrossing;
+
+    private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
+    private Orientation[] orientations; // [0] = Running direction, [1] = rotation direction
+    private boolean isCrossing; // true = crossing, false = curve
 
 
     public RotatingBelt(Orientation[] orientations, boolean isCrossing, int speed) {
-
         this.orientations = orientations;
         this.isCrossing = isCrossing;
         this.speed = speed;
@@ -79,7 +76,7 @@ public class RotatingBelt extends Attribute {
      */
 
     private void updateRobotCoordinates(int x, int y, Player player) {
-        switch (orientation) {
+        switch (orientations[0]) {
             case UP: //NORTH
                 player.getRobot().setPosition(x, y - 1);
                 break;
