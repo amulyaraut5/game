@@ -7,7 +7,6 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.gameStarted.Maps;
-import utilities.Utilities;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -99,10 +98,10 @@ public class Server {
 
 
             //try out "GameStarted":
-            Attribute attributeA = new RotatingBelt(upLeft, true, 2);
+            Attribute attributeA = new RotatingBelt(DOWN_RIGHT, true, 2);
             int[] registers = {2, 4};
-            Attribute attributeB = new PushPanel(Utilities.Orientation.LEFT, registers);
-            Attribute attributeC = new Wall(upRight);
+            Attribute attributeB = new PushPanel(Orientation.LEFT, registers);
+            Attribute attributeC = new Wall(UP_RIGHT);
             Attribute attributeD = new Laser(Orientation.DOWN, 1);
 
             ArrayList<Attribute> fieldList1 = new ArrayList<>();

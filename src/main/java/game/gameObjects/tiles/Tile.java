@@ -141,83 +141,83 @@ public class Tile {
 
             //Green Rotating Conveyor Belts
             case 21:
-                tile.addAttribute(new RotatingBelt(Utilities.upLeft, false, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, false, 1));
                 break;
             case 22:
-                tile.addAttribute(new RotatingBelt(Utilities.upRight, false, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, false, 1));
                 break;
             case 23:
-                tile.addAttribute(new RotatingBelt(Utilities.downLeft, false, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, false, 1));
                 break;
             case 24:
-                tile.addAttribute(new RotatingBelt(Utilities.downRight, false, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, false, 1));
                 break;
 
             case 25:
-                tile.addAttribute(new RotatingBelt(Utilities.upLeft, true, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, true, 1));
                 break;
             case 26:
-                tile.addAttribute(new RotatingBelt(Utilities.upRight, true, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, true, 1));
                 break;
             case 27:
-                tile.addAttribute(new RotatingBelt(Utilities.downLeft, true, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, true, 1));
                 break;
             case 28:
-                tile.addAttribute(new RotatingBelt(Utilities.downRight, true, 1));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, true, 1));
                 break;
             // draw();
 
             //Blue Rotating Conveyor Belts
             case 31:
-                tile.addAttribute(new RotatingBelt(Utilities.upLeft, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, false, 2));
                 break;
             case 32:
-                tile.addAttribute(new RotatingBelt(Utilities.upRight, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, false, 2));
                 break;
             case 33:
-                tile.addAttribute(new RotatingBelt(Utilities.downLeft, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, false, 2));
                 break;
             case 34:
-                tile.addAttribute(new RotatingBelt(Utilities.downRight, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, false, 2));
                 break;
 
             case 101:
-                tile.addAttribute(new RotatingBelt(Utilities.leftUp, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.LEFT_UP, false, 2));
                 break;
             case 102:
-                tile.addAttribute(new RotatingBelt(Utilities.rightUp, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_UP, false, 2));
                 break;
             case 103:
-                tile.addAttribute(new RotatingBelt(Utilities.leftDown, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.LEFT_DOWN, false, 2));
                 break;
             case 104:
-                tile.addAttribute(new RotatingBelt(Utilities.rightDown, false, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_DOWN, false, 2));
                 break;
 
             case 35:
-                tile.addAttribute(new RotatingBelt(Utilities.upLeft, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, true, 2));
                 break;
             case 36:
-                tile.addAttribute(new RotatingBelt(Utilities.upRight, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, true, 2));
                 break;
             case 37:
-                tile.addAttribute(new RotatingBelt(Utilities.downLeft, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, true, 2));
                 break;
             case 38:
-                tile.addAttribute(new RotatingBelt(Utilities.downRight, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, true, 2));
                 break;
 
             case 105:
-                tile.addAttribute(new RotatingBelt(Utilities.leftUp, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.LEFT_UP, true, 2));
                 break;
             case 106:
-                tile.addAttribute(new RotatingBelt(Utilities.rightUp, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_UP, true, 2));
                 break;
             case 107:
-                tile.addAttribute(new RotatingBelt(Utilities.leftDown, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.LEFT_DOWN, true, 2));
                 break;
             case 108:
-                tile.addAttribute(new RotatingBelt(Utilities.rightDown, true, 2));
+                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_DOWN, true, 2));
                 break;
             // draw();
 
@@ -327,16 +327,16 @@ public class Tile {
                 break;
 
             case 95:
-                tile.addAttribute(new Wall(Utilities.upLeft));
+                tile.addAttribute(new Wall(Utilities.UP_LEFT));
                 break;
             case 96:
-                tile.addAttribute(new Wall(Utilities.upRight));
+                tile.addAttribute(new Wall(Utilities.UP_RIGHT));
                 break;
             case 97:
-                tile.addAttribute(new Wall(Utilities.downLeft));
+                tile.addAttribute(new Wall(Utilities.DOWN_LEFT));
                 break;
             case 98:
-                tile.addAttribute(new Wall(Utilities.downRight));
+                tile.addAttribute(new Wall(Utilities.DOWN_RIGHT));
                 break;
 
             // Tile with two walls
