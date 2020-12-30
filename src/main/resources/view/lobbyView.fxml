@@ -13,11 +13,10 @@
                 <Image url="@loginBackground.png" />
             </image>
         </ImageView>
-      <CheckBox fx:id="readyCheckbox" layoutX="517.0" layoutY="346.0" mnemonicParsing="false" onAction="#checkBoxAction" text="Ready" />
+      <CheckBox fx:id="readyCheckbox" layoutX="417.0" layoutY="304.0" mnemonicParsing="false" onAction="#checkBoxAction" text="I'm ready to play" />
       <TextArea fx:id="lobbyTextAreaChat" layoutX="390.0" layoutY="20.0" prefHeight="183.0" prefWidth="201.0" />
       <TextField fx:id="lobbyTextFieldChat" layoutX="390.0" layoutY="217.0" prefHeight="27.0" prefWidth="128.0" />
       <Button layoutX="529.0" layoutY="217.0" mnemonicParsing="false" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="62.0" text="Submit" />
-      <TextArea fx:id="readyUsersTextArea" layoutX="399.0" layoutY="255.0" prefHeight="114.0" prefWidth="110.0" text="readyPlayer&#10;" />
       <HBox layoutX="56.0" layoutY="85.0" prefHeight="237.0" prefWidth="317.0">
          <children>
             <VBox prefHeight="214.0" prefWidth="94.0">
@@ -33,7 +32,7 @@
                      </effect>
                      </Label>
                   <ImageView fx:id="robot4ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="robot4Label" prefHeight="24.0" prefWidth="90.0">
+                  <Label fx:id="robot4Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0">
                       <effect>
                           <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                               <color>
@@ -47,7 +46,7 @@
             <VBox prefHeight="214.0" prefWidth="94.0">
                  <children>
                      <ImageView fx:id="robot2ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot2Label" prefHeight="28.0" prefWidth="90.0">
+                     <Label fx:id="robot2Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0">
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
@@ -57,7 +56,7 @@
                          </effect>
                      </Label>
                      <ImageView fx:id="robot5ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot5Label" prefHeight="24.0" prefWidth="90.0">
+                     <Label fx:id="robot5Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0">
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
@@ -71,7 +70,7 @@
             <VBox prefHeight="214.0" prefWidth="94.0">
                  <children>
                      <ImageView fx:id="robot3ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot3Label" prefHeight="28.0" prefWidth="90.0">
+                     <Label fx:id="robot3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0">
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
@@ -81,7 +80,7 @@
                          </effect>
                      </Label>
                      <ImageView fx:id="robot6ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                     <Label fx:id="robot6Label" prefHeight="24.0" prefWidth="90.0">
+                     <Label fx:id="robot6Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0">
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
