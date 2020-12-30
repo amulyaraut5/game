@@ -99,11 +99,11 @@ public class LobbyController extends Controller {
     public void setReadyUsersTextArea(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
-                String link;
+                String link = "/choose-robot-" + robotNames[robotIcon.getFigure() - 1];
                 if (playerStatus.isReady()) {
-                    link = "/choose-robot-" + robotNames[robotIcon.getFigure() - 1] + "-ready.png";
+                    link +=  "-ready.png";
                 } else {
-                    link = "/choose-robot-" + robotNames[robotIcon.getFigure() - 1] + ".png";
+                    link += ".png";
                 }
                 robotIcon.getImageViewofRobot().setImage(new Image(link));
             }
