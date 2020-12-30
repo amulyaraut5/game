@@ -1,8 +1,8 @@
 package game.gameObjects.tiles;
 
-import utilities.Coordinate;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import utilities.Coordinate;
 import utilities.Utilities;
 
 import java.util.ArrayList;
