@@ -35,7 +35,7 @@ public class ReaderThread extends Thread {
      */
     private BufferedReader bReader;
 
-    private int playerId;
+
 
     /**
      * Constructor of ReaderThread initializes the attributes socket and client
@@ -72,7 +72,7 @@ public class ReaderThread extends Thread {
                 // deserialized and handled in handleMessage method.
 
                 JSONMessage jsonMessage = Multiplex.deserialize(text);
-                handleMessage(jsonMessage);
+                client.handleMessage(jsonMessage);
             } catch (IOException | ClassNotFoundException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
@@ -80,54 +80,5 @@ public class ReaderThread extends Thread {
         }
     }
 
-    /**
-     * Based on the messageType the various protocol are differentiated and Object class type
-     * is downcasted to respective class.
-     *
-     * @param message
-     * @throws ClassNotFoundException
-     */
-    private void handleMessage(JSONMessage message) throws ClassNotFoundException {
 
-        Utilities.MessageType type = message.getType();
-        switch (type) {
-            case HelloClient:
-                HelloClient hc = (HelloClient) message.getBody();
-                //logger.info("\n Received Protocol: " + type + "\n Protocol#: " + hc.getProtocol());
-                client.connect(hc);
-                break;
-            case Welcome:
-                Welcome wc = (Welcome) message.getBody();
-                playerId = wc.getPlayerId();
-                //String labelMessage = "\n Received Protocol: " + type.toString() + "\n ID: " + wc.getPlayerId();
-                //client.sendToMain(labelMessage, "loginController");
-                //logger.info(labelMessage);
-                break;
-            case PlayerAdded:
-                PlayerAdded pa = (PlayerAdded) message.getBody();
-                logger.info("Player Added: " + pa.getId());
-                client.addNewPlayer(pa.getId(), pa.getName());
-                client.sendToMain(pa, "PlayerAdded");
-
-                break;
-            case Error:
-                Error error = (Error) message.getBody();
-                logger.info("Error Message: " + error.getError());
-                break;
-            case PlayerStatus:
-                PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                //TODO extract player id
-                client.sendToMain(playerStatus, "PlayerStatus");
-
-                logger.info("PlayerStatus: " + playerStatus.isReady());
-                break;
-            case ReceivedChat:
-                ReceivedChat receivedChat = (ReceivedChat) message.getBody();
-                logger.info(receivedChat.getMessage());
-                client.sendToMain(receivedChat, "ReceivedChat");
-            default:
-                logger.info("Something went wrong");
-                //TODO
-        }
-    }
 }
