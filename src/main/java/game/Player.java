@@ -49,4 +49,11 @@ public class Player extends User {
 	public void setCheckPointCounter(int checkPointCounter) {
 		this.checkPointCounter = checkPointCounter;
 	}
+
+	/**
+	 * It freezes the player from the current round.
+	 * Effect of Pit or falling off from  the map
+	 */
+    public void freeze() {
+    }
 }

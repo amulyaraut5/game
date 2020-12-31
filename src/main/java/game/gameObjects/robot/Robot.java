@@ -1,5 +1,6 @@
 package game.gameObjects.robot;
 
+import game.Player;
 import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 import javafx.scene.canvas.GraphicsContext;
@@ -47,7 +48,6 @@ public abstract class Robot {
     }
 
 
-
     public Coordinate getPosition() {
         return position;
     }
@@ -58,4 +58,6 @@ public abstract class Robot {
     public void setPosition(int x, int y) {
         this.position = new Coordinate(x,y);
     }
+
+
 }

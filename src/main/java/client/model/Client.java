@@ -205,6 +205,10 @@ public class Client {
                 case ConnectionUpdate:
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
                     logger.info("Player " + connectionUpdate.getId() + " has lost connection to server.");
+                case Reboot:
+                    Reboot reboot = (Reboot) message.getBody();
+                    logger.info("Player " + reboot.getPlayerID() + "fell into pit");
+                    // TODO set the Robot image back to reboot token
                 case CheckPointsReached:
                     CheckpointsReached checkpointsReached = (CheckpointsReached) message.getBody();
                     logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());

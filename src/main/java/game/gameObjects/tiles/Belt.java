@@ -31,18 +31,11 @@ public class Belt extends Attribute {
         int xCoordinate = player.getRobot().getPosition().getX();
         int yCoordinate = player.getRobot().getPosition().getY();
 
-        Orientation orientation = player.getRobot().getOrientation();
-        // Conveyor does not really change the direction of robot  unless it is rotating
-        // belt.Handled separately.
-
-        // Then check the whether there is collision point exist or not.
-        // Then we update the location of Robot in the direction of Conveyor.
-
         if (collisionPointExist()) {
             // No movement
         } else {
             // Need of location of robot and direction of tile.
-            updateRobotCoordinates(xCoordinate, yCoordinate, player);
+            updateRobotCoordinates(xCoordinate, yCoordinate, player, this.speed);
         }
     }
 
@@ -66,20 +59,37 @@ public class Belt extends Attribute {
      * @param y y coordinate
      */
 
-    private void updateRobotCoordinates(int x, int y, Player player) {
-        switch (orientation) {
-            case UP: //NORTH
-                player.getRobot().setPosition(x, y - 1);
-                break;
-            case DOWN: //SOUTH
-                player.getRobot().setPosition(x, y + 1);
-                break;
-            case LEFT: //EAST
-                player.getRobot().setPosition(x + 1, y);
-                break;
-            case RIGHT: //WEST
-                player.getRobot().setPosition(x - 1, y);
-                break;
+    private void updateRobotCoordinates(int x, int y, Player player, int speed) {
+        if(speed == 1){
+            switch (orientation) {
+                case UP: //NORTH
+                    player.getRobot().setPosition(x, y - 1);
+                    break;
+                case DOWN: //SOUTH
+                    player.getRobot().setPosition(x, y + 1);
+                    break;
+                case LEFT: //EAST
+                    player.getRobot().setPosition(x + 1, y);
+                    break;
+                case RIGHT: //WEST
+                    player.getRobot().setPosition(x - 1, y);
+                    break;
+            }
+        }else if(speed == 2){
+            switch (orientation) {
+                case UP: //NORTH
+                    player.getRobot().setPosition(x, y - 2);
+                    break;
+                case DOWN: //SOUTH
+                    player.getRobot().setPosition(x, y + 2);
+                    break;
+                case LEFT: //EAST
+                    player.getRobot().setPosition(x + 1, y);
+                    break;
+                case RIGHT: //WEST
+                    player.getRobot().setPosition(x - 2, y);
+                    break;
+            }
         }
     }
 }

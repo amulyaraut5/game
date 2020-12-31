@@ -22,12 +22,7 @@ public class RotatingBelt extends Attribute {
         this.type = "RotatingBelt";
 
     }
-    /**
-     * The GreenConveyor belt pushes the robot in the direction of tile by
-     * one space.
-     * Once a robot has moved off a belt, the belt has no longer effect.
-     * @param player
-     */
+
     /**
      * The GreenConveyor belt pushes the robot in the direction of tile by
      * one space.
