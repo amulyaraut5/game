@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Error;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -25,6 +26,8 @@ import static utilities.Utilities.PORT;
 /**
  * This Singleton Class handles the connection and disconnection to the server.
  * It also communicates between ViewModel and server.
+ *
+ * @author sarah,
  */
 public class Client {
     /**
@@ -52,6 +55,8 @@ public class Client {
      */
     private PrintWriter writer;
 
+    private int playerId;
+
     /**
      * readyList is the
      */
@@ -60,7 +65,7 @@ public class Client {
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private Map<Integer, String> otherPlayerMap = new HashMap<>();
+    private Map<Integer, String> playerMap = new HashMap<>();
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -152,34 +157,53 @@ public class Client {
         writer.println(json);
     }
 
+
+
     /**
-     * This method receives a String and a type and sends it to main
+     * Based on the messageType the various protocol are differentiated and Object class type
+     * is downcasted to respective class.
      *
-     * @param jsonBody the jsonBody of the message the readerThred gets
-     * @param type        the type of the message
+     * @param message
+     * @throws ClassNotFoundException
      */
-    public void sendToMain(JSONBody jsonBody, String type) {
-        //TODO main.sendChatMessage(messageBody, type);
-        //System.out.println("messageBody = " + messageBody + ", type = " + type);
+    void handleMessage(JSONMessage message) throws ClassNotFoundException {
+
+        Utilities.MessageType type = message.getType();
         Platform.runLater(() -> {
-            switch (type){
-                case "ReceivedChat":
-                    ReceivedChat receivedChat = (ReceivedChat) jsonBody;
-                    lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+            switch (type) {
+                case HelloClient:
+                    HelloClient hc = (HelloClient) message.getBody();
+                    connect(hc);
                     break;
-                case "PlayerStatus":
-                    PlayerStatus playerStatus = (PlayerStatus) jsonBody;
-                    lobbyController.setReadyUsersTextArea(playerStatus);
+                case Welcome:
+                    Welcome wc = (Welcome) message.getBody();
+                    playerId = wc.getPlayerId();
                     break;
-                case "PlayerAdded":
-                    PlayerAdded playerAdded = (PlayerAdded) jsonBody;
+                case PlayerAdded:
+                    PlayerAdded playerAdded = (PlayerAdded) message.getBody();
+                    logger.info("Player Added: " + playerAdded.getId());
+                    addNewPlayer(playerAdded.getId(), playerAdded.getName());
                     lobbyController.setJoinedUsersTextArea(playerAdded);
                     break;
+                case Error:
+                    Error error = (Error) message.getBody();
+                    logger.info("Error Message: " + error.getError());
+                    break;
+                case PlayerStatus:
+                    PlayerStatus playerStatus = (PlayerStatus) message.getBody();
+                    logger.info("PlayerStatus: " + playerStatus.isReady());
+                    lobbyController.setReadyUsersTextArea(playerStatus);
+
+                    break;
+                case ReceivedChat:
+                    ReceivedChat receivedChat = (ReceivedChat) message.getBody();
+                    logger.info(receivedChat.getMessage());
+                    lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                default:
+                    logger.info("Something went wrong");
             }
-
         });
-    }
-
+        }
 
 
     public void addToReadyList(String id) {
@@ -205,10 +229,10 @@ public class Client {
     }
 
     public void addNewPlayer(int id, String name) {
-        otherPlayerMap.put(id, name);
+        playerMap.put(id, name);
     }
 
     public String getIDFrom(int id) {
-        return otherPlayerMap.get(id);
+        return playerMap.get(id);
     }
 }

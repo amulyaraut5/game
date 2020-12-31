@@ -1,10 +1,11 @@
 package server;
 
+import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.gameStarted.Field;
 import utilities.JSONProtocol.body.gameStarted.Maps;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static utilities.Utilities.PORT;
+import static utilities.Utilities.*;
 
 public class Server {
 
@@ -94,6 +95,32 @@ public class Server {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
+
+
+            //try out "GameStarted":
+            Attribute attributeA = new RotatingBelt(DOWN_RIGHT, true, 2);
+            int[] registers = {2, 4};
+            Attribute attributeB = new PushPanel(Orientation.LEFT, registers);
+            Attribute attributeC = new Wall(UP_RIGHT);
+            Attribute attributeD = new Laser(Orientation.DOWN, 1);
+
+            ArrayList<Attribute> fieldList1 = new ArrayList<>();
+            ArrayList<Attribute> fieldList2 = new ArrayList<>();
+            ArrayList<Attribute> fieldList3 = new ArrayList<>();
+            fieldList1.add(attributeA);
+            fieldList2.add(attributeB);
+            fieldList3.add(attributeC);
+            fieldList3.add(attributeD);
+
+            ArrayList<Maps> mapList = new ArrayList<>();
+            mapList.add(new Maps(1, fieldList1));
+            mapList.add(new Maps(2, fieldList2));
+            mapList.add(new Maps(3, fieldList3));
+
+
+            JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
+            System.out.println(Multiplex.serialize(jMessage));
+
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     serverSocket.close();

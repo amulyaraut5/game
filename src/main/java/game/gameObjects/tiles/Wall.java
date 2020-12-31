@@ -9,28 +9,33 @@ import utilities.Utilities.Orientation;
 
 public class Wall extends Attribute {
 
-    public Orientation orientation;
-    public Orientation[] orientations;
+    private Orientation orientation;
+    private Orientation[] orientations;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
+     *
      * @param orientation
      */
-    Wall(Orientation orientation){
+    public Wall(Orientation orientation) {
         this.orientation = orientation;
+        this.type = "Wall";
     }
 
     /**
      * Constructor for Wall for those tiles which have  two walls in two different direction.
+     *
      * @param orientations saves the x and y orientations of the wall
      */
-    Wall(Orientation[] orientations){
+    public Wall(Orientation[] orientations) {
         this.orientations = orientations;
+        this.type = "Wall";
     }
 
     /**
      * Wall itself does not have any functionality but robots cannot
      * move through walls and board lasers cannot pass through walls.
+     *
      * @param player
      */
     @Override

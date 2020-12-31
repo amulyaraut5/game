@@ -6,89 +6,96 @@ import utilities.Utilities.Orientation;
 import java.util.ArrayList;
 
 /**
- *
  * @author Amulya
  */
 
 public class Laser extends Attribute {
 
-	// Count attribute to count the no of lasers that is being fired form laser
-	private int count;
-	public Orientation orientation;
+    private Orientation orientation; //firing direction
+    private int count; // number of lasers
+    private ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
 
-	ArrayList<Tile> laserAffectedTiles = new ArrayList<>();
-
-	Laser(Orientation orientation, int count){
-		this.orientation = orientation;
-		this.count = count;
-		this.type = "BoardLaser";
-	}
+    public Laser(Orientation orientation, int count) {
+        this.orientation = orientation;
+        this.count = count;
+        this.type = "Laser";
+    }
 
     @Override
     public void performAction(Player player) {
         determineLaserPaths();
-        if(checkIfRobotIsInRange()){
+        if (checkIfRobotIsInRange()) {
             fire(player);
         }
     }
 
+    /**
+     * The laser will fire only if it founds any robot standing in its traversing cells.
+     * Outcome: The player will receive the spam card.
+     */
 
+    public void fire(Player player) {
+        /*
+        // It gonna shoot the player.
+        // Here we need to find the target Player.
+        // targetPlayer.getRobot().getSpamCard();
+		*/
+    }
 
-	/**
-	 * It determines the path through which the lasers traverse.
-	 * Lasers cannot traverse through wall, antenna and cannot
-	 * penetrate more than one robot.
-	 * @return return the tiles
-	 */
+    /**
+     * It determines the path through which the lasers traverse.
+     * Lasers cannot traverse through wall, antenna and cannot
+     * penetrate more than one robot.
+     *
+     * @return return the tiles
+     */
 
-    private ArrayList<Tile> determineLaserPaths(){
+    private ArrayList<Tile> determineLaserPaths() {
 
-		Tile tile = null;
+        Tile tile = null;
         // First: Find position of laser.
         // Second: Direction at which laser is facing. This can be found from our instance variable.
         // Third: Add all horizontal or vertical tiles to  Arraylist
         // Here we should check if checkingTile is whether wall, antenna or not
         // And if the robot is standing ahead, the laser cannot traverse through robot.
 
-        if(orientation ==Orientation.DOWN)//SOUTH
+        if (orientation == Orientation.DOWN)//SOUTH
         {
-			//TODO
+            //TODO
 
-        	laserAffectedTiles.add(tile);
-    		return laserAffectedTiles;
+            laserAffectedTiles.add(tile);
+            return laserAffectedTiles;
 
-		}
+        } else if (orientation == Orientation.UP) {
+            //TODO
 
-		else if(orientation == Orientation.UP){
-			//TODO
+            laserAffectedTiles.add(tile);
+            return laserAffectedTiles;
 
-			laserAffectedTiles.add(tile);
-    		return laserAffectedTiles;
+        } else if (orientation == Orientation.LEFT) {
+            //TODO
 
-		}
-		else if(orientation == Orientation.LEFT){
-			//TODO
+            laserAffectedTiles.add(tile);
+            return laserAffectedTiles;
 
-			laserAffectedTiles.add(tile);
-    		return laserAffectedTiles;
+        } else if (orientation == Orientation.RIGHT) {
+            //TODO
 
-		}
-		else if(orientation == Orientation.RIGHT){
-			//TODO
+            laserAffectedTiles.add(tile);
+            return laserAffectedTiles;
 
-			laserAffectedTiles.add(tile);
-    		return laserAffectedTiles;
+        }
 
-		}
+        return null;
 
-		return null;
+    }
 
-	}
-	/**
-	 * The lasers will only activate if it finds any robot standing in its
-	 * traversing direction.
-	 * @return
-	 */
+    /**
+     * The lasers will only activate if it finds any robot standing in its
+     * traversing direction.
+     *
+     * @return
+     */
 
     private boolean checkIfRobotIsInRange() {
         /*
@@ -101,17 +108,5 @@ public class Laser extends Attribute {
          */
         return true;
     }
-	/**
-	 * The laser will fire only if it founds any robot standing in its traversing cells.
-	 * Outcome: The player will receive the spam card.
-	 */
-
-    void fire(Player player){
-        /*
-        // It gonna shoot the player.
-        // Here we need to find the target Player.
-        // targetPlayer.getRobot().getSpamCard();
-		*/
-	}
 
 }

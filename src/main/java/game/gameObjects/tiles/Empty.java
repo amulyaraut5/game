@@ -4,7 +4,7 @@ import game.Player;
 
 public class Empty extends Attribute {
 
-    Empty(){
+    public Empty() {
         this.type = "Empty";
     }
 

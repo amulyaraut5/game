@@ -11,7 +11,7 @@ public class EnergySpace extends Attribute {
     // Count attribute to count the energy cubes
     private int count;
 
-    EnergySpace(int count) {
+    public EnergySpace(int count) {
         this.count = count;
         this.type = "EnergySpace";
     }
