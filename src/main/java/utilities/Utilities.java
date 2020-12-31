@@ -1,5 +1,7 @@
 package utilities;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Utilities {
 
     public static final int PORT = 5555;
@@ -13,11 +15,15 @@ public class Utilities {
     public static final Orientation[] LEFT_DOWN = {Orientation.DOWN, Orientation.RIGHT};
 
     public enum Orientation {
-        UP, DOWN, LEFT, RIGHT
+        @SerializedName("up") UP,
+        @SerializedName("down") DOWN,
+        @SerializedName("left") LEFT,
+        @SerializedName("right") RIGHT
     }
 
     public enum Rotation {
-        LEFT, RIGHT
+        @SerializedName("left") LEFT,
+        @SerializedName("right") RIGHT
     }
 
     public enum Difficulty {
