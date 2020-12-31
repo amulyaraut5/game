@@ -40,7 +40,8 @@ public class Utilities {
         SelectCard, SelectionFinished,
         SetStartingPoint, ShufflingCoding,
         StartingPointTaken, TimerEnded, TimerStarted,
-        YourCards
+        YourCards, PlayerTurning, Reboot, Energy,
+        GameWon, CheckPointsReached
     }
 
 }
