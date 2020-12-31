@@ -8,10 +8,9 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -158,7 +157,6 @@ public class Client {
     }
 
 
-
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is downcasted to respective class.
@@ -193,17 +191,22 @@ public class Client {
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                     logger.info("PlayerStatus: " + playerStatus.isReady());
                     lobbyController.setReadyUsersTextArea(playerStatus);
-
                     break;
                 case ReceivedChat:
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                     logger.info(receivedChat.getMessage());
                     lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                case GameStarted:
+                    GameStarted gameStarted = (GameStarted) message.getBody();
+                    logger.info("The game has started.");
+                case ConnectionUpdate:
+                    ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
+                    logger.info("Player " + connectionUpdate.getId() + " has lost connection to server.");
                 default:
                     logger.info("Something went wrong");
             }
         });
-        }
+    }
 
 
     public void addToReadyList(String id) {
@@ -223,7 +226,7 @@ public class Client {
     }
 
     public void setController(ArrayList<Controller> controllerList) {
-        loginController = (LoginController)controllerList.get(0);
+        loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameViewController = (GameViewController) controllerList.get(2);
     }
