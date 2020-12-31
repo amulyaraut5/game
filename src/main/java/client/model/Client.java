@@ -5,6 +5,7 @@ import client.view.GameViewController;
 import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
+import game.gameObjects.tiles.Attribute;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,6 +71,8 @@ public class Client {
      * constructor of ChatClient to initialize the attributes hostname and port.
      */
     private Client() {
+
+        Attribute.setClient(this);
     }
 
     public static Client getInstance() {
@@ -202,6 +205,14 @@ public class Client {
                 case ConnectionUpdate:
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
                     logger.info("Player " + connectionUpdate.getId() + " has lost connection to server.");
+                case CheckPointsReached:
+                    CheckpointsReached checkpointsReached = (CheckpointsReached) message.getBody();
+                    logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
+                    //TODO Display the message in chat for players/users
+                case GameWon:
+                    GameWon gameWon = (GameWon) message.getBody();
+                    logger.info("Player " + gameWon.getPlayerID() + "has won the game");
+                    //TODO Display the message in chat for players/users
                 default:
                     logger.info("Something went wrong");
             }

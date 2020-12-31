@@ -4,6 +4,7 @@ import game.gameObjects.cards.PermUpgradeCard;
 import game.gameObjects.cards.ProgrammingCard;
 import game.gameObjects.cards.TempUpgradeCard;
 import game.gameObjects.cards.*;
+import game.gameObjects.tiles.Attribute;
 import game.round.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,11 @@ public class Game {
 	private ArrayList<DamageCard> damageCardDeck;
 	private ArrayList<SpecialProgrammingCard> specialProgrammingDeck;
 	private Game instance;
+	private int noOfCheckpoints;
+
+	public Game(){
+		Attribute.setGame(this);
+	}
 
 	public void play() {
 		// TODO - implement Game.play
@@ -28,4 +34,7 @@ public class Game {
 		throw new UnsupportedOperationException();
 	}
 
+	public int getNoOfCheckPoints() {
+		return this.noOfCheckpoints;
+	}
 }

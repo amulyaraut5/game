@@ -1,5 +1,6 @@
 package server;
 
+import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -49,6 +50,7 @@ public class UserThread extends Thread {
         } catch (IOException ex) {
             disconnect(ex);
         }
+        Attribute.setUserThread(this);
     }
 
     /**
@@ -144,6 +146,10 @@ public class UserThread extends Thread {
                 } else {
                     // TODO private Message
                 }
+            case GameWon:
+                GameWon gameWon = (GameWon) message.getBody();
+                server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())),this);
+                // TODO end the game
         }
     }
 

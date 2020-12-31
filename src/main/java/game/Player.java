@@ -29,6 +29,8 @@ public class Player extends User {
 	private ArrayList<PermUpgradeCard> installedUpgrades;
 	private ArrayList<TempUpgradeCard> tempUpgradeCards;
 
+	private int checkPointCounter;
+
 	public void setRegisterAndCards(Map<Integer, Card> mapCards){
 		registerAndCards = mapCards;
 	}
@@ -39,4 +41,12 @@ public class Player extends User {
 	}
 
 	public int getCurrentRegister(){ return this.currentRegister; }
+
+	public int getCheckPointCounter() {
+		return checkPointCounter;
+	}
+
+	public void setCheckPointCounter(int checkPointCounter) {
+		this.checkPointCounter = checkPointCounter;
+	}
 }

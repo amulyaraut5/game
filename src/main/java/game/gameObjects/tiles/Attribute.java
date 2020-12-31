@@ -1,6 +1,9 @@
 package game.gameObjects.tiles;
 
+import client.model.Client;
+import game.Game;
 import game.Player;
+import server.UserThread;
 
 /**
  * @author Amulya
@@ -8,7 +11,24 @@ import game.Player;
 
 public abstract class Attribute {
 
+    static Game game;
+    static UserThread userThread;
+
+    static Client client;
+
     protected String type;
+
+    public static void setUserThread(UserThread userThread){
+        Attribute.userThread = userThread;
+    }
+
+    public static void setClient(Client client){
+        Attribute.client = client;
+    }
+
+    public static void setGame(Game game){
+        Attribute.game = game;
+    }
 
     /**
      * All elements on the board must have a performAction method that can be called

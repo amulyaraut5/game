@@ -1,6 +1,9 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.CheckpointsReached;
+import utilities.JSONProtocol.body.GameWon;
 
 /**
  * @author Amulya
@@ -27,7 +30,7 @@ public class ControlPoint extends Attribute {
 
     /**
      * Checkpoint is the final destination of the game and player wins the game as
-     * soon as the player has reached all the checkpoints.
+     * soon as the player has reached all the checkpoints in chronological order.
      * The player gets the checkpoint token.
      *
      * @param player
@@ -35,37 +38,45 @@ public class ControlPoint extends Attribute {
     @Override
     public void performAction(Player player) {
 
-		/*
-        First : Check how many checkpoints are there
-        Second:
-           if(gameBoard.getNoOfCheckPoints()==1){
-                player.setWinner();
-                // We can end the game and declare winner.
-                gameBoard.endGame();
-            }
-        Third: Then we have to iterate through every checkpoints in
-        order to see if the player has reached that checkpoint or not.
-            else{
-                int lastVisitedCheckpointID = player.getRobot().lastVisitedCheckpointID();
-                // The method setLastVisitedCheckpointID() should take care of if the checkpoints are visited in order or not.
-                // If the player has not visited first of the checkpoints.
-                if (lastVisitedCheckpointID = 0){
-                    player.getRobot().setLastVisitedCheckpointID(1);
-                    // Then the checkpoint is set and player continues to play
-                }
-                else{
-                    If the player has already visited the one of the checkpoints
-                    if( lastVisitedCheckpointID < gameBoard.getNoOfCheckPoints()){
-                        player.getRobot().setLastVisitedCheckPointID(lastVisitedCheckpointID + 1);
-                    }
-                    else if( lastVisitedCheckpointID = gameBoard.getNoOfCheckPoints()){
-                        player.setWinner();
-                        // We can end the game and declare winner.
-                        gameBoard.endGame();
-                    }
-                }
-            }
-		*/
-    }
+        // Send CheckpointReached protocol to all users/players
 
+        JSONMessage jsonMessage = new JSONMessage(new CheckpointsReached(player.getId(),this.count));
+        userThread.sendMessage(jsonMessage);
+
+        // TODO Change no. of checkPoints based on Map
+        if(game.getNoOfCheckPoints()==1){
+
+            // Send JSONMESSAGE to all users/players
+
+            JSONMessage jsonMessage1 = new JSONMessage(new GameWon(player.getId()));
+            client.sendMessage(jsonMessage1);
+
+            // TODO End the game:
+        }
+        else if (game.getNoOfCheckPoints() != 1) {
+
+            if (player.getCheckPointCounter() > this.count){
+                System.out.println("Checkpoint already reached");
+                // Maybe inform all the clients and users
+            }
+            else if (player.getCheckPointCounter() < 1){
+                System.out.println(" 1st Checkpoint not reached.");
+            }
+            else if (player.getCheckPointCounter() == 1){
+                int checkPoint = player.getCheckPointCounter();
+                checkPoint++;
+                player.setCheckPointCounter(checkPoint);
+
+                if ((game.getNoOfCheckPoints() == 2) && (this.count == 2)) {
+
+                    JSONMessage jsonMessage1 = new JSONMessage(new GameWon(player.getId()));
+                    client.sendMessage(jsonMessage1);
+
+                    // TODO End the game
+                }
+            }
+
+        }
+
+    }
 }
