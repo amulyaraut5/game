@@ -34,7 +34,13 @@ public class Utilities {
         HelloClient, HelloServer, Welcome,
         PlayerValues, PlayerAdded, SetStatus,
         PlayerStatus, GameStarted, SendChat,
-        ReceivedChat, Error, ConnectionUpdate
+        ReceivedChat, Error, ConnectionUpdate,
+        ActivePhase, CardPlayed, CardSelected,
+        CurrentPlayer, NotYourCards, PlayCard,
+        SelectCard, SelectionFinished,
+        SetStartingPoint, ShufflingCoding,
+        StartingPointTaken, TimerEnded, TimerStarted,
+        YourCards
     }
 
 }
