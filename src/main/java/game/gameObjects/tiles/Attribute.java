@@ -3,6 +3,8 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import server.UserThread;
 
 /**
@@ -17,6 +19,8 @@ public abstract class Attribute {
     static Client client;
 
     protected String type;
+
+    protected static final Logger logger = LogManager.getLogger();
 
     public static void setUserThread(UserThread userThread){
         Attribute.userThread = userThread;

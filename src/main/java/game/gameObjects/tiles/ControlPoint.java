@@ -56,11 +56,11 @@ public class ControlPoint extends Attribute {
         else if (game.getNoOfCheckPoints() != 1) {
 
             if (player.getCheckPointCounter() > this.count){
-                System.out.println("Checkpoint already reached");
+                logger.info("Checkpoint already reached");
                 // Maybe inform all the clients and users
             }
             else if (player.getCheckPointCounter() < 1){
-                System.out.println(" 1st Checkpoint not reached.");
+                logger.info(" 1st Checkpoint not reached.");
             }
             else if (player.getCheckPointCounter() == 1){
                 int checkPoint = player.getCheckPointCounter();
