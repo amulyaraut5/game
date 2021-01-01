@@ -50,6 +50,14 @@ public class Player extends User {
 		this.checkPointCounter = checkPointCounter;
 	}
 
+	public int getEnergyReserve() {
+		return energyReserve;
+	}
+
+	public void setEnergyReserve(int energyReserve) {
+		this.energyReserve = energyReserve;
+	}
+
 	/**
 	 * It freezes the player from the current round.
 	 * Effect of Pit or falling off from  the map

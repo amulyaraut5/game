@@ -199,24 +199,34 @@ public class Client {
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                     logger.info(receivedChat.getMessage());
                     lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                    break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     logger.info("The game has started.");
+                    break;
                 case ConnectionUpdate:
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
                     logger.info("Player " + connectionUpdate.getId() + " has lost connection to server.");
+                    break;
                 case Reboot:
                     Reboot reboot = (Reboot) message.getBody();
                     logger.info("Player " + reboot.getPlayerID() + "fell into pit");
                     // TODO set the Robot image back to reboot token
+                    break;
+                case Energy:
+                    Energy energy = (Energy) message.getBody();
+                    logger.info("Player "+ energy.getPlayerID() + "received 1 energy cube");
+                    break;
                 case CheckPointsReached:
                     CheckpointsReached checkpointsReached = (CheckpointsReached) message.getBody();
                     logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
                     //TODO Display the message in chat for players/users
+                    break;
                 case GameWon:
                     GameWon gameWon = (GameWon) message.getBody();
                     logger.info("Player " + gameWon.getPlayerID() + "has won the game");
                     //TODO Display the message in chat for players/users
+                    break;
                 default:
                     logger.info("Something went wrong");
             }

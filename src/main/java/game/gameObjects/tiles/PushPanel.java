@@ -29,13 +29,16 @@ public class PushPanel extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        if (true) {
-            updateRobotCoordinates(orientation, player);
-        } else {
-            // Do nothing
-            // Print message saying that this push panel has no effect for current register.
-        }
+        for(int i : registerValue){
 
+            if( i == player.getCurrentRegister()){
+                updateRobotCoordinates(orientation, player);
+            }
+            else {
+                // Do nothing
+                // Print message saying that this push panel has no effect for current register.
+            }
+        }
 
     }
 
