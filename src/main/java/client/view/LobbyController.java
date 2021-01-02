@@ -161,6 +161,7 @@ public class LobbyController extends Controller {
                 // TODO
             }
         lobbyTextFieldChat.clear();
+        directChoiceBox.getSelectionModel().select(0);
     }
 
     private class RobotIcon {
