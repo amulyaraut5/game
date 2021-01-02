@@ -18,21 +18,26 @@ public abstract class Map {
     protected int width;
     protected int length;
 
-    private static ArrayList<Tile> map;
+    private static ArrayList<Tile> finalMap;
+
 
     Map() {
-        this.map = new ArrayList<Tile>();
+        this.finalMap = new ArrayList<Tile>();
+
     }
 
-    public void generateMap(int[][] mapBlueprint) {
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y<10; y++) {
-                map.add(Tile.getInstance().createTile(mapBlueprint[x][y]));
+
+    public static void generateMap(Map map) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                finalMap.add(Tile.getInstance().createTile(map.mapBlueprint[i][j]));
+                System.out.println(j);
+                System.out.println(i);
             }
         }
     }
 
     public static ArrayList<Tile> getMap() {
-        return map;
+        return finalMap;
     }
 }
