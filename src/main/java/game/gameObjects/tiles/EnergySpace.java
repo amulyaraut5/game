@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Energy;
 
@@ -28,7 +30,7 @@ public class EnergySpace extends Attribute {
     public void performAction(Player player) {
 
         // First we need to check if there are any energy cube left in cell
-        if(true){
+        if (true) {
             int energy = player.getEnergyReserve();
             energy += energy;
             player.setEnergyReserve(energy);
@@ -36,5 +38,10 @@ public class EnergySpace extends Attribute {
         }
         JSONMessage jsonMessage = new JSONMessage(new Energy(player.getId(), player.getEnergyReserve()));
         userThread.sendMessage(jsonMessage);
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
     }
 }

@@ -125,7 +125,7 @@ public class Server {
             mapList = Map.getMap();
 
             JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
-            System.out.println(Multiplex.serialize(jMessage));
+            //System.out.println(Multiplex.serialize(jMessage));
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {

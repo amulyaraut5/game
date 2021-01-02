@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Reboot;
 
@@ -29,12 +31,17 @@ public class Pit extends Attribute {
         // Set the position of robot in the position of reboot token
         // Todo Set the position of reboot token
 
-        player.getRobot().setPosition(4,5);
+        player.getRobot().setPosition(4, 5);
         player.freeze();
 
         // Player needs to draw spam card from the deck and add to the discard pile
 
         JSONMessage jsonMessage = new JSONMessage(new Reboot(player.getId()));
         userThread.sendMessage(jsonMessage);
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
     }
 }

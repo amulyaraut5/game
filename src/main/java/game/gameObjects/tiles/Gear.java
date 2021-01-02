@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -59,6 +61,11 @@ public class Gear extends Attribute {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
     }
 
 }

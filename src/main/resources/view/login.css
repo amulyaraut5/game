@@ -1,11 +1,23 @@
 
-
 #loginPane {
     -fx-width: 10;
 }
+
 .list-cell {
-    -fx-control-inner-background: blue ;
-    -fx-control-inner-background-alt: derive(-fx-control-inner-background, 50%);
+    -fx-background-color: transparent;
+    /*-fx-control-inner-background: blue ;
+    -fx-control-inner-background-alt: derive(-fx-control-inner-background, 50%);*/
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: green;
+    -fx-border-width: 3px;
+}
+
+.list-cell:filled:hover {
+    -fx-border-color: gray;
+    -fx-border-width: 3px;
 }
 
 

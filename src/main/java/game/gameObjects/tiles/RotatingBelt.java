@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -48,6 +50,11 @@ public class RotatingBelt extends Attribute {
             // Need of location of robot and direction of tile.
             updateRobotCoordinates(xCoordinate, yCoordinate, player);
         }
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
     }
 
     /**

@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -29,16 +31,20 @@ public class PushPanel extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        for(int i : registerValue){
+        for (int i : registerValue) {
 
-            if( i == player.getCurrentRegister()){
+            if (i == player.getCurrentRegister()) {
                 updateRobotCoordinates(orientation, player);
-            }
-            else {
+            } else {
                 // Do nothing
                 // Print message saying that this push panel has no effect for current register.
             }
         }
+
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
 
     }
 

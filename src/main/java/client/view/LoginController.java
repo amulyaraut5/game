@@ -110,8 +110,8 @@ public class LoginController extends Controller {
             robotList.add(robot);
         }*/
         for (int i = 0; i < robotNames.length; i++) {
-            robotImage = new Image("/choose-robot-" + robotNames[i] + ".png");
-            robot = new ImageView(robotImage);
+            String path = "/lobby/" + robotNames[i] + ".png";
+            robot = new ImageView(new Image(getClass().getResource(path).toString()));
             robot.setFitHeight(scaleSize);
             robot.setFitWidth(scaleSize);
 
