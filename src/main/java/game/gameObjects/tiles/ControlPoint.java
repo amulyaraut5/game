@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.GameWon;
@@ -40,11 +42,11 @@ public class ControlPoint extends Attribute {
 
         // Send CheckpointReached protocol to all users/players
 
-        JSONMessage jsonMessage = new JSONMessage(new CheckpointReached(player.getId(),this.count));
+        JSONMessage jsonMessage = new JSONMessage(new CheckpointReached(player.getId(), this.count));
         userThread.sendMessage(jsonMessage);
 
         // TODO Change no. of checkPoints based on Map
-        if(game.getNoOfCheckPoints()==1){
+        if (game.getNoOfCheckPoints() == 1) {
 
             // Send JSONMESSAGE to all users/players
 
@@ -52,17 +54,14 @@ public class ControlPoint extends Attribute {
             client.sendMessage(jsonMessage1);
 
             // TODO End the game:
-        }
-        else if (game.getNoOfCheckPoints() != 1) {
+        } else if (game.getNoOfCheckPoints() != 1) {
 
-            if (player.getCheckPointCounter() > this.count){
+            if (player.getCheckPointCounter() > this.count) {
                 logger.info("Checkpoint already reached");
                 // Maybe inform all the clients and users
-            }
-            else if (player.getCheckPointCounter() < 1){
+            } else if (player.getCheckPointCounter() < 1) {
                 logger.info(" 1st Checkpoint not reached.");
-            }
-            else if (player.getCheckPointCounter() == 1){
+            } else if (player.getCheckPointCounter() == 1) {
                 int checkPoint = player.getCheckPointCounter();
                 checkPoint++;
                 player.setCheckPointCounter(checkPoint);
@@ -77,6 +76,11 @@ public class ControlPoint extends Attribute {
             }
 
         }
+
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
 
     }
 }

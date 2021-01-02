@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -41,6 +43,11 @@ public class Wall extends Attribute {
     @Override
     public void performAction(Player player) {
         // Does nothing
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
     }
 }
 

@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -30,4 +32,10 @@ public class Antenna extends Attribute {
     public void performAction(Player player) {
         // Does Nothing
     }
+
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
+    }
+
 }

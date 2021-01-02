@@ -1,8 +1,5 @@
 package game.gameObjects.tiles;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import utilities.Coordinate;
 import utilities.Utilities;
 
 import java.util.ArrayList;
@@ -10,28 +7,25 @@ import java.util.ArrayList;
 public class Tile {
 
     private static Tile instance;
-
-    public static Tile getInstance() {
-        if(instance == null){
-            instance = new Tile();
-        }
-        return instance;
-    }
-
     protected String imagePath;
-
     /**
      * saves one or multiple Attributes for one tile
      */
     private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-    //private Image image;
-
-
     /**
      * Constructor for tiles.
      */
     private Tile() {
+    }
+
+    //private Image image;
+
+    public static Tile getInstance() {
+        if (instance == null) {
+            instance = new Tile();
+        }
+        return instance;
     }
 
 	/*
@@ -86,13 +80,6 @@ public class Tile {
      * @param gc
      * @param position
      */
-
-    public void draw(GraphicsContext gc, Coordinate position) {
-        //TODO define image path
-        final Image image = new Image(imagePath);
-        final int size = 100;//TODO define size (w,h)
-        gc.drawImage(image, size * position.getX(), size * position.getY(), size, size);
-    }
 
     /**
      * This method creates the tile with specific attribute.

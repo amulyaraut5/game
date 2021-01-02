@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
+import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -9,7 +11,7 @@ import utilities.Utilities.Orientation;
 
 public class Belt extends Attribute {
 
-    private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
+    private int speed; // 1 = Green Conveyor, 2 = Blue Conveyor
     private Orientation orientation; //direction in which the belt runs
 
     public Belt(Orientation orientation, int speed) {
@@ -39,6 +41,11 @@ public class Belt extends Attribute {
         }
     }
 
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
+
+    }
+
     /**
      * This method checks if two robots converge at the same point or not.
      *
@@ -50,7 +57,6 @@ public class Belt extends Attribute {
         return false;
     }
 
-
     /**
      * This method relocates the robot to new position based on the speed and
      * direction of conveyor belt.
@@ -60,7 +66,7 @@ public class Belt extends Attribute {
      */
 
     private void updateRobotCoordinates(int x, int y, Player player, int speed) {
-        if(speed == 1){
+        if (speed == 1) {
             switch (orientation) {
                 case UP: //NORTH
                     player.getRobot().setPosition(x, y - 1);
@@ -75,7 +81,7 @@ public class Belt extends Attribute {
                     player.getRobot().setPosition(x - 1, y);
                     break;
             }
-        }else if(speed == 2){
+        } else if (speed == 2) {
             switch (orientation) {
                 case UP: //NORTH
                     player.getRobot().setPosition(x, y - 2);

@@ -3,9 +3,11 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
+import javafx.scene.canvas.GraphicsContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
+import utilities.Coordinate;
 
 /**
  * @author Amulya
@@ -13,24 +15,21 @@ import server.UserThread;
 
 public abstract class Attribute {
 
+    protected static final Logger logger = LogManager.getLogger();
     static Game game;
     static UserThread userThread;
-
     static Client client;
-
     protected String type;
 
-    protected static final Logger logger = LogManager.getLogger();
-
-    public static void setUserThread(UserThread userThread){
+    public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;
     }
 
-    public static void setClient(Client client){
+    public static void setClient(Client client) {
         Attribute.client = client;
     }
 
-    public static void setGame(Game game){
+    public static void setGame(Game game) {
         Attribute.game = game;
     }
 
@@ -41,8 +40,9 @@ public abstract class Attribute {
      * <p>
      * Another Idea : We can also Robot instead of Player.
      */
-
     public abstract void performAction(Player player);
+
+    public abstract void draw(GraphicsContext gc, Coordinate position);
 
     /**
      * Sometimes a robot may find another robot while moving in any directions.
@@ -50,7 +50,6 @@ public abstract class Attribute {
      *
      * @return
      */
-
     public boolean checkPlayer() {
         // TODO - implement Attribute.checkPlayer
         throw new UnsupportedOperationException();
