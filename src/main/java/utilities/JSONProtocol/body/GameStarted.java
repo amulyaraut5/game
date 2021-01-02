@@ -1,14 +1,14 @@
 package utilities.JSONProtocol.body;
 
+import game.gameObjects.tiles.Tile;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.body.gameStarted.Maps;
 
 import java.util.ArrayList;
 
 public class GameStarted extends JSONBody {
-    private ArrayList<Maps> map;
+    private ArrayList<ArrayList<Tile>> map;
 
-    public GameStarted(ArrayList<Maps> map) {
+    public GameStarted(ArrayList<ArrayList<Tile>> map) {
         this.map = map;
     }
 }

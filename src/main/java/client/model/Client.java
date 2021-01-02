@@ -5,7 +5,6 @@ import client.view.GameViewController;
 import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
-import game.Player;
 import game.gameObjects.tiles.Attribute;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
@@ -19,8 +18,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static utilities.Utilities.PORT;
 
@@ -210,6 +207,7 @@ public class Client {
                     break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
+
                     logger.info("The game has started.");
                     break;
                 case ConnectionUpdate:
