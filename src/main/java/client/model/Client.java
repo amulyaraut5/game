@@ -279,4 +279,13 @@ public class Client {
         }
         return false;
     }
+
+    public int getIDFrom(String destinationUser) {
+        for (PlayerAdded playerAdded: playerList){
+            if(destinationUser.equals(playerAdded.getName())){
+                return playerAdded.getId();
+            }
+        }
+        return -2;
+    }
 }
