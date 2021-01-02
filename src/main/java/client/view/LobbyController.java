@@ -88,7 +88,7 @@ public class LobbyController extends Controller {
      *
      * @param playerAdded
      */
-    public void setJoinedUsersTextArea(PlayerAdded playerAdded) {
+    public void setJoinedUsers(PlayerAdded playerAdded) {
         String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
         currentLabel.setText(playerAdded.getName());
@@ -142,7 +142,9 @@ public class LobbyController extends Controller {
             if (directMatcher.lookingAt()) {
                 String destinationUser = (message.split(" ", 2)[0]).substring(1);
                 String messageUser = message.split(" ", 2)[1];
-                //if (!messageUser.isBlank()) //TODO if username doesn´t exist and if message is empty
+                if (!messageUser.isBlank()) //
+                logger.info("playerList contains user" + client.getIDFrom(destinationUser));
+                // TODO if username doesn´t exist and if message is empty
                 jsonMessage = new JSONMessage(new SendChat(messageUser, client.getIDFrom(destinationUser)));
             } else {
                 jsonMessage = new JSONMessage(new SendChat(message, -1));

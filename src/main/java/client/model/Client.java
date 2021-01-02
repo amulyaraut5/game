@@ -184,7 +184,7 @@ public class Client {
                     //logger.info("Player Added: " + playerAdded.getId());
                     addNewPlayer(playerAdded);
                     logger.info(playerList.size() +" = playerList Size");
-                    lobbyController.setJoinedUsersTextArea(playerAdded);
+                    lobbyController.setJoinedUsers(playerAdded);
                     break;
                 case Error:
                     Error error = (Error) message.getBody();
@@ -192,17 +192,14 @@ public class Client {
                     break;
                 case PlayerStatus:
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    //logger.info("PlayerStatus: " + playerStatus.isReady());
                     lobbyController.setReadyUsersTextArea(playerStatus);
                     break;
                 case ReceivedChat:
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
-                    //logger.info(receivedChat.getMessage());
                     lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
                     break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
-
                     logger.info("The game has started.");
                     break;
                 case ConnectionUpdate:
