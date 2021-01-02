@@ -65,7 +65,6 @@ public class Client {
     private LobbyController lobbyController;
 
 
-
     /**
      * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
      */
@@ -75,7 +74,6 @@ public class Client {
      * constructor of ChatClient to initialize the attributes hostname and port.
      */
     private Client() {
-
         Attribute.setClient(this);
     }
 
@@ -93,7 +91,6 @@ public class Client {
     public void connect(HelloClient helloClient) {
         JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
         sendMessage(msg);
-
     }
 
     /**
