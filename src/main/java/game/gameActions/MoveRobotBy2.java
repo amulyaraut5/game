@@ -1,13 +1,13 @@
 package game.gameActions;
 
 import game.Player;
-import utilities.Utilities;
+import utilities.Utilities.Orientation;
 
 public class MoveRobotBy2 extends Action {
 
 
     @Override
-    public void doAction(Utilities.Orientation orientation, Player player) {
+    public void doAction(Orientation orientation, Player player) {
         int xCoordinate = player.getRobot().getPosition().getX();
         int yCoordinate = player.getRobot().getPosition().getY();
 

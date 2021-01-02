@@ -11,12 +11,14 @@ public class Tile {
     /**
      * saves one or multiple Attributes for one tile
      */
-    private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+    private ArrayList<Attribute> attributes = new ArrayList<>();
+    private Attribute attribute;
 
     /**
      * Constructor for tiles.
      */
     private Tile() {
+
     }
 
     //private Image image;
@@ -28,34 +30,10 @@ public class Tile {
         return instance;
     }
 
-	/*
-	// Alternative for GraphicsContext for rendering images of Tile
-	// Constructor of Tile takes two parameter
 
-	    public Tile(Attribute attribute, Image image){
-	       this.attribute1 = attribute;
-	       this.image = image;
 
-	 // Getter for image
-	     public Image getImage(){
-	        return this.image;
-	     }
-
-	  // While creating tile, we set path for new Image, which gonna load the image
-	  // Since we have individual images we can even resize the image, which takes additional two parameters
-
-	  Example:
-
-	   public Tile createTile(int tileID){
-	       Tile tile = null;
-	       switch(tileID){
-	           case 00 : tile = new Tile(new Empty(), new Image("imagepath"));
-	       }
-	   }
-	 */
-
-    public ArrayList<Attribute> getAttribute() {
-        return attributes;
+    public Attribute getAttribute() {
+        return attributes.get(0);
     }
 
     /**
@@ -74,21 +52,18 @@ public class Tile {
         //TODO
     }
 
-    /**
-     * TODO
-     *
-     * @param gc
-     * @param position
-     */
+
 
     /**
      * This method creates the tile with specific attribute.
      * Every tile has then it's own specific id which can be called while laying out the map structure.
      * Depending upon the needs of map, we can create our own tile with multiple attributes with different orientations.
      *
-     * @param tileID
+     * @param
      * @return tile
      */
+
+
     public Tile createTile(int tileID) {
         Tile tile = new Tile();
         ArrayList<Utilities.Orientation> orientations;
@@ -338,5 +313,9 @@ public class Tile {
 
         }
         return tile;
+    }
+
+    public boolean isTileOccupied() {
+        return true;
     }
 }
