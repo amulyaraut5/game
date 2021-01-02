@@ -17,6 +17,8 @@ import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -132,8 +134,18 @@ public class LobbyController extends Controller {
         String message = lobbyTextFieldChat.getText();
         if (!message.isBlank()) {
             lobbyTextAreaChat.appendText("[You]: " + message + "\n");
-            JSONMessage msg = new JSONMessage(new SendChat(message, -1));
-            client.sendMessage(msg);
+            Pattern directPattern = Pattern.compile("^@+");
+            Matcher directMatcher = directPattern.matcher(message);
+            JSONMessage jsonMessage;
+            if (directMatcher.lookingAt()) {
+                String destinationUser = (message.split(" ", 2)[0]).substring(1);
+                String messageUser = message.split(" ", 2)[1];
+                //if (!messageUser.isBlank()) //TODO if username doesn´t exist and if message is empty
+                jsonMessage = new JSONMessage(new SendChat(messageUser, client.getIDFrom(destinationUser)));
+            } else {
+                jsonMessage = new JSONMessage(new SendChat(message, -1));
+            }
+            client.sendMessage(jsonMessage);
         }
         lobbyTextFieldChat.clear();
     }
