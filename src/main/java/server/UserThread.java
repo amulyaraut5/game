@@ -146,10 +146,12 @@ public class UserThread extends Thread {
                 } else {
                     // TODO private Message
                 }
+                break;
             case GameWon:
                 GameWon gameWon = (GameWon) message.getBody();
                 server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())),this);
                 // TODO end the game
+                break;
         }
     }
 
