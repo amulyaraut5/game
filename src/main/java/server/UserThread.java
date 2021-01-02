@@ -147,7 +147,6 @@ public class UserThread extends Thread {
                 break;
             case SendChat:
                 SendChat sc = (SendChat) message.getBody();
-                logger.info(this.user.getName());
                 if (sc.getTo() < 0)
                     server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
                 else {

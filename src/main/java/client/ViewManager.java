@@ -117,16 +117,13 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
-            System.err.println("Close");
+            //TODO check if current scene is lobbyScene -> leave lobby
             if (menuStage.getScene() == menuScene) {
-                System.err.println("menuScene");
                 menuStage.close();
-                //TODO close ReaderThread
             } else {
-                System.err.println("!menuScene");
-                //TODO menuStage.show();
                 menuStage.setScene(menuScene);
                 gameStage.show();
+                //TODO menuStage.show();
             }
         });
     }

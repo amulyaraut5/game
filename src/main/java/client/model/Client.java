@@ -109,7 +109,6 @@ public class Client {
         }
 
         readerThread = new ReaderThread(socket, this);
-        readerThread.setName("ReaderThread");
         readerThread.start();
 
         logger.info("Connection to server successful.");
@@ -160,7 +159,6 @@ public class Client {
         writer.println(json);
     }
 
-
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is downcasted to respective class.
@@ -183,23 +181,23 @@ public class Client {
                     break;
                 case PlayerAdded:
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
-                    logger.info("Player Added: " + playerAdded.getId());
+                    //logger.info("Player Added: " + playerAdded.getId());
                     addNewPlayer(playerAdded);
-                    logger.info(playerList.size() +" = playerList SIze");
+                    logger.info(playerList.size() +" = playerList Size");
                     lobbyController.setJoinedUsersTextArea(playerAdded);
                     break;
                 case Error:
                     Error error = (Error) message.getBody();
-                    logger.info("Error Message: " + error.getError());
+                    logger.warn("Error Message: " + error.getError());
                     break;
                 case PlayerStatus:
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    logger.info("PlayerStatus: " + playerStatus.isReady());
+                    //logger.info("PlayerStatus: " + playerStatus.isReady());
                     lobbyController.setReadyUsersTextArea(playerStatus);
                     break;
                 case ReceivedChat:
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
-                    logger.info(receivedChat.getMessage());
+                    //logger.info(receivedChat.getMessage());
                     lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
                     break;
                 case GameStarted:
@@ -231,7 +229,7 @@ public class Client {
                     //TODO Display the message in chat for players/users
                     break;
                 default:
-                    logger.info("Something went wrong");
+                    logger.warn("Something went wrong");
             }
         });
     }

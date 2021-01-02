@@ -1,20 +1,30 @@
 package client.view;
 
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.Gear;
+import game.gameObjects.tiles.Pit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
+import utilities.Utilities;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * The GameViewController class controls the GameView and the Chat of the game
@@ -23,7 +33,7 @@ import java.io.IOException;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    int i = 0;
+    private int i = 0;
     /**
      * the ready Button which can be clicked to show the availability for playing the game
      */
@@ -49,6 +59,34 @@ public class GameViewController extends Controller {
      */
     public void close() {
         //client.disconnect(); TODO disconnect client on closure of window
+    }
+
+    @FXML
+    private void initialize() {
+/*        GraphicsContext gc = fxCanvas.getGraphicsContext2D();
+
+        gc.setFill(Color.GREEN);
+        gc.fillRect(0, 0, fxCanvas.getHeight(), fxCanvas.getWidth());
+
+        String path = "/tiles/green-up.png";
+        String url = getClass().getResource(path).toString();
+        Image image = new Image(url);
+        gc.drawImage(image, 0, 0, 60, 60);
+
+        ArrayList<Attribute> list = new ArrayList<Attribute>(100);
+        for (int j = 0; j < 13; j++) {
+            list.add(new Pit());
+        }
+        list.add(new Gear(Utilities.Orientation.RIGHT));
+        list.add(new Gear(Utilities.Orientation.LEFT));
+        list.add(new Belt(Utilities.Orientation.RIGHT, 1));
+        list.add(new Belt(Utilities.Orientation.LEFT, 2));
+
+        for (int j = 0; j < list.size(); j++) {
+            if (list.get(j) != null) {
+                list.get(j).draw(gc, new Coordinate(j % 10, (int) j / 10));
+            }
+        }*/
     }
 
     /**
