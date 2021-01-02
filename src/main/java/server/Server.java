@@ -135,12 +135,25 @@ public class Server {
     }
 
     public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
-        for (User user : users) {
-            if (user.getThread() != sender) {
+
+            for (User user : users) {
+                if (user.getThread() != sender) {
+                    user.message(jsonMessage);
+                }
+            }
+
+    }
+    public void communicateDirect(JSONMessage jsonMessage, UserThread sender, int receiver){
+        for (User user: users){
+            logger.info("User" + user.getId());
+            logger.info("Jsonm" + jsonMessage.toString());
+
+            if (user.getId()==receiver){
                 user.message(jsonMessage);
             }
         }
     }
+
 
     /**
      * It checks if the username is already used of another user.
