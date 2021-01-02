@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import game.gameActions.MoveRobotInCurve;
 import javafx.scene.canvas.GraphicsContext;
 import utilities.Coordinate;
 import utilities.Utilities.Orientation;
@@ -26,37 +27,20 @@ public class RotatingBelt extends Attribute {
     }
 
     /**
-     * The GreenConveyor belt pushes the robot in the direction of tile by
-     * one space.
-     * Once a robot has moved off a belt, the belt has no longer effect.
+     * The RotatingBelt moves a Robot in a non-linear fashion.
      *
      * @param player
      */
     @Override
     public void performAction(Player player) {
-
-        int xCoordinate = player.getRobot().getPosition().getX();
-        int yCoordinate = player.getRobot().getPosition().getY();
-
-        Orientation orientation = player.getRobot().getOrientation();
-        // Conveyor does not really change the direction of robot  unless......
-
-        // Then check the whether there is collision point exist or not.
-        // Then we update the location of Robot in the direction of Conveyor.
-
         if (collisionPointExist()) {
             // No movement
         } else {
-            // Need of location of robot and direction of tile.
-            updateRobotCoordinates(xCoordinate, yCoordinate, player);
+            if(speed ==2){
+                new MoveRobotInCurve().doAction2(this.orientations, player);
+            }
         }
     }
-
-    @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
-
-    }
-
     /**
      * This method checks if two robots converge at the same point or not.
      *
@@ -68,29 +52,10 @@ public class RotatingBelt extends Attribute {
         return false;
     }
 
+    @Override
+    public void draw(GraphicsContext gc, Coordinate position) {
 
-    /**
-     * This method relocates the robot to new position based on the speed and
-     * direction of conveyor belt.
-     *
-     * @param x x coordinate
-     * @param y y coordinate
-     */
-
-    private void updateRobotCoordinates(int x, int y, Player player) {
-        switch (orientations[0]) {
-            case UP: //NORTH
-                player.getRobot().setPosition(x, y - 1);
-                break;
-            case DOWN: //SOUTH
-                player.getRobot().setPosition(x, y + 1);
-                break;
-            case LEFT: //EAST
-                player.getRobot().setPosition(x + 1, y);
-                break;
-            case RIGHT: //WEST
-                player.getRobot().setPosition(x - 1, y);
-                break;
-        }
     }
+
+
 }
