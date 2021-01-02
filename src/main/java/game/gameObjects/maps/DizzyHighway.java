@@ -28,6 +28,8 @@ public class DizzyHighway extends Map {
                 {14,108, 14, 14, 14, 14, 14,106, 35, 00},
                 {82, 00, 00, 00, 00, 00, 00, 11, 11, 00},
         };
+
+        generateMap(mapBlueprint);
     }
 
 }

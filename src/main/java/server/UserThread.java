@@ -125,7 +125,8 @@ public class UserThread extends Thread {
                 user.setName(ps.getName());
                 JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure()));
                 server.addToPlayerValuesList(jsonMessage);
-
+                user.setId(playerID);
+                user.setName(ps.getName());
                 server.communicateUsers(jsonMessage, this);
                 /*for (JSONMessage jM : server.getPlayerValuesList()) {
                     sendMessage(jM);
@@ -147,9 +148,10 @@ public class UserThread extends Thread {
             case SendChat:
                 SendChat sc = (SendChat) message.getBody();
                 logger.info(this.user.getName());
-                if (sc.getTo() < 0) {
+                if (sc.getTo() < 0)
                     server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
-                } else {
+                else {
+                    server.communicateDirect(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), true)), this, sc.getTo());
                     // TODO private Message
                 }
                 break;

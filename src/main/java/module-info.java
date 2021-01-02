@@ -7,6 +7,8 @@ module roborally {
     exports client.view to javafx.graphics;
     exports client to javafx.graphics;
     exports game.gameObjects.tiles to com.google.gson;
+    exports game.gameObjects.maps to com.google.gson;
+    opens game.gameObjects.maps;
     opens client.view to javafx.fxml;
     opens client to javafx.fxml;
     opens client.model to com.google.gson;

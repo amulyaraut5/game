@@ -134,12 +134,9 @@ public class LoginController extends Controller {
         labelResponse.setText("");
         userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
-        logger.info("client list size loginController" + client.playerList.size());
         if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
         else if(client.playerListContains(robotList.get(chosenRobot).getRobotID()))
             labelResponse.setText("This robot is already taken, please choose another one");
-        else if (userName.contains(" "))
-            labelResponse.setText("Spaces are not allowed in usernames!");
         else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot");
         else {
             labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());

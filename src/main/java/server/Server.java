@@ -1,12 +1,13 @@
 package server;
 
-import game.gameObjects.tiles.*;
+import game.gameObjects.maps.DizzyHighway;
+import game.gameObjects.maps.Map;
+import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.gameStarted.Maps;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,7 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static utilities.Utilities.*;
+import static utilities.Utilities.PORT;
 
 public class Server {
 
@@ -43,6 +44,8 @@ public class Server {
 
     private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
 
+   private Map map;
+
 
     /**
      *
@@ -53,6 +56,10 @@ public class Server {
      * Constructor for the ChatServer class
      */
     public Server() {
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     /**
@@ -97,10 +104,10 @@ public class Server {
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
 
 
-            //try out "GameStarted":
+            /*try out "GameStarted":
             Attribute attributeA = new RotatingBelt(DOWN_RIGHT, true, 2);
             int[] registers = {2, 4};
-            Attribute attributeB = new PushPanel(Orientation.LEFT, registers);
+            Attribute attributeB = new PushPanel(Utilities.Orientation.LEFT, registers);
             Attribute attributeC = new Wall(UP_RIGHT);
             Attribute attributeD = new Laser(Orientation.DOWN, 1);
 
@@ -110,12 +117,11 @@ public class Server {
             fieldList1.add(attributeA);
             fieldList2.add(attributeB);
             fieldList3.add(attributeC);
-            fieldList3.add(attributeD);
+            fieldList3.add(attributeD);*/
 
-            ArrayList<Maps> mapList = new ArrayList<>();
-            mapList.add(new Maps(1, fieldList1));
-            mapList.add(new Maps(2, fieldList2));
-            mapList.add(new Maps(3, fieldList3));
+            ArrayList<ArrayList<Tile>> mapList = new ArrayList<ArrayList<Tile>>();
+            DizzyHighway dizzyHighway = new DizzyHighway();
+            mapList.add(Map.getMap());
 
 
             JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
@@ -135,12 +141,25 @@ public class Server {
     }
 
     public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
-        for (User user : users) {
-            if (user.getThread() != sender) {
+
+            for (User user : users) {
+                if (user.getThread() != sender) {
+                    user.message(jsonMessage);
+                }
+            }
+
+    }
+    public void communicateDirect(JSONMessage jsonMessage, UserThread sender, int receiver){
+        for (User user: users){
+            logger.info("User" + user.getId());
+            logger.info("Jsonm" + jsonMessage.toString());
+
+            if (user.getId()==receiver){
                 user.message(jsonMessage);
             }
         }
     }
+
 
     /**
      * It checks if the username is already used of another user.

@@ -1,5 +1,6 @@
 package game.gameObjects.maps;
 
+import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.Utilities;
 
@@ -17,4 +18,21 @@ public abstract class Map {
     protected int width;
     protected int length;
 
+    private static ArrayList<Tile> map;
+
+    Map() {
+        this.map = new ArrayList<Tile>();
+    }
+
+    public void generateMap(int[][] mapBlueprint) {
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y<10; y++) {
+                map.add(Tile.getInstance().createTile(mapBlueprint[x][y]));
+            }
+        }
+    }
+
+    public static ArrayList<Tile> getMap() {
+        return map;
+    }
 }

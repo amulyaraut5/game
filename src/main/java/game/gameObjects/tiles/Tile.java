@@ -9,12 +9,21 @@ import java.util.ArrayList;
 
 public class Tile {
 
+    private static Tile instance;
+
+    public static Tile getInstance() {
+        if(instance == null){
+            instance = new Tile();
+        }
+        return instance;
+    }
+
     protected String imagePath;
 
     /**
      * saves one or multiple Attributes for one tile
      */
-    private ArrayList<Attribute> attributes;
+    private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
     //private Image image;
 
@@ -22,8 +31,7 @@ public class Tile {
     /**
      * Constructor for tiles.
      */
-    public Tile() {
-        attributes = new ArrayList<>();
+    private Tile() {
     }
 
 	/*
