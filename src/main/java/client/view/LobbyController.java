@@ -89,7 +89,8 @@ public class LobbyController extends Controller {
      * @param playerAdded
      */
     public void setJoinedUsersTextArea(PlayerAdded playerAdded) {
-        currentImageView.setImage(new Image("/choose-robot-" + robotNames[playerAdded.getFigure() - 1] + ".png"));
+        String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
+        currentImageView.setImage(new Image(getClass().getResource(path).toString()));
         currentLabel.setText(playerAdded.getName());
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
@@ -101,13 +102,14 @@ public class LobbyController extends Controller {
     public void setReadyUsersTextArea(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
-                String link = "/choose-robot-" + robotNames[robotIcon.getFigure() - 1];
+                String path = "/lobby/" + robotNames[robotIcon.getFigure() - 1];
                 if (playerStatus.isReady()) {
-                    link +=  "-ready.png";
+                    path +=  "-ready.png";
                 } else {
-                    link += ".png";
+                    path += ".png";
                 }
-                robotIcon.getImageViewofRobot().setImage(new Image(link));
+                Image image = new Image(getClass().getResource(path).toString());
+                robotIcon.getRobotImageView().setImage(image);
             }
         }
     }
@@ -155,7 +157,7 @@ public class LobbyController extends Controller {
         int userID;
         int position;
         int figure;
-        ImageView imageViewofRobot;
+        ImageView robotImageView;
         Label labelOfUser;
 
         public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer) {
@@ -163,7 +165,7 @@ public class LobbyController extends Controller {
             this.userID = playerAdded.getId();
             this.userName = playerAdded.getName();
             this.figure = playerAdded.getFigure();
-            this.imageViewofRobot = imageViewPuffer;
+            this.robotImageView = imageViewPuffer;
             this.labelOfUser = labelPuffer;
         }
 
@@ -179,8 +181,8 @@ public class LobbyController extends Controller {
             return userID;
         }
 
-        public ImageView getImageViewofRobot() {
-            return imageViewofRobot;
+        public ImageView getRobotImageView() {
+            return robotImageView;
         }
 
         public Label getLabelOfUser() {
