@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import game.gameActions.RotateRobot;
 import javafx.scene.canvas.GraphicsContext;
 import utilities.Coordinate;
 import utilities.Utilities.Orientation;
@@ -28,39 +29,8 @@ public class Gear extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        switch (orientation) {
-            case RIGHT:
-                switch (player.getRobot().getOrientation()) {
-                    case UP: //NORTH
-                        player.getRobot().setOrientation(Orientation.LEFT);
-                        break;
-                    case LEFT: //EAST
-                        player.getRobot().setOrientation(Orientation.DOWN);
-                        break;
-                    case DOWN: //SOUTH
-                        player.getRobot().setOrientation(Orientation.RIGHT);
-                        break;
-                    case RIGHT: //WEST
-                        player.getRobot().setOrientation(Orientation.UP);
-                }
-                break;
-            case LEFT:
-                switch (player.getRobot().getOrientation()) {
-                    case UP: //NORTH
-                        player.getRobot().setOrientation(Orientation.RIGHT);
-                        break;
-                    case LEFT: //EAST
-                        player.getRobot().setOrientation(Orientation.DOWN);
-                        break;
-                    case DOWN: //SOUTH
-                        player.getRobot().setOrientation(Orientation.LEFT);
-                        break;
-                    case RIGHT: //WEST
-                        player.getRobot().setOrientation(Orientation.UP);
-                        break;
-                }
-                break;
-        }
+        new RotateRobot().doAction(this.orientation,player);
+
     }
 
     @Override

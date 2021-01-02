@@ -40,7 +40,7 @@ public class Player extends User {
 		return this.robot;
 	}
 
-	public int getCurrentRegister(){ return this.currentRegister; }
+	public int getCurrentRegister(){ return currentRegister; }
 
 	public int getCheckPointCounter() {
 		return checkPointCounter;

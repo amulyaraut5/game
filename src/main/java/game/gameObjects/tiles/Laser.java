@@ -92,9 +92,7 @@ public class Laser extends Attribute {
             return laserAffectedTiles;
 
         }
-
         return null;
-
     }
 
     /**

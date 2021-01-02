@@ -3,6 +3,7 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
+import game.gameActions.Action;
 import javafx.scene.canvas.GraphicsContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ public abstract class Attribute {
     static UserThread userThread;
     static Client client;
     protected String type;
+
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;

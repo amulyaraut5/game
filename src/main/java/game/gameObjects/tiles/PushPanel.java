@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import game.gameActions.MoveRobotBy1;
 import javafx.scene.canvas.GraphicsContext;
 import utilities.Coordinate;
 import utilities.Utilities.Orientation;
@@ -34,13 +35,13 @@ public class PushPanel extends Attribute {
         for (int i : registerValue) {
 
             if (i == player.getCurrentRegister()) {
-                updateRobotCoordinates(orientation, player);
+                new MoveRobotBy1().doAction(orientation,player);
+
             } else {
                 // Do nothing
                 // Print message saying that this push panel has no effect for current register.
             }
         }
-
     }
 
     @Override
@@ -48,24 +49,4 @@ public class PushPanel extends Attribute {
 
     }
 
-    private void updateRobotCoordinates(Orientation orientation, Player player) {
-
-        int xCoordinate = player.getRobot().getPosition().getX();
-        int yCoordinate = player.getRobot().getPosition().getY();
-
-        switch (orientation) {
-            case UP:
-                player.getRobot().setPosition(xCoordinate, yCoordinate - 1);
-                break;
-            case DOWN:
-                player.getRobot().setPosition(xCoordinate, yCoordinate + 1);
-                break;
-            case LEFT:
-                player.getRobot().setPosition(xCoordinate + 1, yCoordinate);
-                break;
-            case RIGHT:
-                player.getRobot().setPosition(xCoordinate - 1, yCoordinate);
-                break;
-        }
-    }
 }

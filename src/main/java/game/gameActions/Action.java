@@ -1,17 +1,15 @@
 package game.gameActions;
 
 import game.Player;
+import utilities.Utilities;
 
-public abstract class Action implements Cloneable{
+public abstract class Action {
 
         /**
-         * This method is called when a action should be executed.
+         * * This method is called when a action should be executed.
          * @param player is the player who is affected by the gameaction.
          */
-        public abstract void doAction(Player player);
+        public abstract void doAction(Utilities.Orientation orientation, Player player);
 
-        @Override
-        public Object clone() throws CloneNotSupportedException {
-                return super.clone();
-        }
+
 }
