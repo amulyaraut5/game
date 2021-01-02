@@ -6,9 +6,9 @@ import utilities.JSONProtocol.JSONBody;
 import java.util.ArrayList;
 
 public class GameStarted extends JSONBody {
-    private ArrayList<ArrayList<Tile>> map;
+    private ArrayList<Tile> map;
 
-    public GameStarted(ArrayList<ArrayList<Tile>> map) {
+    public GameStarted(ArrayList<Tile> map) {
         this.map = map;
     }
 }

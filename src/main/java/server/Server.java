@@ -119,10 +119,10 @@ public class Server {
             fieldList3.add(attributeC);
             fieldList3.add(attributeD);*/
 
-            ArrayList<ArrayList<Tile>> mapList = new ArrayList<ArrayList<Tile>>();
+            ArrayList<Tile> mapList;
             DizzyHighway dizzyHighway = new DizzyHighway();
-            mapList.add(Map.getMap());
-
+            Map.generateMap(dizzyHighway);
+            mapList = Map.getMap();
 
             JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
             System.out.println(Multiplex.serialize(jMessage));
