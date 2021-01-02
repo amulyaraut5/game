@@ -2,12 +2,12 @@ package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
 
-public class CheckpointsReached extends JSONBody {
+public class CheckpointReached extends JSONBody {
 
     int playerID;
     int number;
 
-    public CheckpointsReached(int playerID, int number) {
+    public CheckpointReached(int playerID, int number) {
 
         this.playerID = playerID;
         this.number = number;

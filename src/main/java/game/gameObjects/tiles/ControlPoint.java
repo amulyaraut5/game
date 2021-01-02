@@ -2,7 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.CheckpointsReached;
+import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.GameWon;
 
 /**
@@ -40,7 +40,7 @@ public class ControlPoint extends Attribute {
 
         // Send CheckpointReached protocol to all users/players
 
-        JSONMessage jsonMessage = new JSONMessage(new CheckpointsReached(player.getId(),this.count));
+        JSONMessage jsonMessage = new JSONMessage(new CheckpointReached(player.getId(),this.count));
         userThread.sendMessage(jsonMessage);
 
         // TODO Change no. of checkPoints based on Map

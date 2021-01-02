@@ -224,7 +224,7 @@ public class Client {
                     logger.info("Player "+ energy.getPlayerID() + "received 1 energy cube");
                     break;
                 case CheckPointsReached:
-                    CheckpointsReached checkpointsReached = (CheckpointsReached) message.getBody();
+                    CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
                     //TODO Display the message in chat for players/users
                     break;
