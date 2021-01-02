@@ -24,6 +24,7 @@ public abstract class Controller {
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
+
     /**
      * This private class represents a robot with its name and id
      */

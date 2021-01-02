@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -68,9 +69,28 @@ public class LoginController extends Controller {
      * it makes sure that only one item of the listView can get clicked
      */
     public void initialize() {
+        /*listView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                return new ListCell<String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if ("Orange".equals(item)) {
+                            setDisable(true);
+                        } else {
+                            setDisable(false);
+                        }
+                        setText(item);
+                    }
+
+                };
+            }
+        });*/
         createRobotList();
         listView.setItems(robotImageViewList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
     }
 
     /**
@@ -114,18 +134,31 @@ public class LoginController extends Controller {
         labelResponse.setText("");
         userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
-
+        logger.info("client list size loginController" + client.playerList.size());
         if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
+        else if(client.playerListContains(robotList.get(chosenRobot).getRobotID()))
+            labelResponse.setText("This robot is already taken, please choose another one");
         else if (userName.contains(" "))
             labelResponse.setText("Spaces are not allowed in usernames!");
         else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot");
         else {
             labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());
             JSONMessage msg = new JSONMessage(new PlayerValues(userName, robotList.get(chosenRobot).getRobotID()));
-            viewManager.nextScene();
             client.sendMessage(msg);
+            viewManager.nextScene();
+
         }
     }
+
+   
+
+    public void setImageViewDisabled(int figure){
+        //TODO set cell of figure not selectable with cellfactory from initialize method
+        //robotImageViewList.get(figure).setDisable(true);
+       //robotImageViewList.get(figure).setMouseTransparent(true);
+    }
+
+
 
     /**
      * @param taken
@@ -138,6 +171,7 @@ public class LoginController extends Controller {
             viewManager.nextScene();
         }
     }
+
 
     /**
      * Methods gets called by the ChatClient if no connection to the server could be established.

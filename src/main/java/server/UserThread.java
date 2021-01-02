@@ -112,7 +112,12 @@ public class UserThread extends Thread {
                     JSONMessage jsonMessage = new JSONMessage(new Welcome(playerID));
                     currentThread().setName("UserThread-" + playerID);
                     sendMessage(jsonMessage);
+                    for (JSONMessage jM : server.getPlayerValuesList()) {
+                        sendMessage(jM);
+                        logger.info(jM.toString());
+                    }
                 }
+
                 break;
             case PlayerValues:
                 // The messageBody which is Object is then casted down to PlayerValues class
@@ -122,10 +127,11 @@ public class UserThread extends Thread {
                 server.addToPlayerValuesList(jsonMessage);
 
                 server.communicateUsers(jsonMessage, this);
-                for (JSONMessage jM : server.getPlayerValuesList()) {
+                /*for (JSONMessage jM : server.getPlayerValuesList()) {
                     sendMessage(jM);
                     logger.info(jM.toString());
-                }
+                }*/
+                sendMessage(jsonMessage);
                 break;
             case SetStatus:
                 SetStatus st = (SetStatus) message.getBody();

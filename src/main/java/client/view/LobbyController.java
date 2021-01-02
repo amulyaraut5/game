@@ -175,9 +175,6 @@ public class LobbyController extends Controller {
             return labelOfUser;
         }
 
-        public void setLabelOfUser(Label labelOfUser) {
-            this.labelOfUser = labelOfUser;
-        }
 
     }
 }

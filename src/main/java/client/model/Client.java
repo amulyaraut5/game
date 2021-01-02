@@ -5,6 +5,7 @@ import client.view.GameViewController;
 import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
+import game.Player;
 import game.gameObjects.tiles.Attribute;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
@@ -65,7 +66,13 @@ public class Client {
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private Map<Integer, String> playerMap = new HashMap<>();
+
+
+
+    /**
+     * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
+     */
+    public ArrayList<PlayerAdded> playerList= new ArrayList<>();
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -183,7 +190,8 @@ public class Client {
                 case PlayerAdded:
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     logger.info("Player Added: " + playerAdded.getId());
-                    addNewPlayer(playerAdded.getId(), playerAdded.getName());
+                    addNewPlayer(playerAdded);
+                    logger.info(playerList.size() +" = playerList SIze");
                     lobbyController.setJoinedUsersTextArea(playerAdded);
                     break;
                 case Error:
@@ -256,11 +264,19 @@ public class Client {
         gameViewController = (GameViewController) controllerList.get(2);
     }
 
-    public void addNewPlayer(int id, String name) {
-        playerMap.put(id, name);
+
+
+    public void addNewPlayer(PlayerAdded playerAdded) {
+        playerList.add(playerAdded);
     }
 
-    public String getIDFrom(int id) {
-        return playerMap.get(id);
+
+    public boolean playerListContains(int robotID) {
+        for(PlayerAdded playerAdded : playerList){
+            if(playerAdded.getFigure()==robotID){
+                return true;
+            }
+        }
+        return false;
     }
 }
