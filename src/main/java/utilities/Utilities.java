@@ -42,7 +42,7 @@ public class Utilities {
         SelectionFinished, SetStartingPoint, ShufflingCoding,
         StartingPointTaken, TimerEnded, TimerStarted,
         YourCards, PlayerTurning, PlayIt, Reboot, Energy,
-        GameWon, CheckPointsReached
+        GameWon, CheckPointReached
     }
 
 }

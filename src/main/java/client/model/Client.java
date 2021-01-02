@@ -185,7 +185,7 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     logger.info("Player Added: " + playerAdded.getId());
                     addNewPlayer(playerAdded);
-                    logger.info(playerList.size() +" = playerList SIze");
+                    logger.info(playerList.size() +" = playerList Size");
                     lobbyController.setJoinedUsersTextArea(playerAdded);
                     break;
                 case Error:
@@ -220,7 +220,7 @@ public class Client {
                     Energy energy = (Energy) message.getBody();
                     logger.info("Player "+ energy.getPlayerID() + "received 1 energy cube");
                     break;
-                case CheckPointsReached:
+                case CheckPointReached:
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
                     //TODO Display the message in chat for players/users
