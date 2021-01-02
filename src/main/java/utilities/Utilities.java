@@ -36,12 +36,13 @@ public class Utilities {
         PlayerStatus, GameStarted, SendChat,
         ReceivedChat, Error, ConnectionUpdate,
         ActivePhase, CardPlayed, CardSelected,
-        CurrentPlayer, NotYourCards, PlayCard,
-        SelectCard, SelectionFinished,
-        SetStartingPoint, ShufflingCoding,
+        CardsYouGotNow, CurrentCards, CurrentPlayer,
+        DiscardHand, DrawDamage, Movement, NotYourCards,
+        PickDamage, PlayCard, SelectCard, SelectDamage,
+        SelectionFinished, SetStartingPoint, ShufflingCoding,
         StartingPointTaken, TimerEnded, TimerStarted,
-        YourCards, PlayerTurning, Reboot, Energy,
-        GameWon,  CheckPointsReached
+        YourCards, PlayerTurning, PlayIt, Reboot, Energy,
+        GameWon, CheckPointsReached
     }
 
 }
