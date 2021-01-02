@@ -59,10 +59,9 @@ public abstract class Map {
      * @param x
      * @param y
      * @return
-     * @throws ArrayIndexOutOfBoundsException
      * last Edited By: Amulya
      */
-    public Tile getTile(int x, int y) throws ArrayIndexOutOfBoundsException {
+    public Tile getTile(int x, int y)  {
         return null;
     }
 
@@ -79,7 +78,6 @@ public abstract class Map {
      * This methods adds the laser from the map into arrayList of array.
      * Usage <@Class Round.Laser> to find the path of lasers.
      * @return
-     * @author Amulya
      * last Edited By: Amulya
      */
     public  ArrayList<Tile> getLaserTile(){
