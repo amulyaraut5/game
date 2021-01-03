@@ -2,6 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.RotateRobot;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
@@ -34,7 +35,7 @@ public class Gear extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
+    public Node createImage() {
         String path;
         if (orientation == Orientation.RIGHT) {
             path = "/tiles/gear_right.png";

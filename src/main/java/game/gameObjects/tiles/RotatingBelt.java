@@ -2,6 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.MoveRobotInCurve;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
@@ -42,7 +43,7 @@ public class RotatingBelt extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
+    public Node createImage() {
         return new ImageView();
     }
 

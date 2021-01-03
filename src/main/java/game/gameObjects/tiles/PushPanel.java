@@ -2,6 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.MoveRobot;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
@@ -44,7 +45,7 @@ public class PushPanel extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
+    public Node createImage() {
         return new ImageView();
     }
 

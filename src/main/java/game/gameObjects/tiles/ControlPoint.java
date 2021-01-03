@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.CheckpointReached;
@@ -81,7 +83,12 @@ public class ControlPoint extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
-        return new ImageView();
+    public Node createImage() {
+        String path = "tiles/controlPoint/controlPoint_" + count + ".png";
+
+        var stream = getClass().getResourceAsStream(path);
+        var image = new Image(stream, 60, 60, true, true);
+
+        return new ImageView(image);
     }
 }

@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -17,7 +18,7 @@ public class Empty extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
+    public Node createImage() {
         var stream = getClass().getResourceAsStream("/tiles/empty.png");
         var image = new Image(stream, 60, 60, true, true);
 

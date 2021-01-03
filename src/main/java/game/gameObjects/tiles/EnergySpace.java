@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.JSONProtocol.JSONMessage;
@@ -41,7 +42,7 @@ public class EnergySpace extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
+    public Node createImage() {
         String path;
         if (count > 0) {
             path = "/tiles/energySpace_green.png";

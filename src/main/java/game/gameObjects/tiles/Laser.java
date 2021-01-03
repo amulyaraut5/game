@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
@@ -35,7 +36,7 @@ public class Laser extends Attribute {
     }
 
     @Override
-    public ImageView createImage() {
+    public Node createImage() {
         return new ImageView();
     }
 }

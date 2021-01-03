@@ -3,7 +3,7 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
@@ -44,7 +44,7 @@ public abstract class Attribute {
      */
     public abstract void performAction(Player player);
 
-    public abstract ImageView createImage();
+    public abstract Node createImage();
 
     /**
      * Sometimes a robot may find another robot while moving in any directions.
