@@ -5,6 +5,11 @@ import game.Player;
 
 import java.util.ArrayList;
 
+/** this class implements a Round.
+ * a Round consists of the three phases UpgradePhase, ProgrammingPhase and ActivationPhase
+ * in this exact order.
+ */
+
 public class Round {
 
 

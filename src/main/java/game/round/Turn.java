@@ -1,5 +1,9 @@
 package game.round;
 
+/**
+ * A Turn handles the activation of programming cards in the 5 registers.
+ */
+
 public class Turn {
 
 	public void move() {
