@@ -25,12 +25,6 @@ public abstract class Controller {
             "twonky", "spinbot", "zoombot"};
 
 
-    protected String addLineBreaks(String message){
-        String messageWithBreaks;
-        if(message.length()<31) messageWithBreaks = message;
-        else messageWithBreaks = message;
-        return messageWithBreaks;
-    }
     /**
      * This private class represents a robot with its name and id
      */

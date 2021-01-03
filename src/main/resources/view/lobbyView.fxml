@@ -113,7 +113,7 @@
                <children>
                   <VBox fx:id="scrollVBox" alignment="CENTER" prefHeight="200.0" prefWidth="232.0">
                      <children>
-                        <TextArea fx:id="lobbyTextAreaChat" editable="false" prefHeight="202.0" prefWidth="226.0" />
+                        <TextArea fx:id="lobbyTextAreaChat" editable="false" prefHeight="202.0" prefWidth="226.0" wrapText="true" />
                      </children></VBox>
                </children>
             </VBox>
