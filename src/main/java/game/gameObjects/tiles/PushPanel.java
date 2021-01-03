@@ -1,7 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import game.gameActions.MoveRobotBy1;
+import game.gameActions.MoveRobot;
 import javafx.scene.canvas.GraphicsContext;
 import utilities.Coordinate;
 import utilities.Utilities.Orientation;
@@ -35,7 +35,7 @@ public class PushPanel extends Attribute {
         for (int i : registerValue) {
 
             if (i == player.getCurrentRegister()) {
-                new MoveRobotBy1().doAction(orientation,player);
+                new MoveRobot().doAction(orientation,player);
 
             } else {
                 // Do nothing

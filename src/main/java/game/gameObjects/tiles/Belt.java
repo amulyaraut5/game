@@ -1,12 +1,9 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import game.gameActions.MoveRobotBy1;
-import game.gameActions.MoveRobotBy2;
+import game.gameActions.MoveRobot;
 import javafx.scene.canvas.GraphicsContext;
 import utilities.Coordinate;
-import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.Movement;
 import utilities.Utilities.Orientation;
 
 /**
@@ -38,11 +35,12 @@ public class Belt extends Attribute {
             // No movement
         } else {
            if (speed == 1){
-               new MoveRobotBy1().doAction(this.orientation,player);
+               new MoveRobot().doAction(this.orientation,player);
 
            }
            else{
-               new MoveRobotBy2().doAction(this.orientation, player);
+               new MoveRobot().doAction(this.orientation, player);
+               new MoveRobot().doAction(this.orientation, player);
            }
         }
     }

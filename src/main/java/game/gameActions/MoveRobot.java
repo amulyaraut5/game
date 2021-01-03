@@ -3,7 +3,8 @@ package game.gameActions;
 import game.Player;
 import utilities.Utilities.Orientation;
 
-public class MoveRobotBy3 extends Action{
+public class MoveRobot extends Action{
+
 
     @Override
     public void doAction(Orientation orientation, Player player) {
@@ -12,17 +13,18 @@ public class MoveRobotBy3 extends Action{
 
         switch (orientation) {
             case UP:
-                player.getRobot().setPosition(xCoordinate, yCoordinate - 3);
+                player.getRobot().setPosition(xCoordinate, yCoordinate - 1);
                 break;
             case DOWN:
-                player.getRobot().setPosition(xCoordinate, yCoordinate + 3);
+                player.getRobot().setPosition(xCoordinate, yCoordinate + 1);
                 break;
             case LEFT:
-                player.getRobot().setPosition(xCoordinate + 3, yCoordinate);
+                player.getRobot().setPosition(xCoordinate + 1, yCoordinate);
                 break;
             case RIGHT:
-                player.getRobot().setPosition(xCoordinate - 3, yCoordinate);
+                player.getRobot().setPosition(xCoordinate - 1, yCoordinate);
                 break;
         }
     }
 }
+
