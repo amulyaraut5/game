@@ -177,7 +177,7 @@ public class Client {
                     break;
                 case Welcome:
                     Welcome wc = (Welcome) message.getBody();
-                    playerId = wc.getPlayerId();
+                    playerId = wc.getPlayerID();
                     break;
                 case PlayerAdded:
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
