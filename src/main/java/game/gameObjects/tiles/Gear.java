@@ -29,7 +29,7 @@ public class Gear extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        new RotateRobot().doAction(this.orientation,player);
+        new RotateRobot(this.orientation).doAction(this.orientation,player);
 
     }
 

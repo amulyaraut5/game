@@ -31,12 +31,12 @@ public class EnergySpace extends Attribute {
 
         // First we need to check if there are any energy cube left in cell
         if (true) {
-            int energy = player.getEnergyReserve();
+            int energy = player.getEnergyCubes();
             energy += energy;
-            player.setEnergyReserve(energy);
+            player.setEnergyCubes(energy);
             // Todo Decrease the energy cube number
         }
-        JSONMessage jsonMessage = new JSONMessage(new Energy(player.getId(), player.getEnergyReserve()));
+        JSONMessage jsonMessage = new JSONMessage(new Energy(player.getId(), player.getEnergyCubes()));
         userThread.sendMessage(jsonMessage);
     }
 

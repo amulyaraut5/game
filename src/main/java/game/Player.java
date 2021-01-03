@@ -6,6 +6,7 @@ import server.User;
 
 import java.util.ArrayList;
 import java.util.Map;
+import utilities.Utilities.Orientation;
 
 /**
  * This class extends user to specify different Attributes for a player.
@@ -17,13 +18,14 @@ public class Player extends User {
 	 */
 	private Map<Integer, Card> registerAndCards;
 
-
-
 	private Robot robot;
 	private int currentRegister;
 
+	private Card currentAction;
+	private Card lastAction;
+
 	private int lastCheckpoint;
-	private int energyReserve;
+	private int energyCubes;
 
 	private ArrayList<ProgrammingCard> programmingDeck;
 	private ArrayList<ProgrammingCard> discardedProgrammingCards;
@@ -34,6 +36,38 @@ public class Player extends User {
 	private ArrayList<TempUpgradeCard> tempUpgradeCards;
 
 	private int checkPointCounter;
+
+	private Orientation direction;
+
+	public Player(Robot robot) {
+		this.robot = robot;
+		this.direction = Orientation.RIGHT;
+		this.energyCubes = 5;
+	}
+
+	public Card getCurrentAction() {
+		return currentAction;
+	}
+
+	public void setCurrentAction(Card currentAction) {
+		this.currentAction = currentAction;
+	}
+
+	public Card getLastAction() {
+		return lastAction;
+	}
+
+	public void setLastAction(Card lastAction) {
+		this.lastAction = lastAction;
+	}
+
+	public Orientation getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Orientation direction) {
+		this.direction = direction;
+	}
 
 	public void setRegisterAndCards(Map<Integer, Card> mapCards){
 		registerAndCards = mapCards;
@@ -54,12 +88,12 @@ public class Player extends User {
 		this.checkPointCounter = checkPointCounter;
 	}
 
-	public int getEnergyReserve() {
-		return energyReserve;
+	public int getEnergyCubes() {
+		return energyCubes;
 	}
 
-	public void setEnergyReserve(int energyReserve) {
-		this.energyReserve = energyReserve;
+	public void setEnergyCubes(int energyCubes) {
+		this.energyCubes = energyCubes;
 	}
 
 	/**
