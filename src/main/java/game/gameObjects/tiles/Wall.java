@@ -54,9 +54,6 @@ public class Wall extends Attribute {
     public Node createImage() {
         String pathOneWall = "/tiles/wall_up.png";
         String pathTwoWalls = "/tiles/wall_up_right.png";
-        System.out.println("orientation = " + orientation);
-        System.out.println("orientations = " + orientations[0] + " " + orientations[1]);
-        System.out.println();
 
         if (orientation != null) {
 

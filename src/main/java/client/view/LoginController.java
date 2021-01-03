@@ -15,7 +15,7 @@ import utilities.JSONProtocol.body.PlayerValues;
 
 
 /**
- * This class controls the loginView.fxml view, it takes the name and the chosed robot, sends it to
+ * This class controls the loginView.fxml view, it takes the name and the chosen robot, sends it to
  * client and switches to the game view
  *
  * @author sarah,
