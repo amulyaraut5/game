@@ -1,12 +1,40 @@
 package game.gameObjects.cards;
 
-public class ProgrammingCard extends Card {
+import game.gameActions.Action;
+import javafx.scene.image.ImageView;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+
+/**
+ * @author annika
+ */
+public abstract class ProgrammingCard extends Card {
+    /**
+     * Logger to log information/warning
+     */
+    private static final Logger logger = LogManager.getLogger();
 
     private boolean isHidden;
     private boolean isLocked;
+    private String cardName;
+    //BufferedImage cardImage;
+    private ArrayList<Action> actions = new ArrayList<>();
+
+    ProgrammingCard(String cardName) {
+        this.isHidden = false;
+        this.isLocked = false;
+        this.cardName = cardName;
+    }
 
     @Override
     public void handleCard() {
+    }
+
+    public void setAction(Action action) {
+        this.actions.add(action);
     }
 
     /**
@@ -47,6 +75,10 @@ public class ProgrammingCard extends Card {
      */
     public void setLocked(boolean locked) {
         isLocked = locked;
+    }
+
+    public String toString() {
+        return cardName;
     }
 
 }
