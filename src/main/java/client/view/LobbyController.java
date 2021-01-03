@@ -2,10 +2,7 @@ package client.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
@@ -56,11 +53,14 @@ public class LobbyController extends Controller {
     private ImageView currentImageView;
     private Label currentLabel;
 
+    public ChoiceBox<String> directChoiceBox;
     private ArrayList<ImageView> robotImageViews = new ArrayList<>();
     private ArrayList<Label> robotLabels = new ArrayList<>();
     private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
     public void initialize() {
+        directChoiceBox.getItems().add("all");
+        directChoiceBox.getSelectionModel().select(0);
         robotImageViews.add(robot1ImageView);
         robotImageViews.add(robot2ImageView);
         robotImageViews.add(robot3ImageView);
@@ -92,6 +92,7 @@ public class LobbyController extends Controller {
         String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
         currentLabel.setText(playerAdded.getName());
+        directChoiceBox.getItems().add(playerAdded.getName());
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
         RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer);
@@ -133,25 +134,34 @@ public class LobbyController extends Controller {
      */
     @FXML
     private void submitChatMessage(ActionEvent event) {
+        String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
+        logger.info("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
+        JSONMessage jsonMessage;
         if (!message.isBlank()) {
-            lobbyTextAreaChat.appendText("[You]: " + message + "\n");
-            Pattern directPattern = Pattern.compile("^@+");
+            /*Pattern directPattern = Pattern.compile("^@+");
             Matcher directMatcher = directPattern.matcher(message);
-            JSONMessage jsonMessage;
+
             if (directMatcher.lookingAt()) {
                 String destinationUser = (message.split(" ", 2)[0]).substring(1);
                 String messageUser = message.split(" ", 2)[1];
                 if (!messageUser.isBlank()) //
-                logger.info("playerList contains user" + client.getIDFrom(destinationUser));
-                // TODO if username doesn´t exist and if message is empty
-                jsonMessage = new JSONMessage(new SendChat(messageUser, client.getIDFrom(destinationUser)));
-            } else {
+            */
+            if(sendTo.equals("all")){
                 jsonMessage = new JSONMessage(new SendChat(message, -1));
+                lobbyTextAreaChat.appendText("[You]: " + message + "\n");
+            } else{
+                String destinationUser = sendTo;
+                logger.info("playerList contains user" + client.getIDFrom(destinationUser));
+                jsonMessage = new JSONMessage(new SendChat(message, client.getIDFrom(destinationUser)));
+                lobbyTextAreaChat.appendText("[You]: @" + destinationUser + " " + message + "\n");
             }
             client.sendMessage(jsonMessage);
-        }
+            } else {
+                // TODO
+            }
         lobbyTextFieldChat.clear();
+        directChoiceBox.getSelectionModel().select(0);
     }
 
     private class RobotIcon {

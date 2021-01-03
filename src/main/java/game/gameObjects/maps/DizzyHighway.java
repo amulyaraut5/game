@@ -1,7 +1,10 @@
 package game.gameObjects.maps;
 
 
+import game.gameObjects.tiles.Tile;
 import utilities.Utilities;
+
+import java.util.ArrayList;
 
 public class DizzyHighway extends Map {
 
@@ -29,5 +32,6 @@ public class DizzyHighway extends Map {
                 {82, 00, 00, 00, 00, 00, 00, 11, 11, 00},
         };
     }
+
 
 }

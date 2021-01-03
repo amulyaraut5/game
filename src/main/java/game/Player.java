@@ -7,6 +7,10 @@ import server.User;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This class extends user to specify different Attributes for a player.
+ */
+
 public class Player extends User {
 	/**
 	 * a Map which connects the register and the related card the user chooses
@@ -40,7 +44,7 @@ public class Player extends User {
 		return this.robot;
 	}
 
-	public int getCurrentRegister(){ return this.currentRegister; }
+	public int getCurrentRegister(){ return currentRegister; }
 
 	public int getCheckPointCounter() {
 		return checkPointCounter;
@@ -64,4 +68,19 @@ public class Player extends User {
 	 */
     public void freeze() {
     }
+
+	/**
+	 * This method is triggered if a robot finds itself in sight of board laser or robot laser.
+	 */
+
+	private void receiveDamage(){
+		/*
+		for(int i = 0; i < 2 ; i++){
+			card = currentPlayer.drawDamageCard();
+			programmingDeck().add(card);
+		}
+
+		 */
+
+	}
 }

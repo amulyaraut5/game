@@ -3,11 +3,13 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
+import game.gameActions.Action;
 import javafx.scene.canvas.GraphicsContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
 import utilities.Coordinate;
+import utilities.Utilities.Orientation;
 
 /**
  * @author Amulya
@@ -20,6 +22,8 @@ public abstract class Attribute {
     static UserThread userThread;
     static Client client;
     protected String type;
+    protected Orientation orientation;
+
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;
@@ -55,6 +59,13 @@ public abstract class Attribute {
         throw new UnsupportedOperationException();
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
 
     @Override
     public String toString() {

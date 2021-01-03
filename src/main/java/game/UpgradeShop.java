@@ -4,6 +4,10 @@ import game.gameObjects.cards.Card;
 
 import java.util.ArrayList;
 
+/**
+ * This class creates the Upgrade shop where upgrades can be purchased.
+ */
+
 public class UpgradeShop {
 
     private Card[] upgradeShop;

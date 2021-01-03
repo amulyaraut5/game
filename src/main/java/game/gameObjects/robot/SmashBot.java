@@ -7,6 +7,6 @@ public class SmashBot extends Robot {
     public SmashBot() {
         name = "Smash Bot";
         color = Color.YELLOW;
-        imagePath = "";
+        imagePath = "/robots/SmashBot.png";
     }
 }
