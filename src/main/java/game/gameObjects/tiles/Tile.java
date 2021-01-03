@@ -28,6 +28,10 @@ public class Tile {
         return attributes.get(0);
     }
 
+    public ArrayList<Attribute> getAttributes(){
+        return this.attributes;
+    }
+
     /**
      * Adds an Attribute to a tile by saving it in the ArrayList of attributes
      *
