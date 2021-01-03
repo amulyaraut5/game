@@ -71,7 +71,6 @@
                          </effect>
                      </Label>
                      <ImageView fx:id="robot5ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                  <TextArea fx:id="lobbyTextAreaChat" editable="false" prefHeight="202.0" prefWidth="226.0" />
                      <Label fx:id="robot5Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0">
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
@@ -112,7 +111,10 @@
          <content>
             <VBox prefHeight="206.0" prefWidth="215.0">
                <children>
-                  <VBox fx:id="scrollVBox" alignment="CENTER" prefHeight="200.0" prefWidth="232.0" />
+                  <VBox fx:id="scrollVBox" alignment="CENTER" prefHeight="200.0" prefWidth="232.0">
+                     <children>
+                        <TextArea fx:id="lobbyTextAreaChat" editable="false" prefHeight="202.0" prefWidth="226.0" />
+                     </children></VBox>
                </children>
             </VBox>
          </content>
