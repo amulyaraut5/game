@@ -3,7 +3,6 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
-import game.gameActions.Action;
 import javafx.scene.canvas.GraphicsContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

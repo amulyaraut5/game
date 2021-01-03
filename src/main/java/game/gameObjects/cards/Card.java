@@ -1,8 +1,12 @@
 package game.gameObjects.cards;
 
+import javafx.scene.image.ImageView;
+
 public abstract class Card {
 
     private String nameOfCard;
+
+    public abstract ImageView drawCardImage();
 
     /**
      * Abstract method which is different for every card subclasses.
