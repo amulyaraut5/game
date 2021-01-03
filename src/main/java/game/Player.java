@@ -7,6 +7,10 @@ import server.User;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This class extends user to specify different Attributes for a player.
+ */
+
 public class Player extends User {
 	/**
 	 * a Map which connects the register and the related card the user chooses

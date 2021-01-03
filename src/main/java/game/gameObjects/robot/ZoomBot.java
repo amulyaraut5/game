@@ -7,6 +7,6 @@ public class ZoomBot extends Robot {
     public ZoomBot() {
         name = "Zoom Bot";
         color = Color.GREEN;
-        imagePath = "";
+        imagePath = "/robots/ZoomBot.png";
     }
 }

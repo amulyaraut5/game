@@ -1,29 +1,84 @@
 package game.gameObjects.robot;
 
-import game.Player;
-import utilities.Coordinate;
-import utilities.Utilities.Orientation;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import utilities.Coordinate;
+import utilities.Utilities.Orientation;
+import utilities.Utilities.Rotation;
 
 /**
  * @author simon
  */
 public abstract class Robot {
+    protected String imagePath;
 
     protected String name;
     protected Color color;
-    protected String imagePath;
+
+    protected Orientation orientation;
+    protected Coordinate position;
 
     /**
-     * direction in which the robot is facing
+     * Moves the robot regarding its orientation. It is not checked if the move is allowed.
+     * <pre>
+     * {@code move(3)} moves the robot 3 fields forward.
+     * {@code move(-1)} moves the robot 1 field backwards.
+     * </pre>
+     *
+     * @param moveCount Number of fields which the robot moves.
      */
-    protected Orientation orientation;
+    public void move(int moveCount) {
+        move(moveCount, orientation);
+    }
+
     /**
-     * position of the robot on the map
+     * Moves the robot in given direction. It is not checked if the move is allowed.
+     * <pre>
+     * {@code move(3, UP)} moves the robot 3 fields up (i.e. y-3 ).
+     * {@code move(-1, LEFT)} moves the robot 1 field to the right (i.e. x+1 ).
+     * </pre>
+     *
+     * @param moveCount Number of fields which the robot moves.
+     * @param direction Direction of the movement
      */
-    protected Coordinate position;
+    public void move(int moveCount, Orientation direction) {
+        int x = position.getX();
+        int y = position.getY();
+
+        switch (direction) {
+            case UP -> position.setY(y - moveCount);
+            case RIGHT -> position.setX(x + moveCount);
+            case DOWN -> position.setY(y + moveCount);
+            case LEFT -> position.setX(x - moveCount);
+        }
+    }
+
+    /**
+     * Rotates the robots orientation by 90°.
+     *
+     * @param rotation Direction to rotate. Either LEFT or RIGHT.
+     */
+    public void rotate(Rotation rotation) {
+        switch (rotation) {
+            case RIGHT:
+                switch (getOrientation()) {
+                    case UP -> setOrientation(Orientation.RIGHT);
+                    case RIGHT -> setOrientation(Orientation.DOWN);
+                    case DOWN -> setOrientation(Orientation.LEFT);
+                    case LEFT -> setOrientation(Orientation.UP);
+                }
+                break;
+            case LEFT:
+                switch (getOrientation()) {
+                    case UP -> setOrientation(Orientation.LEFT);
+                    case LEFT -> setOrientation(Orientation.DOWN);
+                    case DOWN -> setOrientation(Orientation.RIGHT);
+                    case RIGHT -> setOrientation(Orientation.UP);
+                }
+                break;
+        }
+    }
 
     public void draw(GraphicsContext gc) {
         final Image image = new Image(imagePath);
@@ -47,7 +102,6 @@ public abstract class Robot {
         this.orientation = orientation;
     }
 
-
     public Coordinate getPosition() {
         return position;
     }
@@ -55,9 +109,8 @@ public abstract class Robot {
     public void setPosition(Coordinate position) {
         this.position = position;
     }
+
     public void setPosition(int x, int y) {
-        this.position = new Coordinate(x,y);
+        this.position = new Coordinate(x, y);
     }
-
-
 }
