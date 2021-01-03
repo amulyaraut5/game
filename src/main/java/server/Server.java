@@ -124,7 +124,7 @@ public class Server {
             MapFactory mapFactory = MapFactory.getInstance();
             DizzyHighway dizzyHighway = new DizzyHighway();
             Tile[][] testmap = mapFactory.constructMap(dizzyHighway);
-            logger.info(testmap[7][7].getAttribute());
+            //logger.info(testmap[7][7].getAttribute());
 
 
 

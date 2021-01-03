@@ -48,7 +48,7 @@ public class MapFactory {
 
     public Tile[][] constructMap(Map map){
         TileFactory tileFactory = TileFactory.getInstance();
-        Tile[][] finalMap = new Tile[map.width-1][map.length-1];
+        Tile[][] finalMap = new Tile[map.width][map.length];
         for(int i = 0; i < (map.width); i++){
             for(int j = 0; j < (map.length); j++){
                 finalMap[i][j] = tileFactory.createTile(map.mapBlueprint[i][j]);
