@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 public class Hulk extends Robot {
 
     public Hulk() {
-        name = " Hulk x90";
+        name = "Hulk x90";
         color = Color.RED;
-        imagePath = "";
+        imagePath = "/robots/HulkX90.png";
     }
 }
