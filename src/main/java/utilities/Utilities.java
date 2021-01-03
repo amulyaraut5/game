@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Utilities {
 
-    public static final int PORT = 5555;
+    public static final int PORT = 5557;
 
     public static final Orientation[] UP_LEFT = {Orientation.UP, Orientation.LEFT};
     public static final Orientation[] LEFT_UP = {Orientation.LEFT, Orientation.UP};

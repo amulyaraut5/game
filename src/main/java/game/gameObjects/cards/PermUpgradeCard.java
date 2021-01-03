@@ -1,6 +1,13 @@
 package game.gameObjects.cards;
 
+import javafx.scene.image.ImageView;
+
 public class PermUpgradeCard extends UpgradeCard {
+
+    @Override
+    public ImageView drawCardImage() {
+        return null;
+    }
 
     /**
      * Once you’ve purchased a permanent upgrade, place it on your player mat.

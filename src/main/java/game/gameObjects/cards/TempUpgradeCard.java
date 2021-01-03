@@ -1,8 +1,14 @@
 package game.gameObjects.cards;
 
 import game.Player;
+import javafx.scene.image.ImageView;
 
 public class TempUpgradeCard extends UpgradeCard {
+
+    @Override
+    public ImageView drawCardImage() {
+        return null;
+    }
 
     /**
      * Once you’ve purchased a temporary upgrade,

@@ -10,6 +10,7 @@ public class MoveRobotInCurve extends Action{
 
     }
     // For Blue Rotating Belt
+    // Todo Split cases with boolean isCrossing
     public void doAction2(Orientation[] orientations,Player player){
 
         int xCoordinate = player.getRobot().getPosition().getX();

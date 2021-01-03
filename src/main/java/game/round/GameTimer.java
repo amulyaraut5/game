@@ -1,12 +1,13 @@
 package game.round;
 
+import game.Game;
 import game.Player;
 
 /**
  * if one player is ready with picking cards, he creates an instance of timer (if timer isn´t running yet)
  */
 
-public class GameTimer extends ProgrammingPhase{
+public class GameTimer {
 
 	public GameTimer(Player callingPlayer){
 		super();

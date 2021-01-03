@@ -64,6 +64,7 @@ public class Laser {
 	 * @return return the tiles
 	 */
 
+	// Arrays.asList(cardNames).contains(guessCardName)
 	private ArrayList<Tile> determineLaserPaths() {
 
 		// Lasers tiles from the map
@@ -71,7 +72,8 @@ public class Laser {
 
 			//Direction at which laser is facing.
 			// Todo getAttribute() is implemented in a wrong way
-			if (tile.getAttribute().getOrientation() == Orientation.DOWN)//SOUTH
+
+			if (true)//SOUTH
 			{
 				// Add all  vertical tiles to  Arraylist
 				int xCoordinate = map.getTilePosition(tile).getX();

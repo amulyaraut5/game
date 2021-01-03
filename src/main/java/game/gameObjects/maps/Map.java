@@ -64,16 +64,22 @@ public abstract class Map {
     }
 
     /**
-     * This methods adds the laser from the map into arrayList of array.
+     * This methods adds the laser tiles from the map into arrayList.
      * Usage <@Class Round.Laser> to find the path of lasers.
      * @return
      * last Edited By: Amulya
      */
     public  ArrayList<Tile> getLaserTile(){
-        for(int i = 61; i<= 68; i++){
-            laserTile.add(this.getTile(i));
+        return null;
+        /*
+        for(Tile tile : finalMap){
+            if (tile.getAttribute().getType().equals("Laser")){
+                laserTile.add(tile);
+            }
             return laserTile;
         }
         return null;
+
+         */
     }
 }
