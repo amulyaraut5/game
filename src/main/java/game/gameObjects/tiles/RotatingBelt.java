@@ -3,6 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import game.gameActions.MoveRobotInCurve;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
@@ -13,10 +14,9 @@ import utilities.Utilities.Orientation;
 public class RotatingBelt extends Attribute {
 
 
-    private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
     private Orientation[] orientations; // [0] = Running direction, [1] = rotation direction
     private boolean isCrossing; // true = crossing, false = curve
-
+    private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
 
     public RotatingBelt(Orientation[] orientations, boolean isCrossing, int speed) {
         this.orientations = orientations;
@@ -44,7 +44,54 @@ public class RotatingBelt extends Attribute {
 
     @Override
     public Node createImage() {
-        return new ImageView();
+        System.out.println("orientations = " + orientations[0] + " " + orientations[1]);
+
+        String color = null;
+        if (speed == 1) color = "green";
+        else if (speed == 2) color = "blue";
+
+        String rotation;
+        if (isCrossing) rotation = "crossing";
+        else rotation = "curve";
+
+        String path = "/tiles/" + color + "_" + rotation + ".png";
+
+        var stream = getClass().getResourceAsStream(path);
+        var image = new Image(stream, 60, 60, true, true);
+        var imageView = new ImageView(image);
+
+        switch (orientations[0]) {
+            case UP -> {
+                if (orientations[1] == Orientation.RIGHT) {
+                    imageView.setScaleY(-1f);
+                }
+                break;
+            }
+            case RIGHT -> {
+                if (orientations[1] == Orientation.DOWN) {
+                    imageView.setScaleY(-1f);
+                }
+                imageView.setRotate(90);
+                break;
+            }
+            case DOWN -> {
+                if (orientations[1] == Orientation.LEFT) {
+                    imageView.setScaleY(-1f);
+                }
+                imageView.setRotate(180);
+                break;
+            }
+            case LEFT -> {
+                if (orientations[1] == Orientation.DOWN) {
+                    imageView.setScaleY(-1f);
+                }
+                imageView.setRotate(270);
+                break;
+
+            }
+        }
+
+        return imageView;
     }
 
     /**
@@ -52,11 +99,8 @@ public class RotatingBelt extends Attribute {
      *
      * @return
      */
-
     private boolean collisionPointExist() {
         //TODO
         return false;
     }
-
-
 }
