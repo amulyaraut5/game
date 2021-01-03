@@ -1,27 +1,24 @@
 package client.view;
 
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.Gear;
-import game.gameObjects.tiles.Pit;
+import game.gameObjects.tiles.Empty;
+import game.gameObjects.tiles.RotatingBelt;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
-import utilities.Utilities;
+import utilities.JSONProtocol.body.gameStarted.BoardElement;
+import utilities.Utilities.Orientation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,30 +61,35 @@ public class GameViewController extends Controller {
 
     @FXML
     private void initialize() {
-/*        GraphicsContext gc = fxCanvas.getGraphicsContext2D();
+        var map = new ArrayList<BoardElement>(100);
 
-        gc.setFill(Color.GREEN);
-        gc.fillRect(0, 0, fxCanvas.getHeight(), fxCanvas.getWidth());
+        var field1 = new ArrayList<Attribute>();
+        Orientation[] orientations1 = {Orientation.UP, Orientation.LEFT};
+        field1.add(new Empty());
+        field1.add(new RotatingBelt(orientations1, true, 1));
 
-        String path = "/tiles/green-up.png";
-        String url = getClass().getResource(path).toString();
-        Image image = new Image(url);
-        gc.drawImage(image, 0, 0, 60, 60);
+        var field2 = new ArrayList<Attribute>();
+        Orientation[] orientations2 = {Orientation.RIGHT, Orientation.UP};
+        field2.add(new Empty());
+        field2.add(new RotatingBelt(orientations2, true, 2));
 
-        ArrayList<Attribute> list = new ArrayList<Attribute>(100);
-        for (int j = 0; j < 13; j++) {
-            list.add(new Pit());
-        }
-        list.add(new Gear(Utilities.Orientation.RIGHT));
-        list.add(new Gear(Utilities.Orientation.LEFT));
-        list.add(new Belt(Utilities.Orientation.RIGHT, 1));
-        list.add(new Belt(Utilities.Orientation.LEFT, 2));
+        var field3 = new ArrayList<Attribute>();
+        Orientation[] orientations3 = {Orientation.DOWN, Orientation.RIGHT};
+        field3.add(new Empty());
+        field3.add(new RotatingBelt(orientations3, false, 1));
 
-        for (int j = 0; j < list.size(); j++) {
-            if (list.get(j) != null) {
-                list.get(j).draw(gc, new Coordinate(j % 10, (int) j / 10));
-            }
-        }*/
+        var field4 = new ArrayList<Attribute>();
+        Orientation[] orientations4 = {Orientation.LEFT, Orientation.DOWN};
+        field4.add(new Empty());
+        field4.add(new RotatingBelt(orientations4, false, 2));
+
+// TODO: 03.01.2021  if 2 mapfields have same position, only choose one
+        map.add(new BoardElement(1, field1));
+        map.add(new BoardElement(2, field2));
+        map.add(new BoardElement(3, field3));
+        map.add(new BoardElement(4, field4));
+
+        buildMap(map);
     }
 
     /**
@@ -121,6 +123,22 @@ public class GameViewController extends Controller {
     private void changeInnerView(ActionEvent event) {
         Pane innerPane = setNextPane();
         outerPane.setCenter(innerPane);
+    }
+
+    private void buildMap(ArrayList<BoardElement> map) {
+        for (int i = 0; i < 100; i++) {
+            fields[i] = new Group();
+        }
+
+        for (BoardElement tile : map) {
+            int pos = tile.getPosition();
+            var field = tile.getField();
+            for (Attribute attribute : field) {
+                var attributeImage = attribute.createImage();
+                fields[pos].getChildren().add(attributeImage);
+            }
+            flowPane.getChildren().add(fields[pos]);
+        }
     }
 
     private Pane setNextPane() {

@@ -44,8 +44,6 @@ public class RotatingBelt extends Attribute {
 
     @Override
     public Node createImage() {
-        System.out.println("orientations = " + orientations[0] + " " + orientations[1]);
-
         String color = null;
         if (speed == 1) color = "green";
         else if (speed == 2) color = "blue";
