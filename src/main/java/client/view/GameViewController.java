@@ -33,7 +33,8 @@ import java.util.ArrayList;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    private int i = 0;
+    private final Group[] fields = new Group[100];
+    private int currentInnerView = 0;
     /**
      * the ready Button which can be clicked to show the availability for playing the game
      */
@@ -52,7 +53,7 @@ public class GameViewController extends Controller {
     @FXML
     private BorderPane outerPane;
     @FXML
-    private Canvas fxCanvas;
+    private FlowPane flowPane;
 
     /**
      *
@@ -125,11 +126,11 @@ public class GameViewController extends Controller {
     private Pane setNextPane() {
         Pane innerPane = null;
         String path = null;
-        i = ++i % 3;
+        currentInnerView = ++currentInnerView % 3;
 
-        if (i == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (i == 1) path = "/view/innerViews/programmingView.fxml";
-        else if (i == 2) path = "/view/innerViews/activationView.fxml";
+        if (currentInnerView == 0) path = "/view/innerViews/upgradeView.fxml";
+        else if (currentInnerView == 1) path = "/view/innerViews/programmingView.fxml";
+        else if (currentInnerView == 2) path = "/view/innerViews/activationView.fxml";
 
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));

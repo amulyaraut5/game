@@ -114,7 +114,4 @@ public class TileFactory {
         tile.addAttribute(attribute);
         return tile;
     }
-
-
-
 }

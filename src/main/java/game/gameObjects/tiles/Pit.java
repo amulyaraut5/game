@@ -12,7 +12,6 @@ import utilities.JSONProtocol.body.Reboot;
  */
 public class Pit extends Attribute {
 
-
     public Pit() {
         this.type = "Pit";
     }

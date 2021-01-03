@@ -14,7 +14,7 @@ import utilities.Utilities.Orientation;
 public class RotatingBelt extends Attribute {
 
 
-    private Orientation[] orientations; // [0] = Running direction, [1] = rotation direction
+    private Orientation[] orientations; // [0] = running direction, [1] = rotation direction
     private boolean isCrossing; // true = crossing, false = curve
     private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
 

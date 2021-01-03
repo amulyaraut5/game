@@ -16,7 +16,6 @@ public class Laser extends Attribute {
     private Orientation orientation; //firing direction
     private int count; // number of lasers
 
-
     public Laser(Orientation orientation, int count) {
         this.orientation = orientation;
         this.count = count;
@@ -43,7 +42,7 @@ public class Laser extends Attribute {
         var stream = getClass().getResourceAsStream(path);
         var image = new Image(stream, 60, 60, true, true);
         var imageView = new ImageView(image);
-        switch(orientation){
+        switch (orientation) {
             case RIGHT -> imageView.setRotate(90);
             case DOWN -> imageView.setRotate(180);
             case LEFT -> imageView.setRotate(270);

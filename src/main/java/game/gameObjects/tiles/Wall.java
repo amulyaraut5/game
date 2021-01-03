@@ -77,7 +77,6 @@ public class Wall extends Attribute {
                 switch (orientations[0]) {
                     case UP: {
                         switch (orientations[1]) {
-                            case RIGHT -> imageView.setRotate(0);
                             case DOWN -> imageView = createParallelImage(Orientation.DOWN);
                             case LEFT -> imageView.setRotate(270);
                         }
@@ -85,7 +84,6 @@ public class Wall extends Attribute {
                     }
                     case RIGHT: {
                         switch (orientations[1]) {
-                            case UP -> imageView.setRotate(0);
                             case DOWN -> imageView.setRotate(90);
                             case LEFT -> imageView = createParallelImage(Orientation.LEFT);
                         }

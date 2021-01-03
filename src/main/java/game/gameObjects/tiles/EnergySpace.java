@@ -13,8 +13,7 @@ import utilities.JSONProtocol.body.Energy;
 
 public class EnergySpace extends Attribute {
 
-    // Count attribute to count the energy cubes
-    private int count;
+    private int count; //number of energy cubes
 
     public EnergySpace(int count) {
         this.count = count;

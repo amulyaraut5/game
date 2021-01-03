@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
-import utilities.Utilities.Orientation;
 
 /**
  * @author Amulya
@@ -16,19 +15,13 @@ import utilities.Utilities.Orientation;
 public abstract class Attribute {
 
     protected static final Logger logger = LogManager.getLogger();
-    static Game game;
-    static UserThread userThread;
-    static Client client;
+    protected static Game game;
+    protected static UserThread userThread;//TODO remove?
+    protected static Client client = Client.getInstance();
     protected String type;
-    protected Orientation orientation;
-
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;
-    }
-
-    public static void setClient(Client client) {
-        Attribute.client = client;
     }
 
     public static void setGame(Game game) {
@@ -59,10 +52,6 @@ public abstract class Attribute {
 
     public String getType() {
         return type;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
     }
 
     @Override

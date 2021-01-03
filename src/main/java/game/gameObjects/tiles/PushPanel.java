@@ -12,7 +12,6 @@ import utilities.Utilities.Orientation;
 
 public class PushPanel extends Attribute {
 
-
     private int[] registerValue; //active registers
     private Orientation orientation; // push direction
 

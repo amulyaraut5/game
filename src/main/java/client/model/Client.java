@@ -74,7 +74,6 @@ public class Client {
      * constructor of ChatClient to initialize the attributes hostname and port.
      */
     private Client() {
-        Attribute.setClient(this);
     }
 
     public static Client getInstance() {

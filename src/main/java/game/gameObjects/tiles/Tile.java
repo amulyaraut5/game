@@ -1,18 +1,13 @@
 package game.gameObjects.tiles;
 
-import utilities.Utilities;
-import utilities.Utilities.Orientation;
-
 import java.util.ArrayList;
 
 public class Tile {
 
-    protected String imagePath;
     /**
      * saves one or multiple Attributes for one tile
      */
     private ArrayList<Attribute> attributes = new ArrayList<>();
-    private Attribute attribute;
 
     /**
      * Constructor for tiles.
@@ -21,14 +16,11 @@ public class Tile {
 
     }
 
-    //private Image image;
-
-
     public Attribute getAttribute() {
         return attributes.get(0);
     }
 
-    public ArrayList<Attribute> getAttributes(){
+    public ArrayList<Attribute> getAttributes() {
         return this.attributes;
     }
 
