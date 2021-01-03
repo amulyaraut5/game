@@ -2,9 +2,13 @@ package client.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -53,6 +57,11 @@ public class LobbyController extends Controller {
     private ImageView currentImageView;
     private Label currentLabel;
 
+    public VBox textVBox;
+    public AnchorPane scrollPaneAnchor;
+    public ScrollPane chatScrollPane;
+    public VBox scrollVBox;
+
     public ChoiceBox<String> directChoiceBox;
     private ArrayList<ImageView> robotImageViews = new ArrayList<>();
     private ArrayList<Label> robotLabels = new ArrayList<>();
@@ -61,6 +70,7 @@ public class LobbyController extends Controller {
     public void initialize() {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
+        scrollVBox.setAlignment(Pos.TOP_CENTER);
         robotImageViews.add(robot1ImageView);
         robotImageViews.add(robot2ImageView);
         robotImageViews.add(robot3ImageView);
@@ -77,10 +87,18 @@ public class LobbyController extends Controller {
 
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
+
     }
 
     public void setTextArea(String messageBody) {
+        TextArea chatText = new TextArea(messageBody);
+        chatText.setMaxHeight(20);
+        chatText.setMaxWidth(110);
+        HBox hBox = new HBox(chatText);
+        hBox.setAlignment(Pos.TOP_LEFT);
+        scrollVBox.getChildren().add(hBox);
         lobbyTextAreaChat.appendText(messageBody + "\n");
+
     }
 
     /**
@@ -134,9 +152,16 @@ public class LobbyController extends Controller {
      */
     @FXML
     private void submitChatMessage(ActionEvent event) {
+
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
-        logger.info("chose choice: " + sendTo);
+                logger.info("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
+        String store = "";
+        if(message.length()>=10){
+            String sub1 = message.substring(0, 10);
+            String sub2 = message.substring(11, message.length()-1);
+            store = sub1 + "\n" + sub2;
+        } else store = message;
         JSONMessage jsonMessage;
         if (!message.isBlank()) {
             /*Pattern directPattern = Pattern.compile("^@+");
@@ -147,15 +172,40 @@ public class LobbyController extends Controller {
                 String messageUser = message.split(" ", 2)[1];
                 if (!messageUser.isBlank()) //
             */
+            TextArea youMessage = new TextArea(store + "\n");
+            HBox hBox = new HBox(youMessage);
+            hBox.setAlignment(Pos.TOP_RIGHT);
+
+            //Label label = new Label("[You]: " + message + "\n");
+            //label.setAlignment(Pos.TOP_RIGHT);
+            // label.setStyle("-fx-font-alignment: right");
+            youMessage.setMaxHeight(20);
+            youMessage.setMaxWidth(110);
+            //chatText.setAlignment(Pos.TOP_RIGHT);
+            //chatText.alignmentProperty().setValue(Pos.TOP_RIGHT);
+            //chatText.setStyle("-fx-text-alignment: right;");
+
             if(sendTo.equals("all")){
-                jsonMessage = new JSONMessage(new SendChat(message, -1));
+                jsonMessage = new JSONMessage(new SendChat(store, -1));
+                //scrollVBox.setAlignment(Pos.TOP_RIGHT);
+                //chatText.centerShapeProperty().setValue(false);
+                //chatText.
+                //textVBox.getChildren().add(new TextArea("hallo"));
+                //scrollPaneAnchor.getChildren().add(new TextArea("hallo"));
+                //chatScrollPane.getContent().
                 lobbyTextAreaChat.appendText("[You]: " + message + "\n");
+                //scrollVBox.getChildren().add(hBox);
             } else{
                 String destinationUser = sendTo;
+                youMessage.setText("@" + destinationUser + " " + store + "\n");
+                //chatText.setStyle("-fx-text-fill: green;");
+                //scrollVBox.setAlignment(Pos.TOP_LEFT);
+                //scrollVBox.getChildren().add(chatText);
                 logger.info("playerList contains user" + client.getIDFrom(destinationUser));
-                jsonMessage = new JSONMessage(new SendChat(message, client.getIDFrom(destinationUser)));
+                jsonMessage = new JSONMessage(new SendChat(store, client.getIDFrom(destinationUser)));
                 lobbyTextAreaChat.appendText("[You]: @" + destinationUser + " " + message + "\n");
             }
+            scrollVBox.getChildren().add(hBox);
             client.sendMessage(jsonMessage);
             } else {
                 // TODO

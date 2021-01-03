@@ -5,10 +5,24 @@
 
 .list-cell {
     -fx-background-color: transparent;
+
     /*-fx-control-inner-background: blue ;
     -fx-control-inner-background-alt: derive(-fx-control-inner-background, 50%);*/
 }
+/*
+Label{
+-fx-text-alignment: right;
+-fx-alignment: right;
+-fx-color: red;
+-fx-background-color: red;
+}
 
+label{
+-fx-text-alignment: right;
+-fx-alignment: right;
+-fx-color: red;
+-fx-background-color: red;
+}*/
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: transparent;
     -fx-border-color: green;
@@ -19,5 +33,8 @@
     -fx-border-color: gray;
     -fx-border-width: 3px;
 }
+TextArea{
+-fx-background-color: blue;
+-fx-font-size: 10;}
 
 
