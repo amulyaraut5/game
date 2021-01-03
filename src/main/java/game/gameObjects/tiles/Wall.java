@@ -1,8 +1,10 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -45,9 +47,90 @@ public class Wall extends Attribute {
         // Does nothing
     }
 
+    /**
+     * @return
+     */
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
+    public Node createImage() {
+        String pathOneWall = "/tiles/wall_up.png";
+        String pathTwoWalls = "/tiles/wall_up_right.png";
+        System.out.println("orientation = " + orientation);
+        System.out.println("orientations = " + orientations[0] + " " + orientations[1]);
+        System.out.println();
 
+        if (orientation != null) {
+
+            var stream = getClass().getResourceAsStream(pathOneWall);
+            var image = new Image(stream, 60, 60, true, true);
+            var imageView = new ImageView(image);
+
+            switch (orientation) {
+                case RIGHT -> imageView.setRotate(90);
+                case DOWN -> imageView.setRotate(180);
+                case LEFT -> imageView.setRotate(270);
+            }
+            return imageView;
+
+        } else {
+            if (orientations != null) {
+                var stream = getClass().getResourceAsStream(pathTwoWalls);
+                var image = new Image(stream, 60, 60, true, true);
+                Node imageView = new ImageView(image);
+
+                switch (orientations[0]) {
+                    case UP: {
+                        switch (orientations[1]) {
+                            case RIGHT -> imageView.setRotate(0);
+                            case DOWN -> imageView = createParallelImage(Orientation.DOWN);
+                            case LEFT -> imageView.setRotate(270);
+                        }
+                        break;
+                    }
+                    case RIGHT: {
+                        switch (orientations[1]) {
+                            case UP -> imageView.setRotate(0);
+                            case DOWN -> imageView.setRotate(90);
+                            case LEFT -> imageView = createParallelImage(Orientation.LEFT);
+                        }
+                        break;
+                    }
+                    case DOWN: {
+                        switch (orientations[1]) {
+                            case UP -> imageView = createParallelImage(Orientation.UP);
+                            case RIGHT -> imageView.setRotate(90);
+                            case LEFT -> imageView.setRotate(180);
+                        }
+                        break;
+                    }
+                    case LEFT: {
+                        switch (orientations[1]) {
+                            case UP -> imageView.setRotate(270);
+                            case RIGHT -> imageView = createParallelImage(Orientation.RIGHT);
+                            case DOWN -> imageView.setRotate(180);
+                        }
+                        break;
+                    }
+                }
+                return imageView;
+            }
+        }
+        return null;
+    }
+
+    private Group createParallelImage(Orientation o) {
+        var stream = getClass().getResourceAsStream("/tiles/wall_up.png");
+        var image = new Image(stream, 60, 60, true, true);
+        var imageView1 = new ImageView(image);
+        var imageView2 = new ImageView(image);
+
+        if (o == Orientation.UP || o == Orientation.DOWN) {
+            imageView2.setRotate(180);
+        } else {
+            imageView1.setRotate(90);
+            imageView2.setRotate(270);
+        }
+
+        return new Group(imageView1, imageView2);
     }
 }
 

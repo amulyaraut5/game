@@ -149,12 +149,12 @@ public class LobbyController extends Controller {
             */
             if(sendTo.equals("all")){
                 jsonMessage = new JSONMessage(new SendChat(message, -1));
-                lobbyTextAreaChat.appendText("[You]: " + message + "\n");
+                lobbyTextAreaChat.appendText("[You] " + message + "\n");
             } else{
                 String destinationUser = sendTo;
                 logger.info("playerList contains user" + client.getIDFrom(destinationUser));
                 jsonMessage = new JSONMessage(new SendChat(message, client.getIDFrom(destinationUser)));
-                lobbyTextAreaChat.appendText("[You]: @" + destinationUser + " " + message + "\n");
+                lobbyTextAreaChat.appendText("[You] @" + destinationUser + ": " + message + "\n");
             }
             client.sendMessage(jsonMessage);
             } else {

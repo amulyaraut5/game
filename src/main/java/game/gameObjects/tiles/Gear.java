@@ -2,8 +2,9 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.RotateRobot;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -29,13 +30,23 @@ public class Gear extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        new RotateRobot(this.orientation).doAction(this.orientation,player);
+        new RotateRobot(this.orientation).doAction(this.orientation, player);
 
     }
 
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
+    public Node createImage() {
+        String path;
+        if (orientation == Orientation.RIGHT) {
+            path = "/tiles/gear_right.png";
+        } else {
+            path = "/tiles/gear_left.png";
+        }
 
+        var stream = getClass().getResourceAsStream(path);
+        var image = new Image(stream, 60, 60, true, true);
+
+        return new ImageView(image);
     }
 
 }

@@ -109,7 +109,6 @@ public class Client {
         }
 
         readerThread = new ReaderThread(socket, this);
-        readerThread.setName("ReaderThread");
         readerThread.start();
 
         logger.info("Connection to server successful.");
@@ -160,7 +159,6 @@ public class Client {
         writer.println(json);
     }
 
-
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is downcasted to respective class.
@@ -183,28 +181,29 @@ public class Client {
                     break;
                 case PlayerAdded:
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
-                    logger.info("Player Added: " + playerAdded.getId());
+                    //logger.info("Player Added: " + playerAdded.getId());
                     addNewPlayer(playerAdded);
                     logger.info(playerList.size() +" = playerList Size");
-                    lobbyController.setJoinedUsersTextArea(playerAdded);
+                    lobbyController.setJoinedUsers(playerAdded);
                     break;
                 case Error:
                     Error error = (Error) message.getBody();
-                    logger.info("Error Message: " + error.getError());
+                    logger.warn("Error Message: " + error.getError());
                     break;
                 case PlayerStatus:
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    logger.info("PlayerStatus: " + playerStatus.isReady());
                     lobbyController.setReadyUsersTextArea(playerStatus);
                     break;
                 case ReceivedChat:
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
-                    logger.info(receivedChat.getMessage());
-                    lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                    String receivedMessage;
+                    if(receivedChat.isPrivat())
+                        receivedMessage = "[" +receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
+                    else receivedMessage = "[" +receivedChat.getFrom() + "] " + receivedChat.getMessage();
+                    lobbyController.setTextArea(receivedMessage);
                     break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
-
                     logger.info("The game has started.");
                     break;
                 case ConnectionUpdate:
@@ -220,7 +219,7 @@ public class Client {
                     Energy energy = (Energy) message.getBody();
                     logger.info("Player "+ energy.getPlayerID() + "received 1 energy cube");
                     break;
-                case CheckPointReached:
+                case CheckPointsReached:
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
                     //TODO Display the message in chat for players/users
@@ -231,7 +230,7 @@ public class Client {
                     //TODO Display the message in chat for players/users
                     break;
                 default:
-                    logger.info("Something went wrong");
+                    logger.warn("Something went wrong");
             }
         });
     }

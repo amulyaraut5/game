@@ -1,8 +1,9 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -33,8 +34,11 @@ public class Antenna extends Attribute {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
+    public Node createImage() {
+        var stream = getClass().getResourceAsStream("/tiles/antenna.png");
+        var image = new Image(stream, 60, 60, true, true);
 
+        return new ImageView(image);
     }
 
 }

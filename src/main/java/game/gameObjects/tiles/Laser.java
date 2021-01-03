@@ -1,10 +1,9 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
-
 
 
 /**
@@ -28,6 +27,7 @@ public class Laser extends Attribute {
      * as the laser should not only fire when the robot steps on laser tile
      * but also at every instance after every register.
      * The robot can get hit at any tile as long as it is in the range of laser.
+     *
      * @param player
      */
     @Override
@@ -36,7 +36,7 @@ public class Laser extends Attribute {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
-
+    public Node createImage() {
+        return new ImageView();
     }
 }

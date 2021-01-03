@@ -2,7 +2,9 @@ package server;
 
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
+import game.gameObjects.maps.MapFactory;
 import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.TileFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -119,12 +121,17 @@ public class Server {
             fieldList3.add(attributeC);
             fieldList3.add(attributeD);*/
 
-            ArrayList<Tile> mapList;
+            MapFactory mapFactory = MapFactory.getInstance();
             DizzyHighway dizzyHighway = new DizzyHighway();
-            Map.generateMap(dizzyHighway);
-            mapList = Map.getMap();
+            Tile[][] testmap = mapFactory.constructMap(dizzyHighway);
+            //logger.info(testmap[7][7].getAttribute());
 
-            JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
+
+
+
+
+
+            //JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
             //System.out.println(Multiplex.serialize(jMessage));
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {

@@ -3,11 +3,10 @@ package game.gameObjects.tiles;
 import client.model.Client;
 import game.Game;
 import game.Player;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
-import utilities.Coordinate;
 import utilities.Utilities.Orientation;
 
 /**
@@ -45,7 +44,7 @@ public abstract class Attribute {
      */
     public abstract void performAction(Player player);
 
-    public abstract void draw(GraphicsContext gc, Coordinate position);
+    public abstract Node createImage();
 
     /**
      * Sometimes a robot may find another robot while moving in any directions.
