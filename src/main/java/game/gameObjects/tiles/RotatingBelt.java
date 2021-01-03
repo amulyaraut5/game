@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.MoveRobotInCurve;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -36,11 +35,17 @@ public class RotatingBelt extends Attribute {
         if (collisionPointExist()) {
             // No movement
         } else {
-            if(speed ==2){
+            if (speed == 2) {
                 new MoveRobotInCurve().doAction2(this.orientations, player);
             }
         }
     }
+
+    @Override
+    public ImageView createImage() {
+        return new ImageView();
+    }
+
     /**
      * This method checks if two robots converge at the same point or not.
      *
@@ -50,11 +55,6 @@ public class RotatingBelt extends Attribute {
     private boolean collisionPointExist() {
         //TODO
         return false;
-    }
-
-    @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
-
     }
 
 

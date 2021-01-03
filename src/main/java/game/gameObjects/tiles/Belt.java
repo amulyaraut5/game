@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.MoveRobot;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -34,20 +33,19 @@ public class Belt extends Attribute {
         if (collisionPointExist()) {
             // No movement
         } else {
-           if (speed == 1){
-               new MoveRobot().doAction(this.orientation,player);
+            if (speed == 1) {
+                new MoveRobot().doAction(this.orientation, player);
 
-           }
-           else{
-               new MoveRobot().doAction(this.orientation, player);
-               new MoveRobot().doAction(this.orientation, player);
-           }
+            } else {
+                new MoveRobot().doAction(this.orientation, player);
+                new MoveRobot().doAction(this.orientation, player);
+            }
         }
     }
 
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
-
+    public ImageView createImage() {
+        return new ImageView();
     }
 
     /**

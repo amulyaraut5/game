@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import game.gameActions.MoveRobot;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -35,7 +34,7 @@ public class PushPanel extends Attribute {
         for (int i : registerValue) {
 
             if (i == player.getCurrentRegister()) {
-                new MoveRobot().doAction(orientation,player);
+                new MoveRobot().doAction(orientation, player);
 
             } else {
                 // Do nothing
@@ -45,8 +44,8 @@ public class PushPanel extends Attribute {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
-
+    public ImageView createImage() {
+        return new ImageView();
     }
 
 }
