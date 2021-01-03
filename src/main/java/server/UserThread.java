@@ -25,6 +25,7 @@ public class UserThread extends Thread {
      * Logger to log information/warning
      */
     private static final Logger logger = LogManager.getLogger();
+    private static int idCounter = 1; //Number of playerIDs is saved to give new player a new number
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
@@ -87,12 +88,23 @@ public class UserThread extends Thread {
     }
 
     /**
+     * prints a message for specific user
+     *
+     * @param msg the message to be sent
+     */
+    public void sendMessage(JSONMessage msg) {
+        String json = Multiplex.serialize(msg);
+        //logger.debug("Protocol sent:" + json);
+        writer.println(json);
+        writer.flush();
+    }
+
+    /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is casted down to respective class.
      *
      * @param message received Object of JSONMessage
      */
-
     private void handleMessage(JSONMessage message) {
         MessageType type = message.getType();
 
@@ -108,7 +120,7 @@ public class UserThread extends Thread {
                     sendMessage(jsonMessage);
                     //disconnect();
                 } else {
-                    playerID = server.getNewID();
+                    playerID = idCounter++;
                     JSONMessage jsonMessage = new JSONMessage(new Welcome(playerID));
                     currentThread().setName("UserThread-" + playerID);
                     sendMessage(jsonMessage);
@@ -156,24 +168,11 @@ public class UserThread extends Thread {
                 break;
             case GameWon:
                 GameWon gameWon = (GameWon) message.getBody();
-                server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())),this);
+                server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())), this);
                 // TODO end the game
                 break;
         }
     }
-
-    /**
-     * prints a message for specific user
-     *
-     * @param msg the message to be sent
-     */
-    public void sendMessage(JSONMessage msg) {
-        String json = Multiplex.serialize(msg);
-        //logger.debug("Protocol sent:" + json);
-        writer.println(json);
-        writer.flush();
-    }
-
 
     private void logIn(String userName) {
         if (!server.isAvailable(userName)) {

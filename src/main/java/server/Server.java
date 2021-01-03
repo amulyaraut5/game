@@ -30,14 +30,6 @@ public class Server {
      * list of users that gets added after every new instance of user is created
      */
     private final ArrayList<User> users = new ArrayList<>(10);
-    /**
-     * idGenerator to give id´s to the users
-     */
-    private final Random idGenerator = new Random();
-    /**
-     * Array with all the id´s that already exist
-     */
-    private ArrayList<Integer> idNumbers = new ArrayList<>();
 
     /**
      *
@@ -190,21 +182,6 @@ public class Server {
      */
     public void removeUser(User user) {
         users.remove(user);
-    }
-
-    /**
-     * This method creates an id which is not assigned to any user yet
-     *
-     * @return a new ID for the user
-     */
-    public int getNewID() {
-        int newID;
-        do {
-            newID = idGenerator.nextInt(Integer.MAX_VALUE);
-            idNumbers.add(newID);
-            return newID;
-        } while (!idNumbers.contains(newID));
-
     }
 
     public ArrayList<JSONMessage> getPlayerValuesList() {
