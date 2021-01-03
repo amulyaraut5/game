@@ -54,20 +54,7 @@ public class Laser {
 		}
 	}
 
-	/**
-	 * This method is triggered if a robot finds itself in sight of board laser or robot laser.
-	 */
 
-	private void receiveDamage(){
-		/*
-		for(int i = 0; i < 2 ; i++){
-			card = currentPlayer.drawDamageCard();
-			programmingDeck().add(card);
-		}
-
-		 */
-
-	}
 
 	/**
 	 * It determines the path through which the lasers traverse.

@@ -5,6 +5,11 @@ import game.Player;
 
 import java.util.ArrayList;
 
+/** this class implements a Round.
+ * a Round consists of the three phases UpgradePhase, ProgrammingPhase and ActivationPhase
+ * in this exact order.
+ */
+
 public class Round {
 
 
@@ -14,13 +19,9 @@ public class Round {
 	private Game game;
 
 	/**
-	 * the list which contains the players of the round
-	 * (they get kicked out of this list if they have to reboot)
+	 * the list which contains the players of the round (they get kicked out of this list if they have to reboot)
 	 */
 	private ArrayList<Player> activePlayerList = new ArrayList<>();
-
-	public Round() {
-	}
 
 	/**
 	 * player get their  cards for programming their robot in this round

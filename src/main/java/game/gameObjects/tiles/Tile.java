@@ -1,6 +1,7 @@
 package game.gameObjects.tiles;
 
 import utilities.Utilities;
+import utilities.Utilities.Orientation;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,6 @@ public class Tile {
     }
 
 
-
     public Attribute getAttribute() {
         return attributes.get(0);
     }
@@ -53,7 +53,6 @@ public class Tile {
     }
 
 
-
     /**
      * This method creates the tile with specific attribute.
      * Every tile has then it's own specific id which can be called while laying out the map structure.
@@ -66,252 +65,102 @@ public class Tile {
 
     public Tile createTile(int tileID) {
         Tile tile = new Tile();
-        ArrayList<Utilities.Orientation> orientations;
+        Attribute attribute = null;
+
         switch (tileID) {
-            case 00:
-                tile.addAttribute(new Empty());
-                break;
+            case 00 -> attribute = new Empty();
+            case 111 -> attribute = new Antenna();
 
-            case 111:
-                tile.addAttribute(new Antenna());
-                break;
-            // draw();
-            // TODO should be changed
-            // Belt constructor has 2 attributes.
+            //Belt
+            case 01 -> attribute = new Belt(Orientation.UP, 1);
+            case 02 -> attribute = new Belt(Orientation.DOWN, 1);
+            case 03 -> attribute = new Belt(Orientation.LEFT, 1);
+            case 04 -> attribute = new Belt(Orientation.RIGHT, 1);
+            case 11 -> attribute = new Belt(Orientation.UP, 2);
+            case 12 -> attribute = new Belt(Orientation.DOWN, 2);
+            case 13 -> attribute = new Belt(Orientation.LEFT, 2);
+            case 14 -> attribute = new Belt(Orientation.RIGHT, 2);
 
-            //Green Conveyor Belts
-            case 01:
-                tile.addAttribute(new Belt(Utilities.Orientation.UP, 1));
-                break;
-            case 02:
-                tile.addAttribute(new Belt(Utilities.Orientation.DOWN, 1));
-                break;
-            case 03:
-                tile.addAttribute(new Belt(Utilities.Orientation.LEFT, 1));
-                break;
-            case 04:
-                tile.addAttribute(new Belt(Utilities.Orientation.RIGHT, 1));
-                break;
-            // draw();
+            //RotatingBelt
+            case 21 -> attribute = new RotatingBelt(Utilities.UP_LEFT, false, 1);
+            case 22 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, false, 1);
+            case 23 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, false, 1);
+            case 24 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, false, 1);
 
-            //Blue Conveyor Belts
-            case 11:
-                tile.addAttribute(new Belt(Utilities.Orientation.UP, 2));
-                break;
-            case 12:
-                tile.addAttribute(new Belt(Utilities.Orientation.DOWN, 2));
-                break;
-            case 13:
-                tile.addAttribute(new Belt(Utilities.Orientation.LEFT, 2));
-                break;
-            case 14:
-                tile.addAttribute(new Belt(Utilities.Orientation.RIGHT, 2));
-                break;
-            // draw();
+            case 25 -> attribute = new RotatingBelt(Utilities.UP_LEFT, true, 1);
+            case 26 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, true, 1);
+            case 27 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, true, 1);
+            case 28 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, true, 1);
 
-            //Green Rotating Conveyor Belts
-            case 21:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, false, 1));
-                break;
-            case 22:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, false, 1));
-                break;
-            case 23:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, false, 1));
-                break;
-            case 24:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, false, 1));
-                break;
+            case 31 -> attribute = new RotatingBelt(Utilities.UP_LEFT, false, 2);
+            case 32 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, false, 2);
+            case 33 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, false, 2);
+            case 34 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, false, 2);
 
-            case 25:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, true, 1));
-                break;
-            case 26:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, true, 1));
-                break;
-            case 27:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, true, 1));
-                break;
-            case 28:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, true, 1));
-                break;
-            // draw();
+            case 101 -> attribute = new RotatingBelt(Utilities.LEFT_UP, false, 2);
+            case 102 -> attribute = new RotatingBelt(Utilities.RIGHT_UP, false, 2);
+            case 103 -> attribute = new RotatingBelt(Utilities.LEFT_DOWN, false, 2);
+            case 104 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, false, 2);
 
-            //Blue Rotating Conveyor Belts
-            case 31:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, false, 2));
-                break;
-            case 32:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, false, 2));
-                break;
-            case 33:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, false, 2));
-                break;
-            case 34:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, false, 2));
-                break;
+            case 35 -> attribute = new RotatingBelt(Utilities.UP_LEFT, true, 2);
+            case 36 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, true, 2);
+            case 37 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, true, 2);
+            case 38 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, true, 2);
 
-            case 101:
-                tile.addAttribute(new RotatingBelt(Utilities.LEFT_UP, false, 2));
-                break;
-            case 102:
-                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_UP, false, 2));
-                break;
-            case 103:
-                tile.addAttribute(new RotatingBelt(Utilities.LEFT_DOWN, false, 2));
-                break;
-            case 104:
-                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_DOWN, false, 2));
-                break;
+            case 105 -> attribute = new RotatingBelt(Utilities.LEFT_UP, true, 2);
+            case 106 -> attribute = new RotatingBelt(Utilities.RIGHT_UP, true, 2);
+            case 107 -> attribute = new RotatingBelt(Utilities.LEFT_DOWN, true, 2);
+            case 108 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, true, 2);
 
-            case 35:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_LEFT, true, 2));
-                break;
-            case 36:
-                tile.addAttribute(new RotatingBelt(Utilities.UP_RIGHT, true, 2));
-                break;
-            case 37:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_LEFT, true, 2));
-                break;
-            case 38:
-                tile.addAttribute(new RotatingBelt(Utilities.DOWN_RIGHT, true, 2));
-                break;
+            //PushPanel
+            case 40 -> attribute = new PushPanel(Orientation.DOWN, new int[]{2, 4});
+            case 41 -> attribute = new PushPanel(Orientation.UP, new int[]{2, 4});
+            case 42 -> attribute = new PushPanel(Orientation.LEFT, new int[]{2, 4});
+            case 43 -> attribute = new PushPanel(Orientation.RIGHT, new int[]{2, 4});
+            case 44 -> attribute = new PushPanel(Orientation.DOWN, new int[]{1, 3, 5});
+            case 45 -> attribute = new PushPanel(Orientation.UP, new int[]{1, 3, 5});
+            case 46 -> attribute = new PushPanel(Orientation.LEFT, new int[]{1, 3, 5});
+            case 47 -> attribute = new PushPanel(Orientation.RIGHT, new int[]{1, 3, 5});
 
-            case 105:
-                tile.addAttribute(new RotatingBelt(Utilities.LEFT_UP, true, 2));
-                break;
-            case 106:
-                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_UP, true, 2));
-                break;
-            case 107:
-                tile.addAttribute(new RotatingBelt(Utilities.LEFT_DOWN, true, 2));
-                break;
-            case 108:
-                tile.addAttribute(new RotatingBelt(Utilities.RIGHT_DOWN, true, 2));
-                break;
-            // draw();
+            //Gear
+            case 51 -> attribute = new Gear(Orientation.LEFT);
+            case 52 -> attribute = new Gear(Orientation.RIGHT);
 
-            //Push Panels
-            case 40:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.DOWN, new int[]{2, 4}));
-                break;
-            case 41:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.UP, new int[]{2, 4}));
-                break;
-            case 42:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.LEFT, new int[]{2, 4}));
-                break;
-            case 43:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.RIGHT, new int[]{2, 4}));
-                break;
+            //Laser
+            case 61 -> attribute = new Laser(Orientation.DOWN, 1);
+            case 62 -> attribute = new Laser(Orientation.UP, 1);
+            case 63 -> attribute = new Laser(Orientation.LEFT, 1);
+            case 64 -> attribute = new Laser(Orientation.RIGHT, 1);
 
-            case 44:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.DOWN, new int[]{1, 3, 5}));
-                break;
-            case 45:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.UP, new int[]{1, 3, 5}));
-                break;
-            case 46:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.LEFT, new int[]{1, 3, 5}));
-                break;
-            case 47:
-                tile.addAttribute(new PushPanel(Utilities.Orientation.RIGHT, new int[]{1, 3, 5}));
-                break;
+            case 65 -> attribute = new Laser(Orientation.DOWN, 2);
+            case 66 -> attribute = new Laser(Orientation.UP, 2);
+            case 67 -> attribute = new Laser(Orientation.LEFT, 2);
+            case 68 -> attribute = new Laser(Orientation.RIGHT, 2);
 
-            //Gears
-            case 51:
-                tile.addAttribute(new Gear(Utilities.Orientation.LEFT));
-                break;
-            case 52:
-                tile.addAttribute(new Gear(Utilities.Orientation.RIGHT));
-                break;
-            // draw();
+            case 71 -> attribute = new Laser(Orientation.DOWN, 3);
+            case 72 -> attribute = new Laser(Orientation.UP, 3);
+            case 73 -> attribute = new Laser(Orientation.LEFT, 3);
+            case 74 -> attribute = new Laser(Orientation.RIGHT, 3);
 
-            //Board Lasers
-            case 61:
-                tile.addAttribute(new Laser(Utilities.Orientation.DOWN, 1));
-                break;
-            case 62:
-                tile.addAttribute(new Laser(Utilities.Orientation.UP, 1));
-                break;
-            case 63:
-                tile.addAttribute(new Laser(Utilities.Orientation.LEFT, 1));
-                break;
-            case 64:
-                tile.addAttribute(new Laser(Utilities.Orientation.RIGHT, 1));
-                break;
+            //EnergySpace
+            case 81 -> attribute = new EnergySpace(0);
+            case 82 -> attribute = new EnergySpace(1);
 
-            case 65:
-                tile.addAttribute(new Laser(Utilities.Orientation.DOWN, 2));
-                break;
-            case 66:
-                tile.addAttribute(new Laser(Utilities.Orientation.UP, 2));
-                break;
-            case 67:
-                tile.addAttribute(new Laser(Utilities.Orientation.LEFT, 2));
-                break;
-            case 68:
-                tile.addAttribute(new Laser(Utilities.Orientation.RIGHT, 2));
-                break;
+            //Pit
+            case 90 -> attribute = new Pit();
 
-            case 71:
-                tile.addAttribute(new Laser(Utilities.Orientation.DOWN, 3));
-                break;
-            case 72:
-                tile.addAttribute(new Laser(Utilities.Orientation.UP, 3));
-                break;
-            case 73:
-                tile.addAttribute(new Laser(Utilities.Orientation.LEFT, 3));
-                break;
-            case 74:
-                tile.addAttribute(new Laser(Utilities.Orientation.RIGHT, 3));
-                break;
-            // draw();
-
-            //Energy Spaces
-            case 81:
-                tile.addAttribute(new EnergySpace(0));
-                break;
-            case 82:
-                tile.addAttribute(new EnergySpace(1));
-                break;
-            // draw();
-
-            //Pits
-            case 90:
-                tile.addAttribute(new Pit());
-                break;
-
-            //Walls
-            case 91:
-                tile.addAttribute(new Wall(Utilities.Orientation.DOWN));
-                break;
-            case 92:
-                tile.addAttribute(new Wall(Utilities.Orientation.UP));
-                break;
-            case 93:
-                tile.addAttribute(new Wall(Utilities.Orientation.LEFT));
-                break;
-            case 94:
-                tile.addAttribute(new Wall(Utilities.Orientation.RIGHT));
-                break;
-
-            case 95:
-                tile.addAttribute(new Wall(Utilities.UP_LEFT));
-                break;
-            case 96:
-                tile.addAttribute(new Wall(Utilities.UP_RIGHT));
-                break;
-            case 97:
-                tile.addAttribute(new Wall(Utilities.DOWN_LEFT));
-                break;
-            case 98:
-                tile.addAttribute(new Wall(Utilities.DOWN_RIGHT));
-                break;
-
-            // Tile with two walls
-
+            //Wall
+            case 91 -> attribute = new Wall(Orientation.DOWN);
+            case 92 -> attribute = new Wall(Orientation.UP);
+            case 93 -> attribute = new Wall(Orientation.LEFT);
+            case 94 -> attribute = new Wall(Orientation.RIGHT);
+            case 95 -> attribute = new Wall(Utilities.UP_LEFT);
+            case 96 -> attribute = new Wall(Utilities.UP_RIGHT);
+            case 97 -> attribute = new Wall(Utilities.DOWN_LEFT);
+            case 98 -> attribute = new Wall(Utilities.DOWN_RIGHT);
         }
+
+        tile.addAttribute(attribute);
         return tile;
     }
 

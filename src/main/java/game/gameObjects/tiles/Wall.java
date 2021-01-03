@@ -1,8 +1,7 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import javafx.scene.canvas.GraphicsContext;
-import utilities.Coordinate;
+import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
 /**
@@ -46,8 +45,8 @@ public class Wall extends Attribute {
     }
 
     @Override
-    public void draw(GraphicsContext gc, Coordinate position) {
-
+    public ImageView createImage() {
+        return new ImageView();
     }
 }
 
