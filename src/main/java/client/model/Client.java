@@ -196,7 +196,11 @@ public class Client {
                     break;
                 case ReceivedChat:
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
-                    lobbyController.setTextArea(receivedChat.getFrom() + ": " + receivedChat.getMessage());
+                    String receivedMessage;
+                    if(receivedChat.isPrivat())
+                        receivedMessage = "[" +receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
+                    else receivedMessage = "[" +receivedChat.getFrom() + "] " + receivedChat.getMessage();
+                    lobbyController.setTextArea(receivedMessage);
                     break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
