@@ -6,7 +6,7 @@ import game.Game;
  * UpgradePhase, where the Upgrade Shop is filled/refilled and Upgrades can be purchased.
  */
 
-public class UpgradePhase extends game.round.Round {
+public class UpgradePhase extends Round {
 
 
 	public UpgradePhase(Game game) {

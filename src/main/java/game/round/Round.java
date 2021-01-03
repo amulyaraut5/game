@@ -19,13 +19,9 @@ public class Round {
 	private Game game;
 
 	/**
-	 * the list which contains the players of the round
-	 * (they get kicked out of this list if they have to reboot)
+	 * the list which contains the players of the round (they get kicked out of this list if they have to reboot)
 	 */
 	private ArrayList<Player> activePlayerList = new ArrayList<>();
-
-	public Round() {
-	}
 
 	/**
 	 * player get their  cards for programming their robot in this round
