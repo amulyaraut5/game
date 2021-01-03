@@ -28,17 +28,6 @@ public abstract class Map {
 
     }
 
-
-    public static void generateMap(Map map) {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                finalMap.add(Tile.getInstance().createTile(map.mapBlueprint[i][j]));
-                System.out.println(j);
-                System.out.println(i);
-            }
-        }
-    }
-
     public static ArrayList<Tile> getMap() {
 
         return finalMap;

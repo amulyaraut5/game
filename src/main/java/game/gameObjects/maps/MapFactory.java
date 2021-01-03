@@ -1,5 +1,7 @@
 package game.gameObjects.maps;
 
+import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.gameStarted.Field;
 
 import java.util.ArrayList;
@@ -44,19 +46,14 @@ public class MapFactory {
         return maps.get(id);
     }
 
-    public Field[][] constructMap(Map map){
-        Field[][] finalMap = new Field[map.width-1][map.length-1];
+    public Tile[][] constructMap(Map map){
+        TileFactory tileFactory = TileFactory.getInstance();
+        Tile[][] finalMap = new Tile[map.width-1][map.length-1];
         for(int i = 0; i < (map.width); i++){
-            for(int j = 0; j < (map.length); i++){
-                contructField(map.mapBlueprint[i][j]);
+            for(int j = 0; j < (map.length); j++){
+                finalMap[i][j] = tileFactory.createTile(map.mapBlueprint[i][j]);
             }
         }
         return finalMap;
-    }
-
-    public Field contructField(int i){
-        //TODO Switch case to construct specific tile
-
-        return null;
     }
 }
