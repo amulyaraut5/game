@@ -5,6 +5,11 @@ import utilities.Utilities.Orientation;
 
 public class RotateRobot extends Action{
 
+    private Orientation orientation;
+
+    public RotateRobot(Orientation orientation){
+        this.orientation = orientation;
+    }
 
     @Override
     public void doAction(Orientation orientation, Player player) {

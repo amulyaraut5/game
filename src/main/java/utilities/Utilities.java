@@ -19,8 +19,22 @@ public class Utilities {
         @SerializedName("up") UP,
         @SerializedName("down") DOWN,
         @SerializedName("left") LEFT,
-        @SerializedName("right") RIGHT
+        @SerializedName("right") RIGHT;
+
+        private Orientation oppositeOrientation;
+
+        static {
+            Orientation.UP.oppositeOrientation = Orientation.DOWN;
+            Orientation.DOWN.oppositeOrientation = Orientation.UP;
+            Orientation.LEFT.oppositeOrientation = Orientation.RIGHT;
+            Orientation.RIGHT.oppositeOrientation = Orientation.LEFT;
+        }
+
+        public Orientation getOpposite(){
+            return oppositeOrientation;
+        }
     }
+
 
     public enum Rotation {
         @SerializedName("left") LEFT,
