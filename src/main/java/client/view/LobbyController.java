@@ -232,6 +232,7 @@ public class LobbyController extends Controller {
      */
     @FXML
     private void submitChatMessage(ActionEvent event) {
+        chatMessageLabel.setText("");
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.info("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
@@ -252,11 +253,11 @@ public class LobbyController extends Controller {
             }
             client.sendMessage(jsonMessage);
             } else {
-                chatMessageLabel.setText("Your message is empty.");
+                chatMessageLabel.setText("Your message was empty.");
             }
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
-        chatMessageLabel.setText("");
+
     }
 
     /**
