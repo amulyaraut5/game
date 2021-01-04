@@ -1,9 +1,13 @@
 package server;
 
+import game.gameObjects.maps.DizzyHighway;
+import game.gameObjects.maps.MapFactory;
 import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.MapConverter;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
@@ -112,6 +116,18 @@ public class UserThread extends Thread {
             case HelloServer:
                 // The messageBody which is Object is then casted down to HelloServer class
                 HelloServer hs = (HelloServer) message.getBody();
+                //just for testing purposes
+
+                MapConverter mapConverter = MapConverter.getInstance();
+                MapFactory mapFactory = MapFactory.getInstance();
+                DizzyHighway dizzyHighway = new DizzyHighway();
+                Tile[][] testmap = mapFactory.constructMap(dizzyHighway);
+                GameStarted testbody = mapConverter.convert(testmap);
+                JSONMessage testmessage = new JSONMessage(testbody);
+                sendMessage(testmessage);
+
+
+                //
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
                     JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don't match"));
