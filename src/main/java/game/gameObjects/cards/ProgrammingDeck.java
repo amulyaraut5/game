@@ -1,4 +1,4 @@
 package game.gameObjects.cards;
 
-public class ProgrammingDeck {
+public class ProgrammingDeck extends Deck {
 }

@@ -1,8 +1,7 @@
 package game;
 
 import game.gameObjects.cards.Card;
-
-import java.util.ArrayList;
+import game.gameObjects.cards.UpgradeDeck;
 
 /**
  * This class creates the Upgrade shop where upgrades can be purchased.
@@ -10,14 +9,14 @@ import java.util.ArrayList;
 
 public class UpgradeShop {
 
+    /**number of available slots in the UpgradeShop. (=player count)*/
     private Card[] upgradeShop;
-    private ArrayList<Card> upgradeDeck = new ArrayList<Card>();
-    private ArrayList<Card> discardedDeck = new ArrayList<Card>();
+    private UpgradeDeck drawDeck;
+    private UpgradeDeck discardedDeck;
     private int emptySlots = 0;
 
 
     public UpgradeShop() {
-
     }
 
     public void shuffle() {
