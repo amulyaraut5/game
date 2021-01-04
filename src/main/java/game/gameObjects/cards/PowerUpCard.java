@@ -14,7 +14,7 @@ public class PowerUpCard extends ProgrammingCard{
 
     PowerUpCard() {
         super("Power Up");
-        super.setAction(new PowerUpRobot());
+        super.addAction(new PowerUpRobot());
         drawCardImage();
         logger.info("took one energy cube");
     }

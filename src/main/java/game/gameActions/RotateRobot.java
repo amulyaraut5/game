@@ -1,14 +1,15 @@
 package game.gameActions;
 
 import game.Player;
+import utilities.Utilities.Rotation;
 import utilities.Utilities.Orientation;
 
 public class RotateRobot extends Action{
 
     private Orientation orientation;
 
-    public RotateRobot(Orientation orientation){
-        this.orientation = orientation;
+    public RotateRobot(Orientation rotation){
+        this.orientation = rotation;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class AgainCard extends ProgrammingCard{
 
     AgainCard(){
         super("Again");
-        super.setAction(new AgainAction());
+        super.addAction(new AgainAction());
         drawCardImage();
         logger.info("Repeat the programming in previous register.");
     }

@@ -15,7 +15,7 @@ public class LeftTurnCard extends ProgrammingCard{
 
     LeftTurnCard(){
         super("Left Turn");
-        super.setAction(new RotateRobot(Orientation.LEFT));
+        super.addAction(new RotateRobot(Orientation.LEFT));
         drawCardImage();
         logger.info("rotated left");
     }

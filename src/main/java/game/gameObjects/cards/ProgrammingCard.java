@@ -33,7 +33,7 @@ public abstract class ProgrammingCard extends Card {
     public void handleCard() {
     }
 
-    public void setAction(Action action) {
+    public void addAction(Action action) {
         this.actions.add(action);
     }
 

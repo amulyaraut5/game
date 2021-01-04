@@ -15,8 +15,8 @@ public class UTurnCard extends ProgrammingCard{
 
     UTurnCard() {
         super("U-Turn");
-        super.setAction(new RotateRobot(Orientation.RIGHT));
-        super.setAction(new RotateRobot(Orientation.RIGHT));
+        super.addAction(new RotateRobot(Orientation.RIGHT));
+        super.addAction(new RotateRobot(Orientation.RIGHT));
         drawCardImage();
         logger.info("performed U-Turn");
     }

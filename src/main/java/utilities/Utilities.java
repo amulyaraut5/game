@@ -15,13 +15,16 @@ public class Utilities {
     public static final Orientation[] DOWN_LEFT = {Orientation.DOWN, Orientation.LEFT};
     public static final Orientation[] LEFT_DOWN = {Orientation.DOWN, Orientation.RIGHT};
 
+    public enum Rotation {
+        @SerializedName("left") LEFT,
+        @SerializedName("right") RIGHT
+    }
+
     public enum Orientation {
         @SerializedName("up") UP,
         @SerializedName("down") DOWN,
         @SerializedName("left") LEFT,
         @SerializedName("right") RIGHT;
-
-        private Orientation oppositeOrientation;
 
         static {
             Orientation.UP.oppositeOrientation = Orientation.DOWN;
@@ -30,19 +33,16 @@ public class Utilities {
             Orientation.RIGHT.oppositeOrientation = Orientation.LEFT;
         }
 
-        public Orientation getOpposite(){
+        private Orientation oppositeOrientation;
+
+        public Orientation getOpposite() {
             return oppositeOrientation;
         }
     }
 
-
-    public enum Rotation {
-        @SerializedName("left") LEFT,
-        @SerializedName("right") RIGHT
-    }
-
     public enum Difficulty {
-        BEGINNER, ADVANCED, EXTREME
+        BEGINNER, ADVANCED, EXTREME;
+
     }
 
     public enum MessageType {

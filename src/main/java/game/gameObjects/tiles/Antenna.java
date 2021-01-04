@@ -18,7 +18,7 @@ public class Antenna extends Attribute {
      * Constructor for Antenna that basically sets the antenna facing north
      */
     public Antenna() {
-        this.orientation = Orientation.UP;
+        this.orientation = Orientation.RIGHT;
         this.type = "Antenna";
     }
 

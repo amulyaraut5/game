@@ -6,9 +6,6 @@ import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-
 /**
  * @author annika
  */
@@ -17,7 +14,7 @@ public class Move1Card extends ProgrammingCard{
 
     Move1Card(){
         super("Move 1");
-        super.setAction(new MoveRobot());
+        super.addAction(new MoveRobot());
         //load image
         drawCardImage();
         //ODER:

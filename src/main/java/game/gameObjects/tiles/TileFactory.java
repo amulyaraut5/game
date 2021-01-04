@@ -1,6 +1,8 @@
 package game.gameObjects.tiles;
 
 import utilities.Utilities;
+import utilities.Utilities.Orientation;
+import utilities.Utilities.Rotation;
 
 public class TileFactory {
     private static TileFactory instance;
@@ -23,14 +25,14 @@ public class TileFactory {
             case 111 -> attribute = new Antenna();
 
             //Belt
-            case 01 -> attribute = new Belt(Utilities.Orientation.UP, 1);
-            case 02 -> attribute = new Belt(Utilities.Orientation.DOWN, 1);
-            case 03 -> attribute = new Belt(Utilities.Orientation.LEFT, 1);
-            case 04 -> attribute = new Belt(Utilities.Orientation.RIGHT, 1);
-            case 11 -> attribute = new Belt(Utilities.Orientation.UP, 2);
-            case 12 -> attribute = new Belt(Utilities.Orientation.DOWN, 2);
-            case 13 -> attribute = new Belt(Utilities.Orientation.LEFT, 2);
-            case 14 -> attribute = new Belt(Utilities.Orientation.RIGHT, 2);
+            case 01 -> attribute = new Belt(Orientation.UP, 1);
+            case 02 -> attribute = new Belt(Orientation.DOWN, 1);
+            case 03 -> attribute = new Belt(Orientation.LEFT, 1);
+            case 04 -> attribute = new Belt(Orientation.RIGHT, 1);
+            case 11 -> attribute = new Belt(Orientation.UP, 2);
+            case 12 -> attribute = new Belt(Orientation.DOWN, 2);
+            case 13 -> attribute = new Belt(Orientation.LEFT, 2);
+            case 14 -> attribute = new Belt(Orientation.RIGHT, 2);
 
             //RotatingBelt
             case 21 -> attribute = new RotatingBelt(Utilities.UP_LEFT, false, 1);
@@ -64,34 +66,34 @@ public class TileFactory {
             case 108 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, true, 2);
 
             //PushPanel
-            case 40 -> attribute = new PushPanel(Utilities.Orientation.DOWN, new int[]{2, 4});
-            case 41 -> attribute = new PushPanel(Utilities.Orientation.UP, new int[]{2, 4});
-            case 42 -> attribute = new PushPanel(Utilities.Orientation.LEFT, new int[]{2, 4});
-            case 43 -> attribute = new PushPanel(Utilities.Orientation.RIGHT, new int[]{2, 4});
-            case 44 -> attribute = new PushPanel(Utilities.Orientation.DOWN, new int[]{1, 3, 5});
-            case 45 -> attribute = new PushPanel(Utilities.Orientation.UP, new int[]{1, 3, 5});
-            case 46 -> attribute = new PushPanel(Utilities.Orientation.LEFT, new int[]{1, 3, 5});
-            case 47 -> attribute = new PushPanel(Utilities.Orientation.RIGHT, new int[]{1, 3, 5});
+            case 40 -> attribute = new PushPanel(Orientation.DOWN, new int[]{2, 4});
+            case 41 -> attribute = new PushPanel(Orientation.UP, new int[]{2, 4});
+            case 42 -> attribute = new PushPanel(Orientation.LEFT, new int[]{2, 4});
+            case 43 -> attribute = new PushPanel(Orientation.RIGHT, new int[]{2, 4});
+            case 44 -> attribute = new PushPanel(Orientation.DOWN, new int[]{1, 3, 5});
+            case 45 -> attribute = new PushPanel(Orientation.UP, new int[]{1, 3, 5});
+            case 46 -> attribute = new PushPanel(Orientation.LEFT, new int[]{1, 3, 5});
+            case 47 -> attribute = new PushPanel(Orientation.RIGHT, new int[]{1, 3, 5});
 
             //Gear
-            case 51 -> attribute = new Gear(Utilities.Orientation.LEFT);
-            case 52 -> attribute = new Gear(Utilities.Orientation.RIGHT);
+            case 51 -> attribute = new Gear(Rotation.LEFT);
+            case 52 -> attribute = new Gear(Rotation.RIGHT);
 
             //Laser
-            case 61 -> attribute = new Laser(Utilities.Orientation.DOWN, 1);
-            case 62 -> attribute = new Laser(Utilities.Orientation.UP, 1);
-            case 63 -> attribute = new Laser(Utilities.Orientation.LEFT, 1);
-            case 64 -> attribute = new Laser(Utilities.Orientation.RIGHT, 1);
+            case 61 -> attribute = new Laser(Orientation.DOWN, 1);
+            case 62 -> attribute = new Laser(Orientation.UP, 1);
+            case 63 -> attribute = new Laser(Orientation.LEFT, 1);
+            case 64 -> attribute = new Laser(Orientation.RIGHT, 1);
 
-            case 65 -> attribute = new Laser(Utilities.Orientation.DOWN, 2);
-            case 66 -> attribute = new Laser(Utilities.Orientation.UP, 2);
-            case 67 -> attribute = new Laser(Utilities.Orientation.LEFT, 2);
-            case 68 -> attribute = new Laser(Utilities.Orientation.RIGHT, 2);
+            case 65 -> attribute = new Laser(Orientation.DOWN, 2);
+            case 66 -> attribute = new Laser(Orientation.UP, 2);
+            case 67 -> attribute = new Laser(Orientation.LEFT, 2);
+            case 68 -> attribute = new Laser(Orientation.RIGHT, 2);
 
-            case 71 -> attribute = new Laser(Utilities.Orientation.DOWN, 3);
-            case 72 -> attribute = new Laser(Utilities.Orientation.UP, 3);
-            case 73 -> attribute = new Laser(Utilities.Orientation.LEFT, 3);
-            case 74 -> attribute = new Laser(Utilities.Orientation.RIGHT, 3);
+            case 71 -> attribute = new Laser(Orientation.DOWN, 3);
+            case 72 -> attribute = new Laser(Orientation.UP, 3);
+            case 73 -> attribute = new Laser(Orientation.LEFT, 3);
+            case 74 -> attribute = new Laser(Orientation.RIGHT, 3);
 
             //EnergySpace
             case 81 -> attribute = new EnergySpace(0);
@@ -101,10 +103,10 @@ public class TileFactory {
             case 90 -> attribute = new Pit();
 
             //Wall
-            case 91 -> attribute = new Wall(Utilities.Orientation.DOWN);
-            case 92 -> attribute = new Wall(Utilities.Orientation.UP);
-            case 93 -> attribute = new Wall(Utilities.Orientation.LEFT);
-            case 94 -> attribute = new Wall(Utilities.Orientation.RIGHT);
+            case 91 -> attribute = new Wall(Orientation.DOWN);
+            case 92 -> attribute = new Wall(Orientation.UP);
+            case 93 -> attribute = new Wall(Orientation.LEFT);
+            case 94 -> attribute = new Wall(Orientation.RIGHT);
             case 95 -> attribute = new Wall(Utilities.UP_LEFT);
             case 96 -> attribute = new Wall(Utilities.UP_RIGHT);
             case 97 -> attribute = new Wall(Utilities.DOWN_LEFT);

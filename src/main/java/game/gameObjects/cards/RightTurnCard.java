@@ -15,7 +15,7 @@ public class RightTurnCard extends ProgrammingCard{
 
     RightTurnCard(){
         super("Right Turn");
-        super.setAction(new RotateRobot(Orientation.RIGHT));
+        super.addAction(new RotateRobot(Orientation.RIGHT));
         drawCardImage();
         logger.info("rotated right");
     }

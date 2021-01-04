@@ -15,7 +15,7 @@ public class MoveBackCard extends ProgrammingCard {
 
     MoveBackCard() {
     super("Move Back");
-    super.setAction(new MoveRobotBack());
+    super.addAction(new MoveRobotBack());
     drawCardImage();
     logger.info("moved back");
     }
