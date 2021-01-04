@@ -1,8 +1,7 @@
 package game;
 
 import game.gameObjects.cards.DamageCard;
-import game.gameObjects.cards.SpecialProgrammingCard;
-import game.gameObjects.cards.UpgradeCard;
+import game.gameObjects.cards.ProgrammingDeck;
 import game.gameObjects.tiles.Attribute;
 import game.round.Round;
 
@@ -15,26 +14,26 @@ import java.util.ArrayList;
 
 public class Game {
 
-	private int energyBank;
-	private ArrayList<UpgradeCard> upgradeDeck;
-	private ArrayList<Player> playerList;
-	private Round activeRound;
-	private ArrayList<DamageCard> damageCardDeck;
-	private ArrayList<SpecialProgrammingCard> specialProgrammingDeck;
-	private Game instance;
-	private int noOfCheckpoints;
+    private int energyBank;
+    private UpgradeShop upgradeShop;
+    private ArrayList<Player> playerList;
+    private Round activeRound;
+    private ArrayList<DamageCard> damageCardDeck;
+    private ProgrammingDeck specialProgrammingDeck;
+    private Game instance;
+    private int noOfCheckpoints;
 
-	public Game(){
-		Attribute.setGame(this);
-	}
+    public Game() {
+        Attribute.setGame(this);
+    }
 
-	/**
-	 * This methods starts Roborally.
-	 */
-	public void play() {
-		// TODO - implement Game.play
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * This methods starts Roborally.
+     */
+    public void play() {
+        // TODO - implement Game.play
+        throw new UnsupportedOperationException();
+    }
 
 	/**
 	 * TODO
@@ -44,11 +43,16 @@ public class Game {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * TODO
-	 * @return
-	 */
-	public int getNoOfCheckPoints() {
-		return this.noOfCheckpoints;
-	}
+    /**
+     * TODO
+     *
+     * @return
+     */
+    public int getNoOfCheckPoints() {
+        return this.noOfCheckpoints;
+    }
+
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
 }

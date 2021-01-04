@@ -1,12 +1,12 @@
 package game;
 
-import game.gameObjects.robot.*;
 import game.gameObjects.cards.*;
+import game.gameObjects.robot.Robot;
 import server.User;
+import utilities.Utilities.Orientation;
 
 import java.util.ArrayList;
 import java.util.Map;
-import utilities.Utilities.Orientation;
 
 /**
  * This class extends user to specify different Attributes for a player.
@@ -27,8 +27,8 @@ public class Player extends User {
 	private int lastCheckpoint;
 	private int energyCubes;
 
-	private ArrayList<ProgrammingCard> programmingDeck;
-	private ArrayList<ProgrammingCard> discardedProgrammingCards;
+	private ProgrammingDeck DrawProgrammingDeck;
+	private ProgrammingDeck DiscardedProgrammingCards;
 	private ArrayList<ProgrammingCard> drawnProgrammingCards;
 	private ArrayList<ProgrammingCard> chosenProgrammingCards;
 

@@ -3,12 +3,12 @@ package game.round;
 import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.ProgrammingCard;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class ProgrammingPhase extends Round {
+
 	/**
 	 * timerIsRunning will get true if a player creates an instance of timer
 	 */
@@ -17,7 +17,7 @@ public class ProgrammingPhase extends Round {
 	/**
 	 * a player gets removed if he has already chose 5 cards in the time
 	 */
-	public ArrayList<Player> notReadyPlayers = new ArrayList<>();
+	private ArrayList<Player> notReadyPlayers = new ArrayList<>();
 
 	public ProgrammingPhase(Game game) {
 		super(game);
@@ -32,6 +32,14 @@ public class ProgrammingPhase extends Round {
 	 */
 	private void showCards() {
 
+	}
+
+	/**
+	 * player get their  cards for programming their robot in this round
+	 */
+	private void dealProgrammingCards() {
+		for (Player player : playerList){ }
+		//  deal 9 cards
 	}
 
 	/**

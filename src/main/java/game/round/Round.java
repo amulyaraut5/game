@@ -21,25 +21,21 @@ public class Round {
 	/**
 	 * the list which contains the players of the round (they get kicked out of this list if they have to reboot)
 	 */
-	private ArrayList<Player> activePlayerList = new ArrayList<>();
+	protected ArrayList<Player> playerList;
 
-	/**
-	 * player get their  cards for programming their robot in this round
-	 */
-	private void dealCards() {
-			// for (Player player : activePlayerList){
-			//  deal 9 cards
+	public Round(Game game) {
+		this.game = game;
+		this.playerList = game.getPlayerList();
+		executeRound();
 	}
+
+
 
 	private void discardCards() {
 
 	}
 
-	public Round(Game game) {
-		this.game = game;
-		//this.activePlayerList = game.getPlayerList();
-		executeRound();
-	}
+
 
 	public void executeRound(){
 		// dealCards for every active Player
