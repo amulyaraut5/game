@@ -112,6 +112,8 @@ public class LobbyController extends Controller {
     @FXML
     private ChoiceBox<String> directChoiceBox;
 
+
+    public Label chatMessageLabel;
     /**
      * In robotImageViews the different ImageViews that can be assigned
      * are stored together
@@ -127,6 +129,13 @@ public class LobbyController extends Controller {
      */
     private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
+
+    /**
+     * this method gets called automatically by constructing view
+     * it adds the different ImageViews and Labels to lists and also
+     * sets the default of the choiceBox to all. Additionally the current imageView
+     * and label are assigned
+     */
     public void initialize() {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
@@ -148,12 +157,20 @@ public class LobbyController extends Controller {
         currentLabel = robot1Label;
     }
 
+    /**
+     * The messages received from other users are printed
+     * in the chatTextArea
+     * @param messageBody
+     */
     public void setTextArea(String messageBody) {
         lobbyTextAreaChat.appendText(messageBody + "\n");
     }
 
     /**
      * this method displays an user who joined to the lobby
+     * with its choosed robot, name and also the name is added to the choicebox
+     * so that other users in lobby can send direct messages.
+     * Also
      *
      * @param playerAdded
      */
@@ -169,27 +186,38 @@ public class LobbyController extends Controller {
         nextRobot();
     }
 
+    /**
+     * The robot image of the user who clicked the ready button gets changed. Now the icon has a pink
+     * background to signal the ready status.
+     * @param playerStatus
+     */
     public void setReadyUsersTextArea(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
                 String path = "/lobby/" + robotNames[robotIcon.getFigure() - 1];
-                if (playerStatus.isReady()) {
-                    path +=  "-ready.png";
-                } else {
-                    path += ".png";
-                }
+                if (playerStatus.isReady()) path +=  "-ready.png";
+                else path += ".png";
                 Image image = new Image(getClass().getResource(path).toString());
                 robotIcon.getRobotImageView().setImage(image);
             }
         }
     }
 
+    /**
+     * The next free place in the lobby is presented by the next current Label and
+     * ImageView.
+     */
     private void nextRobot() {
         currentImageView = robotImageViews.get(robotImageViews.indexOf(currentImageView) + 1);
         currentLabel = robotLabels.get(robotLabels.indexOf(currentLabel) + 1);
 
     }
 
+    /**
+     * by clicking the ready checkbox a message will be send to the client (and then to the server)
+     * to signal the ready status of the user.
+     * @param event
+     */
     @FXML
     private void checkBoxAction(ActionEvent event) {
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
@@ -197,7 +225,7 @@ public class LobbyController extends Controller {
     }
 
     /**
-     * send chat Message
+     * send a chat Message, either private or to everyone
      *
      * @param event
      */
@@ -208,26 +236,18 @@ public class LobbyController extends Controller {
         String message = lobbyTextFieldChat.getText();
         JSONMessage jsonMessage;
         if (!message.isBlank()) {
-            /*Pattern directPattern = Pattern.compile("^@+");
-            Matcher directMatcher = directPattern.matcher(message);
-
-            if (directMatcher.lookingAt()) {
-                String destinationUser = (message.split(" ", 2)[0]).substring(1);
-                String messageUser = message.split(" ", 2)[1];
-                if (!messageUser.isBlank()) //
-            */
             if(sendTo.equals("all")){
                 jsonMessage = new JSONMessage(new SendChat(message, -1));
                 lobbyTextAreaChat.appendText("[You] " + message + "\n");
-            } else{
+            } else {
                 String destinationUser = sendTo;
                 logger.info("playerList contains user" + client.getIDFrom(destinationUser));
-                jsonMessage = new JSONMessage(new SendChat(message, client.getIDFrom(destinationUser)));
-                lobbyTextAreaChat.appendText("[You] @" + destinationUser + ": " + message + "\n");
+                    jsonMessage = new JSONMessage(new SendChat(message, client.getIDFrom(destinationUser)));
+                    lobbyTextAreaChat.appendText("[You] @" + destinationUser + ": " + message + "\n");
             }
             client.sendMessage(jsonMessage);
             } else {
-                // TODO
+                chatMessageLabel.setText("Your message is empty.");
             }
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
