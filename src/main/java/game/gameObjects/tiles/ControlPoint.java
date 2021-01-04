@@ -84,7 +84,7 @@ public class ControlPoint extends Attribute {
 
     @Override
     public Node createImage() {
-        String path = "tiles/controlPoint/controlPoint_" + count + ".png";
+        String path = "/tiles/controlPoint/controlPoint_" + count + ".png";
 
         var stream = getClass().getResourceAsStream(path);
         var image = new Image(stream, 60, 60, true, true);

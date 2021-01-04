@@ -5,7 +5,7 @@ import game.gameActions.RotateRobot;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import utilities.Utilities.Orientation;
+import utilities.Utilities.Rotation;
 
 /**
  * @author Amulya
@@ -13,9 +13,9 @@ import utilities.Utilities.Orientation;
 
 public class Gear extends Attribute {
 
-    private Orientation orientation; //gear rotation: RIGHT = clockwise, LEFT = Anti-clockwise
+    private Rotation orientation; //gear rotation: RIGHT = clockwise, LEFT = Anti-clockwise
 
-    public Gear(Orientation orientation) {
+    public Gear(Rotation orientation) {
         this.orientation = orientation;
         this.type = "Gear";
     }
@@ -30,14 +30,14 @@ public class Gear extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        new RotateRobot(this.orientation).doAction(this.orientation, player);
+        //new RotateRobot(this.orientation).doAction(this.orientation, player);
 
     }
 
     @Override
     public Node createImage() {
         String path;
-        if (orientation == Orientation.RIGHT) {
+        if (orientation == Rotation.RIGHT) {
             path = "/tiles/gear_right.png";
         } else {
             path = "/tiles/gear_left.png";

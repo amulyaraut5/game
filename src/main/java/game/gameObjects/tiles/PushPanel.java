@@ -3,6 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import game.gameActions.MoveRobot;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.Utilities.Orientation;
 
@@ -12,12 +13,12 @@ import utilities.Utilities.Orientation;
 
 public class PushPanel extends Attribute {
 
-    private int[] registerValue; //active registers
+    private int[] registers; //active registers
     private Orientation orientation; // push direction
 
-    public PushPanel(Orientation orientation, int[] registerValue) {
+    public PushPanel(Orientation orientation, int[] registers) {
         this.orientation = orientation;
-        this.registerValue = registerValue;
+        this.registers = registers;
         this.type = "PushPanel";
     }
 
@@ -31,7 +32,7 @@ public class PushPanel extends Attribute {
     @Override
     public void performAction(Player player) {
 
-        for (int i : registerValue) {
+        for (int i : registers) {
 
             if (i == player.getCurrentRegister()) {
                 new MoveRobot().doAction(orientation, player);
@@ -45,7 +46,25 @@ public class PushPanel extends Attribute {
 
     @Override
     public Node createImage() {
-        return new ImageView();
-    }
+        String path = "";
+        if (registers.length == 1) {
+            path = "/tiles/pushpanel/pushpanel_" + registers[0] + "c.png";
+        } else if (registers.length == 2) {
+            path = "/tiles/pushpanel/pushpanel_24c.png";
+        } else if (registers.length == 3) {
+            path = "/tiles/pushpanel/pushpanel_135c.png";
+        }
 
+        var stream = getClass().getResourceAsStream(path);
+        var image = new Image(stream, 60, 60, true, true);
+        var imageView = new ImageView(image);
+
+        switch (orientation) {
+            case RIGHT -> imageView.setRotate(90);
+            case DOWN -> imageView.setRotate(180);
+            case LEFT -> imageView.setRotate(270);
+        }
+
+        return imageView;
+    }
 }

@@ -1,8 +1,6 @@
 package client.view;
 
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Empty;
-import game.gameObjects.tiles.RotatingBelt;
+import game.gameObjects.tiles.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
+import utilities.Utilities;
 import utilities.Utilities.Orientation;
 
 import java.io.IOException;
@@ -62,32 +61,33 @@ public class GameViewController extends Controller {
     @FXML
     private void initialize() {
         var map = new ArrayList<BoardElement>(100);
+        var field = new ArrayList<ArrayList<Attribute>>();
 
-        var field1 = new ArrayList<Attribute>();
-        Orientation[] orientations1 = {Orientation.UP, Orientation.LEFT};
-        field1.add(new Empty());
-        field1.add(new RotatingBelt(orientations1, true, 1));
+        for (int i = 0; i < 14; i++) {
+            field.add(i, new ArrayList<>());
+            field.get(i).add(new Empty());
+        }
 
-        var field2 = new ArrayList<Attribute>();
-        Orientation[] orientations2 = {Orientation.RIGHT, Orientation.UP};
-        field2.add(new Empty());
-        field2.add(new RotatingBelt(orientations2, true, 2));
+        field.get(1).add(new Antenna());
+        field.get(2).add(new Belt(Orientation.RIGHT, 1));
+        field.get(3).add(new ControlPoint(5));
+        field.get(4).add(new Empty());
+        field.get(5).add(new EnergySpace(3));
+        field.get(6).add(new Gear(Utilities.Rotation.LEFT));
+        field.get(7).add(new Laser(Orientation.LEFT, 3));
+        field.get(8).add(new Pit());
+        field.get(9).add(new PushPanel(Orientation.DOWN, new int[]{3}));
+        field.get(10).add(new Reboot());
+        field.get(11).add(new RotatingBelt(new Orientation[]{Orientation.UP, Orientation.RIGHT}, true, 1));
+        field.get(12).add(new RotatingBelt(new Orientation[]{Orientation.DOWN, Orientation.RIGHT}, false, 2));
+        field.get(13).add(new Wall(Orientation.RIGHT));
 
-        var field3 = new ArrayList<Attribute>();
-        Orientation[] orientations3 = {Orientation.DOWN, Orientation.RIGHT};
-        field3.add(new Empty());
-        field3.add(new RotatingBelt(orientations3, false, 1));
-
-        var field4 = new ArrayList<Attribute>();
-        Orientation[] orientations4 = {Orientation.LEFT, Orientation.DOWN};
-        field4.add(new Empty());
-        field4.add(new RotatingBelt(orientations4, false, 2));
 
 // TODO: 03.01.2021  if 2 mapfields have same position, only choose one
-        map.add(new BoardElement(1, field1));
-        map.add(new BoardElement(2, field2));
-        map.add(new BoardElement(3, field3));
-        map.add(new BoardElement(4, field4));
+
+        for (int i = 0; i < field.size(); i++) {
+            map.add(new BoardElement(i, field.get(i)));
+        }
 
         buildMap(map);
     }
@@ -133,6 +133,7 @@ public class GameViewController extends Controller {
         for (BoardElement tile : map) {
             int pos = tile.getPosition();
             var field = tile.getField();
+            // TODO: 04.01.2021 check priority for the imageViews (e.g.: draw Empty at first, then Laser, then Wall)
             for (Attribute attribute : field) {
                 var attributeImage = attribute.createImage();
                 fields[pos].getChildren().add(attributeImage);
@@ -143,7 +144,7 @@ public class GameViewController extends Controller {
 
     private Pane setNextPane() {
         Pane innerPane = null;
-        String path = null;
+        String path = "";
         currentInnerView = ++currentInnerView % 3;
 
         if (currentInnerView == 0) path = "/view/innerViews/upgradeView.fxml";
