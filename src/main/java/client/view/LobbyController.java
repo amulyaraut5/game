@@ -176,9 +176,10 @@ public class LobbyController extends Controller {
      */
     public void setJoinedUsers(PlayerAdded playerAdded) {
         String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
+        String newName = playerAdded.getName() + " " + playerAdded.getId();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
-        currentLabel.setText(playerAdded.getName() + " " + playerAdded.getId());
-        directChoiceBox.getItems().add(playerAdded.getName() + " " + playerAdded.getId());
+        currentLabel.setText(newName);
+        directChoiceBox.getItems().add(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
         RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer);
