@@ -85,7 +85,7 @@ public class Client {
      * This method creates a HelloServer protocol message and sends it to server
      * it gets called when client gets a HelloClient message
      *
-     * @param helloClient //TODO more than protocol possible?
+     * @param helloClient //TODO more than one protocol possible?
      */
     public void connect(HelloClient helloClient) {
         JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
@@ -160,7 +160,7 @@ public class Client {
 
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
-     * is downcasted to respective class.
+     * is downcasted to respective class and then it interacts with the different controllers.
      *
      * @param message
      * @throws ClassNotFoundException
@@ -247,9 +247,6 @@ public class Client {
         //this.gameViewController = gameViewController;
     }
 
-    public void setLoginController(LoginController loginController) {
-        this.loginController = loginController;
-    }
 
     public void setController(ArrayList<Controller> controllerList) {
         loginController = (LoginController) controllerList.get(0);
