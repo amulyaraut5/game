@@ -3,8 +3,6 @@ package game.round;
 import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.ProgrammingCard;
-import game.gameObjects.cards.ProgrammingDeck;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,6 +18,7 @@ public class ProgrammingPhase extends Round {
 	 * a player gets removed if he has already chose 5 cards in the time
 	 */
 	private ArrayList<Player> notReadyPlayers = new ArrayList<>();
+	private ArrayList<Card> availableProgrammingCards;
 
 	public ProgrammingPhase(Game game) {
 		super(game);
@@ -41,8 +40,7 @@ public class ProgrammingPhase extends Round {
 	 */
 	private void dealProgrammingCards() {
 		for (Player player : playerList){
-			ProgrammingDeck programmingDeck = player.getDrawProgrammingDeck();
-			ArrayList<ProgrammingCard> availableProgrammingCards = programmingDeck.drawProgrammingCards();
+			availableProgrammingCards = (player.getDrawProgrammingDeck()).drawCards(9);
 		}
 	}
 
