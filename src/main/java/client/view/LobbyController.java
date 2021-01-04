@@ -177,8 +177,8 @@ public class LobbyController extends Controller {
     public void setJoinedUsers(PlayerAdded playerAdded) {
         String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
-        currentLabel.setText(playerAdded.getName());
-        directChoiceBox.getItems().add(playerAdded.getName());
+        currentLabel.setText(playerAdded.getName() + " " + playerAdded.getId());
+        directChoiceBox.getItems().add(playerAdded.getName() + " " + playerAdded.getId());
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
         RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer);
@@ -240,10 +240,14 @@ public class LobbyController extends Controller {
                 jsonMessage = new JSONMessage(new SendChat(message, -1));
                 lobbyTextAreaChat.appendText("[You] " + message + "\n");
             } else {
-                String destinationUser = sendTo;
-                logger.info("playerList contains user" + client.getIDFrom(destinationUser));
-                    jsonMessage = new JSONMessage(new SendChat(message, client.getIDFrom(destinationUser)));
-                    lobbyTextAreaChat.appendText("[You] @" + destinationUser + ": " + message + "\n");
+                String [] userInformation = sendTo.split(" ");
+                String destinationUser = "";
+                for(int i = 0; i<userInformation.length-1; i++) destinationUser += userInformation[i] + " ";
+                String idUser = userInformation[userInformation.length-1];
+                destinationUser = destinationUser.substring(0, destinationUser.length()-1);
+                logger.info("playerList contains user " + client.getIDFrom(destinationUser) + " id is " + idUser);
+                jsonMessage = new JSONMessage(new SendChat(message, Integer.parseInt(idUser)));
+                lobbyTextAreaChat.appendText("[You] @" + destinationUser + ": " + message + "\n");
             }
             client.sendMessage(jsonMessage);
             } else {
@@ -277,7 +281,7 @@ public class LobbyController extends Controller {
         public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer) {
             this.position = position;
             this.userID = playerAdded.getId();
-            this.userName = playerAdded.getName();
+            this.userName = playerAdded.getName() + " " + playerAdded.getId();
             this.figure = playerAdded.getFigure();
             this.robotImageView = imageViewPuffer;
             this.labelOfUser = labelPuffer;
