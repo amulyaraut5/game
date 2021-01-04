@@ -6,12 +6,14 @@ import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
 import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Tile;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -203,7 +205,14 @@ public class Client {
                     break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
+                    //  <----------------For Test---------------------->
+                    MapConverter mapConverter = MapConverter.getInstance();
+                    Tile[][] convertedMap = mapConverter.reconvert(gameStarted);
+                    logger.info("Tile at position [9] [8]: "+ convertedMap[9][8].getAttribute().getType());
+                    //  <----------------For Test---------------------->
+
                     logger.info("The game has started.");
+
                     break;
                 case ConnectionUpdate:
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();

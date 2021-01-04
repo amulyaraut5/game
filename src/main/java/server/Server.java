@@ -97,35 +97,6 @@ public class Server {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
 
-
-            /*try out "GameStarted":
-            Attribute attributeA = new RotatingBelt(DOWN_RIGHT, true, 2);
-            int[] registers = {2, 4};
-            Attribute attributeB = new PushPanel(Utilities.Orientation.LEFT, registers);
-            Attribute attributeC = new Wall(UP_RIGHT);
-            Attribute attributeD = new Laser(Orientation.DOWN, 1);
-
-            ArrayList<Attribute> fieldList1 = new ArrayList<>();
-            ArrayList<Attribute> fieldList2 = new ArrayList<>();
-            ArrayList<Attribute> fieldList3 = new ArrayList<>();
-            fieldList1.add(attributeA);
-            fieldList2.add(attributeB);
-            fieldList3.add(attributeC);
-            fieldList3.add(attributeD);*/
-
-            MapFactory mapFactory = MapFactory.getInstance();
-            DizzyHighway dizzyHighway = new DizzyHighway();
-            Tile[][] testmap = mapFactory.constructMap(dizzyHighway);
-            //logger.info(testmap[7][7].getAttribute());
-
-
-
-
-
-
-            //JSONMessage jMessage = new JSONMessage(new GameStarted(mapList));
-            //System.out.println(Multiplex.serialize(jMessage));
-
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     serverSocket.close();

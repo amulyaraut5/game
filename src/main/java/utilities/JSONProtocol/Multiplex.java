@@ -2,11 +2,16 @@ package utilities.JSONProtocol;
 
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * This class contains 2 important methods namely serialize and deserialize whose functionality are described
@@ -59,13 +64,76 @@ public class Multiplex {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String messageType = jsonObject.get("messageType").getAsString();
             JsonObject messageBody = jsonObject.get("messageBody").getAsJsonObject();
-            if (messageType != null) {
+
+            /*Gson gsonTile = new GsonBuilder()
+                    .registerTypeAdapter(Attribute.class, tileJsonDeserializer).create();*/
+            Gson gsonTile = new GsonBuilder()
+                    .registerTypeAdapter(Attribute.class, new AttributeDeserializer()).create();
+
+            if (messageType.equals("GameStarted")) {
+
+                JsonArray mapArray = messageBody.get("map").getAsJsonArray();
+                //JsonArray field = map.get(1).getAsJsonArray();
+                Type mapType = new TypeToken<ArrayList<BoardElement>>() {}.getType();
+                ArrayList<BoardElement> mapBody = gsonTile.fromJson(mapArray, mapType);
+                GameStarted gameStarted = new GameStarted(mapBody);
+                return new JSONMessage(gameStarted);
+            } else if (messageType != null) {
                 try {
                     JSONBody body = gson.fromJson(messageBody, (Type) Class.forName("utilities.JSONProtocol.body." + messageType));
                     return new JSONMessage(body);
                 } catch (ClassNotFoundException e) {
                     logger.error("messageType could not be converted to a JSONBody Class: " + e.getMessage());
                 }
+            }
+            return null;
+        }
+    }
+
+    static class AttributeDeserializer implements JsonDeserializer<Attribute> {
+
+        @Override
+        public Attribute deserialize(JsonElement jsonElement, Type typeofT,
+                                     JsonDeserializationContext jsonDeserializationContext)
+                throws JsonParseException {
+            JsonObject tileObject = jsonElement.getAsJsonObject();
+            String tileType = tileObject.get("type").getAsString();
+
+            Gson gson = new GsonBuilder().create();
+
+            if (tileType.equals("ControlPoint")) {
+                ControlPoint result = gson.fromJson(jsonElement, ControlPoint.class);
+                return result;
+            } else if (tileType.equals("Antenna")) {
+                Antenna result = gson.fromJson(jsonElement, Antenna.class);
+                return result;
+            }else if (tileType.equals("Belt")) {
+                Belt result = gson.fromJson(jsonElement, Belt.class);
+                return result;
+            }else if (tileType.equals("Empty")) {
+                Empty result = gson.fromJson(jsonElement, Empty.class);
+                return result;
+            } else if (tileType.equals("EnergySpace")) {
+                EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
+                return result;
+            } else if (tileType.equals("Gear")) {
+                Gear result = gson.fromJson(jsonElement, Gear.class);
+                return result;
+            } else if (tileType.equals("Laser")) {
+                Laser result = gson.fromJson(jsonElement, Laser.class);
+                return result;
+            } else if (tileType.equals("Pit")) {
+                Pit result = gson.fromJson(jsonElement, Pit.class);
+                return result;
+            } else if (tileType.equals("PushPanel")) {
+                PushPanel result = gson.fromJson(jsonElement, PushPanel.class);
+                return result;
+            } else if (tileType.equals("RotatingBelt")) {
+                RotatingBelt result = gson.fromJson(jsonElement, RotatingBelt.class);
+                return result;
+            } else if (tileType.equals("Wall")) {
+                Wall result = gson.fromJson(jsonElement, Wall.class);
+                return result;
             }
             return null;
         }

@@ -12,6 +12,9 @@ public class Field {
     private ArrayList<Integer> registers;
     private Integer count;
 
+    public Field(){
+
+    }
 
     /**
      * Getter and Setter

@@ -7,10 +7,11 @@ import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.MapConverter;
+import utilities.MapConverter;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.MapConverter;
 import utilities.Utilities.MessageType;
 
 import java.io.*;
@@ -116,8 +117,8 @@ public class UserThread extends Thread {
             case HelloServer:
                 // The messageBody which is Object is then casted down to HelloServer class
                 HelloServer hs = (HelloServer) message.getBody();
-                //just for testing purposes
 
+                //  <----------------For Test---------------------->
                 MapConverter mapConverter = MapConverter.getInstance();
                 MapFactory mapFactory = MapFactory.getInstance();
                 DizzyHighway dizzyHighway = new DizzyHighway();
@@ -125,7 +126,7 @@ public class UserThread extends Thread {
                 GameStarted testbody = mapConverter.convert(testmap);
                 JSONMessage testmessage = new JSONMessage(testbody);
                 sendMessage(testmessage);
-
+                //  <----------------For Test---------------------->
 
                 //
                 if (!(hs.getProtocol() == protocol)) {
