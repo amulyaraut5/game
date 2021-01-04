@@ -38,7 +38,6 @@ public class Round {
 
 
 	public void executeRound(){
-		// dealCards for every active Player
 		//start upgradePhase and upgradePhase.startUpgradePhase()
 
 		//start programmingPhase and programmingPhase.startProgrammingPhase()

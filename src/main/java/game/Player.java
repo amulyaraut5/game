@@ -27,8 +27,8 @@ public class Player extends User {
 	private int lastCheckpoint;
 	private int energyCubes;
 
-	private ProgrammingDeck DrawProgrammingDeck;
-	private ProgrammingDeck DiscardedProgrammingCards;
+	private ProgrammingDeck drawProgrammingDeck;
+	private ProgrammingDeck discardedProgrammingCards;
 	private ArrayList<ProgrammingCard> drawnProgrammingCards;
 	private ArrayList<ProgrammingCard> chosenProgrammingCards;
 
@@ -95,6 +95,10 @@ public class Player extends User {
 	public void setEnergyCubes(int energyCubes) {
 		this.energyCubes = energyCubes;
 	}
+
+	public void setDrawnProgrammingCards(ArrayList<ProgrammingCard> drawnProgrammingCards) {this.drawnProgrammingCards = drawnProgrammingCards;}
+
+	public ProgrammingDeck getDrawProgrammingDeck() {return drawProgrammingDeck;}
 
 	/**
 	 * It freezes the player from the current round.

@@ -3,6 +3,8 @@ package game.round;
 import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
+import game.gameObjects.cards.ProgrammingCard;
+import game.gameObjects.cards.ProgrammingDeck;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -35,11 +37,13 @@ public class ProgrammingPhase extends Round {
 	}
 
 	/**
-	 * player get their  cards for programming their robot in this round
+	 * players get their  cards for programming their robot in this round
 	 */
 	private void dealProgrammingCards() {
-		for (Player player : playerList){ }
-		//  deal 9 cards
+		for (Player player : playerList){
+			ProgrammingDeck programmingDeck = player.getDrawProgrammingDeck();
+			ArrayList<ProgrammingCard> availableProgrammingCards = programmingDeck.drawProgrammingCards();
+		}
 	}
 
 	/**
