@@ -251,6 +251,7 @@ public class LobbyController extends Controller {
             }
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
+        chatMessageLabel.setText("");
     }
 
     /**
