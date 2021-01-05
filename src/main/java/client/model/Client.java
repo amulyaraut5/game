@@ -205,14 +205,13 @@ public class Client {
                     break;
                 case GameStarted:
                     GameStarted gameStarted = (GameStarted) message.getBody();
+                    //TODO start gameView
+                    gameViewController.buildMap(gameStarted.getMap());
                     //  <----------------For Test---------------------->
                     MapConverter mapConverter = MapConverter.getInstance();
                     Tile[][] convertedMap = mapConverter.reconvert(gameStarted);
-                    logger.info("Tile at position [9] [8]: "+ convertedMap[9][8].getAttribute().getType());
                     //  <----------------For Test---------------------->
-
                     logger.info("The game has started.");
-
                     break;
                 case ConnectionUpdate:
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
