@@ -60,36 +60,6 @@ public class GameViewController extends Controller {
 
     @FXML
     private void initialize() {
-        var map = new ArrayList<BoardElement>(100);
-        var field = new ArrayList<ArrayList<Attribute>>();
-
-        for (int i = 0; i < 14; i++) {
-            field.add(i, new ArrayList<>());
-            field.get(i).add(new Empty());
-        }
-
-        field.get(1).add(new Antenna());
-        field.get(2).add(new Belt(Orientation.RIGHT, 1));
-        field.get(3).add(new ControlPoint(5));
-        field.get(4).add(new Empty());
-        field.get(5).add(new EnergySpace(3));
-        field.get(6).add(new Gear(Utilities.Rotation.LEFT));
-        field.get(7).add(new Laser(Orientation.LEFT, 3));
-        field.get(8).add(new Pit());
-        field.get(9).add(new PushPanel(Orientation.DOWN, new int[]{3}));
-        field.get(10).add(new Reboot());
-        field.get(11).add(new RotatingBelt(new Orientation[]{Orientation.UP, Orientation.RIGHT}, true, 1));
-        field.get(12).add(new RotatingBelt(new Orientation[]{Orientation.DOWN, Orientation.RIGHT}, false, 2));
-        field.get(13).add(new Wall(Orientation.RIGHT));
-
-
-// TODO: 03.01.2021  if 2 mapfields have same position, only choose one
-
-        for (int i = 0; i < field.size(); i++) {
-            map.add(new BoardElement(i, field.get(i)));
-        }
-
-        buildMap(map);
     }
 
     /**

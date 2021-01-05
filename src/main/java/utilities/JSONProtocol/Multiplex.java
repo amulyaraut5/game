@@ -3,7 +3,7 @@ package utilities.JSONProtocol;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import game.gameObjects.tiles.*;
+import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.GameStarted;
@@ -100,40 +100,11 @@ public class Multiplex {
             String tileType = tileObject.get("type").getAsString();
 
             Gson gson = new GsonBuilder().create();
-
-            if (tileType.equals("ControlPoint")) {
-                ControlPoint result = gson.fromJson(jsonElement, ControlPoint.class);
+            try {
+                Attribute result = gson.fromJson(jsonElement, (Type) Class.forName("game.gameObjects.tiles." + tileType));
                 return result;
-            } else if (tileType.equals("Antenna")) {
-                Antenna result = gson.fromJson(jsonElement, Antenna.class);
-                return result;
-            }else if (tileType.equals("Belt")) {
-                Belt result = gson.fromJson(jsonElement, Belt.class);
-                return result;
-            }else if (tileType.equals("Empty")) {
-                Empty result = gson.fromJson(jsonElement, Empty.class);
-                return result;
-            } else if (tileType.equals("EnergySpace")) {
-                EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
-                return result;
-            } else if (tileType.equals("Gear")) {
-                Gear result = gson.fromJson(jsonElement, Gear.class);
-                return result;
-            } else if (tileType.equals("Laser")) {
-                Laser result = gson.fromJson(jsonElement, Laser.class);
-                return result;
-            } else if (tileType.equals("Pit")) {
-                Pit result = gson.fromJson(jsonElement, Pit.class);
-                return result;
-            } else if (tileType.equals("PushPanel")) {
-                PushPanel result = gson.fromJson(jsonElement, PushPanel.class);
-                return result;
-            } else if (tileType.equals("RotatingBelt")) {
-                RotatingBelt result = gson.fromJson(jsonElement, RotatingBelt.class);
-                return result;
-            } else if (tileType.equals("Wall")) {
-                Wall result = gson.fromJson(jsonElement, Wall.class);
-                return result;
+            } catch (ClassNotFoundException e) {
+                logger.error("tileType could not be converted to a Attribute Class: " + e.getMessage());
             }
             return null;
         }

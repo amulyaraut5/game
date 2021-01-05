@@ -7,7 +7,7 @@ import utilities.ImageHandler;
 public class Reboot extends Attribute {
 
     public Reboot() {
-        type = "RebootToken";
+        type = "Reboot";
     }
 
     @Override

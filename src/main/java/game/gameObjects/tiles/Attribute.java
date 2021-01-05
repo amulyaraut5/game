@@ -15,17 +15,13 @@ import server.UserThread;
 public abstract class Attribute {
 
     protected static final Logger logger = LogManager.getLogger();
-    protected static Game game;
+    protected static Game game = Game.getInstance();
     protected static UserThread userThread;//TODO remove?
     protected static Client client = Client.getInstance();
     protected String type;
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;
-    }
-
-    public static void setGame(Game game) {
-        Attribute.game = game;
     }
 
     /**
@@ -52,12 +48,5 @@ public abstract class Attribute {
 
     public String getType() {
         return type;
-    }
-
-    @Override
-    public String toString() {
-        return "Attribute{" +
-                "name='" + type + '\'' +
-                '}';
     }
 }

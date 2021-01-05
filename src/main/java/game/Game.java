@@ -14,17 +14,21 @@ import java.util.ArrayList;
 
 public class Game {
 
+    private static Game instance;
     private int energyBank;
     private UpgradeShop upgradeShop;
     private ArrayList<Player> playerList;
     private Round activeRound;
     private ArrayList<DamageCard> damageCardDeck;
     private ProgrammingDeck specialProgrammingDeck;
-    private Game instance;
     private int noOfCheckpoints;
 
-    public Game() {
-        Attribute.setGame(this);
+    private Game() {
+    }
+
+    public static Game getInstance() {
+        if (instance == null) instance = new Game();
+        return instance;
     }
 
     /**
@@ -34,14 +38,6 @@ public class Game {
         // TODO - implement Game.play
         throw new UnsupportedOperationException();
     }
-
-	/**
-	 * TODO
-	 */
-	public void operation() {
-		// TODO - implement Game.operation
-		throw new UnsupportedOperationException();
-	}
 
     /**
      * TODO

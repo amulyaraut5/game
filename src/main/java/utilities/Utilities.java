@@ -13,7 +13,12 @@ public class Utilities {
     public static final Orientation[] DOWN_RIGHT = {Orientation.DOWN, Orientation.RIGHT};
     public static final Orientation[] RIGHT_DOWN = {Orientation.RIGHT, Orientation.DOWN};
     public static final Orientation[] DOWN_LEFT = {Orientation.DOWN, Orientation.LEFT};
-    public static final Orientation[] LEFT_DOWN = {Orientation.DOWN, Orientation.RIGHT};
+    public static final Orientation[] LEFT_DOWN = {Orientation.LEFT, Orientation.DOWN};
+
+    public static final Orientation[] UP_DOWN = {Orientation.UP, Orientation.DOWN};
+    public static final Orientation[] DOWN_UP = {Orientation.DOWN, Orientation.UP};
+    public static final Orientation[] RIGHT_LEFT = {Orientation.RIGHT, Orientation.LEFT};
+    public static final Orientation[] LEFT_RIGHT = {Orientation.LEFT, Orientation.RIGHT};
 
     public enum Rotation {
         @SerializedName("left") LEFT,
