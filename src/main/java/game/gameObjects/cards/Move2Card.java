@@ -16,16 +16,7 @@ public class Move2Card extends ProgrammingCard {
         super("Move 2");
         super.addAction(new MoveRobot());
         super.addAction(new MoveRobot());
-        //load image
         drawCardImage();
-        //ODER:
-        /*
-        try {
-            super.cardImage = ImageIO.read(new File("programming-cards/move-2-card.png"));
-        } catch (java.io.IOException | NullPointerException e){
-            logger.warn("Move 2 card image could not be read");
-        }
-         */
         logger.info("moved 2 Tiles");
     }
 

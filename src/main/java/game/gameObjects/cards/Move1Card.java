@@ -15,16 +15,7 @@ public class Move1Card extends ProgrammingCard {
     public Move1Card() {
         super("Move 1");
         super.addAction(new MoveRobot());
-        //load image
         drawCardImage();
-        //ODER:
-        /*
-        try {
-            super.cardImage = ImageIO.read(new File("programming-cards/move-1-card.png"));
-        } catch (java.io.IOException | NullPointerException e){
-            logger.warn("Move one card image could not be read");
-        }
-         */
         logger.info("moved One Tile");
     }
 

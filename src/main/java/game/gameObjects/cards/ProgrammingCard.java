@@ -12,21 +12,16 @@ import java.awt.image.BufferedImage;
  * @author annika
  */
 public abstract class ProgrammingCard extends Card {
-    /**
-     * Logger to log information/warning
-     */
-    private static final Logger logger = LogManager.getLogger();
 
     private boolean isHidden;
     private boolean isLocked;
-    private String cardName;
-    //BufferedImage cardImage;
+
     private ArrayList<Action> actions = new ArrayList<>();
 
     ProgrammingCard(String cardName) {
+        super("Programming Card");
         this.isHidden = false;
         this.isLocked = false;
-        this.cardName = cardName;
     }
 
     @Override
@@ -77,8 +72,5 @@ public abstract class ProgrammingCard extends Card {
         isLocked = locked;
     }
 
-    public String toString() {
-        return cardName;
-    }
 
 }
