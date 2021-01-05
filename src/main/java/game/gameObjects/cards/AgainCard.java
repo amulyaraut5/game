@@ -13,7 +13,7 @@ import utilities.ImageHandler;
 public class AgainCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    AgainCard() {
+    public AgainCard() {
         super("Again");
         super.addAction(new AgainAction());
         drawCardImage();

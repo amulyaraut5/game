@@ -12,7 +12,7 @@ import utilities.ImageHandler;
 public class PowerUpCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    PowerUpCard() {
+    public PowerUpCard() {
         super("Power Up");
         super.addAction(new PowerUpRobot());
         drawCardImage();

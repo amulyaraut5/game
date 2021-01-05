@@ -12,7 +12,7 @@ import utilities.ImageHandler;
 public class Move2Card extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    Move2Card() {
+    public Move2Card() {
         super("Move 2");
         super.addAction(new MoveRobot());
         super.addAction(new MoveRobot());

@@ -13,7 +13,7 @@ import utilities.Utilities.Orientation;
 public class UTurnCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    UTurnCard() {
+    public UTurnCard() {
         super("U-Turn");
         super.addAction(new RotateRobot(Orientation.RIGHT));
         super.addAction(new RotateRobot(Orientation.RIGHT));

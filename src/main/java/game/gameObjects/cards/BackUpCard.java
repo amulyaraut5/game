@@ -1,27 +1,27 @@
 package game.gameObjects.cards;
 
-import game.gameActions.RotateRobot;
+import game.gameActions.MoveRobotBack;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
-import utilities.Utilities.Orientation;
+
 
 /**
  * @author annika
  */
-public class LeftTurnCard extends ProgrammingCard {
+public class BackUpCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    LeftTurnCard() {
-        super("Left Turn");
-        super.addAction(new RotateRobot(Orientation.LEFT));
+    public BackUpCard() {
+        super("Move Back");
+        super.addAction(new MoveRobotBack());
         drawCardImage();
-        logger.info("rotated left");
+        logger.info("moved back");
     }
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/left-turn-card.png");
+        return ImageHandler.createImageView("/programming-cards/move-back-card.png");
     }
 }

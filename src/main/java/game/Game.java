@@ -1,8 +1,7 @@
 package game;
 
 import game.gameObjects.cards.DamageCard;
-import game.gameObjects.cards.ProgrammingDeck;
-import game.gameObjects.tiles.Attribute;
+import game.gameObjects.decks.ProgrammingDeck;
 import game.round.Round;
 
 import java.util.ArrayList;

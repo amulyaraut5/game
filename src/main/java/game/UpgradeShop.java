@@ -1,7 +1,7 @@
 package game;
 
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.UpgradeDeck;
+import game.gameObjects.decks.UpgradeDeck;
 
 /**
  * This class creates the Upgrade shop where upgrades can be purchased.

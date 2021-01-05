@@ -10,10 +10,10 @@ import utilities.Utilities.Orientation;
 /**
  * @author annika
  */
-public class RightTurnCard extends ProgrammingCard {
+public class TurnRightCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    RightTurnCard() {
+    public TurnRightCard() {
         super("Right Turn");
         super.addAction(new RotateRobot(Orientation.RIGHT));
         drawCardImage();
