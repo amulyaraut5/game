@@ -13,10 +13,16 @@ public abstract class Deck {
     private ArrayList<Card> deck;
 
     /**
+     * Creates a suitable deck with the respective cards,
+     * has to be implemented in each deck class.
+     */
+    public abstract void createDeck();
+
+    /**
      * Shuffles the deck.
      */
     public void shuffle() {
-        Collections.shuffle(deck);
+        Collections.shuffle(this.getDeck());
     }
 
     /**
@@ -27,15 +33,29 @@ public abstract class Deck {
         deck.add(card);
     }
 
-    public void isEmpty() {
+    /**
+     * Checks whether the respective deck is empty.
+     * @return
+     */
+    public boolean isEmpty() {
+        if(deck.size() == 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    /**
+     * Indicates the size of the deck.
+     * Depending on the size, e.g., it needs to be reshuffled.
+     */
     public void size() {
+        deck.size();
     }
 
     /**
      * removes first card of the deck
-     * @return poped the removed card
+     * @return the removed card
      */
     public Card pop() {
         Card poped = deck.get(0);
@@ -43,9 +63,6 @@ public abstract class Deck {
         return poped;
     }
 
-    public void drawCard() {
-        pop();
-    }
 
     /**
      * Return the desired amount of cards and then removes them from the deck.
@@ -58,4 +75,9 @@ public abstract class Deck {
         }
         return tempDeck;
     }
+
+    /**
+     *  Returns the deck.
+     */
+    public abstract ArrayList<Card> getDeck();
 }

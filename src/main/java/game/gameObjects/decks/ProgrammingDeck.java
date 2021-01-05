@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class ProgrammingDeck extends Deck {
 
-    ArrayList<Card> deck;
+    ArrayList<Card> programmingDeck;
 
     public ProgrammingDeck() {
         createDeck();
@@ -21,7 +21,7 @@ public class ProgrammingDeck extends Deck {
      * each player has in the Programming Deck at the beginning of the game.
      */
     public void createDeck() {
-        deck = new ArrayList<>();
+        programmingDeck = new ArrayList<>();
 
         // Move 1 Cards
         for (int i = 0; i < 5; i++) {
@@ -56,5 +56,11 @@ public class ProgrammingDeck extends Deck {
             addCard(new AgainCard());
         }
     }
+
+    @Override
+    public ArrayList<Card> getDeck() {
+        return programmingDeck;
+    }
+
 
 }
