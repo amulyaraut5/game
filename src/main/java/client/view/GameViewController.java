@@ -1,10 +1,12 @@
 package client.view;
 
-import game.gameObjects.tiles.*;
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Empty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,8 +18,6 @@ import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
-import utilities.Utilities;
-import utilities.Utilities.Orientation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +58,28 @@ public class GameViewController extends Controller {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
+    public void buildMap(ArrayList<BoardElement> map) {
+        for (int i = 0; i < 100; i++) {
+            fields[i] = new Group();
+        }
+
+        for (BoardElement tile : map) {
+            int pos = tile.getPosition();
+            var field = tile.getField();
+            // TODO: 04.01.2021 check priority for the imageViews (e.g.: draw Empty at first, then Laser, then Wall)
+
+            fields[pos - 1].getChildren().add(new Empty().createImage());
+
+            for (Attribute attribute : field) {
+                Node attributeImage = attribute.createImage();
+                if (attributeImage != null) {
+                    fields[pos - 1].getChildren().add(attributeImage);
+                }
+            }
+            flowPane.getChildren().add(fields[pos - 1]);
+        }
+    }
+
     @FXML
     private void initialize() {
     }
@@ -93,23 +115,6 @@ public class GameViewController extends Controller {
     private void changeInnerView(ActionEvent event) {
         Pane innerPane = setNextPane();
         outerPane.setCenter(innerPane);
-    }
-
-    private void buildMap(ArrayList<BoardElement> map) {
-        for (int i = 0; i < 100; i++) {
-            fields[i] = new Group();
-        }
-
-        for (BoardElement tile : map) {
-            int pos = tile.getPosition();
-            var field = tile.getField();
-            // TODO: 04.01.2021 check priority for the imageViews (e.g.: draw Empty at first, then Laser, then Wall)
-            for (Attribute attribute : field) {
-                var attributeImage = attribute.createImage();
-                fields[pos].getChildren().add(attributeImage);
-            }
-            flowPane.getChildren().add(fields[pos]);
-        }
     }
 
     private Pane setNextPane() {
