@@ -1,19 +1,19 @@
 package game.gameObjects.cards;
 
 import game.gameActions.RotateRobot;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 import utilities.Utilities.Orientation;
 
 /**
  * @author annika
  */
-public class LeftTurnCard extends ProgrammingCard{
+public class LeftTurnCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    LeftTurnCard(){
+    LeftTurnCard() {
         super("Left Turn");
         super.addAction(new RotateRobot(Orientation.LEFT));
         drawCardImage();
@@ -22,8 +22,6 @@ public class LeftTurnCard extends ProgrammingCard{
 
     @Override
     public ImageView drawCardImage() {
-        var stream = getClass().getResourceAsStream("/programming-cards/left-turn-card.png");
-        var image = new Image(stream);
-        return new ImageView(image);
+        return ImageHandler.createImageView("/programming-cards/left-turn-card.png");
     }
 }

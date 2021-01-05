@@ -1,19 +1,19 @@
 package game.gameObjects.cards;
 
 import game.gameActions.AgainAction;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 
 
 /**
  * @author annika
  */
-public class AgainCard extends ProgrammingCard{
+public class AgainCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    AgainCard(){
+    AgainCard() {
         super("Again");
         super.addAction(new AgainAction());
         drawCardImage();
@@ -22,8 +22,6 @@ public class AgainCard extends ProgrammingCard{
 
     @Override
     public ImageView drawCardImage() {
-        var stream = getClass().getResourceAsStream("/programming-cards/again-card.png");
-        var image = new Image(stream);
-        return new ImageView(image);
+        return ImageHandler.createImageView("/programming-cards/again-card.png");
     }
 }

@@ -1,15 +1,15 @@
 package game.gameObjects.cards;
 
 import game.gameActions.MoveRobot;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 
 /**
  * @author annika
  */
-public class Move3Card extends ProgrammingCard{
+public class Move3Card extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
     Move3Card() {
@@ -32,8 +32,6 @@ public class Move3Card extends ProgrammingCard{
 
     @Override
     public ImageView drawCardImage() {
-        var stream = getClass().getResourceAsStream("/programming-cards/move-3-card.png");
-        var image = new Image(stream);
-        return new ImageView(image);
+        return ImageHandler.createImageView("/programming-cards/move-3-card.png");
     }
 }

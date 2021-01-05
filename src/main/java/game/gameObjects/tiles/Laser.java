@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 import utilities.Utilities.Orientation;
 
 
@@ -38,17 +37,6 @@ public class Laser extends Attribute {
     @Override
     public Node createImage() {
         String path = "/tiles/laser/laser_" + count + "c.png";
-
-        var stream = getClass().getResourceAsStream(path);
-        var image = new Image(stream, 60, 60, true, true);
-        var imageView = new ImageView(image);
-
-        switch (orientation) {
-            case RIGHT -> imageView.setRotate(90);
-            case DOWN -> imageView.setRotate(180);
-            case LEFT -> imageView.setRotate(270);
-        }
-
-        return imageView;
+        return ImageHandler.createImageView(path, orientation);
     }
 }

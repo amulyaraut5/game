@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 
 public class Reboot extends Attribute {
 
@@ -18,9 +17,6 @@ public class Reboot extends Attribute {
 
     @Override
     public Node createImage() {
-        var stream = getClass().getResourceAsStream("/tiles/reboot.png");
-        var image = new Image(stream, 60, 60, true, true);
-
-        return new ImageView(image);
+        return ImageHandler.createImageView("/tiles/reboot.png");
     }
 }

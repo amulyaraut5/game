@@ -1,15 +1,15 @@
 package game.gameObjects.cards;
 
 import game.gameActions.PowerUpRobot;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 
 /**
  * @author annika
  */
-public class PowerUpCard extends ProgrammingCard{
+public class PowerUpCard extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
     PowerUpCard() {
@@ -21,8 +21,6 @@ public class PowerUpCard extends ProgrammingCard{
 
     @Override
     public ImageView drawCardImage() {
-        var stream = getClass().getResourceAsStream("/programming-cards/power-up-card.png");
-        var image = new Image(stream);
-        return new ImageView(image);
+        return ImageHandler.createImageView("/programming-cards/power-up-card.png");
     }
 }

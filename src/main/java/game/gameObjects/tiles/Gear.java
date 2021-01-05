@@ -1,10 +1,8 @@
 package game.gameObjects.tiles;
 
 import game.Player;
-import game.gameActions.RotateRobot;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 import utilities.Utilities.Rotation;
 
 /**
@@ -43,10 +41,7 @@ public class Gear extends Attribute {
             path = "/tiles/gear_left.png";
         }
 
-        var stream = getClass().getResourceAsStream(path);
-        var image = new Image(stream, 60, 60, true, true);
-
-        return new ImageView(image);
+        return ImageHandler.createImageView(path);
     }
 
 }

@@ -3,8 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import game.gameActions.MoveRobotInCurve;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 import utilities.Utilities.Orientation;
 
 /**
@@ -54,9 +53,7 @@ public class RotatingBelt extends Attribute {
 
         String path = "/tiles/" + color + "_" + rotation + ".png";
 
-        var stream = getClass().getResourceAsStream(path);
-        var image = new Image(stream, 60, 60, true, true);
-        var imageView = new ImageView(image);
+        var imageView = ImageHandler.createImageView(path);
 
         switch (orientations[0]) {
             case UP -> {

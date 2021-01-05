@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Reboot;
 
@@ -42,9 +41,6 @@ public class Pit extends Attribute {
 
     @Override
     public Node createImage() {
-        var stream = getClass().getResourceAsStream("/tiles/pit.png");
-        var image = new Image(stream, 60, 60, true, true);
-
-        return new ImageView(image);
+        return ImageHandler.createImageView("/tiles/pit.png");
     }
 }

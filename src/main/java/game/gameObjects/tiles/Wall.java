@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 import utilities.Utilities.Orientation;
 
 /**
@@ -56,23 +57,10 @@ public class Wall extends Attribute {
         String pathTwoWalls = "/tiles/wall_up_right.png";
 
         if (orientation != null) {
-
-            var stream = getClass().getResourceAsStream(pathOneWall);
-            var image = new Image(stream, 60, 60, true, true);
-            var imageView = new ImageView(image);
-
-            switch (orientation) {
-                case RIGHT -> imageView.setRotate(90);
-                case DOWN -> imageView.setRotate(180);
-                case LEFT -> imageView.setRotate(270);
-            }
-            return imageView;
-
+            return ImageHandler.createImageView(pathOneWall, orientation);
         } else {
             if (orientations != null) {
-                var stream = getClass().getResourceAsStream(pathTwoWalls);
-                var image = new Image(stream, 60, 60, true, true);
-                Node imageView = new ImageView(image);
+                Node imageView = ImageHandler.createImageView(pathTwoWalls);
 
                 switch (orientations[0]) {
                     case UP: {

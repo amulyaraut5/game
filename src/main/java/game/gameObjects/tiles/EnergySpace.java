@@ -2,8 +2,7 @@ package game.gameObjects.tiles;
 
 import game.Player;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Energy;
 
@@ -49,9 +48,6 @@ public class EnergySpace extends Attribute {
             path = "/tiles/energySpace_red.png";
         }
 
-        var stream = getClass().getResourceAsStream(path);
-        var image = new Image(stream, 60, 60, true, true);
-
-        return new ImageView(image);
+        return ImageHandler.createImageView(path);
     }
 }
