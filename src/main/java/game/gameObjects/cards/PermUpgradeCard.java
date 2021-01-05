@@ -4,6 +4,10 @@ import javafx.scene.image.ImageView;
 
 public class PermUpgradeCard extends UpgradeCard {
 
+    public PermUpgradeCard(String cardName) {
+        super(cardName);
+    }
+
     @Override
     public ImageView drawCardImage() {
         return null;

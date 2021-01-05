@@ -5,6 +5,10 @@ import javafx.scene.image.ImageView;
 
 public class TempUpgradeCard extends UpgradeCard {
 
+    public TempUpgradeCard(String cardName) {
+        super(cardName);
+    }
+
     @Override
     public ImageView drawCardImage() {
         return null;
