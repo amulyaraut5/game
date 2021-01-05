@@ -4,11 +4,23 @@ import game.gameObjects.cards.*;
 
 import java.util.ArrayList;
 
+/**
+ * @author annika
+ */
 public class ProgrammingDeck extends Deck {
 
     ArrayList<Card> deck;
 
-    public void resetDeck() {
+    public ProgrammingDeck() {
+        createDeck();
+        shuffle();
+    }
+
+    /**
+     * Creates a deck with all 20 programming cards
+     * each player has in the Programming Deck at the beginning of the game.
+     */
+    public void createDeck() {
         deck = new ArrayList<>();
 
         // Move 1 Cards
@@ -37,9 +49,8 @@ public class ProgrammingDeck extends Deck {
         addCard(new UTurnCard());
 
         // Power Up Cards
-        for (int i = 1; i <= 6; i++) {
-            addCard(new PowerUpCard());
-        }
+        addCard(new PowerUpCard());
+
         // Again Card
         for (int i = 0; i < 2; i++) {
             addCard(new AgainCard());

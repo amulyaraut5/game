@@ -27,18 +27,14 @@ public abstract class Deck {
         deck.add(card);
     }
 
-    public void isEmpty(){
+    public void isEmpty() {
     }
 
-    public void addCard(){
-    }
-
-    public void size(){
+    public void size() {
     }
 
     /**
      * removes first card of the deck
-     *
      * @return poped the removed card
      */
     public Card pop() {
@@ -47,7 +43,8 @@ public abstract class Deck {
         return poped;
     }
 
-    public void drawCard(){
+    public void drawCard() {
+        pop();
     }
 
     /**
