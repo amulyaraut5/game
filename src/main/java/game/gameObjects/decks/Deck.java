@@ -1,8 +1,13 @@
-package game.gameObjects.cards;
+package game.gameObjects.decks;
+
+import game.gameObjects.cards.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author annika
+ */
 public abstract class Deck {
 
     private ArrayList<Card> deck;
@@ -22,7 +27,13 @@ public abstract class Deck {
         deck.add(card);
     }
 
-    public void drawCard(){
+    public void isEmpty(){
+    }
+
+    public void addCard(){
+    }
+
+    public void size(){
     }
 
     /**
@@ -34,6 +45,9 @@ public abstract class Deck {
         Card poped = deck.get(0);
         deck.remove(poped);
         return poped;
+    }
+
+    public void drawCard(){
     }
 
     /**
