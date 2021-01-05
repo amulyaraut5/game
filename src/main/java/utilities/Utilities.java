@@ -20,6 +20,21 @@ public class Utilities {
     public static final Orientation[] RIGHT_LEFT = {Orientation.RIGHT, Orientation.LEFT};
     public static final Orientation[] LEFT_RIGHT = {Orientation.LEFT, Orientation.RIGHT};
 
+    //Cards
+    public static final int SPAM_CARDCOUNT = 36;
+    public static final int TROJANHORSE_CARDCOUNT = 12;
+    public static final int VIRUS_CARDCOUNT = 18;
+    public static final int WORM_CARDCOUNT = 6;
+    public static final int MOVE1_CARDCOUNT = 5;
+    public static final int MOVE2_CARDCOUNT = 3;
+    public static final int MOVE3_CARDCOUNT = 1;
+    public static final int BACKUP_CARDCOUNT = 1;
+    public static final int TURNLEFT_CARDCOUNT = 3;
+    public static final int TURNRIGHT_CARDCOUNT = 3;
+    public static final int UTURN_CARDCOUNT = 1;
+    public static final int AGAIN_CARDCOUNT = 2;
+    public static final int POWERUP_CARDCOUNT = 1;
+
     public enum Rotation {
         @SerializedName("left") LEFT,
         @SerializedName("right") RIGHT
