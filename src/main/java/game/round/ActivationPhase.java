@@ -11,12 +11,12 @@ import java.util.ArrayList;
  * @author janau
  */
 
-public class ActivationPhase extends game.round.Round {
+public class ActivationPhase {
 
 	private ArrayList<Player> priorityList;
 
-	public ActivationPhase(Game game) {
-		super(game);
+	public ActivationPhase(Round round) {
+
 	}
 
 
