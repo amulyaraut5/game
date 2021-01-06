@@ -1,16 +1,20 @@
 package client.view;
 
+import client.ViewManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.JSONProtocol.body.PlayerStatus;
-import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
@@ -23,11 +27,8 @@ import java.util.ArrayList;
 public class LobbyController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
-
     @FXML
-    private TextArea lobbyTextAreaChat;
-    @FXML
-    private TextField lobbyTextFieldChat;
+    private BorderPane chatPane;
 
     @FXML
     private CheckBox readyCheckbox;
@@ -103,16 +104,6 @@ public class LobbyController extends Controller {
     private Label currentLabel;
 
     /**
-     * the choiceBox where the user can choose if the
-     * message should be a direct message or who should be
-     * the receiver of the message
-     */
-    @FXML
-    private ChoiceBox<String> directChoiceBox;
-
-
-    public Label chatMessageLabel;
-    /**
      * In robotImageViews the different ImageViews that can be assigned
      * are stored together
      */
@@ -134,9 +125,8 @@ public class LobbyController extends Controller {
      * sets the default of the choiceBox to all. Additionally the current imageView
      * and label are assigned
      */
+    @FXML
     public void initialize() {
-        directChoiceBox.getItems().add("all");
-        directChoiceBox.getSelectionModel().select(0);
         robotImageViews.add(robot1ImageView);
         robotImageViews.add(robot2ImageView);
         robotImageViews.add(robot3ImageView);
@@ -154,14 +144,10 @@ public class LobbyController extends Controller {
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
     }
-
-    /**
-     * The messages received from other users are printed
-     * in the chatTextArea
-     * @param messageBody
-     */
-    public void setTextArea(String messageBody) {
-        lobbyTextAreaChat.appendText(messageBody + "\n");
+    public void attachChatPane(Pane chat){
+        chat.setPrefWidth(chatPane.getPrefWidth());
+        chat.setPrefHeight(chatPane.getPrefHeight());
+        chatPane.setCenter(chat);
     }
 
     /**
@@ -177,7 +163,6 @@ public class LobbyController extends Controller {
         String newName = playerAdded.getName() + " " + playerAdded.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
         currentLabel.setText(newName);
-        directChoiceBox.getItems().add(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
         RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer);
@@ -188,13 +173,14 @@ public class LobbyController extends Controller {
     /**
      * The robot image of the user who clicked the ready button gets changed. Now the icon has a pink
      * background to signal the ready status.
+     *
      * @param playerStatus
      */
     public void displayPlayerStatus(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
                 String path = "/lobby/" + robotNames[robotIcon.getFigure() - 1];
-                if (playerStatus.isReady()) path +=  "-ready.png";
+                if (playerStatus.isReady()) path += "-ready.png";
                 else path += ".png";
                 Image image = new Image(getClass().getResource(path).toString());
                 robotIcon.getRobotImageView().setImage(image);
@@ -215,47 +201,13 @@ public class LobbyController extends Controller {
     /**
      * by clicking the ready checkbox a message will be send to the client (and then to the server)
      * to signal the ready status of the user.
+     *
      * @param event
      */
     @FXML
     private void checkBoxAction(ActionEvent event) {
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
         client.sendMessage(msg);
-    }
-
-    /**
-     * send a chat Message, either private or to everyone
-     *
-     * @param event
-     */
-    @FXML
-    private void submitChatMessage(ActionEvent event) {
-        chatMessageLabel.setText("");
-        String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
-        logger.info("chose choice: " + sendTo);
-        String message = lobbyTextFieldChat.getText();
-        JSONMessage jsonMessage;
-        if (!message.isBlank()) {
-            if(sendTo.equals("all")){
-                jsonMessage = new JSONMessage(new SendChat(message, -1));
-                lobbyTextAreaChat.appendText("[You] " + message + "\n");
-            } else {
-                String [] userInformation = sendTo.split(" ");
-                String destinationUser = "";
-                for(int i = 0; i<userInformation.length-1; i++) destinationUser += userInformation[i] + " ";
-                String idUser = userInformation[userInformation.length-1];
-                destinationUser = destinationUser.substring(0, destinationUser.length()-1);
-                logger.info("playerList contains user " + client.getIDFrom(destinationUser) + " id is " + idUser);
-                jsonMessage = new JSONMessage(new SendChat(message, Integer.parseInt(idUser)));
-                lobbyTextAreaChat.appendText("[You] @" + destinationUser + ": " + message + "\n");
-            }
-            client.sendMessage(jsonMessage);
-            } else {
-                chatMessageLabel.setText("Your message was empty.");
-            }
-        lobbyTextFieldChat.clear();
-        directChoiceBox.getSelectionModel().select(0);
-
     }
 
     /**
@@ -273,6 +225,7 @@ public class LobbyController extends Controller {
         /**
          * the constructor of RobotIcon where one RobotIcon can be created with the
          * values of one player and the image of the figure he choosed
+         *
          * @param position
          * @param playerAdded
          * @param imageViewPuffer

@@ -123,14 +123,18 @@ public class Server {
     }
 
     public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
-
             for (User user : users) {
                 if (user.getThread() != sender) {
                     user.message(jsonMessage);
                 }
             }
-
     }
+    public void communicateAll(JSONMessage jsonMessage) {
+        for (User user : users) {
+                user.message(jsonMessage);
+        }
+    }
+
     public void communicateDirect(JSONMessage jsonMessage, UserThread sender, int receiver){
         for (User user: users){
             logger.info("User" + user.getId());

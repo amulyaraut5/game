@@ -1,9 +1,6 @@
 package client.model;
 
-import client.view.Controller;
-import client.view.GameViewController;
-import client.view.LobbyController;
-import client.view.LoginController;
+import client.view.*;
 import com.google.gson.Gson;
 import game.gameObjects.tiles.Tile;
 import javafx.application.Platform;
@@ -57,12 +54,10 @@ public class Client {
 
     private int playerID;
 
-    /**
-     * readyList is the
-     */
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
+    private ChatController chatController;
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -160,10 +155,15 @@ public class Client {
         gameViewController = (GameViewController) controllerList.get(2);
     }
 
+    public void setChatController(ChatController chatController) {
+        this.chatController = chatController;
+    }
+
     public void addNewPlayer(PlayerAdded playerAdded) {
-        logger.debug(playerList.size() + " = playerList Size");
         lobbyController.setJoinedUsers(playerAdded);
+        chatController.addNewUser(playerAdded);
         playerList.add(playerAdded);
+        logger.debug(playerList.size() + " = playerList Size");
     }
 
     public boolean playerListContains(int robotID) {
@@ -222,7 +222,8 @@ public class Client {
                     if (receivedChat.isPrivat())
                         receivedMessage = "[" + receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
                     else receivedMessage = "[" + receivedChat.getFrom() + "] " + receivedChat.getMessage();
-                    lobbyController.setTextArea(receivedMessage);
+                    //lobbyController.setTextArea(receivedMessage);//TODO
+                    chatController.setTextArea(receivedMessage);
                 }
                 case GameStarted -> {
                     GameStarted gameStarted = (GameStarted) message.getBody();

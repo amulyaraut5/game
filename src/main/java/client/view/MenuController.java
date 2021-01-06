@@ -26,7 +26,7 @@ public class MenuController extends Controller {
 
         //TODO test if a server already exists on localhost? or print out that the user only joined
         Thread t = new Thread(() -> {
-            new Server().start();
+            Server.getInstance().start();
         });
         t.setName("Server Thread");
         t.start();
