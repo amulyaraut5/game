@@ -29,7 +29,7 @@ public class Player extends User {
 	private int energyCubes;
 
 	private ProgrammingDeck drawProgrammingDeck;
-	private ProgrammingDeck discardedProgrammingCards;
+	private ProgrammingDeck discardedProgrammingDeck;
 	private ArrayList<ProgrammingCard> drawnProgrammingCards;
 	private ArrayList<ProgrammingCard> chosenProgrammingCards;
 
@@ -44,6 +44,7 @@ public class Player extends User {
 		this.robot = robot;
 		this.direction = Orientation.RIGHT;
 		this.energyCubes = 5;
+		this.drawProgrammingDeck = getDrawProgrammingDeck();
 	}
 
 	public Card getCurrentAction() {
@@ -99,7 +100,11 @@ public class Player extends User {
 
 	public void setDrawnProgrammingCards(ArrayList<ProgrammingCard> drawnProgrammingCards) {this.drawnProgrammingCards = drawnProgrammingCards;}
 
+	public void setDrawProgrammingDeck(ProgrammingDeck drawProgrammingDeck) {this.drawProgrammingDeck = drawProgrammingDeck;}
+
 	public ProgrammingDeck getDrawProgrammingDeck() {return drawProgrammingDeck;}
+
+	public ProgrammingDeck getDiscardedProgrammingDeck() {return discardedProgrammingDeck;}
 
 	/**
 	 * It freezes the player from the current round.
@@ -107,6 +112,15 @@ public class Player extends User {
 	 */
     public void freeze() {
     }
+
+	/**
+	 * used in ProgrammingPhase. If the DrawProgrammingDeck is empty the discarded pile gets flipped and shuffled
+	 * and can be used to draw cards again.
+	 */
+	public void reuseDiscardedDeck () {
+		discardedProgrammingDeck.shuffle();
+		drawProgrammingDeck = discardedProgrammingDeck;
+	}
 
 	/**
 	 * This method is triggered if a robot finds itself in sight of board laser or robot laser.

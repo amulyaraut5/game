@@ -49,8 +49,8 @@ public abstract class Deck {
      * Indicates the size of the deck.
      * Depending on the size, e.g., it needs to be reshuffled.
      */
-    public void size() {
-        deck.size();
+    public int size() {
+        return deck.size();
     }
 
     /**
