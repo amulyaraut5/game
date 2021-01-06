@@ -1,7 +1,13 @@
 package game.round;
 
 import game.Player;
-import java.util.Map;
+import game.gameObjects.cards.Card;
+import game.gameObjects.decks.ProgrammingDeck;
+import server.Server;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.*;
+
+import java.util.ArrayList;
 import java.util.Timer;
 
 public class ProgrammingPhase  {
@@ -57,7 +63,7 @@ public class ProgrammingPhase  {
     /**
      * every player can look at their programming cards
      */
-    private void showCards() {
+    private void showCards() {}
 
     public void onePlayerFinished(Player player){
         JSONMessage selectionFinished = new JSONMessage(new SelectionFinished(player.getId()));
