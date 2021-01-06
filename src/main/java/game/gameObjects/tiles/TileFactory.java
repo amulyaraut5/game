@@ -17,12 +17,29 @@ public class TileFactory {
         return instance;
     }
 
-
-    public Tile createTile(int tileID) {
+    public Tile createTile(Object tileID) {
         Tile tile = new Tile();
+
+        //Ckeck if tileID is just one ID or a list of IDs (for tiles with multiple Attributes)
+        if (tileID instanceof int[]) {
+            int[] idList = (int[]) tileID;
+
+            for (int i = 0; i < idList.length; i++) {
+                tile.addAttribute(convertIdToAttribute(idList[i]));
+            }
+
+        } else if (tileID instanceof Integer) {
+            int attributeID = (int) tileID;
+            tile.addAttribute(convertIdToAttribute(attributeID));
+        } else
+            throw new IllegalArgumentException(tileID.getClass() + " is not allowed as an ID. Use only int or int[].");
+        return tile;
+    }
+
+    private Attribute convertIdToAttribute(int attributeID) {
         Attribute attribute = null;
 
-        switch (tileID) {
+        switch (attributeID) {
             case 0 -> attribute = new Empty();
             case 1 -> attribute = new Antenna();
             case 2 -> attribute = new Pit();
@@ -169,10 +186,12 @@ public class TileFactory {
             case 920 -> attribute = new Wall(Utilities.DOWN_UP);
             case 913 -> attribute = new Wall(Utilities.RIGHT_LEFT);
             case 931 -> attribute = new Wall(Utilities.LEFT_RIGHT);
-            default -> logger.error("tileID " + tileID + " could not be converted! " + tileID + " is no known Tile.");
-        }
 
-        tile.addAttribute(attribute);
-        return tile;
+            default -> {
+                logger.error("ID " + attributeID + " could not be converted! " + attributeID + " is no known Tile.");
+                attribute = new Empty();
+            }
+        }
+        return attribute;
     }
 }

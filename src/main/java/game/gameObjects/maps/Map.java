@@ -13,8 +13,7 @@ public abstract class Map {
     protected int minPlayers;
     protected int maxPlayers;
     protected Utilities.Difficulty difficulty;
-    protected ArrayList<Coordinate> startPositions;
-    protected int[][] mapBlueprint;
+    protected Object[][] mapBlueprint;
     protected int width;
     protected int length;
 
