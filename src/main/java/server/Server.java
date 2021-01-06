@@ -1,5 +1,6 @@
 package server;
 
+import game.Game;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapFactory;
@@ -20,6 +21,20 @@ import java.util.Random;
 import static utilities.Utilities.PORT;
 
 public class Server {
+
+    private static Server instance;
+
+    /**
+     * private Constructor for the ChatServer class
+     */
+    private Server() {
+    }
+
+    public static Server getInstance() {
+        if (instance == null) instance = new Server();
+        return instance;
+    }
+
 
     /**
      * Logger to log information/warning
@@ -46,11 +61,8 @@ public class Server {
      */
     private ArrayList<UserThread> addedPlayerList = new ArrayList<>();
 
-    /**
-     * Constructor for the ChatServer class
-     */
-    public Server() {
-    }
+
+
 
     public void setMap(Map map) {
         this.map = map;

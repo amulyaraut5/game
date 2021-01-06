@@ -38,7 +38,9 @@ public class Round {
 
 
 	public void executeRound(){
+
 		//start upgradePhase and upgradePhase.startUpgradePhase()
+		ProgrammingPhase programmingPhase = new ProgrammingPhase(this);
 
 		//start programmingPhase and programmingPhase.startProgrammingPhase()
 
@@ -50,4 +52,7 @@ public class Round {
 
 	}
 
+	public ArrayList<Player> getPlayerList() {
+		return this.playerList;
+	}
 }
