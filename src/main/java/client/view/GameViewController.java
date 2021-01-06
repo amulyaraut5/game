@@ -8,24 +8,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The GameViewController class controls the GameView and the Chat of the game
  *
- * @author Sarah,
+ * @author Sarah, Simon
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
@@ -36,20 +34,25 @@ public class GameViewController extends Controller {
      */
     @FXML
     private Button readyButton;
-    /**
-     * The TextField where the player can type in its message to one user/other users
-     */
-    @FXML
-    private TextField chatTextField;
-    /**
-     * The TextArea which displays the chat history with other players
-     */
-    @FXML
-    private TextArea chatWindow;
+
     @FXML
     private BorderPane outerPane;
+
+    @FXML
+    private BorderPane chatPane;
+
     @FXML
     private FlowPane flowPane;
+
+    @FXML
+    public void initialize() {
+    }
+
+    public void attachChatPane(Pane chat) {
+        chat.setPrefWidth(chatPane.getPrefWidth());
+        chat.setPrefHeight(chatPane.getPrefHeight());
+        chatPane.setCenter(chat);
+    }
 
     /**
      *
@@ -66,10 +69,12 @@ public class GameViewController extends Controller {
         for (BoardElement tile : map) {
             int pos = tile.getPosition();
             var field = tile.getField();
-            // TODO: 04.01.2021 check priority for the imageViews (e.g.: draw Empty at first, then Laser, then Wall)
 
-            fields[pos - 1].getChildren().add(new Empty().createImage());
+            if (emptyBackground(field)) {    //If the image would be transparent, an empty tile is added.
+                fields[pos - 1].getChildren().add(new Empty().createImage());
+            }
 
+            field = sortAttributes(field);
             for (Attribute attribute : field) {
                 Node attributeImage = attribute.createImage();
                 if (attributeImage != null) {
@@ -80,35 +85,33 @@ public class GameViewController extends Controller {
         }
     }
 
-    @FXML
-    private void initialize() {
-    }
-
-    /**
-     * This message adds a String to the chatTextArea
-     *
-     * @param messageBody
-     */
-    private void setTextArea(String messageBody) {
-        chatWindow.appendText(messageBody + "\n");
-    }
-
-    /**
-     * The method gets called by clicking on the submit button
-     * it casts the message of the user to a JSONMessage (private/not private) and
-     * clears the textField and displays the message in the textArea
-     *
-     * @param event
-     */
-    @FXML
-    private void sendChatMessage(ActionEvent event) {
-        String message = chatTextField.getText();
-        if (!message.isBlank()) {
-            setTextArea("[You]: " + message);
-            JSONMessage msg = new JSONMessage(new SendChat(message, -1));
-            client.sendMessage(msg);
+    private boolean emptyBackground(ArrayList<Attribute> field) {
+        for (Attribute a : field) {
+            if (a.getType().equals("Pit") || a.getType().equals("Empty")) {
+                return false;
+            }
         }
-        chatTextField.clear();
+        return true;
+    }
+
+    private ArrayList<Attribute> sortAttributes(ArrayList<Attribute> field) {
+        var sortedField = new ArrayList<Attribute>();
+        String[][] priorityArray = {
+                {"Pit", "Empty"},
+                {"Belt", "RotatingBelt", "Gear", "EnergySpace", "Antenna"},
+                {"PushPanel", "Laser", "ControlPoint"},
+                {"Wall"}};
+
+        for (String[] priority : priorityArray) {
+            List<String> priorityList = Arrays.asList(priority);
+            for (Attribute a : field) {
+                String type = a.getType();
+                if (priorityList.contains(type)) {
+                    sortedField.add(a);
+                }
+            }
+        }
+        return sortedField;
     }
 
     @FXML
@@ -129,7 +132,7 @@ public class GameViewController extends Controller {
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
-
+            logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
         return innerPane;
     }

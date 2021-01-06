@@ -8,6 +8,7 @@ import client.view.LoginController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,14 +39,15 @@ public class ViewManager {
     private Scene loginScene;
     private Scene lobbyScene;
     private Scene gameScene;
+    private Pane chatPane;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
-    private ArrayList<Controller> controllerList = new ArrayList<>();
 
     private ViewManager() {
         Platform.runLater(() -> {
             try {
+                createChatPane();
                 constructScenes();
                 constructMenuStage();
                 constructGameStage();
@@ -65,9 +67,10 @@ public class ViewManager {
         if (menuStage.isShowing()) {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
-            else if (menuStage.getScene() == loginScene)
+            else if (menuStage.getScene() == loginScene) {
                 menuStage.setScene(lobbyScene);
-            else if (menuStage.getScene() == lobbyScene) showGameStage();
+                lobbyController.attachChatPane(chatPane);
+            } else if (menuStage.getScene() == lobbyScene) showGameStage();
         } else {
             logger.warn("There is no next Scene!");
         }
@@ -98,6 +101,7 @@ public class ViewManager {
     }
 
     private void showGameStage() {
+        gameViewController.attachChatPane(chatPane);
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
             gameStage.show();
@@ -117,13 +121,12 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
-            //TODO check if current scene is lobbyScene -> leave lobby
+            //TODO check if current scene is lobbyScene -> leave lobby & disconnect
             if (menuStage.getScene() == menuScene) {
                 menuStage.close();
             } else {
+                showGameStage();    //TODO just for testing, remove later, add menuStage.show();
                 menuStage.setScene(menuScene);
-                gameStage.show();
-                //TODO menuStage.show();
             }
         });
     }
@@ -137,6 +140,15 @@ public class ViewManager {
             //TODO leave game
             showMenuStage();
         });
+    }
+
+    private void createChatPane() {
+        try {
+            chatPane = FXMLLoader.load(getClass().getResource("/view/innerViews/chatView.fxml"));
+        } catch (IOException e) {
+            logger.error("ChatPane could not be created: " + e.getMessage());
+        }
+
     }
 
     private void constructScenes() throws IOException {
@@ -158,9 +170,8 @@ public class ViewManager {
         lobbyController = lobbyLoader.getController();
         gameViewController = gameLoader.getController();
 
-        //TODO client.setController
-        //client.setLoginController(loginController);
-        //client.setGameViewController(gameViewController);
+        ArrayList<Controller> controllerList = new ArrayList<>();
+
         controllerList.add(loginController);
         controllerList.add(lobbyController);
         controllerList.add(gameViewController);

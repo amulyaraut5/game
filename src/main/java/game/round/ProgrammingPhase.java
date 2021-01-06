@@ -6,12 +6,11 @@ import game.gameObjects.cards.Card;
 import game.gameObjects.decks.ProgrammingDeck;
 import server.Server;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.NotYourCards;
-import utilities.JSONProtocol.body.SelectCard;
-import utilities.JSONProtocol.body.YourCards;
+import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
 
 public class ProgrammingPhase  {
 
@@ -54,16 +53,39 @@ public class ProgrammingPhase  {
      * @param player
      * @param selectCard
      */
+    //Damit müsste die Reihenfolge wie folgt sein: "TimerEnded" (an alle) ->
+    // "DiscardHand" (an den Spieler der seine Hand wegwerfen muss)  -> CardsYouGotNow (neugezogene Karten).
+    // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
+    // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
     private void cardWasSelected(Player player, SelectCard selectCard){
         player.setRegisterAndCards(selectCard.getRegister(), selectCard.getCard());
+        if (player.getRegisterAndCards().size() == 5) {
+            onePlayerFinished(player);
+        }
     }
-    /**
-     * every player can look at their programming cards
-     */
-    private void showCards() {
 
+    public void onePlayerFinished(Player player){
+        JSONMessage selectionFinished = new JSONMessage(new SelectionFinished(player.getId()));
+        Server.getInstance().communicateAll(selectionFinished);
+        JSONMessage timerStarted = new JSONMessage(new TimerStarted());
+        // JSONMessage timerEnded = new JSONMessage(new TimerEnded(//TODO));
+        Server.getInstance().communicateAll(timerStarted);
+        Timer timer = new Timer(true); //TODO einzelne Klasse überhaupt notwendig oder sogar wait()?
+        //timer for 30 sek
+        JSONMessage discardCard;
+        JSONMessage cardsYouGotNow;
+        for (Player playerTest : playerList){
+            if (playerTest.getRegisterAndCards().size()<5){
+                discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
+                playerTest.message(discardCard);
+                //TODO random 5 cards from programmingCardDeck
+                //cardsYouGotNow = new JSONMessage(new CardsYouGotNow());
+                //playerTest.message(cardsYouGotNow);
+            }
+        }
     }
+
 
     /**
      * players get their  cards for programming their robot in this round.

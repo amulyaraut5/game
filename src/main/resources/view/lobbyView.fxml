@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
     <children>
@@ -25,13 +30,7 @@
             </font>
             
         </Label>
-      <CheckBox fx:id="readyCheckbox" layoutX="417.0" layoutY="304.0" mnemonicParsing="false" onAction="#checkBoxAction" text="I'm ready to play" />
-      <ChoiceBox fx:id="directChoiceBox" layoutX="377.0" layoutY="231.0" prefHeight="27.0" prefWidth="49.0" />
-      <TextField fx:id="lobbyTextFieldChat" layoutX="433.0" layoutY="231.0" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="109.0" />
-      <Button layoutX="547.0" layoutY="231.0" mnemonicParsing="false" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="57.0" text="Submit">
-         <font>
-            <Font size="12.0" />
-         </font></Button>
+      <CheckBox fx:id="readyCheckbox" layoutX="446.0" layoutY="330.0" mnemonicParsing="false" onAction="#checkBoxAction" text="I'm ready to play" />
       <HBox layoutX="56.0" layoutY="126.0" prefHeight="237.0" prefWidth="317.0">
          <children>
             <VBox prefHeight="214.0" prefWidth="94.0">
@@ -41,7 +40,7 @@
                      <effect>
                         <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                            <color>
-                              <Color red="1.0" green="1.0" blue="1.0" />
+                              <Color blue="1.0" green="1.0" red="1.0" />
                            </color>
                         </DropShadow>
                      </effect>
@@ -51,7 +50,7 @@
                       <effect>
                           <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                               <color>
-                                  <Color red="1.0" green="1.0" blue="1.0" />
+                                  <Color blue="1.0" green="1.0" red="1.0" />
                               </color>
                           </DropShadow>
                       </effect>
@@ -65,7 +64,7 @@
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
-                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                     <Color blue="1.0" green="1.0" red="1.0" />
                                  </color>
                              </DropShadow>
                          </effect>
@@ -75,7 +74,7 @@
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
-                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                     <Color blue="1.0" green="1.0" red="1.0" />
                                  </color>
                              </DropShadow>
                          </effect>
@@ -89,7 +88,7 @@
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
-                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                     <Color blue="1.0" green="1.0" red="1.0" />
                                  </color>
                              </DropShadow>
                          </effect>
@@ -99,7 +98,7 @@
                          <effect>
                              <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
                                  <color>
-                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                     <Color blue="1.0" green="1.0" red="1.0" />
                                  </color>
                              </DropShadow>
                          </effect>
@@ -107,21 +106,6 @@
                  </children>
             </VBox>
          </children></HBox>
-      <ScrollPane fx:id="chatScrollPane" layoutX="373.0" layoutY="13.0" prefHeight="208.0" prefWidth="230.0">
-         <content>
-            <VBox prefHeight="206.0" prefWidth="215.0">
-               <children>
-                  <VBox fx:id="scrollVBox" alignment="CENTER" prefHeight="219.0" prefWidth="226.0">
-                     <children>
-                        <TextArea fx:id="lobbyTextAreaChat" editable="false" prefHeight="229.0" prefWidth="215.0" wrapText="true" />
-                        <Label fx:id="chatMessageLabel" textFill="#949191">
-                           <font>
-                              <Font size="8.0" />
-                           </font></Label>
-                     </children></VBox>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
+      <BorderPane fx:id="chatPane" layoutX="376.0" prefHeight="300.0" prefWidth="250.0" />
     </children>
 </AnchorPane>

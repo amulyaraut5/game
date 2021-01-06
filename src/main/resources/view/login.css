@@ -34,7 +34,6 @@ label{
     -fx-border-width: 3px;
 }
 TextArea{
--fx-background-color: blue;
 -fx-font-size: 12;}
 
 
