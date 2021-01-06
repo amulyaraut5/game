@@ -7,10 +7,9 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.MapConverter;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-
+import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -71,37 +70,24 @@ public class Client {
     }
 
     /**
-     * This method creates a HelloServer protocol message and sends it to server
-     * it gets called when client gets a HelloClient message
-     *
-     * @param helloClient //TODO more than one protocol possible?
-     */
-    public void connect(HelloClient helloClient) {
-        JSONMessage msg = new JSONMessage(new HelloServer(1.0, "Astreine Akazien", false));
-        sendMessage(msg);
-    }
-
-    /**
      * This method establishes the connection between the server and the client using the assigned hostname and port.
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
      */
-    public void establishConnection() {
-        while (true) {
-            try {
-                String hostname = "localhost";
-                socket = new Socket(hostname, PORT);
-                writer = new PrintWriter(socket.getOutputStream(), true);
-                break;
-            } catch (IOException ex) {
-                logger.warn("No connection.");
-            }
+    public boolean establishConnection() {
+        try {
+            String hostname = "localhost";
+            socket = new Socket(hostname, PORT);
+            writer = new PrintWriter(socket.getOutputStream(), true);
+
+            readerThread = new ReaderThread(socket, this);
+            readerThread.start();
+
+            logger.info("Connection to server successful.");
+            return true;
+        } catch (IOException e) {
+            logger.warn("No connection to server: " + e.getMessage());
         }
-
-        readerThread = new ReaderThread(socket, this);
-        readerThread.start();
-
-        logger.info("Connection to server successful.");
-
+        return false;
     }
 
     /**
@@ -135,20 +121,6 @@ public class Client {
         logger.info("Type \"bye\" to exit.");
     }
 
-    /**
-     * This message changes a JSONMessage so that it's possible
-     * to send it as a String over the socket to the server
-     *
-     * @param message
-     */
-    public void sendMessage(JSONMessage message) {
-        Gson gson = new Gson();
-        String json = gson.toJson(message);
-        logger.debug("Protocol sent: " + json);
-        writer.println(json);
-    }
-
-
     public void setController(ArrayList<Controller> controllerList) {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
@@ -157,13 +129,6 @@ public class Client {
 
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
-    }
-
-    public void addNewPlayer(PlayerAdded playerAdded) {
-        lobbyController.setJoinedUsers(playerAdded);
-        chatController.addNewUser(playerAdded);
-        playerList.add(playerAdded);
-        logger.debug(playerList.size() + " = playerList Size");
     }
 
     public boolean playerListContains(int robotID) {
@@ -191,7 +156,7 @@ public class Client {
      * @param message
      * @throws ClassNotFoundException
      */
-    void handleMessage(JSONMessage message) throws ClassNotFoundException {
+    public void handleMessage(JSONMessage message) throws ClassNotFoundException {
         Utilities.MessageType type = message.getType();
 
         Platform.runLater(() -> {
@@ -261,5 +226,36 @@ public class Client {
                 default -> logger.warn("Something went wrong");
             }
         });
+    }
+
+    /**
+     * This method creates a HelloServer protocol message and sends it to server
+     * it gets called when client gets a HelloClient message
+     *
+     * @param helloClient //TODO more than one protocol possible?
+     */
+    public void connect(HelloClient helloClient) {
+        JSONMessage msg = new JSONMessage(new HelloServer(1.0, "Astreine Akazien", false));
+        sendMessage(msg);
+    }
+
+    public void addNewPlayer(PlayerAdded playerAdded) {
+        lobbyController.setJoinedUsers(playerAdded);
+        chatController.addNewUser(playerAdded);
+        playerList.add(playerAdded);
+        logger.debug(playerList.size() + " = playerList Size");
+    }
+
+    /**
+     * This message changes a JSONMessage so that it's possible
+     * to send it as a String over the socket to the server
+     *
+     * @param message
+     */
+    public void sendMessage(JSONMessage message) {
+        Gson gson = new Gson();
+        String json = gson.toJson(message);
+        logger.debug("Protocol sent: " + json);
+        writer.println(json);
     }
 }
