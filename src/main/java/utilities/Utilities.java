@@ -35,6 +35,17 @@ public class Utilities {
     public static final int AGAIN_CARDCOUNT = 2;
     public static final int POWERUP_CARDCOUNT = 1;
 
+    public enum CardName {
+        @SerializedName("moveI") MOVEI,
+        @SerializedName("moveII") MOVEII,
+        @SerializedName("moveII") MOVEIII,
+        @SerializedName("turnLeft") TURNLEFT,
+        @SerializedName("turnRight") TURNRIGHT,
+        @SerializedName("uTurn") UTURN,
+        @SerializedName("backUp") BACKUP,
+        @SerializedName("powerUp") POWERUP,
+        @SerializedName("again") AGAIN,
+    }
     public enum Rotation {
         @SerializedName("left") LEFT,
         @SerializedName("right") RIGHT
@@ -59,6 +70,7 @@ public class Utilities {
             return oppositeOrientation;
         }
     }
+
 
     public enum Difficulty {
         BEGINNER, ADVANCED, EXTREME;
