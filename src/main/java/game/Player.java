@@ -118,6 +118,7 @@ public class Player extends User {
 	 * and can be used to draw cards again.
 	 */
 	public void reuseDiscardedDeck () {
+		//TODO send ShuffleCoding
 		discardedProgrammingDeck.shuffle();
 		drawProgrammingDeck = discardedProgrammingDeck;
 	}

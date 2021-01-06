@@ -19,6 +19,10 @@ public class ProgrammingPhase extends Round {
      * a player gets removed if he has already chose 5 cards in the time
      */
     private ArrayList<Player> notReadyPlayers = new ArrayList<>();
+
+    /**
+     * Programming cards from which the player can choose to program his robot.
+     */
     private ArrayList<Card> availableProgrammingCards;
 
     public ProgrammingPhase(Game game) {
@@ -26,8 +30,7 @@ public class ProgrammingPhase extends Round {
     }
 
     public void startProgrammingPhase() {
-        //start programming phase
-
+        dealProgrammingCards();
     }
 
     /**
@@ -58,7 +61,8 @@ public class ProgrammingPhase extends Round {
         }
 
     /**
-     * a player can choose 5 cards and then a timer starts
+     * a player can choose 5 cards and then a timer starts.
+     * TODO
      */
     private void setRegisterCards(Player player, Map<Integer, Card> mapCards) {
         player.setRegisterAndCards(mapCards);
@@ -66,7 +70,6 @@ public class ProgrammingPhase extends Round {
             timerIsRunning = true;
             GameTimer timer = new GameTimer(player);
         }
-
     }
 
     /**
@@ -82,7 +85,6 @@ public class ProgrammingPhase extends Round {
     private void resetProgrammingPhase() {
         timerIsRunning = false;
         notReadyPlayers = null;
-
     }
 
 }
