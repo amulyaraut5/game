@@ -2,6 +2,9 @@ package game.round;
 
 import game.Game;
 import game.Player;
+import server.Server;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.ActivePhase;
 
 import java.util.ArrayList;
 
@@ -38,13 +41,23 @@ public class Round {
 
 
 	public void executeRound(){
+		//Aufbauphase //TODO where ?
+		JSONMessage buildPhaseMessage = new JSONMessage(new ActivePhase(0));
+		Server.getInstance().communicateAll(buildPhaseMessage);
 
 		//start upgradePhase and upgradePhase.startUpgradePhase()
+		JSONMessage upgradePhaseMessage = new JSONMessage(new ActivePhase(1));
+		Server.getInstance().communicateAll(upgradePhaseMessage);
+
+		//start programmingPhase and programmingPhase.startProgrammingPhase()
+		JSONMessage programmingPhaseMessage = new JSONMessage(new ActivePhase(2));
 		ProgrammingPhase programmingPhase = new ProgrammingPhase(this);
+		Server.getInstance().communicateAll(programmingPhaseMessage);
 
-		//start programmingPhase and programmingPhase.startProgrammingPhase()
 
-		//start programmingPhase and programmingPhase.startProgrammingPhase()
+		//start activationPhase
+		JSONMessage activationPhaseMessage = new JSONMessage(new ActivePhase(3));
+		Server.getInstance().communicateAll(activationPhaseMessage);
 
 	}
 
