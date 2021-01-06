@@ -4,6 +4,11 @@ import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.decks.ProgrammingDeck;
+import server.Server;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.NotYourCards;
+import utilities.JSONProtocol.body.SelectCard;
+import utilities.JSONProtocol.body.YourCards;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,8 +35,18 @@ public class ProgrammingPhase  {
         this.playerList = round.getPlayerList();
     }
 
+    //TODO ShuffleCoding
     public void startProgrammingPhase() {
         dealProgrammingCards();
+        //send Protocol to player and others which cards the player has
+        for(Player player: playerList){
+            ArrayList<Card> cardDeck = player.getDrawProgrammingDeck().getDeck();
+            JSONMessage toPlayer = new JSONMessage(new YourCards(cardDeck));
+            JSONMessage toOtherPlayers = new JSONMessage(new NotYourCards(player.getId(), cardDeck.size()));
+            Server.getInstance().communicateUsers(toOtherPlayers, player.getThread());
+            player.message(toPlayer);
+        }
+
     }
 
     /**
