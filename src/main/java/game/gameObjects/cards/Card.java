@@ -1,11 +1,11 @@
 package game.gameObjects.cards;
 
-import game.gameActions.Action;
 import javafx.scene.image.ImageView;
+import utilities.Utilities.CardName;
 
 public abstract class Card {
 
-    private String cardName;
+    private CardName cardName;
 
     public Card(String cardName) {
         cardName = "Card";
@@ -23,12 +23,12 @@ public abstract class Card {
      * Gets the card name.
      * @return returns the respective name of card
      */
-    public String getCardName() {
+    public CardName getCardName() {
         return cardName;
     }
 
     public String toString() {
-        return cardName;
+        return cardName.toString();
     }
 }
 
