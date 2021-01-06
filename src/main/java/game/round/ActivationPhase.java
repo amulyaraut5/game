@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Activation Phase, where the Programming Cards and GameBoard Tiles are activated
  *
- * @author janau
+ * @author janau, sarah
  */
 
 public class ActivationPhase {
@@ -27,6 +27,9 @@ public class ActivationPhase {
 	 * After each register the method for activating the board tiles ist called.
 	 */
 	public void startActivationPhase() {
+		for (int register = 1; register<6; register++){
+
+		}
 		/*
 		for(register=0;register<5;register++) 		--> loops five times = Register
 		flipRegister 							--> all players turn over their cards (in view?)
