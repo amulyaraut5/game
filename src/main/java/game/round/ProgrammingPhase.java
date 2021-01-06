@@ -50,6 +50,15 @@ public class ProgrammingPhase  {
     }
 
     /**
+     * if
+     * @param player
+     * @param selectCard
+     */
+    //TODO server has to call this method if he gets the protocol cardselected
+    private void cardWasSelected(Player player, SelectCard selectCard){
+        player.setRegisterAndCards(selectCard.getRegister(), selectCard.getCard());
+    }
+    /**
      * every player can look at their programming cards
      */
     private void showCards() {
@@ -76,17 +85,7 @@ public class ProgrammingPhase  {
             }
         }
 
-    /**
-     * a player can choose 5 cards and then a timer starts.
-     * TODO
-     */
-    private void setRegisterCards(Player player, Map<Integer, Card> mapCards) {
-        player.setRegisterAndCards(mapCards);
-        if (!timerIsRunning) {
-            timerIsRunning = true;
-            GameTimer timer = new GameTimer(player);
-        }
-    }
+
 
     /**
      * a method which handles the players who didn´t choose cards in time
