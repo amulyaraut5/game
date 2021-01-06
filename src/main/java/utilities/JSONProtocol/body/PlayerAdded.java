@@ -13,7 +13,7 @@ public class PlayerAdded extends JSONBody {
         this.figure = figure;
     }
 
-    public int getId() {
+    public int getID() {
         return playerID;
     }
 

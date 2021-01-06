@@ -5,7 +5,6 @@ import client.view.GameViewController;
 import client.view.LobbyController;
 import client.view.LoginController;
 import com.google.gson.Gson;
-import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
@@ -39,9 +38,9 @@ public class Client {
      */
     private static Client instance;
     /**
-     * hostname of the server is saved here for the socket creation.
+     * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
      */
-    private final String hostname = "localhost";
+    private ArrayList<PlayerAdded> playerList = new ArrayList<>();
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -55,22 +54,14 @@ public class Client {
      */
     private PrintWriter writer;
 
-    private int playerId;
+    private int playerID;
 
     /**
      * readyList is the
      */
-    //TODO handle case that id of player that already connected changes
-    private ArrayList<String> readyList = new ArrayList<>();
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
-
-
-    /**
-     * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
-     */
-    public ArrayList<PlayerAdded> playerList= new ArrayList<>();
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -90,7 +81,7 @@ public class Client {
      * @param helloClient //TODO more than one protocol possible?
      */
     public void connect(HelloClient helloClient) {
-        JSONMessage msg = new JSONMessage(new HelloServer(0.1, "Astreine Akazien", false));
+        JSONMessage msg = new JSONMessage(new HelloServer(1.0, "Astreine Akazien", false));
         sendMessage(msg);
     }
 
@@ -101,6 +92,7 @@ public class Client {
     public void establishConnection() {
         while (true) {
             try {
+                String hostname = "localhost";
                 socket = new Socket(hostname, PORT);
                 writer = new PrintWriter(socket.getOutputStream(), true);
                 break;
@@ -160,50 +152,78 @@ public class Client {
         writer.println(json);
     }
 
+
+    public void setController(ArrayList<Controller> controllerList) {
+        loginController = (LoginController) controllerList.get(0);
+        lobbyController = (LobbyController) controllerList.get(1);
+        gameViewController = (GameViewController) controllerList.get(2);
+    }
+
+    public void addNewPlayer(PlayerAdded playerAdded) {
+        logger.debug(playerList.size() + " = playerList Size");
+        lobbyController.setJoinedUsers(playerAdded);
+        playerList.add(playerAdded);
+    }
+
+    public boolean playerListContains(int robotID) {
+        for (PlayerAdded playerAdded : playerList) {
+            if (playerAdded.getFigure() == robotID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getIDFrom(String destinationUser) {
+        for (PlayerAdded playerAdded : playerList) {
+            if (destinationUser.equals(playerAdded.getName())) {
+                return playerAdded.getID();
+            }
+        }
+        return -2;
+    }
+
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
-     * is downcasted to respective class and then it interacts with the different controllers.
+     * is casted down to respective class and then it interacts with the different controllers.
      *
      * @param message
      * @throws ClassNotFoundException
      */
     void handleMessage(JSONMessage message) throws ClassNotFoundException {
-
         Utilities.MessageType type = message.getType();
+
         Platform.runLater(() -> {
             switch (type) {
-                case HelloClient:
+                case HelloClient -> {
                     HelloClient hc = (HelloClient) message.getBody();
                     connect(hc);
-                    break;
-                case Welcome:
+                }
+                case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
-                    playerId = wc.getPlayerID();
-                    break;
-                case PlayerAdded:
+                    playerID = wc.getPlayerID();
+                }
+                case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
-                    //logger.info("Player Added: " + playerAdded.getId());
                     addNewPlayer(playerAdded);
-                    logger.info(playerList.size() +" = playerList Size");
-                    lobbyController.setJoinedUsers(playerAdded);
-                    break;
-                case Error:
+                }
+                case Error -> { //TODO display error message in current view
                     Error error = (Error) message.getBody();
-                    logger.warn("Error Message: " + error.getError());
-                    break;
-                case PlayerStatus:
+                    logger.warn("Error Message received: " + error.getError());
+                }
+                case PlayerStatus -> {
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    lobbyController.setReadyUsersTextArea(playerStatus);
-                    break;
-                case ReceivedChat:
+                    lobbyController.displayPlayerStatus(playerStatus);
+                }
+                case ReceivedChat -> {
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                     String receivedMessage;
-                    if(receivedChat.isPrivat())
-                        receivedMessage = "[" +receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
-                    else receivedMessage = "[" +receivedChat.getFrom() + "] " + receivedChat.getMessage();
+                    if (receivedChat.isPrivat())
+                        receivedMessage = "[" + receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
+                    else receivedMessage = "[" + receivedChat.getFrom() + "] " + receivedChat.getMessage();
                     lobbyController.setTextArea(receivedMessage);
-                    break;
-                case GameStarted:
+                }
+                case GameStarted -> {
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     //TODO start gameView
                     gameViewController.buildMap(gameStarted.getMap());
@@ -212,78 +232,32 @@ public class Client {
                     Tile[][] convertedMap = mapConverter.reconvert(gameStarted);
                     //  <----------------For Test---------------------->
                     logger.info("The game has started.");
-                    break;
-                case ConnectionUpdate:
+                }
+                case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
                     logger.info("Player " + connectionUpdate.getId() + " has lost connection to server.");
-                    break;
-                case Reboot:
+                }
+                case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
                     logger.info("Player " + reboot.getPlayerID() + "fell into pit");
                     // TODO set the Robot image back to reboot token
-                    break;
-                case Energy:
+                }
+                case Energy -> {
                     Energy energy = (Energy) message.getBody();
-                    logger.info("Player "+ energy.getPlayerID() + "received 1 energy cube");
-                    break;
-                case CheckPointReached:
+                    logger.info("Player " + energy.getPlayerID() + "received 1 energy cube");
+                }
+                case CheckPointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
                     //TODO Display the message in chat for players/users
-                    break;
-                case GameWon:
+                }
+                case GameWon -> {
                     GameWon gameWon = (GameWon) message.getBody();
                     logger.info("Player " + gameWon.getPlayerID() + "has won the game");
                     //TODO Display the message in chat for players/users
-                    break;
-                default:
-                    logger.warn("Something went wrong");
+                }
+                default -> logger.warn("Something went wrong");
             }
         });
-    }
-
-
-    public void addToReadyList(String id) {
-        readyList.add(id);
-    }
-
-    public void deleteFromReadyList(String id) {
-        readyList.remove(id);
-    }
-
-    public void setGameViewController(GameViewController gameViewController) {
-        //this.gameViewController = gameViewController;
-    }
-
-
-    public void setController(ArrayList<Controller> controllerList) {
-        loginController = (LoginController) controllerList.get(0);
-        lobbyController = (LobbyController) controllerList.get(1);
-        gameViewController = (GameViewController) controllerList.get(2);
-    }
-
-
-
-    public void addNewPlayer(PlayerAdded playerAdded) {
-        playerList.add(playerAdded);
-    }
-
-
-    public boolean playerListContains(int robotID) {
-        for(PlayerAdded playerAdded : playerList){
-            if(playerAdded.getFigure()==robotID){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int getIDFrom(String destinationUser) {
-        for (PlayerAdded playerAdded: playerList){
-            if(destinationUser.equals(playerAdded.getName())){
-                return playerAdded.getId();
-            }
-        }
-        return -2;
     }
 }

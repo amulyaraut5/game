@@ -7,7 +7,6 @@ import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.MapConverter;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
@@ -34,7 +33,7 @@ public class UserThread extends Thread {
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
-    private final double protocol = 0.1;
+    private final double protocol = 1.0;
     private int playerID;
     private PrintWriter writer;
     private BufferedReader reader;
@@ -115,7 +114,6 @@ public class UserThread extends Thread {
 
         switch (type) {
             case HelloServer:
-                // The messageBody which is Object is then casted down to HelloServer class
                 HelloServer hs = (HelloServer) message.getBody();
 
                 //  <----------------For Test---------------------->
@@ -128,7 +126,6 @@ public class UserThread extends Thread {
                 sendMessage(testmessage);
                 //  <----------------For Test---------------------->
 
-                //
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
                     JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don't match"));
@@ -149,7 +146,6 @@ public class UserThread extends Thread {
 
                 break;
             case PlayerValues:
-                // The messageBody which is Object is then casted down to PlayerValues class
                 PlayerValues ps = (PlayerValues) message.getBody();
                 user.setName(ps.getName());
                 JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure()));

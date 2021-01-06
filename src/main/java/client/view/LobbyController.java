@@ -14,8 +14,6 @@ import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -176,7 +174,7 @@ public class LobbyController extends Controller {
      */
     public void setJoinedUsers(PlayerAdded playerAdded) {
         String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
-        String newName = playerAdded.getName() + " " + playerAdded.getId();
+        String newName = playerAdded.getName() + " " + playerAdded.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
         currentLabel.setText(newName);
         directChoiceBox.getItems().add(newName);
@@ -192,7 +190,7 @@ public class LobbyController extends Controller {
      * background to signal the ready status.
      * @param playerStatus
      */
-    public void setReadyUsersTextArea(PlayerStatus playerStatus) {
+    public void displayPlayerStatus(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
                 String path = "/lobby/" + robotNames[robotIcon.getFigure() - 1];
@@ -282,8 +280,8 @@ public class LobbyController extends Controller {
          */
         public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer) {
             this.position = position;
-            this.userID = playerAdded.getId();
-            this.userName = playerAdded.getName() + " " + playerAdded.getId();
+            this.userID = playerAdded.getID();
+            this.userName = playerAdded.getName() + " " + playerAdded.getID();
             this.figure = playerAdded.getFigure();
             this.robotImageView = imageViewPuffer;
             this.labelOfUser = labelPuffer;
