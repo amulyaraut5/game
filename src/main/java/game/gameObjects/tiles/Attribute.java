@@ -7,6 +7,9 @@ import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
+import utilities.Utilities;
+
+import javax.print.attribute.standard.JobOriginatingUserName;
 
 /**
  * @author Amulya
@@ -19,6 +22,7 @@ public abstract class Attribute {
     protected static UserThread userThread;//TODO remove?
     protected static Client client = Client.getInstance();
     protected String type;
+    protected Utilities.Orientation orientation;
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;
@@ -48,5 +52,9 @@ public abstract class Attribute {
 
     public String getType() {
         return type;
+    }
+
+    public Utilities.Orientation getOrientation() {
+        return orientation;
     }
 }

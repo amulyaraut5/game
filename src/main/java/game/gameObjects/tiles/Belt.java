@@ -13,7 +13,6 @@ import utilities.Utilities.Orientation;
 public class Belt extends Attribute {
 
     private int speed; // 1 = Green Conveyor, 2 = Blue Conveyor
-    private Orientation orientation; //direction in which the belt runs
 
     public Belt(Orientation orientation, int speed) {
         this.speed = speed;

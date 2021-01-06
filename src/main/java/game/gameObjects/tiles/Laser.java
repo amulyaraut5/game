@@ -12,7 +12,6 @@ import utilities.Utilities.Orientation;
 
 public class Laser extends Attribute {
 
-    private Orientation orientation; //firing direction
     private int count; // number of lasers
 
     public Laser(Orientation orientation, int count) {

@@ -1,6 +1,8 @@
 package game.round;
 
-import game.gameObjects.maps.Map;
+import game.Player;
+import game.gameObjects.maps.MapFactory;
+import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.Utilities.Orientation;
@@ -14,10 +16,8 @@ import java.util.ArrayList;
 
 public class Laser {
 
-	private Map map;
-	ArrayList<Tile> boardLaserAffectedTiles = new ArrayList<>();
-	ArrayList<Tile> robotLaserAffectedTiles = new ArrayList<>();
-
+	ArrayList<Coordinate> coordinates = new ArrayList<>();
+	ArrayList<Player> playersList = new ArrayList<>();//TODO
 	/**
 	 * Constructor for laser
 	 */
@@ -32,11 +32,16 @@ public class Laser {
 	 */
 
 	public void activateBoardLaser(){
-		for(Tile tile : boardLaserAffectedTiles){
-			if (tile.isTileOccupied()){
-				//tile.getCurrentPlayer().receiveDamage();
-				// Target hit
+		determineLaserPaths();
+		for(Coordinate coordinate: coordinates){
+			for(Player player : playersList){
+				if(player.getRobot().getPosition().getX() == coordinate.getX()
+				      && player.getRobot().getPosition().getY() == coordinate.getY()){
+					// Then the player draws a spam card
+
+				}
 			}
+			System.out.println("X:" +coordinate.getX() + "Y:" + coordinate.getY());
 		}
 	}
 
@@ -45,13 +50,11 @@ public class Laser {
 	 * @return
 	 */
 
-	public void activateRobotLaser(){
-		for(Tile tile : robotLaserAffectedTiles){
-			if (tile.isTileOccupied()){
-				//
-				// Target hit
-			}
-		}
+	public void activateRobotLaser(Player player){
+		int x = player.getRobot().getPosition().getX();
+		int y = player.getRobot().getPosition().getY();
+		Orientation orientation = player.getDirection();
+
 	}
 
 
@@ -61,71 +64,9 @@ public class Laser {
 	 * Lasers cannot traverse through wall, antenna and cannot
 	 * penetrate more than one robot.
 	 *
-	 * @return return the tiles
 	 */
 
-	// Arrays.asList(cardNames).contains(guessCardName)
-	private ArrayList<Tile> determineLaserPaths() {
+	private void determineLaserPaths() {
 
-		// Lasers tiles from the map
-		for (Tile tile : map.getLaserTile()) {
-
-			//Direction at which laser is facing.
-			// Todo getAttribute() is implemented in a wrong way
-
-			if (true)//SOUTH
-			{
-				// Add all  vertical tiles to  Arraylist
-				int xCoordinate = map.getTilePosition(tile).getX();
-				int yCoordinate = map.getTilePosition(tile).getY();
-				for(int y = yCoordinate; y< 10; y++){
-					// Here we should check if checkingTile is whether wall, antenna or not
-					if (true){
-						Tile tileAffected = map.getTile(xCoordinate, y);
-						// Todo Check whether robot is standing or not
-						boardLaserAffectedTiles.add(tileAffected);
-						return boardLaserAffectedTiles;
-					}
-				}
-				break;
-
-			}
-			/*else if (tile.getAttribute().getOrientation()  == Orientation.UP) {
-
-				yCoordinate = tile.getPosition().getY();
-
-				for(int x = yCoordinate; x> 0; x--){
-					if (tile != Wall && tile != Antenna){
-						laserAffectedTiles.add(tile);
-						return laserAffectedTiles;
-					}
-				}
-				break;
-
-			} else if (tile.getAttribute().getOrientation()  == Orientation.LEFT) {
-				xCoordinate = tile.getPosition().getX();
-				for(int y = xCoordinate; y > 0; y --){
-					if (tile != Wall && tile != Antenna){
-						laserAffectedTiles.add(tile);
-						return laserAffectedTiles;
-					}
-				}
-				break;
-
-			} else if (tile.getAttribute().getOrientation()  == Orientation.RIGHT) {
-				xCoordinate = tile.getPosition().getX();
-
-				for(int y = xCoordinate; y < 10 ; y++){
-					if (tile != Wall && tile != Antenna){
-						laserAffectedTiles.add(tile);
-						return laserAffectedTiles;
-					}
-				}
-				break;
-			}
-
-			 */
-		}
-		return null;
 	}
 }

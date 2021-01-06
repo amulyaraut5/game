@@ -1,13 +1,19 @@
 package game.gameObjects.maps;
 
+import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
+import utilities.Coordinate;
 
 import java.util.ArrayList;
 
 public class MapFactory {
     private static MapFactory instance;
     private ArrayList<Map> maps;
+    public final int ROW = 10;
+    public final int COL = 10;
+
+    Tile[][] finalMap = new Tile[ROW][COL];
 
     private MapFactory() {
         generateMaps();
@@ -39,11 +45,12 @@ public class MapFactory {
         return maps.get(id);
     }
 
+
+
     public Tile[][] constructMap(Map map) {
         TileFactory tileFactory = TileFactory.getInstance();
-        Tile[][] finalMap = new Tile[map.width][map.length];
-        for (int i = 0; i < (map.width); i++) {
-            for (int j = 0; j < (map.length); j++) {
+        for (int i = 0; i < (map.getLength()); i++) {
+            for (int j = 0; j < (map.getWidth()); j++) {
                 finalMap[i][j] = tileFactory.createTile(map.mapBlueprint[i][j]);
             }
         }
@@ -57,4 +64,57 @@ public class MapFactory {
         maps = new ArrayList<>();
         maps.add(new DizzyHighway());
     }
+
+    public ArrayList<Coordinate> getLaserCoordinates(){
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        for (int i = 0; i < (finalMap.length); i++) {
+            for (int j = 0; j < (finalMap[0].length); j++) {
+                for(Attribute a : finalMap[i][j].getAttributes()){
+                    if(a.getType() == "Laser"){
+                        Coordinate temp = new Coordinate(i,j);
+                        coordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return coordinates;
+    }
+
+
+
+    public Tile getTile(int x, int y) throws ArrayIndexOutOfBoundsException  {
+        return this.finalMap[x][y];
+    }
+
+
+    public Tile getTile(Coordinate pos) throws ArrayIndexOutOfBoundsException {
+        return this.finalMap[pos.getX()][pos.getY()];
+    }
+
+    public Coordinate lookInToMapFor(){
+        return null;
+    }
+    /**
+     * This methods adds the laser tiles from the map into arrayList.
+     * Usage <@Class Round.Laser> to find the path of lasers.
+     * @return
+     * last Edited By: Amulya
+     */
+
+    public  ArrayList<Tile> getLaserTile(){
+
+        ArrayList<Tile> laserTiles = new ArrayList<>();
+        for (int i = 0; i < (finalMap.length); i++) {
+            for (int j = 0; j < (finalMap[0].length); j++){
+                for(Attribute a : finalMap[i][j].getAttributes()){
+                    if(a.getType() == "Laser"){
+                        Tile tile = new Tile();
+                        laserTiles.add(tile);
+                    }
+                }
+            }
+        }
+        return laserTiles;
+    }
+
 }

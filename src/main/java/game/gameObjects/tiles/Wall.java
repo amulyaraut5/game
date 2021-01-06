@@ -14,7 +14,6 @@ import utilities.Utilities.Orientation;
 
 public class Wall extends Attribute {
 
-    private Orientation orientation;
     private Orientation[] orientations;
 
     /**
