@@ -8,8 +8,9 @@ import game.gameObjects.decks.ProgrammingDeck;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ProgrammingPhase extends Round {
+public class ProgrammingPhase  {
 
+    private ArrayList<Player> playerList;
     /**
      * timerIsRunning will get true if a player creates an instance of timer
      */
@@ -25,8 +26,8 @@ public class ProgrammingPhase extends Round {
      */
     private ArrayList<Card> availableProgrammingCards;
 
-    public ProgrammingPhase(Game game) {
-        super(game);
+    public ProgrammingPhase(Round round) {
+        this.playerList = round.getPlayerList();
     }
 
     public void startProgrammingPhase() {
