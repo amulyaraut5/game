@@ -1,28 +1,38 @@
 package server;
 
-import game.Game;
-import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
-import game.gameObjects.maps.MapFactory;
-import game.gameObjects.tiles.Tile;
-import game.gameObjects.tiles.TileFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.GameStarted;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static utilities.Utilities.PORT;
 
-public class Server {
+public class Server extends Thread {
 
+    /**
+     * Logger to log information/warning
+     */
+    private static final Logger logger = LogManager.getLogger();
     private static Server instance;
+    /**
+     * list of users that gets added after every new instance of user is created
+     */
+    private final ArrayList<User> users = new ArrayList<>(10);
+    /**
+     *
+     */
+    private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
+    private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
+    private Map map;
+    /**
+     *
+     */
+    private ArrayList<UserThread> addedPlayerList = new ArrayList<>();
 
     /**
      * private Constructor for the ChatServer class
@@ -30,49 +40,67 @@ public class Server {
     private Server() {
     }
 
+    /**
+     * Main method starts only the server separately
+     */
+    public static void main(String[] args) {
+        Server.getInstance().start();
+    }
+
+    /**
+     * Gets the singleton instance of server.
+     *
+     * @return instance of server
+     */
     public static Server getInstance() {
         if (instance == null) instance = new Server();
         return instance;
     }
 
-
     /**
-     * Logger to log information/warning
+     * It opens a channel for the connection between Server and Client.
      */
-    private static final Logger logger = LogManager.getLogger();
+    @Override
+    public void run() {
+        logger.info("SERVER STARTED");
+        currentThread().setName("ServerThread");
 
-    /**
-     * list of users that gets added after every new instance of user is created
-     */
-    private final ArrayList<User> users = new ArrayList<>(10);
+        try {
+            ServerSocket serverSocket = new ServerSocket(PORT);
+            logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
 
-    /**
-     *
-     */
-    private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
+            acceptClients(serverSocket);
 
-    private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
-
-   private Map map;
-
-
-    /**
-     *
-     */
-    private ArrayList<UserThread> addedPlayerList = new ArrayList<>();
-
-
-
-
-    public void setMap(Map map) {
-        this.map = map;
+        } catch (IOException e) {
+            logger.error("could not connect: " + e.getMessage());
+        }
+        logger.info("SERVER CLOSED");
     }
 
     /**
-     * Main method
+     * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
+     *
+     * @param serverSocket socket from which connection is to be established
      */
-    public static void main(String[] args) {
-        new Server().start();
+    private void acceptClients(ServerSocket serverSocket) {
+        boolean accept = true;
+        while (accept) {
+            try {
+                Socket clientSocket = serverSocket.accept();
+                logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
+                User user = new User();
+                users.add(user);
+                UserThread thread = new UserThread(clientSocket, this, user);
+                thread.start();
+            } catch (IOException e) {
+                accept = false;
+                logger.info("Accept failed on: " + PORT);
+            }
+        }
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     /**
@@ -100,52 +128,30 @@ public class Server {
         }
     }
 
-    /**
-     * It opens a channel for the connection between Server and Client.
-     */
-    public void start() {
-        logger.info("SERVER STARTED");
-        try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
-            logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
-
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                try {
-                    serverSocket.close();
-                    logger.info("The server is shut down!");
-                } catch (IOException e) { /* failed */ }
-            }));
-            acceptClients(serverSocket);
-        } catch (IOException e) {
-            logger.error("could not connect: " + e.getMessage());
-        }
-        logger.info("SERVER CLOSED");
-    }
-
     public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
-            for (User user : users) {
-                if (user.getThread() != sender) {
-                    user.message(jsonMessage);
-                }
+        for (User user : users) {
+            if (user.getThread() != sender) {
+                user.message(jsonMessage);
             }
+        }
     }
+
     public void communicateAll(JSONMessage jsonMessage) {
         for (User user : users) {
-                user.message(jsonMessage);
+            user.message(jsonMessage);
         }
     }
 
-    public void communicateDirect(JSONMessage jsonMessage, UserThread sender, int receiver){
-        for (User user: users){
+    public void communicateDirect(JSONMessage jsonMessage, UserThread sender, int receiver) {
+        for (User user : users) {
             logger.info("User" + user.getId());
             logger.info("Jsonm" + jsonMessage.toString());
 
-            if (user.getId()==receiver){
+            if (user.getId() == receiver) {
                 user.message(jsonMessage);
             }
         }
     }
-
 
     /**
      * It checks if the username is already used of another user.
@@ -177,27 +183,5 @@ public class Server {
 
     public void addToPlayerValuesList(JSONMessage playerAddedMessage) {
         this.playerValuesList.add(playerAddedMessage);
-    }
-
-    /**
-     * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
-     *
-     * @param serverSocket socket from which connection is to be established
-     */
-    private void acceptClients(ServerSocket serverSocket) {
-        boolean accept = true;
-        while (accept) {
-            try {
-                Socket clientSocket = serverSocket.accept();
-                logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
-                User user = new User();
-                users.add(user);
-                UserThread thread = new UserThread(clientSocket, this, user);
-                thread.start();
-            } catch (IOException e) {
-                accept = false;
-                logger.info("Accept failed on: " + PORT);
-            }
-        }
     }
 }

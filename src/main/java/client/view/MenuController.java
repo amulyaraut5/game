@@ -1,13 +1,10 @@
 package client.view;
 
-import client.ViewManager;
-import client.model.Client;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
-
-import static utilities.Utilities.PORT;
 
 /**
  * The MenuController is the Controller for the main menu view.
@@ -17,6 +14,9 @@ import static utilities.Utilities.PORT;
 public class MenuController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
+    @FXML
+    private Label infoLabel;
+
     /**
      * Method creates a new Server and Client and opens the Login view
      */
@@ -24,15 +24,8 @@ public class MenuController extends Controller {
     public void hostGameClicked() {
         logger.info("Host Game Clicked");
 
-        //TODO test if a server already exists on localhost? or print out that the user only joined
-        Thread t = new Thread(() -> {
-            Server.getInstance().start();
-        });
-        t.setName("Server Thread");
-        t.start();
-
-        client.establishConnection();
-        viewManager.nextScene();
+        Server.getInstance().start();
+        connect();
     }
 
     /**
@@ -42,7 +35,13 @@ public class MenuController extends Controller {
     public void joinGameClicked() {
         logger.info("Join Game Clicked");
 
-        client.establishConnection();
-        viewManager.nextScene();
+        connect();
+    }
+
+    private void connect() {
+        infoLabel.setText("");
+        boolean connected = client.establishConnection();
+        if (connected) viewManager.nextScene();
+        else infoLabel.setText("The Server is not reachable!");
     }
 }
