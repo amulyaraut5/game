@@ -5,7 +5,7 @@ import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
 import utilities.Utilities.Orientation;
-
+import utilities.Utilities.CardName;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -30,6 +30,9 @@ public class Player extends User {
 
 	private ProgrammingDeck drawProgrammingDeck;
 	private ProgrammingDeck discardedProgrammingDeck;
+
+
+
 	private ArrayList<ProgrammingCard> drawnProgrammingCards;
 	private ArrayList<ProgrammingCard> chosenProgrammingCards;
 
@@ -71,8 +74,33 @@ public class Player extends User {
 		this.direction = direction;
 	}
 
-	public void setRegisterAndCards(Map<Integer, Card> mapCards){
-		registerAndCards = mapCards;
+	/**
+	 * if a player chose a card in a register it gets saved in a map within the player
+	 * last time edited: sarah
+	 * @param register
+	 * @param card
+	 */
+	public void setRegisterAndCards(int register, String card){
+		Card choosedCard = null;
+		switch(card){
+			case "again":
+				choosedCard = new AgainCard();
+				break;
+
+			case "moveI":
+				choosedCard = new Move1Card();
+				break;
+			case "moveII":
+				choosedCard = new Move2Card();
+				break;
+			case "moveIII":
+				choosedCard = new Move3Card();
+				break;
+
+			//TODO other types of cards
+			case "null": break;
+		}
+		registerAndCards.put(register, choosedCard);
 	}
 
 
@@ -105,6 +133,7 @@ public class Player extends User {
 	public ProgrammingDeck getDrawProgrammingDeck() {return drawProgrammingDeck;}
 
 	public ProgrammingDeck getDiscardedProgrammingDeck() {return discardedProgrammingDeck;}
+
 
 	/**
 	 * It freezes the player from the current round.
