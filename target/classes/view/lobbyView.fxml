@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
+    <children>
+        <ImageView fitHeight="400.0" fitWidth="626.0" opacity="0.66" pickOnBounds="true">
+            <image>
+                <Image url="@loginBackground.png" />
+            </image>
+        </ImageView>
+        <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="146.0" layoutY="30.0" text="Lobby">
+            <font>
+                <Font size="37.0" />
+            </font>
+        </Label>
+        <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="76.0" prefHeight="37.0" prefWidth="373.0" text="Chill a bit in the lobby, chat with other players &#10;and when you are ready to play press ready">
+            <font>
+                <Font size="14.0" />
+            </font>
+            
+        </Label>
+      <CheckBox fx:id="readyCheckbox" layoutX="417.0" layoutY="304.0" mnemonicParsing="false" onAction="#checkBoxAction" text="I'm ready to play" />
+      <ChoiceBox fx:id="directChoiceBox" layoutX="377.0" layoutY="231.0" prefHeight="27.0" prefWidth="49.0" />
+      <TextField fx:id="lobbyTextFieldChat" layoutX="433.0" layoutY="231.0" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="109.0" />
+      <Button layoutX="547.0" layoutY="231.0" mnemonicParsing="false" onAction="#submitChatMessage" prefHeight="27.0" prefWidth="57.0" text="Submit">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <HBox layoutX="56.0" layoutY="126.0" prefHeight="237.0" prefWidth="317.0">
+         <children>
+            <VBox prefHeight="214.0" prefWidth="94.0">
+               <children>
+                  <ImageView fx:id="robot1ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="robot1Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0">
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                     </Label>
+                  <ImageView fx:id="robot4ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="robot4Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0" wrapText="true">
+                      <effect>
+                          <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                              <color>
+                                  <Color red="1.0" green="1.0" blue="1.0" />
+                              </color>
+                          </DropShadow>
+                      </effect>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="214.0" prefWidth="94.0">
+                 <children>
+                     <ImageView fx:id="robot2ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot2Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
+                     <ImageView fx:id="robot5ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot5Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
+                 </children>
+            </VBox>
+            <VBox prefHeight="214.0" prefWidth="94.0">
+                 <children>
+                     <ImageView fx:id="robot3ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
+                     <ImageView fx:id="robot6ImageView" fitHeight="80.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                     <Label fx:id="robot6Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="90.0">
+                         <effect>
+                             <DropShadow blurType="GAUSSIAN" height="69.28" radius="35.65" spread="0.12" width="75.32">
+                                 <color>
+                                     <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                             </DropShadow>
+                         </effect>
+                     </Label>
+                 </children>
+            </VBox>
+         </children></HBox>
+      <ScrollPane fx:id="chatScrollPane" layoutX="373.0" layoutY="13.0" prefHeight="208.0" prefWidth="230.0">
+         <content>
+            <VBox prefHeight="206.0" prefWidth="215.0">
+               <children>
+                  <VBox fx:id="scrollVBox" alignment="CENTER" prefHeight="219.0" prefWidth="226.0">
+                     <children>
+                        <TextArea fx:id="lobbyTextAreaChat" editable="false" prefHeight="229.0" prefWidth="215.0" wrapText="true" />
+                        <Label fx:id="chatMessageLabel" textFill="#949191">
+                           <font>
+                              <Font size="8.0" />
+                           </font></Label>
+                     </children></VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+    </children>
+</AnchorPane>
