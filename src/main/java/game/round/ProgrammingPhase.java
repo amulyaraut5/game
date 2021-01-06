@@ -1,6 +1,5 @@
 package game.round;
 
-import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.decks.ProgrammingDeck;
@@ -11,7 +10,6 @@ import utilities.JSONProtocol.body.SelectCard;
 import utilities.JSONProtocol.body.YourCards;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ProgrammingPhase  {
 
@@ -34,8 +32,6 @@ public class ProgrammingPhase  {
     public ProgrammingPhase(Round round) {
         this.playerList = round.getPlayerList();
     }
-
-    //TODO ShuffleCoding
     public void startProgrammingPhase() {
         dealProgrammingCards();
         //send Protocol to player and others which cards the player has
@@ -78,11 +74,14 @@ public class ProgrammingPhase  {
             if (currentDeck.size() >= 9) {
                 availableProgrammingCards = currentDeck.drawCards(9);
             } else {
+                //TODO send ShuffleCoding
                 availableProgrammingCards = currentDeck.drawCards(currentDeck.size());
                 player.reuseDiscardedDeck();
                 availableProgrammingCards.addAll(player.getDrawProgrammingDeck().drawCards(9- currentDeck.size()));
                 }
+            player.setDrawnProgrammingCards(availableProgrammingCards);
             }
+
         }
 
 

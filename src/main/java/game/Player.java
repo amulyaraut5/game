@@ -1,11 +1,12 @@
 package game;
 
 import game.gameObjects.cards.*;
+import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
 import utilities.Utilities.Orientation;
-import utilities.Utilities.CardName;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -29,11 +30,11 @@ public class Player extends User {
 	private int energyCubes;
 
 	private ProgrammingDeck drawProgrammingDeck;
-	private ProgrammingDeck discardedProgrammingDeck;
+	private DiscardDeck discardedProgrammingDeck;
 
 
 
-	private ArrayList<ProgrammingCard> drawnProgrammingCards;
+	private ArrayList<Card> drawnProgrammingCards;
 	private ArrayList<ProgrammingCard> chosenProgrammingCards;
 
 	private ArrayList<PermUpgradeCard> installedUpgrades;
@@ -45,9 +46,10 @@ public class Player extends User {
 
 	public Player(Robot robot) {
 		this.robot = robot;
-		this.direction = Orientation.RIGHT;
-		this.energyCubes = 5;
-		this.drawProgrammingDeck = getDrawProgrammingDeck();
+		direction = Orientation.RIGHT;
+		energyCubes = 5;
+		drawProgrammingDeck.createDeck();
+		discardedProgrammingDeck.createDeck();
 	}
 
 	public Card getCurrentAction() {
@@ -126,13 +128,13 @@ public class Player extends User {
 		this.energyCubes = energyCubes;
 	}
 
-	public void setDrawnProgrammingCards(ArrayList<ProgrammingCard> drawnProgrammingCards) {this.drawnProgrammingCards = drawnProgrammingCards;}
+	public void setDrawnProgrammingCards(ArrayList<Card> drawnProgrammingCards) {this.drawnProgrammingCards = drawnProgrammingCards;}
 
 	public void setDrawProgrammingDeck(ProgrammingDeck drawProgrammingDeck) {this.drawProgrammingDeck = drawProgrammingDeck;}
 
 	public ProgrammingDeck getDrawProgrammingDeck() {return drawProgrammingDeck;}
 
-	public ProgrammingDeck getDiscardedProgrammingDeck() {return discardedProgrammingDeck;}
+	public DiscardDeck getDiscardedProgrammingDeck() {return discardedProgrammingDeck;}
 
 
 	/**
@@ -147,9 +149,7 @@ public class Player extends User {
 	 * and can be used to draw cards again.
 	 */
 	public void reuseDiscardedDeck () {
-		//TODO send ShuffleCoding
-		discardedProgrammingDeck.shuffle();
-		drawProgrammingDeck = discardedProgrammingDeck;
+		discardedProgrammingDeck.refillProgrammingDeck(drawProgrammingDeck);
 	}
 
 	/**
