@@ -2,9 +2,14 @@ package game;
 
 import game.gameObjects.cards.DamageCard;
 import game.gameObjects.decks.ProgrammingDeck;
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Tile;
 import game.round.Round;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.SelectCard;
+import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -46,6 +51,21 @@ public class Game {
      */
     public int getNoOfCheckPoints() {
         return this.noOfCheckpoints;
+    }
+
+    public ArrayList<Coordinate> getLaserCoordinates(Tile[][] map){
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        for (int i = 0; i < (map.length); i++) {
+            for (int j = 0; j < (map[0].length); j++) {
+                for(Attribute a : map[i][j].getAttributes()){
+                    if(a.getType() == "Laser"){
+                        Coordinate temp = new Coordinate(i,j);
+                        coordinates.add(temp);
+                    }
+                }
+            }
+        }
+    return coordinates;
     }
 
     public ArrayList<Player> getPlayerList() {
