@@ -7,6 +7,7 @@ import server.User;
 import utilities.Utilities.Orientation;
 import utilities.Utilities.CardName;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,10 +15,12 @@ import java.util.Map;
  */
 
 public class Player extends User {
+
+
 	/**
 	 * a Map which connects the register and the related card the user chooses
 	 */
-	private Map<Integer, Card> registerAndCards;
+	private Map<Integer, Card> registerAndCards = new HashMap<>();
 
 	private Robot robot;
 	private int currentRegister;
@@ -102,7 +105,9 @@ public class Player extends User {
 		}
 		registerAndCards.put(register, choosedCard);
 	}
-
+	public Map<Integer, Card> getRegisterAndCards() {
+		return registerAndCards;
+	}
 
 	public Robot getRobot(){
 		return this.robot;
