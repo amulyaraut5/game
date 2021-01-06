@@ -1,5 +1,6 @@
 package server;
 
+import game.Game;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.MapFactory;
 import game.gameObjects.tiles.Attribute;
@@ -179,6 +180,11 @@ public class UserThread extends Thread {
                     // TODO private Message
                 }
                 break;
+            case SelectCard:
+                SelectCard selectCard = (SelectCard) message.getBody();
+                //TODO send selectCard to ProgrammingPhase
+                //Game.getInstance().messageToPhases(selectCard);
+                server.communicateUsers(new JSONMessage(new CardSelected(this.playerID, selectCard.getRegister())), this);
             case GameWon:
                 GameWon gameWon = (GameWon) message.getBody();
                 server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())), this);
