@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -135,9 +134,9 @@ public class LoginController extends Controller {
         userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
         if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
-        else if(client.playerListContains(robotList.get(chosenRobot).getRobotID()))
-            labelResponse.setText("This robot is already taken, please choose another one");
-        else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot");
+        else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot!");
+        else if (client.playerListContains(robotList.get(chosenRobot).getRobotID()))
+            labelResponse.setText("This robot is already taken!"); //TODO catch also in server and send error protocol
         else {
             labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());
             JSONMessage msg = new JSONMessage(new PlayerValues(userName, robotList.get(chosenRobot).getRobotID()));
@@ -147,7 +146,7 @@ public class LoginController extends Controller {
         }
     }
 
-   
+
 
     public void setImageViewDisabled(int figure){
         //TODO set cell of figure not selectable with cellfactory from initialize method

@@ -5,7 +5,18 @@ import javafx.scene.image.ImageView;
 
 import java.io.InputStream;
 
+/**
+ * The ImageHandler provides methods for loading images easily and displaying them in javafx components.
+ *
+ * @author simon
+ */
 public class ImageHandler {
+    /**
+     * Creates an ImageView from the image at given path.
+     *
+     * @param path path to the desired image
+     * @return A ImageView containing the image; null if no resource with this name is found.
+     */
     public static ImageView createImageView(String path) {
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         if (stream != null) {
@@ -15,6 +26,13 @@ public class ImageHandler {
         return null;
     }
 
+    /**
+     * Creates an ImageView from the image at given path.
+     *
+     * @param path        path to the desired image
+     * @param orientation An orientation, if the image from the path should also be rotated.
+     * @return A ImageView containing the image; null if no resource with this name is found.
+     */
     public static ImageView createImageView(String path, Utilities.Orientation orientation) {
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         if (stream != null) {
