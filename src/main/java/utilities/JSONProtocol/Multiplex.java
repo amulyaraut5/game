@@ -16,6 +16,7 @@ import java.util.ArrayList;
 /**
  * This class contains 2 important methods namely serialize and deserialize whose functionality are described
  * in respective method.
+ * @author Amulya
  */
 public class Multiplex {
 
@@ -25,8 +26,7 @@ public class Multiplex {
      * This method converts a Java Object into Json String with the use of Gson library.
      *
      * @param messageObj
-     * @return
-     * @throws IOException
+     * @return Json String
      */
 
     public static String serialize(JSONMessage messageObj) {
@@ -40,7 +40,7 @@ public class Multiplex {
      * gson deserializer.
      *
      * @param jsonString
-     * @return
+     * @return Java Object
      */
 
     public static JSONMessage deserialize(String jsonString) {
@@ -65,15 +65,14 @@ public class Multiplex {
             String messageType = jsonObject.get("messageType").getAsString();
             JsonObject messageBody = jsonObject.get("messageBody").getAsJsonObject();
 
-            /*Gson gsonTile = new GsonBuilder()
-                    .registerTypeAdapter(Attribute.class, tileJsonDeserializer).create();*/
+
+
             Gson gsonTile = new GsonBuilder()
                     .registerTypeAdapter(Attribute.class, new AttributeDeserializer()).create();
 
-            if (messageType.equals("GameStarted")) {
+             if (messageType.equals("GameStarted")) {
 
                 JsonArray mapArray = messageBody.get("map").getAsJsonArray();
-                //JsonArray field = map.get(1).getAsJsonArray();
                 Type mapType = new TypeToken<ArrayList<BoardElement>>() {}.getType();
                 ArrayList<BoardElement> mapBody = gsonTile.fromJson(mapArray, mapType);
                 GameStarted gameStarted = new GameStarted(mapBody);
@@ -89,6 +88,11 @@ public class Multiplex {
             return null;
         }
     }
+
+    /**
+     * This class contains an overridden deserialize method from interface JsonDeserializer</> in order to parse
+     * through different subclasses of abstract class Attribute.
+     */
 
     static class AttributeDeserializer implements JsonDeserializer<Attribute> {
 

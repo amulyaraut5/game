@@ -15,12 +15,6 @@ public class ControlPoint extends Attribute {
 
     private int count; //number of the ControlPoint
 
-    /**
-     * Constructor that helps in creating multiple instances of Checkpoints with different ID
-     *
-     * @param count
-     */
-
     public ControlPoint(int count) {
         this.count = count;
         this.type = "ControlPoint";

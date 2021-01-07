@@ -37,30 +37,5 @@ public abstract class Map {
         this.length = length;
     }
 
-    /**
-     * Returns the tile with specific id.
-     * @param
-     * @return
-     * last Edited By: Amulya
-     */
-    /*
-    public Tile getTile(int id){
-        return finalMap.get(id);
-    }
-
-
-
-    /**
-     * Returns tile position from the map
-     * @return
-     * last Edited By: Amulya
-     */
-
-    public Coordinate getTilePosition(Tile tile){
-        return null;
-    }
-
-
-
 }
 

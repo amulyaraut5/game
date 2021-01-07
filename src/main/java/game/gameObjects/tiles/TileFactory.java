@@ -17,6 +17,14 @@ public class TileFactory {
         return instance;
     }
 
+    /**
+     * This method creates the tile with specific attribute.
+     * Every tile has then it's own specific id which can be called while laying out the map structure.
+     * Depending upon the needs of map, we can create our own tile with multiple attributes with different orientations.
+     *
+     * @param
+     * @return tile
+     */
     public Tile createTile(Object tileID) {
         Tile tile = new Tile();
 

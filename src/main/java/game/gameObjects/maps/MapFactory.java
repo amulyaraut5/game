@@ -7,6 +7,9 @@ import utilities.Coordinate;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class MapFactory {
     private static MapFactory instance;
     private ArrayList<Map> maps;
@@ -81,24 +84,38 @@ public class MapFactory {
     }
 
 
-
+    /**
+     * Retrieves the tile from the map.
+     * @param x x coordinate of the tile
+     * @param y y coordinate of the tile
+     * @return
+     * @throws ArrayIndexOutOfBoundsException when the position is not on the map.
+     */
     public Tile getTile(int x, int y) throws ArrayIndexOutOfBoundsException  {
         return this.finalMap[x][y];
     }
 
-
+    /**
+     * Retrieves the tile of the given position from the map
+     * @param pos position of tile
+     * @return
+     * @throws ArrayIndexOutOfBoundsException when the position is not on the map
+     */
     public Tile getTile(Coordinate pos) throws ArrayIndexOutOfBoundsException {
         return this.finalMap[pos.getX()][pos.getY()];
     }
 
+    /**
+     * Retrieves the coordinate of the tile from the map
+     * @return
+     */
     public Coordinate lookInToMapFor(){
         return null;
     }
     /**
      * This methods adds the laser tiles from the map into arrayList.
      * Usage <@Class Round.Laser> to find the path of lasers.
-     * @return
-     * last Edited By: Amulya
+     * @return ArrayList of tiles
      */
 
     public  ArrayList<Tile> getLaserTile(){
