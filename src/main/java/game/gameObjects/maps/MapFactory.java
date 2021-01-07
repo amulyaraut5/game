@@ -109,6 +109,7 @@ public class MapFactory {
                 for(Attribute a : finalMap[i][j].getAttributes()){
                     if(a.getType() == "Laser"){
                         Tile tile = new Tile();
+                        tile.addAttribute(a);
                         laserTiles.add(tile);
                     }
                 }

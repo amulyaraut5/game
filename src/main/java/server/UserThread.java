@@ -3,6 +3,7 @@ package server;
 import game.Game;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.MapFactory;
+import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.round.Laser;
@@ -122,7 +123,8 @@ public class UserThread extends Thread {
                 MapConverter mapConverter = MapConverter.getInstance();
                 MapFactory mapFactory = MapFactory.getInstance();
                 DizzyHighway dizzyHighway = new DizzyHighway();
-                Tile[][] testmap = mapFactory.constructMap(dizzyHighway);
+                RiskyCrossing riskyCrossing = new RiskyCrossing();
+                Tile[][] testmap = mapFactory.constructMap(riskyCrossing);
                 GameStarted testbody = mapConverter.convert(testmap);
                 JSONMessage testmessage = new JSONMessage(testbody);
                 sendMessage(testmessage);

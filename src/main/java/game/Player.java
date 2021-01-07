@@ -107,7 +107,6 @@ public class Player extends User {
 			case "again":
 				choosedCard = new AgainCard();
 				break;
-
 			case "moveI":
 				choosedCard = new Move1Card();
 				break;
