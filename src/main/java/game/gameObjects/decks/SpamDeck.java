@@ -14,6 +14,10 @@ public class SpamDeck extends DamageCardDeck {
 
     ArrayList<Card> spamDeck;
 
+
+    /**
+     * Creates the deck of Spam cards.
+     */
     @Override
     public void createDeck() {
         this.spamDeck = new ArrayList<>();

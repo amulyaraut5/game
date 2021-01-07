@@ -3,15 +3,11 @@ package game.gameObjects.cards;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 
-/**
- * @author annika
- */
-public class SpamCard extends DamageCard {
+public class VirusCard extends DamageCard{
 
-    public SpamCard() {
-        super("Spam");
+    public VirusCard() {
+        super("Virus");
     }
-
 
     @Override
     public ImageView drawCardImage() {
