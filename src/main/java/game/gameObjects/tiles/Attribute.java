@@ -7,9 +7,9 @@ import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
-import utilities.Utilities;
+import utilities.Utilities.Orientation;
 
-import javax.print.attribute.standard.JobOriginatingUserName;
+import java.util.ArrayList;
 
 /**
  * @author Amulya
@@ -22,7 +22,9 @@ public abstract class Attribute {
     protected static UserThread userThread;//TODO remove?
     protected static Client client = Client.getInstance();
     protected String type;
-    protected Utilities.Orientation orientation;
+    protected Orientation orientation;
+
+    //ArrayList<Player> activePlayerList = new ArrayList<>(); // TODO Get from Game
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;
@@ -32,29 +34,57 @@ public abstract class Attribute {
      * All elements on the board must have a performAction method that can be called
      * when the robot find itself in that specific tile.
      * The player that is positioned on the element
-     * <p>
-     * Another Idea : We can also Robot instead of Player.
      */
     public abstract void performAction(Player player);
 
     public abstract Node createImage();
 
     /**
-     * Sometimes a robot may find another robot while moving in any directions.
-     * This can be used to shoot a laser or push oa
-     *
-     * @return
+     * Sometimes a robot may find other robot while moving in a given directions.
+     * @return true if robot find any robot on its path, false otherwise
      */
-    public boolean checkPlayer() {
-        // TODO - implement Attribute.checkPlayer
-        throw new UnsupportedOperationException();
+    /*
+    public boolean checkPlayer(Player player) {
+        int x = player.getRobot().getPosition().getX();
+        int y = player.getRobot().getPosition().getY();
+        Orientation orientation = player.getDirection();
+
+        for(Player targetPlayer: activePlayerList) {
+            switch (orientation) {
+                case RIGHT:
+                    if (targetPlayer.getRobot().getPosition().getX() == x && targetPlayer.getRobot().getPosition().getY() == y + 1)
+                        return true;
+                    break;
+                case LEFT:
+                    if (targetPlayer.getRobot().getPosition().getX() == x && targetPlayer.getRobot().getPosition().getY() == y - 1)
+                        return true;
+                    break;
+                case UP:
+                    if (targetPlayer.getRobot().getPosition().getX() == x - 1 && targetPlayer.getRobot().getPosition().getY() == y)
+                        return true;
+                    break;
+                case DOWN:
+                    if (targetPlayer.getRobot().getPosition().getX() == x + 1 && targetPlayer.getRobot().getPosition().getY() == y)
+                        return true;
+                    break;
+            }
+        }
+        return false;
+    }*/
+
+    /**
+     * Sometimes a robot may find hindrance while moving (may encounter wall or antenna)
+     * In such case the movement action will be nullified
+     */
+    public void isValidMove(){
+
     }
 
     public String getType() {
         return type;
     }
 
-    public Utilities.Orientation getOrientation() {
+    public Orientation getOrientation() {
         return orientation;
     }
 }
