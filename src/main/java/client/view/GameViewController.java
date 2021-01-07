@@ -99,7 +99,8 @@ public class GameViewController extends Controller {
         String[][] priorityArray = {
                 {"Pit", "Empty"},
                 {"Belt", "RotatingBelt", "Gear", "EnergySpace", "Antenna"},
-                {"PushPanel", "Laser", "ControlPoint"},
+                {"PushPanel", "Laser"},
+                {"ControlPoint", "Reboot"},
                 {"Wall"}};
 
         for (String[] priority : priorityArray) {

@@ -46,6 +46,7 @@ public class Utilities {
         @SerializedName("powerUp") POWERUP,
         @SerializedName("again") AGAIN,
     }
+
     public enum Rotation {
         @SerializedName("left") LEFT,
         @SerializedName("right") RIGHT
