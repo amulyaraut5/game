@@ -1,6 +1,5 @@
 package server;
 
-import game.Game;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.MapFactory;
 import game.gameObjects.maps.RiskyCrossing;
@@ -116,7 +115,7 @@ public class UserThread extends Thread {
         MessageType type = message.getType();
 
         switch (type) {
-            case HelloServer:
+            case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
 
                 //  <----------------For Test---------------------->
@@ -151,8 +150,8 @@ public class UserThread extends Thread {
                     }
                 }
 
-                break;
-            case PlayerValues:
+            }
+            case PlayerValues -> {
                 PlayerValues ps = (PlayerValues) message.getBody();
                 user.setName(ps.getName());
                 JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure()));
@@ -160,13 +159,13 @@ public class UserThread extends Thread {
                 user.setId(playerID);
                 user.setName(ps.getName());
                 server.communicateUsers(jsonMessage, this);
-                /*for (JSONMessage jM : server.getPlayerValuesList()) {
+                /*for (JSONMessage jM  : server.getPlayerValuesList()) {
                     sendMessage(jM);
                     logger.info(jM.toString());
                 }*/
                 sendMessage(jsonMessage);
-                break;
-            case SetStatus:
+            }
+            case SetStatus -> {
                 SetStatus st = (SetStatus) message.getBody();
                 JSONMessage jsonMessagePlayerStatus = new JSONMessage(new PlayerStatus(playerID, st.isReady()));
                 if (st.isReady()) {
@@ -176,8 +175,8 @@ public class UserThread extends Thread {
                 }
                 server.communicateUsers(jsonMessagePlayerStatus, this);
                 sendMessage(jsonMessagePlayerStatus);
-                break;
-            case SendChat:
+            }
+            case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
                     server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
@@ -185,39 +184,21 @@ public class UserThread extends Thread {
                     server.communicateDirect(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), true)), this, sc.getTo());
                     // TODO private Message
                 }
-                break;
-            case SelectCard:
+            }
+            case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
                 //Game.getInstance().messageToPhases(selectCard);
                 server.communicateUsers(new JSONMessage(new CardSelected(this.playerID, selectCard.getRegister())), this);
-            case GameWon:
+            }
+            case GameWon -> {
                 GameWon gameWon = (GameWon) message.getBody();
                 server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())), this);
                 // TODO end the game
-                break;
+            }
+            default -> logger.error("the MessageType " + type + " is invalid or not yet implemented!");
+
         }
-    }
-
-    private void logIn(String userName) {
-        if (!server.isAvailable(userName)) {
-
-            //TODO sendMessage(new JSONMessage("userNameTaken", "true"));
-            //else {
-            //sendMessage(new JSONMessage("userNameTaken", "false"));
-            user.setName(userName);
-            user.setId(playerID);
-            welcome();
-        }
-
-    }
-
-
-    /**
-     * Sends welcome message to the user and notifies all other users.
-     */
-    private void welcome() {
-        //server.communicate(user + " joined the room.", user);
     }
 
     /**
@@ -252,5 +233,25 @@ public class UserThread extends Thread {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
+    }
+
+    private void logIn(String userName) {
+        if (!server.isAvailable(userName)) {
+
+            //TODO sendMessage(new JSONMessage("userNameTaken", "true"));
+            //else {
+            //sendMessage(new JSONMessage("userNameTaken", "false"));
+            user.setName(userName);
+            user.setId(playerID);
+            welcome();
+        }
+
+    }
+
+    /**
+     * Sends welcome message to the user and notifies all other users.
+     */
+    private void welcome() {
+        //server.communicate(user + " joined the room.", user);
     }
 }

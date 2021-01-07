@@ -156,7 +156,7 @@ public class Client {
      * @param message
      * @throws ClassNotFoundException
      */
-    public void handleMessage(JSONMessage message) throws ClassNotFoundException {
+    public void handleMessage(JSONMessage message) {
         Utilities.MessageType type = message.getType();
 
         Platform.runLater(() -> {
@@ -223,7 +223,7 @@ public class Client {
                     logger.info("Player " + gameWon.getPlayerID() + "has won the game");
                     //TODO Display the message in chat for players/users
                 }
-                default -> logger.warn("Something went wrong");
+                default -> logger.error("the MessageType " + type + " is invalid or not yet implemented!");
             }
         });
     }

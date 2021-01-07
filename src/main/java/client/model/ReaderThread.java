@@ -4,9 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.*;
-import utilities.Utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,8 +31,6 @@ public class ReaderThread extends Thread {
      * BufferedReader which is wrap around the InputStream of the socket.
      */
     private BufferedReader bReader;
-
-
 
     /**
      * Constructor of ReaderThread initializes the attributes socket and client
@@ -75,7 +70,7 @@ public class ReaderThread extends Thread {
 
                 JSONMessage jsonMessage = Multiplex.deserialize(text);
                 client.handleMessage(jsonMessage);
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
             }
