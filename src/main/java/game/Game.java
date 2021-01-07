@@ -2,6 +2,7 @@ package game;
 
 import game.gameObjects.cards.DamageCard;
 import game.gameObjects.decks.ProgrammingDeck;
+import game.gameObjects.decks.SpamDeck;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.round.Round;
@@ -27,6 +28,8 @@ public class Game {
     private ArrayList<DamageCard> damageCardDeck;
     private ProgrammingDeck specialProgrammingDeck;
     private int noOfCheckpoints;
+    private SpamDeck spamDeck;
+    private ProgrammingDeck programmingDeck;
 
     private Game() {
     }
@@ -59,4 +62,11 @@ public class Game {
         return playerList;
     }
 
+    public SpamDeck getSpamDeck() {
+        return spamDeck;
+    }
+
+    public ProgrammingDeck getProgrammingDeck() {
+        return programmingDeck;
+    }
 }

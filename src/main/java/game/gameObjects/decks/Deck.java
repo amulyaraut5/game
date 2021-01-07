@@ -30,7 +30,7 @@ public abstract class Deck {
      * @param card card to be added back to the deck.
      */
     public void addCard(Card card) {
-        deck.add(card);
+        this.getDeck().add(card);
     }
 
     /**
@@ -38,7 +38,7 @@ public abstract class Deck {
      * @return
      */
     public boolean isEmpty() {
-        if(deck.size() == 0){
+        if(this.getDeck().size() == 0){
             return true;
         } else {
             return false;
@@ -50,7 +50,7 @@ public abstract class Deck {
      * Depending on the size, e.g., it needs to be reshuffled.
      */
     public int size() {
-        return deck.size();
+        return this.getDeck().size();
     }
 
     /**
@@ -58,11 +58,10 @@ public abstract class Deck {
      * @return the removed card
      */
     public Card pop() {
-        Card poped = deck.get(0);
-        deck.remove(poped);
+        Card poped = this.getDeck().get(0);
+        this.getDeck().remove(poped);
         return poped;
     }
-
 
     /**
      * Return the desired amount of cards and then removes them from the deck.
@@ -70,8 +69,8 @@ public abstract class Deck {
     public ArrayList<Card> drawCards(int amount) {
         ArrayList<Card> tempDeck = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            tempDeck.add(deck.get(i));
-            deck.remove(i);
+            tempDeck.add(this.getDeck().get(i));
+            this.getDeck().remove(i);
         }
         return tempDeck;
     }
