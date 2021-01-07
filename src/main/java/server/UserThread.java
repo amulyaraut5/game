@@ -5,6 +5,7 @@ import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.MapFactory;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
+import game.round.Laser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -126,6 +127,9 @@ public class UserThread extends Thread {
                 JSONMessage testmessage = new JSONMessage(testbody);
                 sendMessage(testmessage);
                 //  <----------------For Test---------------------->
+                //  <----------------Test For Laser --------------->
+                new Laser().activateBoardLaser();
+                //  <----------------Test For Laser --------------->
 
                 if (!(hs.getProtocol() == protocol)) {
                     //TODO send Error and disconnect the client
