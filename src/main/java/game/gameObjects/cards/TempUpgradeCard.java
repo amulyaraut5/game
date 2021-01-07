@@ -1,5 +1,6 @@
 package game.gameObjects.cards;
 
+import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
 
@@ -19,7 +20,8 @@ public class TempUpgradeCard extends UpgradeCard {
      * you may keep it in your hand and use it at any time on your turn.
      */
     @Override
-    public void handleCard() {
+    public void handleCard(Game game, Player player) {
+        super.handleCard(game, player);
     }
 
     /**
