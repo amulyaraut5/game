@@ -1,5 +1,8 @@
 package game.gameObjects.cards;
 
+import game.Game;
+import game.Player;
+
 public abstract class UpgradeCard extends Card {
 
     private int cost;
@@ -9,7 +12,9 @@ public abstract class UpgradeCard extends Card {
     }
 
     @Override
-    public abstract void handleCard();
+    public void handleCard(Game game, Player player) {
+
+    }
 
     public int getCost() {
         return cost;

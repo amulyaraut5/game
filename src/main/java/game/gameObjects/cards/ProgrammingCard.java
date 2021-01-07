@@ -1,5 +1,7 @@
 package game.gameObjects.cards;
 
+import game.Game;
+import game.Player;
 import game.gameActions.Action;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +27,8 @@ public abstract class ProgrammingCard extends Card {
     }
 
     @Override
-    public void handleCard() {
+    public void handleCard(Game game, Player player) {
+
     }
 
     public void addAction(Action action) {

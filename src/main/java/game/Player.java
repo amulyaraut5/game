@@ -25,6 +25,7 @@ public class Player extends User {
 
 	private Robot robot;
 	private int currentRegister;
+	private ArrayList<Card> register;
 
 	private Card currentAction;
 	private Card lastAction;
@@ -53,6 +54,21 @@ public class Player extends User {
 		energyCubes = 5;
 		drawProgrammingDeck.createDeck();
 		discardedProgrammingDeck.createDeck();
+	}
+
+	/**
+	 * Creates an empty register.
+	 * @author annika
+	 */
+	public void createRegister(){
+		this.register = new ArrayList<>();
+		for(int i = 0; i < 5; i++){
+			register.add(i, null);
+		}
+	}
+
+	public ArrayList<Card> getRegister() {
+		return register;
 	}
 
 	public Card getCurrentAction() {
@@ -170,4 +186,6 @@ public class Player extends User {
 
 		 */
 	}
+
+
 }

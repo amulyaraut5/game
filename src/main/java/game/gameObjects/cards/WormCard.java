@@ -1,5 +1,7 @@
 package game.gameObjects.cards;
 
+import game.Game;
+import game.Player;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 
@@ -11,7 +13,11 @@ public class WormCard extends DamageCard{
 
     @Override
     public ImageView drawCardImage() {
-        //TODO
-        return ImageHandler.createImageView("/programming-cards/move-3-card.png");
+        return ImageHandler.createImageView("/programming-cards/worm-card.png");
+    }
+
+    @Override
+    public void handleCard(Game game, Player player) {
+
     }
 }
