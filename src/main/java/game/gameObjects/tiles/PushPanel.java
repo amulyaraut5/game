@@ -13,7 +13,6 @@ import utilities.Utilities.Orientation;
 public class PushPanel extends Attribute {
 
     private int[] registers; //active registers
-    private Orientation orientation; // push direction
 
     public PushPanel(Orientation orientation, int[] registers) {
         this.orientation = orientation;
