@@ -1,10 +1,7 @@
 package client;
 
 import client.model.Client;
-import client.view.Controller;
-import client.view.GameViewController;
-import client.view.LobbyController;
-import client.view.LoginController;
+import client.view.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -40,9 +37,11 @@ public class ViewManager {
     private Scene lobbyScene;
     private Scene gameScene;
     private Pane chatPane;
+    private Scene mapSelectionScene;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
+    private MapSelectionController mapSelectionController;
 
     private ViewManager() {
         Platform.runLater(() -> {
@@ -68,9 +67,14 @@ public class ViewManager {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
             else if (menuStage.getScene() == loginScene) {
+                menuStage.setScene(mapSelectionScene);
+
+            }else if (menuStage.getScene() == mapSelectionScene){
                 menuStage.setScene(lobbyScene);
                 lobbyController.attachChatPane(chatPane);
-            } else if (menuStage.getScene() == lobbyScene) showGameStage();
+            }
+            else if (menuStage.getScene() == lobbyScene) showGameStage();
+
         } else {
             logger.warn("There is no next Scene!");
         }
@@ -160,21 +164,25 @@ public class ViewManager {
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
         FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/view/lobbyView.fxml"));
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
+        FXMLLoader mapSceneLoader = new FXMLLoader(getClass().getResource("/view/mapSelection.fxml"));
 
         menuScene = new Scene(menuLoader.load());
         loginScene = new Scene(loginLoader.load());
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
+        mapSelectionScene = new Scene(mapSceneLoader.load());
 
         loginController = loginLoader.getController();
         lobbyController = lobbyLoader.getController();
         gameViewController = gameLoader.getController();
+        mapSelectionController = mapSceneLoader.getController();
 
         ArrayList<Controller> controllerList = new ArrayList<>();
 
         controllerList.add(loginController);
         controllerList.add(lobbyController);
         controllerList.add(gameViewController);
+        //controllerList.add(mapSelectionController);
         client.setController(controllerList);
     }
 }

@@ -40,6 +40,9 @@ public class UserThread extends Thread {
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
+    MapConverter mapConverter = MapConverter.getInstance();
+    MapFactory mapFactory = MapFactory.getInstance();
+    private String map;
 
     public UserThread(Socket socket, Server server, User user) {
 
@@ -60,6 +63,10 @@ public class UserThread extends Thread {
         Attribute.setUserThread(this);
     }
 
+    public void setMap(String map) {
+        this.map = map;
+    }
+
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
      * The user disconnects by typing "bye".
@@ -78,12 +85,17 @@ public class UserThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
+                if(text.equals("DizzyHighway") || text.equals("RiskyCrossing")){
+                    setMap(text);
+                }
+                else{
+                    JSONMessage msg = Multiplex.deserialize(text);
+                    handleMessage(msg);
+                }
                 //logger.debug("Protocol received: " + text);
 
                 // After the reader object reads the serialized message from the socket it is then
                 // deserialized and handled in handleMessage method.
-                JSONMessage msg = Multiplex.deserialize(text);
-                handleMessage(msg);
 
             }
 
@@ -118,18 +130,8 @@ public class UserThread extends Thread {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
 
-                //  <----------------For Test---------------------->
-                MapConverter mapConverter = MapConverter.getInstance();
-                MapFactory mapFactory = MapFactory.getInstance();
-                DizzyHighway dizzyHighway = new DizzyHighway();
-                RiskyCrossing riskyCrossing = new RiskyCrossing();
-                Tile[][] testmap = mapFactory.constructMap(riskyCrossing);
-                GameStarted testbody = mapConverter.convert(testmap);
-                JSONMessage testmessage = new JSONMessage(testbody);
-                sendMessage(testmessage);
-                //  <----------------For Test---------------------->
                 //  <----------------Test For Laser --------------->
-                new Laser().activateBoardLaser();
+                //new Laser().activateBoardLaser();
                 //  <----------------Test For Laser --------------->
 
                 if (!(hs.getProtocol() == protocol)) {
@@ -175,6 +177,23 @@ public class UserThread extends Thread {
                 }
                 server.communicateUsers(jsonMessagePlayerStatus, this);
                 sendMessage(jsonMessagePlayerStatus);
+                // TODO Start the game after min. players required join the game
+                if(map.equals("DizzyHighway")){
+                    DizzyHighway dizzyHighway = new DizzyHighway();
+                    Tile[][] dizzy = mapFactory.constructMap(dizzyHighway);
+                    GameStarted testBody1 = mapConverter.convert(dizzy);
+                    JSONMessage testMessage = new JSONMessage(testBody1);
+                    sendMessage(testMessage);
+                    break;
+                }
+                else if(map.equals("RiskyCrossing")){
+                    RiskyCrossing riskyCrossing = new RiskyCrossing();
+                    Tile[][] testmap = mapFactory.constructMap(riskyCrossing);
+                    GameStarted testbody = mapConverter.convert(testmap);
+                    JSONMessage testmessage = new JSONMessage(testbody);
+                    sendMessage(testmessage);
+                    break;
+                }
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();

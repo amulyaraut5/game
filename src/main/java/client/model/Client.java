@@ -258,4 +258,8 @@ public class Client {
         logger.debug("Protocol sent: " + json);
         writer.println(json);
     }
+
+    public PrintWriter getWriter() {
+        return writer;
+    }
 }
