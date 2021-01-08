@@ -19,6 +19,11 @@ public class Coordinate {
         this.y = y;
     }
 
+    public void add(Coordinate c) {
+        x += c.getX();
+        y += c.getY();
+    }
+
     /**
      * Methods updates the position of a coordinate to given attributes.
      *
@@ -50,5 +55,10 @@ public class Coordinate {
      */
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public Coordinate clone() {
+        return new Coordinate(x, y);
     }
 }
