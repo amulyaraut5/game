@@ -2,7 +2,7 @@ package utilities;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Utilities {
+public abstract class Utilities {
 
     public static final int PORT = 5558;
 
@@ -20,6 +20,7 @@ public class Utilities {
     public static final Orientation[] RIGHT_LEFT = {Orientation.RIGHT, Orientation.LEFT};
     public static final Orientation[] LEFT_RIGHT = {Orientation.LEFT, Orientation.RIGHT};
 
+
     //Cards
     public static final int SPAM_CARDCOUNT = 36;
     public static final int TROJANHORSE_CARDCOUNT = 12;
@@ -35,16 +36,9 @@ public class Utilities {
     public static final int AGAIN_CARDCOUNT = 2;
     public static final int POWERUP_CARDCOUNT = 1;
 
-    public enum CardName {
-        @SerializedName("moveI") MOVEI,
-        @SerializedName("moveII") MOVEII,
-        @SerializedName("moveII") MOVEIII,
-        @SerializedName("turnLeft") TURNLEFT,
-        @SerializedName("turnRight") TURNRIGHT,
-        @SerializedName("uTurn") UTURN,
-        @SerializedName("backUp") BACKUP,
-        @SerializedName("powerUp") POWERUP,
-        @SerializedName("again") AGAIN,
+    public enum CardType {
+        MoveI, MoveII, MoveIII, TurnLeft, TurnRight, UTurn, BackUp, PowerUp, Again,
+        Spam, Wurm, Virus, Trojaner
     }
 
     public enum Rotation {
@@ -56,6 +50,16 @@ public class Utilities {
     public enum Difficulty {
         BEGINNER, ADVANCED, EXTREME;
 
+    }
+
+    public enum Phase {
+        CONSTRUCTION(0), UPGRADE(1), PROGRAMMING(2), ACTIVATION(3);
+        private final int phase;
+
+        Phase(int phase) {
+            this.phase = phase;
+            Orientation a = Orientation.UP;
+        }
     }
 
     public enum MessageType {
@@ -71,5 +75,10 @@ public class Utilities {
         StartingPointTaken, TimerEnded, TimerStarted,
         YourCards, PlayerTurning, PlayIt, Reboot, Energy,
         GameWon, CheckPointReached
+    }
+
+    public enum AttributeType {
+        Antenna, Belt, ControlPoint, Empty, EnergySpace, Gear,
+        Laser, Pit, PushPanel, Reboot, RotatingBelt, Wall
     }
 }

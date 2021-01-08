@@ -2,13 +2,14 @@ package game.gameObjects.cards;
 
 import game.Game;
 import game.Player;
+import utilities.Utilities.CardType;
 
 public abstract class UpgradeCard extends Card {
 
     private int cost;
 
-    public UpgradeCard(String cardName) {
-        super(cardName);
+    public UpgradeCard(CardType card) {
+        super(card);
     }
 
     @Override

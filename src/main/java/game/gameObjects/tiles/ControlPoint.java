@@ -6,6 +6,7 @@ import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.GameWon;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -17,7 +18,7 @@ public class ControlPoint extends Attribute {
 
     public ControlPoint(int count) {
         this.count = count;
-        this.type = "ControlPoint";
+        this.type = AttributeType.ControlPoint;
     }
 
     public int getCheckPointID() {

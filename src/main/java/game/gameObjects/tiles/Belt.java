@@ -5,6 +5,7 @@ import game.gameActions.MoveRobot;
 import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -17,7 +18,7 @@ public class Belt extends Attribute {
     public Belt(Orientation orientation, int speed) {
         this.speed = speed;
         this.orientation = orientation;
-        this.type = "Belt";
+        this.type = AttributeType.Belt;
     }
 
     /**

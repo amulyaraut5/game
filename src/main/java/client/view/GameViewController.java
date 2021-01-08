@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
+import utilities.Utilities.AttributeType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
     private final Group[] fields = new Group[100];
     private int currentPhaseView = 0;
-    private int ActivePhase =0; //TODO enum? move to client?
+    private int ActivePhase = 0; //TODO enum? move to client?
 
     @FXML
     private BorderPane outerPane;
@@ -94,7 +95,7 @@ public class GameViewController extends Controller {
      */
     private boolean emptyTileBackground(ArrayList<Attribute> field) {
         for (Attribute a : field) {
-            if (a.getType().equals("Pit") || a.getType().equals("Empty")) {
+            if (a.getType() == AttributeType.Empty || a.getType() == AttributeType.Pit) {
                 return false;
             }
         }
@@ -103,17 +104,18 @@ public class GameViewController extends Controller {
 
     private ArrayList<Attribute> sortBoardAttributes(ArrayList<Attribute> field) {
         var sortedField = new ArrayList<Attribute>();
-        String[][] priorityArray = {
-                {"Pit", "Empty"},
-                {"Belt", "RotatingBelt", "Gear", "EnergySpace", "Antenna"},
-                {"PushPanel", "Laser"},
-                {"ControlPoint", "Reboot"},
-                {"Wall"}};
+        AttributeType[][] priorityArray = {
+                {AttributeType.Pit, AttributeType.Empty},
+                {AttributeType.Belt, AttributeType.RotatingBelt, AttributeType.Gear,
+                        AttributeType.EnergySpace, AttributeType.Antenna},
+                {AttributeType.PushPanel, AttributeType.Laser},
+                {AttributeType.ControlPoint, AttributeType.Reboot},
+                {AttributeType.Wall}};
 
-        for (String[] priority : priorityArray) {
-            List<String> priorityList = Arrays.asList(priority);
+        for (AttributeType[] priority : priorityArray) {
+            List<AttributeType> priorityList = Arrays.asList(priority);
             for (Attribute a : field) {
-                String type = a.getType();
+                AttributeType type = a.getType();
                 if (priorityList.contains(type)) {
                     sortedField.add(a);
                 }

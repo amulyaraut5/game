@@ -1,21 +1,21 @@
-package game.gameObjects.cards;
+package game.gameObjects.cards.damage;
 
 import game.Game;
 import game.Player;
-import game.gameObjects.tiles.Reboot;
-import game.round.Round;
+import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.Coordinate;
 import utilities.ImageHandler;
+import utilities.Utilities.CardType;
 
 /**
  * @author annika
  */
-public class WormCard extends DamageCard{
+public class Wurm extends DamageCard{
     private Reboot reboot;
 
-    public WormCard() {
-        super("Worm");
+    public Wurm() {
+        super(CardType.Wurm);
     }
 
     @Override

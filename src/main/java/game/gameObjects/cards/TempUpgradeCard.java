@@ -3,11 +3,12 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
+import utilities.Utilities.CardType;
 
-public class TempUpgradeCard extends UpgradeCard {
+public abstract class TempUpgradeCard extends UpgradeCard {
 
-    public TempUpgradeCard(String cardName) {
-        super(cardName);
+    public TempUpgradeCard(CardType card) {
+        super(card);
     }
 
     @Override
@@ -26,9 +27,10 @@ public class TempUpgradeCard extends UpgradeCard {
 
     /**
      * After a temporary upgrade has gone into effect, place it out of play.
+     *
      * @return
      */
-    public boolean isUsed(){
+    public boolean isUsed() {
         return true;
     }
 

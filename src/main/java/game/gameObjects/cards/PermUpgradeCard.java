@@ -3,11 +3,12 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
+import utilities.Utilities.CardType;
 
-public class PermUpgradeCard extends UpgradeCard {
+public abstract class PermUpgradeCard extends UpgradeCard {
 
-    public PermUpgradeCard(String cardName) {
-        super(cardName);
+    public PermUpgradeCard(CardType card) {
+        super(card);
     }
 
     @Override

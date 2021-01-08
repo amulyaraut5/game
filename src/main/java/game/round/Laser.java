@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 import java.util.ArrayList;
 
@@ -85,7 +86,7 @@ public class Laser {
             Tile tile = MapFactory.getInstance().getTile(xC, yC);
 
             for (Attribute a : tile.getAttributes()) {
-                if (a.getType() == "Laser") {//TODO use equals()
+                if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = a.getOrientation();
 
                     coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
@@ -117,11 +118,11 @@ public class Laser {
             position.add(step);
             Tile affectedTile = MapFactory.getInstance().getTile(position.getX(), position.getY());
             for (Attribute b : affectedTile.getAttributes()) {
-                if (b.getType() != "Wall") { //TODO test if there is a Antenna, robot
+                if (b.getType() != AttributeType.Wall) { //TODO test if there is a Antenna, robot
                     path.add(position.clone());
                     logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + position.getX() + "," + position.getY() + ")");
                     break; //TODO what is if at the next attribute is a Wall?
-                } else if (b.getType() == "Wall") {
+                } else if (b.getType() == AttributeType.Wall) {
                     if (b.getOrientation() == orientation) {  //TODO test if wall orientation is opposite of robot orientation
                         path.add(position.clone());
                         logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + position.getX() + "," + position.getY() + ")");

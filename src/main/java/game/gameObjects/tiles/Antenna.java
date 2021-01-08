@@ -4,6 +4,7 @@ import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -18,7 +19,7 @@ public class Antenna extends Attribute {
      */
     public Antenna() {
         this.orientation = Orientation.RIGHT;
-        this.type = "Antenna";
+        this.type = AttributeType.Antenna;
     }
 
     /**

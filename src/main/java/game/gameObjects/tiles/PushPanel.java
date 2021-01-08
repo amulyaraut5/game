@@ -5,6 +5,7 @@ import game.gameActions.MoveRobot;
 import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -17,7 +18,7 @@ public class PushPanel extends Attribute {
     public PushPanel(Orientation orientation, int[] registers) {
         this.orientation = orientation;
         this.registers = registers;
-        this.type = "PushPanel";
+        this.type = AttributeType.PushPanel;
     }
 
     /**
