@@ -8,6 +8,9 @@ import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 import utilities.Utilities.CardType;
 
+/**
+ * @author annika
+ */
 public class Trojaner extends DamageCard {
 
     public Trojaner() {

@@ -39,7 +39,7 @@ public class Player extends User {
 	private ProgrammingDeck drawProgrammingDeck;
 	private DiscardDeck discardedProgrammingDeck;
 
-
+	private Game game;
 
 	private ArrayList<Card> drawnProgrammingCards;
 	private ArrayList<ProgrammingCard> chosenProgrammingCards;
@@ -148,6 +148,9 @@ public class Player extends User {
 
 	public DiscardDeck getDiscardedProgrammingDeck() {return discardedProgrammingDeck;}
 
+	public Game getGame() {
+		return game;
+	}
 
 	/**
 	 * It freezes the player from the current round.
