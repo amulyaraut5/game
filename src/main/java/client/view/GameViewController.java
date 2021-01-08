@@ -2,17 +2,18 @@ package client.view;
 
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.io.IOException;
@@ -21,19 +22,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The GameViewController class controls the GameView and the Chat of the game
+ * The GameViewController class controls the GameView and coordinates its inner views
  *
- * @author Sarah, Simon
+ * @author Simon, Sarah
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
     private final Group[] fields = new Group[100];
-    private int currentInnerView = 0;
-    /**
-     * the ready Button which can be clicked to show the availability for playing the game
-     */
-    @FXML
-    private Button readyButton;
+    private int currentPhaseView = 0;
+    private int ActivePhase =0; //TODO enum? move to client?
 
     @FXML
     private BorderPane outerPane;
@@ -42,7 +39,7 @@ public class GameViewController extends Controller {
     private BorderPane chatPane;
 
     @FXML
-    private FlowPane flowPane;
+    private FlowPane boardPane;
 
     @FXML
     public void initialize() {
@@ -64,28 +61,38 @@ public class GameViewController extends Controller {
     public void buildMap(ArrayList<BoardElement> map) {
         for (int i = 0; i < 100; i++) {
             fields[i] = new Group();
+            int position = i + 1;
+            fields[i].addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                client.sendMessage(new JSONMessage(new SetStartingPoint(position)));
+            });
         }
 
         for (BoardElement tile : map) {
             int pos = tile.getPosition();
             var field = tile.getField();
 
-            if (emptyBackground(field)) {    //If the image would be transparent, an empty tile is added.
+            if (emptyTileBackground(field)) {    //If the image would be transparent, an empty tile is added.
                 fields[pos - 1].getChildren().add(new Empty().createImage());
             }
 
-            field = sortAttributes(field);
+            field = sortBoardAttributes(field);
             for (Attribute attribute : field) {
                 Node attributeImage = attribute.createImage();
                 if (attributeImage != null) {
                     fields[pos - 1].getChildren().add(attributeImage);
                 }
             }
-            flowPane.getChildren().add(fields[pos - 1]);
+            boardPane.getChildren().add(fields[pos - 1]);
         }
     }
 
-    private boolean emptyBackground(ArrayList<Attribute> field) {
+    /**
+     * Method tests if the background of all attributes on a field are transparent.
+     *
+     * @param field Field to test
+     * @return True if the Tile is transparent.
+     */
+    private boolean emptyTileBackground(ArrayList<Attribute> field) {
         for (Attribute a : field) {
             if (a.getType().equals("Pit") || a.getType().equals("Empty")) {
                 return false;
@@ -94,7 +101,7 @@ public class GameViewController extends Controller {
         return true;
     }
 
-    private ArrayList<Attribute> sortAttributes(ArrayList<Attribute> field) {
+    private ArrayList<Attribute> sortBoardAttributes(ArrayList<Attribute> field) {
         var sortedField = new ArrayList<Attribute>();
         String[][] priorityArray = {
                 {"Pit", "Empty"},
@@ -115,20 +122,26 @@ public class GameViewController extends Controller {
         return sortedField;
     }
 
+    /**
+     * Button press to test the change of inner phase panes.
+     */
     @FXML
-    private void changeInnerView(ActionEvent event) {
-        Pane innerPane = setNextPane();
+    private void changeInnerView() {
+        Pane innerPane = setNextPhase();
         outerPane.setCenter(innerPane);
     }
 
-    private Pane setNextPane() {
+    /**
+     * @return
+     */
+    private Pane setNextPhase() {
         Pane innerPane = null;
         String path = "";
-        currentInnerView = ++currentInnerView % 3;
+        currentPhaseView = ++currentPhaseView % 3;
 
-        if (currentInnerView == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (currentInnerView == 1) path = "/view/innerViews/programmingView.fxml";
-        else if (currentInnerView == 2) path = "/view/innerViews/activationView.fxml";
+        if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
+        else if (currentPhaseView == 1) path = "/view/innerViews/programmingView.fxml";
+        else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
 
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));

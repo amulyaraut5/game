@@ -34,7 +34,7 @@
                </children>
             </GridPane>
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeInnerView" prefHeight="30.0" prefWidth="150.0" text="test change inner view" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <FlowPane fx:id="flowPane" prefHeight="200.0" prefWidth="200.0" />
+            <FlowPane fx:id="boardPane" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </GridPane>
     </children>
