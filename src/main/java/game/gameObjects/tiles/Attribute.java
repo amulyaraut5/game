@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
+import utilities.Coordinate;
 import utilities.Orientation;
 
 /**
@@ -21,6 +22,7 @@ public abstract class Attribute {
     protected static Client client = Client.getInstance();
     protected String type;
     protected Orientation orientation;
+    protected Coordinate position;
 
     //ArrayList<Player> activePlayerList = new ArrayList<>(); // TODO Get from Game
 
@@ -84,5 +86,13 @@ public abstract class Attribute {
 
     public Orientation getOrientation() {
         return orientation;
+    }
+
+    public Coordinate getPosition() {
+        return position;
+    }
+
+    public void setPosition(Coordinate position) {
+        this.position = position;
     }
 }

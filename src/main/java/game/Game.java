@@ -69,4 +69,8 @@ public class Game {
     public ProgrammingDeck getProgrammingDeck() {
         return programmingDeck;
     }
+
+    public Round getActiveRound() {
+        return activeRound;
+    }
 }

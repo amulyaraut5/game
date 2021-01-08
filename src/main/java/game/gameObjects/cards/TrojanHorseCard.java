@@ -30,7 +30,6 @@ public class TrojanHorseCard extends DamageCard{
             Card spamCard = game.getSpamDeck().pop();
             player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
         }
-
         //Play the new register card
         topCard.handleCard(game, player);
     }
