@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -23,7 +24,7 @@ public class Wall extends Attribute {
      */
     public Wall(Orientation orientation) {
         this.orientation = orientation;
-        this.type = "Wall";
+        this.type = AttributeType.Wall;
     }
 
     /**
@@ -33,7 +34,7 @@ public class Wall extends Attribute {
      */
     public Wall(Orientation[] orientations) {
         this.orientations = orientations;
-        this.type = "Wall";
+        this.type = AttributeType.Wall;
     }
 
     /**

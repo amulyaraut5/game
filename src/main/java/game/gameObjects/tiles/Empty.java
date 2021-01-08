@@ -3,11 +3,12 @@ package game.gameObjects.tiles;
 import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
+import utilities.Utilities.AttributeType;
 
 public class Empty extends Attribute {
 
     public Empty() {
-        this.type = "Empty";
+        this.type = AttributeType.PushPanel;
     }
 
 

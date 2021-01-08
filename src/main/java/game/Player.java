@@ -1,11 +1,14 @@
 package game;
 
 import game.gameObjects.cards.*;
+import game.gameObjects.cards.programming.Again;
+import game.gameObjects.cards.programming.MoveI;
+import game.gameObjects.cards.programming.MoveII;
+import game.gameObjects.cards.programming.MoveIII;
 import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
-import utilities.Orientation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,11 +49,8 @@ public class Player extends User {
 
 	private int checkPointCounter;
 
-	private Orientation direction;
-
 	public Player(Robot robot) {
 		this.robot = robot;
-		direction = Orientation.RIGHT;
 		energyCubes = 5;
 		drawProgrammingDeck.createDeck();
 		discardedProgrammingDeck.createDeck();
@@ -87,14 +87,6 @@ public class Player extends User {
 		this.lastAction = lastAction;
 	}
 
-	public Orientation getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Orientation direction) {
-		this.direction = direction;
-	}
-
 	/**
 	 * if a player chose a card in a register it gets saved in a map within the player
 	 * last time edited: sarah
@@ -105,16 +97,16 @@ public class Player extends User {
 		Card choosedCard = null;
 		switch(card){
 			case "again":
-				choosedCard = new AgainCard();
+				choosedCard = new Again();
 				break;
 			case "moveI":
-				choosedCard = new Move1Card();
+				choosedCard = new MoveI();
 				break;
 			case "moveII":
-				choosedCard = new Move2Card();
+				choosedCard = new MoveII();
 				break;
 			case "moveIII":
-				choosedCard = new Move3Card();
+				choosedCard = new MoveIII();
 				break;
 
 			//TODO other types of cards

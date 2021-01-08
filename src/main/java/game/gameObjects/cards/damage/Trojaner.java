@@ -1,14 +1,17 @@
-package game.gameObjects.cards;
+package game.gameObjects.cards.damage;
 
 import game.Game;
 import game.Player;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
+import utilities.Utilities.CardType;
 
-public class TrojanHorseCard extends DamageCard{
+public class Trojaner extends DamageCard {
 
-    public TrojanHorseCard() {
-        super("Trojan Horse");
+    public Trojaner() {
+        super(CardType.Trojaner);
     }
 
     /**

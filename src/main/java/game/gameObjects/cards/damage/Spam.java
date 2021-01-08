@@ -1,18 +1,20 @@
-package game.gameObjects.cards;
+package game.gameObjects.cards.damage;
 
 import game.Game;
 import game.Player;
-import game.gameObjects.decks.SpamDeck;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
+import utilities.Utilities.CardType;
 
 /**
  * @author annika
  */
-public class SpamCard extends DamageCard {
+public class Spam extends DamageCard {
 
-    public SpamCard() {
-        super("Spam");
+    public Spam() {
+        super(CardType.Spam);
     }
 
     /**
@@ -27,9 +29,9 @@ public class SpamCard extends DamageCard {
         Card topCard = game.getProgrammingDeck().pop();
 
         //exchange spam card and new programming card in the current register
-       int spamIndex = player.getRegister().indexOf(this);
-       player.getRegister().remove(this);
-       player.getRegister().set(spamIndex, topCard);
+        int spamIndex = player.getRegister().indexOf(this);
+        player.getRegister().remove(this);
+        player.getRegister().set(spamIndex, topCard);
 
         //Play the new register card
         topCard.handleCard(game, player);

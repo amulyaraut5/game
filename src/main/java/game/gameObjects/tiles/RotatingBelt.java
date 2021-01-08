@@ -5,6 +5,7 @@ import game.gameActions.MoveRobotInCurve;
 import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -21,7 +22,7 @@ public class RotatingBelt extends Attribute {
         this.orientations = orientations;
         this.isCrossing = isCrossing;
         this.speed = speed;
-        this.type = "RotatingBelt";
+        this.type = AttributeType.RotatingBelt;
 
     }
 

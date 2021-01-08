@@ -223,7 +223,7 @@ public class Client {
                     logger.info("Player " + gameWon.getPlayerID() + "has won the game");
                     //TODO Display the message in chat for players/users
                 }
-                default -> logger.error("the MessageType " + type + " is invalid or not yet implemented!");
+                default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
     }

@@ -1,19 +1,21 @@
-package game.gameObjects.cards;
+package game.gameObjects.cards.programming;
 
 import game.gameActions.MoveRobot;
+import game.gameObjects.cards.ProgrammingCard;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
+import utilities.Utilities.CardType;
 
 /**
  * @author annika
  */
-public class Move3Card extends ProgrammingCard {
+public class MoveIII extends ProgrammingCard {
     private static final Logger logger = LogManager.getLogger();
 
-    public Move3Card() {
-        super("Move 3");
+    public MoveIII() {
+        super(CardType.MoveIII);
         super.addAction(new MoveRobot());
         super.addAction(new MoveRobot());
         super.addAction(new MoveRobot());

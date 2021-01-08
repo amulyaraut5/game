@@ -215,7 +215,7 @@ public class UserThread extends Thread {
                 server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())), this);
                 // TODO end the game
             }
-            default -> logger.error("the MessageType " + type + " is invalid or not yet implemented!");
+            default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
 
         }
     }

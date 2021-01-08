@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -19,7 +20,7 @@ public abstract class Attribute {
     protected static Game game = Game.getInstance();
     protected static UserThread userThread;//TODO remove?
     protected static Client client = Client.getInstance();
-    protected String type;
+    protected AttributeType type;
     protected Orientation orientation;
 
     //ArrayList<Player> activePlayerList = new ArrayList<>(); // TODO Get from Game
@@ -74,11 +75,11 @@ public abstract class Attribute {
      * Sometimes a robot may find hindrance while moving (may encounter wall or antenna)
      * In such case the movement action will be nullified
      */
-    public void isValidMove(){
+    public void isValidMove() {
 
     }
 
-    public String getType() {
+    public AttributeType getType() {
         return type;
     }
 

@@ -4,6 +4,7 @@ import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.Orientation;
+import utilities.Utilities.AttributeType;
 
 
 /**
@@ -17,7 +18,7 @@ public class Laser extends Attribute {
     public Laser(Orientation orientation, int count) {
         this.orientation = orientation;
         this.count = count;
-        this.type = "Laser";
+        this.type = AttributeType.Laser;
     }
 
     /**

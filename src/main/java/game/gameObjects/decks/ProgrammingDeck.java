@@ -1,6 +1,7 @@
 package game.gameObjects.decks;
 
-import game.gameObjects.cards.*;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.programming.*;
 
 import java.util.ArrayList;
 
@@ -27,43 +28,43 @@ public class ProgrammingDeck extends Deck {
 
         // Move 1 Cards
         for (int i = 0; i < MOVE1_CARDCOUNT; i++) {
-            addCard(new Move1Card());
+            addCard(new MoveI());
         }
         // Move 2 Cards
         for (int i = 0; i < MOVE2_CARDCOUNT; i++) {
-            addCard(new Move2Card());
+            addCard(new MoveII());
         }
         // Move3 Card
         for (int i = 0; i < MOVE3_CARDCOUNT; i++) {
-            addCard(new Move3Card());
+            addCard(new MoveIII());
         }
 
         // Back Up Card
         for (int i = 0; i < BACKUP_CARDCOUNT; i++) {
-            addCard(new BackUpCard());
+            addCard(new BackUp());
         }
 
         // Left Turn Cards
         for (int i = 0; i < TURNLEFT_CARDCOUNT; i++) {
-            addCard(new TurnLeftCard());
+            addCard(new TurnLeft());
         }
         // Right Turn Cards
         for (int i = 0; i < TURNRIGHT_CARDCOUNT; i++) {
-            addCard(new TurnRightCard());
+            addCard(new TurnRight());
         }
         // U-Turn Card
         for (int i = 0; i < UTURN_CARDCOUNT; i++) {
-            addCard(new UTurnCard());
+            addCard(new UTurn());
         }
 
         // Power Up Cards
         for (int i = 0; i < POWERUP_CARDCOUNT; i++) {
-            addCard(new PowerUpCard());
+            addCard(new PowerUp());
         }
 
         // Again Card
         for (int i = 0; i < AGAIN_CARDCOUNT; i++) {
-            addCard(new AgainCard());
+            addCard(new Again());
         }
     }
 

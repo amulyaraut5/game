@@ -3,6 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
+import utilities.Utilities.AttributeType;
 import utilities.Utilities.Rotation;
 
 /**
@@ -15,7 +16,7 @@ public class Gear extends Attribute {
 
     public Gear(Rotation orientation) {
         this.orientation = orientation;
-        this.type = "Gear";
+        this.type = AttributeType.Gear;
     }
 
     /**

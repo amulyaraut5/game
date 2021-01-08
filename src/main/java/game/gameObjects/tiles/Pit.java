@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Reboot;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -12,7 +13,7 @@ import utilities.JSONProtocol.body.Reboot;
 public class Pit extends Attribute {
 
     public Pit() {
-        this.type = "Pit";
+        this.type = AttributeType.PushPanel;
     }
 
     /**

@@ -3,14 +3,14 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
-import utilities.Utilities.CardName;
+import utilities.Utilities.CardType;
 
 public abstract class Card {
 
-    private CardName cardName;
+    private CardType card;
 
-    public Card(String cardName) {
-        cardName = "Card";
+    public Card(CardType card) {
+        this.card = card;
     }
 
     public abstract ImageView drawCardImage();
@@ -23,14 +23,15 @@ public abstract class Card {
 
     /**
      * Gets the card name.
+     *
      * @return returns the respective name of card
      */
-    public CardName getCardName() {
-        return cardName;
+    public CardType getName() {
+        return card;
     }
 
     public String toString() {
-        return cardName.toString();
+        return card.toString();
     }
 }
 

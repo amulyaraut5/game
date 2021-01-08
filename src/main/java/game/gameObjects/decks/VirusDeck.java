@@ -1,11 +1,11 @@
 package game.gameObjects.decks;
 
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.VirusCard;
+import game.gameObjects.cards.damage.Virus;
 
 import java.util.ArrayList;
 
-import static utilities.Utilities.*;
+import static utilities.Utilities.VIRUS_CARDCOUNT;
 
 /**
  * @author annika
@@ -22,7 +22,7 @@ public class VirusDeck extends DamageCardDeck {
         this.virusDeck = new ArrayList<>();
 
         for (int i = 0; i < VIRUS_CARDCOUNT; i++) {
-            virusDeck.add(new VirusCard());
+            virusDeck.add(new Virus());
         }
     }
 

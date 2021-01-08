@@ -1,14 +1,16 @@
-package game.gameObjects.cards;
+package game.gameObjects.cards.damage;
 
 import game.Game;
 import game.Player;
+import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
+import utilities.Utilities.CardType;
 
-public class VirusCard extends DamageCard{
+public class Virus extends DamageCard {
 
-    public VirusCard() {
-        super("Virus");
+    public Virus() {
+        super(CardType.Virus);
     }
 
     @Override

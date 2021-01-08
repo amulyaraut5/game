@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Energy;
+import utilities.Utilities.AttributeType;
 
 /**
  * @author Amulya
@@ -16,7 +17,7 @@ public class EnergySpace extends Attribute {
 
     public EnergySpace(int count) {
         this.count = count;
-        this.type = "EnergySpace";
+        this.type = AttributeType.EnergySpace;
     }
 
     /**
