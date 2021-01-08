@@ -3,6 +3,7 @@ package game;
 import game.gameObjects.cards.DamageCard;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.decks.SpamDeck;
+import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.round.Round;
@@ -29,6 +30,7 @@ public class Game {
     private ProgrammingDeck specialProgrammingDeck;
     private int noOfCheckpoints;
     private SpamDeck spamDeck;
+    private VirusDeck virusDeck;
     private ProgrammingDeck programmingDeck;
 
     private Game() {
@@ -64,6 +66,10 @@ public class Game {
 
     public SpamDeck getSpamDeck() {
         return spamDeck;
+    }
+
+    public VirusDeck getVirusDeck() {
+        return virusDeck;
     }
 
     public ProgrammingDeck getProgrammingDeck() {
