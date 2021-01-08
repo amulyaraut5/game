@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 /**
  * @author Amulya

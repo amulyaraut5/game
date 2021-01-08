@@ -3,7 +3,7 @@ package game.gameObjects.tiles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Utilities;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 import utilities.Utilities.Rotation;
 
 public class TileFactory {

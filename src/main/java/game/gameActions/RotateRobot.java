@@ -1,8 +1,7 @@
 package game.gameActions;
 
 import game.Player;
-import utilities.Utilities.Rotation;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 public class RotateRobot extends Action{
 

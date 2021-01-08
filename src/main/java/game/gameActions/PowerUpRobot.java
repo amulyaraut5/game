@@ -1,7 +1,7 @@
 package game.gameActions;
 
 import game.Player;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 /**
  * The player gets one energy cube.

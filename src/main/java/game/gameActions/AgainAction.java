@@ -1,7 +1,7 @@
 package game.gameActions;
 
 import game.Player;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 /**
  * Repeats the programming in the players previous register.

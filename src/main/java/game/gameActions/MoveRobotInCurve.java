@@ -2,7 +2,7 @@ package game.gameActions;
 
 import game.Player;
 import utilities.Utilities;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 public class MoveRobotInCurve extends Action{
     @Override

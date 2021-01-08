@@ -3,7 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 
 /**

@@ -4,7 +4,7 @@ import game.Player;
 import game.gameActions.MoveRobot;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 /**
  * @author Amulya

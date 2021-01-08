@@ -33,7 +33,7 @@ public class ImageHandler {
      * @param orientation An orientation, if the image from the path should also be rotated.
      * @return A ImageView containing the image; null if no resource with this name is found.
      */
-    public static ImageView createImageView(String path, Utilities.Orientation orientation) {
+    public static ImageView createImageView(String path, Orientation orientation) {
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         if (stream != null) {
             var image = new Image(stream, 60, 60, true, true);

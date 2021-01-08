@@ -1,7 +1,7 @@
 package game.gameActions;
 
 import game.Player;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 public class MoveRobot extends Action{
 

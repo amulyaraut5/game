@@ -7,7 +7,7 @@ import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.Utilities.Orientation;
+import utilities.Orientation;
 
 import java.util.ArrayList;
 

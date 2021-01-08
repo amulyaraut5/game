@@ -7,9 +7,7 @@ import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.UserThread;
-import utilities.Utilities.Orientation;
-
-import java.util.ArrayList;
+import utilities.Orientation;
 
 /**
  * @author Amulya
