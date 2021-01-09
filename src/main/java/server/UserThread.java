@@ -1,5 +1,6 @@
 package server;
 
+import game.GameController;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.MapFactory;
 import game.gameObjects.maps.RiskyCrossing;
@@ -207,6 +208,8 @@ public class UserThread extends Thread {
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
+
+                //GameController.getInstance().sendToProgrammingPhase(this, selectCard);
                 //Game.getInstance().messageToPhases(selectCard);
                 server.communicateUsers(new JSONMessage(new CardSelected(this.playerID, selectCard.getRegister())), this);
             }
