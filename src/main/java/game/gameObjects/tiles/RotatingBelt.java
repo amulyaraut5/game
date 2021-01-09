@@ -93,4 +93,8 @@ public class RotatingBelt extends Attribute {
         //TODO
         return false;
     }
+
+    public int getSpeed() {
+        return speed;
+    }
 }

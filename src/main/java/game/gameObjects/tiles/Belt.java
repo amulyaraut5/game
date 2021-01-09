@@ -63,4 +63,7 @@ public class Belt extends Attribute {
         return false;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
 }
