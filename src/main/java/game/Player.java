@@ -9,20 +9,12 @@ import game.gameObjects.robot.Robot;
 import server.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class extends user to specify different Attributes for a player.
  */
 
 public class Player extends User {
-
-
-    /**
-     * a Map which connects the register and the related card the user chooses
-     */
-    private Map<Integer, Card> registerAndCards = new HashMap<>();
 
     private int currentRegister;
 
@@ -81,13 +73,24 @@ public class Player extends User {
      * @param register addressed register
      * @param card assigned card
      */
-    public void setRegisterCard (int register, Card card) {
+    public void setRegisterCards(int register, Card card) {
         int index = register-1;
         registerCards.add(index, card);
     }
 
     public ArrayList<Card> getRegisterCards() {
         return registerCards;
+    }
+
+    /**
+     * returns the card that is saved to the given register (1-5)
+     *
+     * @param register
+     * @return
+     */
+    public Card getRegisterCard(int register) {
+        int index = register-1;
+        return registerCards.get(index);
     }
 
     public Card getCurrentAction() {
@@ -104,21 +107,6 @@ public class Player extends User {
 
     public void setLastAction(Card lastAction) {
         this.lastAction = lastAction;
-    }
-
-    /**
-     * if a player chose a card in a register it gets saved in a map within the player
-     * last time edited: sarah
-     *
-     * @param register
-     * @param card
-     */
-    public void setRegisterAndCards(int register, Card card) {
-        registerAndCards.put(register, card);
-    }
-
-    public Map<Integer, Card> getRegisterAndCards() {
-        return registerAndCards;
     }
 
     public Robot getRobot() {
