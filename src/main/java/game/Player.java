@@ -65,7 +65,7 @@ public class Player extends User {
     }
 
     /**
-     * Creates an empty register.
+     * Creates 5 empty registers.
      *
      * @author annika
      */
@@ -74,6 +74,16 @@ public class Player extends User {
         for (int i = 0; i < 5; i++) {
             registerCards.add(i, null);
         }
+    }
+
+    /** saves the assigned Card for the stated register (1 - 5)
+     *
+     * @param register addressed register
+     * @param card assigned card
+     */
+    public void setRegisterCard (int register, Card card) {
+        int index = register-1;
+        registerCards.add(index, card);
     }
 
     public ArrayList<Card> getRegisterCards() {
