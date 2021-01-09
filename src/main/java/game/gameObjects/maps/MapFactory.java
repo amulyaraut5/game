@@ -61,6 +61,8 @@ public class MapFactory {
 
     /**
      * Adds the maps of the game to a ArrayList
+     *
+     * TODO find usage
      */
     private void generateMaps() {
         maps = new ArrayList<>();
