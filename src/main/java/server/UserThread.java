@@ -5,7 +5,6 @@ import game.gameObjects.maps.MapFactory;
 import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
-import game.round.Laser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -182,8 +181,7 @@ public class UserThread extends Thread {
                     DizzyHighway dizzyHighway = new DizzyHighway();
                     Tile[][] dizzy = mapFactory.constructMap(dizzyHighway);
                     GameStarted testBody1 = mapConverter.convert(dizzy);
-                    JSONMessage testMessage = new JSONMessage(testBody1);
-                    sendMessage(testMessage);
+
                     break;
                 }
                 else if(map.equals("RiskyCrossing")){
