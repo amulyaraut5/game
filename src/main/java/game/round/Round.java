@@ -6,7 +6,9 @@ import server.Server;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.ActivePhase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /** this class implements a Round.
  * a Round consists of the three phases UpgradePhase, ProgrammingPhase and ActivationPhase
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class Round {
 
 
+	private static Round round;
 	/**
 	 * the game which created the round
 	 */
@@ -28,11 +31,19 @@ public class Round {
 
 	public Round(Game game) {
 		this.game = game;
-		this.playerList = game.getPlayerList();
-		executeRound();
+		//this.playerList = game.getPlayerList();
+		round = this;
 	}
 
-
+	public static void main(String[] args) {
+		Round round = new Round(null);
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+		System.out.println(format.format(new Date()));
+		ProgrammingPhase programmingPhase = new ProgrammingPhase(round);
+		programmingPhase.start();
+		SimpleDateFormat format2 = new SimpleDateFormat("hh:mm:ss");
+		System.out.println(format2.format(new Date()));
+	}
 
 	private void discardCards() {
 
