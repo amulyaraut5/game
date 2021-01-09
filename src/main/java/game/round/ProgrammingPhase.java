@@ -7,21 +7,27 @@ import server.Server;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 
-import java.util.ArrayList;
-import java.util.Timer;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class ProgrammingPhase  {
+public class ProgrammingPhase extends Thread{
 
     private ArrayList<Player> playerList;
-    /**
-     * timerIsRunning will get true if a player creates an instance of timer
-     */
-    private boolean timerIsRunning = false;
+
 
     /**
      * a player gets removed if he has already chose 5 cards in the time
      */
     private ArrayList<Player> notReadyPlayers = new ArrayList<>();
+    private BlockingQueue<Player> playerQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<SelectCard> selectCardQueue = new LinkedBlockingQueue<>();
+
+
+
+    private boolean notFinished = true;
 
     /**
      * Programming cards from which the player can choose to program his robot.
@@ -31,7 +37,7 @@ public class ProgrammingPhase  {
     public ProgrammingPhase(Round round) {
         this.playerList = round.getPlayerList();
     }
-    public void startProgrammingPhase() {
+    public void run() {
         dealProgrammingCards();
         //send Protocol to player and others which cards the player has
         for(Player player: playerList){
@@ -41,7 +47,17 @@ public class ProgrammingPhase  {
             Server.getInstance().communicateUsers(toOtherPlayers, player.getThread());
             player.message(toPlayer);
         }
-
+        while(notFinished) {
+            Player player;
+            SelectCard selectCard;
+            while ((player = playerQueue.poll()) != null && (selectCard = selectCardQueue.poll()) != null) {
+                player.setRegisterAndCards(selectCard.getRegister(), selectCard.getCard());
+                if (player.getRegisterAndCards().size() == 5 && !player.getRegisterAndCards().containsValue(null)) {
+                    onePlayerFinished(player);
+                }
+            }
+        }
+        timeRunOut();
     }
 
     /**
