@@ -10,7 +10,7 @@ import utilities.JSONProtocol.body.*;
 import java.util.ArrayList;
 import java.util.Timer;
 
-public class ProgrammingPhase  {
+public class ProgrammingPhase {
 
     private ArrayList<Player> playerList;
     /**
@@ -31,21 +31,14 @@ public class ProgrammingPhase  {
     public ProgrammingPhase(Round round) {
         this.playerList = round.getPlayerList();
     }
+
     public void startProgrammingPhase() {
         dealProgrammingCards();
-        //send Protocol to player and others which cards the player has
-        for(Player player: playerList){
-            ArrayList<Card> cardDeck = player.getDrawProgrammingDeck().getDeck();
-            JSONMessage toPlayer = new JSONMessage(new YourCards(cardDeck));
-            JSONMessage toOtherPlayers = new JSONMessage(new NotYourCards(player.getId(), cardDeck.size()));
-            Server.getInstance().communicateUsers(toOtherPlayers, player.getThread());
-            player.message(toPlayer);
-        }
-
     }
 
     /**
      * if
+     *
      * @param player
      * @param selectCard
      */
@@ -54,18 +47,20 @@ public class ProgrammingPhase  {
     // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
-    private void cardWasSelected(Player player, SelectCard selectCard){
+    private void cardWasSelected(Player player, SelectCard selectCard) {
         player.setRegisterAndCards(selectCard.getRegister(), selectCard.getCard());
         if (player.getRegisterAndCards().size() == 5) {
             onePlayerFinished(player);
         }
     }
+
     /**
      * every player can look at their programming cards
      */
-    private void showCards() {}
+    private void showCards() {
+    }
 
-    public void onePlayerFinished(Player player){
+    public void onePlayerFinished(Player player) {
         JSONMessage selectionFinished = new JSONMessage(new SelectionFinished(player.getId()));
         Server.getInstance().communicateAll(selectionFinished);
         JSONMessage timerStarted = new JSONMessage(new TimerStarted());
@@ -75,8 +70,8 @@ public class ProgrammingPhase  {
         //timer for 30 sek
         JSONMessage discardCard;
         JSONMessage cardsYouGotNow;
-        for (Player playerTest : playerList){
-            if (playerTest.getRegisterAndCards().size()<5){
+        for (Player playerTest : playerList) {
+            if (playerTest.getRegisterAndCards().size() < 5) {
                 discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
                 playerTest.message(discardCard);
                 //TODO random 5 cards from programmingCardDeck
@@ -93,6 +88,7 @@ public class ProgrammingPhase  {
      * If there are less cards, the remaining cards get dealt.
      * the discarded pile is reshuffled and used as the draw pile and the rest of the 9 cards is drawn from
      * the new draw Deck.
+     * YourCards and NotYourCards protocol is send
      */
     private void dealProgrammingCards() {
         for (Player player : playerList) {
@@ -103,13 +99,16 @@ public class ProgrammingPhase  {
                 //TODO send ShuffleCoding
                 availableProgrammingCards = currentDeck.drawCards(currentDeck.size());
                 player.reuseDiscardedDeck();
-                availableProgrammingCards.addAll(player.getDrawProgrammingDeck().drawCards(9- currentDeck.size()));
-                }
-            player.setDrawnProgrammingCards(availableProgrammingCards);
+                availableProgrammingCards.addAll(player.getDrawProgrammingDeck().drawCards(9 - currentDeck.size()));
             }
-
+            player.setDrawnProgrammingCards(availableProgrammingCards);
+            JSONMessage yourCards = new JSONMessage(new YourCards(availableProgrammingCards));
+            player.message(yourCards);
+            JSONMessage notYourCards = new JSONMessage(new NotYourCards(player.getId(), availableProgrammingCards.size()));
+            Server.getInstance().communicateUsers(notYourCards, player.getThread());
         }
 
+    }
 
 
     /**
