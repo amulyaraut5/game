@@ -13,9 +13,8 @@ import java.util.ArrayList;
  */
 public class MapFactory {
     private static MapFactory instance;
-    public final int ROW = 10;
-    public final int COL = 10;
-    Tile[][] finalMap = new Tile[ROW][COL];
+
+    private Tile [][] currentMap;
     private ArrayList<Map> maps;
 
     private MapFactory() {
@@ -28,6 +27,8 @@ public class MapFactory {
         }
         return instance;
     }
+
+
 
     /**
      * returns every map in the game
@@ -50,12 +51,15 @@ public class MapFactory {
 
 
     public Tile[][] constructMap(Map map) {
+
         TileFactory tileFactory = TileFactory.getInstance();
+        Tile[][] finalMap = new Tile[map.length][map.width];
         for (int i = 0; i < (map.length); i++) {
             for (int j = 0; j < (map.width); j++) {
                 finalMap[i][j] = tileFactory.createTile(map.mapBlueprint[i][j]);
             }
         }
+        setCurrentMap(finalMap);
         return finalMap;
     }
 
@@ -69,85 +73,12 @@ public class MapFactory {
         maps.add(new DizzyHighway());
     }
 
-    public ArrayList<Coordinate> getLaserCoordinates() {
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
-        for (int i = 0; i < (finalMap.length); i++) {
-            for (int j = 0; j < (finalMap[0].length); j++) {
-                for (Attribute a : finalMap[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.Laser) {
-                        Coordinate temp = new Coordinate(i, j);
-                        coordinates.add(temp);
-                    }
-                }
-            }
-        }
-        return coordinates;
+    public Tile[][] getCurrentMap() {
+        return currentMap;
     }
 
-    /**
-     * Retrieves the tile from the map.
-     *
-     * @param x x coordinate of the tile
-     * @param y y coordinate of the tile
-     * @return
-     * @throws ArrayIndexOutOfBoundsException when the position is not on the map.
-     */
-    public Tile getTile(int x, int y) throws ArrayIndexOutOfBoundsException {
-        return this.finalMap[x][y];
-    }
-
-    /**
-     * Retrieves the tile of the given position from the map
-     *
-     * @param pos position of tile
-     * @return
-     * @throws ArrayIndexOutOfBoundsException when the position is not on the map
-     */
-    public Tile getTile(Coordinate pos) throws ArrayIndexOutOfBoundsException {
-        return this.finalMap[pos.getX()][pos.getY()];
-    }
-
-    /**
-     * Retrieves the coordinate of the tile from the map
-     *
-     * @return
-     */
-    public Coordinate lookInMapFor(Attribute attribute) {
-        for (int i = 0; i < (finalMap.length); i++) {
-            for (int j = 0; j < (finalMap[0].length); j++) {
-                for (Attribute a : finalMap[i][j].getAttributes()) {
-                    if (a.getType() == attribute.getType()) {
-                        return new Coordinate(i,j);
-                    }
-                }
-            }
-        break;
-        }
-        return null;
-    }
-
-    /**
-     * This methods adds the laser tiles from the map into arrayList.
-     * Usage <@Class Round.Laser> to find the path of lasers.
-     *
-     * @return ArrayList of tiles
-     */
-
-    public ArrayList<Tile> getLaserTile() {
-
-        ArrayList<Tile> laserTiles = new ArrayList<>();
-        for (int i = 0; i < (finalMap.length); i++) {
-            for (int j = 0; j < (finalMap[0].length); j++) {
-                for (Attribute a : finalMap[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.Laser) {
-                        Tile tile = new Tile();
-                        tile.addAttribute(a);
-                        laserTiles.add(tile);
-                    }
-                }
-            }
-        }
-        return laserTiles;
+    public void setCurrentMap(Tile[][] currentMap) {
+        this.currentMap = currentMap;
     }
 
 }

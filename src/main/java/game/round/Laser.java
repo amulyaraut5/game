@@ -1,7 +1,7 @@
 package game.round;
 
 import game.Player;
-import game.gameObjects.maps.MapFactory;
+import game.gameObjects.maps.MapAssociates;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
@@ -79,11 +79,11 @@ public class Laser {
      */
     //TODO Antenna Case and Delete unnecessary logger.info
     private void determineLaserPaths() {
-        for (Coordinate coordinate : MapFactory.getInstance().getLaserCoordinates()) {
+        for (Coordinate coordinate : MapAssociates.getInstance().getLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
 
-            Tile tile = MapFactory.getInstance().getTile(xC, yC);
+            Tile tile = MapAssociates.getInstance().getTile(xC, yC);
 
             for (Attribute a : tile.getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
@@ -116,7 +116,7 @@ public class Laser {
         outerLoop:
         while (position.getX() >= 0 || position.getX() <= 10 || position.getY() >= 0 || position.getY() <= 10) {
             position.add(step);
-            Tile affectedTile = MapFactory.getInstance().getTile(position.getX(), position.getY());
+            Tile affectedTile = MapAssociates.getInstance().getTile(position.getX(), position.getY());
             for (Attribute b : affectedTile.getAttributes()) {
                 if (b.getType() != AttributeType.Wall) { //TODO test if there is a Antenna, robot
                     path.add(position.clone());

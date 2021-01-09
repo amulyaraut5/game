@@ -197,10 +197,6 @@ public class Client {
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     //TODO start gameView
                     gameViewController.buildMap(gameStarted.getMap());
-                    //  <----------------For Test---------------------->
-                    MapConverter mapConverter = MapConverter.getInstance();
-                    Tile[][] convertedMap = mapConverter.reconvert(gameStarted);
-                    //  <----------------For Test---------------------->
                     logger.info("The game has started.");
                 }
                 case ConnectionUpdate -> {
