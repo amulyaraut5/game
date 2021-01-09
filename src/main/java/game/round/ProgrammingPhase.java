@@ -1,5 +1,6 @@
 package game.round;
 
+import game.GameController;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.decks.ProgrammingDeck;
@@ -59,7 +60,23 @@ public class ProgrammingPhase extends Thread{
         }
         timeRunOut();
     }
+    public void setNotFinished(boolean notFinished) {
+        this.notFinished = notFinished;
+    }
+    /*
+    @Override
+    public synchronized void run() {
+        System.out.println("Hallo");
+        Timer timer = new Timer();
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        System.out.println("Hallo");
+    }
+    */
     /**
      * if
      * @param player
@@ -72,7 +89,7 @@ public class ProgrammingPhase extends Thread{
     //TODO server has to call this method if he gets the protocol cardselected
     private void cardWasSelected(Player player, SelectCard selectCard){
         player.setRegisterAndCards(selectCard.getRegister(), selectCard.getCard());
-        if (player.getRegisterAndCards().size() == 5) {
+        if (player.getRegisterAndCards().size() == 5 && !player.getRegisterAndCards().containsValue(null)) {
             onePlayerFinished(player);
         }
     }
@@ -84,22 +101,9 @@ public class ProgrammingPhase extends Thread{
     public void onePlayerFinished(Player player){
         JSONMessage selectionFinished = new JSONMessage(new SelectionFinished(player.getId()));
         Server.getInstance().communicateAll(selectionFinished);
-        JSONMessage timerStarted = new JSONMessage(new TimerStarted());
-        // JSONMessage timerEnded = new JSONMessage(new TimerEnded(//TODO));
-        Server.getInstance().communicateAll(timerStarted);
-        Timer timer = new Timer(true); //TODO einzelne Klasse überhaupt notwendig oder sogar wait()?
-        //timer for 30 sek
-        JSONMessage discardCard;
-        JSONMessage cardsYouGotNow;
-        for (Player playerTest : playerList){
-            if (playerTest.getRegisterAndCards().size()<5){
-                discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
-                playerTest.message(discardCard);
-                //TODO random 5 cards from programmingCardDeck
-                //cardsYouGotNow = new JSONMessage(new CardsYouGotNow());
-                //playerTest.message(cardsYouGotNow);
-            }
-        }
+        GameTimer gameTimer = new GameTimer(player, this);
+        gameTimer.start();
+
     }
 
 
@@ -133,14 +137,26 @@ public class ProgrammingPhase extends Thread{
      */
     private void timeRunOut() {
         // random set the programming cards of players´ deck to the registerAndCard Map
+        JSONMessage discardCard;
+        JSONMessage cardsYouGotNow;
+        for (Player playerTest : playerList){
+            if (playerTest.getRegisterAndCards().size()<5){
+                discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
+                playerTest.message(discardCard);
+                //TODO random 5 cards from programmingCardDeck
+                //cardsYouGotNow = new JSONMessage(new CardsYouGotNow());
+                //playerTest.message(cardsYouGotNow);
+            }
+        }
     }
 
     /**
      * this method gets called after every Round to reset the attributes
      */
     private void resetProgrammingPhase() {
-        timerIsRunning = false;
+
         notReadyPlayers = null;
     }
+
 
 }
