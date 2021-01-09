@@ -1,10 +1,9 @@
 package game;
 
-import game.gameObjects.cards.*;
-import game.gameObjects.cards.programming.Again;
-import game.gameObjects.cards.programming.MoveI;
-import game.gameObjects.cards.programming.MoveII;
-import game.gameObjects.cards.programming.MoveIII;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.PermUpgradeCard;
+import game.gameObjects.cards.ProgrammingCard;
+import game.gameObjects.cards.TempUpgradeCard;
 import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
@@ -93,26 +92,8 @@ public class Player extends User {
 	 * @param register
 	 * @param card
 	 */
-	public void setRegisterAndCards(int register, String card){
-		Card choosedCard = null;
-		switch(card){
-			case "again":
-				choosedCard = new Again();
-				break;
-			case "moveI":
-				choosedCard = new MoveI();
-				break;
-			case "moveII":
-				choosedCard = new MoveII();
-				break;
-			case "moveIII":
-				choosedCard = new MoveIII();
-				break;
-
-			//TODO other types of cards
-			case "null": break;
-		}
-		registerAndCards.put(register, choosedCard);
+	public void setRegisterAndCards(int register, Card card){
+		registerAndCards.put(register, card);
 	}
 	public Map<Integer, Card> getRegisterAndCards() {
 		return registerAndCards;
