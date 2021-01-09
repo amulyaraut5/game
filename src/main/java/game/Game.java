@@ -59,20 +59,6 @@ public class Game {
         return this.noOfCheckpoints;
     }
 
-    public ArrayList<Coordinate> getLaserCoordinates(Tile[][] map){
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
-        for (int i = 0; i < (map.length); i++) {
-            for (int j = 0; j < (map[0].length); j++) {
-                for(Attribute a : map[i][j].getAttributes()){
-                    if(a.getType() == Utilities.AttributeType.Laser){
-                        Coordinate temp = new Coordinate(i,j);
-                        coordinates.add(temp);
-                    }
-                }
-            }
-        }
-    return coordinates;
-    }
 
     public ArrayList<Coordinate> getBeltCoordinates(Tile[][] map){
         ArrayList<Coordinate> coordinates = new ArrayList<>();

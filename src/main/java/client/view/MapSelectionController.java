@@ -6,13 +6,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 
 
-
 import java.io.PrintWriter;
 
 public class MapSelectionController extends Controller{
     @FXML private CheckBox dizzyHighway;
     @FXML private CheckBox riskyCrossing;
 
+   // TODO Only host can select the map
     @FXML
     private void choiceBoxActionForMap(ActionEvent event){
 

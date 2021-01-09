@@ -74,7 +74,6 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-
             // HelloClient protocol is first serialized and sent through socket to Client.
             JSONMessage jsonMessage = new JSONMessage(new HelloClient(protocol));
             sendMessage(jsonMessage);
@@ -89,14 +88,12 @@ public class UserThread extends Thread {
                     setMap(text);
                 }
                 else{
+                    //logger.debug("Protocol received: " + text);
+                    // After the reader object reads the serialized message from the socket it is then
+                    // deserialized and handled in handleMessage method.
                     JSONMessage msg = Multiplex.deserialize(text);
                     handleMessage(msg);
                 }
-                //logger.debug("Protocol received: " + text);
-
-                // After the reader object reads the serialized message from the socket it is then
-                // deserialized and handled in handleMessage method.
-
             }
 
         } catch (IOException ex) {
@@ -151,7 +148,6 @@ public class UserThread extends Thread {
                         logger.info(jM.toString());
                     }
                 }
-
             }
             case PlayerValues -> {
                 PlayerValues ps = (PlayerValues) message.getBody();

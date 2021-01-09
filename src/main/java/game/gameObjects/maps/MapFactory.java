@@ -113,7 +113,17 @@ public class MapFactory {
      *
      * @return
      */
-    public Coordinate lookInToMapFor() {
+    public Coordinate lookInMapFor(Attribute attribute) {
+        for (int i = 0; i < (finalMap.length); i++) {
+            for (int j = 0; j < (finalMap[0].length); j++) {
+                for (Attribute a : finalMap[i][j].getAttributes()) {
+                    if (a.getType() == attribute.getType()) {
+                        return new Coordinate(i,j);
+                    }
+                }
+            }
+        break;
+        }
         return null;
     }
 
