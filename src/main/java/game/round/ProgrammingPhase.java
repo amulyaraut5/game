@@ -12,6 +12,8 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 import java.util.Timer;
 
 public class ProgrammingPhase {
@@ -31,6 +33,11 @@ public class ProgrammingPhase {
      * Programming cards from which the player can choose to program his robot.
      */
     private ArrayList<Card> availableProgrammingCards;
+
+    /**
+     * saves if one player already filled his 5 registers
+     */
+    Boolean onePlayerFinished = false;
 
     public ProgrammingPhase(Round round) {
         this.playerList = round.getPlayerList();
@@ -73,11 +80,13 @@ public class ProgrammingPhase {
                 break;
         }
 
-            player.setRegisterAndCards(selectCard.getRegister(), chosenCard);
-            if (player.getRegisterAndCards().size() == 5) {
+        player.setRegisterAndCards(selectCard.getRegister(), chosenCard);
+        if (!onePlayerFinished) {
+            if (player.getRegisterAndCards().size() == 5 && !player.getRegisterAndCards().containsValue(null)) {
                 onePlayerFinished(player);
             }
         }
+    }
 
 
     /**
@@ -87,6 +96,7 @@ public class ProgrammingPhase {
     }
 
     public void onePlayerFinished(Player player) {
+        onePlayerFinished = true;
         JSONMessage selectionFinished = new JSONMessage(new SelectionFinished(player.getId()));
         Server.getInstance().communicateAll(selectionFinished);
         JSONMessage timerStarted = new JSONMessage(new TimerStarted());
@@ -140,10 +150,25 @@ public class ProgrammingPhase {
 
 
     /**
-     * a method which handles the players who didn´t choose cards in time
+     * Method that chooses ar random card out of the drawn Programming cards for every empty register.
+     * TODO call method and send CardsYouGotNow protocol
      */
-    private void timeRunOut() {
-        // random set the programming cards of players´ deck to the registerAndCard Map
+    private void timeRanOut() {
+        for (Player player : playerList) {
+            if (!(player.getRegisterAndCards().size() == 5) || player.getRegisterAndCards().containsValue(null)) {
+                Map<Integer, Card> register = player.getRegisterAndCards();
+                Random randomGenerator = new Random();
+                for (Map.Entry<Integer, Card> registerAndCard : register.entrySet()) {
+                    if (registerAndCard.getValue() == null) {
+                        availableProgrammingCards = player.getDrawnProgrammingCards();
+                        int index = randomGenerator.nextInt(availableProgrammingCards.size());
+                        Card randomCard = availableProgrammingCards.get(index);
+                        availableProgrammingCards.remove(index);
+                        player.setRegisterAndCards(registerAndCard.getKey(), randomCard);
+                    }
+                }
+            }
+        }
     }
 
     /**
