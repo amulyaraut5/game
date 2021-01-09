@@ -122,6 +122,7 @@ public class Player extends User {
 	}
 
 	public void setDrawnProgrammingCards(ArrayList<Card> drawnProgrammingCards) {this.drawnProgrammingCards = drawnProgrammingCards;}
+	public ArrayList<Card> getDrawnProgrammingCards() {return drawnProgrammingCards;}
 
 	public void setDrawProgrammingDeck(ProgrammingDeck drawProgrammingDeck) {this.drawProgrammingDeck = drawProgrammingDeck;}
 
