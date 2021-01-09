@@ -2,12 +2,12 @@ package game;
 
 import game.gameObjects.cards.DamageCard;
 import game.gameObjects.decks.ProgrammingDeck;
+import game.gameObjects.decks.SpamDeck;
+import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.round.Round;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.SelectCard;
-import utilities.JSONProtocol.body.gameStarted.BoardElement;
 import utilities.Utilities;
 
 import java.lang.reflect.Array;
@@ -25,6 +25,9 @@ public class Game {
     private UpgradeShop upgradeShop;
     private ArrayList<Player> playerList;
     private Round activeRound;
+    private SpamDeck spamDeck;
+    private VirusDeck virusDeck;
+    private ProgrammingDeck programmingDeck;
     private ArrayList<DamageCard> damageCardDeck;
     private ProgrammingDeck specialProgrammingDeck;
     private int noOfCheckpoints;
@@ -104,6 +107,22 @@ public class Game {
 
     public ArrayList<Player> getPlayerList() {
         return playerList;
+    }
+
+    public SpamDeck getSpamDeck() {
+        return spamDeck;
+    }
+
+    public VirusDeck getVirusDeck() {
+        return virusDeck;
+    }
+
+    public ProgrammingDeck getProgrammingDeck() {
+        return programmingDeck;
+    }
+
+    public Round getActiveRound() {
+        return activeRound;
     }
 
 }
