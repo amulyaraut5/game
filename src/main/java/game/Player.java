@@ -41,7 +41,6 @@ public class Player extends User {
 	private Game game;
 
 	private ArrayList<Card> drawnProgrammingCards;
-	private ArrayList<ProgrammingCard> chosenProgrammingCards;
 
 	private ArrayList<PermUpgradeCard> installedUpgrades;
 	private ArrayList<TempUpgradeCard> tempUpgradeCards;
