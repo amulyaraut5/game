@@ -200,9 +200,6 @@ public class Client {
                     //  <----------------For Test---------------------->
                     MapConverter mapConverter = MapConverter.getInstance();
                     Tile[][] convertedMap = mapConverter.reconvert(gameStarted);
-                    for(Attribute a :convertedMap[ 0][0].getAttributes()){
-                        System.out.println(a.getType());
-                    }
                     //  <----------------For Test---------------------->
                     logger.info("The game has started.");
                 }

@@ -51,8 +51,8 @@ public class MapFactory {
 
     public Tile[][] constructMap(Map map) {
         TileFactory tileFactory = TileFactory.getInstance();
-        for (int i = 0; i < (map.getLength()); i++) {
-            for (int j = 0; j < (map.getWidth()); j++) {
+        for (int i = 0; i < (map.length); i++) {
+            for (int j = 0; j < (map.width); j++) {
                 finalMap[i][j] = tileFactory.createTile(map.mapBlueprint[i][j]);
             }
         }
@@ -83,7 +83,6 @@ public class MapFactory {
         }
         return coordinates;
     }
-
 
     /**
      * Retrieves the tile from the map.
