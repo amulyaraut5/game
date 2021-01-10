@@ -2,7 +2,7 @@ package game.gameObjects.maps;
 
 import utilities.Utilities;
 
-public class RiskyCrossing extends Map {
+public class RiskyCrossing extends Blueprint {
     public RiskyCrossing(){
         this.name = "Risky Crossing";
         this.gameLength = "short";

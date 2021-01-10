@@ -3,7 +3,7 @@ package game.gameObjects.maps;
 
 import utilities.Utilities;
 
-public class DizzyHighway extends Map {
+public class DizzyHighway extends Blueprint {
 
 
     public DizzyHighway() {

@@ -6,7 +6,7 @@ import utilities.Utilities;
 
 import java.util.ArrayList;
 
-public abstract class Map {
+public abstract class Blueprint {
 
     protected String name;
     protected String gameLength;

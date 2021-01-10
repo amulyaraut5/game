@@ -1,10 +1,7 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
-import utilities.Coordinate;
-import utilities.Utilities.AttributeType;
 
 import java.util.ArrayList;
 
@@ -15,7 +12,7 @@ public class MapFactory {
     private static MapFactory instance;
 
     private Tile [][] currentMap;
-    private ArrayList<Map> maps;
+    private ArrayList<Blueprint> blueprints;
 
     private MapFactory() {
         generateMaps();
@@ -35,8 +32,8 @@ public class MapFactory {
      *
      * @return maps list containing every map in the game
      */
-    public ArrayList<Map> getMaps() {
-        return maps;
+    public ArrayList<Blueprint> getMaps() {
+        return blueprints;
     }
 
     /**
@@ -45,18 +42,18 @@ public class MapFactory {
      * @param id the id of the map to request
      * @return the requested map
      */
-    public Map getMap(int id) {
-        return maps.get(id);
+    public Blueprint getMap(int id) {
+        return blueprints.get(id);
     }
 
 
-    public Tile[][] constructMap(Map map) {
+    public Tile[][] constructMap(Blueprint blueprint) {
 
         TileFactory tileFactory = TileFactory.getInstance();
-        Tile[][] finalMap = new Tile[map.length][map.width];
-        for (int i = 0; i < (map.length); i++) {
-            for (int j = 0; j < (map.width); j++) {
-                finalMap[i][j] = tileFactory.createTile(map.mapBlueprint[i][j]);
+        Tile[][] finalMap = new Tile[blueprint.length][blueprint.width];
+        for (int i = 0; i < (blueprint.length); i++) {
+            for (int j = 0; j < (blueprint.width); j++) {
+                finalMap[i][j] = tileFactory.createTile(blueprint.mapBlueprint[i][j]);
             }
         }
         setCurrentMap(finalMap);
@@ -69,8 +66,8 @@ public class MapFactory {
      * TODO find usage
      */
     private void generateMaps() {
-        maps = new ArrayList<>();
-        maps.add(new DizzyHighway());
+        blueprints = new ArrayList<>();
+        blueprints.add(new DizzyHighway());
     }
 
     public Tile[][] getCurrentMap() {
