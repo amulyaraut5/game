@@ -208,6 +208,7 @@ public class LobbyController extends Controller {
     private void checkBoxAction(ActionEvent event) {
         JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
         client.sendMessage(msg);
+        viewManager.nextScene();
     }
 
     /**
