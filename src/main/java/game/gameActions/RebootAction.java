@@ -34,7 +34,7 @@ public class RebootAction extends Action{
         //game.getActiveRound().getPlayerList().remove(player);
         player.freeze();
         //Robot is placed on reboot token
-        Tile[][] currentMap = player.getGame().getMap();
+        Tile[][] currentMap = player.getGame().getMap().getTiles();
         player.getRobot().setPosition(getRebootTileCoordinates(currentMap));
         //TODO The player can turn the robot to face any direction.
     }
