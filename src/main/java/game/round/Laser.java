@@ -25,7 +25,7 @@ public class Laser {
     ArrayList<Coordinate> coordinates = new ArrayList<>();
     ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
     Game game = Game.getInstance();
-    ArrayList<Player> playersList = game.getPlayerList();
+    ArrayList<Player> playerList = game.getPlayerList();
     Map map = game.getMap();
 
     /**
@@ -42,7 +42,7 @@ public class Laser {
     public void activateBoardLaser() {
         determineLaserPaths();
         for (Coordinate coordinate : coordinates) {
-            for (Player player : playersList) {
+            for (Player player : playerList) {
                 if (player.getRobot().getPosition().getX() == coordinate.getX()
                         && player.getRobot().getPosition().getY() == coordinate.getY()) {
                     //player.getDiscardedProgrammingDeck().addSpamCard();
@@ -62,7 +62,7 @@ public class Laser {
     public void activateRobotLaser(Player currentPlayer) {
         determineRobotLaserPath(currentPlayer);
         for (Coordinate coordinate : roboCoordinates) {
-            for (Player targetPlayer : playersList) {
+            for (Player targetPlayer : playerList) {
                 if (currentPlayer != targetPlayer) { //TODO
 
                     if (targetPlayer.getRobot().getPosition().getX() == coordinate.getX()

@@ -142,7 +142,6 @@ public class UserThread extends Thread {
                     sendMessage(jsonMessage);
                     for (JSONMessage jM : server.getPlayerValuesList()) {
                         sendMessage(jM);
-                        logger.info(jM.toString());
                     }
                 }
             }
@@ -154,10 +153,6 @@ public class UserThread extends Thread {
                 user.setId(playerID);
                 user.setName(ps.getName());
                 server.communicateUsers(jsonMessage, this);
-                /*for (JSONMessage jM  : server.getPlayerValuesList()) {
-                    sendMessage(jM);
-                    logger.info(jM.toString());
-                }*/
                 sendMessage(jsonMessage);
             }
             case SetStatus -> {
@@ -177,15 +172,13 @@ public class UserThread extends Thread {
                     GameStarted testBody1 = MapConverter.convert(dizzy);
                     JSONMessage testMessage = new JSONMessage(testBody1);
                     sendMessage(testMessage);
-                    break;
                 }
                 else if(map.equals("RiskyCrossing")){
                     RiskyCrossing riskyCrossing = new RiskyCrossing();
                     Map risky = MapFactory.constructMap(riskyCrossing);
-                    GameStarted testbody = MapConverter.convert(risky);
-                    JSONMessage testmessage = new JSONMessage(testbody);
-                    sendMessage(testmessage);
-                    break;
+                    GameStarted testBody = MapConverter.convert(risky);
+                    JSONMessage testMessage = new JSONMessage(testBody);
+                    sendMessage(testMessage);
                 }
             }
             case SendChat -> {

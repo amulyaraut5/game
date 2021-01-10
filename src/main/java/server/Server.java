@@ -28,7 +28,6 @@ public class Server extends Thread {
      */
     private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
     private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
-    private Blueprint blueprint;
     /**
      *
      */
@@ -62,8 +61,8 @@ public class Server extends Thread {
      */
     @Override
     public void run() {
-        logger.info("SERVER STARTED");
         currentThread().setName("ServerThread");
+        logger.info("SERVER STARTED");
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
@@ -100,7 +99,6 @@ public class Server extends Thread {
     }
 
     public void setMap(Blueprint blueprint) {
-        this.blueprint = blueprint;
     }
 
     /**

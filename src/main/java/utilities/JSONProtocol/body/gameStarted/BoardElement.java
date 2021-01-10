@@ -28,7 +28,7 @@ public class BoardElement {
         return this.field;
     }
 
-    public void addAttribute(Attribute a) {
-        field.add(a);
+    public void setField(ArrayList<Attribute> field) {
+        this.field = field;
     }
 }
