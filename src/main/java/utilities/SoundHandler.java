@@ -1,20 +1,13 @@
 package utilities;
 
-import game.gameObjects.maps.MapFactory;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.nio.file.Paths;
-
-
+/**
+ * This class loads different soundtracks from the resources and plays the music
+ * based on different situations.
+ * @author Amulya
+ */
 public class SoundHandler{
 
     private MediaPlayer mediaPlayer;
@@ -22,6 +15,10 @@ public class SoundHandler{
     public SoundHandler() {
     }
 
+    /**
+     * musicOn() plays  general soundtrack throughout the game
+     * if the player wishes to play.
+     */
     public void musicOn(){
         //String s = "C:\\Users\\Amulya\\IdeaProjects\\vp-astreine-akazien\\src\\main\\resources\\sounds\\robotDance.mp3";
         //Media m = new Media(Paths.get(s).toUri().toString());
@@ -30,6 +27,10 @@ public class SoundHandler{
         mediaPlayer.play();
 
     }
+
+    /**
+     * musicOff() stops the music upon called.
+     */
     public void musicOff(){
         mediaPlayer.stop();
     }

@@ -3,8 +3,14 @@ package game.gameActions;
 import game.Player;
 import utilities.Orientation;
 
-public class MoveRobot extends Action{
+/**
+ * The MoveRobot class contains only overriden method that moves the Robot one space
+ * in any direction but based on the orienation.
+ * The orientation of the Robot remains unchanged.
+ * @author Amulya
+ */
 
+public class MoveRobot extends Action{
 
     @Override
     public void doAction(Orientation orientation, Player player) {

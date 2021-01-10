@@ -31,8 +31,7 @@ public class Laser {
     /**
      * Constructor for laser
      */
-    public Laser() {
-    }
+    public Laser() { }
 
     /**
      * The effect of lasers will be seen if it finds any robot standing in its

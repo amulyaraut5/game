@@ -7,12 +7,18 @@ import utilities.Utilities;
 
 import java.util.ArrayList;
 
+/**
+ * The map class helps in retrieving all the important aspects of the map.
+ */
 public class Map {
 
     private Tile[][] tiles;
     private ArrayList<Coordinate> laserCoordinates;
     private ArrayList<Coordinate> beltCoordinates;
 
+    /**
+     * Constructor that initializes the Tile[][] tiles.
+     */
     public Map(Tile[][] tiles) {
         this.tiles = tiles;
     }

@@ -4,11 +4,18 @@ import game.Player;
 import utilities.Utilities;
 import utilities.Orientation;
 
+/**
+ * The MoveRobotInCurve class contains only overriden method that moves the robot in a non-linear fashion
+ * based on the orientation of the belt.
+ * The orientation of the Robot remains unchanged.
+ *
+ * @author Amulya
+ */
+
 public class MoveRobotInCurve extends Action{
     @Override
-    public void doAction(Orientation orientation, Player player) {
+    public void doAction(Orientation orientation, Player player) { }
 
-    }
     // For Blue Rotating Belt
     // Todo Split cases with boolean isCrossing
     public void doAction2(Orientation[] orientations,Player player){

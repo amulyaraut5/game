@@ -1,17 +1,19 @@
 package client.view;
 
 import client.model.Client;
-import game.gameActions.Action;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import utilities.SoundHandler;
-
-
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
+/**
+ * This class allows only host to select a map from the different options
+ * for the game.
+ * @author Amulya
+ */
 
 public class MapSelectionController extends Controller {
     @FXML
@@ -51,8 +53,7 @@ public class MapSelectionController extends Controller {
     private void soundsOffAction(ActionEvent event){
         this.soundHandler.musicOff();
     }
-    public void initialize() {
-        this.soundHandler = new SoundHandler();
-    }
+
+    public void initialize() { this.soundHandler = new SoundHandler(); }
 
 }

@@ -3,6 +3,13 @@ package game.gameActions;
 import game.Player;
 import utilities.Orientation;
 
+/**
+ * The RotateRobot class contains only overriden method that rotates the robot either clockwise
+ * or antoclockwise based on the orientation.
+ * Orientation RIGHT: Clockwise Rotation  & LEFT: Anticlockwise Rotation
+ * @author Amulya
+ */
+
 public class RotateRobot extends Action{
 
     private Orientation orientation;
