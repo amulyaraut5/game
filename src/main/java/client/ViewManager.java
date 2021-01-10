@@ -182,7 +182,7 @@ public class ViewManager {
         controllerList.add(loginController);
         controllerList.add(lobbyController);
         controllerList.add(gameViewController);
-        //controllerList.add(mapSelectionController);
+        controllerList.add(mapSelectionController);
         client.setController(controllerList);
     }
 }

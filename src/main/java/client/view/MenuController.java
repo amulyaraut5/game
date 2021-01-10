@@ -22,9 +22,14 @@ public class MenuController extends Controller {
      */
     @FXML
     public void hostGameClicked() {
-        logger.info("Host Game Clicked");
+        logger.info("Host Game Clicked.");
 
-        Server.getInstance().start();
+        Server server = Server.getInstance();
+        if (!server.isAlive()) {
+            Server.getInstance().start();
+        }else{
+            logger.warn("Server is already running.");
+        }
         connect();
     }
 
@@ -33,7 +38,7 @@ public class MenuController extends Controller {
      */
     @FXML
     public void joinGameClicked() {
-        logger.info("Join Game Clicked");
+        logger.info("Join Game Clicked.");
 
         connect();
     }

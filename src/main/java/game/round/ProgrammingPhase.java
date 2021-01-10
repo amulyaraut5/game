@@ -12,7 +12,6 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 
@@ -37,7 +36,12 @@ public class ProgrammingPhase {
     /**
      * saves if one player already filled his 5 registers
      */
-    Boolean onePlayerFinished = false;
+    private Boolean onePlayerFinished = false;
+
+    /**
+     * just counts how many players already finished programming their robot (put 5 cards down)
+     */
+    private int programmedCount = 0;
 
     public ProgrammingPhase(Round round) {
         this.playerList = round.getPlayerList();
@@ -45,6 +49,10 @@ public class ProgrammingPhase {
 
     public void startProgrammingPhase() {
         dealProgrammingCards();
+        while (programmedCount < playerList.size()) {
+            //die Programming Phase geht solange, bis alle Spieler ihre Register gefüllt haben
+        }
+        resetProgrammingPhase();
     }
 
     /**
@@ -58,6 +66,7 @@ public class ProgrammingPhase {
     // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
+
     private void cardWasSelected(Player player, SelectCard selectCard) {
         String cardType = selectCard.getCard();
         Card chosenCard = null;
@@ -76,14 +85,15 @@ public class ProgrammingPhase {
                 break;
             //TODO other types of cards
             case "null":
-                chosenCard = null; // player can empty a register
+                // if player removes one card
                 break;
         }
 
-        player.setRegisterAndCards(selectCard.getRegister(), chosenCard);
-        if (!onePlayerFinished) {
-            if (player.getRegisterAndCards().size() == 5 && !player.getRegisterAndCards().containsValue(null)) {
-                onePlayerFinished(player);
+        player.setRegisterCards(selectCard.getRegister(), chosenCard);
+            if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
+                programmedCount++;
+                if (!onePlayerFinished) {
+                    onePlayerFinished(player);
             }
         }
     }
@@ -104,15 +114,11 @@ public class ProgrammingPhase {
         Server.getInstance().communicateAll(timerStarted);
         Timer timer = new Timer(true); //TODO einzelne Klasse überhaupt notwendig oder sogar wait()?
         //timer for 30 sek
-        JSONMessage discardCard;
-        JSONMessage cardsYouGotNow;
         for (Player playerTest : playerList) {
-            if (playerTest.getRegisterAndCards().size() < 5) {
-                discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
+            if (playerTest.getRegisterCards().size() < 5) {
+                JSONMessage discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
                 playerTest.message(discardCard);
-                //TODO random 5 cards from programmingCardDeck
-                //cardsYouGotNow = new JSONMessage(new CardsYouGotNow());
-                //playerTest.message(cardsYouGotNow);
+                timeRanOut();
             }
         }
     }
@@ -155,19 +161,21 @@ public class ProgrammingPhase {
      */
     private void timeRanOut() {
         for (Player player : playerList) {
-            if (!(player.getRegisterAndCards().size() == 5) || player.getRegisterAndCards().containsValue(null)) {
-                Map<Integer, Card> register = player.getRegisterAndCards();
+            ArrayList<Card> registers = player.getRegisterCards();
+            if (!(registers.size() == 5) || registers.contains(null)) {
                 Random randomGenerator = new Random();
-                for (Map.Entry<Integer, Card> registerAndCard : register.entrySet()) {
-                    if (registerAndCard.getValue() == null) {
+                for (int i = 0; i< registers.size(); i++) {
+                    if (registers.get(i) == null) {
                         availableProgrammingCards = player.getDrawnProgrammingCards();
                         int index = randomGenerator.nextInt(availableProgrammingCards.size());
                         Card randomCard = availableProgrammingCards.get(index);
                         availableProgrammingCards.remove(index);
-                        player.setRegisterAndCards(registerAndCard.getKey(), randomCard);
+                        player.setRegisterCards(i+1, randomCard);
                     }
                 }
             }
+            JSONMessage cardsYouGotNow = new JSONMessage(new CardsYouGotNow(player.getRegisterCards()));
+            player.message(cardsYouGotNow);
         }
     }
 
@@ -177,6 +185,7 @@ public class ProgrammingPhase {
     private void resetProgrammingPhase() {
         timerIsRunning = false;
         notReadyPlayers = null;
+        programmedCount = 0;
     }
 
 }

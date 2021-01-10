@@ -1,6 +1,6 @@
 package server;
 
-import game.gameObjects.maps.Map;
+import game.gameObjects.maps.Blueprint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -28,7 +28,6 @@ public class Server extends Thread {
      */
     private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
     private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
-    private Map map;
     /**
      *
      */
@@ -62,8 +61,8 @@ public class Server extends Thread {
      */
     @Override
     public void run() {
-        logger.info("SERVER STARTED");
         currentThread().setName("ServerThread");
+        logger.info("SERVER STARTED");
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
@@ -99,8 +98,7 @@ public class Server extends Thread {
         }
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMap(Blueprint blueprint) {
     }
 
     /**

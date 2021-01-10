@@ -27,9 +27,9 @@ public class Trojaner extends DamageCard {
         Card topCard = game.getProgrammingDeck().pop();
 
         //exchange spam card and new programming card in the current register
-        int spamIndex = player.getRegister().indexOf(this);
-        player.getRegister().remove(this);
-        player.getRegister().set(spamIndex, topCard);
+        int spamIndex = player.getRegisterCards().indexOf(this);
+        player.getRegisterCards().remove(this);
+        player.getRegisterCards().set(spamIndex, topCard);
 
         //Draw two spam cards
         for (int i = 0; i < 2; i++) {

@@ -1,5 +1,6 @@
 package utilities;
 
+import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import utilities.JSONProtocol.body.GameStarted;
@@ -9,9 +10,6 @@ import java.util.ArrayList;
 
 public class MapConverter {
     private static MapConverter instance;
-    //TODO change Length and Width attributes if Map is not DizzyHighway
-    public int mapLength = 10;
-    public int mapWidth = 10;
 
     public static MapConverter getInstance() {
         if (instance == null) {
@@ -20,41 +18,43 @@ public class MapConverter {
         return instance;
     }
 
-    public GameStarted convert(Tile[][] map) {
-        ArrayList<BoardElement> maplist = new ArrayList<BoardElement>();
+    public static GameStarted convert(Map map) {
+        Tile[][] tiles = map.getTiles();
+        ArrayList<BoardElement> mapList = new ArrayList<>();
+        int xMax = tiles.length;
+        int yMax = tiles[0].length;
+
         int position = 1;
-        for (int i = 0; i < (mapWidth); i++) {
-            for (int j = 0; j < (mapLength); j++) {
+        for (int x = 0; x < (xMax); x++) {
+            for (int y = 0; y < (yMax); y++) {
                 BoardElement temp = new BoardElement();
-                for (Attribute a : map[i][j].getAttributes()) {
-                    temp.addAttribute(a);
-                }
-                temp.setPosition(position);
-                maplist.add(temp);
-                position = position + 1;
+                temp.setField(tiles[x][y].getAttributes());
+                temp.setPosition(position++);
+                mapList.add(temp);
             }
         }
-        return new GameStarted(maplist);
+        return new GameStarted(mapList);
     }
 
-    public Tile[][] reconvert(GameStarted body) {
+    public static Map reconvert(GameStarted body) {
+        int mapLength = (int) Math.sqrt(body.getMap().size()); //TODO only works for squared maps
         int index1;
         int index2;
-        Tile[][] map = new Tile[mapWidth][mapLength];
+        Tile[][] tiles = new Tile[mapLength][mapLength];
         ArrayList<BoardElement> JsonMap = body.getMap();
         for (BoardElement e : JsonMap) {
-            index1 = calculateFirstIndex(e.getPosition());
-            index2 = calculateSecondIndex(e.getPosition());
+            index1 = calculateFirstIndex(e.getPosition(), mapLength);
+            index2 = calculateSecondIndex(e.getPosition(), mapLength);
             Tile temp = new Tile();
             for (Attribute a : e.getField()) {
                 temp.addAttribute(a);
             }
-            map[index1][index2] = temp;
+            tiles[index1][index2] = temp;
         }
-        return map;
+        return new Map(tiles);
     }
 
-    public int calculateFirstIndex(int position) {
+    public static int calculateFirstIndex(int position, int mapLength) {
         int n = position / mapLength;
         if (position % mapLength == 0 && n != 0) {
             n = n - 1;
@@ -62,7 +62,7 @@ public class MapConverter {
         return n;
     }
 
-    public int calculateSecondIndex(int position) {
+    public static int calculateSecondIndex(int position, int mapLength) {
         int n = position % mapLength;
         if (n == 0) {
             n = mapLength;

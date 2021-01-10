@@ -1,11 +1,10 @@
 package server;
 
 import game.gameObjects.maps.DizzyHighway;
+import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapFactory;
 import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Tile;
-import game.round.Laser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -40,8 +39,6 @@ public class UserThread extends Thread {
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
-    MapConverter mapConverter = MapConverter.getInstance();
-    MapFactory mapFactory = MapFactory.getInstance();
     private String map;
 
     public UserThread(Socket socket, Server server, User user) {
@@ -74,7 +71,6 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-
             // HelloClient protocol is first serialized and sent through socket to Client.
             JSONMessage jsonMessage = new JSONMessage(new HelloClient(protocol));
             sendMessage(jsonMessage);
@@ -89,14 +85,12 @@ public class UserThread extends Thread {
                     setMap(text);
                 }
                 else{
+                    //logger.debug("Protocol received: " + text);
+                    // After the reader object reads the serialized message from the socket it is then
+                    // deserialized and handled in handleMessage method.
                     JSONMessage msg = Multiplex.deserialize(text);
                     handleMessage(msg);
                 }
-                //logger.debug("Protocol received: " + text);
-
-                // After the reader object reads the serialized message from the socket it is then
-                // deserialized and handled in handleMessage method.
-
             }
 
         } catch (IOException ex) {
@@ -148,10 +142,8 @@ public class UserThread extends Thread {
                     sendMessage(jsonMessage);
                     for (JSONMessage jM : server.getPlayerValuesList()) {
                         sendMessage(jM);
-                        logger.info(jM.toString());
                     }
                 }
-
             }
             case PlayerValues -> {
                 PlayerValues ps = (PlayerValues) message.getBody();
@@ -161,10 +153,6 @@ public class UserThread extends Thread {
                 user.setId(playerID);
                 user.setName(ps.getName());
                 server.communicateUsers(jsonMessage, this);
-                /*for (JSONMessage jM  : server.getPlayerValuesList()) {
-                    sendMessage(jM);
-                    logger.info(jM.toString());
-                }*/
                 sendMessage(jsonMessage);
             }
             case SetStatus -> {
@@ -180,19 +168,17 @@ public class UserThread extends Thread {
                 // TODO Start the game after min. players required join the game
                 if(map.equals("DizzyHighway")){
                     DizzyHighway dizzyHighway = new DizzyHighway();
-                    Tile[][] dizzy = mapFactory.constructMap(dizzyHighway);
-                    GameStarted testBody1 = mapConverter.convert(dizzy);
+                    Map dizzy = MapFactory.constructMap(dizzyHighway);
+                    GameStarted testBody1 = MapConverter.convert(dizzy);
                     JSONMessage testMessage = new JSONMessage(testBody1);
                     sendMessage(testMessage);
-                    break;
                 }
                 else if(map.equals("RiskyCrossing")){
                     RiskyCrossing riskyCrossing = new RiskyCrossing();
-                    Tile[][] testmap = mapFactory.constructMap(riskyCrossing);
-                    GameStarted testbody = mapConverter.convert(testmap);
-                    JSONMessage testmessage = new JSONMessage(testbody);
-                    sendMessage(testmessage);
-                    break;
+                    Map risky = MapFactory.constructMap(riskyCrossing);
+                    GameStarted testBody = MapConverter.convert(risky);
+                    JSONMessage testMessage = new JSONMessage(testBody);
+                    sendMessage(testMessage);
                 }
             }
             case SendChat -> {

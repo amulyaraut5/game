@@ -2,6 +2,7 @@ package client.model;
 
 import client.view.*;
 import com.google.gson.Gson;
+import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
@@ -57,6 +58,7 @@ public class Client {
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
+    private MapSelectionController mapSelectionController;
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -125,6 +127,7 @@ public class Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameViewController = (GameViewController) controllerList.get(2);
+        mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public void setChatController(ChatController chatController) {
@@ -194,10 +197,6 @@ public class Client {
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     //TODO start gameView
                     gameViewController.buildMap(gameStarted.getMap());
-                    //  <----------------For Test---------------------->
-                    MapConverter mapConverter = MapConverter.getInstance();
-                    Tile[][] convertedMap = mapConverter.reconvert(gameStarted);
-                    //  <----------------For Test---------------------->
                     logger.info("The game has started.");
                 }
                 case ConnectionUpdate -> {

@@ -28,8 +28,8 @@ public class RebootAction extends Action{
             player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
         }
         //discard cards in registers on discard pile
-        player.getRegister().addAll(player.getDiscardedProgrammingDeck().getDeck());
-        player.getRegister().clear();
+        player.getRegisterCards().addAll(player.getDiscardedProgrammingDeck().getDeck());
+        player.getRegisterCards().clear();
         //Out of the round, must wait until the next round to program the robot again.
         //game.getActiveRound().getPlayerList().remove(player);
         player.freeze();

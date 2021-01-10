@@ -1,7 +1,8 @@
 package game.round;
 
+import game.Game;
 import game.Player;
-import game.gameObjects.maps.MapFactory;
+import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +24,9 @@ public class Laser {
     private static final Logger logger = LogManager.getLogger();
     ArrayList<Coordinate> coordinates = new ArrayList<>();
     ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
-    ArrayList<Player> playersList = new ArrayList<>();//TODO Get active Playerlist from Game
+    Game game = Game.getInstance();
+    ArrayList<Player> playerList = game.getPlayerList();
+    Map map = game.getMap();
 
     /**
      * Constructor for laser
@@ -39,7 +42,7 @@ public class Laser {
     public void activateBoardLaser() {
         determineLaserPaths();
         for (Coordinate coordinate : coordinates) {
-            for (Player player : playersList) {
+            for (Player player : playerList) {
                 if (player.getRobot().getPosition().getX() == coordinate.getX()
                         && player.getRobot().getPosition().getY() == coordinate.getY()) {
                     //player.getDiscardedProgrammingDeck().addSpamCard();
@@ -59,7 +62,7 @@ public class Laser {
     public void activateRobotLaser(Player currentPlayer) {
         determineRobotLaserPath(currentPlayer);
         for (Coordinate coordinate : roboCoordinates) {
-            for (Player targetPlayer : playersList) {
+            for (Player targetPlayer : playerList) {
                 if (currentPlayer != targetPlayer) { //TODO
 
                     if (targetPlayer.getRobot().getPosition().getX() == coordinate.getX()
@@ -79,11 +82,11 @@ public class Laser {
      */
     //TODO Antenna Case and Delete unnecessary logger.info
     private void determineLaserPaths() {
-        for (Coordinate coordinate : MapFactory.getInstance().getLaserCoordinates()) {
+        for (Coordinate coordinate : map.getLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
 
-            Tile tile = MapFactory.getInstance().getTile(xC, yC);
+            Tile tile = map.getTile(xC, yC);
 
             for (Attribute a : tile.getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
@@ -116,7 +119,7 @@ public class Laser {
         outerLoop:
         while (position.getX() >= 0 || position.getX() <= 10 || position.getY() >= 0 || position.getY() <= 10) {
             position.add(step);
-            Tile affectedTile = MapFactory.getInstance().getTile(position.getX(), position.getY());
+            Tile affectedTile = map.getTile(position.getX(), position.getY());
             for (Attribute b : affectedTile.getAttributes()) {
                 if (b.getType() != AttributeType.Wall) { //TODO test if there is a Antenna, robot
                     path.add(position.clone());
