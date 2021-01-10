@@ -9,9 +9,8 @@ import java.util.ArrayList;
  *
  */
 public class MapFactory {
-    private static MapFactory instance;
 
-    private Tile [][] currentMap;
+    private static MapFactory instance;
     private ArrayList<Blueprint> blueprints;
 
     private MapFactory() {
@@ -25,14 +24,25 @@ public class MapFactory {
         return instance;
     }
 
+    public static Map constructMap(Blueprint blueprint) {
+        int xMax = blueprint.getWidth();
+        int yMax = blueprint.getHeight();
+        Tile[][] tiles = new Tile[xMax][yMax];
 
+        for (int x = 0; x < xMax; x++) {
+            for (int y = 0; y < yMax; y++) {
+                tiles[x][y] = TileFactory.createTile(blueprint.mapBlueprint[x][y]);
+            }
+        }
+        return new Map(tiles);
+    }
 
     /**
      * returns every map in the game
      *
      * @return maps list containing every map in the game
      */
-    public ArrayList<Blueprint> getMaps() {
+    public ArrayList<Blueprint> getBlueprints() {
         return blueprints;
     }
 
@@ -42,40 +52,16 @@ public class MapFactory {
      * @param id the id of the map to request
      * @return the requested map
      */
-    public Blueprint getMap(int id) {
+    public Blueprint getBlueprint(int id) {
         return blueprints.get(id);
-    }
-
-
-    public Tile[][] constructMap(Blueprint blueprint) {
-
-        TileFactory tileFactory = TileFactory.getInstance();
-        Tile[][] finalMap = new Tile[blueprint.length][blueprint.width];
-        for (int i = 0; i < (blueprint.length); i++) {
-            for (int j = 0; j < (blueprint.width); j++) {
-                finalMap[i][j] = tileFactory.createTile(blueprint.mapBlueprint[i][j]);
-            }
-        }
-        setCurrentMap(finalMap);
-        return finalMap;
     }
 
     /**
      * Adds the maps of the game to a ArrayList
-     *
-     * TODO find usage
      */
     private void generateMaps() {
         blueprints = new ArrayList<>();
         blueprints.add(new DizzyHighway());
+        blueprints.add(new RiskyCrossing());
     }
-
-    public Tile[][] getCurrentMap() {
-        return currentMap;
-    }
-
-    public void setCurrentMap(Tile[][] currentMap) {
-        this.currentMap = currentMap;
-    }
-
 }

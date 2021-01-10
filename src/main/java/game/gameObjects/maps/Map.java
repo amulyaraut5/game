@@ -7,17 +7,18 @@ import utilities.Utilities;
 
 import java.util.ArrayList;
 
-public class MapAssociates {
+public class Map {
 
-    private Tile[][] map = MapFactory.getInstance().getCurrentMap();
+    private Tile[][] tiles;
+    private ArrayList<Coordinate> laserCoordinates;
+    private ArrayList<Coordinate> beltCoordinates;
 
-    private static MapAssociates instance;
+    public Map(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
 
-    public static MapAssociates getInstance() {
-        if (instance == null) {
-            instance = new MapAssociates();
-        }
-        return instance;
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     /**
@@ -29,7 +30,7 @@ public class MapAssociates {
      * @throws ArrayIndexOutOfBoundsException when the position is not on the map.
      */
     public Tile getTile(int x, int y) throws ArrayIndexOutOfBoundsException {
-        return this.map[x][y];
+        return tiles[x][y];
     }
 
     /**
@@ -40,21 +41,22 @@ public class MapAssociates {
      * @throws ArrayIndexOutOfBoundsException when the position is not on the map
      */
     public Tile getTile(Coordinate pos) throws ArrayIndexOutOfBoundsException {
-        return this.map[pos.getX()][pos.getY()];
+        return tiles[pos.getX()][pos.getY()];
     }
 
     /**
      * This method stores all the laser coordinates from the actual
      * version of map and returns it.
      * The coordinates are retrieved only once for the actual map.
-     * Usage Round.Laser class
+     * Usage <@Class Round.Laser> to find the path of lasers.
+     *
      * @return
      */
     public ArrayList<Coordinate> getLaserCoordinates() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
-        for (int i = 0; i < (map.length); i++) {
-            for (int j = 0; j < (map[0].length); j++) {
-                for (Attribute a : map[i][j].getAttributes()) {
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == Utilities.AttributeType.Laser) {
                         Coordinate temp = new Coordinate(i, j);
                         coordinates.add(temp);
@@ -66,7 +68,6 @@ public class MapAssociates {
     }
 
 
-
     /**
      * Based on the type of attribute it returns the arraylist of coordinate of that specific
      * tile from the map.
@@ -75,11 +76,11 @@ public class MapAssociates {
      */
     public ArrayList<Coordinate> lookInMapFor(Attribute attribute) {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
-        for (int i = 0; i < (map.length); i++) {
-            for (int j = 0; j < (map[0].length); j++) {
-                for (Attribute a : map[i][j].getAttributes()) {
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == attribute.getType()) {
-                        coordinates.add(new Coordinate(i,j));
+                        coordinates.add(new Coordinate(i, j));
                         return coordinates;
                     }
                 }
@@ -88,27 +89,18 @@ public class MapAssociates {
         return null;
     }
 
-    /**
-     * This methods adds the laser tiles from the map into arrayList.
-     * Usage <@Class Round.Laser> to find the path of lasers.
-     *
-     * @return ArrayList of tiles
-     */
-
-    public ArrayList<Tile> getLaserTile() {
-
-        ArrayList<Tile> laserTiles = new ArrayList<>();
+    public ArrayList<Coordinate> getBeltCoordinates(Tile[][] map) {
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < (map.length); i++) {
             for (int j = 0; j < (map[0].length); j++) {
                 for (Attribute a : map[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.Laser) {
-                        Tile tile = new Tile();
-                        tile.addAttribute(a);
-                        laserTiles.add(tile);
+                    if (a.getType() == Utilities.AttributeType.Belt || a.getType() == Utilities.AttributeType.RotatingBelt) {
+                        Coordinate temp = new Coordinate(i, j);
+                        coordinates.add(temp);
                     }
                 }
             }
         }
-        return laserTiles;
+        return coordinates;
     }
 }

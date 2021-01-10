@@ -25,7 +25,7 @@ public class TileFactory {
      * @param
      * @return tile
      */
-    public Tile createTile(Object tileID) {
+    public static Tile createTile(Object tileID) {
         Tile tile = new Tile();
 
         //Ckeck if tileID is just one ID or a list of IDs (for tiles with multiple Attributes)
@@ -44,7 +44,7 @@ public class TileFactory {
         return tile;
     }
 
-    private Attribute convertIdToAttribute(int attributeID) {
+    private static Attribute convertIdToAttribute(int attributeID) {
         Attribute attribute = null;
 
         switch (attributeID) {

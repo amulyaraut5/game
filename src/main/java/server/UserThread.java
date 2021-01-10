@@ -1,11 +1,10 @@
 package server;
 
 import game.gameObjects.maps.DizzyHighway;
+import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapFactory;
 import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Tile;
-import game.round.Laser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONMessage;
@@ -40,8 +39,6 @@ public class UserThread extends Thread {
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
-    MapConverter mapConverter = MapConverter.getInstance();
-    MapFactory mapFactory = MapFactory.getInstance();
     private String map;
 
     public UserThread(Socket socket, Server server, User user) {
@@ -176,16 +173,16 @@ public class UserThread extends Thread {
                 // TODO Start the game after min. players required join the game
                 if(map.equals("DizzyHighway")){
                     DizzyHighway dizzyHighway = new DizzyHighway();
-                    Tile[][] dizzy = mapFactory.constructMap(dizzyHighway);
-                    GameStarted testBody1 = mapConverter.convert(dizzy);
+                    Map dizzy = MapFactory.constructMap(dizzyHighway);
+                    GameStarted testBody1 = MapConverter.convert(dizzy);
                     JSONMessage testMessage = new JSONMessage(testBody1);
                     sendMessage(testMessage);
                     break;
                 }
                 else if(map.equals("RiskyCrossing")){
                     RiskyCrossing riskyCrossing = new RiskyCrossing();
-                    Tile[][] testmap = mapFactory.constructMap(riskyCrossing);
-                    GameStarted testbody = mapConverter.convert(testmap);
+                    Map risky = MapFactory.constructMap(riskyCrossing);
+                    GameStarted testbody = MapConverter.convert(risky);
                     JSONMessage testmessage = new JSONMessage(testbody);
                     sendMessage(testmessage);
                     break;

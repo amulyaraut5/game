@@ -13,7 +13,7 @@ public class DizzyHighway extends Blueprint {
         this.minPlayers = 2;
         this.maxPlayers = 6;
         this.width = 10;
-        this.length = 10;
+        this.height = 10;
 
         //Tiles with multiple attributes (Laser and Wall)
         //outsourced for enhanced clarity in Blueprint

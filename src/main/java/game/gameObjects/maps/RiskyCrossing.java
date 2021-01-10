@@ -10,7 +10,7 @@ public class RiskyCrossing extends Blueprint {
         this.minPlayers = 2;
         this.maxPlayers = 6;
         this.width = 10;
-        this.length = 10;
+        this.height = 10;
 
 
         mapBlueprint = new Object[][]{

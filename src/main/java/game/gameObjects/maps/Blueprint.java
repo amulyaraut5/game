@@ -1,10 +1,6 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.tiles.Tile;
-import utilities.Coordinate;
-import utilities.Utilities;
-
-import java.util.ArrayList;
+import utilities.Utilities.Difficulty;
 
 public abstract class Blueprint {
 
@@ -12,10 +8,10 @@ public abstract class Blueprint {
     protected String gameLength;
     protected int minPlayers;
     protected int maxPlayers;
-    protected Utilities.Difficulty difficulty;
+    protected Difficulty difficulty;
     protected Object[][] mapBlueprint;
     protected int width;
-    protected int length;
+    protected int height;
 
     public Object[][] getMapBlueprint() {
         return mapBlueprint;
@@ -25,17 +21,8 @@ public abstract class Blueprint {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public int getHeight() {
+        return height;
     }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
 }
 
