@@ -125,4 +125,7 @@ public class Game {
         return activeRound;
     }
 
+    public Tile[][] getMap() {
+        return map;
+    }
 }
