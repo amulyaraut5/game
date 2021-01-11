@@ -1,6 +1,8 @@
 package game.gameObjects.maps;
 
 import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.Utilities;
@@ -15,6 +17,9 @@ public class Map {
     private Tile[][] tiles;
     private ArrayList<Coordinate> laserCoordinates;
     private ArrayList<Coordinate> beltCoordinates;
+    private ArrayList<Coordinate> GreenBelts;
+    private ArrayList<Coordinate> BlueBelts;
+
 
     /**
      * Constructor that initializes the Tile[][] tiles.
@@ -95,11 +100,11 @@ public class Map {
         return null;
     }
 
-    public ArrayList<Coordinate> getBeltCoordinates(Tile[][] map) {
+    public void readBeltCoordinates() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
-        for (int i = 0; i < (map.length); i++) {
-            for (int j = 0; j < (map[0].length); j++) {
-                for (Attribute a : map[i][j].getAttributes()) {
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == Utilities.AttributeType.Belt || a.getType() == Utilities.AttributeType.RotatingBelt) {
                         Coordinate temp = new Coordinate(i, j);
                         coordinates.add(temp);
@@ -107,6 +112,24 @@ public class Map {
                 }
             }
         }
-        return coordinates;
+
+        for (Coordinate c : coordinates) {
+            for (Attribute a : getTile(c).getAttributes()) {
+                if(a.getType() == Utilities.AttributeType.Belt){
+                    Belt temp = (Belt) a;
+                    if
+                }
+                if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                    RotatingBelt temp = (RotatingBelt) a;
+                }
+            }
+
+        }
+
+        this.beltCoordinates = coordinates;
+    }
+
+    public ArrayList<Coordinate> getBeltCoordinates() {
+        return beltCoordinates;
     }
 }

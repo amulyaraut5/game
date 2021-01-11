@@ -3,10 +3,16 @@ package game.round;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.Utilities;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -72,7 +78,7 @@ public class ActivationPhase extends Phase {
         gameMapTiles = game.getMap().getTiles();
         gameMap = game.getMap();
 
-        for(Coordinate tileCoordinate : gameMap.getBeltCoordinates(gameMapTiles)) {
+        for(Coordinate tileCoordinate : gameMap.getBeltCoordinates()) {
             for(Player player : playerList) {
                 if(player.getRobot().getPosition() == tileCoordinate) {
 
@@ -92,6 +98,29 @@ public class ActivationPhase extends Phase {
 
 
         //throw new UnsupportedOperationException();
+    }
+
+    private void activateGreenBelts(){
+        this.gameMap.readBeltCoordinates();
+
+        ArrayList<Coordinate> GreenBelts = new ArrayList<>();
+        ArrayList<Coordinate> BlueBelts = new ArrayList<>();
+
+        for (Coordinate c : gameMap.getBeltCoordinates()) {
+            for (Attribute a : gameMap.getTile(c).getAttributes()) {
+                if(a.getType() == Utilities.AttributeType.Belt){
+                    Belt temp = (Belt) a;
+                }
+                if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                    RotatingBelt temp = (RotatingBelt) a;
+                }
+            }
+
+        }
+
+
+
+
     }
 
 
