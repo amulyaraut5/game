@@ -23,6 +23,7 @@ import java.util.Timer;
 public class ProgrammingPhase extends Phase {
     /**
      * timerIsRunning will get true if a player creates an instance of timer
+     * TODO do we need it?
      */
     private boolean timerIsRunning = false;
 
@@ -45,7 +46,7 @@ public class ProgrammingPhase extends Phase {
             notReadyPlayers.add(player.getId());
         }
         dealProgrammingCards();
-        while (!(notReadyPlayers.size() == 0 )) {
+        while (!(notReadyPlayers.size() == 0)) {
             //die Programming Phase geht solange, bis alle Spieler ihre Register gefüllt haben
         }
         resetProgrammingPhase();
@@ -148,22 +149,19 @@ public class ProgrammingPhase extends Phase {
 
     /**
      * Method that chooses ar random card out of the drawn Programming cards for every empty register.
-     * TODO call method and send CardsYouGotNow protocol
      */
     private void timeRanOut() {
-        //TODO get player from ID
-        for (Player player : playerList) {
+        for (Integer id : notReadyPlayers) {
+            Player player = game.getPlayerFromID(id);
             ArrayList<Card> registers = player.getRegisterCards();
-            if (!(registers.size() == 5) || registers.contains(null)) {
-                Random randomGenerator = new Random();
-                for (int i = 0; i < registers.size(); i++) {
-                    if (registers.get(i) == null) {
-                        availableProgrammingCards = player.getDrawnProgrammingCards();
-                        int index = randomGenerator.nextInt(availableProgrammingCards.size());
-                        Card randomCard = availableProgrammingCards.get(index);
-                        availableProgrammingCards.remove(index);
-                        player.setRegisterCards(i + 1, randomCard);
-                    }
+            Random randomGenerator = new Random();
+            for (int i = 0; i < registers.size(); i++) {
+                if (registers.get(i) == null) {
+                    availableProgrammingCards = player.getDrawnProgrammingCards();
+                    int index = randomGenerator.nextInt(availableProgrammingCards.size());
+                    Card randomCard = availableProgrammingCards.get(index);
+                    availableProgrammingCards.remove(index);
+                    player.setRegisterCards(i + 1, randomCard);
                 }
             }
             player.message(new CardsYouGotNow(player.getRegisterCards()));
