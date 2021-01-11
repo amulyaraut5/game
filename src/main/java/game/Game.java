@@ -8,6 +8,7 @@ import game.gameObjects.maps.Map;
 import game.round.Round;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class handles the game itself.
@@ -18,6 +19,7 @@ public class Game {
     private static Game instance;
 
     private ArrayList<Player> playerList;
+    private HashMap<Integer, Player> playerIDs = new HashMap<>();
     private UpgradeShop upgradeShop;
 
     private Round activeRound;
@@ -75,4 +77,6 @@ public class Game {
     public Round getActiveRound() {
         return activeRound;
     }
+
+    public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}
 }
