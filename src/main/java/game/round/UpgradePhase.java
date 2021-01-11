@@ -1,43 +1,40 @@
 package game.round;
 
-import game.Game;
-
 /**
  * UpgradePhase, where the Upgrade Shop is filled/refilled and Upgrades can be purchased.
  */
 
-public class UpgradePhase extends Round {
+public class UpgradePhase extends Phase {
 
+    public UpgradePhase() {
+    }
 
-	public UpgradePhase(Game game) {
-		super(game);
-	}
+    /**
+     * starts the Upgrade Phase.
+     * Calls the refill Method from the upgrade Shop and the purchase Upgrades method.
+     */
+    @Override
+    public void startPhase() {
 
-	/**
-	 * starts the Upgrade Phase.
-	 *Calls the refill Method from the upgrade Shop and the purchase Upgrades method.
-	 */
-	public void startUpgradePhase() {
+    }
 
-	}
-
-	/**
-	 * Handles the purchasing of upgrades.
-	 * First the priorityList gets called and according to that each player is asked one by one
-	 * if he wants to purchase upgrade cards.
-	 * If yes it's checked if the player can afford the cardand if he has enough upgradeSlots left.
-	 * If not he has to remove one of his cards and in the end the card is added to him.
-	 */
-	private void purchaseUpgrades() {
-		// TODO - implement UpgradePhase.purchaseUpgrades
+    /**
+     * Handles the purchasing of upgrades.
+     * First the priorityList gets called and according to that each player is asked one by one
+     * if he wants to purchase upgrade cards.
+     * If yes it's checked if the player can afford the cardand if he has enough upgradeSlots left.
+     * If not he has to remove one of his cards and in the end the card is added to him.
+     */
+    private void purchaseUpgrades() {
+        // TODO - implement UpgradePhase.purchaseUpgrades
 		/*
 		game.getPriorityList
 		view --> show UpgradeCards
 		for (Player player : priorityList)
 			view --> a if player
 		 */
-		//throw new UnsupportedOperationException();
-	}
+        //throw new UnsupportedOperationException();
+    }
 
 	/*private void refillUpgradeShop() {
 		/*

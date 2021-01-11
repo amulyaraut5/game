@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.PlayerValues;
 
 
@@ -139,21 +139,18 @@ public class LoginController extends Controller {
             labelResponse.setText("This robot is already taken!"); //TODO catch also in server and send error protocol
         else {
             labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());
-            JSONMessage msg = new JSONMessage(new PlayerValues(userName, robotList.get(chosenRobot).getRobotID()));
-            client.sendMessage(msg);
+            JSONBody jsonBody = new PlayerValues(userName, robotList.get(chosenRobot).getRobotID());
+            client.sendMessage(jsonBody);
             viewManager.nextScene();
 
         }
     }
 
-
-
-    public void setImageViewDisabled(int figure){
+    public void setImageViewDisabled(int figure) {
         //TODO set cell of figure not selectable with cellfactory from initialize method
         //robotImageViewList.get(figure).setDisable(true);
-       //robotImageViewList.get(figure).setMouseTransparent(true);
+        //robotImageViewList.get(figure).setMouseTransparent(true);
     }
-
 
 
     /**

@@ -7,6 +7,7 @@ import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
@@ -73,9 +74,7 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-            JSONMessage jsonMessage = new JSONMessage(new HelloClient(protocol));
-            sendMessage(jsonMessage);
-            //<------------------------->
+            sendMessage(new HelloClient(protocol));
 
             while (!exit) {
                 String text = reader.readLine();
@@ -84,8 +83,7 @@ public class UserThread extends Thread {
                 }
                 if (text.equals("DizzyHighway") || text.equals("RiskyCrossing")) {
                     setMap(text);
-                }
-                else{
+                } else {
                     //logger.debug("Protocol received: " + text);
                     JSONMessage msg = Multiplex.deserialize(text);
                     handleMessage(msg);
@@ -101,11 +99,11 @@ public class UserThread extends Thread {
     /**
      * prints a message for specific user
      *
-     * @param msg the message to be sent
+     * @param jsonBody the JSONBody of the message to sent
      */
-    public void sendMessage(JSONMessage msg) {
-        String json = Multiplex.serialize(msg);
-        //logger.debug("Protocol sent:" + json);
+    public void sendMessage(JSONBody jsonBody) {
+        String json = Multiplex.serialize(new JSONMessage(jsonBody));
+        //logger.debug("Protocol sent: " + json);
         writer.println(json);
         writer.flush();
     }
@@ -125,15 +123,14 @@ public class UserThread extends Thread {
                 if (hs.getProtocol() == protocol) {
                     playerID = idCounter++;
                     currentThread().setName("UserThread-" + playerID);
-                    JSONMessage welcome = new JSONMessage(new Welcome(playerID));
-                    sendMessage(welcome);
+                    sendMessage(new Welcome(playerID));
 
                     for (PlayerAdded addedPlayer : addedPlayers) {
-                        sendMessage(new JSONMessage(addedPlayer));
+                        sendMessage(addedPlayer);
                     }
                 } else {
-                    JSONMessage error = new JSONMessage(new Error("Protocols don't match! " +
-                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + protocol));
+                    JSONBody error = new Error("Protocols don't match! " +
+                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + protocol);
                     sendMessage(error);
                     disconnect();
                 }
@@ -153,44 +150,40 @@ public class UserThread extends Thread {
                     user.setFigure(pv.getFigure());
                     PlayerAdded addedPlayer = new PlayerAdded(playerID, pv.getName(), pv.getFigure());
                     addedPlayers.add(addedPlayer);
-                    server.communicateAll(new JSONMessage(addedPlayer));
+                    server.communicateAll(addedPlayer);
                 } else {
-                    JSONMessage error = new JSONMessage(new Error("Robot is already taken!"));
+                    JSONBody error = new Error("Robot is already taken!");
                     sendMessage(error);
                 }
             }
             case SetStatus -> {
                 SetStatus st = (SetStatus) message.getBody();
-                JSONMessage jsonMessagePlayerStatus = new JSONMessage(new PlayerStatus(playerID, st.isReady()));
+                JSONBody playerStatus = new PlayerStatus(playerID, st.isReady());
                 if (st.isReady()) {
                     server.changeReadyPlayerList(1, this);
                 } else {
                     server.changeReadyPlayerList(0, this);
                 }
-                server.communicateUsers(jsonMessagePlayerStatus, this);
-                sendMessage(jsonMessagePlayerStatus);
+                server.communicateAll(playerStatus);
                 // TODO Start the game after min. players required join the game
-                if(map.equals("DizzyHighway")){
+                if (map.equals("DizzyHighway")) {
                     DizzyHighway dizzyHighway = new DizzyHighway();
                     Map dizzy = MapFactory.constructMap(dizzyHighway);
                     GameStarted testBody1 = MapConverter.convert(dizzy);
-                    JSONMessage testMessage = new JSONMessage(testBody1);
-                    sendMessage(testMessage);
-                }
-                else if(map.equals("RiskyCrossing")){
+                    sendMessage(testBody1);
+                } else if (map.equals("RiskyCrossing")) {
                     RiskyCrossing riskyCrossing = new RiskyCrossing();
                     Map risky = MapFactory.constructMap(riskyCrossing);
                     GameStarted testBody = MapConverter.convert(risky);
-                    JSONMessage testMessage = new JSONMessage(testBody);
-                    sendMessage(testMessage);
+                    sendMessage(testBody);
                 }
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
-                    server.communicateUsers(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), false)), this);
+                    server.communicateUsers(new ReceivedChat(sc.getMessage(), this.user.getName(), false), this);
                 else {
-                    server.communicateDirect(new JSONMessage(new ReceivedChat(sc.getMessage(), this.user.getName(), true)), this, sc.getTo());
+                    server.communicateDirect(new ReceivedChat(sc.getMessage(), this.user.getName(), true), this, sc.getTo());
                     // TODO private Message
                 }
             }
@@ -198,11 +191,11 @@ public class UserThread extends Thread {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
                 //Game.getInstance().messageToPhases(selectCard);
-                server.communicateUsers(new JSONMessage(new CardSelected(this.playerID, selectCard.getRegister())), this);
+                server.communicateUsers(new CardSelected(this.playerID, selectCard.getRegister()), this);
             }
             case GameWon -> {
                 GameWon gameWon = (GameWon) message.getBody();
-                server.communicateUsers(new JSONMessage(new GameWon(gameWon.getPlayerID())), this);
+                server.communicateUsers(new GameWon(gameWon.getPlayerID()), this);
                 // TODO end the game
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");

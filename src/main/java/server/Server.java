@@ -3,7 +3,7 @@ package server;
 import game.gameObjects.maps.Blueprint;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.JSONBody;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,24 +14,10 @@ import static utilities.Utilities.PORT;
 
 public class Server extends Thread {
 
-    /**
-     * Logger to log information/warning
-     */
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-    /**
-     * list of users that gets added after every new instance of user is created
-     */
-    private final ArrayList<User> users = new ArrayList<>(10);
-    /**
-     *
-     */
-    private ArrayList<UserThread> readyPlayerList = new ArrayList<>();
-    private ArrayList<JSONMessage> playerValuesList = new ArrayList<>();
-    /**
-     *
-     */
-    private ArrayList<UserThread> addedPlayerList = new ArrayList<>();
+    private final ArrayList<User> users = new ArrayList<>(10); //all Users
+    private ArrayList<UserThread> readyPlayerList = new ArrayList<>(); //Users which pressed ready
 
     /**
      * private Constructor for the ChatServer class
@@ -126,27 +112,24 @@ public class Server extends Thread {
         }
     }
 
-    public void communicateUsers(JSONMessage jsonMessage, UserThread sender) {
+    public void communicateUsers(JSONBody jsonBody, UserThread sender) {
         for (User user : users) {
             if (user.getThread() != sender) {
-                user.message(jsonMessage);
+                user.message(jsonBody);
             }
         }
     }
 
-    public void communicateAll(JSONMessage jsonMessage) {
+    public void communicateAll(JSONBody jsonBody) {
         for (User user : users) {
-            user.message(jsonMessage);
+            user.message(jsonBody);
         }
     }
 
-    public void communicateDirect(JSONMessage jsonMessage, UserThread sender, int receiver) {
+    public void communicateDirect(JSONBody jsonBody, UserThread sender, int receiver) {
         for (User user : users) {
-            logger.info("User" + user.getId());
-            logger.info("Jsonm" + jsonMessage.toString());
-
             if (user.getId() == receiver) {
-                user.message(jsonMessage);
+                user.message(jsonBody);
             }
         }
     }
@@ -173,13 +156,5 @@ public class Server extends Thread {
      */
     public void removeUser(User user) {
         users.remove(user);
-    }
-
-    public ArrayList<JSONMessage> getPlayerValuesList() {
-        return playerValuesList;
-    }
-
-    public void addToPlayerValuesList(JSONMessage playerAddedMessage) {
-        this.playerValuesList.add(playerAddedMessage);
     }
 }

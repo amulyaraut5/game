@@ -1,16 +1,14 @@
 package client.model;
 
 import client.view.*;
-import com.google.gson.Gson;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Tile;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -234,8 +232,8 @@ public class Client {
      * @param helloClient //TODO more than one protocol possible?
      */
     public void connect(HelloClient helloClient) {
-        JSONMessage msg = new JSONMessage(new HelloServer(1.0, "Astreine Akazien", false));
-        sendMessage(msg);
+        JSONBody jsonBody = new HelloServer(1.0, "Astreine Akazien", false);
+        sendMessage(jsonBody);
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
@@ -249,13 +247,13 @@ public class Client {
      * This message changes a JSONMessage so that it's possible
      * to send it as a String over the socket to the server
      *
-     * @param message
+     * @param jsonBody
      */
-    public void sendMessage(JSONMessage message) {
-        Gson gson = new Gson();
-        String json = gson.toJson(message);
+    public void sendMessage(JSONBody jsonBody) {
+        String json = Multiplex.serialize(new JSONMessage(jsonBody));
         logger.debug("Protocol sent: " + json);
         writer.println(json);
+        writer.flush();
     }
 
     public PrintWriter getWriter() {

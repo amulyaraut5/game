@@ -19,13 +19,11 @@ public abstract class Attribute {
 
     protected static final Logger logger = LogManager.getLogger();
     protected static Game game = Game.getInstance();
-    protected static UserThread userThread;//TODO remove?
-    protected static Client client = Client.getInstance();
+    protected static UserThread userThread;//TODO remove
+    protected static Client client = Client.getInstance(); //TODO remove
     protected AttributeType type;
     protected Orientation orientation;
     protected Coordinate position;
-
-    //ArrayList<Player> activePlayerList = new ArrayList<>(); // TODO Get from Game
 
     public static void setUserThread(UserThread userThread) {
         Attribute.userThread = userThread;

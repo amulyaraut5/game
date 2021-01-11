@@ -3,7 +3,7 @@ package game.gameObjects.tiles;
 import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.Energy;
 import utilities.Utilities.AttributeType;
 
@@ -36,8 +36,8 @@ public class EnergySpace extends Attribute {
             player.setEnergyCubes(energy);
             // Todo Decrease the energy cube number
         }
-        JSONMessage jsonMessage = new JSONMessage(new Energy(player.getId(), player.getEnergyCubes()));
-        userThread.sendMessage(jsonMessage);
+        JSONBody jsonBody = new Energy(player.getId(), player.getEnergyCubes());
+        userThread.sendMessage(jsonBody);
     }
 
     @Override

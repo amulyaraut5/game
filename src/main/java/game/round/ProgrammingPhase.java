@@ -8,16 +8,14 @@ import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.cards.programming.MoveIII;
 import game.gameObjects.decks.ProgrammingDeck;
 import server.Server;
-import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 
-public class ProgrammingPhase {
-
-    private ArrayList<Player> playerList;
+public class ProgrammingPhase extends Phase {
     /**
      * timerIsRunning will get true if a player creates an instance of timer
      */
@@ -43,11 +41,11 @@ public class ProgrammingPhase {
      */
     private int programmedCount = 0;
 
-    public ProgrammingPhase(Round round) {
-        this.playerList = round.getPlayerList();
+    public ProgrammingPhase() {
     }
 
-    public void startProgrammingPhase() {
+    @Override
+    public void startPhase() {
         dealProgrammingCards();
         while (programmedCount < playerList.size()) {
             //die Programming Phase geht solange, bis alle Spieler ihre Register gefüllt haben
@@ -66,7 +64,6 @@ public class ProgrammingPhase {
     // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
-
     private void cardWasSelected(Player player, SelectCard selectCard) {
         String cardType = selectCard.getCard();
         Card chosenCard = null;
@@ -90,10 +87,10 @@ public class ProgrammingPhase {
         }
 
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
-            if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
-                programmedCount++;
-                if (!onePlayerFinished) {
-                    onePlayerFinished(player);
+        if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
+            programmedCount++;
+            if (!onePlayerFinished) {
+                onePlayerFinished(player);
             }
         }
     }
@@ -107,17 +104,14 @@ public class ProgrammingPhase {
 
     public void onePlayerFinished(Player player) {
         onePlayerFinished = true;
-        JSONMessage selectionFinished = new JSONMessage(new SelectionFinished(player.getId()));
-        Server.getInstance().communicateAll(selectionFinished);
-        JSONMessage timerStarted = new JSONMessage(new TimerStarted());
+        server.communicateAll(new SelectionFinished(player.getId()));
         // JSONMessage timerEnded = new JSONMessage(new TimerEnded(//TODO));
-        Server.getInstance().communicateAll(timerStarted);
+        Server.getInstance().communicateAll(new TimerStarted());
         Timer timer = new Timer(true); //TODO einzelne Klasse überhaupt notwendig oder sogar wait()?
         //timer for 30 sek
         for (Player playerTest : playerList) {
             if (playerTest.getRegisterCards().size() < 5) {
-                JSONMessage discardCard = new JSONMessage(new DiscardHand(playerTest.getId()));
-                playerTest.message(discardCard);
+                playerTest.message(new DiscardHand(playerTest.getId()));
                 timeRanOut();
             }
         }
@@ -142,13 +136,11 @@ public class ProgrammingPhase {
                 player.reuseDiscardedDeck();
                 availableProgrammingCards.addAll(player.getDrawProgrammingDeck().drawCards(9 - currentDeck.size()));
 
-                JSONMessage shuffleCoding = new JSONMessage(new ShuffleCoding(player.getId()));
-                player.message(shuffleCoding);
+                player.message(new ShuffleCoding(player.getId()));
             }
             player.setDrawnProgrammingCards(availableProgrammingCards);
-            JSONMessage yourCards = new JSONMessage(new YourCards(availableProgrammingCards));
-            player.message(yourCards);
-            JSONMessage notYourCards = new JSONMessage(new NotYourCards(player.getId(), availableProgrammingCards.size()));
+            player.message(new YourCards(availableProgrammingCards));
+            JSONBody notYourCards = new NotYourCards(player.getId(), availableProgrammingCards.size());
             Server.getInstance().communicateUsers(notYourCards, player.getThread());
         }
 
@@ -164,18 +156,17 @@ public class ProgrammingPhase {
             ArrayList<Card> registers = player.getRegisterCards();
             if (!(registers.size() == 5) || registers.contains(null)) {
                 Random randomGenerator = new Random();
-                for (int i = 0; i< registers.size(); i++) {
+                for (int i = 0; i < registers.size(); i++) {
                     if (registers.get(i) == null) {
                         availableProgrammingCards = player.getDrawnProgrammingCards();
                         int index = randomGenerator.nextInt(availableProgrammingCards.size());
                         Card randomCard = availableProgrammingCards.get(index);
                         availableProgrammingCards.remove(index);
-                        player.setRegisterCards(i+1, randomCard);
+                        player.setRegisterCards(i + 1, randomCard);
                     }
                 }
             }
-            JSONMessage cardsYouGotNow = new JSONMessage(new CardsYouGotNow(player.getRegisterCards()));
-            player.message(cardsYouGotNow);
+            player.message(new CardsYouGotNow(player.getRegisterCards()));
         }
     }
 
@@ -187,5 +178,4 @@ public class ProgrammingPhase {
         notReadyPlayers = null;
         programmedCount = 0;
     }
-
 }

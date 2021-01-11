@@ -1,6 +1,6 @@
 package server;
 
-import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.JSONBody;
 
 /**
  * for every new client, a User is created.
@@ -58,10 +58,10 @@ public class User {
     /**
      * Outputs a message to the user via its UserThread.
      *
-     * @param message the message to be sent
+     * @param jsonBody the message to be sent
      */
-    public synchronized void message(JSONMessage message) {
-        thread.sendMessage(message);
+    public synchronized void message(JSONBody jsonBody) {
+        thread.sendMessage(jsonBody);
     }
 
     /**

@@ -4,7 +4,6 @@ import game.Player;
 import game.gameActions.RebootAction;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Reboot;
 import utilities.Orientation;
 import utilities.Utilities.AttributeType;
@@ -43,8 +42,7 @@ public class Pit extends Attribute {
 
         // Player needs to draw spam card from the deck and add to the discard pile
 
-        JSONMessage jsonMessage = new JSONMessage(new Reboot(player.getId()));
-        userThread.sendMessage(jsonMessage);
+        userThread.sendMessage(new Reboot(player.getId()));
     }
 
     @Override

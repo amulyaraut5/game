@@ -1,10 +1,8 @@
 package client.view;
 
-import client.ViewManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
@@ -144,7 +141,8 @@ public class LobbyController extends Controller {
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
     }
-    public void attachChatPane(Pane chat){
+
+    public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
         chat.setPrefHeight(chatPane.getPrefHeight());
         chatPane.setCenter(chat);
@@ -206,8 +204,7 @@ public class LobbyController extends Controller {
      */
     @FXML
     private void checkBoxAction(ActionEvent event) {
-        JSONMessage msg = new JSONMessage(new SetStatus(readyCheckbox.isSelected()));
-        client.sendMessage(msg);
+        client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
         viewManager.nextScene();
     }
 

@@ -12,7 +12,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 import utilities.Utilities.AttributeType;
@@ -64,7 +63,7 @@ public class GameViewController extends Controller {
             fields[i] = new Group();
             int position = i + 1;
             fields[i].addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                client.sendMessage(new JSONMessage(new SetStartingPoint(position)));
+                client.sendMessage(new SetStartingPoint(position));
             });
         }
 

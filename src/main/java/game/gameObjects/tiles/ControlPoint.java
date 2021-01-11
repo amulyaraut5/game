@@ -37,8 +37,7 @@ public class ControlPoint extends Attribute {
 
         // Send CheckpointReached protocol to all users/players
 
-        JSONMessage jsonMessage = new JSONMessage(new CheckpointReached(player.getId(), this.count));
-        userThread.sendMessage(jsonMessage);
+        player.message(new CheckpointReached(player.getId(), this.count));
 
         // TODO Change no. of checkPoints based on Map
         if (game.getNoOfCheckPoints() == 1) {
@@ -46,7 +45,7 @@ public class ControlPoint extends Attribute {
             // Send JSONMESSAGE to all users/players
 
             JSONMessage jsonMessage1 = new JSONMessage(new GameWon(player.getId()));
-            client.sendMessage(jsonMessage1);
+            //client.sendMessage(jsonMessage1); //TODO remove, Send from Server to Client
 
             // TODO End the game:
         } else if (game.getNoOfCheckPoints() != 1) {
@@ -66,7 +65,7 @@ public class ControlPoint extends Attribute {
                 if ((game.getNoOfCheckPoints() == 2) && (this.count == 2)) {
 
                     JSONMessage jsonMessage1 = new JSONMessage(new GameWon(player.getId()));
-                    client.sendMessage(jsonMessage1);
+                    //client.sendMessage(jsonMessage1); //TODO remove, Send from Server to Client
 
                     // TODO End the game
                 }

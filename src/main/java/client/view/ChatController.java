@@ -8,7 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.JSONProtocol.body.SendChat;
 
@@ -68,10 +68,10 @@ public class ChatController extends Controller {
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
-        JSONMessage jsonMessage;
+        JSONBody jsonBody;
         if (!message.isBlank()) {
             if (sendTo.equals("all")) {
-                jsonMessage = new JSONMessage(new SendChat(message, -1));
+                jsonBody = new SendChat(message, -1);
                 chatWindow.appendText("[You] " + message + "\n");
             } else {
                 String[] userInformation = sendTo.split(" ");
@@ -80,10 +80,10 @@ public class ChatController extends Controller {
                 String idUser = userInformation[userInformation.length - 1];
                 destinationUser = destinationUser.substring(0, destinationUser.length() - 1);
                 logger.trace("playerList contains user " + client.getIDFrom(destinationUser) + " id is " + idUser);
-                jsonMessage = new JSONMessage(new SendChat(message, Integer.parseInt(idUser)));
+                jsonBody = new SendChat(message, Integer.parseInt(idUser));
                 chatWindow.appendText("[You] @" + destinationUser + ": " + message + "\n");
             }
-            client.sendMessage(jsonMessage);
+            client.sendMessage(jsonBody);
         }
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
