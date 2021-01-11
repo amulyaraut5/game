@@ -7,8 +7,6 @@ import game.gameObjects.cards.programming.MoveI;
 import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.cards.programming.MoveIII;
 import game.gameObjects.decks.ProgrammingDeck;
-import server.Server;
-import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
@@ -22,32 +20,25 @@ public class ProgrammingPhase extends Phase {
     private boolean timerIsRunning = false;
 
     /**
-     * a player gets removed if he has already chose 5 cards in the time
+     * saves the player id's. a player gets removed if he has already chose 5 cards in the time
      */
-    private ArrayList<Player> notReadyPlayers = new ArrayList<>();
+    private ArrayList<Integer> notReadyPlayers = new ArrayList<>();
 
     /**
      * Programming cards from which the player can choose to program his robot.
      */
     private ArrayList<Card> availableProgrammingCards;
 
-    /**
-     * saves if one player already filled his 5 registers
-     */
-    private Boolean onePlayerFinished = false;
-
-    /**
-     * just counts how many players already finished programming their robot (put 5 cards down)
-     */
-    private int programmedCount = 0;
-
     public ProgrammingPhase() {
     }
 
     @Override
     public void startPhase() {
+        for (Player player : playerList) {
+            notReadyPlayers.add(player.getId());
+        }
         dealProgrammingCards();
-        while (programmedCount < playerList.size()) {
+        while (!(notReadyPlayers.size() == 0 )) {
             //die Programming Phase geht solange, bis alle Spieler ihre Register gefüllt haben
         }
         resetProgrammingPhase();
@@ -88,8 +79,8 @@ public class ProgrammingPhase extends Phase {
 
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
         if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
-            programmedCount++;
-            if (!onePlayerFinished) {
+            notReadyPlayers.remove(player.getId());
+            if (notReadyPlayers.size() == playerList.size() - 1) {
                 onePlayerFinished(player);
             }
         }
@@ -103,12 +94,14 @@ public class ProgrammingPhase extends Phase {
     }
 
     public void onePlayerFinished(Player player) {
-        onePlayerFinished = true;
         server.communicateAll(new SelectionFinished(player.getId()));
-        // JSONMessage timerEnded = new JSONMessage(new TimerEnded(//TODO));
-        Server.getInstance().communicateAll(new TimerStarted());
+        server.communicateAll(new TimerStarted());
         Timer timer = new Timer(true); //TODO einzelne Klasse überhaupt notwendig oder sogar wait()?
         //timer for 30 sek
+        server.communicateAll(new TimerEnded(notReadyPlayers));
+        if (!(notReadyPlayers.size() == 0)) {
+            timeRanOut();
+        }
         for (Player playerTest : playerList) {
             if (playerTest.getRegisterCards().size() < 5) {
                 playerTest.message(new DiscardHand(playerTest.getId()));
@@ -140,8 +133,7 @@ public class ProgrammingPhase extends Phase {
             }
             player.setDrawnProgrammingCards(availableProgrammingCards);
             player.message(new YourCards(availableProgrammingCards));
-            JSONBody notYourCards = new NotYourCards(player.getId(), availableProgrammingCards.size());
-            Server.getInstance().communicateUsers(notYourCards, player.getThread());
+            server.communicateUsers((new NotYourCards(player.getId(), availableProgrammingCards.size())), player.getThread());
         }
 
     }
@@ -152,6 +144,7 @@ public class ProgrammingPhase extends Phase {
      * TODO call method and send CardsYouGotNow protocol
      */
     private void timeRanOut() {
+        //TODO get player from ID
         for (Player player : playerList) {
             ArrayList<Card> registers = player.getRegisterCards();
             if (!(registers.size() == 5) || registers.contains(null)) {
@@ -172,10 +165,10 @@ public class ProgrammingPhase extends Phase {
 
     /**
      * this method gets called after every Round to reset the attributes
+     * TODO is it necessary? A new Phase gets created the next time anyway
      */
     private void resetProgrammingPhase() {
         timerIsRunning = false;
         notReadyPlayers = null;
-        programmedCount = 0;
     }
 }
