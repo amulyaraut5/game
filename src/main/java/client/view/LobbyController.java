@@ -205,7 +205,6 @@ public class LobbyController extends Controller {
     @FXML
     private void checkBoxAction(ActionEvent event) {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
-        viewManager.nextScene();
     }
 
     /**

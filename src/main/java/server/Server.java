@@ -17,7 +17,7 @@ public class Server extends Thread {
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
-    private ArrayList<UserThread> readyPlayerList = new ArrayList<>(); //Users which pressed ready
+    private ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
 
     /**
      * private Constructor for the ChatServer class
@@ -75,7 +75,7 @@ public class Server extends Thread {
                 logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
                 User user = new User();
                 users.add(user);
-                UserThread thread = new UserThread(clientSocket, this, user);
+                UserThread thread = new UserThread(clientSocket, user);
                 thread.start();
             } catch (IOException e) {
                 accept = false;
@@ -96,20 +96,22 @@ public class Server extends Thread {
         return users;
     }
 
-    public void changeReadyPlayerList(int change, UserThread userThread) {
-        //remove this userThread
-        if (change == 0) {
-            readyPlayerList.remove(userThread);
+
+    /**
+     * Adds a user to the list of ready users if they are ready, or removes them if not.
+     * It is tested, if the player was already ready/ not ready.
+     *
+     * @param user  User to change the status for
+     * @param ready true if ready, otherwise false
+     * @return true if all players (min. 2) are ready
+     */
+    public boolean setReadyStatus(User user, boolean ready) {
+        if (ready) {
+            if (!readyUsers.contains(user)) readyUsers.add(user);
+        } else {
+            if (readyUsers.contains(user)) readyUsers.remove(user);
         }
-        //add  this userThread
-        else if (change == 1) {
-            readyPlayerList.add(userThread);
-        }
-        if (readyPlayerList.size() >= 2) {
-            logger.info("Tiles can be initialized");
-            //JSONMessage jsonMessage = new JSONMessage(new GameStarted("test"));
-            //communicateUsers();
-        }
+        return (users.size() == readyUsers.size() && users.size() > 1);
     }
 
     public void communicateUsers(JSONBody jsonBody, UserThread sender) {

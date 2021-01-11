@@ -36,18 +36,15 @@ public class UserThread extends Thread {
     private static ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
-    private final Server server;
+    private final Server server = Server.getInstance();
     private final double protocol = 1.0;
-    private int playerID;
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
     private String map;
 
-    public UserThread(Socket socket, Server server, User user) {
-
+    public UserThread(Socket socket, User user) {
         this.socket = socket;
-        this.server = server;
         this.user = user;
 
         this.user.setThread(this);
@@ -121,9 +118,9 @@ public class UserThread extends Thread {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
                 if (hs.getProtocol() == protocol) {
-                    playerID = idCounter++;
-                    currentThread().setName("UserThread-" + playerID);
-                    sendMessage(new Welcome(playerID));
+                    user.setId(idCounter++);
+                    currentThread().setName("UserThread-" + user.getId());
+                    sendMessage(new Welcome(user.getId()));
 
                     for (PlayerAdded addedPlayer : addedPlayers) {
                         sendMessage(addedPlayer);
@@ -145,10 +142,10 @@ public class UserThread extends Thread {
                     }
                 }
                 if (!figureTaken) {
-                    user.setId(playerID);
+                    user.setId(user.getId());
                     user.setName(pv.getName());
                     user.setFigure(pv.getFigure());
-                    PlayerAdded addedPlayer = new PlayerAdded(playerID, pv.getName(), pv.getFigure());
+                    PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
                     addedPlayers.add(addedPlayer);
                     server.communicateAll(addedPlayer);
                 } else {
@@ -157,25 +154,19 @@ public class UserThread extends Thread {
                 }
             }
             case SetStatus -> {
-                SetStatus st = (SetStatus) message.getBody();
-                JSONBody playerStatus = new PlayerStatus(playerID, st.isReady());
-                if (st.isReady()) {
-                    server.changeReadyPlayerList(1, this);
-                } else {
-                    server.changeReadyPlayerList(0, this);
-                }
-                server.communicateAll(playerStatus);
-                // TODO Start the game after min. players required join the game
-                if (map.equals("DizzyHighway")) {
-                    DizzyHighway dizzyHighway = new DizzyHighway();
-                    Map dizzy = MapFactory.constructMap(dizzyHighway);
-                    GameStarted testBody1 = MapConverter.convert(dizzy);
-                    sendMessage(testBody1);
-                } else if (map.equals("RiskyCrossing")) {
-                    RiskyCrossing riskyCrossing = new RiskyCrossing();
-                    Map risky = MapFactory.constructMap(riskyCrossing);
-                    GameStarted testBody = MapConverter.convert(risky);
-                    sendMessage(testBody);
+                SetStatus status = (SetStatus) message.getBody();
+                server.communicateAll(new PlayerStatus(user.getId(), status.isReady()));
+                boolean allUsersReady = server.setReadyStatus(user, status.isReady());
+
+                if (allUsersReady) {
+                    Map chosenMap = null;
+                    if (map.equals("DizzyHighway")) {
+                        chosenMap = MapFactory.constructMap(new DizzyHighway());
+                    } else if (map.equals("RiskyCrossing")) {
+                        chosenMap = MapFactory.constructMap(new RiskyCrossing());
+                    }
+                    GameStarted gameStarted = MapConverter.convert(chosenMap);
+                    server.communicateAll(gameStarted);
                 }
             }
             case SendChat -> {
@@ -191,15 +182,9 @@ public class UserThread extends Thread {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
                 //Game.getInstance().messageToPhases(selectCard);
-                server.communicateUsers(new CardSelected(this.playerID, selectCard.getRegister()), this);
-            }
-            case GameWon -> {
-                GameWon gameWon = (GameWon) message.getBody();
-                server.communicateUsers(new GameWon(gameWon.getPlayerID()), this);
-                // TODO end the game
+                server.communicateUsers(new CardSelected(this.user.getId(), selectCard.getRegister()), this);
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
-
         }
     }
 
@@ -244,7 +229,7 @@ public class UserThread extends Thread {
             //else {
             //sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
-            user.setId(playerID);
+            user.setId(user.getId());
             welcome();
         }
 
