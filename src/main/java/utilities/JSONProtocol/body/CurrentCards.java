@@ -3,16 +3,16 @@ package utilities.JSONProtocol.body;
 import game.gameObjects.cards.Card;
 import utilities.JSONProtocol.JSONBody;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class CurrentCards extends JSONBody {
-    HashMap<Integer, Card> activeCards;
+    ArrayList<Card> activeCards;
 
-    public CurrentCards(HashMap<Integer, Card> activeCards) {
+    public CurrentCards(ArrayList<Card> activeCards) {
         this.activeCards = activeCards;
     }
 
-    public HashMap<Integer, Card> getActiveCards() {
+    public ArrayList<Card> getActiveCards() {
         return activeCards;
     }
 }
