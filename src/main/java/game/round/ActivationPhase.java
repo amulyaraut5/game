@@ -2,6 +2,9 @@ package game.round;
 
 import game.Player;
 import game.gameObjects.cards.Card;
+import game.gameObjects.maps.Map;
+import game.gameObjects.tiles.Tile;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
 
 import java.util.HashMap;
@@ -18,9 +21,12 @@ public class ActivationPhase extends Phase {
     // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
 
     /**
-     * saves the Player ID and the card for the curretn register
+     * saves the Player ID and the card for the current register
      */
     private HashMap<Integer, Card> currentCards = new HashMap<>();
+
+    private Tile [][] gameMapTiles;
+    private Map gameMap;
 
     public ActivationPhase() {
 
@@ -31,7 +37,7 @@ public class ActivationPhase extends Phase {
      * starts the ActivationPhase.
      * After each register the method for activating the board tiles ist called.
      * TODO In every register the priority is determined and the players cards get activated
-     *      * in priority order.
+     * * in priority order.
      */
     @Override
     public void startPhase() {
@@ -50,7 +56,7 @@ public class ActivationPhase extends Phase {
      */
 
     private void activateCards() {
-        for(Integer key : currentCards.keySet()) {
+        for (Integer key : currentCards.keySet()) {
             Card currentCard = currentCards.get(key);
             Player currentPlayer = game.getPlayerFromID(key);
             currentCard.handleCard(game, currentPlayer);
@@ -63,6 +69,16 @@ public class ActivationPhase extends Phase {
 
     private void activateBoard() {
         // TODO - implement ActivationPhase.activateBoard
+        gameMapTiles = game.getMap().getTiles();
+        gameMap = game.getMap();
+
+        for(Coordinate tileCoordinate : gameMap.getBeltCoordinates(gameMapTiles)) {
+            for(Player player : playerList) {
+                if(player.getRobot().getPosition() == tileCoordinate) {
+
+                }
+            }
+        }
 		/*
 		blueConveyor.performAction();
 		greenConveyor.performAction();
