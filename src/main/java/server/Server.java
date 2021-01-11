@@ -1,9 +1,14 @@
 package server;
 
+import game.Game;
 import game.gameObjects.maps.Blueprint;
+import game.gameObjects.maps.Map;
+import game.gameObjects.maps.MapFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.body.GameStarted;
+import utilities.MapConverter;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -57,7 +62,7 @@ public class Server extends Thread {
             acceptClients(serverSocket);
 
         } catch (IOException e) {
-            logger.error("could not connect: " + e.getMessage());
+            logger.error("Server could not be created: " + e.getMessage());
         }
         logger.info("SERVER CLOSED");
     }
@@ -108,9 +113,8 @@ public class Server extends Thread {
     public boolean setReadyStatus(User user, boolean ready) {
         if (ready) {
             if (!readyUsers.contains(user)) readyUsers.add(user);
-        } else {
-            if (readyUsers.contains(user)) readyUsers.remove(user);
-        }
+        } else readyUsers.remove(user);
+
         return (users.size() == readyUsers.size() && users.size() > 1);
     }
 
@@ -157,6 +161,16 @@ public class Server extends Thread {
      * @param user User to be removed
      */
     public void removeUser(User user) {
+        readyUsers.remove(user);
         users.remove(user);
+    }
+
+    public void startGame(Blueprint chosenBlueprint) {
+        Map chosenMap = MapFactory.constructMap(chosenBlueprint);
+
+        //new Game gets created, Map created
+
+        GameStarted gameStarted = MapConverter.convert(chosenMap);
+        communicateAll(gameStarted);
     }
 }
