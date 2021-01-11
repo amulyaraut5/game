@@ -62,7 +62,7 @@ public class ReaderThread extends Thread {
             try {
                 String text = bReader.readLine();
                 if (text == null) {
-                    throw new IOException();
+                    throw new IOException("Connection closed");
                 }
                 logger.debug("Protocol received: " + text);
                 // After the reader object reads the serialized message from the socket it is then

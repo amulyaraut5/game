@@ -1,8 +1,7 @@
 package server;
 
+import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.DizzyHighway;
-import game.gameObjects.maps.Map;
-import game.gameObjects.maps.MapFactory;
 import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +11,6 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.MapConverter;
 import utilities.Utilities.MessageType;
 
 import java.io.*;
@@ -90,7 +88,7 @@ public class UserThread extends Thread {
         } catch (IOException ex) {
             disconnect(ex);
         }
-        if (!exit) disconnect();
+        disconnect();
     }
 
     /**
@@ -159,14 +157,13 @@ public class UserThread extends Thread {
                 boolean allUsersReady = server.setReadyStatus(user, status.isReady());
 
                 if (allUsersReady) {
-                    Map chosenMap = null;
+                    Blueprint chosenBlueprint = null;
                     if (map.equals("DizzyHighway")) {
-                        chosenMap = MapFactory.constructMap(new DizzyHighway());
+                        chosenBlueprint = new DizzyHighway();
                     } else if (map.equals("RiskyCrossing")) {
-                        chosenMap = MapFactory.constructMap(new RiskyCrossing());
+                        chosenBlueprint = new RiskyCrossing();
                     }
-                    GameStarted gameStarted = MapConverter.convert(chosenMap);
-                    server.communicateAll(gameStarted);
+                    server.startGame(chosenBlueprint);
                 }
             }
             case SendChat -> {
@@ -175,7 +172,6 @@ public class UserThread extends Thread {
                     server.communicateUsers(new ReceivedChat(sc.getMessage(), this.user.getName(), false), this);
                 else {
                     server.communicateDirect(new ReceivedChat(sc.getMessage(), this.user.getName(), true), this, sc.getTo());
-                    // TODO private Message
                 }
             }
             case SelectCard -> {
@@ -192,14 +188,17 @@ public class UserThread extends Thread {
      * The connection is closed and other users get notified that the user left.
      */
     private void disconnect() {
-        //sendMessage("Bye " + user);
-        server.removeUser(user);
-        //server.communicate(user + " left the room.", user);
-        logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
-        try {
-            socket.close();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
+        if (!exit) {
+            exit = true;
+            //sendMessage("Bye " + user);
+            server.removeUser(user);
+            //server.communicate(user + " left the room.", user);
+            logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+            try {
+                socket.close();
+            } catch (IOException e) {
+                logger.error(e.getMessage());
+            }
         }
     }
 
@@ -210,15 +209,17 @@ public class UserThread extends Thread {
      * @param ex Exception which occurred
      */
     private void disconnect(Exception ex) {
-        exit = true;
-        logger.fatal("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
-        server.removeUser(user);
-        //server.communicate(user + " left the room.", user);
-        logger.fatal("Closed the connection with address:   " + socket.getRemoteSocketAddress());
-        try {
-            socket.close();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
+        if (!exit) {
+            exit = true;
+            logger.fatal("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+            server.removeUser(user);
+            //server.communicate(user + " left the room.", user);
+            logger.fatal("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+            try {
+                socket.close();
+            } catch (IOException e) {
+                logger.error(e.getMessage());
+            }
         }
     }
 

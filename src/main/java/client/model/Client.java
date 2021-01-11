@@ -111,14 +111,13 @@ public class Client {
      */
     public void disconnect(Exception ex) {
         readerThread.interrupt();
-        logger.info("The server is no longer reachable: " + ex.getMessage());
+        logger.warn("The server is no longer reachable: " + ex.getMessage());
         try {
             socket.close();
             logger.info("The connection with the server is closed.");
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        logger.info("Type \"bye\" to exit.");
     }
 
     public void setController(ArrayList<Controller> controllerList) {
@@ -174,9 +173,9 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case Error -> { //TODO display error message in current view
+                case Error -> {
                     Error error = (Error) message.getBody();
-                    logger.warn("Error Message received: " + error.getError());
+                    //TODO display error message in current view
                 }
                 case PlayerStatus -> {
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
