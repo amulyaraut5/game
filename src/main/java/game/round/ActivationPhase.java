@@ -4,7 +4,6 @@ import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
@@ -78,7 +77,7 @@ public class ActivationPhase extends Phase {
         gameMapTiles = game.getMap().getTiles();
         gameMap = game.getMap();
 
-        for(Coordinate tileCoordinate : gameMap.getBeltCoordinates(gameMapTiles)) {
+        /*for(Coordinate tileCoordinate : gameMap.getBeltCoordinates(gameMapTiles)) {
             for(Player currentPlayer : playerList) {
                 if(player.getRobot().getPosition() == tileCoordinate) {
 

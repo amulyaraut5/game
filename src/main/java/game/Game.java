@@ -4,14 +4,15 @@ import game.gameObjects.cards.DamageCard;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.decks.SpamDeck;
 import game.gameObjects.decks.VirusDeck;
+import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.round.Round;
 import utilities.Coordinate;
 import utilities.Utilities;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class handles the game itself.
@@ -24,6 +25,7 @@ public class Game {
     private int energyBank;
     private UpgradeShop upgradeShop;
     private ArrayList<Player> playerList;
+    private HashMap<Integer, Player> playerIDs = new HashMap<>();
     private Round activeRound;
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
@@ -31,7 +33,7 @@ public class Game {
     private ArrayList<DamageCard> damageCardDeck;
     private ProgrammingDeck specialProgrammingDeck;
     private int noOfCheckpoints;
-    private Tile[][] map;
+    private Map map;
     private ArrayList<Player> players;
 
     private Game() {
@@ -48,6 +50,10 @@ public class Game {
     public void play() {
         // TODO - implement Game.play
         throw new UnsupportedOperationException();
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     /**
@@ -110,5 +116,7 @@ public class Game {
     public Round getActiveRound() {
         return activeRound;
     }
+
+    public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}
 
 }
