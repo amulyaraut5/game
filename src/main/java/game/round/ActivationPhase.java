@@ -1,18 +1,26 @@
 package game.round;
 
 import game.Player;
+import game.gameObjects.cards.Card;
+import utilities.JSONProtocol.body.CurrentCards;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Activation Phase, where the Programming Cards and GameBoard Tiles are activated
+ * The Activation Phase is the third phase in the Round.
+ * In this class the Programming Cards and GameBoard Tiles are activated.
  *
  * @author janau, sarah
  */
 
 public class ActivationPhase extends Phase {
 
-    private ArrayList<Player> priorityList;
+    // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
+
+    /**
+     * saves the Player ID and the card for the curretn register
+     */
+    private HashMap<Integer, Card> currentCards = new HashMap<>();
 
     public ActivationPhase() {
 
@@ -21,24 +29,32 @@ public class ActivationPhase extends Phase {
 
     /**
      * starts the ActivationPhase.
-     * In every register the priority is determined and the players cards get activated
-     * in priority order.
      * After each register the method for activating the board tiles ist called.
+     * TODO In every register the priority is determined and the players cards get activated
+     *      * in priority order.
      */
     @Override
     public void startPhase() {
         for (int register = 1; register < 6; register++) {
-
+            for (Player player : playerList) {
+                currentCards.put(player.getId(), player.getRegisterCard(register));
+            }
+            server.communicateAll(new CurrentCards(currentCards));
         }
-		/*
-		for(register=0;register<5;register++) 		--> loops five times = Register
-		flipRegister 							--> all players turn over their cards (in view?)
-		game.getPriorityList 					--> returns priorityList
-		for(Player player : priorityList)		--> oder Robots?
-		if (!playerRebooted)
-			card.activateCard(player, register)	--> robot?
-		 */
         //throw new UnsupportedOperationException();
+    }
+
+    /**
+     * The player needs to confirm that he want to play the card (PlayIt).
+     * If he confirms this method needs to be called.
+     */
+
+    private void activateCards() {
+        for(Integer key : currentCards.keySet()) {
+            Card currentCard = currentCards.get(key);
+            Player currentPlayer = game.getPlayerFromID(key);
+            currentCard.handleCard(game, currentPlayer);
+        }
     }
 
     /**
