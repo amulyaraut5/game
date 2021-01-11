@@ -1,7 +1,10 @@
 package game.round;
 
 /**
- * UpgradePhase, where the Upgrade Shop is filled/refilled and Upgrades can be purchased.
+ * The UpgradePhase is the first Phase of every Round.
+ * The Upgrade Shop is filled/refilled and the players can purchase Upgrades.
+ *
+ * @author janau 
  */
 
 public class UpgradePhase extends Phase {

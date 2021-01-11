@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 
+/**
+ * The Programming phase is the second Phase of every round.
+ * In this class the players choose their programming cards for the five registers.
+ *
+ * @author janau, sarah
+ */
+
 public class ProgrammingPhase extends Phase {
     /**
      * timerIsRunning will get true if a player creates an instance of timer
