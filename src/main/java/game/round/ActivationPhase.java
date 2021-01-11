@@ -5,9 +5,12 @@ import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.Orientation;
+import utilities.Utilities;
 
 import java.util.HashMap;
 
@@ -106,6 +109,50 @@ public class ActivationPhase extends Phase {
 		checkPoint.performAction();
 		 */
         //throw new UnsupportedOperationException();
+
+    }
+
+    public void activateGreenBelts(){
+        for(Coordinate tileCoordinate : gameMap.getGreenBelts()) {
+            for(Player currentPlayer : playerList) {
+                if(currentPlayer.getRobot().getPosition() == tileCoordinate) {
+                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){{
+                        if(a.getType() == Utilities.AttributeType.Belt){
+                            if(a.getOrientation() == Orientation.UP){
+                                //move
+                            }
+                            if(a.getOrientation() == Orientation.LEFT){
+                                //move
+                            }
+                            if(a.getOrientation() == Orientation.RIGHT){
+                                //move
+                            }
+                            if(a.getOrientation() == Orientation.DOWN){
+                                //move
+                            }
+                        }
+                        if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                            RotatingBelt temp = (RotatingBelt) a;
+                            if(temp.getOrientations()[1]  == Orientation.UP){
+                                //move
+                            }
+                            if(temp.getOrientations()[1]  == Orientation.LEFT){
+                                //move
+                            }
+                            if(temp.getOrientations()[1]  == Orientation.RIGHT){
+                                //move
+                            }
+                            if(temp.getOrientations()[1]  == Orientation.DOWN){
+                                //move
+                            }
+                        }
+
+                    }
+                    }
+
+                }
+            }
+        }
     }
 
 
