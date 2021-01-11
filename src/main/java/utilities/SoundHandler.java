@@ -25,7 +25,6 @@ public class SoundHandler{
         Media m = new Media(getClass().getResource("/sounds/robotDance.mp3").toExternalForm());
         mediaPlayer = new MediaPlayer(m);
         mediaPlayer.play();
-
     }
 
     /**
@@ -33,5 +32,20 @@ public class SoundHandler{
      */
     public void musicOff(){
         mediaPlayer.stop();
+    }
+
+    /**
+     * This method gets triggered if the player falls in the pit.
+     */
+    public void pitSound(){
+        Media m = new Media(getClass().getResource("/sounds/pitSound.wav").toExternalForm());
+        mediaPlayer = new MediaPlayer(m);
+        mediaPlayer.play();
+    }
+
+    public void checkPoint(){
+        Media m = new Media(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
+        mediaPlayer = new MediaPlayer(m);
+        mediaPlayer.play();
     }
 }

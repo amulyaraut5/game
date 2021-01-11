@@ -37,11 +37,11 @@ public class ViewManager {
     private Scene lobbyScene;
     private Scene gameScene;
     private Pane chatPane;
-    private Scene mapSelectionScene;
+    //private Scene mapSelectionScene;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
-    private MapSelectionController mapSelectionController;
+    //private MapSelectionController mapSelectionController;
 
     private ViewManager() {
         Platform.runLater(() -> {
@@ -165,25 +165,25 @@ public class ViewManager {
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
         FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/view/lobbyView.fxml"));
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
-        FXMLLoader mapSceneLoader = new FXMLLoader(getClass().getResource("/view/mapSelection.fxml"));
+        //FXMLLoader mapSceneLoader = new FXMLLoader(getClass().getResource("/view/mapSelection.fxml"));
 
         menuScene = new Scene(menuLoader.load());
         loginScene = new Scene(loginLoader.load());
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
-        mapSelectionScene = new Scene(mapSceneLoader.load());
+        //mapSelectionScene = new Scene(mapSceneLoader.load());
 
         loginController = loginLoader.getController();
         lobbyController = lobbyLoader.getController();
         gameViewController = gameLoader.getController();
-        mapSelectionController = mapSceneLoader.getController();
+        //mapSelectionController = mapSceneLoader.getController();
 
         ArrayList<Controller> controllerList = new ArrayList<>();
 
         controllerList.add(loginController);
         controllerList.add(lobbyController);
         controllerList.add(gameViewController);
-        controllerList.add(mapSelectionController);
+        //controllerList.add(mapSelectionController);
         client.setController(controllerList);
     }
 }

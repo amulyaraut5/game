@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 /**
  * This class allows only host to select a map from the different options
  * for the game.
+ * No usage: Because MapSelection Protocol is not given.
  * @author Amulya
  */
 

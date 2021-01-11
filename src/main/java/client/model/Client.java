@@ -56,7 +56,7 @@ public class Client {
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
-    private MapSelectionController mapSelectionController;
+    //private MapSelectionController mapSelectionController;
 
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
@@ -124,7 +124,7 @@ public class Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameViewController = (GameViewController) controllerList.get(2);
-        mapSelectionController = (MapSelectionController) controllerList.get(3);
+        //mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public void setChatController(ChatController chatController) {
