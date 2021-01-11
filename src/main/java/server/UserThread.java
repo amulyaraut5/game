@@ -16,6 +16,7 @@ import utilities.Utilities.MessageType;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Handles connection for each connected client,
@@ -31,6 +32,7 @@ public class UserThread extends Thread {
      */
     private static final Logger logger = LogManager.getLogger();
     private static int idCounter = 1; //Number of playerIDs is saved to give new player a new number
+    private static ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server;
@@ -71,7 +73,6 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-            // HelloClient protocol is first serialized and sent through socket to Client.
             JSONMessage jsonMessage = new JSONMessage(new HelloClient(protocol));
             sendMessage(jsonMessage);
             //<------------------------->
@@ -81,13 +82,11 @@ public class UserThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
-                if(text.equals("DizzyHighway") || text.equals("RiskyCrossing")){
+                if (text.equals("DizzyHighway") || text.equals("RiskyCrossing")) {
                     setMap(text);
                 }
                 else{
                     //logger.debug("Protocol received: " + text);
-                    // After the reader object reads the serialized message from the socket it is then
-                    // deserialized and handled in handleMessage method.
                     JSONMessage msg = Multiplex.deserialize(text);
                     handleMessage(msg);
                 }
@@ -123,37 +122,42 @@ public class UserThread extends Thread {
         switch (type) {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
-
-                //  <----------------Test For Laser --------------->
-                //new Laser().activateBoardLaser();
-                //  <----------------Test For Laser --------------->
-
-                if (!(hs.getProtocol() == protocol)) {
-                    //TODO send Error and disconnect the client
-                    JSONMessage jsonMessage = new JSONMessage(new Error("Protocols don't match"));
-                    logger.warn("Protocols don´t match");
-                    logger.warn(Multiplex.serialize(jsonMessage));
-                    sendMessage(jsonMessage);
-                    //disconnect();
-                } else {
+                if (hs.getProtocol() == protocol) {
                     playerID = idCounter++;
-                    JSONMessage jsonMessage = new JSONMessage(new Welcome(playerID));
                     currentThread().setName("UserThread-" + playerID);
-                    sendMessage(jsonMessage);
-                    for (JSONMessage jM : server.getPlayerValuesList()) {
-                        sendMessage(jM);
+                    JSONMessage welcome = new JSONMessage(new Welcome(playerID));
+                    sendMessage(welcome);
+
+                    for (PlayerAdded addedPlayer : addedPlayers) {
+                        sendMessage(new JSONMessage(addedPlayer));
                     }
+                } else {
+                    JSONMessage error = new JSONMessage(new Error("Protocols don't match! " +
+                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + protocol));
+                    sendMessage(error);
+                    disconnect();
                 }
             }
             case PlayerValues -> {
-                PlayerValues ps = (PlayerValues) message.getBody();
-                user.setName(ps.getName());
-                JSONMessage jsonMessage = new JSONMessage(new PlayerAdded(playerID, ps.getName(), ps.getFigure()));
-                server.addToPlayerValuesList(jsonMessage);
-                user.setId(playerID);
-                user.setName(ps.getName());
-                server.communicateUsers(jsonMessage, this);
-                sendMessage(jsonMessage);
+                PlayerValues pv = (PlayerValues) message.getBody();
+                boolean figureTaken = false;
+                for (User user : server.getUsers()) {
+                    if (pv.getFigure() == user.getFigure()) {
+                        figureTaken = true;
+                        break;
+                    }
+                }
+                if (!figureTaken) {
+                    user.setId(playerID);
+                    user.setName(pv.getName());
+                    user.setFigure(pv.getFigure());
+                    PlayerAdded addedPlayer = new PlayerAdded(playerID, pv.getName(), pv.getFigure());
+                    addedPlayers.add(addedPlayer);
+                    server.communicateAll(new JSONMessage(addedPlayer));
+                } else {
+                    JSONMessage error = new JSONMessage(new Error("Robot is already taken!"));
+                    sendMessage(error);
+                }
             }
             case SetStatus -> {
                 SetStatus st = (SetStatus) message.getBody();

@@ -2,8 +2,6 @@ package server;
 
 import utilities.JSONProtocol.JSONMessage;
 
-import java.time.LocalDate;
-
 /**
  * for every new client, a User is created.
  * An instance of this class has a reference to the UserThread connected with the specific user.
@@ -17,11 +15,20 @@ public class User {
      * The thread which handles the connection for each connected client.
      */
     private volatile UserThread thread;
-    /**
-     * The name of the user.
-     */
     private volatile String name;
-    private volatile int id;//TODO
+    private volatile int id;
+    private volatile int figure;
+
+    public User() {
+    }
+
+    public int getFigure() {
+        return figure;
+    }
+
+    public void setFigure(int figure) {
+        this.figure = figure;
+    }
 
     /**
      * Test if two different objects of User are the same user.
