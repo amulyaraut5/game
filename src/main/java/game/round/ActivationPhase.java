@@ -5,15 +5,10 @@ import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
-import utilities.Orientation;
-import utilities.Utilities;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -74,18 +69,32 @@ public class ActivationPhase extends Phase {
      * Method that activates the board elements in their right order.
      */
 
-    private void activateBoard() {
+
+    private void activateBoard(Player player) {
         // TODO - implement ActivationPhase.activateBoard
         gameMapTiles = game.getMap().getTiles();
         gameMap = game.getMap();
 
-        for(Coordinate tileCoordinate : gameMap.getBeltCoordinates()) {
-            for(Player player : playerList) {
+        for(Coordinate tileCoordinate : gameMap.getBeltCoordinates(gameMapTiles)) {
+            for(Player currentPlayer : playerList) {
                 if(player.getRobot().getPosition() == tileCoordinate) {
 
                 }
             }
         }
+        /*
+        for(Coordinate coordinate : gameMap.getBeltCoordinates(gameMapTiles)){
+
+            if(player.getRobot().getPosition() == coordinate){
+                Tile tile = gameMap.getTile(coordinate);
+                for(Attribute a : tile.getAttributes()){
+                    a.performAction(player);
+                }
+            }
+        }
+        // And then we can execute other board elements in order
+
+
 		/*
 		blueConveyor.performAction();
 		greenConveyor.performAction();
@@ -96,59 +105,7 @@ public class ActivationPhase extends Phase {
 		energySpace.performAction();
 		checkPoint.performAction();
 		 */
-
-
         //throw new UnsupportedOperationException();
-    }
-
-    private void activateGreenBelts(){
-
-        for(Coordinate tileCoordinate : gameMap.getGreenBelts()) {
-            for(Player player : playerList) {
-                if(player.getRobot().getPosition() == tileCoordinate) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes() ) {
-                        if(a.getType() == Utilities.AttributeType.Belt){
-                            if(a.getOrientation() == Orientation.UP){
-                                //move up
-                            }
-                            if(a.getOrientation() == Orientation.RIGHT){
-                                //move right
-                            }
-                            if(a.getOrientation() == Orientation.LEFT){
-                                //move left
-                            }
-                            if(a.getOrientation() == Orientation.DOWN){
-                                //move down
-                            }
-
-                        }
-
-                        if(a.getType() == Utilities.AttributeType.RotatingBelt){
-                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.UP){
-                                //move up
-                            }
-                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.RIGHT){
-                                //move right
-                            }
-                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.LEFT){
-                                //move left
-                            }
-                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.DOWN){
-                                //move down
-                            }
-                        }
-                    }
-
-
-                }
-            }
-        }
-
-
-
-
-
-
     }
 
 
