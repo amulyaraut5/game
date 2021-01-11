@@ -17,8 +17,8 @@ public class Map {
     private Tile[][] tiles;
     private ArrayList<Coordinate> laserCoordinates;
     private ArrayList<Coordinate> beltCoordinates;
-    private ArrayList<Coordinate> GreenBelts;
-    private ArrayList<Coordinate> BlueBelts;
+    private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
+    private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
 
 
     /**
@@ -113,14 +113,26 @@ public class Map {
             }
         }
 
+        //Add Belts to Green and Blue Belt lists
         for (Coordinate c : coordinates) {
             for (Attribute a : getTile(c).getAttributes()) {
                 if(a.getType() == Utilities.AttributeType.Belt){
                     Belt temp = (Belt) a;
-                    if
+                    if(temp.getSpeed() == 1){
+                        addGreenBelt(c);
+                    }
+                    else{
+                        addBlueBelt(c);
+                    }
                 }
                 if(a.getType() == Utilities.AttributeType.RotatingBelt){
                     RotatingBelt temp = (RotatingBelt) a;
+                    if(temp.getSpeed() == 1){
+                        addGreenBelt(c);
+                    }
+                    else{
+                        addBlueBelt(c);
+                    }
                 }
             }
 
@@ -131,5 +143,21 @@ public class Map {
 
     public ArrayList<Coordinate> getBeltCoordinates() {
         return beltCoordinates;
+    }
+
+    private void addGreenBelt(Coordinate c){
+        GreenBelts.add(c);
+    }
+
+    private void addBlueBelt(Coordinate c){
+        BlueBelts.add(c);
+    }
+
+    public ArrayList<Coordinate> getGreenBelts(){
+        return GreenBelts;
+    }
+
+    public ArrayList<Coordinate> getBlueBelts(){
+        return BlueBelts;
     }
 }

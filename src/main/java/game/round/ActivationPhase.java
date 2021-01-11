@@ -9,6 +9,7 @@ import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.Orientation;
 import utilities.Utilities;
 
 import java.lang.reflect.Array;
@@ -101,22 +102,49 @@ public class ActivationPhase extends Phase {
     }
 
     private void activateGreenBelts(){
-        this.gameMap.readBeltCoordinates();
 
-        ArrayList<Coordinate> GreenBelts = new ArrayList<>();
-        ArrayList<Coordinate> BlueBelts = new ArrayList<>();
+        for(Coordinate tileCoordinate : gameMap.getGreenBelts()) {
+            for(Player player : playerList) {
+                if(player.getRobot().getPosition() == tileCoordinate) {
+                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes() ) {
+                        if(a.getType() == Utilities.AttributeType.Belt){
+                            if(a.getOrientation() == Orientation.UP){
+                                //move up
+                            }
+                            if(a.getOrientation() == Orientation.RIGHT){
+                                //move right
+                            }
+                            if(a.getOrientation() == Orientation.LEFT){
+                                //move left
+                            }
+                            if(a.getOrientation() == Orientation.DOWN){
+                                //move down
+                            }
 
-        for (Coordinate c : gameMap.getBeltCoordinates()) {
-            for (Attribute a : gameMap.getTile(c).getAttributes()) {
-                if(a.getType() == Utilities.AttributeType.Belt){
-                    Belt temp = (Belt) a;
-                }
-                if(a.getType() == Utilities.AttributeType.RotatingBelt){
-                    RotatingBelt temp = (RotatingBelt) a;
+                        }
+
+                        if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.UP){
+                                //move up
+                            }
+                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.RIGHT){
+                                //move right
+                            }
+                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.LEFT){
+                                //move left
+                            }
+                            if(((RotatingBelt) a).getOrientations()[1] == Orientation.DOWN){
+                                //move down
+                            }
+                        }
+                    }
+
+
                 }
             }
-
         }
+
+
 
 
 

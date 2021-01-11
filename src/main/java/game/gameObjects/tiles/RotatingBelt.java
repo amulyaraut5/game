@@ -97,4 +97,8 @@ public class RotatingBelt extends Attribute {
     public int getSpeed() {
         return speed;
     }
+
+    public Orientation[] getOrientations() {
+        return orientations;
+    }
 }
