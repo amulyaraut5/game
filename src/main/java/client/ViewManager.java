@@ -66,10 +66,11 @@ public class ViewManager {
         if (menuStage.isShowing()) {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
-            else if (menuStage.getScene() == loginScene) {
-                menuStage.setScene(mapSelectionScene);
 
-            }else if (menuStage.getScene() == mapSelectionScene){
+            /*else if (menuStage.getScene() == loginScene) {
+                menuStage.setScene(mapSelectionScene);}*/
+
+            else if (menuStage.getScene() == loginScene){
                 menuStage.setScene(lobbyScene);
                 lobbyController.attachChatPane(chatPane);
             }

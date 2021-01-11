@@ -65,12 +65,10 @@ public class Multiplex {
             String messageType = jsonObject.get("messageType").getAsString();
             JsonObject messageBody = jsonObject.get("messageBody").getAsJsonObject();
 
-
-
             Gson gsonTile = new GsonBuilder()
                     .registerTypeAdapter(Attribute.class, new AttributeDeserializer()).create();
 
-             if (messageType.equals("GameStarted")) {
+            if (messageType.equals("GameStarted")) {
 
                 JsonArray mapArray = messageBody.get("map").getAsJsonArray();
                 Type mapType = new TypeToken<ArrayList<BoardElement>>() {}.getType();

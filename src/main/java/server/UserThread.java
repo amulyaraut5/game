@@ -76,9 +76,9 @@ public class UserThread extends Thread {
                 if (text == null) {
                     throw new IOException();
                 }
-                if (text.equals("DizzyHighway") || text.equals("RiskyCrossing")) {
-                    setMap(text);
-                } else {
+                /*if (text.equals("DizzyHighway") || text.equals("RiskyCrossing")) {
+                    setMap(text); } */
+                else {
                     //logger.debug("Protocol received: " + text);
                     JSONMessage msg = Multiplex.deserialize(text);
                     handleMessage(msg);
@@ -156,7 +156,7 @@ public class UserThread extends Thread {
                 server.communicateAll(new PlayerStatus(user.getId(), status.isReady()));
                 boolean allUsersReady = server.setReadyStatus(user, status.isReady());
 
-                if (allUsersReady) {
+                /*if (allUsersReady) {
                     Blueprint chosenBlueprint = null;
                     if (map.equals("DizzyHighway")) {
                         chosenBlueprint = new DizzyHighway();
@@ -164,6 +164,9 @@ public class UserThread extends Thread {
                         chosenBlueprint = new RiskyCrossing();
                     }
                     server.startGame(chosenBlueprint);
+                } */
+                if(allUsersReady){
+                    server.startGame(new DizzyHighway());
                 }
             }
             case SendChat -> {
