@@ -11,7 +11,6 @@ import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
 
 /**
  * The Programming phase is the second Phase of every round.
@@ -21,11 +20,6 @@ import java.util.Timer;
  */
 
 public class ProgrammingPhase extends Phase {
-    /**
-     * timerIsRunning will get true if a player creates an instance of timer
-     * TODO do we need it?
-     */
-    private boolean timerIsRunning = false;
 
     /**
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
@@ -37,10 +31,6 @@ public class ProgrammingPhase extends Phase {
      */
     private ArrayList<Card> availableProgrammingCards;
 
-    /**
-     * a boolean to check whether someone has already finished
-     */
-    private boolean isFinished = false;
 
     public ProgrammingPhase() {
     }
@@ -100,11 +90,7 @@ public class ProgrammingPhase extends Phase {
     }
 
 
-    /**
-     * every player can look at their programming cards -> Turn cards around after everyone's cards were dealt?
-     */
-    private void showCards() {
-    }
+
 
     private void onePlayerFinished(Player player) {
         //isFinished = true;
@@ -173,14 +159,4 @@ public class ProgrammingPhase extends Phase {
     }
 
 
-
-
-    /**
-     * this method gets called after every Round to reset the attributes
-     * TODO is it necessary? A new Phase gets created the next time anyway
-     */
-    private void resetProgrammingPhase() {
-        timerIsRunning = false;
-        notReadyPlayers = null;
-    }
 }
