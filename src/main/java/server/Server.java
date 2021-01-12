@@ -2,18 +2,24 @@ package server;
 
 import game.Game;
 import game.gameObjects.maps.Blueprint;
+import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Error;
 import utilities.MapConverter;
+import utilities.Utilities;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static utilities.Utilities.PORT;
 
@@ -23,6 +29,13 @@ public class Server extends Thread {
     private static Server instance;
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
     private ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
+    private final double protocol = 1.0;
+    private static int idCounter = 1; //Number of playerIDs is saved to give new player a new number
+    private static ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
+
+
+    private BlockingQueue<QueueMessage> blockingQueue = new LinkedBlockingQueue<>();
+    private boolean exit = false; //TODO Server
 
     /**
      * private Constructor for the ChatServer class
@@ -55,12 +68,19 @@ public class Server extends Thread {
         currentThread().setName("ServerThread");
         logger.info("SERVER STARTED");
 
+
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
+            Thread acceptClients = new Thread(()->{acceptClients(serverSocket);});
+            acceptClients.start();
+            while (!exit){
+                QueueMessage queueMessage;
+                while((queueMessage = blockingQueue.poll()) != null ){
+                    handleMessage(queueMessage);
+                }
 
-            acceptClients(serverSocket);
-
+            }
         } catch (IOException e) {
             logger.error("Server could not be created: " + e.getMessage());
         }
@@ -68,10 +88,98 @@ public class Server extends Thread {
     }
 
     /**
+     * Based on the messageType the various protocol are differentiated and Object class type
+     * is casted down to respective class.
+     *
+     * @param queueMessage received Object of JSONMessage
+     */
+    private void handleMessage(QueueMessage queueMessage) {
+        JSONMessage message = queueMessage.getJsonMessage();
+        Utilities.MessageType type = message.getType();
+        User user = queueMessage.getUser();
+        switch (type) {
+            case HelloServer -> {
+                HelloServer hs = (HelloServer) message.getBody();
+                if (hs.getProtocol() == protocol) {
+                    user.setId(idCounter++);
+                    currentThread().setName("UserThread-" + user.getId());
+                    user.message(new Welcome(user.getId()));
+
+                    for (PlayerAdded addedPlayer : addedPlayers) {
+                        user.message(addedPlayer);
+                    }
+                } else {
+                    JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
+                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + protocol);
+                    user.message(error);
+                    user.getThread().disconnect();
+                }
+            }
+            case PlayerValues -> {
+                PlayerValues pv = (PlayerValues) message.getBody();
+                boolean figureTaken = false;
+                for (User userLoop : getUsers()) {
+                    if (pv.getFigure() == userLoop.getFigure()) {
+                        figureTaken = true;
+                        break;
+                    }
+                }
+                if (!figureTaken) {
+                    user.setId(user.getId());
+                    user.setName(pv.getName());
+                    user.setFigure(pv.getFigure());
+                    PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
+                    addedPlayers.add(addedPlayer);
+                    communicateAll(addedPlayer);
+                } else {
+                    JSONBody error = new Error("Robot is already taken!");
+                    user.message(error);
+                }
+            }
+            case SetStatus -> {
+                SetStatus status = (SetStatus) message.getBody();
+                communicateAll(new PlayerStatus(user.getId(), status.isReady()));
+                boolean allUsersReady = setReadyStatus(user, status.isReady());
+
+                /*if (allUsersReady) {
+                    Blueprint chosenBlueprint = null;
+                    if (map.equals("DizzyHighway")) {
+                        chosenBlueprint = new DizzyHighway();
+                    } else if (map.equals("RiskyCrossing")) {
+                        chosenBlueprint = new RiskyCrossing();
+                    }
+                    server.startGame(chosenBlueprint);
+                } */
+                if(allUsersReady){
+                    startGame(new DizzyHighway());
+                }
+            }
+            case SendChat -> {
+                SendChat sc = (SendChat) message.getBody();
+                if (sc.getTo() < 0)
+                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getName(), false), user.getThread());
+                else {
+                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getName(), true), user.getThread(), sc.getTo());
+                }
+            }
+            case SelectCard -> {
+                SelectCard selectCard = (SelectCard) message.getBody();
+                //TODO send selectCard to ProgrammingPhase
+                //Game.getInstance().messageToPhases(selectCard);
+                communicateUsers(new CardSelected(user.getId(), selectCard.getRegister()), user.getThread());
+            }
+            default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
+        }
+    }
+    public BlockingQueue<QueueMessage> getBlockingQueue() {
+        return blockingQueue;
+    }
+    /**
      * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
      *
      * @param serverSocket socket from which connection is to be established
      */
+
     private void acceptClients(ServerSocket serverSocket) {
         boolean accept = true;
         while (accept) {
