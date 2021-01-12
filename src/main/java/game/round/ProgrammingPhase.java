@@ -82,11 +82,11 @@ public class ProgrammingPhase extends Phase {
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
         if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player.getId());
-            if (notReadyPlayers.size() == playerList.size() - 1) {
+            player.discardCards(availableProgrammingCards, player.getDiscardedProgrammingDeck());
+            if (notReadyPlayers.size() == playerList.size() - 1)
                 onePlayerFinished(player);
             } //TODO if a player doesn't play this round use isFinished?
         }
-    }
 
 
 
@@ -128,6 +128,7 @@ public class ProgrammingPhase extends Phase {
                     player.setRegisterCards(i + 1, randomCard);
                 }
             }
+            player.discardCards(availableProgrammingCards, player.getDiscardedProgrammingDeck());
             player.message(new CardsYouGotNow(player.getRegisterCards()));
         }
     }

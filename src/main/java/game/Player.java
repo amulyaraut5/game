@@ -153,6 +153,17 @@ public class Player extends User {
         return discardedProgrammingDeck;
     }
 
+    /**
+     * Lets you discard an Array of cards to a specified deck
+     * @param cards
+     * @param discardDeck
+     */
+    public void discardCards (ArrayList<Card> cards, DiscardDeck discardDeck) {
+        for (Card card : cards) {
+            discardDeck.addCard(card);
+        }
+    }
+
     public Game getGame() {
         return game;
     }
