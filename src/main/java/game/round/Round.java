@@ -4,6 +4,7 @@ import game.Game;
 import game.Player;
 import server.Server;
 import utilities.JSONProtocol.body.ActivePhase;
+import utilities.Utilities;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,10 @@ public class Round {
      * the list which contains the players of the round (they get kicked out of this list if they have to reboot)
      */
     protected ArrayList<Player> playerList;
+    private ProgrammingPhase programmingPhase;
+    private ActivationPhase activationPhase;
+    private UpgradePhase upgradePhase;
+
     /**
      * the game which created the round
      */
@@ -29,7 +34,6 @@ public class Round {
     public Round(Game game) {
         this.game = game;
         this.playerList = game.getPlayerList();
-        executeRound();
     }
 
 
@@ -37,21 +41,33 @@ public class Round {
 
     }
 
+    /**
+     * This method gets called from the phases, it calls the next phase
+     * @param phase
+     */
+    public void nextPhase(Utilities.Phase phase) {
+        int phaseNumber = 0; //TODO Aufbauphase im game
+        switch(phase){
+            case UPGRADE:
+                phaseNumber = 2;
+                server.communicateAll(new ActivePhase(phaseNumber));
+                this.programmingPhase = new ProgrammingPhase(this);
+                break;
+            case PROGRAMMING:
+                phaseNumber = 3;
+                server.communicateAll(new ActivePhase(phaseNumber));
+                this.activationPhase = new ActivationPhase(this);
+                break;
+            case ACTIVATION:
+                phaseNumber = 1;
+                server.communicateAll(new ActivePhase(phaseNumber));
+                this.upgradePhase = new UpgradePhase(this);
+                break;
+            default:
+                //
 
-    public void executeRound() {
-        //Aufbauphase //TODO where ?
-        server.communicateAll(new ActivePhase(0));
+        }
 
-        //start upgradePhase and upgradePhase.startUpgradePhase()
-        server.communicateAll(new ActivePhase(1));
-
-        //start programmingPhase and programmingPhase.startProgrammingPhase()
-        ProgrammingPhase programmingPhase = new ProgrammingPhase();
-        server.communicateAll(new ActivePhase(2));
-
-
-        //start activationPhase
-        server.communicateAll(new ActivePhase(3));
 
     }
 
