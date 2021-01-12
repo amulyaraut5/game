@@ -44,6 +44,8 @@ public class Game {
         return instance;
     }
 
+    //TODO resetGame()
+
     /**
      * This methods starts Roborally.
      */

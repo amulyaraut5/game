@@ -81,7 +81,7 @@ public class UserThread extends Thread {
                     //logger.debug("Protocol received: " + text);
                     JSONMessage msg = Multiplex.deserialize(text);
                     QueueMessage queueMessage = new QueueMessage(msg, this.user);
-                    server.getBlockingQueue().add(queueMessage);
+                    server.getBlockingQueue().add(queueMessage); //TODO put?
                 }
             }
 

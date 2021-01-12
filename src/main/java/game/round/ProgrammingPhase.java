@@ -101,7 +101,7 @@ public class ProgrammingPhase extends Phase {
 
     /**
      * method that gets called from gameTimer if he has ended and then sends the message
-     * TimerEnded and calls timeRanOut()
+     * TimerEnded and calls dealRandomCards()
      */
     public void timerHasEnded(){
         server.communicateAll(new TimerEnded(notReadyPlayers));
