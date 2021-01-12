@@ -16,7 +16,6 @@ public class Map {
 
     private Tile[][] tiles;
     private ArrayList<Coordinate> laserCoordinates;
-    private ArrayList<Coordinate> beltCoordinates;
     private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
 
@@ -137,12 +136,6 @@ public class Map {
             }
 
         }
-
-        this.beltCoordinates = coordinates;
-    }
-
-    public ArrayList<Coordinate> getBeltCoordinates() {
-        return beltCoordinates;
     }
 
     private void addGreenBelt(Coordinate c){
