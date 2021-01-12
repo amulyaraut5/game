@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static utilities.Utilities.PORT;
 
@@ -50,12 +52,14 @@ public class Client {
      */
     private PrintWriter writer;
 
+    private BlockingQueue<JSONMessage> blockingQueue = new LinkedBlockingQueue<>();
     private int playerID;
 
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
+    private boolean exit = false;
     //private MapSelectionController mapSelectionController;
 
     /**
@@ -81,7 +85,16 @@ public class Client {
 
             readerThread = new ReaderThread(socket, this);
             readerThread.start();
+            Thread handleThread = new Thread(()->{
+                while(!exit){
+                    JSONMessage jsonMessage;
+                    while((jsonMessage = blockingQueue.poll()) != null){
+                        handleMessage(jsonMessage);
+                    }
+                }
 
+            });
+            handleThread.start();
             logger.info("Connection to server successful.");
             return true;
         } catch (IOException e) {
@@ -129,6 +142,10 @@ public class Client {
 
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
+    }
+
+    public BlockingQueue<JSONMessage> getBlockingQueue() {
+        return blockingQueue;
     }
 
     public boolean playerListContains(int robotID) {
