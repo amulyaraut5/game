@@ -8,6 +8,7 @@ import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.cards.programming.MoveIII;
 import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
+import utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,20 +33,18 @@ public class ProgrammingPhase extends Phase {
     private ArrayList<Card> availableProgrammingCards;
 
 
-    public ProgrammingPhase() {
-    }
-
-    @Override
-    public void startPhase() {
+    public ProgrammingPhase(Round round) {
+        super(round);
         for (Player player : playerList) {
             notReadyPlayers.add(player.getId());
         }
         dealProgrammingCards();
-        while (!(notReadyPlayers.size() == 0)) {
-            //die Programming Phase geht solange, bis alle Spieler ihre Register gefüllt haben
-        }
-        resetProgrammingPhase();
     }
+    @Override
+    public void startPhase() {
+
+    }
+
 
     /**
      * if
@@ -109,6 +108,7 @@ public class ProgrammingPhase extends Phase {
         if (!(notReadyPlayers.size() == 0)) {
             dealRandomCards();
         }
+        round.nextPhase(Utilities.Phase.PROGRAMMING);
     }
     /**
      * Method that chooses ar random card out of the drawn Programming cards for every empty register.
