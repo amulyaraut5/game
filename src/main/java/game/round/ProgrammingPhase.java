@@ -37,6 +37,11 @@ public class ProgrammingPhase extends Phase {
      */
     private ArrayList<Card> availableProgrammingCards;
 
+    /**
+     * a boolean to check whether someone has already finished
+     */
+    private boolean isFinished = false;
+
     public ProgrammingPhase() {
     }
 
@@ -90,7 +95,7 @@ public class ProgrammingPhase extends Phase {
             notReadyPlayers.remove(player.getId());
             if (notReadyPlayers.size() == playerList.size() - 1) {
                 onePlayerFinished(player);
-            }
+            } //TODO if a player doesn't play this round use isFinished?
         }
     }
 
@@ -101,24 +106,45 @@ public class ProgrammingPhase extends Phase {
     private void showCards() {
     }
 
-    public void onePlayerFinished(Player player) {
+    private void onePlayerFinished(Player player) {
+        //isFinished = true;
         server.communicateAll(new SelectionFinished(player.getId()));
-        server.communicateAll(new TimerStarted());
-        Timer timer = new Timer(true); //TODO einzelne Klasse überhaupt notwendig oder sogar wait()?
-        //timer for 30 sek
-        server.communicateAll(new TimerEnded(notReadyPlayers));
-        if (!(notReadyPlayers.size() == 0)) {
-            timeRanOut();
-        }
-        for (Player playerTest : playerList) {
-            if (playerTest.getRegisterCards().size() < 5) {
-                playerTest.message(new DiscardHand(playerTest.getId()));
-                timeRanOut();
-            }
-        }
+        GameTimer gameTimer = new GameTimer(this);
+        gameTimer.start();
+
     }
 
-
+    /**
+     * method that gets called from gameTimer if he has ended and then sends the message
+     * TimerEnded and calls timeRanOut()
+     */
+    public void timerHasEnded(){
+        server.communicateAll(new TimerEnded(notReadyPlayers));
+        if (!(notReadyPlayers.size() == 0)) {
+            dealRandomCards();
+        }
+    }
+    /**
+     * Method that chooses ar random card out of the drawn Programming cards for every empty register.
+     */
+    private void dealRandomCards() {
+        for (Integer id : notReadyPlayers) {
+            Player player = game.getPlayerFromID(id);
+            player.message(new DiscardHand(player.getId()));
+            ArrayList<Card> registers = player.getRegisterCards();
+            Random randomGenerator = new Random();
+            for (int i = 0; i < registers.size(); i++) {
+                if (registers.get(i) == null) {
+                    availableProgrammingCards = player.getDrawnProgrammingCards();
+                    int index = randomGenerator.nextInt(availableProgrammingCards.size());
+                    Card randomCard = availableProgrammingCards.get(index);
+                    availableProgrammingCards.remove(index);
+                    player.setRegisterCards(i + 1, randomCard);
+                }
+            }
+            player.message(new CardsYouGotNow(player.getRegisterCards()));
+        }
+    }
     /**
      * players get their  cards for programming their robot in this round.
      * If the draw pile has at least 9 cards, the top 9 cards get dealt.
@@ -147,26 +173,7 @@ public class ProgrammingPhase extends Phase {
     }
 
 
-    /**
-     * Method that chooses ar random card out of the drawn Programming cards for every empty register.
-     */
-    private void timeRanOut() {
-        for (Integer id : notReadyPlayers) {
-            Player player = game.getPlayerFromID(id);
-            ArrayList<Card> registers = player.getRegisterCards();
-            Random randomGenerator = new Random();
-            for (int i = 0; i < registers.size(); i++) {
-                if (registers.get(i) == null) {
-                    availableProgrammingCards = player.getDrawnProgrammingCards();
-                    int index = randomGenerator.nextInt(availableProgrammingCards.size());
-                    Card randomCard = availableProgrammingCards.get(index);
-                    availableProgrammingCards.remove(index);
-                    player.setRegisterCards(i + 1, randomCard);
-                }
-            }
-            player.message(new CardsYouGotNow(player.getRegisterCards()));
-        }
-    }
+
 
     /**
      * this method gets called after every Round to reset the attributes
