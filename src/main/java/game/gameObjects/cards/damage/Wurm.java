@@ -2,14 +2,10 @@ package game.gameObjects.cards.damage;
 
 import game.Game;
 import game.Player;
-import game.gameActions.MoveRobot;
 import game.gameActions.RebootAction;
-import game.gameObjects.cards.Card;
 import game.gameObjects.cards.DamageCard;
-import game.gameObjects.robot.Robot;
-import game.gameObjects.tiles.Reboot;
+import game.gameObjects.tiles.RestartPoint;
 import javafx.scene.image.ImageView;
-import utilities.Coordinate;
 import utilities.ImageHandler;
 import utilities.Orientation;
 import utilities.Utilities.CardType;
@@ -18,7 +14,7 @@ import utilities.Utilities.CardType;
  * @author annika
  */
 public class Wurm extends DamageCard{
-    private Reboot reboot;
+    private RestartPoint restartPoint;
 
     public Wurm() {
         super(CardType.Wurm);

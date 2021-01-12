@@ -79,6 +79,6 @@ public abstract class Utilities {
 
     public enum AttributeType {
         Antenna, Belt, ControlPoint, Empty, EnergySpace, Gear,
-        Laser, Pit, PushPanel, Reboot, RotatingBelt, Wall
+        Laser, Pit, PushPanel,StartPoint, RestartPoint, RotatingBelt, Wall
     }
 }

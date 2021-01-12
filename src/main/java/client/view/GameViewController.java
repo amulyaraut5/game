@@ -108,7 +108,7 @@ public class GameViewController extends Controller {
                 {AttributeType.Belt, AttributeType.RotatingBelt, AttributeType.Gear,
                         AttributeType.EnergySpace, AttributeType.Antenna},
                 {AttributeType.PushPanel, AttributeType.Laser},
-                {AttributeType.ControlPoint, AttributeType.Reboot},
+                {AttributeType.ControlPoint, AttributeType.RestartPoint, AttributeType.StartPoint},
                 {AttributeType.Wall}};
 
         for (AttributeType[] priority : priorityArray) {
