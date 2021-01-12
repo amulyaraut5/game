@@ -10,6 +10,9 @@ public abstract class Phase {
     protected Server server = Server.getInstance();
     protected Game game = Game.getInstance();
     protected ArrayList<Player> playerList = game.getPlayerList();
-
+    protected Round round;
+    public Phase (Round round){
+        this.round = round;
+    }
     public abstract void startPhase();
 }
