@@ -52,7 +52,7 @@ public class Client {
      */
     private PrintWriter writer;
 
-    private BlockingQueue<JSONMessage> blockingQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<JSONMessage> messageQueue = new LinkedBlockingQueue<>();
     private int playerID;
 
     private GameViewController gameViewController;
@@ -88,7 +88,7 @@ public class Client {
             Thread handleThread = new Thread(()->{
                 while(!exit){
                     JSONMessage jsonMessage;
-                    while((jsonMessage = blockingQueue.poll()) != null){
+                    while((jsonMessage = messageQueue.poll()) != null){
                         handleMessage(jsonMessage);
                     }
                 }
@@ -144,8 +144,8 @@ public class Client {
         this.chatController = chatController;
     }
 
-    public BlockingQueue<JSONMessage> getBlockingQueue() {
-        return blockingQueue;
+    public BlockingQueue<JSONMessage> getMessageQueue() {
+        return messageQueue;
     }
 
     public boolean playerListContains(int robotID) {
@@ -266,7 +266,7 @@ public class Client {
      * @param jsonBody
      */
     public void sendMessage(JSONBody jsonBody) {
-        String json = Multiplex.serialize(new JSONMessage(jsonBody));
+        String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
         writer.println(json);
         writer.flush();

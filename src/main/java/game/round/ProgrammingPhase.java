@@ -161,7 +161,7 @@ public class ProgrammingPhase extends Phase {
             }
             player.setDrawnProgrammingCards(availableProgrammingCards);
             player.message(new YourCards(availableProgrammingCards));
-            server.communicateUsers((new NotYourCards(player.getId(), availableProgrammingCards.size())), player.getThread());
+            server.communicateUsers((new NotYourCards(player.getId(), availableProgrammingCards.size())), player);
         }
 
     }

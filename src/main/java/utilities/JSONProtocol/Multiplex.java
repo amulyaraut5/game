@@ -9,14 +9,14 @@ import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
  * This class contains 2 important methods namely serialize and deserialize whose functionality are described
  * in respective method.
- * @author Amulya
+ *
+ * @author Amulya, Simon
  */
 public class Multiplex {
 
@@ -31,8 +31,7 @@ public class Multiplex {
 
     public static String serialize(JSONMessage messageObj) {
         Gson gson = new Gson();
-        String json = gson.toJson(messageObj);
-        return json;
+        return gson.toJson(messageObj);
     }
 
     /**
@@ -45,12 +44,11 @@ public class Multiplex {
 
     public static JSONMessage deserialize(String jsonString) {
         Gson gson = new GsonBuilder().registerTypeAdapter(JSONMessage.class, new Deserializer()).create();
-        JSONMessage obj = gson.fromJson(jsonString, JSONMessage.class);
-        return obj;
+        return gson.fromJson(jsonString, JSONMessage.class);
     }
 
     /**
-     * This class contains an overriden deserialize method from interface JsonDeserializer</> in order to parse messageBody
+     * This class contains an overridden deserialize method from interface JsonDeserializer</> in order to parse messageBody
      * of different classes correctly.
      */
 
@@ -68,17 +66,18 @@ public class Multiplex {
             Gson gsonTile = new GsonBuilder()
                     .registerTypeAdapter(Attribute.class, new AttributeDeserializer()).create();
 
-            if (messageType.equals("GameStarted")) {
+            if (messageType != null) {
+                if (messageType.equals("GameStarted")) {
 
-                JsonArray mapArray = messageBody.get("map").getAsJsonArray();
-                Type mapType = new TypeToken<ArrayList<BoardElement>>() {}.getType();
-                ArrayList<BoardElement> mapBody = gsonTile.fromJson(mapArray, mapType);
-                GameStarted gameStarted = new GameStarted(mapBody);
-                return new JSONMessage(gameStarted);
-            } else if (messageType != null) {
-                try {
+                    JsonArray mapArray = messageBody.get("map").getAsJsonArray();
+                    Type mapType = new TypeToken<ArrayList<BoardElement>>() {
+                    }.getType();
+                    ArrayList<BoardElement> mapBody = gsonTile.fromJson(mapArray, mapType);
+                    GameStarted gameStarted = new GameStarted(mapBody);
+                    return JSONMessage.build(gameStarted);
+                } else try {
                     JSONBody body = gson.fromJson(messageBody, (Type) Class.forName("utilities.JSONProtocol.body." + messageType));
-                    return new JSONMessage(body);
+                    return JSONMessage.build(body);
                 } catch (ClassNotFoundException e) {
                     logger.error("messageType could not be converted to a JSONBody Class: " + e.getMessage());
                 }
@@ -103,8 +102,7 @@ public class Multiplex {
 
             Gson gson = new GsonBuilder().create();
             try {
-                Attribute result = gson.fromJson(jsonElement, (Type) Class.forName("game.gameObjects.tiles." + tileType));
-                return result;
+                return gson.fromJson(jsonElement, (Type) Class.forName("game.gameObjects.tiles." + tileType));
             } catch (ClassNotFoundException e) {
                 logger.error("tileType could not be converted to a Attribute Class: " + e.getMessage());
             }

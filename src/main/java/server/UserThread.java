@@ -1,21 +1,16 @@
 package server;
 
-import game.gameObjects.maps.Blueprint;
-import game.gameObjects.maps.DizzyHighway;
-import game.gameObjects.maps.RiskyCrossing;
 import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.*;
-import utilities.Utilities.MessageType;
+import utilities.JSONProtocol.body.HelloClient;
+import utilities.Utilities;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * Handles connection for each connected client,
@@ -34,11 +29,9 @@ public class UserThread extends Thread {
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server = Server.getInstance();
-    private final double protocol = 1.0;
     private PrintWriter writer;
     private BufferedReader reader;
     private boolean exit = false;
-    private String map;
 
     public UserThread(Socket socket, User user) {
         this.socket = socket;
@@ -57,10 +50,6 @@ public class UserThread extends Thread {
         Attribute.setUserThread(this);
     }
 
-    public void setMap(String map) {
-        this.map = map;
-    }
-
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
      * The user disconnects by typing "bye".
@@ -68,20 +57,18 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-            sendMessage(new HelloClient(protocol));
+            sendMessage(new HelloClient(Utilities.PROTOCOL));
 
             while (!exit) {
                 String text = reader.readLine();
                 if (text == null) {
                     throw new IOException();
                 }
-                /*if (text.equals("DizzyHighway") || text.equals("RiskyCrossing")) {
-                    setMap(text); } */
                 else {
                     //logger.debug("Protocol received: " + text);
                     JSONMessage msg = Multiplex.deserialize(text);
                     QueueMessage queueMessage = new QueueMessage(msg, this.user);
-                    server.getBlockingQueue().add(queueMessage); //TODO put?
+                    server.getMessageQueue().add(queueMessage); //TODO put?
                 }
             }
 
@@ -97,13 +84,11 @@ public class UserThread extends Thread {
      * @param jsonBody the JSONBody of the message to sent
      */
     public void sendMessage(JSONBody jsonBody) {
-        String json = Multiplex.serialize(new JSONMessage(jsonBody));
+        String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         //logger.debug("Protocol sent: " + json);
         writer.println(json);
         writer.flush();
     }
-
-
 
     /**
      * The connection is closed and other users get notified that the user left.

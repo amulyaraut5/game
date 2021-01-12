@@ -8,15 +8,7 @@ import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.util.ArrayList;
 
-public class MapConverter {
-    private static MapConverter instance;
-
-    public static MapConverter getInstance() {
-        if (instance == null) {
-            instance = new MapConverter();
-        }
-        return instance;
-    }
+public abstract class MapConverter {
 
     public static GameStarted convert(Map map) {
         Tile[][] tiles = map.getTiles();
@@ -37,7 +29,7 @@ public class MapConverter {
     }
 
     public static Map reconvert(GameStarted body) {
-        int mapLength = (int) Math.sqrt(body.getMap().size()); //TODO only works for squared maps
+        int mapLength = 10;
         int index1;
         int index2;
         Tile[][] tiles = new Tile[mapLength][mapLength];

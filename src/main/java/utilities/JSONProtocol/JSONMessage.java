@@ -11,21 +11,13 @@ public class JSONMessage {
 
     private JSONBody messageBody;
 
-    public JSONMessage(JSONBody messageBody) {
-        this.messageBody = messageBody;
-
-        var type = messageBody.getClass().getSimpleName();
-        messageType = MessageType.valueOf(type);
+    private JSONMessage() {
     }
 
-    public JSONMessage() {
-
-    }
-
-    public static JSONMessage create(JSONBody messageBody) {
+    public static JSONMessage build(JSONBody messageBody) {
         var msg = new JSONMessage();
         msg.messageBody = messageBody;
-        var type = messageBody.getClass().getSimpleName();
+        String type = messageBody.getClass().getSimpleName();
         msg.messageType = MessageType.valueOf(type);
         return msg;
     }

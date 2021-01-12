@@ -98,7 +98,7 @@ public class ActivationPhase extends Phase {
     public void activateGreenBelts(){
         for(Coordinate tileCoordinate : gameMap.getGreenBelts()) {
             for(Player currentPlayer : playerList) {
-                if(tileCoordinate.compare(currentPlayer.getRobot().getPosition())) {
+                if(tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
                     for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){
                         if(a.getType() == Utilities.AttributeType.Belt){
                             handleMove(currentPlayer, a.getOrientation());
@@ -117,7 +117,7 @@ public class ActivationPhase extends Phase {
         for (int i = 0; i < 2; i++) {
             for(Coordinate tileCoordinate : gameMap.getBlueBelts()) {
                 for(Player currentPlayer : playerList) {
-                    if(tileCoordinate.compare(currentPlayer.getRobot().getPosition())) {
+                    if(tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
                         for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){
                             if(a.getType() == Utilities.AttributeType.Belt){
                                 handleMove(currentPlayer, a.getOrientation());

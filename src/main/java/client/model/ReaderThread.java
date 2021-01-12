@@ -69,7 +69,7 @@ public class ReaderThread extends Thread {
                 // deserialized and handled in handleMessage method.
 
                 JSONMessage jsonMessage = Multiplex.deserialize(text);
-                client.getBlockingQueue().add(jsonMessage); //TODO put?
+                client.getMessageQueue().add(jsonMessage); //TODO put?
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;
