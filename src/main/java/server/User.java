@@ -17,7 +17,7 @@ public class User {
     private volatile UserThread thread;
     private volatile String name;
     private volatile int id;
-    private volatile int figure;
+    private volatile int figure = -1;
 
     public User() {
     }

@@ -39,7 +39,7 @@ public abstract class Controller {
          * @param robotId   of the robot
          */
         public RobotPrivate(String robotName, int robotId) {
-            this.id = robotId + 1;
+            this.id = robotId;
             this.name = robotName;
         }
 

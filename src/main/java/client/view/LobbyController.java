@@ -157,7 +157,7 @@ public class LobbyController extends Controller {
      * @param playerAdded
      */
     public void setJoinedUsers(PlayerAdded playerAdded) {
-        String path = "/lobby/" + robotNames[playerAdded.getFigure() - 1] + ".png";
+        String path = "/lobby/" + robotNames[playerAdded.getFigure()] + ".png";
         String newName = playerAdded.getName() + " " + playerAdded.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
         currentLabel.setText(newName);
@@ -177,7 +177,7 @@ public class LobbyController extends Controller {
     public void displayPlayerStatus(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
-                String path = "/lobby/" + robotNames[robotIcon.getFigure() - 1];
+                String path = "/lobby/" + robotNames[robotIcon.getFigure()];
                 if (playerStatus.isReady()) path += "-ready.png";
                 else path += ".png";
                 Image image = new Image(getClass().getResource(path).toString());
