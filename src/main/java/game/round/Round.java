@@ -48,20 +48,20 @@ public class Round {
     public void nextPhase(Utilities.Phase phase) {
         int phaseNumber = 0; //TODO Aufbauphase im game
         switch(phase){
+            case ACTIVATION:
+                phaseNumber = 1;
+                server.communicateAll(new ActivePhase(phase));
+                this.upgradePhase = new UpgradePhase();
+                break;
             case UPGRADE:
                 phaseNumber = 2;
-                server.communicateAll(new ActivePhase(phaseNumber));
-                this.programmingPhase = new ProgrammingPhase(this);
+                server.communicateAll(new ActivePhase(phase));
+                this.programmingPhase = new ProgrammingPhase();
                 break;
             case PROGRAMMING:
                 phaseNumber = 3;
-                server.communicateAll(new ActivePhase(phaseNumber));
-                this.activationPhase = new ActivationPhase(this);
-                break;
-            case ACTIVATION:
-                phaseNumber = 1;
-                server.communicateAll(new ActivePhase(phaseNumber));
-                this.upgradePhase = new UpgradePhase(this);
+                server.communicateAll(new ActivePhase(phase));
+                this.activationPhase = new ActivationPhase();
                 break;
             default:
                 //

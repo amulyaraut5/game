@@ -105,5 +105,4 @@ public class Game {
     }
 
     public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}
-
 }

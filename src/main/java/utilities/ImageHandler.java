@@ -10,7 +10,8 @@ import java.io.InputStream;
  *
  * @author simon
  */
-public class ImageHandler {
+public abstract class ImageHandler {
+
     /**
      * Creates an ImageView from the image at given path.
      *

@@ -32,8 +32,8 @@ public class ActivationPhase extends Phase {
     private Tile [][] gameMapTiles;
     private Map gameMap;
 
-    public ActivationPhase(Round round) {
-        super(round);
+    public ActivationPhase() {
+        super();
     }
 
 

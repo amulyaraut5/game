@@ -45,6 +45,7 @@ public abstract class Robot {
     public void move(int moveCount, Orientation direction) {
         int x = position.getX();
         int y = position.getY();
+        //position.add(direction.toVector());
 
         switch (direction) {
             case UP -> position.setY(y - moveCount);

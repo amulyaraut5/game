@@ -33,8 +33,8 @@ public class ProgrammingPhase extends Phase {
     private ArrayList<Card> availableProgrammingCards;
 
 
-    public ProgrammingPhase(Round round) {
-        super(round);
+    public ProgrammingPhase() {
+        super();
         for (Player player : playerList) {
             notReadyPlayers.add(player.getId());
         }

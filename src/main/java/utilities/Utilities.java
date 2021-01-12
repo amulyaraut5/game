@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public abstract class Utilities {
 
     public static final int PORT = 5558;
+    public static final double PROTOCOL = 1.0;
 
     public static final Orientation[] UP_LEFT = {Orientation.UP, Orientation.LEFT};
     public static final Orientation[] LEFT_UP = {Orientation.LEFT, Orientation.UP};
@@ -42,23 +43,25 @@ public abstract class Utilities {
     }
 
     public enum Rotation {
-        @SerializedName("left") LEFT,
-        @SerializedName("right") RIGHT
+        @SerializedName("counterClockwise") LEFT,
+        @SerializedName("clockwise") RIGHT
     }
 
 
     public enum Difficulty {
-        BEGINNER, ADVANCED, EXTREME;
+        BEGINNER, ADVANCED, EXTREME
 
     }
 
     public enum Phase {
-        CONSTRUCTION(0), UPGRADE(1), PROGRAMMING(2), ACTIVATION(3);
+        @SerializedName("0") CONSTRUCTION(0),
+        @SerializedName("1") UPGRADE(1),
+        @SerializedName("2") PROGRAMMING(2),
+        @SerializedName("3") ACTIVATION(3);
         private final int phase;
 
         Phase(int phase) {
             this.phase = phase;
-            Orientation a = Orientation.UP;
         }
     }
 
@@ -79,6 +82,6 @@ public abstract class Utilities {
 
     public enum AttributeType {
         Antenna, Belt, ControlPoint, Empty, EnergySpace, Gear,
-        Laser, Pit, PushPanel,StartPoint, RestartPoint, RotatingBelt, Wall
+        Laser, Pit, PushPanel, StartPoint, RestartPoint, RotatingBelt, Wall
     }
 }
