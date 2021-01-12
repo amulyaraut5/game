@@ -30,8 +30,7 @@ public class UserThread extends Thread {
      * Logger to log information/warning
      */
     private static final Logger logger = LogManager.getLogger();
-    private static int idCounter = 1; //Number of playerIDs is saved to give new player a new number
-    private static ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
+
     private final User user; //Connected user, which data has to be filled in logIn()
     private final Socket socket;
     private final Server server = Server.getInstance();
@@ -81,7 +80,8 @@ public class UserThread extends Thread {
                 else {
                     //logger.debug("Protocol received: " + text);
                     JSONMessage msg = Multiplex.deserialize(text);
-                    handleMessage(msg);
+                    QueueMessage queueMessage = new QueueMessage(msg, this.user);
+                    server.getBlockingQueue().add(queueMessage);
                 }
             }
 
@@ -103,94 +103,12 @@ public class UserThread extends Thread {
         writer.flush();
     }
 
-    /**
-     * Based on the messageType the various protocol are differentiated and Object class type
-     * is casted down to respective class.
-     *
-     * @param message received Object of JSONMessage
-     */
-    private void handleMessage(JSONMessage message) {
-        MessageType type = message.getType();
 
-        switch (type) {
-            case HelloServer -> {
-                HelloServer hs = (HelloServer) message.getBody();
-                if (hs.getProtocol() == protocol) {
-                    user.setId(idCounter++);
-                    currentThread().setName("UserThread-" + user.getId());
-                    sendMessage(new Welcome(user.getId()));
-
-                    for (PlayerAdded addedPlayer : addedPlayers) {
-                        sendMessage(addedPlayer);
-                    }
-                } else {
-                    JSONBody error = new Error("Protocols don't match! " +
-                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + protocol);
-                    sendMessage(error);
-                    disconnect();
-                }
-            }
-            case PlayerValues -> {
-                PlayerValues pv = (PlayerValues) message.getBody();
-                boolean figureTaken = false;
-                for (User user : server.getUsers()) {
-                    if (pv.getFigure() == user.getFigure()) {
-                        figureTaken = true;
-                        break;
-                    }
-                }
-                if (!figureTaken) {
-                    user.setId(user.getId());
-                    user.setName(pv.getName());
-                    user.setFigure(pv.getFigure());
-                    PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
-                    addedPlayers.add(addedPlayer);
-                    server.communicateAll(addedPlayer);
-                } else {
-                    JSONBody error = new Error("Robot is already taken!");
-                    sendMessage(error);
-                }
-            }
-            case SetStatus -> {
-                SetStatus status = (SetStatus) message.getBody();
-                server.communicateAll(new PlayerStatus(user.getId(), status.isReady()));
-                boolean allUsersReady = server.setReadyStatus(user, status.isReady());
-
-                /*if (allUsersReady) {
-                    Blueprint chosenBlueprint = null;
-                    if (map.equals("DizzyHighway")) {
-                        chosenBlueprint = new DizzyHighway();
-                    } else if (map.equals("RiskyCrossing")) {
-                        chosenBlueprint = new RiskyCrossing();
-                    }
-                    server.startGame(chosenBlueprint);
-                } */
-                if(allUsersReady){
-                    server.startGame(new DizzyHighway());
-                }
-            }
-            case SendChat -> {
-                SendChat sc = (SendChat) message.getBody();
-                if (sc.getTo() < 0)
-                    server.communicateUsers(new ReceivedChat(sc.getMessage(), this.user.getName(), false), this);
-                else {
-                    server.communicateDirect(new ReceivedChat(sc.getMessage(), this.user.getName(), true), this, sc.getTo());
-                }
-            }
-            case SelectCard -> {
-                SelectCard selectCard = (SelectCard) message.getBody();
-                //TODO send selectCard to ProgrammingPhase
-                //Game.getInstance().messageToPhases(selectCard);
-                server.communicateUsers(new CardSelected(this.user.getId(), selectCard.getRegister()), this);
-            }
-            default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
-        }
-    }
 
     /**
      * The connection is closed and other users get notified that the user left.
      */
-    private void disconnect() {
+    void disconnect() {
         if (!exit) {
             exit = true;
             //sendMessage("Bye " + user);

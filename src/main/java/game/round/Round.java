@@ -65,10 +65,7 @@ public class Round {
                 break;
             default:
                 //
-
         }
-
-
     }
 
     public void resetRound() {
