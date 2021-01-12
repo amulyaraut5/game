@@ -1,6 +1,5 @@
 package server;
 
-import game.Game;
 import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
@@ -9,8 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.Utilities;
 
@@ -27,13 +26,11 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-    private final ArrayList<User> users = new ArrayList<>(10); //all Users
-    private ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
-    private final double protocol = 1.0;
     private static int idCounter = 1; //Number of playerIDs is saved to give new player a new number
     private static ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
-
-
+    private final ArrayList<User> users = new ArrayList<>(10); //all Users
+    private final double protocol = 1.0;
+    private ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
     private BlockingQueue<QueueMessage> blockingQueue = new LinkedBlockingQueue<>();
     private boolean exit = false; //TODO Server
 
@@ -72,11 +69,11 @@ public class Server extends Thread {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
-            Thread acceptClients = new Thread(()->{acceptClients(serverSocket);});
+            Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.start();
-            while (!exit){
+            while (!exit) {
                 QueueMessage queueMessage;
-                while((queueMessage = blockingQueue.poll()) != null ){
+                while ((queueMessage = blockingQueue.poll()) != null) {
                     handleMessage(queueMessage);
                 }
 
@@ -150,16 +147,16 @@ public class Server extends Thread {
                     }
                     server.startGame(chosenBlueprint);
                 } */
-                if(allUsersReady){
+                if (allUsersReady) {
                     startGame(new DizzyHighway());
                 }
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
-                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getName(), false), user.getThread());
+                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getId(), false), user.getThread());
                 else {
-                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getName(), true), user.getThread(), sc.getTo());
+                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getId(), true), user.getThread(), sc.getTo());
                 }
             }
             case SelectCard -> {
@@ -171,9 +168,11 @@ public class Server extends Thread {
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
+
     public BlockingQueue<QueueMessage> getBlockingQueue() {
         return blockingQueue;
     }
+
     /**
      * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
      *
