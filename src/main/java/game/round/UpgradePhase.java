@@ -9,7 +9,8 @@ package game.round;
 
 public class UpgradePhase extends Phase {
 
-    public UpgradePhase() {
+    public UpgradePhase(Round round) {
+        super(round);
     }
 
     /**
