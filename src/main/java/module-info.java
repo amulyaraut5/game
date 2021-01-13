@@ -11,6 +11,7 @@ module roborally {
     exports game.gameObjects.tiles to com.google.gson;
     exports game.gameObjects.maps to com.google.gson;
     exports utilities to javafx.graphics;
+    exports game.gameObjects.cards.programming to com.google.gson;
     opens game.gameObjects.maps;
     opens client.view to javafx.fxml;
     opens client to javafx.fxml;
