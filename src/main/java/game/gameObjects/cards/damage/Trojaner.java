@@ -24,7 +24,7 @@ public class Trojaner extends DamageCard {
     @Override
     public void handleCard(Game game, Player player) {
         game.getSpamDeck().getDeck().add(this);
-        Card topCard = game.getProgrammingDeck().pop();
+        Card topCard = player.getDrawProgrammingDeck().pop();
 
         //exchange spam card and new programming card in the current register
         int spamIndex = player.getRegisterCards().indexOf(this);

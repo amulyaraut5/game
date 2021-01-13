@@ -26,7 +26,7 @@ public class Spam extends DamageCard {
         //Add spam card back into the spam deck
         game.getSpamDeck().getDeck().add(this);
         //remove top card from programming deck
-        Card topCard = game.getProgrammingDeck().pop();
+        Card topCard = player.getDrawProgrammingDeck().pop();
 
         //exchange spam card and new programming card in the current register
         int spamIndex = player.getRegisterCards().indexOf(this);

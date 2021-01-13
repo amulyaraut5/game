@@ -30,7 +30,7 @@ public class Virus extends DamageCard {
 
         int robotX = player.getRobot().getPosition().getX();
         int robotY = player.getRobot().getPosition().getY();
-        ArrayList<Player> allPlayers = game.getActiveRound().getPlayerList();
+        ArrayList<Player> allPlayers = game.getPlayerList();
 
             for (Player otherPlayer : allPlayers) {
                 int otherRobotX = otherPlayer.getRobot().getPosition().getX();

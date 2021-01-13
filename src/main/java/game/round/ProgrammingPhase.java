@@ -107,7 +107,7 @@ public class ProgrammingPhase extends Phase {
         if (!(notReadyPlayers.size() == 0)) {
             dealRandomCards();
         }
-        round.nextPhase(Utilities.Phase.PROGRAMMING);
+        game.nextPhase(Utilities.Phase.PROGRAMMING);
     }
 
     /**

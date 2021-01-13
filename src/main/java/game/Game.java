@@ -8,8 +8,8 @@ import game.gameObjects.maps.MapFactory;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import game.round.ActivationPhase;
+import game.round.Phase;
 import game.round.ProgrammingPhase;
-import game.round.Round;
 import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,6 +52,9 @@ public class Game {
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
     private UpgradePhase upgradePhase;
+
+    private Phase activePhase;
+
     /**
      * Shows if a game has already been created or not (false = not created)
      **/
@@ -99,7 +102,7 @@ public class Game {
     }
 
     //TODO resetGame()
-    public void reset(){
+    public void resetGame(){
         createdGame = false;
         runningGame = false;
 
@@ -155,4 +158,8 @@ public class Game {
     }
 
     public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}
+
+    public Phase getActivePhase() {
+        return activePhase;
+    }
 }

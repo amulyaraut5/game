@@ -36,7 +36,7 @@ public class AgainAction extends Action{
         for (Card damageCard : damageCards) {
             if (player.getLastAction() == damageCard) {
                 //draw top card from programming deck and play it
-                Card topCard = player.getGame().getProgrammingDeck().pop();
+                Card topCard = player.getDrawProgrammingDeck().pop();
                 topCard.handleCard(player.getGame(), player);
             }
         }
