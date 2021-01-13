@@ -52,6 +52,14 @@ public class Game {
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
     private UpgradePhase upgradePhase;
+    /**
+     * Shows if a game has already been created or not (false = not created)
+     **/
+    private boolean createdGame = false;
+    /**
+     * Shows if a game has already been started or not (false = not running)
+     **/
+    private boolean runningGame = false;
 
     private Server server = Server.getInstance();
 
@@ -91,6 +99,11 @@ public class Game {
     }
 
     //TODO resetGame()
+    public void reset(){
+        createdGame = false;
+        runningGame = false;
+
+    }
 
     /**
      * This methods starts Roborally.
