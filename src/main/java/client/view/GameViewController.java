@@ -71,7 +71,7 @@ public class GameViewController extends Controller {
             int pos = tile.getPosition();
             var field = tile.getField();
 
-            if (emptyTileBackground(field)) {    //If the image would be transparent, an empty tile is added.
+            if (isTileBackgroundEmpty(field)) {    //If the image would be transparent, an empty tile is added.
                 fields[pos - 1].getChildren().add(new Empty().createImage());
             }
 
@@ -92,7 +92,7 @@ public class GameViewController extends Controller {
      * @param field Field to test
      * @return True if the Tile is transparent.
      */
-    private boolean emptyTileBackground(ArrayList<Attribute> field) {
+    private boolean isTileBackgroundEmpty(ArrayList<Attribute> field) {
         for (Attribute a : field) {
             if (a.getType() == AttributeType.Empty || a.getType() == AttributeType.Pit) {
                 return false;
@@ -108,7 +108,7 @@ public class GameViewController extends Controller {
                 {AttributeType.Belt, AttributeType.RotatingBelt, AttributeType.Gear,
                         AttributeType.EnergySpace, AttributeType.Antenna},
                 {AttributeType.PushPanel, AttributeType.Laser},
-                {AttributeType.ControlPoint, AttributeType.Reboot},
+                {AttributeType.ControlPoint, AttributeType.RestartPoint, AttributeType.StartPoint},
                 {AttributeType.Wall}};
 
         for (AttributeType[] priority : priorityArray) {

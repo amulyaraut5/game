@@ -32,8 +32,8 @@ public class ActivationPhase extends Phase {
     private Tile [][] gameMapTiles;
     private Map gameMap;
 
-    public ActivationPhase(Round round) {
-        super(round);
+    public ActivationPhase() {
+        super();
     }
 
 
@@ -77,29 +77,13 @@ public class ActivationPhase extends Phase {
         gameMapTiles = game.getMap().getTiles();
         gameMap = game.getMap();
 
-        /*for(Coordinate tileCoordinate : gameMap.getBeltCoordinates(gameMapTiles)) {
-            for(Player currentPlayer : playerList) {
-                if(player.getRobot().getPosition() == tileCoordinate) {
 
-                }
-            }
-        }
-        /*
-        for(Coordinate coordinate : gameMap.getBeltCoordinates(gameMapTiles)){
-
-            if(player.getRobot().getPosition() == coordinate){
-                Tile tile = gameMap.getTile(coordinate);
-                for(Attribute a : tile.getAttributes()){
-                    a.performAction(player);
-                }
-            }
-        }
         // And then we can execute other board elements in order
 
 
 		/*
-		blueConveyor.performAction();
-		greenConveyor.performAction();
+		activateBlueBelts;
+		activateGreenBelts;
 		pushPanel.performAction();
 		gear.performAction();
 		boardLaser.performAction();
@@ -114,44 +98,72 @@ public class ActivationPhase extends Phase {
     public void activateGreenBelts(){
         for(Coordinate tileCoordinate : gameMap.getGreenBelts()) {
             for(Player currentPlayer : playerList) {
-                if(currentPlayer.getRobot().getPosition() == tileCoordinate) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){{
+                if(tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){
                         if(a.getType() == Utilities.AttributeType.Belt){
-                            if(a.getOrientation() == Orientation.UP){
-                                //move
-                            }
-                            if(a.getOrientation() == Orientation.LEFT){
-                                //move
-                            }
-                            if(a.getOrientation() == Orientation.RIGHT){
-                                //move
-                            }
-                            if(a.getOrientation() == Orientation.DOWN){
-                                //move
-                            }
+                            handleMove(currentPlayer, a.getOrientation());
                         }
                         if(a.getType() == Utilities.AttributeType.RotatingBelt){
                             RotatingBelt temp = (RotatingBelt) a;
-                            if(temp.getOrientations()[1]  == Orientation.UP){
-                                //move
-                            }
-                            if(temp.getOrientations()[1]  == Orientation.LEFT){
-                                //move
-                            }
-                            if(temp.getOrientations()[1]  == Orientation.RIGHT){
-                                //move
-                            }
-                            if(temp.getOrientations()[1]  == Orientation.DOWN){
-                                //move
-                            }
+                            handleMove(currentPlayer, temp.getOrientations()[1]);
                         }
-
                     }
-                    }
-
                 }
             }
         }
+    }
+
+    public void activateBlueBelts(){
+        for (int i = 0; i < 2; i++) {
+            for(Coordinate tileCoordinate : gameMap.getBlueBelts()) {
+                for(Player currentPlayer : playerList) {
+                    if(tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                        for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){
+                            if(a.getType() == Utilities.AttributeType.Belt){
+                                handleMove(currentPlayer, a.getOrientation());
+
+                            }
+                            if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                                RotatingBelt temp = (RotatingBelt) a;
+                                handleMove(currentPlayer, temp.getOrientations()[1]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //Supposed o handle a robot moving one tile.
+    //TODO Once the game can be started, it needs to check wheiher the robots really move in the right direction
+    public void handleMove(Player player, Orientation o){
+        Coordinate newPosition = null;
+        if(o == Orientation.UP){
+            newPosition = player.getRobot().getPosition().clone();
+            newPosition.addToY(-1);
+        }
+        if(o == Orientation.RIGHT){
+            newPosition = player.getRobot().getPosition().clone();
+            newPosition.addToX(1);
+        }
+        if(o == Orientation.DOWN){
+            newPosition = player.getRobot().getPosition().clone();
+            newPosition.addToY(1);
+        }
+        if(o == Orientation.LEFT){
+            newPosition = player.getRobot().getPosition().clone();
+            newPosition.addToX(-1);
+
+
+        }
+
+        for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
+            switch(a.getType()){
+                //handle different tile effects here
+            }
+        }
+
+
+
     }
 
 

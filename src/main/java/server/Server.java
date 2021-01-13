@@ -1,6 +1,5 @@
 package server;
 
-import game.Game;
 import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
@@ -9,8 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.Utilities;
 
@@ -27,14 +26,13 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
+
+    private final ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
-    private ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
-    private final double protocol = 1.0;
-    private static int idCounter = 1; //Number of playerIDs is saved to give new player a new number
-    private static ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
+    private final ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
 
-
-    private BlockingQueue<QueueMessage> blockingQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
+    private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
     private boolean exit = false; //TODO Server
 
     /**
@@ -72,11 +70,11 @@ public class Server extends Thread {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
-            Thread acceptClients = new Thread(()->{acceptClients(serverSocket);});
+            Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.start();
-            while (!exit){
+            while (!exit) {
                 QueueMessage queueMessage;
-                while((queueMessage = blockingQueue.poll()) != null ){
+                while ((queueMessage = messageQueue.poll()) != null) {
                     handleMessage(queueMessage);
                 }
 
@@ -100,7 +98,7 @@ public class Server extends Thread {
         switch (type) {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
-                if (hs.getProtocol() == protocol) {
+                if (hs.getProtocol() == Utilities.PROTOCOL) {
                     user.setId(idCounter++);
                     currentThread().setName("UserThread-" + user.getId());
                     user.message(new Welcome(user.getId()));
@@ -110,7 +108,7 @@ public class Server extends Thread {
                     }
                 } else {
                     JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
-                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + protocol);
+                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
                     user.message(error);
                     user.getThread().disconnect();
                 }
@@ -141,39 +139,32 @@ public class Server extends Thread {
                 communicateAll(new PlayerStatus(user.getId(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
 
-                /*if (allUsersReady) {
-                    Blueprint chosenBlueprint = null;
-                    if (map.equals("DizzyHighway")) {
-                        chosenBlueprint = new DizzyHighway();
-                    } else if (map.equals("RiskyCrossing")) {
-                        chosenBlueprint = new RiskyCrossing();
-                    }
-                    server.startGame(chosenBlueprint);
-                } */
-                if(allUsersReady){
+                if (allUsersReady) {
                     startGame(new DizzyHighway());
                 }
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
-                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getId(), false), user.getThread());
+                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getId(), false), user);
                 else {
-                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getId(), true), user.getThread(), sc.getTo());
+                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getId(), true), sc.getTo());
                 }
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
                 //Game.getInstance().messageToPhases(selectCard);
-                communicateUsers(new CardSelected(user.getId(), selectCard.getRegister()), user.getThread());
+                communicateUsers(new CardSelected(user.getId(), selectCard.getRegister()), user);
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
-    public BlockingQueue<QueueMessage> getBlockingQueue() {
-        return blockingQueue;
+
+    public BlockingQueue<QueueMessage> getMessageQueue() {
+        return messageQueue;
     }
+
     /**
      * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
      *
@@ -195,9 +186,6 @@ public class Server extends Thread {
                 logger.info("Accept failed on: " + PORT);
             }
         }
-    }
-
-    public void setMap(Blueprint blueprint) {
     }
 
     /**
@@ -226,9 +214,9 @@ public class Server extends Thread {
         return (users.size() == readyUsers.size() && users.size() > 1);
     }
 
-    public void communicateUsers(JSONBody jsonBody, UserThread sender) {
+    public void communicateUsers(JSONBody jsonBody, User sender) {
         for (User user : users) {
-            if (user.getThread() != sender) {
+            if (!user.equals(sender)) {
                 user.message(jsonBody);
             }
         }
@@ -240,7 +228,7 @@ public class Server extends Thread {
         }
     }
 
-    public void communicateDirect(JSONBody jsonBody, UserThread sender, int receiver) {
+    public void communicateDirect(JSONBody jsonBody, int receiver) {
         for (User user : users) {
             if (user.getId() == receiver) {
                 user.message(jsonBody);

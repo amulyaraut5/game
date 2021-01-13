@@ -20,8 +20,6 @@ public class SoundHandler{
      * if the player wishes to play.
      */
     public void musicOn(){
-        //String s = "C:\\Users\\Amulya\\IdeaProjects\\vp-astreine-akazien\\src\\main\\resources\\sounds\\robotDance.mp3";
-        //Media m = new Media(Paths.get(s).toUri().toString());
         Media m = new Media(getClass().getResource("/sounds/robotDance.mp3").toExternalForm());
         mediaPlayer = new MediaPlayer(m);
         mediaPlayer.play();

@@ -51,7 +51,8 @@ public class TileFactory {
             case 0 -> attribute = new Empty();
             case 1 -> attribute = new Antenna();
             case 2 -> attribute = new Pit();
-            case 3 -> attribute = new Reboot();
+            case 3 -> attribute = new RestartPoint();
+            case 4 -> attribute = new StartPoint();
 
             //Belt
             case 10 -> attribute = new Belt(Orientation.UP, 1);

@@ -68,24 +68,6 @@ public class LoginController extends Controller {
      * it makes sure that only one item of the listView can get clicked
      */
     public void initialize() {
-        /*listView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> param) {
-                return new ListCell<String>() {
-                    @Override
-                    protected void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if ("Orange".equals(item)) {
-                            setDisable(true);
-                        } else {
-                            setDisable(false);
-                        }
-                        setText(item);
-                    }
-
-                };
-            }
-        });*/
         createRobotList();
         listView.setItems(robotImageViewList);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -100,14 +82,6 @@ public class LoginController extends Controller {
         ImageView robot;
         Image robotImage;
         double scaleSize = 50;
-        /*
-        for (String robotName: robotNames){
-            robotImage = new Image("/choose-robot-" + robotName +".png");
-            robot = new ImageView(robotImage);
-            robot.setFitHeight(scaleSize);
-            robot.setFitWidth(scaleSize);
-            robotList.add(robot);
-        }*/
         for (int i = 0; i < robotNames.length; i++) {
             String path = "/lobby/" + robotNames[i] + ".png";
             robot = new ImageView(new Image(getClass().getResource(path).toString()));

@@ -61,4 +61,16 @@ public class Coordinate {
     public Coordinate clone() {
         return new Coordinate(x, y);
     }
+
+    public boolean equals(Coordinate c) {
+        return (this.getX() == c.getX()) && (this.getY() == c.getY());
+    }
+
+    public void addToX(int x) {
+        this.x = this.x + x;
+    }
+
+    public void addToY(int y) {
+        this.y = this.y + y;
+    }
 }

@@ -5,10 +5,10 @@ import javafx.scene.Node;
 import utilities.ImageHandler;
 import utilities.Utilities.AttributeType;
 
-public class Reboot extends Attribute {
+public class RestartPoint extends Attribute {
 
-    public Reboot() {
-        type = AttributeType.Reboot;
+    public RestartPoint() {
+        type = AttributeType.RestartPoint;
     }
 
     @Override
@@ -19,6 +19,6 @@ public class Reboot extends Attribute {
 
     @Override
     public Node createImage() {
-        return ImageHandler.createImageView("/tiles/reboot.png");
+        return ImageHandler.createImageView("/tiles/restart.png");
     }
 }

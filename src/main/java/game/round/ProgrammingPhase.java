@@ -11,7 +11,7 @@ import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
 
 /**
  * The Programming phase is the second Phase of every round.
@@ -33,13 +33,14 @@ public class ProgrammingPhase extends Phase {
     private ArrayList<Card> availableProgrammingCards;
 
 
-    public ProgrammingPhase(Round round) {
-        super(round);
+    public ProgrammingPhase() {
+        super();
         for (Player player : playerList) {
             notReadyPlayers.add(player.getId());
         }
         dealProgrammingCards();
     }
+
     @Override
     public void startPhase() {
 
@@ -82,13 +83,11 @@ public class ProgrammingPhase extends Phase {
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
         if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player.getId());
-            if (notReadyPlayers.size() == playerList.size() - 1) {
+            player.discardCards(availableProgrammingCards, player.getDiscardedProgrammingDeck());
+            if (notReadyPlayers.size() == playerList.size() - 1)
                 onePlayerFinished(player);
-            } //TODO if a player doesn't play this round use isFinished?
-        }
+        } //TODO if a player doesn't play this round use isFinished?
     }
-
-
 
 
     private void onePlayerFinished(Player player) {
@@ -103,34 +102,43 @@ public class ProgrammingPhase extends Phase {
      * method that gets called from gameTimer if he has ended and then sends the message
      * TimerEnded and calls dealRandomCards()
      */
-    public void timerHasEnded(){
+    public void timerHasEnded() {
         server.communicateAll(new TimerEnded(notReadyPlayers));
         if (!(notReadyPlayers.size() == 0)) {
             dealRandomCards();
         }
         round.nextPhase(Utilities.Phase.PROGRAMMING);
     }
+
     /**
-     * Method that chooses ar random card out of the drawn Programming cards for every empty register.
+     * Method takes all previously dealt programming cards (9), shuffles them and puts the top 5
+     * cards into the players register
      */
     private void dealRandomCards() {
         for (Integer id : notReadyPlayers) {
             Player player = game.getPlayerFromID(id);
+
             player.message(new DiscardHand(player.getId()));
+
             ArrayList<Card> registers = player.getRegisterCards();
-            Random randomGenerator = new Random();
+            availableProgrammingCards = player.getDrawnProgrammingCards();
+
+            registers.removeAll(null);
+            availableProgrammingCards.addAll(registers);
+            Collections.shuffle(availableProgrammingCards);
+
             for (int i = 0; i < registers.size(); i++) {
-                if (registers.get(i) == null) {
-                    availableProgrammingCards = player.getDrawnProgrammingCards();
-                    int index = randomGenerator.nextInt(availableProgrammingCards.size());
-                    Card randomCard = availableProgrammingCards.get(index);
-                    availableProgrammingCards.remove(index);
-                    player.setRegisterCards(i + 1, randomCard);
-                }
+                player.setRegisterCards(i, availableProgrammingCards.get(i));
+                availableProgrammingCards.set(i, null);
             }
+
+            availableProgrammingCards.removeAll(null);
+            player.discardCards(availableProgrammingCards, player.getDiscardedProgrammingDeck());
             player.message(new CardsYouGotNow(player.getRegisterCards()));
         }
+
     }
+
     /**
      * players get their  cards for programming their robot in this round.
      * If the draw pile has at least 9 cards, the top 9 cards get dealt.
@@ -153,7 +161,7 @@ public class ProgrammingPhase extends Phase {
             }
             player.setDrawnProgrammingCards(availableProgrammingCards);
             player.message(new YourCards(availableProgrammingCards));
-            server.communicateUsers((new NotYourCards(player.getId(), availableProgrammingCards.size())), player.getThread());
+            server.communicateUsers((new NotYourCards(player.getId(), availableProgrammingCards.size())), player);
         }
 
     }

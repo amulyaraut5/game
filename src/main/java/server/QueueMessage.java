@@ -3,8 +3,8 @@ package server;
 import utilities.JSONProtocol.JSONMessage;
 
 public class QueueMessage {
-    private JSONMessage jsonMessage;
-    private User user;
+    private final JSONMessage jsonMessage;
+    private final User user;
 
 
     public QueueMessage(JSONMessage jsonMessage, User user) {

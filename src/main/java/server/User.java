@@ -17,7 +17,7 @@ public class User {
     private volatile UserThread thread;
     private volatile String name;
     private volatile int id;
-    private volatile int figure;
+    private volatile int figure = -1;
 
     public User() {
     }
@@ -28,19 +28,6 @@ public class User {
 
     public void setFigure(int figure) {
         this.figure = figure;
-    }
-
-    /**
-     * Test if two different objects of User are the same user.
-     * (i.e. if they have the same UserThread and therefore are connected to the same client.)
-     * For example if Player a is User b.
-     *
-     * @param a first user
-     * @param b second user
-     * @return true if they are the same user, otherwise false
-     */
-    public boolean isSameUser(User a, User b) {
-        return a.thread == b.thread;
     }
 
     /**
