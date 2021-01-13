@@ -5,11 +5,11 @@ import utilities.JSONProtocol.JSONBody;
 public class ReceivedChat extends JSONBody {
     String message;
 
-    String from;
+    int from;
 
     boolean privat;
 
-    public ReceivedChat(String message, String from, boolean privat) {
+    public ReceivedChat(String message, int from, boolean privat) {
         this.message = message;
         this.from = from;
         this.privat = privat;
@@ -19,7 +19,7 @@ public class ReceivedChat extends JSONBody {
         return this.message;
     }
 
-    public String getFrom() {
+    public int getFrom() {
         return this.from;
     }
 

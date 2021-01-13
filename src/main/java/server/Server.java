@@ -157,9 +157,9 @@ public class Server extends Thread {
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
-                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getName(), false), user.getThread());
+                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getId(), false), user.getThread());
                 else {
-                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getName(), true), user.getThread(), sc.getTo());
+                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getId(), true), user.getThread(), sc.getTo());
                 }
             }
             case SelectCard -> {
