@@ -1,18 +1,28 @@
 package game;
 
 import game.gameObjects.cards.DamageCard;
-import game.gameObjects.decks.ProgrammingDeck;
-import game.gameObjects.decks.SpamDeck;
-import game.gameObjects.decks.VirusDeck;
+import game.gameObjects.decks.*;
+import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.Map;
+import game.gameObjects.maps.MapFactory;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
+import game.round.ActivationPhase;
+import game.round.ProgrammingPhase;
 import game.round.Round;
+import game.round.UpgradePhase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import server.Server;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.ActivePhase;
 import utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static utilities.Utilities.MAX_PLAYERS;
+import static utilities.Utilities.MIN_PLAYERS;
 
 /**
  * This class handles the game itself.
@@ -21,20 +31,29 @@ import java.util.HashMap;
 
 public class Game {
 
+    private static final Logger logger = LogManager.getLogger();
+
     private static Game instance;
     private int energyBank;
     private UpgradeShop upgradeShop;
     private ArrayList<Player> playerList;
     private HashMap<Integer, Player> playerIDs = new HashMap<>();
-    private Round activeRound;
+
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
-    private ProgrammingDeck programmingDeck;
-    private ArrayList<DamageCard> damageCardDeck;
-    private ProgrammingDeck specialProgrammingDeck;
+    private WormDeck wormDeck;
+    private TrojanHorseDeck trojanHorseDeck;
+
     private int noOfCheckpoints;
     private Map map;
+    private MapFactory mapFactory;
     private ArrayList<Player> players;
+
+    private ProgrammingPhase programmingPhase;
+    private ActivationPhase activationPhase;
+    private UpgradePhase upgradePhase;
+
+    private Server server = Server.getInstance();
 
     private Game() {
     }
@@ -44,18 +63,49 @@ public class Game {
         return instance;
     }
 
+    /**
+     * This method gets called from the phases, it calls the next phase
+     * @param phase
+     */
+    public void nextPhase(Utilities.Phase phase) {
+        int phaseNumber = 0; //TODO Aufbauphase im game
+        switch(phase){
+            case ACTIVATION:
+                phaseNumber = 1;
+                server.communicateAll(new ActivePhase(phase));
+                this.upgradePhase = new UpgradePhase();
+                break;
+            case UPGRADE:
+                phaseNumber = 2;
+                server.communicateAll(new ActivePhase(phase));
+                this.programmingPhase = new ProgrammingPhase();
+                break;
+            case PROGRAMMING:
+                phaseNumber = 3;
+                server.communicateAll(new ActivePhase(phase));
+                this.activationPhase = new ActivationPhase();
+                break;
+            default:
+                //
+        }
+    }
+
     //TODO resetGame()
 
     /**
      * This methods starts Roborally.
      */
-    public void play() {
-        // TODO - implement Game.play
-        throw new UnsupportedOperationException();
-    }
+    public void play(ArrayList<Player> players) {
+        this.players = new ArrayList<>(players);
 
-    public Map getMap() {
-        return map;
+        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
+            //create Map ?
+            logger.info("Game has started");
+            //upgradePhase.startPhase();
+            programmingPhase.startPhase();
+            activationPhase.startPhase();
+        }
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -67,22 +117,9 @@ public class Game {
         return this.noOfCheckpoints;
     }
 
-
-    //private void activateBelts(){
-    //    ArrayList<Coordinate> coordinates = getBeltCoordinates(map);
-    //    for(Player player : players){
-    //        for(Coordinate c : coordinates){
-    //            if((player.getRobot().getPosition().getX() == c.getX()) && (player.getRobot().getPosition().getY() == c.getY())){
-    //
-    //            }
-    //        }
-    //    }
-    //
-    //
-    //
-    //}
-
-
+    public Map getMap() {
+        return map;
+    }
 
     public ArrayList<Player> getPlayerList() {
         return playerList;
@@ -96,12 +133,12 @@ public class Game {
         return virusDeck;
     }
 
-    public ProgrammingDeck getProgrammingDeck() {
-        return programmingDeck;
+    public WormDeck getWormDeck() {
+        return wormDeck;
     }
 
-    public Round getActiveRound() {
-        return activeRound;
+    public TrojanHorseDeck getTrojanHorseDeck() {
+        return trojanHorseDeck;
     }
 
     public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}

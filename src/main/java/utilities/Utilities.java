@@ -37,6 +37,10 @@ public abstract class Utilities {
     public static final int AGAIN_CARDCOUNT = 2;
     public static final int POWERUP_CARDCOUNT = 1;
 
+    //Number of Players
+    public static final int MIN_PLAYERS = 2;
+    public static final int MAX_PLAYERS = 6;
+
     public enum CardType {
         MoveI, MoveII, MoveIII, TurnLeft, TurnRight, UTurn, BackUp, PowerUp, Again,
         Spam, Wurm, Virus, Trojaner
