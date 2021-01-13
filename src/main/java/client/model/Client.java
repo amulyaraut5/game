@@ -1,6 +1,10 @@
 package client.model;
 
 import client.view.*;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.programming.Again;
+import game.gameObjects.cards.programming.MoveI;
+import game.gameObjects.cards.programming.MoveII;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -212,6 +216,11 @@ public class Client {
                     //TODO start gameView
                     gameViewController.buildMap(gameStarted.getMap());
                     logger.info("The game has started.");
+                }
+                case YourCards -> {
+                    YourCards yourCards = (YourCards) message.getBody();
+                    gameViewController.programCards(yourCards);
+
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();

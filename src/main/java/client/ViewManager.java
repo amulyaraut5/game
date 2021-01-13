@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * <p>
  * The Scenes of the view can be changed with nextScenes() and previousScene(). showMenu() return to the main menu.
  *
- * @author simon
+ * @author simon, sarah
  */
 public class ViewManager {
     private static final Logger logger = LogManager.getLogger();
@@ -37,6 +37,7 @@ public class ViewManager {
     private Scene lobbyScene;
     private Scene gameScene;
     private Pane chatPane;
+    private Pane playerMap;
     //private Scene mapSelectionScene;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
@@ -47,6 +48,7 @@ public class ViewManager {
         Platform.runLater(() -> {
             try {
                 createChatPane();
+                createPlayerMap();
                 constructScenes();
                 constructMenuStage();
                 constructGameStage();
@@ -107,6 +109,8 @@ public class ViewManager {
 
     private void showGameStage() {
         gameViewController.attachChatPane(chatPane);
+        gameViewController.attachPlayerMap(playerMap);
+        //gameViewController.changeInnerView();
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
             gameStage.show();
@@ -153,7 +157,13 @@ public class ViewManager {
         } catch (IOException e) {
             logger.error("ChatPane could not be created: " + e.getMessage());
         }
-
+    }
+    private void createPlayerMap() {
+        try {
+            playerMap = FXMLLoader.load(getClass().getResource("/view/innerViews/playerMap.fxml"));
+        } catch (IOException e) {
+            logger.error("PlayerMap could not be created: " + e.getMessage());
+        }
     }
 
     private void constructScenes() throws IOException {
