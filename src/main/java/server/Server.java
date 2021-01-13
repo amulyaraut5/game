@@ -1,5 +1,9 @@
 package server;
 
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.programming.Again;
+import game.gameObjects.cards.programming.MoveI;
+import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
@@ -142,6 +146,12 @@ public class Server extends Thread {
                 if (allUsersReady) {
                     startGame(new DizzyHighway());
                 }
+                //TODO now just hardcoded and for testing purposes (Sarah)
+                ArrayList<Card> programmingCards = new ArrayList<>();
+                programmingCards.add(new Again());
+                programmingCards.add(new MoveII());
+                programmingCards.add(new MoveI());
+                user.message(new YourCards(programmingCards));
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -268,5 +278,6 @@ public class Server extends Thread {
 
         GameStarted gameStarted = MapConverter.convert(chosenMap);
         communicateAll(gameStarted);
+
     }
 }
