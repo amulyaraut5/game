@@ -1,5 +1,6 @@
 package client.view;
 
+import game.gameObjects.cards.Card;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import javafx.fxml.FXML;
@@ -7,12 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.SetStartingPoint;
+import utilities.JSONProtocol.body.YourCards;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 import utilities.Utilities.AttributeType;
 
@@ -42,8 +45,18 @@ public class GameViewController extends Controller {
     private FlowPane boardPane;
 
     @FXML
+    public AnchorPane playerMap; //TODO make it private
+
+
+    @FXML
     public void initialize() {
     }
+    public void attachPlayerMap(Pane playerM){
+        playerM.setPrefHeight(playerM.getPrefWidth());
+        playerM.setPrefHeight(playerM.getPrefHeight());
+        playerMap.getChildren().add(playerM);
+    }
+
 
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
@@ -84,6 +97,10 @@ public class GameViewController extends Controller {
             }
             boardPane.getChildren().add(fields[pos - 1]);
         }
+    }
+    //TODO inner view with activation phase
+    public void programCards(YourCards yourCards){
+
     }
 
     /**
@@ -126,8 +143,8 @@ public class GameViewController extends Controller {
     /**
      * Button press to test the change of inner phase panes.
      */
-    @FXML
-    private void changeInnerView() {
+
+    public void changeInnerView() {//TODO set it private
         Pane innerPane = setNextPhase();
         outerPane.setCenter(innerPane);
     }
@@ -138,12 +155,19 @@ public class GameViewController extends Controller {
     private Pane setNextPhase() {
         Pane innerPane = null;
         String path = "";
-        currentPhaseView = ++currentPhaseView % 3;
+        /*currentPhaseView = ++currentPhaseView % 3;
 
         if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
         else if (currentPhaseView == 1) path = "/view/innerViews/programmingView.fxml";
         else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
 
+        try {
+            innerPane = FXMLLoader.load(getClass().getResource(path));
+        } catch (IOException e) {
+            logger.error("Inner phase View could not be loaded: " + e.getMessage());
+        }
+        return innerPane;*/
+        path = "/view/innerViews/programmingPhase.fxml";
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
