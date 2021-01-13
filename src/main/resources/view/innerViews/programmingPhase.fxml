@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="313.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.ProgrammingController">
+    <children>
+        <ImageView  fitHeight="97.0" fitWidth="62.0" layoutX="59.0" layoutY="62.0" onDragDetected="#setOnDragDetected" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../programming-cards/again-card.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>
