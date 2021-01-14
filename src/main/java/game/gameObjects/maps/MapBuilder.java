@@ -8,29 +8,36 @@ import java.util.ArrayList;
 /**
  *
  */
-public class MapFactory {
+public class MapBuilder {
 
-    private static MapFactory instance;
+    private static MapBuilder instance;
     private ArrayList<Blueprint> blueprints;
 
-    private MapFactory() {
+    private MapBuilder() {
         generateMaps();
     }
 
-    public static MapFactory getInstance() {
+    public static MapBuilder getInstance() {
         if (instance == null) {
-            instance = new MapFactory();
+            instance = new MapBuilder();
         }
         return instance;
     }
 
     public static Map constructMap(Blueprint blueprint) {
         int max = 10;
-        Tile[][] tiles = new Tile[max][max];
+        Tile[][] tiles = new Tile[max + 3][max];
+
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < max; y++) {
+                Startzone startzone = new Startzone();
+                tiles[x][y] = TileFactory.createTile(startzone.getMapBlueprint()[y][x]);
+            }
+        }
 
         for (int x = 0; x < max; x++) {
             for (int y = 0; y < max; y++) {
-                tiles[x][y] = TileFactory.createTile(blueprint.mapBlueprint[x][y]);
+                tiles[x + 3][y] = TileFactory.createTile(blueprint.mapBlueprint[y][x]);
             }
         }
         return new Map(tiles);

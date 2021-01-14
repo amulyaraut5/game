@@ -1,12 +1,8 @@
 package game;
 
-import game.gameObjects.cards.DamageCard;
 import game.gameObjects.decks.*;
-import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.Map;
-import game.gameObjects.maps.MapFactory;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Tile;
+import game.gameObjects.maps.MapBuilder;
 import game.round.ActivationPhase;
 import game.round.Phase;
 import game.round.ProgrammingPhase;
@@ -14,7 +10,6 @@ import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
-import utilities.Coordinate;
 import utilities.JSONProtocol.body.ActivePhase;
 import utilities.Utilities;
 
@@ -46,7 +41,7 @@ public class Game {
 
     private int noOfCheckpoints;
     private Map map;
-    private MapFactory mapFactory;
+    private MapBuilder mapBuilder;
     private ArrayList<Player> players;
 
     private ProgrammingPhase programmingPhase;

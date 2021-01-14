@@ -7,7 +7,7 @@ import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.maps.Blueprint;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
-import game.gameObjects.maps.MapFactory;
+import game.gameObjects.maps.MapBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -272,7 +272,7 @@ public class Server extends Thread {
     }
 
     public void startGame(Blueprint chosenBlueprint) {
-        Map chosenMap = MapFactory.constructMap(chosenBlueprint);
+        Map chosenMap = MapBuilder.constructMap(chosenBlueprint);
 
         //new Game gets created, Map created
 
