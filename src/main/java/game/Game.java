@@ -62,6 +62,7 @@ public class Game {
     private Server server = Server.getInstance();
 
     private Game() {
+
     }
 
     public static Game getInstance() {
@@ -74,22 +75,27 @@ public class Game {
      * @param phase
      */
     public void nextPhase(Utilities.Phase phase) {
-        int phaseNumber = 0; //TODO Aufbauphase im game
+        int phaseNumber = 0; //TODO Aufbauphase im game oder neue Construction-Phase Klasse?
         switch(phase){
-            case ACTIVATION:
-                phaseNumber = 1;
+            case CONSTRUCTION:
+                phaseNumber = 0;
                 server.communicateAll(new ActivePhase(phase));
-                this.upgradePhase = new UpgradePhase();
+                //this.constructionPhase = new ProgrammingPhase(); ?
                 break;
             case UPGRADE:
-                phaseNumber = 2;
+                phaseNumber = 1;
                 server.communicateAll(new ActivePhase(phase));
                 this.programmingPhase = new ProgrammingPhase();
                 break;
             case PROGRAMMING:
-                phaseNumber = 3;
+                phaseNumber = 2;
                 server.communicateAll(new ActivePhase(phase));
                 this.activationPhase = new ActivationPhase();
+                break;
+            case ACTIVATION:
+                phaseNumber = 3;
+                server.communicateAll(new ActivePhase(phase));
+                this.upgradePhase = new UpgradePhase();
                 break;
             default:
                 //
@@ -111,6 +117,7 @@ public class Game {
 
         while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
             //create Map ?
+            nextPhase(Utilities.Phase.CONSTRUCTION);
             logger.info("Game has started");
             //upgradePhase.startPhase();
             programmingPhase.startPhase();
