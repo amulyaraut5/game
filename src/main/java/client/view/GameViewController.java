@@ -1,22 +1,20 @@
 package client.view;
 
-import game.gameObjects.cards.Card;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
+import utilities.Utilities;
 import utilities.Utilities.AttributeType;
 
 import java.io.IOException;
@@ -31,27 +29,23 @@ import java.util.List;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    private final Group[] fields = new Group[100];
+    private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+    @FXML
+    public AnchorPane playerMap; //TODO make it private
     private int currentPhaseView = 0;
     private int ActivePhase = 0; //TODO enum? move to client?
-
     @FXML
     private BorderPane outerPane;
-
     @FXML
     private BorderPane chatPane;
-
     @FXML
     private FlowPane boardPane;
 
     @FXML
-    public AnchorPane playerMap; //TODO make it private
-
-
-    @FXML
     public void initialize() {
     }
-    public void attachPlayerMap(Pane playerM){
+
+    public void attachPlayerMap(Pane playerM) {
         playerM.setPrefHeight(playerM.getPrefWidth());
         playerM.setPrefHeight(playerM.getPrefHeight());
         playerMap.getChildren().add(playerM);
@@ -72,34 +66,38 @@ public class GameViewController extends Controller {
     }
 
     public void buildMap(ArrayList<BoardElement> map) {
-        for (int i = 0; i < 100; i++) {
-            fields[i] = new Group();
-            int position = i + 1;
-            fields[i].addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                client.sendMessage(new SetStartingPoint(position));
-            });
+        for (int x = 0; x < 13; x++) {
+            for (int y = 0; y < 10; y++) {
+                fields[x][y] = new Group();
+//                fields[i].addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+//                    client.sendMessage(new SetStartingPoint(position));
+//                });
+            }
         }
 
-        for (BoardElement tile : map) {
-            int pos = tile.getPosition();
-            var field = tile.getField();
+        int pos = 0;
+        for (int x = 0; x < 13; x++) {
+            for (int y = 0; y < 10; y++) {
+                ArrayList<Attribute> field = map.get(pos++).getField();
 
-            if (isTileBackgroundEmpty(field)) {    //If the image would be transparent, an empty tile is added.
-                fields[pos - 1].getChildren().add(new Empty().createImage());
-            }
-
-            field = sortBoardAttributes(field);
-            for (Attribute attribute : field) {
-                Node attributeImage = attribute.createImage();
-                if (attributeImage != null) {
-                    fields[pos - 1].getChildren().add(attributeImage);
+                if (isTileBackgroundEmpty(field)) {    //If the image would be transparent, an empty tile is added.
+                    fields[x][y].getChildren().add(new Empty().createImage());
                 }
+
+                field = sortBoardAttributes(field);
+                for (Attribute attribute : field) {
+                    Node attributeImage = attribute.createImage();
+                    if (attributeImage != null) {
+                        fields[x][y].getChildren().add(attributeImage);
+                    }
+                }
+                boardPane.getChildren().add(fields[x][y]);
             }
-            boardPane.getChildren().add(fields[pos - 1]);
         }
     }
+
     //TODO inner view with activation phase
-    public void programCards(YourCards yourCards){
+    public void programCards(YourCards yourCards) {
 
     }
 

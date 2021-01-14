@@ -21,6 +21,9 @@ public abstract class Utilities {
     public static final Orientation[] RIGHT_LEFT = {Orientation.RIGHT, Orientation.LEFT};
     public static final Orientation[] LEFT_RIGHT = {Orientation.LEFT, Orientation.RIGHT};
 
+    //Map
+    public static final int MAP_HEIGHT = 10;
+    public static final int MAP_WIDTH = 13;
 
     //Cards
     public static final int SPAM_CARDCOUNT = 36;
