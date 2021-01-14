@@ -5,6 +5,7 @@ import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -31,7 +32,8 @@ public class Laser {
     /**
      * Constructor for laser
      */
-    public Laser() { }
+    public Laser() {
+    }
 
     /**
      * The effect of lasers will be seen if it finds any robot standing in its
@@ -89,7 +91,7 @@ public class Laser {
 
             for (Attribute a : tile.getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
-                    Orientation orientation = a.getOrientation();
+                    Orientation orientation = ((game.gameObjects.tiles.Laser) a).getOrientation();
 
                     coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
                 }
@@ -125,7 +127,7 @@ public class Laser {
                     logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + position.getX() + "," + position.getY() + ")");
                     break; //TODO what is if at the next attribute is a Wall?
                 } else if (b.getType() == AttributeType.Wall) {
-                    if (b.getOrientation() == orientation) {  //TODO test if wall orientation is opposite of robot orientation
+                    if (((Wall) b).getOrientation() == orientation) {  //TODO test if wall orientation is opposite of robot orientation
                         path.add(position.clone());
                         logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + position.getX() + "," + position.getY() + ")");
                         break outerLoop;

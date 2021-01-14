@@ -4,6 +4,7 @@ import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
@@ -29,7 +30,6 @@ public class ActivationPhase extends Phase {
      */
     private HashMap<Integer, Card> currentCards = new HashMap<>();
 
-    private Tile [][] gameMapTiles;
     private Map gameMap;
 
     public ActivationPhase() {
@@ -74,7 +74,6 @@ public class ActivationPhase extends Phase {
 
     private void activateBoard(Player player) {
         // TODO - implement ActivationPhase.activateBoard
-        gameMapTiles = game.getMap().getTiles();
         gameMap = game.getMap();
 
 
@@ -95,15 +94,15 @@ public class ActivationPhase extends Phase {
 
     }
 
-    public void activateGreenBelts(){
-        for(Coordinate tileCoordinate : gameMap.getGreenBelts()) {
-            for(Player currentPlayer : playerList) {
-                if(tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){
-                        if(a.getType() == Utilities.AttributeType.Belt){
-                            handleMove(currentPlayer, a.getOrientation());
+    public void activateGreenBelts() {
+        for (Coordinate tileCoordinate : gameMap.getGreenBelts()) {
+            for (Player currentPlayer : playerList) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
+                        if (a.getType() == Utilities.AttributeType.Belt) {
+                            handleMove(currentPlayer, ((Belt) a).getOrientation());
                         }
-                        if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                        if (a.getType() == Utilities.AttributeType.RotatingBelt) {
                             RotatingBelt temp = (RotatingBelt) a;
                             handleMove(currentPlayer, temp.getOrientations()[1]);
                         }
@@ -113,17 +112,17 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void activateBlueBelts(){
+    public void activateBlueBelts() {
         for (int i = 0; i < 2; i++) {
-            for(Coordinate tileCoordinate : gameMap.getBlueBelts()) {
-                for(Player currentPlayer : playerList) {
-                    if(tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
-                        for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()){
-                            if(a.getType() == Utilities.AttributeType.Belt){
-                                handleMove(currentPlayer, a.getOrientation());
+            for (Coordinate tileCoordinate : gameMap.getBlueBelts()) {
+                for (Player currentPlayer : playerList) {
+                    if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                        for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
+                            if (a.getType() == Utilities.AttributeType.Belt) {
+                                handleMove(currentPlayer, ((Belt) a).getOrientation());
 
                             }
-                            if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                            if (a.getType() == Utilities.AttributeType.RotatingBelt) {
                                 RotatingBelt temp = (RotatingBelt) a;
                                 handleMove(currentPlayer, temp.getOrientations()[1]);
                             }
@@ -133,23 +132,24 @@ public class ActivationPhase extends Phase {
             }
         }
     }
+
     //Supposed o handle a robot moving one tile.
     //TODO Once the game can be started, it needs to check wheiher the robots really move in the right direction
-    public void handleMove(Player player, Orientation o){
+    public void handleMove(Player player, Orientation o) {
         Coordinate newPosition = null;
-        if(o == Orientation.UP){
+        if (o == Orientation.UP) {
             newPosition = player.getRobot().getPosition().clone();
             newPosition.addToY(-1);
         }
-        if(o == Orientation.RIGHT){
+        if (o == Orientation.RIGHT) {
             newPosition = player.getRobot().getPosition().clone();
             newPosition.addToX(1);
         }
-        if(o == Orientation.DOWN){
+        if (o == Orientation.DOWN) {
             newPosition = player.getRobot().getPosition().clone();
             newPosition.addToY(1);
         }
-        if(o == Orientation.LEFT){
+        if (o == Orientation.LEFT) {
             newPosition = player.getRobot().getPosition().clone();
             newPosition.addToX(-1);
 
@@ -157,11 +157,10 @@ public class ActivationPhase extends Phase {
         }
 
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
-            switch(a.getType()){
+            switch (a.getType()) {
                 //handle different tile effects here
             }
         }
-
 
 
     }

@@ -14,6 +14,7 @@ import utilities.Utilities.AttributeType;
 public class PushPanel extends Attribute {
 
     private int[] registers; //active registers
+    private Orientation orientation;
 
     public PushPanel(Orientation orientation, int[] registers) {
         this.orientation = orientation;
@@ -55,5 +56,13 @@ public class PushPanel extends Attribute {
         }
 
         return ImageHandler.createImageView(path, orientation);
+    }
+
+    public int[] getRegisters() {
+        return registers;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 }

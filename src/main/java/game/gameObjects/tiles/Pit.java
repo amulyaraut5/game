@@ -14,7 +14,7 @@ import utilities.Utilities.AttributeType;
 public class Pit extends Attribute {
 
     public Pit() {
-        this.type = AttributeType.PushPanel;
+        type = AttributeType.PushPanel;
     }
 
     /**
@@ -42,7 +42,7 @@ public class Pit extends Attribute {
 
         // Player needs to draw spam card from the deck and add to the discard pile
 
-        userThread.sendMessage(new Reboot(player.getId()));
+        player.message(new Reboot(player.getId()));
     }
 
     @Override

@@ -16,6 +16,7 @@ import utilities.Utilities.AttributeType;
 public class Wall extends Attribute {
 
     private Orientation[] orientations;
+    private Orientation orientation;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
@@ -61,37 +62,34 @@ public class Wall extends Attribute {
         } else {
             if (orientations != null) {
                 Node imageView = ImageHandler.createImageView(pathTwoWalls);
+                assert imageView != null;
 
                 switch (orientations[0]) {
-                    case UP: {
+                    case UP -> {
                         switch (orientations[1]) {
                             case DOWN -> imageView = createParallelImage(Orientation.DOWN);
                             case LEFT -> imageView.setRotate(270);
                         }
-                        break;
                     }
-                    case RIGHT: {
+                    case RIGHT -> {
                         switch (orientations[1]) {
                             case DOWN -> imageView.setRotate(90);
                             case LEFT -> imageView = createParallelImage(Orientation.LEFT);
                         }
-                        break;
                     }
-                    case DOWN: {
+                    case DOWN -> {
                         switch (orientations[1]) {
                             case UP -> imageView = createParallelImage(Orientation.UP);
                             case RIGHT -> imageView.setRotate(90);
                             case LEFT -> imageView.setRotate(180);
                         }
-                        break;
                     }
-                    case LEFT: {
+                    case LEFT -> {
                         switch (orientations[1]) {
                             case UP -> imageView.setRotate(270);
                             case RIGHT -> imageView = createParallelImage(Orientation.RIGHT);
                             case DOWN -> imageView.setRotate(180);
                         }
-                        break;
                     }
                 }
                 return imageView;
@@ -114,6 +112,14 @@ public class Wall extends Attribute {
         }
 
         return new Group(imageView1, imageView2);
+    }
+
+    public Orientation[] getOrientations() {
+        return orientations;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 }
 

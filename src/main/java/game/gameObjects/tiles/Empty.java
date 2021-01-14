@@ -8,7 +8,7 @@ import utilities.Utilities.AttributeType;
 public class Empty extends Attribute {
 
     public Empty() {
-        this.type = AttributeType.Empty;
+        type = AttributeType.Empty;
     }
 
 

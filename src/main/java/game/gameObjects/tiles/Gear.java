@@ -16,7 +16,7 @@ public class Gear extends Attribute {
 
     public Gear(Rotation orientation) {
         this.orientation = orientation;
-        this.type = AttributeType.Gear;
+        type = AttributeType.Gear;
     }
 
     /**
@@ -44,5 +44,7 @@ public class Gear extends Attribute {
 
         return ImageHandler.createImageView(path);
     }
-
+    public Rotation getOrientation() {
+        return orientation;
+    }
 }

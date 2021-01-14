@@ -47,7 +47,6 @@ public class UserThread extends Thread {
         } catch (IOException ex) {
             disconnect(ex);
         }
-        Attribute.setUserThread(this);
     }
 
     /**

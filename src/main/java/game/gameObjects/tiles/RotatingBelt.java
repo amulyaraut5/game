@@ -101,4 +101,8 @@ public class RotatingBelt extends Attribute {
     public Orientation[] getOrientations() {
         return orientations;
     }
+
+    public boolean isCrossing() {
+        return isCrossing;
+    }
 }

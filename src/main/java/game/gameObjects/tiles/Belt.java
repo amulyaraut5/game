@@ -14,11 +14,12 @@ import utilities.Utilities.AttributeType;
 public class Belt extends Attribute {
 
     private int speed; // 1 = Green Conveyor, 2 = Blue Conveyor
+    private Orientation orientation;
 
     public Belt(Orientation orientation, int speed) {
         this.speed = speed;
         this.orientation = orientation;
-        this.type = AttributeType.Belt;
+        type = AttributeType.Belt;
     }
 
     /**
@@ -65,5 +66,9 @@ public class Belt extends Attribute {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 }

@@ -18,8 +18,8 @@ public class Antenna extends Attribute {
      * Constructor for Antenna that basically sets the antenna facing north
      */
     public Antenna() {
-        this.orientation = Orientation.RIGHT;
-        this.type = AttributeType.Antenna;
+        orientation = Orientation.RIGHT;
+        type = AttributeType.Antenna;
     }
 
     /**
@@ -38,5 +38,7 @@ public class Antenna extends Attribute {
         return ImageHandler.createImageView("/tiles/antenna.png");
     }
 
-
+    public Orientation getOrientation() {
+        return orientation;
+    }
 }

@@ -18,7 +18,7 @@ public class ControlPoint extends Attribute {
 
     public ControlPoint(int count) {
         this.count = count;
-        this.type = AttributeType.ControlPoint;
+        type = AttributeType.ControlPoint;
     }
 
     public int getCheckPointID() {
@@ -79,5 +79,9 @@ public class ControlPoint extends Attribute {
     public Node createImage() {
         String path = "/tiles/controlPoint/controlPoint_" + count + ".png";
         return ImageHandler.createImageView(path);
+    }
+
+    public int getCount() {
+        return count;
     }
 }

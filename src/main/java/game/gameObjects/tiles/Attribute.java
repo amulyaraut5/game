@@ -1,14 +1,10 @@
 package game.gameObjects.tiles;
 
-import client.model.Client;
 import game.Game;
 import game.Player;
 import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import server.UserThread;
-import utilities.Coordinate;
-import utilities.Orientation;
 import utilities.Utilities.AttributeType;
 
 /**
@@ -16,18 +12,10 @@ import utilities.Utilities.AttributeType;
  */
 
 public abstract class Attribute {
-
     protected static final Logger logger = LogManager.getLogger();
-    protected static Game game = Game.getInstance();
-    protected static UserThread userThread;//TODO remove
-    protected static Client client = Client.getInstance(); //TODO remove
-    protected AttributeType type;
-    protected Orientation orientation;
-    protected Coordinate position;
 
-    public static void setUserThread(UserThread userThread) {
-        Attribute.userThread = userThread;
-    }
+    protected static Game game = Game.getInstance();
+    protected AttributeType type;
 
     /**
      * All elements on the board must have a performAction method that can be called
@@ -81,17 +69,5 @@ public abstract class Attribute {
 
     public AttributeType getType() {
         return type;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    public Coordinate getPosition() {
-        return position;
-    }
-
-    public void setPosition(Coordinate position) {
-        this.position = position;
     }
 }

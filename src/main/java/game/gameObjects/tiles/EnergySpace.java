@@ -17,7 +17,7 @@ public class EnergySpace extends Attribute {
 
     public EnergySpace(int count) {
         this.count = count;
-        this.type = AttributeType.EnergySpace;
+        type = AttributeType.EnergySpace;
     }
 
     /**
@@ -37,7 +37,7 @@ public class EnergySpace extends Attribute {
             // Todo Decrease the energy cube number
         }
         JSONBody jsonBody = new Energy(player.getId(), player.getEnergyCubes());
-        userThread.sendMessage(jsonBody);
+        player.message(jsonBody);
     }
 
     @Override
@@ -50,5 +50,9 @@ public class EnergySpace extends Attribute {
         }
 
         return ImageHandler.createImageView(path);
+    }
+
+    public int getCount() {
+        return count;
     }
 }
