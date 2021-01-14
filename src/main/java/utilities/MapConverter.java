@@ -13,12 +13,11 @@ public abstract class MapConverter {
     public static GameStarted convert(Map map) {
         Tile[][] tiles = map.getTiles();
         ArrayList<BoardElement> mapList = new ArrayList<>();
-        int xMax = tiles.length;
-        int yMax = tiles[0].length;
+        int max = 10;
 
-        int position = 1;
-        for (int x = 0; x < (xMax); x++) {
-            for (int y = 0; y < (yMax); y++) {
+        int position = 0;
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 13; x++) {
                 BoardElement temp = new BoardElement();
                 temp.setField(tiles[x][y].getAttributes());
                 temp.setPosition(position++);
