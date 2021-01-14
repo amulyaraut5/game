@@ -11,9 +11,9 @@ import utilities.Utilities.CardType;
 /**
  * @author annika
  */
-public class Trojaner extends DamageCard {
+public class Trojan extends DamageCard {
 
-    public Trojaner() {
+    public Trojan() {
         super(CardType.Trojaner);
     }
 

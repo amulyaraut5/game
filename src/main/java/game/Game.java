@@ -37,7 +37,7 @@ public class Game {
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
     private WormDeck wormDeck;
-    private TrojanHorseDeck trojanHorseDeck;
+    private TrojanDeck trojanDeck;
 
     private int noOfCheckpoints;
     private Map map;
@@ -155,8 +155,8 @@ public class Game {
         return wormDeck;
     }
 
-    public TrojanHorseDeck getTrojanHorseDeck() {
-        return trojanHorseDeck;
+    public TrojanDeck getTrojanHorseDeck() {
+        return trojanDeck;
     }
 
     public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}

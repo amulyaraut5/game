@@ -1,7 +1,7 @@
 package game.gameObjects.decks;
 
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.Wurm;
+import game.gameObjects.cards.damage.Worm;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class WormDeck extends DamageCardDeck {
         this.wormDeck = new ArrayList<>();
 
         for (int i = 0; i < WORM_CARDCOUNT; i++) {
-            wormDeck.add(new Wurm());
+            wormDeck.add(new Worm());
         }
     }
 
