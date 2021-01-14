@@ -1,8 +1,9 @@
 package utilities;
 
 import game.gameObjects.maps.Map;
-import game.gameObjects.tiles.Attribute;
+import game.gameObjects.maps.Startzone;
 import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
@@ -13,14 +14,14 @@ public abstract class MapConverter {
     public static GameStarted convert(Map map) {
         Tile[][] tiles = map.getTiles();
         ArrayList<BoardElement> mapList = new ArrayList<>();
-        int max = 10;
+        int xMax = Utilities.MAP_WIDTH;
+        int yMax = Utilities.MAP_HEIGHT;
 
-        int position = 0;
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 13; x++) {
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 3; x < xMax; x++) {
                 BoardElement temp = new BoardElement();
                 temp.setField(tiles[x][y].getAttributes());
-                temp.setPosition(position++);
+                temp.setPosition(y * xMax + x);
                 mapList.add(temp);
             }
         }
@@ -28,37 +29,26 @@ public abstract class MapConverter {
     }
 
     public static Map reconvert(GameStarted body) {
-        int mapLength = 10;
-        int index1;
-        int index2;
-        Tile[][] tiles = new Tile[mapLength][mapLength];
         ArrayList<BoardElement> JsonMap = body.getMap();
-        for (BoardElement e : JsonMap) {
-            index1 = calculateFirstIndex(e.getPosition(), mapLength);
-            index2 = calculateSecondIndex(e.getPosition(), mapLength);
-            Tile temp = new Tile();
-            for (Attribute a : e.getField()) {
-                temp.addAttribute(a);
+        int xMax = Utilities.MAP_WIDTH;
+        int yMax = Utilities.MAP_HEIGHT;
+        Tile[][] tiles = new Tile[xMax][yMax];
+
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < yMax; y++) {
+                Startzone startzone = new Startzone();
+                tiles[x][y] = TileFactory.createTile(startzone.getMapBlueprint()[y][x]);
             }
-            tiles[index1][index2] = temp;
+        }
+
+        for (BoardElement e : JsonMap) {
+            int pos = e.getPosition();
+            int x = pos % xMax;
+            int y = pos / xMax;
+            Tile temp = new Tile();
+            temp.setAttributes(e.getField());
+            tiles[x][y] = temp;
         }
         return new Map(tiles);
-    }
-
-    public static int calculateFirstIndex(int position, int mapLength) {
-        int n = position / mapLength;
-        if (position % mapLength == 0 && n != 0) {
-            n = n - 1;
-        }
-        return n;
-    }
-
-    public static int calculateSecondIndex(int position, int mapLength) {
-        int n = position % mapLength;
-        if (n == 0) {
-            n = mapLength;
-        }
-        n = n - 1;
-        return n;
     }
 }

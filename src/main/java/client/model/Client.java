@@ -1,10 +1,7 @@
 package client.model;
 
 import client.view.*;
-import game.gameObjects.cards.Card;
-import game.gameObjects.cards.programming.Again;
-import game.gameObjects.cards.programming.MoveI;
-import game.gameObjects.cards.programming.MoveII;
+import game.gameObjects.maps.Map;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +10,7 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -89,10 +87,10 @@ public class Client {
 
             readerThread = new ReaderThread(socket, this);
             readerThread.start();
-            Thread handleThread = new Thread(()->{
-                while(!exit){
+            Thread handleThread = new Thread(() -> {
+                while (!exit) {
                     JSONMessage jsonMessage;
-                    while((jsonMessage = messageQueue.poll()) != null){
+                    while ((jsonMessage = messageQueue.poll()) != null) {
                         handleMessage(jsonMessage);
                     }
                 }
@@ -214,13 +212,13 @@ public class Client {
                 case GameStarted -> {
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     //TODO start gameView
-                    gameViewController.buildMap(gameStarted.getMap());
+                    Map map = MapConverter.reconvert(gameStarted);
+                    gameViewController.buildMap(map);
                     logger.info("The game has started.");
                 }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
                     gameViewController.programCards(yourCards);
-
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();

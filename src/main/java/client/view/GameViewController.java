@@ -1,19 +1,21 @@
 package client.view;
 
+import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
-import utilities.JSONProtocol.body.gameStarted.BoardElement;
 import utilities.Utilities;
 import utilities.Utilities.AttributeType;
 
@@ -43,6 +45,15 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
+        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                mouseEvent -> {
+                    int xMax = Utilities.MAP_WIDTH;
+                    int fieldSize = Utilities.FIELD_SIZE;
+                    int x = (int) mouseEvent.getX() / fieldSize;
+                    int y = (int) mouseEvent.getY() / fieldSize;
+                    int pos = y * xMax + x;
+                    client.sendMessage(new SetStartingPoint(pos));
+                });
     }
 
     public void attachPlayerMap(Pane playerM) {
@@ -65,27 +76,21 @@ public class GameViewController extends Controller {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-    public void buildMap(ArrayList<BoardElement> map) {
-        for (int x = 0; x < 13; x++) {
-            for (int y = 0; y < 10; y++) {
+    public void buildMap(Map map) {
+        int xMax = Utilities.MAP_WIDTH;
+        int yMax = Utilities.MAP_HEIGHT;
+
+        for (int y = 0; y < yMax; y++) {
+            for (int x = 0; x < xMax; x++) {
+                ArrayList<Attribute> attributes = map.getTile(x, y).getAttributes();
                 fields[x][y] = new Group();
-//                fields[i].addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-//                    client.sendMessage(new SetStartingPoint(position));
-//                });
-            }
-        }
 
-        int pos = 0;
-        for (int x = 0; x < 13; x++) {
-            for (int y = 0; y < 10; y++) {
-                ArrayList<Attribute> field = map.get(pos++).getField();
-
-                if (isTileBackgroundEmpty(field)) {    //If the image would be transparent, an empty tile is added.
+                if (isTileBackgroundEmpty(attributes)) {    //If the image would be transparent, an empty tile is added.
                     fields[x][y].getChildren().add(new Empty().createImage());
                 }
 
-                field = sortBoardAttributes(field);
-                for (Attribute attribute : field) {
+                attributes = sortBoardAttributes(attributes);
+                for (Attribute attribute : attributes) {
                     Node attributeImage = attribute.createImage();
                     if (attributeImage != null) {
                         fields[x][y].getChildren().add(attributeImage);

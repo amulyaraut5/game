@@ -24,6 +24,7 @@ public abstract class Utilities {
     //Map
     public static final int MAP_HEIGHT = 10;
     public static final int MAP_WIDTH = 13;
+    public static final int FIELD_SIZE = 60;
 
     //Cards
     public static final int SPAM_CARDCOUNT = 36;

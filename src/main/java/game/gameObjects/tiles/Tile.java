@@ -7,17 +7,22 @@ public class Tile {
     /**
      * Saves one or multiple Attributes for one tile
      */
-    private ArrayList<Attribute> attributes = new ArrayList<>();;
+    private ArrayList<Attribute> attributes = new ArrayList<>();
 
     /**
      * Constructor for tiles.
      */
 
-    public Tile() { }
+    public Tile() {
+    }
 
 
     public ArrayList<Attribute> getAttributes() {
         return this.attributes;
+    }
+
+    public void setAttributes(ArrayList<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     /**
@@ -28,6 +33,4 @@ public class Tile {
     public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
     }
-
-
 }
