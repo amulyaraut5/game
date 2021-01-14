@@ -25,12 +25,11 @@ public class MapFactory {
     }
 
     public static Map constructMap(Blueprint blueprint) {
-        int xMax = blueprint.getWidth();
-        int yMax = blueprint.getHeight();
-        Tile[][] tiles = new Tile[xMax][yMax];
+        int max = 10;
+        Tile[][] tiles = new Tile[max][max];
 
-        for (int x = 0; x < xMax; x++) {
-            for (int y = 0; y < yMax; y++) {
+        for (int x = 0; x < max; x++) {
+            for (int y = 0; y < max; y++) {
                 tiles[x][y] = TileFactory.createTile(blueprint.mapBlueprint[x][y]);
             }
         }

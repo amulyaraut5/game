@@ -151,7 +151,7 @@ public class Server extends Thread {
                 programmingCards.add(new Again());
                 programmingCards.add(new MoveII());
                 programmingCards.add(new MoveI());
-                user.message(new YourCards(programmingCards));
+                //user.message(new YourCards(programmingCards));
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
