@@ -77,6 +77,13 @@ public class Server extends Thread {
             Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.start();
             while (!exit) {
+                try {
+                    synchronized (this){
+                        this.wait(10); //FIXME workaround, find better solution
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 QueueMessage queueMessage;
                 while ((queueMessage = messageQueue.poll()) != null) {
                     handleMessage(queueMessage);
