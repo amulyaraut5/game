@@ -1,6 +1,5 @@
 package server;
 
-import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -20,13 +19,9 @@ import java.net.Socket;
  */
 
 public class UserThread extends Thread {
-
-    /**
-     * Logger to log information/warning
-     */
     private static final Logger logger = LogManager.getLogger();
 
-    private final User user; //Connected user, which data has to be filled in logIn()
+    private final User user;
     private final Socket socket;
     private final Server server = Server.getInstance();
     private PrintWriter writer;
@@ -59,15 +54,16 @@ public class UserThread extends Thread {
             sendMessage(new HelloClient(Utilities.PROTOCOL));
 
             while (!exit) {
-                String text = reader.readLine();
-                if (text == null) {
-                    throw new IOException();
+                String jsonText = reader.readLine();
+                if (jsonText == null) {
+                    throw new IOException("Connection closed");
                 }
-                else {
-                    //logger.debug("Protocol received: " + text);
-                    JSONMessage msg = Multiplex.deserialize(text);
-                    QueueMessage queueMessage = new QueueMessage(msg, this.user);
-                    server.getMessageQueue().add(queueMessage); //TODO put?
+                //logger.debug("Protocol received: " + text);
+
+                JSONMessage msg = Multiplex.deserialize(jsonText);
+                server.getMessageQueue().add(new QueueMessage(msg, user));
+                synchronized (server) {
+                    server.notify();
                 }
             }
 

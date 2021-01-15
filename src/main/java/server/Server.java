@@ -63,22 +63,21 @@ public class Server extends Thread {
      */
     @Override
     public void run() {
-        currentThread().setName("ServerThread");
+        setName("ServerThread");
         logger.info("SERVER STARTED");
-
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
             Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.start();
+
             while (!exit) {
-                try {
-                    synchronized (this){
-                        this.wait(10); //FIXME workaround, find better solution
+                synchronized (this) {
+                    try {
+                        this.wait();
+                    } catch (InterruptedException e) {
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 QueueMessage queueMessage;
                 while ((queueMessage = messageQueue.poll()) != null) {
@@ -196,7 +195,7 @@ public class Server extends Thread {
                 thread.start();
             } catch (IOException e) {
                 accept = false;
-                logger.info("Accept failed on: " + PORT);
+                logger.error("Accepting clients failed on port " + PORT + ": " + e.getMessage());
             }
         }
     }
