@@ -1,8 +1,11 @@
 package game;
 
-import game.gameObjects.decks.*;
-import game.gameObjects.maps.Map;
-import game.gameObjects.maps.MapBuilder;
+import game.gameObjects.decks.SpamDeck;
+import game.gameObjects.decks.TrojanDeck;
+import game.gameObjects.decks.VirusDeck;
+import game.gameObjects.decks.WormDeck;
+import game.gameObjects.maps.*;
+import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
 import game.round.Phase;
 import game.round.ProgrammingPhase;
@@ -10,7 +13,9 @@ import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
+import server.User;
 import utilities.JSONProtocol.body.ActivePhase;
+import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.util.ArrayList;
@@ -25,13 +30,13 @@ import static utilities.Utilities.MIN_PLAYERS;
  */
 
 public class Game {
-
     private static final Logger logger = LogManager.getLogger();
-
     private static Game instance;
+
+    private Server server = Server.getInstance();
     private int energyBank;
     private UpgradeShop upgradeShop;
-    private ArrayList<Player> playerList;
+    private ArrayList<Player> players;
     private HashMap<Integer, Player> playerIDs = new HashMap<>();
 
     private SpamDeck spamDeck;
@@ -41,8 +46,6 @@ public class Game {
 
     private int noOfCheckpoints;
     private Map map;
-    private MapBuilder mapBuilder;
-    private ArrayList<Player> players;
 
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
@@ -59,10 +62,7 @@ public class Game {
      **/
     private boolean runningGame = false;
 
-    private Server server = Server.getInstance();
-
     private Game() {
-
     }
 
     public static Game getInstance() {
@@ -71,12 +71,55 @@ public class Game {
     }
 
     /**
+     * Initialises the game attributes at the beginning of each game
+     */
+    public void reset() {
+        energyBank = Utilities.ENERGY_BANK;
+        upgradeShop = new UpgradeShop();
+        players = new ArrayList<>(6);
+
+        spamDeck = new SpamDeck();
+        virusDeck = new VirusDeck();
+        wormDeck = new WormDeck();
+        trojanDeck = new TrojanDeck();
+
+        createdGame = false;
+        runningGame = false;
+    }
+
+    /**
+     * This methods starts Roborally.
+     */
+    public void play() {
+        reset();
+
+        ArrayList<User> users = server.getUsers();
+        for (User user : users) {
+            int figure = user.getFigure();
+            players.add(new Player(user, Robot.create(figure)));
+        }
+
+        map = MapBuilder.constructMap(new TestBlueprint());
+        server.communicateAll(MapConverter.convert(map));
+
+/*        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
+            nextPhase(Utilities.Phase.CONSTRUCTION);
+            logger.info("Game has started");
+            upgradePhase.startPhase();
+            programmingPhase.startPhase();
+            activationPhase.startPhase();
+        }
+        throw new UnsupportedOperationException();*/
+    }
+
+    /**
      * This method gets called from the phases, it calls the next phase
+     *
      * @param phase
      */
     public void nextPhase(Utilities.Phase phase) {
         int phaseNumber = 0; //TODO Aufbauphase im game oder neue Construction-Phase Klasse?
-        switch(phase){
+        switch (phase) {
             case CONSTRUCTION:
                 phaseNumber = 0;
                 server.communicateAll(new ActivePhase(phase));
@@ -102,35 +145,6 @@ public class Game {
         }
     }
 
-    //TODO resetGame()
-    public void resetGame(){
-        createdGame = false;
-        runningGame = false;
-
-    }
-
-    /**
-     * This methods starts Roborally.
-     */
-    public void play(ArrayList<Player> players) {
-        this.players = new ArrayList<>(players);
-
-        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
-            //create Map ?
-            nextPhase(Utilities.Phase.CONSTRUCTION);
-            logger.info("Game has started");
-            //upgradePhase.startPhase();
-            programmingPhase.startPhase();
-            activationPhase.startPhase();
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * TODO
-     *
-     * @return
-     */
     public int getNoOfCheckPoints() {
         return this.noOfCheckpoints;
     }
@@ -139,8 +153,8 @@ public class Game {
         return map;
     }
 
-    public ArrayList<Player> getPlayerList() {
-        return playerList;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public SpamDeck getSpamDeck() {
@@ -159,7 +173,9 @@ public class Game {
         return trojanDeck;
     }
 
-    public Player getPlayerFromID (Integer id) { return playerIDs.get(id);}
+    public Player getPlayerFromID(Integer id) {
+        return playerIDs.get(id);
+    }
 
     public Phase getActivePhase() {
         return activePhase;

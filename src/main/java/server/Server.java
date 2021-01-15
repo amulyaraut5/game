@@ -1,20 +1,16 @@
 package server;
 
+import game.Game;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.programming.Again;
 import game.gameObjects.cards.programming.MoveI;
 import game.gameObjects.cards.programming.MoveII;
-import game.gameObjects.maps.Blueprint;
-import game.gameObjects.maps.DizzyHighway;
-import game.gameObjects.maps.Map;
-import game.gameObjects.maps.MapBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.io.IOException;
@@ -151,7 +147,7 @@ public class Server extends Thread {
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
 
                 if (allUsersReady) {
-                    startGame(new DizzyHighway());
+                    Game.getInstance().play();
                 }
                 //TODO now just hardcoded and for testing purposes (Sarah)
                 ArrayList<Card> programmingCards = new ArrayList<>();
@@ -276,15 +272,5 @@ public class Server extends Thread {
     public void removeUser(User user) {
         readyUsers.remove(user);
         users.remove(user);
-    }
-
-    public void startGame(Blueprint chosenBlueprint) {
-        Map chosenMap = MapBuilder.constructMap(chosenBlueprint);
-
-        //new Game gets created, Map created
-
-        GameStarted gameStarted = MapConverter.convert(chosenMap);
-        communicateAll(gameStarted);
-
     }
 }

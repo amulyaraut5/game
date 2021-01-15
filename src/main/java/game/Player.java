@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class Player extends User {
 
     private int currentRegister;
-
     /**
      * contains the chosen Cards for each register
      */
@@ -36,24 +35,27 @@ public class Player extends User {
     private Card currentAction;
     private Card lastAction;
 
-    private int lastCheckpoint;
     private int checkPointCounter;
     private int energyCubes;
     /**
      * the players robot
      */
     private Robot robot;
-    private Game game;
 
     private ArrayList<PermUpgradeCard> installedUpgrades;
     private ArrayList<TempUpgradeCard> tempUpgradeCards;
 
 
-    public Player(Robot robot) {
+    public Player(User user, Robot robot) {
+        id = user.getId();
+        name = user.getName();
+        figure = user.getFigure();
+        thread = user.getThread();
+
         this.robot = robot;
         energyCubes = 5;
-        drawProgrammingDeck.createDeck();
-        discardedProgrammingDeck.createDeck();
+        drawProgrammingDeck=new ProgrammingDeck();
+        discardedProgrammingDeck=new DiscardDeck();
     }
 
     /**
@@ -68,13 +70,14 @@ public class Player extends User {
         }
     }
 
-    /** saves the assigned Card for the stated register (1 - 5)
+    /**
+     * saves the assigned Card for the stated register (1 - 5)
      *
      * @param register addressed register
-     * @param card assigned card
+     * @param card     assigned card
      */
     public void setRegisterCards(int register, Card card) {
-        int index = register-1;
+        int index = register - 1;
         registerCards.add(index, card);
     }
 
@@ -89,7 +92,7 @@ public class Player extends User {
      * @return
      */
     public Card getRegisterCard(int register) {
-        int index = register-1;
+        int index = register - 1;
         return registerCards.get(index);
     }
 
@@ -133,20 +136,20 @@ public class Player extends User {
         this.energyCubes = energyCubes;
     }
 
-    public void setDrawnProgrammingCards(ArrayList<Card> drawnProgrammingCards) {
-        this.drawnProgrammingCards = drawnProgrammingCards;
-    }
-
     public ArrayList<Card> getDrawnProgrammingCards() {
         return drawnProgrammingCards;
     }
 
-    public void setDrawProgrammingDeck(ProgrammingDeck drawProgrammingDeck) {
-        this.drawProgrammingDeck = drawProgrammingDeck;
+    public void setDrawnProgrammingCards(ArrayList<Card> drawnProgrammingCards) {
+        this.drawnProgrammingCards = drawnProgrammingCards;
     }
 
     public ProgrammingDeck getDrawProgrammingDeck() {
         return drawProgrammingDeck;
+    }
+
+    public void setDrawProgrammingDeck(ProgrammingDeck drawProgrammingDeck) {
+        this.drawProgrammingDeck = drawProgrammingDeck;
     }
 
     public DiscardDeck getDiscardedProgrammingDeck() {
@@ -155,17 +158,14 @@ public class Player extends User {
 
     /**
      * Lets you discard an Array of cards to a specified deck
+     *
      * @param cards
      * @param discardDeck
      */
-    public void discardCards (ArrayList<Card> cards, DiscardDeck discardDeck) {
+    public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
         for (Card card : cards) {
             discardDeck.addCard(card);
         }
-    }
-
-    public Game getGame() {
-        return game;
     }
 
     /**
