@@ -1,12 +1,18 @@
 package client.view;
 
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.programming.*;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
-import javax.swing.text.html.ImageView;
+import java.util.ArrayList;
+
 
 public class ProgrammingController {
     //@FXML
@@ -44,16 +50,18 @@ public class ProgrammingController {
 
 
     @FXML
-    private void setOnDragDetected(Event event) {
-        //Dragboard db = programCard1.
+    private void setOnDragDetected(Event event, ImageView imageView) {
+        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         //Dragboard db = programCard1.startDragAndDrop(TransferMode.ANY);
         //Dragboard db = source.startDragAndDrop(TransferMode.ANY);
         /* Put a string on a dragboard */
-        //ClipboardContent content = new ClipboardContent();
-        //content.putImage(s.getImage());
-        //db.setContent(content);
+        ClipboardContent content = new ClipboardContent();
 
-        //event.consume();
+        //content.put(new DataFormat(cardName),imageView.getImage());
+        content.putImage(imageView.getImage());
+        db.setContent(content);
+
+        event.consume();
 
     }
 
