@@ -83,9 +83,7 @@ public class ActivationPhase extends Phase {
         // TODO - implement ActivationPhase.activateBoard
         gameMap = game.getMap();
 
-
         // And then we can execute other board elements in order
-
 
 		/*
 		activateBlueBelts;
@@ -160,8 +158,6 @@ public class ActivationPhase extends Phase {
         if (o == Orientation.LEFT) {
             newPosition = player.getRobot().getPosition().clone();
             newPosition.addToX(-1);
-
-
         }
         //Handle board elements
         boolean canMove = true;
@@ -177,15 +173,11 @@ public class ActivationPhase extends Phase {
                             canMove = false;
                         }
                     }
-
                 case Pit:
                     inPit = true;
 
                 case ControlPoint:
                     onCheckpoint = true;
-
-
-
             }
 
         }
@@ -210,24 +202,16 @@ public class ActivationPhase extends Phase {
                 moveOne(player, o);
                 player.checkPointReached();
             }
-
             else{
                 if(canMove){
                     moveOne(player, o);
                 }
             }
         }
-
-
-
-
-
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
         server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
     }
-
-
 }

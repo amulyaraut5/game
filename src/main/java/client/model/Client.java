@@ -252,6 +252,11 @@ public class Client {
                     logger.info("Player " + gameWon.getPlayerID() + "has won the game");
                     //TODO Display the message in chat for players/users
                 }
+                case Movement -> {
+                    Movement movement = (Movement) message.getBody();
+                    gameViewController.handleMovement(movement.getPlayerID(), movement.getTo());
+                }
+
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
