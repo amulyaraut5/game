@@ -1,6 +1,8 @@
 package game.gameActions;
 
 import game.Player;
+import utilities.JSONProtocol.body.Movement;
+import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.Orientation;
 
 /**
@@ -38,5 +40,6 @@ public class RotateRobot extends Action{
                 }
                 break;
         }
+        server.communicateAll(new PlayerTurning(player.getPlayerID(), orientation));
     }
 }

@@ -24,6 +24,8 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
 import utilities.MapConverter;
+import utilities.Orientation;
+import utilities.Utilities.Rotation;
 import utilities.Utilities;
 import utilities.Utilities.AttributeType;
 
@@ -175,7 +177,7 @@ public class GameViewController extends Controller {
         }
     }
 
-    public void handlePlayerTurning(int playerID, Utilities.Rotation rotation) {
+    public void handlePlayerTurning(int playerID, Orientation rotation) {
         // TODO Handle Player differently???
 
         for(Player player: Game.getInstance().getPlayers()){
@@ -192,7 +194,7 @@ public class GameViewController extends Controller {
                 double currentDirection = robotImageView.rotateProperty().getValue();
 
                 //Turn the robot based on the direction
-                if (rotation.equals(Utilities.Rotation.LEFT)) {
+                if (rotation.equals(Orientation.LEFT)) {
                     robotImageView.rotateProperty().setValue(currentDirection - 90);
                 } else {
                     robotImageView.rotateProperty().setValue(currentDirection + 90);

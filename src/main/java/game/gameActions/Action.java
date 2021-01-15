@@ -1,6 +1,7 @@
 package game.gameActions;
 
 import game.Player;
+import server.Server;
 import utilities.Orientation;
 
 /**
@@ -8,6 +9,7 @@ import utilities.Orientation;
  * based on different type of action to be performed.
  */
 public abstract class Action {
+    protected Server server = Server.getInstance();
 
    /**
     * This method is called when a action should be executed.
