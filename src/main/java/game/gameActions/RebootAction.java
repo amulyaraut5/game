@@ -35,23 +35,7 @@ public class RebootAction extends Action{
         //game.getActiveRound().getPlayerList().remove(player);
         player.freeze();
         //Robot is placed on reboot token
-        Tile[][] currentMap = Game.getInstance().getMap().getTiles();
-        player.getRobot().setPosition(getRebootTileCoordinates(currentMap));
+        player.getRobot().setPosition(map.getRestartPointCoordinate());
         //TODO The player can turn the robot to face any direction.
-    }
-
-
-    public Coordinate getRebootTileCoordinates(Tile[][] map) {
-        for (int i = 0; i < (map.length); i++) {
-            for (int j = 0; j < (map[0].length); j++) {
-                for (Attribute a : map[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.RestartPoint) {
-                        return new Coordinate(i, j);
-                    }
-                }
-            }
-            break;
-        }
-        return null;
     }
 }

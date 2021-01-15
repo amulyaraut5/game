@@ -25,7 +25,7 @@ public class MapSelectionController extends Controller {
     private Button soundsOn;
     @FXML private Button soundsOff;
 
-    private SoundHandler soundHandler;
+
 
     // TODO Only host can select the map
     @FXML
@@ -46,15 +46,8 @@ public class MapSelectionController extends Controller {
         }
     }
 
-    @FXML
-    private void soundsOnAction(ActionEvent event) {
-        this.soundHandler.musicOn();
-    }
-    @FXML
-    private void soundsOffAction(ActionEvent event){
-        this.soundHandler.musicOff();
-    }
 
-    public void initialize() { this.soundHandler = new SoundHandler(); }
+
+    public void initialize() { }
 
 }

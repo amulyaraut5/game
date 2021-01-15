@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class Map {
 
     private Tile[][] tiles;
-    private ArrayList<Coordinate> laserCoordinates;
     private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
     private Coordinate RestartPoint;
@@ -78,32 +77,28 @@ public class Map {
         return coordinates;
     }
 
-    public void readAll(){
-        readBeltCoordinates();
-        readRestartPointCoordinate();
-    }
-
-
     /**
-     * Based on the type of attribute it returns the arraylist of coordinate of that specific
-     * tile from the map.
-     *
-     * @return the coordinate
+     * This method returns the coordinate for the RestartPoint from the map.
+     * @return
      */
-    public ArrayList<Coordinate> lookInMapFor(Attribute attribute) {
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
+    public Coordinate getRestartPointCoordinate(){
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == attribute.getType()) {
-                        coordinates.add(new Coordinate(i, j));
-                        return coordinates;
+                    if (a.getType() == Utilities.AttributeType.Laser) {
+                       return new Coordinate(i, j);
                     }
                 }
             }
         }
         return null;
     }
+
+    public void readAll(){
+        readBeltCoordinates();
+        readRestartPointCoordinate();
+    }
+
 
     public void readBeltCoordinates() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
