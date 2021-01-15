@@ -144,15 +144,9 @@ public class Server extends Thread {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getId(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
-
                 if (allUsersReady) {
                     Game.getInstance().play();
                 }
-                //TODO now just hardcoded and for testing purposes (Sarah)
-                ArrayList<Card> programmingCards = new ArrayList<>();
-                programmingCards.add(new Again());
-                programmingCards.add(new MoveII());
-                programmingCards.add(new MoveI());
                 //user.message(new YourCards(programmingCards));
             }
             case SendChat -> {
