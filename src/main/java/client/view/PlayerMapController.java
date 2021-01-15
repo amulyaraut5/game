@@ -14,17 +14,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
+
 
 public class PlayerMapController {
 
     @FXML
     private ImageView imageView;
-    @FXML
-    public StackPane register1;
-
-
-    @FXML
-    public ImageView source;
 
     @FXML
     private HBox registerHBox;
@@ -57,9 +53,8 @@ public class PlayerMapController {
             });
             registerHBox.getChildren().add(pane);
 
-    @FXML
-    private void setOnDragOver(Event event) {
-        mouseDragOver(event);
+        }
+
     }
 
 
@@ -80,22 +75,11 @@ public class PlayerMapController {
     }
 
 
-    @FXML
-    private void setOnDragDropped(Event event) {
-        System.out.println("set on drag dropped");
-        mouseDragDropped(event);
-        }
-
-   @FXML
-   private void setOnDragExited(Event event) {
-        register1.setStyle("-fx-border-color: #C6C6C6;");
-        }
 
 
 
 
     void addImage(Image i, StackPane pane){
-
         imageView = new ImageView();
         imageView.setImage(i);
         imageView.setFitWidth(120);
@@ -103,67 +87,27 @@ public class PlayerMapController {
         pane.getChildren().add(imageView);
     }
 
-    private void mouseDragDropped(final Event e) {
-        DragEvent event = (DragEvent) e;
-        final Dragboard db = event.getDragboard();
+    private void mouseDragDropped(DragEvent event, StackPane pane) {
+        Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasImage()) {
             success = true;
-            // Only get the first file from the list
-            //Platform.runLater(new Runnable() {
-              //  @Override
-                //public void run() {
-                    if (!register1.getChildren().isEmpty()) {
-                        register1.getChildren().remove(0);
-                    }
-                    Image img = db.getImage();
+            if (!pane.getChildren().isEmpty()) {
+                    pane.getChildren().remove(0);
+            }
+            Image img = db.getImage();
 
-                    addImage(img, register1);
-                //}
-            //});
+            addImage(img, pane);
 
-            //final File file = db.getFiles().get(0);
-            /*Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println(file.getAbsolutePath());
-                    try {
-                        if(!contentPane.getChildren().isEmpty()){
-                            contentPane.getChildren().remove(0);
-                        }
-                        Image img = new Image(new FileInputStream(file.getAbsolutePath()));
-
-                        addImage(img, contentPane);
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(DragAndDropExample.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });*/
         }
         event.setDropCompleted(success);
         event.consume();
     }
 
-    private  void mouseDragOver(final Event e) {
-        DragEvent event = (DragEvent) e;
-        final Dragboard db = event.getDragboard();
+    private  void mouseDragOver(DragEvent event, StackPane pane) {
 
-        /*final boolean isAccepted = db.getImage().g.getName().toLowerCase().endsWith(".png")
-                || db.getFiles().get(0).getName().toLowerCase().endsWith(".jpeg")
-                || db.getFiles().get(0).getName().toLowerCase().endsWith(".jpg");
 
-        if (db.hasFiles()) {
-            if (isAccepted) {
-                contentPane.setStyle("-fx-border-color: red;"
-                        + "-fx-border-width: 5;"
-                        + "-fx-background-color: #C6C6C6;"
-                        + "-fx-border-style: solid;");
-                event.acceptTransferModes(TransferMode.COPY);
-            }
-        } else {
-            event.consume();
-        }*/
-        register1.setStyle("-fx-border-color: red;"
+        pane.setStyle("-fx-border-color: red;"
                 + "-fx-border-width: 5;"
                 + "-fx-background-color: #C6C6C6;"
                 + "-fx-border-style: solid;");
