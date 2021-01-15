@@ -2,6 +2,7 @@ package client.view;
 
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -25,7 +27,35 @@ public class PlayerMapController {
     public ImageView source;
 
     @FXML
-    private VBox vBox;
+    private HBox registerHBox;
+
+    public void initialize(){
+        System.out.println("j");
+        int register = 5;
+        for (int i = 0; i<5; i++){
+            StackPane pane = new StackPane();
+            pane.setPrefHeight(200);
+            pane.setPrefWidth(300);
+            pane.setStyle("-fx-border-color: #000000;");
+            pane.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    mouseDragOver(dragEvent, pane);
+                }
+            });
+            pane.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    mouseDragDropped(dragEvent, pane);
+                }
+            });
+            pane.setOnDragExited(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    pane.setStyle("-fx-border-color: #C6C6C6;");
+                }
+            });
+            registerHBox.getChildren().add(pane);
 
     @FXML
     private void setOnDragOver(Event event) {
