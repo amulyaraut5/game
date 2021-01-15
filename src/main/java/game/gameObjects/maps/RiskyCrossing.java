@@ -1,15 +1,8 @@
 package game.gameObjects.maps;
 
-import utilities.Utilities;
-
 public class RiskyCrossing extends Blueprint {
     public RiskyCrossing(){
-        this.name = "Risky Crossing";
-        this.gameLength = "short";
-        this.difficulty = Utilities.Difficulty.BEGINNER;
-        this.minPlayers = 2;
-        this.maxPlayers = 6;
-
+        name = "Risky Crossing";
 
         mapBlueprint = new Object[][]{
                 {00, 22, 00, 00, 00, 00, 00, 20, 00, 00},

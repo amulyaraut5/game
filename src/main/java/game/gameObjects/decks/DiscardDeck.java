@@ -7,9 +7,13 @@ import java.util.ArrayList;
 /**
  * @author annika
  */
-public class DiscardDeck extends Deck{
+public class DiscardDeck extends Deck {
 
     private ArrayList<Card> discardDeck;
+
+    public DiscardDeck() {
+        createDeck();
+    }
 
     /**
      * Creates an empty DiscardDeck.
@@ -17,6 +21,11 @@ public class DiscardDeck extends Deck{
     @Override
     public void createDeck() {
         this.discardDeck = new ArrayList<>();
+    }
+
+    @Override
+    public ArrayList<Card> getDeck() {
+        return discardDeck;
     }
 
     /**
@@ -27,10 +36,5 @@ public class DiscardDeck extends Deck{
         shuffle();
         programmingDeck.getDeck().addAll(discardDeck);
         discardDeck.clear();
-    }
-
-    @Override
-    public ArrayList<Card> getDeck() {
-        return discardDeck;
     }
 }

@@ -19,6 +19,20 @@ public abstract class Robot {
     protected Orientation orientation;
     protected Coordinate position;
 
+    public static Robot create(int figure) {
+        Robot robot = null;
+
+        switch (figure) {
+            case 0 -> robot = new Hulk();
+            case 1 -> robot = new HammerBot();
+            case 2 -> robot = new SmashBot();
+            case 3 -> robot = new Twonky();
+            case 4 -> robot = new SpinBot();
+            case 5 -> robot = new ZoomBot();
+        }
+        return robot;
+    }
+
     /**
      * Moves the robot regarding its orientation. It is not checked if the move is allowed.
      * <pre>

@@ -27,6 +27,7 @@ public abstract class Deck {
 
     /**
      * Adds a card back to the deck.
+     *
      * @param card card to be added back to the deck.
      */
     public void addCard(Card card) {
@@ -35,14 +36,11 @@ public abstract class Deck {
 
     /**
      * Checks whether the respective deck is empty.
+     *
      * @return
      */
     public boolean isEmpty() {
-        if(this.getDeck().size() == 0){
-            return true;
-        } else {
-            return false;
-        }
+        return deck.isEmpty();
     }
 
     /**
@@ -55,6 +53,7 @@ public abstract class Deck {
 
     /**
      * removes first card of the deck
+     *
      * @return the removed card
      */
     public Card pop() {
@@ -76,7 +75,7 @@ public abstract class Deck {
     }
 
     /**
-     *  Returns the deck.
+     * Returns the deck.
      */
     public abstract ArrayList<Card> getDeck();
 }

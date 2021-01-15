@@ -1,7 +1,7 @@
 package utilities;
 
 import game.gameObjects.maps.Map;
-import game.gameObjects.maps.Startzone;
+import game.gameObjects.maps.StartZone;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.GameStarted;
@@ -36,7 +36,7 @@ public abstract class MapConverter {
 
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < yMax; y++) {
-                Startzone startzone = new Startzone();
+                StartZone startzone = new StartZone();
                 tiles[x][y] = TileFactory.createTile(startzone.getMapBlueprint()[y][x]);
             }
         }

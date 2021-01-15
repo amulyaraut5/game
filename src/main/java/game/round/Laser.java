@@ -26,7 +26,7 @@ public class Laser {
     ArrayList<Coordinate> coordinates = new ArrayList<>();
     ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
     Game game = Game.getInstance();
-    ArrayList<Player> playerList = game.getPlayerList();
+    ArrayList<Player> playerList = game.getPlayers();
     Map map = game.getMap();
 
     /**

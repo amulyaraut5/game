@@ -1,5 +1,6 @@
 package game.gameActions;
 
+import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.tiles.Attribute;
@@ -24,7 +25,7 @@ public class RebootAction extends Action{
     public void doAction(Orientation orientation, Player player) {
         //Draw two spam cards
         for (int i = 0; i < 2; i++) {
-            Card spamCard = player.getGame().getSpamDeck().pop();
+            Card spamCard = Game.getInstance().getSpamDeck().pop();
             player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
         }
         //discard cards in registers on discard pile
@@ -34,7 +35,7 @@ public class RebootAction extends Action{
         //game.getActiveRound().getPlayerList().remove(player);
         player.freeze();
         //Robot is placed on reboot token
-        Tile[][] currentMap = player.getGame().getMap().getTiles();
+        Tile[][] currentMap = Game.getInstance().getMap().getTiles();
         player.getRobot().setPosition(getRebootTileCoordinates(currentMap));
         //TODO The player can turn the robot to face any direction.
     }

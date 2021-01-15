@@ -89,6 +89,13 @@ public class Client {
             readerThread.start();
             Thread handleThread = new Thread(() -> {
                 while (!exit) {
+                    try {
+                        synchronized (this){
+                            this.wait(10); //FIXME workaround, find better solution
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     JSONMessage jsonMessage;
                     while ((jsonMessage = messageQueue.poll()) != null) {
                         handleMessage(jsonMessage);

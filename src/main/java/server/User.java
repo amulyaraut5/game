@@ -14,10 +14,10 @@ public class User {
     /**
      * The thread which handles the connection for each connected client.
      */
-    private volatile UserThread thread;
-    private volatile String name;
-    private volatile int id;
-    private volatile int figure = -1;
+    protected volatile UserThread thread;
+    protected volatile String name;
+    protected volatile int id;
+    protected volatile int figure = -1;
 
     public User() {
     }

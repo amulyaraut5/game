@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class Utilities {
 
+    //Connection
     public static final int PORT = 5558;
     public static final double PROTOCOL = 1.0;
 
@@ -41,13 +42,14 @@ public abstract class Utilities {
     public static final int AGAIN_CARDCOUNT = 2;
     public static final int POWERUP_CARDCOUNT = 1;
 
-    //Number of Players
+    //Game
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 6;
+    public static final int ENERGY_BANK = 48;
 
     public enum CardType {
         MoveI, MoveII, MoveIII, TurnLeft, TurnRight, UTurn, BackUp, PowerUp, Again,
-        Spam, Wurm, Virus, Trojaner
+        Spam, Worm, Virus, Trojan
     }
 
     public enum Rotation {

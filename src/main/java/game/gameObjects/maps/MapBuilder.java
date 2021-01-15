@@ -30,7 +30,7 @@ public class MapBuilder {
 
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < max; y++) {
-                Startzone startzone = new Startzone();
+                StartZone startzone = new StartZone();
                 tiles[x][y] = TileFactory.createTile(startzone.getMapBlueprint()[y][x]);
             }
         }

@@ -14,7 +14,7 @@ import utilities.Utilities.AttributeType;
 public class Pit extends Attribute {
 
     public Pit() {
-        type = AttributeType.PushPanel;
+        type = AttributeType.Pit;
     }
 
     /**

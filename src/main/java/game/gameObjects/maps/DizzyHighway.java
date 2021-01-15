@@ -1,17 +1,9 @@
 package game.gameObjects.maps;
 
-
-import utilities.Utilities;
-
 public class DizzyHighway extends Blueprint {
 
-
     public DizzyHighway() {
-        this.name = "Dizzy Highway";
-        this.gameLength = "short";
-        this.difficulty = Utilities.Difficulty.BEGINNER;
-        this.minPlayers = 2;
-        this.maxPlayers = 6;
+        name = "Dizzy Highway";
 
         //Tiles with multiple attributes (Laser and Wall)
         //outsourced for enhanced clarity in Blueprint
@@ -33,6 +25,4 @@ public class DizzyHighway extends Blueprint {
                 {71, 00, 00, 00, 00, 00, 00, 20, 20, 00},
         };
     }
-
-
 }

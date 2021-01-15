@@ -13,11 +13,11 @@ import utilities.Utilities.CardType;
 /**
  * @author annika
  */
-public class Wurm extends DamageCard{
+public class Worm extends DamageCard{
     private RestartPoint restartPoint;
 
-    public Wurm() {
-        super(CardType.Wurm);
+    public Worm() {
+        super(CardType.Worm);
     }
 
     /**

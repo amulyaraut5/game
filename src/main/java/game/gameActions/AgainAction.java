@@ -1,11 +1,12 @@
 package game.gameActions;
 
+import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Spam;
-import game.gameObjects.cards.damage.Trojaner;
+import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Virus;
-import game.gameObjects.cards.damage.Wurm;
+import game.gameObjects.cards.damage.Worm;
 import utilities.Orientation;
 
 import java.util.Arrays;
@@ -27,17 +28,17 @@ public class AgainAction extends Action{
     @Override
     public void doAction(Orientation orientation, Player player) {
         Spam spam = new Spam();
-        Trojaner trojaner = new Trojaner();
+        Trojan trojan = new Trojan();
         Virus virus = new Virus();
-        Wurm wurm = new Wurm();
+        Worm worm = new Worm();
 
-        List<Card> damageCards = Arrays.asList(spam, trojaner, virus, wurm);
+        List<Card> damageCards = Arrays.asList(spam, trojan, virus, worm);
 
         for (Card damageCard : damageCards) {
             if (player.getLastAction() == damageCard) {
                 //draw top card from programming deck and play it
                 Card topCard = player.getDrawProgrammingDeck().pop();
-                topCard.handleCard(player.getGame(), player);
+                topCard.handleCard(Game.getInstance(), player);
             }
         }
         //player.getLastAction().handleCard(player.getGame(), player);

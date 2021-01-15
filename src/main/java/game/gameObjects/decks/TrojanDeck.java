@@ -1,7 +1,7 @@
 package game.gameObjects.decks;
 
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.Trojaner;
+import game.gameObjects.cards.damage.Trojan;
 
 import java.util.ArrayList;
 
@@ -10,25 +10,25 @@ import static utilities.Utilities.TROJANHORSE_CARDCOUNT;
 /**
  * @author annika
  */
-public class TrojanHorseDeck extends DamageCardDeck {
+public class TrojanDeck extends DamageCardDeck {
 
-    ArrayList<Card> trojanHorseDeck;
+    ArrayList<Card> trojanDeck;
 
     /**
-     * Creates the deck of Trojan Horse cards.
+     * Creates the deck of Trojan cards.
      */
     @Override
     public void createDeck() {
-        this.trojanHorseDeck = new ArrayList<>();
+        this.trojanDeck = new ArrayList<>();
 
         for (int i = 0; i < TROJANHORSE_CARDCOUNT; i++) {
-            trojanHorseDeck.add(new Trojaner());
+            trojanDeck.add(new Trojan());
         }
 
     }
 
     @Override
     public ArrayList<Card> getDeck() {
-        return trojanHorseDeck;
+        return trojanDeck;
     }
 }

@@ -11,10 +11,10 @@ import utilities.Utilities.CardType;
 /**
  * @author annika
  */
-public class Trojaner extends DamageCard {
+public class Trojan extends DamageCard {
 
-    public Trojaner() {
-        super(CardType.Trojaner);
+    public Trojan() {
+        super(CardType.Trojan);
     }
 
     /**
