@@ -55,19 +55,15 @@ public abstract class MapConverter {
     }
 
     public static Movement convertCoordinate(Player player, Coordinate coordinate){
-        int n = coordinate.getY() * Utilities.MAP_WIDTH + coordinate.getX() + 1;
-        return new Movement(player.getId(), n);
+        int position = coordinate.getY() * Utilities.MAP_WIDTH + coordinate.getX() + 1;
+        return new Movement(player.getId(), position);
     }
 
-    public static Coordinate reconvertCoordinate(Movement movement){
+    public static Coordinate reconvertToCoordinate(int position){
         int xMax = Utilities.MAP_WIDTH;
-
-        int n = movement.getTo();
-        int x = n % xMax;
-        int y = n / xMax;
+        int x = position % xMax;
+        int y = position / xMax;
         Coordinate coordinate = new Coordinate(x, y);
-
         return coordinate;
-
     }
 }

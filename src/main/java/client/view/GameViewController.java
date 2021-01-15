@@ -5,7 +5,6 @@ import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -17,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -25,7 +23,6 @@ import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
 import utilities.MapConverter;
 import utilities.Orientation;
-import utilities.Utilities.Rotation;
 import utilities.Utilities;
 import utilities.Utilities.AttributeType;
 
@@ -160,19 +157,18 @@ public class GameViewController extends Controller {
                 Coordinate oldRobotPosition = player.getRobot().getPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
-                //int position = convertToInt(Coordinate coordinate);
 
-                //Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(to);
-                //int newX = newRobotPosition.getX();
-                //int newY = newRobotPosition.getY();
+                Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(to);
+                int newX = newRobotPosition.getX();
+                int newY = newRobotPosition.getY();
 
                 // Get ImageView from the old position
                 ImageView imageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size()-1);
                 // Remove the imageView from the old position
                 getFields()[x][y].getChildren().remove(getFields()[x][y].getChildren().size()-1);
                 // Set the imageView to new position
-                // Change x and y to newX and newY
-                getFields()[x][y].getChildren().add(imageView);
+
+                getFields()[newX][newY].getChildren().add(imageView);
             }
         }
     }
@@ -186,7 +182,6 @@ public class GameViewController extends Controller {
                 Coordinate oldRobotPosition = player.getRobot().getPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
-                //int position = convertToInt(Coordinate coordinate);
 
                 // Get the imageView from that position
                 ImageView robotImageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size()-1);
