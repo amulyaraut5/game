@@ -18,6 +18,7 @@ public class Map {
     private ArrayList<Coordinate> laserCoordinates;
     private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
+    private Coordinate RestartPoint;
 
 
     /**
@@ -75,6 +76,11 @@ public class Map {
             }
         }
         return coordinates;
+    }
+
+    public void readAll(){
+        readBeltCoordinates();
+        readRestartPointCoordinate();
     }
 
 
@@ -137,6 +143,18 @@ public class Map {
 
         }
     }
+    public void readRestartPointCoordinate() {
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if(a.getType() == Utilities.AttributeType.RestartPoint){
+                        this.RestartPoint = new Coordinate(i, j);
+                    }
+                }
+            }
+        }
+    }
+
 
     private void addGreenBelt(Coordinate c){
         GreenBelts.add(c);
@@ -152,5 +170,9 @@ public class Map {
 
     public ArrayList<Coordinate> getBlueBelts(){
         return BlueBelts;
+    }
+
+    public Coordinate getRestartPoint(){
+        return this.RestartPoint;
     }
 }

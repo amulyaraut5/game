@@ -114,12 +114,12 @@ public class Wall extends Attribute {
         return new Group(imageView1, imageView2);
     }
 
-    public Orientation[] getOrientations() {
-        return orientations;
-    }
-
     public Orientation getOrientation() {
         return orientation;
+    }
+
+    public Orientation[] getOrientations(){
+        return this.orientations;
     }
 }
 

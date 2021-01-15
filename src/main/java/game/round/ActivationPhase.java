@@ -7,8 +7,12 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.Wall;
 import utilities.Coordinate;
+import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.Movement;
+import utilities.MapConverter;
 import utilities.Orientation;
 import utilities.Utilities;
 
@@ -31,6 +35,9 @@ public class ActivationPhase extends Phase {
     private HashMap<Integer, Card> currentCards = new HashMap<>();
 
     private Map gameMap;
+
+    //Saves current Register number(for push panels and energy fields)
+    private int currentRegister;
 
     public ActivationPhase() {
         super();
@@ -136,6 +143,7 @@ public class ActivationPhase extends Phase {
     //Supposed o handle a robot moving one tile.
     //TODO Once the game can be started, it needs to check wheiher the robots really move in the right direction
     public void handleMove(Player player, Orientation o) {
+        //calculate potential new position
         Coordinate newPosition = null;
         if (o == Orientation.UP) {
             newPosition = player.getRobot().getPosition().clone();
@@ -155,13 +163,70 @@ public class ActivationPhase extends Phase {
 
 
         }
+        //Handle board elements
+        boolean canMove = true;
+        boolean inPit = false;
+        boolean onCheckpoint=false;
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
             switch (a.getType()) {
                 //handle different tile effects here
+                case Wall:
+                    Wall temp = (Wall) a;
+                    for (Orientation orientation : temp.getOrientations()) {
+                        if(orientation == o.getOpposite()){
+                            canMove = false;
+                        }
+                    }
+
+                case Pit:
+                    inPit = true;
+
+                case ControlPoint:
+                    onCheckpoint = true;
+
+
+
+            }
+
+        }
+        //Handle collisions
+        for (Player currentPlayer : playerList) {
+            if (newPosition.equals(currentPlayer.getRobot().getPosition())) {
+                Coordinate old = currentPlayer.getRobot().getPosition();
+                handleMove(currentPlayer, o);
+                if((old.equals(currentPlayer.getRobot().getPosition()))){
+                    canMove=false;
+                }
+
+            }
+        }
+        //move robot, activate board element if given
+        if(inPit && canMove){
+            moveOne(player,o);
+            player.getRobot().reboot();
+        }
+        else {
+            if(onCheckpoint && canMove) {
+                moveOne(player, o);
+                player.checkPointReached();
+            }
+
+            else{
+                if(canMove){
+                    moveOne(player, o);
+                }
             }
         }
 
 
+
+
+
+    }
+
+    public void moveOne(Player player, Orientation orientation) {
+        player.getRobot().move(1, orientation);
+        server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
     }
 
 

@@ -55,4 +55,5 @@ public class EnergySpace extends Attribute {
     public int getCount() {
         return count;
     }
+
 }

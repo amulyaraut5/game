@@ -128,4 +128,7 @@ public abstract class Robot {
     public void setPosition(int x, int y) {
         this.position = new Coordinate(x, y);
     }
+
+    //TODO
+    public void reboot(){}
 }

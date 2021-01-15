@@ -139,6 +139,18 @@ public class Player extends User {
         this.checkPointCounter = checkPointCounter;
     }
 
+    public void addEnergyCubes(int n){
+        this.energyCubes = this.energyCubes + n;
+    }
+
+    public void takeEnergyCubes(int n){
+        this.energyCubes = this.energyCubes - n;
+    }
+
+    public void checkPointReached(){
+        this.checkPointCounter++;
+    }
+
     public int getEnergyCubes() {
         return energyCubes;
     }
