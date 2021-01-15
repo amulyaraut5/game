@@ -65,6 +65,7 @@ public class ActivationController extends Controller{
 
     public void handleMovement(int playerId, int to){
         // TODO Handle Player differently???
+        /*
         for(Player player: Game.getInstance().getPlayerList()) {
             if (player.getPlayerID() == playerId) {
                 // Get the Robot position from the Board
@@ -86,9 +87,12 @@ public class ActivationController extends Controller{
                 gameViewController.getFields()[x][y].getChildren().add(imageView);
             }
         }
+
+         */
     }
     public void handlePlayerTurning(int playerID,Rotation rotation) {
         // TODO Handle Player differently???
+        /*
         for(Player player: Game.getInstance().getPlayerList()){
             if(player.getPlayerID() == playerID){
 
@@ -110,5 +114,9 @@ public class ActivationController extends Controller{
                 }
             }
         }
+
+         */
     }
+
+
 }
