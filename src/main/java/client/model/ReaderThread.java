@@ -53,23 +53,22 @@ public class ReaderThread extends Thread {
     }
 
     /**
-     * run() method to start Thread and read input from the server and print it out on the console
+     * run() method to start Thread and read input from the server
      */
     @Override
     public void run() {
 
         while (!isInterrupted()) {
             try {
-                String text = bReader.readLine();
-                if (text == null) {
+                String jsonText = bReader.readLine();
+                if (jsonText == null) {
                     throw new IOException("Connection closed");
                 }
-                logger.debug("Protocol received: " + text);
-                // After the reader object reads the serialized message from the socket it is then
-                // deserialized and handled in handleMessage method.
+                logger.debug("Protocol received: " + jsonText);
 
-                JSONMessage jsonMessage = Multiplex.deserialize(text);
-                client.getMessageQueue().add(jsonMessage); //TODO put?
+                JSONMessage msg = Multiplex.deserialize(jsonText);
+                client.handleMessage(msg);
+
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;

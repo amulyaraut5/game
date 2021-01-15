@@ -54,16 +54,12 @@ public class Client {
      */
     private PrintWriter writer;
 
-    private BlockingQueue<JSONMessage> messageQueue = new LinkedBlockingQueue<>();
     private int playerID;
-
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
     private boolean exit = false;
-    //private MapSelectionController mapSelectionController;
-
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      */
@@ -87,23 +83,7 @@ public class Client {
 
             readerThread = new ReaderThread(socket, this);
             readerThread.start();
-            Thread handleThread = new Thread(() -> {
-                while (!exit) {
-                    try {
-                        synchronized (this){
-                            this.wait(10); //FIXME workaround, find better solution
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    JSONMessage jsonMessage;
-                    while ((jsonMessage = messageQueue.poll()) != null) {
-                        handleMessage(jsonMessage);
-                    }
-                }
 
-            });
-            handleThread.start();
             logger.info("Connection to server successful.");
             return true;
         } catch (IOException e) {
@@ -151,10 +131,6 @@ public class Client {
 
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
-    }
-
-    public BlockingQueue<JSONMessage> getMessageQueue() {
-        return messageQueue;
     }
 
     public boolean playerListContains(int robotID) {
