@@ -11,7 +11,6 @@ import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * The Programming phase is the second Phase of every round.
@@ -26,11 +25,6 @@ public class ProgrammingPhase extends Phase {
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
      */
     private ArrayList<Integer> notReadyPlayers = new ArrayList<>();
-
-    /**
-     * Programming cards from which the player can choose to program his robot.
-     */
-    private ArrayList<Card> availableProgrammingCards;
 
 
     public ProgrammingPhase() {
@@ -81,9 +75,10 @@ public class ProgrammingPhase extends Phase {
         }
 
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
+        player.getDrawnProgrammingCards().remove(chosenCard);
         if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player.getId());
-            player.discardCards(availableProgrammingCards, player.getDiscardedProgrammingDeck());
+            player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             if (notReadyPlayers.size() == playerList.size() - 1)
                 onePlayerFinished(player);
         } //TODO if a player doesn't play this round use isFinished?
@@ -118,22 +113,26 @@ public class ProgrammingPhase extends Phase {
         for (Integer id : notReadyPlayers) {
             Player player = game.getPlayerFromID(id);
 
+            //Nimm alle Karten aus den Registern und lege sie auf den Ablagestapel
+            player.getRegisterCards().removeAll(null);
+            player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+            //Werfe alle Handkarten ab
+            player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             player.message(new DiscardHand(player.getId()));
 
-            ArrayList<Card> registers = player.getRegisterCards();
-            availableProgrammingCards = player.getDrawnProgrammingCards();
-
-            registers.removeAll(null);
-            availableProgrammingCards.addAll(registers);
-            Collections.shuffle(availableProgrammingCards);
-
-            for (int i = 0; i < registers.size(); i++) {
-                player.setRegisterCards(i, availableProgrammingCards.get(i));
-                availableProgrammingCards.set(i, null);
+            //Nimm 5 Karten vom ProgrammierStapel
+            ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
+            if (!(currentDeck.size() < 5)) {
+                player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(5));
+            } else {
+                player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeck.size()));
+                player.reuseDiscardedDeck();
+                player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(5 - currentDeck.size()));
             }
-
-            availableProgrammingCards.removeAll(null);
-            player.discardCards(availableProgrammingCards, player.getDiscardedProgrammingDeck());
+            for (int i = 0; i < 6; i++) {
+                player.setRegisterCards(i+1, player.getDrawnProgrammingCards().get(i));
+                player.getDrawnProgrammingCards().remove(i);
+            }
             player.message(new CardsYouGotNow(player.getRegisterCards()));
         }
 
@@ -151,17 +150,15 @@ public class ProgrammingPhase extends Phase {
         for (Player player : playerList) {
             ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
             if (currentDeck.size() >= 9) {
-                availableProgrammingCards = currentDeck.drawCards(9);
+                player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(9));
             } else {
-                availableProgrammingCards = currentDeck.drawCards(currentDeck.size());
+                player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeck.size()));
                 player.reuseDiscardedDeck();
-                availableProgrammingCards.addAll(player.getDrawProgrammingDeck().drawCards(9 - currentDeck.size()));
-
+                player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(9 - currentDeck.size()));
                 player.message(new ShuffleCoding(player.getId()));
             }
-            player.setDrawnProgrammingCards(availableProgrammingCards);
-            player.message(new YourCards(availableProgrammingCards));
-            server.communicateUsers((new NotYourCards(player.getId(), availableProgrammingCards.size())), player);
+            player.message(new YourCards(player.getDrawnProgrammingCards()));
+            server.communicateUsers((new NotYourCards(player.getId(), player.getDrawnProgrammingCards().size())), player);
         }
 
     }
