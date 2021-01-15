@@ -259,17 +259,8 @@ public class GameViewController extends Controller {
         currentPhaseView = ++currentPhaseView % 3;
 
         if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhase.fxml";
+        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhaseView.fxml";
         else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
-
-        try {
-            innerPane = FXMLLoader.load(getClass().getResource(path));
-        } catch (IOException e) {
-            logger.error("Inner phase View could not be loaded: " + e.getMessage());
-        }
-        return innerPane;
-        /*
-        path = "/view/innerViews/programmingPhase.fxml";
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
@@ -277,7 +268,6 @@ public class GameViewController extends Controller {
         }
         return innerPane;
 
-         */
     }
 
 
