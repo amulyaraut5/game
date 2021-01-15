@@ -1,5 +1,6 @@
 package game.gameActions;
 
+import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Spam;
@@ -37,7 +38,7 @@ public class AgainAction extends Action{
             if (player.getLastAction() == damageCard) {
                 //draw top card from programming deck and play it
                 Card topCard = player.getDrawProgrammingDeck().pop();
-                topCard.handleCard(player.getGame(), player);
+                topCard.handleCard(Game.getInstance(), player);
             }
         }
         //player.getLastAction().handleCard(player.getGame(), player);
