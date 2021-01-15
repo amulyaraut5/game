@@ -25,6 +25,6 @@ public class UTurn extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/u-turn-card.png");
+        return ImageHandler.createImageView("/programming-cards/UTurn-card.png");
     }
 }

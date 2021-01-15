@@ -23,6 +23,6 @@ public class BackUp extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/move-back-card.png");
+        return ImageHandler.createImageView("/programming-cards/BackUp-card.png");
     }
 }

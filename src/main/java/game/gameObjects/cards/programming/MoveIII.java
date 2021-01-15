@@ -25,6 +25,6 @@ public class MoveIII extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/move-3-card.png");
+        return ImageHandler.createImageView("/programming-cards/MoveIII-card.png");
     }
 }
