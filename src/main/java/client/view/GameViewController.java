@@ -154,7 +154,7 @@ public class GameViewController extends Controller {
         for(Player player: Game.getInstance().getPlayers()) {
             if (player.getPlayerID() == playerId) {
                 // Get the Robot position from the Board
-                Coordinate oldRobotPosition = player.getRobot().getPosition();
+                Coordinate oldRobotPosition = player.getRobot().getOldPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
 
@@ -171,6 +171,7 @@ public class GameViewController extends Controller {
                 getFields()[newX][newY].getChildren().add(imageView);
             }
         }
+        // TODO Should other player map also be updated????
     }
 
     public void handlePlayerTurning(int playerID, Orientation rotation) {
@@ -179,7 +180,7 @@ public class GameViewController extends Controller {
         for(Player player: Game.getInstance().getPlayers()){
             if(player.getPlayerID() == playerID){
 
-                Coordinate oldRobotPosition = player.getRobot().getPosition();
+                Coordinate oldRobotPosition = player.getRobot().getOldPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
 
@@ -196,6 +197,7 @@ public class GameViewController extends Controller {
                 }
             }
         }
+        // TODO Should other player map also be updated????
     }
 
 

@@ -7,6 +7,8 @@ import utilities.Coordinate;
 import utilities.Orientation;
 import utilities.Utilities.Rotation;
 
+import java.util.ArrayList;
+
 /**
  * @author simon
  */
@@ -18,6 +20,7 @@ public abstract class Robot {
 
     protected Orientation orientation;
     protected Coordinate position;
+    protected Coordinate oldPosition;
 
     public static Robot create(int figure) {
         Robot robot = null;
@@ -120,15 +123,21 @@ public abstract class Robot {
     public Coordinate getPosition() {
         return position;
     }
+    public Coordinate getOldPosition(){
+        return oldPosition;
+    }
 
-    public void setPosition(Coordinate position) {
-        this.position = position;
+    public void setPosition(Coordinate p) {
+        oldPosition = position;
+        position = p;
     }
 
     public void setPosition(int x, int y) {
-        this.position = new Coordinate(x, y);
+        oldPosition = position;
+        position = new Coordinate(x, y);
     }
 
     //TODO
     public void reboot(){}
+
 }
