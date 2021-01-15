@@ -33,9 +33,13 @@
                   <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#changeInnerView" prefHeight="30.0" prefWidth="150.0" text="test change inner view" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             <FlowPane fx:id="boardPane" />
             <AnchorPane fx:id="playerMap" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <Button layoutX="355.0" layoutY="137.0" mnemonicParsing="false" onAction="#changeInnerView" text="test inner view" />
+               </children>
+            </AnchorPane>
          </children>
       </GridPane>
     </children>

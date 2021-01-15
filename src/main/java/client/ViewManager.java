@@ -110,7 +110,7 @@ public class ViewManager {
     private void showGameStage() {
         gameViewController.attachChatPane(chatPane);
         gameViewController.attachPlayerMap(playerMap);
-        //gameViewController.changeInnerView();
+       //gameViewController.changeInnerView();
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
             gameStage.show();

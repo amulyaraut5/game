@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.ActivationController">
    <children>
-      <Label layoutX="287.0" layoutY="292.0" text="activationView" />
+      <AnchorPane layoutX="4.0" layoutY="4.0" prefHeight="593.0" prefWidth="642.0">
+         <children>
+            <Label alignment="CENTER" layoutX="184.0" layoutY="25.0" prefHeight="43.0" prefWidth="258.0" text="Activation Phase">
+               <font>
+                  <Font name="Cambria Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="register" layoutX="141.0" layoutY="82.0" prefHeight="26.0" prefWidth="367.0" text="Label" />
+            <AnchorPane layoutX="83.0" layoutY="126.0" prefHeight="399.0" prefWidth="466.0">
+               <children>
+                  <Label fx:id="ProgOrBoard" layoutX="53.0" layoutY="14.0" prefHeight="26.0" prefWidth="318.0" text="Label" />
+                  <ImageView fx:id="imageView1" fitHeight="150.0" fitWidth="110.0" layoutX="19.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imageView3" fitHeight="150.0" fitWidth="110.0" layoutX="325.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imageView2" fitHeight="150.0" fitWidth="110.0" layoutX="166.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="displayResult" layoutX="57.0" layoutY="316.0" prefHeight="26.0" prefWidth="352.0" text="Label" />
+                  <Label fx:id="showPriority" layoutX="74.0" layoutY="58.0" prefHeight="26.0" prefWidth="318.0" text="Label" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

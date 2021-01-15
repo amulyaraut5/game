@@ -214,6 +214,8 @@ public class Client {
                     //TODO start gameView
                     Map map = MapConverter.reconvert(gameStarted);
                     gameViewController.buildMap(map);
+                    //<---------------Test------------->
+                    gameViewController.placeRobotInMap();
                     logger.info("The game has started.");
                 }
                 case YourCards -> {

@@ -155,7 +155,6 @@ public class ActivationPhase extends Phase {
 
 
         }
-
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
             switch (a.getType()) {
                 //handle different tile effects here

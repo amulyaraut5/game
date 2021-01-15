@@ -39,6 +39,17 @@ public class Player extends User {
     private int lastCheckpoint;
     private int checkPointCounter;
     private int energyCubes;
+
+    private int playerID;
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
+    }
+
     /**
      * the players robot
      */

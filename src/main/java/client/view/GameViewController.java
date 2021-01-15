@@ -3,15 +3,19 @@ package client.view;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.SetStartingPoint;
@@ -53,7 +57,14 @@ public class GameViewController extends Controller {
                     int y = (int) mouseEvent.getY() / fieldSize;
                     int pos = y * xMax + x;
                     client.sendMessage(new SetStartingPoint(pos));
+                    //placeRobotInMap(x,y);
+
                 });
+        ActivationController.setGameViewController(this);
+    }
+
+    public Group[][] getFields() {
+        return fields;
     }
 
     public void attachPlayerMap(Pane playerM) {
@@ -100,6 +111,16 @@ public class GameViewController extends Controller {
             }
         }
     }
+    public void placeRobotInMap(){
+
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
+        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
+        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+        imageView.setPreserveRatio(true);
+        fields[7][8].getChildren().add(imageView);
+        //fields[88].getChildren().add(new MoveI().drawCardImage());
+    }
+
 
     //TODO inner view with activation phase
     public void programCards(YourCards yourCards) {
@@ -146,7 +167,7 @@ public class GameViewController extends Controller {
     /**
      * Button press to test the change of inner phase panes.
      */
-
+    @FXML
     public void changeInnerView() {//TODO set it private
         Pane innerPane = setNextPhase();
         outerPane.setCenter(innerPane);
@@ -158,10 +179,10 @@ public class GameViewController extends Controller {
     private Pane setNextPhase() {
         Pane innerPane = null;
         String path = "";
-        /*currentPhaseView = ++currentPhaseView % 3;
+        currentPhaseView = ++currentPhaseView % 3;
 
         if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (currentPhaseView == 1) path = "/view/innerViews/programmingView.fxml";
+        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhase.fxml";
         else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
 
         try {
@@ -169,7 +190,8 @@ public class GameViewController extends Controller {
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
-        return innerPane;*/
+        return innerPane;
+        /*
         path = "/view/innerViews/programmingPhase.fxml";
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
@@ -177,6 +199,8 @@ public class GameViewController extends Controller {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
         return innerPane;
+
+         */
     }
 
 
