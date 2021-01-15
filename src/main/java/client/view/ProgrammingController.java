@@ -11,8 +11,36 @@ import javax.swing.text.html.ImageView;
 public class ProgrammingController {
     //@FXML
     //public ImageView imageView;
-    @FXML
-    public ImageView programCard1;
+    //@FXML
+    //public ImageView programCard;
+
+    public AnchorPane programmingPhasePane;
+    public HBox hBox;
+
+    public void initialize(){ //TODO method that gets called when cards were dealt
+        ArrayList<String> cardList = new ArrayList<>(); //HARDCODED
+        cardList.add("Again");
+        cardList.add("MoveI");
+        cardList.add("MoveII");
+        cardList.add("MoveIII");
+        cardList.add("UTurn");
+        for (String card : cardList){
+            ImageView programCard = new ImageView();
+            programCard.setImage(new Image("/programming-cards/" + card +"-card.png"));
+            programCard.setFitWidth(90);
+            programCard.setFitHeight(116);
+            programCard.setOnDragDetected(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    setOnDragDetected(mouseEvent, programCard);
+                }
+            });
+            hBox.getChildren().add(programCard);
+        }
+
+    }
+
+
 
 
     @FXML
