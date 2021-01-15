@@ -5,7 +5,6 @@ import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
-import utilities.Coordinate;
 import utilities.ImageHandler;
 import utilities.Utilities.CardType;
 
@@ -30,7 +29,7 @@ public class Virus extends DamageCard {
 
         int robotX = player.getRobot().getPosition().getX();
         int robotY = player.getRobot().getPosition().getY();
-        ArrayList<Player> allPlayers = game.getPlayerList();
+        ArrayList<Player> allPlayers = game.getPlayers();
 
             for (Player otherPlayer : allPlayers) {
                 int otherRobotX = otherPlayer.getRobot().getPosition().getX();

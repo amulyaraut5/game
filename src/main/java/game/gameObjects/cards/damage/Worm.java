@@ -17,7 +17,7 @@ public class Worm extends DamageCard{
     private RestartPoint restartPoint;
 
     public Worm() {
-        super(CardType.Wurm);
+        super(CardType.Worm);
     }
 
     /**
