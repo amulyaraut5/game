@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import static utilities.Utilities.PORT;
 
@@ -198,7 +195,6 @@ public class Client {
                     //TODO start gameView
                     Map map = MapConverter.reconvert(gameStarted);
                     gameViewController.buildMap(map);
-
                     logger.info("The game has started.");
                 }
                 case YourCards -> {
@@ -239,7 +235,7 @@ public class Client {
                 case StartingPointTaken -> {
                     StartingPointTaken startingPointTaken = (StartingPointTaken) message.getBody();
                     // It places other robot in the players map
-                    gameViewController.placeOtherRobotInMap(startingPointTaken.getPlayerID(),startingPointTaken.getPosition());
+                    gameViewController.placeRobotInMap(startingPointTaken.getPlayerID(),startingPointTaken.getPosition());
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }

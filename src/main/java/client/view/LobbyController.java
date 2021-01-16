@@ -122,16 +122,6 @@ public class LobbyController extends Controller {
         return imageHashmap;
     }
 
-    private Image currentPlayerImage;
-
-    public Image getCurrentPlayerImage() {
-        return currentPlayerImage;
-    }
-
-    public void setCurrentPlayerImage(Image currentPlayerImage) {
-        this.currentPlayerImage = currentPlayerImage;
-    }
-
     /**
      * this method gets called automatically by constructing view
      * it adds the different ImageViews and Labels to lists and also
@@ -180,7 +170,6 @@ public class LobbyController extends Controller {
 
         //<-----------------------------Test-------------------------->
         imageHashmap.put(playerAdded.getID(),new Image(getClass().getResource(path).toString()) );
-        setCurrentPlayerImage(new Image(getClass().getResource(path).toString()));
         //<-----------------------------Test-------------------------->
         currentLabel.setText(newName);
         ImageView imageViewPuffer = currentImageView;

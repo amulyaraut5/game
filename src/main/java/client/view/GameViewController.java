@@ -56,9 +56,18 @@ public class GameViewController extends Controller {
     private Pane playerPane;
 
     private static LobbyController lobbyController;
+    private boolean placeRobotOneTime = false;
 
     public static void setLobbyController(LobbyController lobbyController) {
         GameViewController.lobbyController = lobbyController;
+    }
+
+    public boolean isPlaceRobotOneTime() {
+        return placeRobotOneTime;
+    }
+
+    public void setPlaceRobotOneTime(boolean placeRobotOneTime) {
+        this.placeRobotOneTime = placeRobotOneTime;
     }
 
     @FXML
@@ -67,7 +76,6 @@ public class GameViewController extends Controller {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
             int pos = x + y * Utilities.MAP_WIDTH;
-            placeRobotInMap(x, y);
             client.sendMessage(new SetStartingPoint(pos));
         });
     }
@@ -123,20 +131,8 @@ public class GameViewController extends Controller {
 
     // <----------------------Only For Test---------------------------->
 
-    public void placeRobotInMap(int x, int y) {
 
-        Image image = lobbyController.getCurrentPlayerImage();
-        ImageView imageView = new ImageView(image);
-        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
-        imageView.setPreserveRatio(true);
-
-        playerPane.getChildren().add(imageView);
-        imageView.setX(x * Utilities.FIELD_SIZE);
-        imageView.setY(y * Utilities.FIELD_SIZE);
-    }
-
-    public void placeOtherRobotInMap(int playerID, int position) {
+    public void placeRobotInMap(int playerID, int position) {
         Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
         int newX = newRobotPosition.getX();
         int newY = newRobotPosition.getY();
