@@ -42,14 +42,16 @@ public class ViewManager {
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
+    private PlayerMapController playerMapController;
     //private MapSelectionController mapSelectionController;
 
     private ViewManager() {
         Platform.runLater(() -> {
             try {
+                constructScenes();
                 createChatPane();
                 createPlayerMap();
-                constructScenes();
+
                 constructMenuStage();
                 constructGameStage();
                 menuStage.show();
@@ -110,6 +112,7 @@ public class ViewManager {
     private void showGameStage() {
         gameViewController.attachChatPane(chatPane);
         gameViewController.attachPlayerMap(playerMap);
+
        //gameViewController.changeInnerView();
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
@@ -160,7 +163,10 @@ public class ViewManager {
     }
     private void createPlayerMap() {
         try {
-            playerMap = FXMLLoader.load(getClass().getResource("/view/innerViews/playerMap.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMap.fxml"));
+            playerMap = fxmlLoader.load();
+            playerMapController = fxmlLoader.getController();
+            gameViewController.setPlayerMapController(playerMapController);
         } catch (IOException e) {
             logger.error("PlayerMap could not be created: " + e.getMessage());
         }
