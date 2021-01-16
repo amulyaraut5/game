@@ -62,7 +62,7 @@ public class ActivationElements {
      * example, if you end register two on a push panel labeled “2, 4” you will be pushed. If you end
      * register three on the same push panel, you won’t be pushed.
      */
-
+    /*
     public void activatePushPanel(){
         for(Coordinate coordinate: map.getPushPanelCoordinate()){
             Tile tile = map.getTile(coordinate);
@@ -72,7 +72,7 @@ public class ActivationElements {
                     for(Attribute a : tile.getAttributes()){
                         for(int i : ((game.gameObjects.tiles.PushPanel) a).getRegisters()){
                             if( i == player.getCurrentRegister()){
-                                new MoveRobot().doAction(a.getOrientation(), player);
+                                ///new MoveRobot().doAction(a.getOrientation(), player);
                             }
                         }
                     }
@@ -80,5 +80,7 @@ public class ActivationElements {
             }
         }
     }
+
+     */
 
 }
