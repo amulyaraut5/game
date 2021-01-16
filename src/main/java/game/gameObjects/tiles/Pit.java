@@ -30,18 +30,6 @@ public class Pit extends Attribute {
     public void performAction(Player player) {
         Orientation robotOrientation = player.getRobot().getOrientation();
         new RebootAction().doAction(robotOrientation, player);
-
-        /*
-        // Set the position of robot in the position of reboot token
-        // Todo Set the position of reboot token
-
-        player.getRobot().setPosition(4, 5);
-        player.freeze();
-
-         */
-
-        // Player needs to draw spam card from the deck and add to the discard pile
-
         player.message(new Reboot(player.getId()));
     }
 

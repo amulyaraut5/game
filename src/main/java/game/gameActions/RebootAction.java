@@ -6,6 +6,8 @@ import game.gameObjects.cards.Card;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.Movement;
+import utilities.MapConverter;
 import utilities.Orientation;
 import utilities.Utilities;
 
@@ -36,6 +38,7 @@ public class RebootAction extends Action{
         player.freeze();
         //Robot is placed on reboot token
         player.getRobot().setPosition(map.getRestartPointCoordinate());
+        server.communicateAll(MapConverter.convertCoordinate(player, map.getRestartPointCoordinate()));
         //TODO The player can turn the robot to face any direction.
     }
 }
