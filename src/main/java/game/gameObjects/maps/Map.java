@@ -94,6 +94,45 @@ public class Map {
         return null;
     }
 
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Coordinate> getEnergySpaceCoordinate(){
+        ArrayList<Coordinate> energyCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.EnergySpace) {
+                        Coordinate temp = new Coordinate(i, j);
+                        energyCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return energyCoordinates;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Coordinate> getPushPanelCoordinate(){
+        ArrayList<Coordinate> pushPanelCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.PushPanel) {
+                        Coordinate temp = new Coordinate(i, j);
+                        pushPanelCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return pushPanelCoordinates;
+    }
+
+
     public void readAll(){
         readBeltCoordinates();
         readRestartPointCoordinate();
