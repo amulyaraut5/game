@@ -52,7 +52,7 @@ public class ProgrammingPhase extends Phase {
     // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
-    private void cardWasSelected(Player player, SelectCard selectCard) {
+    private void putCardToRegister(Player player, SelectCard selectCard) {
         String cardType = selectCard.getCard();
         Card chosenCard = null;
         switch (cardType) {
@@ -79,13 +79,17 @@ public class ProgrammingPhase extends Phase {
         if (player.getRegisterCards().size() == 5 && !player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player.getId());
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
-            if (notReadyPlayers.size() == playerList.size() - 1)
-                onePlayerFinished(player);
-        } //TODO if a player doesn't play this round use isFinished?
+            if (notReadyPlayers.size() == playerList.size() - 1) {
+                startProgrammingTimer(player);
+            } else if (notReadyPlayers.isEmpty()) {
+                endProgrammingTimer();
+            }
+        }
+        //TODO if a player doesn't play this round use isFinished?
     }
 
 
-    private void onePlayerFinished(Player player) {
+    private void startProgrammingTimer(Player player) {
         //isFinished = true;
         server.communicateAll(new SelectionFinished(player.getId()));
         GameTimer gameTimer = new GameTimer(this);
@@ -97,7 +101,7 @@ public class ProgrammingPhase extends Phase {
      * method that gets called from gameTimer if he has ended and then sends the message
      * TimerEnded and calls dealRandomCards()
      */
-    public void timerHasEnded() {
+    public void endProgrammingTimer() {
         server.communicateAll(new TimerEnded(notReadyPlayers));
         if (!(notReadyPlayers.size() == 0)) {
             dealRandomCards();
