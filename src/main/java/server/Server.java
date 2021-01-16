@@ -1,10 +1,6 @@
 package server;
 
 import game.Game;
-import game.gameObjects.cards.Card;
-import game.gameObjects.cards.programming.Again;
-import game.gameObjects.cards.programming.MoveI;
-import game.gameObjects.cards.programming.MoveII;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -26,12 +22,11 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-
     private final ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
     private final ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
-
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
+    private Game game;
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
     private boolean exit = false; //TODO Server
 
@@ -63,6 +58,7 @@ public class Server extends Thread {
      */
     @Override
     public void run() {
+        game = Game.getInstance();
         setName("ServerThread");
         logger.info("SERVER STARTED");
 
@@ -77,6 +73,7 @@ public class Server extends Thread {
                     try {
                         this.wait();
                     } catch (InterruptedException e) {
+                        logger.warn(e.getMessage());
                     }
                 }
                 QueueMessage queueMessage;
@@ -145,7 +142,7 @@ public class Server extends Thread {
                 communicateAll(new PlayerStatus(user.getId(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
                 if (allUsersReady) {
-                    Game.getInstance().play();
+                    game.play();
                 }
                 //user.message(new YourCards(programmingCards));
             }

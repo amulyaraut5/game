@@ -63,15 +63,14 @@ public class PlayerMapController {
     @FXML
     private void setOnDragDetected(Event event) {
 
-        //Dragboard db = vBox.startDragAndDrop(TransferMode.ANY);
-        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-        /* Put a string on a dragboard */
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(source.getImage());
-        db.setContent(content);
-
-        event.consume();
-
+//        //Dragboard db = vBox.startDragAndDrop(TransferMode.ANY);
+//        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+//        /* Put a string on a dragboard */
+//        ClipboardContent content = new ClipboardContent();
+//        content.putImage(source.getImage());
+//        db.setContent(content);
+//
+//        event.consume();
     }
 
 

@@ -4,25 +4,28 @@ import game.gameObjects.decks.SpamDeck;
 import game.gameObjects.decks.TrojanDeck;
 import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.decks.WormDeck;
-import game.gameObjects.maps.*;
+import game.gameObjects.maps.Map;
+import game.gameObjects.maps.MapBuilder;
+import game.gameObjects.maps.TestBlueprint;
 import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
-import game.round.Phase;
 import game.round.ProgrammingPhase;
 import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.ActivePhase;
+import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
 import utilities.Utilities;
+import utilities.Utilities.AttributeType;
+import utilities.Utilities.PhaseState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static utilities.Utilities.MAX_PLAYERS;
-import static utilities.Utilities.MIN_PLAYERS;
 
 /**
  * This class handles the game itself.
@@ -33,7 +36,7 @@ public class Game {
     private static final Logger logger = LogManager.getLogger();
     private static Game instance;
 
-    private Server server = Server.getInstance();
+    private final Server server = Server.getInstance();
     private int energyBank;
     private UpgradeShop upgradeShop;
     private ArrayList<Player> players;
@@ -51,7 +54,7 @@ public class Game {
     private ActivationPhase activationPhase;
     private UpgradePhase upgradePhase;
 
-    private Phase activePhase;
+    private PhaseState activePhase;
 
     /**
      * Shows if a game has already been created or not (false = not created)
@@ -75,20 +78,20 @@ public class Game {
      */
     public void reset() {
         energyBank = Utilities.ENERGY_BANK;
+        activePhase = PhaseState.CONSTRUCTION;
         upgradeShop = new UpgradeShop();
         players = new ArrayList<>(6);
+        createdGame = false;
+        runningGame = false;
 
         spamDeck = new SpamDeck();
         virusDeck = new VirusDeck();
         wormDeck = new WormDeck();
         trojanDeck = new TrojanDeck();
-
-        createdGame = false;
-        runningGame = false;
     }
 
     /**
-     * This methods starts Roborally.
+     * This methods starts RoboRally.
      */
     public void play() {
         reset();
@@ -101,6 +104,7 @@ public class Game {
 
         map = MapBuilder.constructMap(new TestBlueprint());
         server.communicateAll(MapConverter.convert(map));
+        server.communicateAll(new ActivePhase(activePhase));
 
 /*        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
             nextPhase(Utilities.Phase.CONSTRUCTION);
@@ -114,35 +118,16 @@ public class Game {
 
     /**
      * This method gets called from the phases, it calls the next phase
-     *
-     * @param phase
      */
-    public void nextPhase(Utilities.Phase phase) {
-        int phaseNumber = 0; //TODO Aufbauphase im game oder neue Construction-Phase Klasse?
-        switch (phase) {
-            case CONSTRUCTION:
-                phaseNumber = 0;
-                server.communicateAll(new ActivePhase(phase));
-                //this.constructionPhase = new ProgrammingPhase(); ?
-                break;
-            case UPGRADE:
-                phaseNumber = 1;
-                server.communicateAll(new ActivePhase(phase));
-                this.programmingPhase = new ProgrammingPhase();
-                break;
-            case PROGRAMMING:
-                phaseNumber = 2;
-                server.communicateAll(new ActivePhase(phase));
-                this.activationPhase = new ActivationPhase();
-                break;
-            case ACTIVATION:
-                phaseNumber = 3;
-                server.communicateAll(new ActivePhase(phase));
-                this.upgradePhase = new UpgradePhase();
-                break;
-            default:
-                //
+    public void nextPhase() {
+        activePhase = activePhase.getNext();
+
+        switch (activePhase) {
+            case UPGRADE -> upgradePhase = new UpgradePhase();
+            case PROGRAMMING -> programmingPhase = new ProgrammingPhase();
+            case ACTIVATION -> activationPhase = new ActivationPhase();
         }
+        server.communicateAll(new ActivePhase(activePhase));
     }
 
     public int getNoOfCheckPoints() {
@@ -201,8 +186,7 @@ public class Game {
         for (Player p : players) {
             if (p.getRobot().getPosition() == null) return;
         }
-        System.out.println("All robots have set their StartingPoint!!!");
-        //TODO nextPhase();
+        nextPhase();
     }
 
     public Player userToPlayer(User user) {

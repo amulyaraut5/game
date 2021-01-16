@@ -52,17 +52,12 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
-        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                mouseEvent -> {
-                    int xMax = Utilities.MAP_WIDTH;
-                    int fieldSize = Utilities.FIELD_SIZE;
-                    int x = (int) mouseEvent.getX() / fieldSize;
-                    int y = (int) mouseEvent.getY() / fieldSize;
-                    int pos = y * xMax + x;
-                    client.sendMessage(new SetStartingPoint(pos));
-                    //placeRobotInMap(x,y);
-
-                });
+        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
+            int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
+            int pos = x + y * Utilities.MAP_WIDTH;
+            client.sendMessage(new SetStartingPoint(pos));
+        });
     }
 
     public Group[][] getFields() {
@@ -115,7 +110,7 @@ public class GameViewController extends Controller {
     }
 
     // <----------------------Only For Test---------------------------->
-    public void placeRobotInMap(){
+    public void placeRobotInMap() {
 
         ImageView imageView = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
@@ -125,17 +120,17 @@ public class GameViewController extends Controller {
         //fields[88].getChildren().add(new MoveI().drawCardImage());
     }
 
-    public void changeDirection(){
+    public void changeDirection() {
 
-        ImageView robotImageView= (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size()-1);
+        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
         double currentDirection = robotImageView.rotateProperty().getValue();
         robotImageView.rotateProperty().setValue(currentDirection - 90);
     }
 
     // Called twice will move the tile image
-    public void moveRobot(){
-        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size()-1);
-        getFields()[7][8].getChildren().remove(getFields()[7][8].getChildren().size()-1);
+    public void moveRobot() {
+        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
+        getFields()[7][8].getChildren().remove(getFields()[7][8].getChildren().size() - 1);
         getFields()[7][6].getChildren().add(robotImageView);
 
         /*TranslateTransition transition = new TranslateTransition();
@@ -148,10 +143,10 @@ public class GameViewController extends Controller {
     }
     // <----------------------Only For Test---------------------------->
 
-    public void handleMovement(int playerId, int to){
+    public void handleMovement(int playerId, int to) {
         // TODO Handle Player differently???
 
-        for(Player player: Game.getInstance().getPlayers()) {
+        for (Player player : Game.getInstance().getPlayers()) {
             if (player.getPlayerID() == playerId) {
                 // Get the Robot position from the Board
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
@@ -163,9 +158,9 @@ public class GameViewController extends Controller {
                 int newY = newRobotPosition.getY();
 
                 // Get ImageView from the old position
-                ImageView imageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size()-1);
+                ImageView imageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size() - 1);
                 // Remove the imageView from the old position
-                getFields()[x][y].getChildren().remove(getFields()[x][y].getChildren().size()-1);
+                getFields()[x][y].getChildren().remove(getFields()[x][y].getChildren().size() - 1);
                 // Set the imageView to new position
 
                 getFields()[newX][newY].getChildren().add(imageView);
@@ -177,15 +172,15 @@ public class GameViewController extends Controller {
     public void handlePlayerTurning(int playerID, Orientation rotation) {
         // TODO Handle Player differently???
 
-        for(Player player: Game.getInstance().getPlayers()){
-            if(player.getPlayerID() == playerID){
+        for (Player player : Game.getInstance().getPlayers()) {
+            if (player.getPlayerID() == playerID) {
 
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
 
                 // Get the imageView from that position
-                ImageView robotImageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size()-1);
+                ImageView robotImageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size() - 1);
                 // Direction of robotImageView
                 double currentDirection = robotImageView.rotateProperty().getValue();
 

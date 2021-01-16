@@ -8,7 +8,6 @@ import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.cards.programming.MoveIII;
 import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
-import utilities.Utilities;
 
 import java.util.ArrayList;
 
@@ -102,7 +101,7 @@ public class ProgrammingPhase extends Phase {
         if (!(notReadyPlayers.size() == 0)) {
             dealRandomCards();
         }
-        game.nextPhase(Utilities.Phase.PROGRAMMING);
+        game.nextPhase();
     }
 
     /**
@@ -130,7 +129,7 @@ public class ProgrammingPhase extends Phase {
                 player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(5 - currentDeck.size()));
             }
             for (int i = 0; i < 6; i++) {
-                player.setRegisterCards(i+1, player.getDrawnProgrammingCards().get(i));
+                player.setRegisterCards(i + 1, player.getDrawnProgrammingCards().get(i));
                 player.getDrawnProgrammingCards().remove(i);
             }
             player.message(new CardsYouGotNow(player.getRegisterCards()));
