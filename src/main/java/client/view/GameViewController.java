@@ -36,9 +36,8 @@ import java.util.List;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-
+    private static LobbyController lobbyController;
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
-
     @FXML
     private StackPane playerMap;
 
@@ -55,9 +54,7 @@ public class GameViewController extends Controller {
     @FXML
     private Pane animationPane;
     @FXML
-    private Pane playerPane;
-
-    private static LobbyController lobbyController;
+    private Pane robotPane;
     private PlayerMapController playerMapController;
 
     public static void setLobbyController(LobbyController lobbyController) {
@@ -147,7 +144,7 @@ public class GameViewController extends Controller {
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
 
-        playerPane.getChildren().add(imageView);
+        robotPane.getChildren().add(imageView);
         imageView.setX(newX * Utilities.FIELD_SIZE);
         imageView.setY(newY * Utilities.FIELD_SIZE);
     }

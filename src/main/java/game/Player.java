@@ -2,6 +2,7 @@ package game;
 
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.PermUpgradeCard;
+import game.gameObjects.cards.ProgrammingCard;
 import game.gameObjects.cards.TempUpgradeCard;
 import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
@@ -67,6 +68,7 @@ public class Player extends User {
         energyCubes = 5;
         drawProgrammingDeck = new ProgrammingDeck();
         discardedProgrammingDeck = new DiscardDeck();
+        registerCards = new ArrayList<Card>();
         createRegister();
     }
 
@@ -187,10 +189,11 @@ public class Player extends User {
      * @param discardDeck
      */
     public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
-        cards.removeAll(null);
+        //cards.removeAll(null); //TODO
         for (Card card : cards) {
             discardDeck.addCard(card);
         }
+        cards.clear();
     }
 
     /**

@@ -27,5 +27,4 @@ module roborally {
     opens game.gameObjects.robot to com.google.gson;
     opens game.gameActions to com.google.gson;
     opens server to com.google.gson;
-
 }

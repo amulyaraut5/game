@@ -9,7 +9,7 @@ import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
 import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
-import game.round.Laser;
+import game.round.LaserAction;
 import game.round.ProgrammingPhase;
 import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
@@ -106,7 +106,7 @@ public class Game {
         map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(activePhase));
-        new Laser().determineLaserPaths();
+        new LaserAction().determineLaserPaths();
 
 /*        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
             nextPhase(Utilities.Phase.CONSTRUCTION);
@@ -123,6 +123,8 @@ public class Game {
      */
     public void nextPhase() {
         activePhase = activePhase.getNext();
+        //upgradePhase is skipped in current milestone
+        if (activePhase == PhaseState.UPGRADE) activePhase = activePhase.getNext();
 
         switch (activePhase) {
             case UPGRADE -> upgradePhase = new UpgradePhase();

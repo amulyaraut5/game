@@ -37,7 +37,7 @@
                <children>
                   <FlowPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
                   <Pane fx:id="animationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
-                  <Pane fx:id="playerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+                  <Pane fx:id="robotPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
                </children></StackPane>
             <StackPane id="playerMapStackPane" fx:id="playerMap" prefHeight="189.0" prefWidth="647.0" stylesheets="@login.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
