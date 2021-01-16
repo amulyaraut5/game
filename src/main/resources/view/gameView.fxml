@@ -6,7 +6,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameViewController">
     <children>
@@ -33,13 +35,18 @@
                   <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
-            <FlowPane fx:id="boardPane" />
             <AnchorPane fx:id="playerMap" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
                   <Button layoutX="355.0" layoutY="137.0" mnemonicParsing="false" onAction="#changeInnerView" text="test inner view" />
                </children>
             </AnchorPane>
+            <StackPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0">
+               <children>
+                  <FlowPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+                  <Pane fx:id="animationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+                  <Pane fx:id="playerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+               </children></StackPane>
          </children>
       </GridPane>
     </children>

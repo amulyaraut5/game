@@ -12,10 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -38,9 +35,11 @@ import java.util.List;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
+
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+
     @FXML
-    public AnchorPane playerMap; //TODO make it private
+    private AnchorPane playerMap;
     private int currentPhaseView = 0;
     private int ActivePhase = 0; //TODO enum? move to client?
     @FXML
@@ -48,7 +47,13 @@ public class GameViewController extends Controller {
     @FXML
     private BorderPane chatPane;
     @FXML
-    private FlowPane boardPane;
+    private StackPane boardPane; //stacks the map-, animation-, and playerPane
+    @FXML
+    private FlowPane mapPane;
+    @FXML
+    private Pane animationPane;
+    @FXML
+    private Pane playerPane;
 
     @FXML
     public void initialize() {
@@ -104,20 +109,22 @@ public class GameViewController extends Controller {
                         fields[x][y].getChildren().add(attributeImage);
                     }
                 }
-                boardPane.getChildren().add(fields[x][y]);
+                mapPane.getChildren().add(fields[x][y]);
             }
         }
     }
 
     // <----------------------Only For Test---------------------------->
     public void placeRobotInMap() {
-
         ImageView imageView = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
-        fields[7][8].getChildren().add(imageView);
-        //fields[88].getChildren().add(new MoveI().drawCardImage());
+        //fields[7][8].getChildren().add(imageView);
+
+        playerPane.getChildren().add(imageView);
+        imageView.setX(8 * Utilities.FIELD_SIZE);
+        imageView.setY(7 * Utilities.FIELD_SIZE);
     }
 
     public void changeDirection() {
