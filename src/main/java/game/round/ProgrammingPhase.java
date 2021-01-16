@@ -25,7 +25,7 @@ public class ProgrammingPhase extends Phase {
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
      */
     private ArrayList<Integer> notReadyPlayers = new ArrayList<>();
-
+    private boolean timerFinished = false;
 
     public ProgrammingPhase() {
         super();
@@ -104,11 +104,16 @@ public class ProgrammingPhase extends Phase {
      * TimerEnded and calls dealRandomCards()
      */
     public void endProgrammingTimer() {
-        server.communicateAll(new TimerEnded(notReadyPlayers));
-        if (!(notReadyPlayers.size() == 0)) {
-            dealRandomCards();
+        if(timerFinished){
+            timerFinished = true;
+            server.communicateAll(new TimerEnded(notReadyPlayers));
+            if (!(notReadyPlayers.size() == 0)) {
+                dealRandomCards();
+            }
+            game.nextPhase();
+
         }
-        game.nextPhase();
+
     }
 
     /**
