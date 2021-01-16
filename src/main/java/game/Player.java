@@ -65,8 +65,9 @@ public class Player extends User {
 
         this.robot = robot;
         energyCubes = 5;
-        drawProgrammingDeck=new ProgrammingDeck();
-        discardedProgrammingDeck=new DiscardDeck();
+        drawProgrammingDeck = new ProgrammingDeck();
+        discardedProgrammingDeck = new DiscardDeck();
+        createRegister();
     }
 
     /**
@@ -139,15 +140,15 @@ public class Player extends User {
         this.checkPointCounter = checkPointCounter;
     }
 
-    public void addEnergyCubes(int n){
+    public void addEnergyCubes(int n) {
         this.energyCubes = this.energyCubes + n;
     }
 
-    public void takeEnergyCubes(int n){
+    public void takeEnergyCubes(int n) {
         this.energyCubes = this.energyCubes - n;
     }
 
-    public void checkPointReached(){
+    public void checkPointReached() {
         this.checkPointCounter++;
     }
 
@@ -186,6 +187,7 @@ public class Player extends User {
      * @param discardDeck
      */
     public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
+        cards.removeAll(null);
         for (Card card : cards) {
             discardDeck.addCard(card);
         }

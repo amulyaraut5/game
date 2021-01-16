@@ -31,6 +31,8 @@ public class ProgrammingPhase extends Phase {
         super();
         for (Player player : playerList) {
             notReadyPlayers.add(player.getId());
+            player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+            player.createRegister();
         }
         dealProgrammingCards();
     }
@@ -117,12 +119,14 @@ public class ProgrammingPhase extends Phase {
         for (Integer id : notReadyPlayers) {
             Player player = game.getPlayerFromID(id);
 
-            //Take all cards from the register and discard them
+            //Take all cards from the register and discard them to have an empty register
             player.getRegisterCards().removeAll(null);
             player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+            player.createRegister();
 
             //Discard all hand cards
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
+            player.getDrawnProgrammingCards().clear();
             player.message(new DiscardHand(player.getId()));
 
             //Take 5 cards from the draw Deck, and shuffle the discard deck if necessary
@@ -135,13 +139,13 @@ public class ProgrammingPhase extends Phase {
                 player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(5 - currentDeck.size()));
             }
 
-            //Put he 5 drawn cards down in random order
+            //Put the 5 drawn cards down in random order
             Random random = new Random();
             for (int register = 1; register < 6; register++) {
                 ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
                 Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
-                player.getDrawnProgrammingCards().remove(randomElement);
                 player.setRegisterCards(register, randomElement);
+                player.getDrawnProgrammingCards().remove(randomElement);
             }
 
             player.message(new CardsYouGotNow(player.getRegisterCards()));
