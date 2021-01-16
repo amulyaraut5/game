@@ -43,6 +43,7 @@ public class PlayerMapController extends Controller{
         registerHBox.setSpacing(20);
 
         int register = 5;
+
         for (int i = 0; i<5; i++){
             StackPane pane = createNewPane();
             registerHBox.getChildren().add(pane);
@@ -51,6 +52,35 @@ public class PlayerMapController extends Controller{
 
     }
 
+    private StackPane createNewPane(){
+        StackPane pane = new StackPane();
+
+        pane.setPrefHeight(heightRegisterCard);
+        pane.setPrefWidth(widthRegisterCard);
+        pane.setStyle("-fx-border-color: #d100ea;");
+        pane.setStyle("-fx-background-color: #FFFFFF;");
+
+        pane.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                mouseDragOver(dragEvent, pane);
+            }
+        });
+        pane.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                mouseDragDropped(dragEvent, pane);
+            }
+        });
+        pane.setOnDragExited(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                pane.setStyle("-fx-border-color: #C6C6C6;");
+                }
+            });
+
+        return pane;
+        }
 
 
 
