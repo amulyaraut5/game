@@ -122,12 +122,14 @@ public class GameViewController extends Controller {
     }
 
     // <----------------------Only For Test---------------------------->
+
     public void placeRobotInMap(int x, int y) {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
+
+        Image image = lobbyController.getCurrentPlayerImage();
+        ImageView imageView = new ImageView(image);
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
-        //fields[7][8].getChildren().add(imageView);
 
         playerPane.getChildren().add(imageView);
         imageView.setX(x * Utilities.FIELD_SIZE);
@@ -141,7 +143,6 @@ public class GameViewController extends Controller {
         Image image = lobbyController.getImageHashmap().get(playerID);
 
         ImageView imageView = new ImageView(image);
-        //ImageView imageView1 = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
