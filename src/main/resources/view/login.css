@@ -13,6 +13,13 @@
 .register{
 -fx-background-color: blue;
 }
+
+#gameViewAnchorPane{
+-fx-background-color: #999999;
+}
+#playerMap{
+    -fx-background-color: blue;
+}
 /*
 Label{
 -fx-text-alignment: right;
