@@ -11,11 +11,6 @@ public class RestartPoint extends Attribute {
         type = AttributeType.RestartPoint;
     }
 
-    @Override
-    public void performAction(Player player) {
-    //You can be shot or pushed by an active robot while on a reboot token, but you cannot shoot robots.
-    //You also may not use upgrades.
-    }
 
     @Override
     public Node createImage() {

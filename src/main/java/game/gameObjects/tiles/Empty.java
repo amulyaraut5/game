@@ -13,11 +13,6 @@ public class Empty extends Attribute {
 
 
     @Override
-    public void performAction(Player player) {
-        // No functionality
-    }
-
-    @Override
     public Node createImage() {
         return ImageHandler.createImageView("/tiles/empty.png");
     }

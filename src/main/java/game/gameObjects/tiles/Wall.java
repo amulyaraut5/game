@@ -38,16 +38,6 @@ public class Wall extends Attribute {
         this.type = AttributeType.Wall;
     }
 
-    /**
-     * Wall itself does not have any functionality but robots cannot
-     * move through walls and board lasers cannot pass through walls.
-     *
-     * @param player
-     */
-    @Override
-    public void performAction(Player player) {
-        // Does nothing
-    }
 
     /**
      * @return

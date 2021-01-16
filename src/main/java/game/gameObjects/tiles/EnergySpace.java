@@ -20,25 +20,6 @@ public class EnergySpace extends Attribute {
         type = AttributeType.EnergySpace;
     }
 
-    /**
-     * Whenever the player finds in this tile, player gets the energy token.
-     *
-     * @param player The player that is positioned on the tile
-     */
-
-    @Override
-    public void performAction(Player player) {
-
-        // First we need to check if there are any energy cube left in cell
-        if (true) {
-            int energy = player.getEnergyCubes();
-            energy += energy;
-            player.setEnergyCubes(energy);
-            // Todo Decrease the energy cube number
-        }
-        JSONBody jsonBody = new Energy(player.getId(), player.getEnergyCubes());
-        player.message(jsonBody);
-    }
 
     @Override
     public Node createImage() {
