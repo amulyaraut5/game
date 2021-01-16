@@ -38,31 +38,13 @@ public class PlayerMapController extends Controller{
     private double heightRegisterCard;
 
     public void initialize(){
-        System.out.println("j");
+        widthRegisterCard = registerHBox.getPrefWidth()/5;
+        heightRegisterCard = registerHBox.getPrefHeight();
+        registerHBox.setSpacing(20);
+
         int register = 5;
         for (int i = 0; i<5; i++){
-            StackPane pane = new StackPane();
-            pane.setPrefHeight(200);
-            pane.setPrefWidth(300);
-            pane.setStyle("-fx-border-color: #000000;");
-            pane.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    mouseDragOver(dragEvent, pane);
-                }
-            });
-            pane.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    mouseDragDropped(dragEvent, pane);
-                }
-            });
-            pane.setOnDragExited(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    pane.setStyle("-fx-border-color: #C6C6C6;");
-                }
-            });
+            StackPane pane = createNewPane();
             registerHBox.getChildren().add(pane);
 
         }
