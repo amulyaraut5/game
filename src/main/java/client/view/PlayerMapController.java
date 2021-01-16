@@ -1,29 +1,41 @@
 package client.view;
 
 
-import javafx.event.Event;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import utilities.JSONProtocol.body.PlayerAdded;
 
 import java.awt.*;
 
 
-public class PlayerMapController {
+public class PlayerMapController extends Controller{
 
     @FXML
     private ImageView imageView;
 
     @FXML
     private HBox registerHBox;
+
+    @FXML
+    private ImageView playerIcon;
+
+    @FXML
+    private Label playerMapLabelName;
+
+
+
+    private double widthRegisterCard;
+    private double heightRegisterCard;
 
     public void initialize(){
         System.out.println("j");
