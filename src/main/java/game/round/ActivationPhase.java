@@ -49,12 +49,8 @@ public class ActivationPhase extends Phase {
      */
     @Override
     public void startPhase() {
-        for (int register = 1; register < 6; register++) {
-            for (Player player : playerList) {
-                currentCards.put(player.getId(), player.getRegisterCard(register));
-            }
-            server.communicateAll(new CurrentCards(currentCards));
-        }
+        activateCards();
+        activateBoard();
         //throw new UnsupportedOperationException();
     }
 
@@ -64,6 +60,12 @@ public class ActivationPhase extends Phase {
      */
 
     private void activateCards() {
+        for (int register = 1; register < 6; register++) {
+            for (Player player : playerList) {
+                currentCards.put(player.getId(), player.getRegisterCard(register));
+            }
+            server.communicateAll(new CurrentCards(currentCards));
+        }
         for (Integer key : currentCards.keySet()) {
             Card currentCard = currentCards.get(key);
             Player currentPlayer = game.getPlayerFromID(key);
@@ -76,15 +78,16 @@ public class ActivationPhase extends Phase {
      */
 
 
-    private void activateBoard(Player player) {
+    private void activateBoard() {
         // TODO - implement ActivationPhase.activateBoard
         gameMap = game.getMap();
 
         // And then we can execute other board elements in order
 
+        activateBlueBelts();
+        activateGreenBelts();
 		/*
-		activateBlueBelts;
-		activateGreenBelts;
+
 		pushPanel.performAction();
 		gear.performAction();
 		boardLaser.performAction();
@@ -92,6 +95,8 @@ public class ActivationPhase extends Phase {
 		energySpace.performAction();
 		checkPoint.performAction();
 		 */
+
+        // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
         //throw new UnsupportedOperationException();
 
     }
