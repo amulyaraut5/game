@@ -4,11 +4,12 @@ import game.gameObjects.decks.SpamDeck;
 import game.gameObjects.decks.TrojanDeck;
 import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.decks.WormDeck;
+import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
-import game.gameObjects.maps.TestBlueprint;
 import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
+import game.round.Laser;
 import game.round.ProgrammingPhase;
 import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
@@ -102,9 +103,10 @@ public class Game {
             players.add(new Player(user, Robot.create(figure)));
         }
 
-        map = MapBuilder.constructMap(new TestBlueprint());
+        map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(activePhase));
+        new Laser().determineLaserPaths();
 
 /*        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
             nextPhase(Utilities.Phase.CONSTRUCTION);

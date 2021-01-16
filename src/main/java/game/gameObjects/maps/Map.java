@@ -132,6 +132,51 @@ public class Map {
         return pushPanelCoordinates;
     }
 
+    public ArrayList<Coordinate> getControlPointCoordinate(){
+        ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                        Coordinate temp = new Coordinate(i, j);
+                        controlPointCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return controlPointCoordinates;
+    }
+
+    public ArrayList<Coordinate> getPitCoordinate(){
+        ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                        Coordinate temp = new Coordinate(i, j);
+                        pitCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return pitCoordinates;
+    }
+
+    public ArrayList<Coordinate> getGearCoordinate(){
+        ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                        Coordinate temp = new Coordinate(i, j);
+                        gearCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return gearCoordinates;
+    }
+
 
     public void readAll(){
         readBeltCoordinates();

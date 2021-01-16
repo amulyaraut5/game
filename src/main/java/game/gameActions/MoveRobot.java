@@ -7,6 +7,7 @@ import utilities.Orientation;
  * The MoveRobot class contains only overriden method that moves the Robot one space
  * in any direction but based on the orienation.
  * The orientation of the Robot remains unchanged.
+ * It is not checked whether there is wall or not.
  * @author Amulya
  */
 
