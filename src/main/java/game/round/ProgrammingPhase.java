@@ -10,6 +10,7 @@ import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The Programming phase is the second Phase of every round.
@@ -112,14 +113,15 @@ public class ProgrammingPhase extends Phase {
         for (Integer id : notReadyPlayers) {
             Player player = game.getPlayerFromID(id);
 
-            //Nimm alle Karten aus den Registern und lege sie auf den Ablagestapel
+            //Take all cards from the register and discard them
             player.getRegisterCards().removeAll(null);
             player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
-            //Werfe alle Handkarten ab
+
+            //Discard all hand cards
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             player.message(new DiscardHand(player.getId()));
 
-            //Nimm 5 Karten vom ProgrammierStapel
+            //Take 5 cards from the draw Deck, and shuffle the discard deck if necessary
             ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
             if (!(currentDeck.size() < 5)) {
                 player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(5));
@@ -128,10 +130,16 @@ public class ProgrammingPhase extends Phase {
                 player.reuseDiscardedDeck();
                 player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(5 - currentDeck.size()));
             }
-            for (int i = 0; i < 6; i++) {
-                player.setRegisterCards(i + 1, player.getDrawnProgrammingCards().get(i));
-                player.getDrawnProgrammingCards().remove(i);
+
+            //Put he 5 drawn cards down in random order
+            Random random = new Random();
+            for (int register = 1; register < 6; register++) {
+                ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
+                Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
+                player.getDrawnProgrammingCards().remove(randomElement);
+                player.setRegisterCards(register, randomElement);
             }
+
             player.message(new CardsYouGotNow(player.getRegisterCards()));
         }
 
