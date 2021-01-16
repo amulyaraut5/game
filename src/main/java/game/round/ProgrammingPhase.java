@@ -180,8 +180,5 @@ public class ProgrammingPhase extends Phase {
             player.message(new YourCards(player.getDrawnProgrammingCards()));
             server.communicateUsers((new NotYourCards(player.getId(), player.getDrawnProgrammingCards().size())), player);
         }
-
     }
-
-
 }

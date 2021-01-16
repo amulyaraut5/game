@@ -55,12 +55,19 @@ public class GameViewController extends Controller {
     @FXML
     private Pane playerPane;
 
+    private static LobbyController lobbyController;
+
+    public static void setLobbyController(LobbyController lobbyController) {
+        GameViewController.lobbyController = lobbyController;
+    }
+
     @FXML
     public void initialize() {
         boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
             int pos = x + y * Utilities.MAP_WIDTH;
+            placeRobotInMap(x, y);
             client.sendMessage(new SetStartingPoint(pos));
         });
     }
@@ -115,7 +122,7 @@ public class GameViewController extends Controller {
     }
 
     // <----------------------Only For Test---------------------------->
-    public void placeRobotInMap() {
+    public void placeRobotInMap(int x, int y) {
         ImageView imageView = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
@@ -123,8 +130,25 @@ public class GameViewController extends Controller {
         //fields[7][8].getChildren().add(imageView);
 
         playerPane.getChildren().add(imageView);
-        imageView.setX(8 * Utilities.FIELD_SIZE);
-        imageView.setY(7 * Utilities.FIELD_SIZE);
+        imageView.setX(x * Utilities.FIELD_SIZE);
+        imageView.setY(y * Utilities.FIELD_SIZE);
+    }
+
+    public void placeOtherRobotInMap(int playerID, int position) {
+        Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
+        int newX = newRobotPosition.getX();
+        int newY = newRobotPosition.getY();
+        Image image = lobbyController.getImageHashmap().get(playerID);
+
+        ImageView imageView = new ImageView(image);
+        //ImageView imageView1 = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
+        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
+        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+        imageView.setPreserveRatio(true);
+
+        playerPane.getChildren().add(imageView);
+        imageView.setX(newX * Utilities.FIELD_SIZE);
+        imageView.setY(newY * Utilities.FIELD_SIZE);
     }
 
     public void changeDirection() {

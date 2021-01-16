@@ -15,6 +15,7 @@ import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -115,6 +116,11 @@ public class LobbyController extends Controller {
      */
     private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
+    private HashMap<Integer, Image> imageHashmap = new HashMap<>();
+
+    public HashMap<Integer, Image> getImageHashmap() {
+        return imageHashmap;
+    }
 
     /**
      * this method gets called automatically by constructing view
@@ -140,6 +146,7 @@ public class LobbyController extends Controller {
 
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
+        GameViewController.setLobbyController(this);
     }
 
     public void attachChatPane(Pane chat) {
@@ -160,6 +167,10 @@ public class LobbyController extends Controller {
         String path = "/lobby/" + robotNames[playerAdded.getFigure()] + ".png";
         String newName = playerAdded.getName() + " " + playerAdded.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
+
+        //<-----------------------------Test-------------------------->
+        imageHashmap.put(playerAdded.getID(),new Image(getClass().getResource(path).toString()) );
+        //<-----------------------------Test-------------------------->
         currentLabel.setText(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
@@ -167,6 +178,7 @@ public class LobbyController extends Controller {
         robotIcons.add(robotIcon);
         nextRobot();
     }
+
 
     /**
      * The robot image of the user who clicked the ready button gets changed. Now the icon has a pink
