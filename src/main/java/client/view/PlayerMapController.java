@@ -47,7 +47,6 @@ public class PlayerMapController extends Controller{
         for (int i = 0; i<5; i++){
             StackPane pane = createNewPane();
             registerHBox.getChildren().add(pane);
-
         }
 
     }
@@ -83,9 +82,15 @@ public class PlayerMapController extends Controller{
         }
 
 
+    private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
+        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putImage(imageView.getImage());
 
-    @FXML
-    private void setOnDragDetected(Event event) {
+        db.setContent(content);
+        imageView.setImage(new Image(getClass().getResource("/programming-cards/backside-card.png").toString()));
+        mouseEvent.consume();
+    }
 
 //        //Dragboard db = vBox.startDragAndDrop(TransferMode.ANY);
 //        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
@@ -104,10 +109,18 @@ public class PlayerMapController extends Controller{
 
     void addImage(Image i, StackPane pane){
         imageView = new ImageView();
+        imageView.setFitWidth(widthRegisterCard-20);
+        imageView.setFitHeight(heightRegisterCard);
         imageView.setImage(i);
-        imageView.setFitWidth(120);
-        imageView.setFitHeight(165);
+        imageView.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                setOnDragDetected(mouseEvent, imageView);
+            }
+        });
         pane.getChildren().add(imageView);
+
+
     }
 
     private void mouseDragDropped(DragEvent event, StackPane pane) {
