@@ -254,8 +254,13 @@ public class Client {
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
-        lobbyController.setJoinedUsers(playerAdded);
+        boolean thisUser = false;
+        if(playerAdded.getID() == this.playerID){
+            gameViewController.getPlayerMapController().loadPlayerMap(playerAdded);
+        }
+        lobbyController.setJoinedUsers(playerAdded, false);
         chatController.addNewUser(playerAdded);
+
         playerList.add(playerAdded);
         logger.debug(playerList.size() + " = playerList Size");
     }
