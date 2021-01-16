@@ -68,5 +68,61 @@ public abstract class Controller {
             return this.id;
         }
     }
+    /**
+     * This private class is a data structure to easily connect the different information
+     * that are necessary to assign one user to a specific place in the lobby with his image, name etc.
+     */
+    protected class RobotIcon {
+        private String userName;
+        private int userID;
+        private int position;
+        private int figure;
+        private ImageView robotImageView;
+        private Label labelOfUser;
+        private boolean thisUser;
+
+        /**
+         * the constructor of RobotIcon where one RobotIcon can be created with the
+         * values of one player and the image of the figure he choosed
+         *
+         * @param position
+         * @param playerAdded
+         * @param imageViewPuffer
+         * @param labelPuffer
+         */
+        public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer, boolean thisUser) {
+            this.position = position;
+            this.userID = playerAdded.getID();
+            this.userName = playerAdded.getName() + " " + playerAdded.getID();
+            this.figure = playerAdded.getFigure();
+            this.robotImageView = imageViewPuffer;
+            this.labelOfUser = labelPuffer;
+            this.thisUser = thisUser;
+        }
+
+        public int getFigure() {
+            return figure;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public int getUserID() {
+            return userID;
+        }
+
+        public ImageView getRobotImageView() {
+            return robotImageView;
+        }
+
+        public Label getLabelOfUser() {
+            return labelOfUser;
+        }
+
+        public boolean isThisUser() {
+            return thisUser;
+        }
+    }
 
 }
