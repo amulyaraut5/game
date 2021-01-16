@@ -177,7 +177,40 @@ public class Game {
         return playerIDs.get(id);
     }
 
-    public Phase getActivePhase() {
-        return activePhase;
+    public void setStartingPoint(User user, int position) {
+        Coordinate pos = MapConverter.reconvertToCoordinate(position);
+        Player player = userToPlayer(user);
+
+        //check if chosen tile is StartingPoint
+        boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
+        if (isOnStartPoint) {
+            //check if no other player is on the chosen tile
+            for (Player other : players) {
+                if (!other.equals(player)) {
+                    Coordinate otherPos = other.getRobot().getPosition();
+                    if (!pos.equals(otherPos)) {
+                        //chosen StartingPoint is valid
+                        player.getRobot().setPosition(pos);
+                        server.communicateAll(new StartingPointTaken(player.getId(), position));
+                    } else player.message(new Error("Your chosen position is already taken!"));
+                }
+            }
+        } else player.message(new Error("This is no valid StartPoint!"));
+
+        //check if all players have set their StartingPoint
+        for (Player p : players) {
+            if (p.getRobot().getPosition() == null) return;
+        }
+        System.out.println("All robots have set their StartingPoint!!!");
+        //TODO nextPhase();
+    }
+
+    public Player userToPlayer(User user) {
+        for (Player player : players) {
+            if (user.equals(player)) {
+                return player;
+            }
+        }
+        return null;
     }
 }

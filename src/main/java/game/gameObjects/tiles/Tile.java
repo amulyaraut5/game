@@ -1,5 +1,7 @@
 package game.gameObjects.tiles;
 
+import utilities.Utilities.AttributeType;
+
 import java.util.ArrayList;
 
 public class Tile {
@@ -32,5 +34,12 @@ public class Tile {
      */
     public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
+    }
+
+    public boolean hasAttribute(AttributeType type) {
+        for (Attribute a : attributes) {
+            if (a.getType() == type) return true;
+        }
+        return false;
     }
 }

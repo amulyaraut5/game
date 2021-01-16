@@ -163,6 +163,11 @@ public class Server extends Thread {
                 //Game.getInstance().messageToPhases(selectCard);
                 communicateUsers(new CardSelected(user.getId(), selectCard.getRegister()), user);
             }
+            case SetStartingPoint -> {
+                SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
+
+                game.setStartingPoint(user, setStartingPoint.getPosition());
+            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
