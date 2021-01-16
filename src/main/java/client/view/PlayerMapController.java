@@ -92,19 +92,21 @@ public class PlayerMapController extends Controller{
         mouseEvent.consume();
     }
 
-//        //Dragboard db = vBox.startDragAndDrop(TransferMode.ANY);
-//        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-//        /* Put a string on a dragboard */
-//        ClipboardContent content = new ClipboardContent();
-//        content.putImage(source.getImage());
-//        db.setContent(content);
-//
-//        event.consume();
+    public void loadPlayerMap(PlayerAdded playerAdded){
+        String name = robotNames[playerAdded.getFigure()];
+        playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name +".png").toString()));
+        playerMapLabelName.setText(playerAdded.getName() + " " + playerAdded.getID());
+        /*System.out.println(getPlayersAdded().size());
+        for (RobotIcon icon : getPlayersAdded()){
+            System.out.println("twwwta");
+            if (icon.isThisUser()){
+                System.out.println("twwwta");
+                //playerIcon = new ImageView(new Image());
+            }
+            System.out.println("twwwta");
+        }*/
+
     }
-
-
-
-
 
 
     void addImage(Image i, StackPane pane){
