@@ -87,13 +87,7 @@ public class ActivationPhase extends Phase {
         activateBlueBelts();
         activateGreenBelts();
 		/*
-
-		pushPanel.performAction();
-		gear.performAction();
-		boardLaser.performAction();
-		robotLaser.performAction(); TODO is there a robot laser?
-		energySpace.performAction();
-		checkPoint.performAction();
+           all board elements functionality are handled in activation elements class except laser
 		 */
 
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action

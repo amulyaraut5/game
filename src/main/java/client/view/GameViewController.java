@@ -56,19 +56,11 @@ public class GameViewController extends Controller {
     private Pane playerPane;
 
     private static LobbyController lobbyController;
-    private boolean placeRobotOneTime = false;
 
     public static void setLobbyController(LobbyController lobbyController) {
         GameViewController.lobbyController = lobbyController;
     }
 
-    public boolean isPlaceRobotOneTime() {
-        return placeRobotOneTime;
-    }
-
-    public void setPlaceRobotOneTime(boolean placeRobotOneTime) {
-        this.placeRobotOneTime = placeRobotOneTime;
-    }
 
     @FXML
     public void initialize() {
