@@ -7,6 +7,7 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -39,7 +40,8 @@ public class GameViewController extends Controller {
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
 
     @FXML
-    private AnchorPane playerMap;
+    private StackPane playerMap;
+
     private int currentPhaseView = 0;
     private int ActivePhase = 0; //TODO enum? move to client?
     @FXML
@@ -56,11 +58,19 @@ public class GameViewController extends Controller {
     private Pane playerPane;
 
     private static LobbyController lobbyController;
+    private PlayerMapController playerMapController;
 
     public static void setLobbyController(LobbyController lobbyController) {
         GameViewController.lobbyController = lobbyController;
     }
 
+    public PlayerMapController getPlayerMapController() {
+        return playerMapController;
+    }
+
+    public void setPlayerMapController(PlayerMapController playerMapController) {
+        this.playerMapController = playerMapController;
+    }
 
     @FXML
     public void initialize() {
@@ -77,9 +87,11 @@ public class GameViewController extends Controller {
     }
 
     public void attachPlayerMap(Pane playerM) {
-        playerM.setPrefHeight(playerM.getPrefWidth());
-        playerM.setPrefHeight(playerM.getPrefHeight());
+        //playerM.setPrefHeight(playerMap.getPrefWidth());
+        //playerM.setPrefWidth(playerMap.getPrefHeight());
+        playerMap.setAlignment(Pos.CENTER);
         playerMap.getChildren().add(playerM);
+        //playerMapController.loadPlayerMap();
     }
 
 
@@ -286,6 +298,7 @@ public class GameViewController extends Controller {
         return innerPane;
 
     }
+
 
 
 }
