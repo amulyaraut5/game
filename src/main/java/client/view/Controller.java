@@ -2,6 +2,11 @@ package client.view;
 
 import client.ViewManager;
 import client.model.Client;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import utilities.JSONProtocol.body.PlayerAdded;
+
+import java.util.ArrayList;
 
 /**
  * Abstract super class of all view-controller
@@ -23,6 +28,18 @@ public abstract class Controller {
      */
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
+
+    protected ArrayList<RobotIcon> playersAdded = new ArrayList<>();
+
+    public ArrayList<RobotIcon> getPlayersAdded() {
+        return playersAdded;
+    }
+
+    public void addRobotIcon(RobotIcon robotIcon) {
+       playersAdded.add(robotIcon);
+    }
+
+
 
 
     /**
