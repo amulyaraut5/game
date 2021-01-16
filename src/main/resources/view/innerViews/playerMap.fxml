@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="347.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMapController">
+<AnchorPane prefHeight="200.0" prefWidth="650.0" stylesheets="@../login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMapController">
    <children>
-      <HBox fx:id="registerHBox" layoutX="50.0" layoutY="148.0" prefHeight="200.0" prefWidth="500.0" />
+      <ImageView id="playerMap" fitHeight="157.0" fitWidth="592.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../backgrounds/playerMapBackground.png" />
+         </image>
+      </ImageView>
+      <HBox fx:id="registerHBox" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0" />
+      <ImageView fx:id="playerIcon" fitHeight="56.0" fitWidth="57.0" layoutX="9.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="playerMapLabelName" layoutX="66.0" layoutY="6.0" prefHeight="17.0" prefWidth="20.0" textFill="#1b02fc" />
+      <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="131.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../backgrounds/register/register_1.png" />
+         </image></ImageView>
    </children>
 </AnchorPane>
