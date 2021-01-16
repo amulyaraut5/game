@@ -82,16 +82,18 @@ public class Laser {
      * penetrate more than one robot.
      */
     //TODO Antenna Case and Delete unnecessary logger.info
-    private void determineLaserPaths() {
+    public void determineLaserPaths() {
         for (Coordinate coordinate : map.getLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
 
             Tile tile = map.getTile(xC, yC);
+            System.out.println("X"+ xC+ "y"+yC);
 
             for (Attribute a : tile.getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((game.gameObjects.tiles.Laser) a).getOrientation();
+                    //Orientation Orientation = a.getOrientation();
 
                     coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
                 }
