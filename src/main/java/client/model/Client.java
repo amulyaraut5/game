@@ -1,5 +1,6 @@
 package client.model;
 
+import client.ViewManager;
 import client.view.*;
 import game.gameObjects.maps.Map;
 import javafx.application.Platform;
@@ -35,6 +36,7 @@ public class Client {
      * Singleton instance of Client
      */
     private static Client instance;
+    private final ViewManager viewManager = ViewManager.getInstance();
     /**
      * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
      */
@@ -51,13 +53,14 @@ public class Client {
      * the printWriter which writes messages onto the socket connected to the server.
      */
     private PrintWriter writer;
-
+    private boolean exit = false;
     private int playerID;
+
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
-    private boolean exit = false;
+
     /**
      * constructor of ChatClient to initialize the attributes hostname and port.
      */
@@ -195,7 +198,11 @@ public class Client {
                     //TODO start gameView
                     Map map = MapConverter.reconvert(gameStarted);
                     gameViewController.buildMap(map);
-                    logger.info("The game has started.");
+                    viewManager.nextScene();
+                }
+                case StartingPointTaken -> {
+                    StartingPointTaken msg = (StartingPointTaken) message.getBody();
+                    gameViewController.placeRobotInMap(msg.getPlayerID(), msg.getPosition());
                 }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
@@ -230,12 +237,7 @@ public class Client {
                 }
                 case PlayerTurning -> {
                     PlayerTurning playerTurning = (PlayerTurning) message.getBody();
-                    gameViewController.handlePlayerTurning(playerTurning.getPlayerID(),playerTurning.getDirection());
-                }
-                case StartingPointTaken -> {
-                    StartingPointTaken startingPointTaken = (StartingPointTaken) message.getBody();
-                    // It places other robot in the players map
-                    gameViewController.placeRobotInMap(startingPointTaken.getPlayerID(),startingPointTaken.getPosition());
+                    gameViewController.handlePlayerTurning(playerTurning.getPlayerID(), playerTurning.getDirection());
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
@@ -255,7 +257,7 @@ public class Client {
 
     public void addNewPlayer(PlayerAdded playerAdded) {
         boolean thisUser = false;
-        if(playerAdded.getID() == this.playerID){
+        if (playerAdded.getID() == this.playerID) {
             gameViewController.getPlayerMapController().loadPlayerMap(playerAdded);
         }
         lobbyController.setJoinedUsers(playerAdded, false);
