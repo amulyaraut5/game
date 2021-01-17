@@ -57,6 +57,11 @@ public class PlayerMapController extends Controller{
         }
     }
 
+    public void loadPlayerMap(Player player){
+        String name = robotNames[player.getFigure()];
+        playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name +".png").toString()));
+        playerMapLabelName.setText(player.getName() + " " + player.getID());
+    }
     private StackPane createNewPane(){
         StackPane pane = new StackPane();
 
@@ -87,7 +92,6 @@ public class PlayerMapController extends Controller{
         return pane;
         }
 
-
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
@@ -98,11 +102,7 @@ public class PlayerMapController extends Controller{
         mouseEvent.consume();
     }
 
-    public void loadPlayerMap(Player player){
-        String name = robotNames[player.getFigure()];
-        playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name +".png").toString()));
-        playerMapLabelName.setText(player.getName() + " " + player.getID());
-    }
+
 
 
     void addImage(Image i, StackPane pane){
@@ -132,7 +132,8 @@ public class PlayerMapController extends Controller{
             }
             Image img = db.getImage();
             addImage(img, pane);
-            System.out.println("in PlayerMapController " + getImageDropped());
+            System.out.println("Card name from Programming Phase " + getImageDropped());
+            System.out.println("the register " + (registerHBox.getChildren().indexOf(pane)+1));
             //TODO getting url
             //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
 
