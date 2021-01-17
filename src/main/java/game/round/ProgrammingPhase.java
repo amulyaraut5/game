@@ -162,7 +162,6 @@ public class ProgrammingPhase extends Phase {
 
             //Discard all hand cards
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
-            // TODO: still needed? player.getDrawnProgrammingCards().clear();
             player.message(new DiscardHand(player.getId()));
 
             //Take 5 cards from the draw Deck
