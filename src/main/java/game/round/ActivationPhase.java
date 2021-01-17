@@ -233,7 +233,7 @@ public void moveOne(Player player, Orientation orientation) {
 
 
     /**
-     * This class contains a constructor getter and setter to handle robots by distance from antenna
+     * Class to handle the players robots by distance from antenna
      */
     public class RobotDistance {
         private int playerID;
@@ -248,9 +248,6 @@ public void moveOne(Player player, Orientation orientation) {
         public double getDistance() { return distance; }
     }
 
-
-    //List containing information for determining the next player in line (next robot with priority)
-    ArrayList<RobotDistance> nextPriority = new ArrayList<>();
 
     /**
      * calculates the distance between antenna and robot on the map
@@ -267,11 +264,14 @@ public void moveOne(Player player, Orientation orientation) {
 
 
     /**
-     * calculates the priority of the robots and returns the matching playerID of the player whose turn it is
+     * calculates the priority and returns the playerID of the player whose turn it is
      * @param antenna
      * @return
      */
     public int calculatePriority(Point2D antenna) {
+        //List containing information for determining the next player in line (next robot with priority)
+        ArrayList<RobotDistance> nextPriority = new ArrayList<>();
+
         //Fill List nextPriority with matching objects
         if (nextPriority.size() == 0) {
             int i = 0;
@@ -282,7 +282,7 @@ public void moveOne(Player player, Orientation orientation) {
                         players.get(i).getRobot().getPosition().getX(),
                         players.get(i).getRobot().getPosition().getY());
                 //get playerID
-                int playerID = players.get(i).getPlayerID();
+                int playerID = players.get(i).getID();
                 //get distance to antenna
                 double distance = calculateDistance(antenna, robot);
                 //safe object in nextPriority
