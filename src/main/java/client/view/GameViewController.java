@@ -61,6 +61,10 @@ public class GameViewController extends Controller {
     private Pane robotPane;
     private PlayerMapController playerMapController;
 
+    private UpgradeController upgradeController;
+    private ProgrammingController programmingController;
+    private ActivationController activationController;
+
     private SoundHandler soundHandler;
 
     public static void setLobbyController(LobbyController lobbyController) {
@@ -291,7 +295,7 @@ public class GameViewController extends Controller {
      * Button press to test the change of inner phase panes.
      */
     @FXML
-    public void changeInnerView() {//TODO set it private
+    public void changeInnerView() throws IOException {//TODO set it private
         Pane innerPane = setNextPhase();
         outerPane.setCenter(innerPane);
     }
@@ -299,15 +303,39 @@ public class GameViewController extends Controller {
     /**
      * @return
      */
-    private Pane setNextPhase() {
+    private Pane setNextPhase() throws IOException {
         Pane innerPane = null;
         String path = "";
         currentPhaseView = ++currentPhaseView % 3;
 
-        if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhaseView.fxml";
-        else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
-        try {
+
+        if (currentPhaseView == 0){
+            FXMLLoader upgradeLoader = new FXMLLoader(getClass().getResource("/view/innerViews/upgradeView.fxml"));
+            try {
+                innerPane = upgradeLoader.load();
+            } catch (IOException e) {
+                logger.error("Inner phase View could not be loaded: " + e.getMessage());
+            }
+            upgradeController = upgradeLoader.getController();
+        } else if (currentPhaseView == 1) {
+            FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingPhaseView.fxml"));
+            try {
+                innerPane = programmingLoader.load();
+            } catch (IOException e) {
+                logger.error("Inner phase View could not be loaded: " + e.getMessage());
+            }
+            programmingController = programmingLoader.getController();
+        }
+        else if (currentPhaseView == 2) {
+            FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
+            try {
+                innerPane = activationLoader.load();
+            } catch (IOException e) {
+                logger.error("Inner phase View could not be loaded: " + e.getMessage());
+            }
+            activationController = activationLoader.getController();
+        }
+        /*try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
