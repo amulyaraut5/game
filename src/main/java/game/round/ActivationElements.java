@@ -1,26 +1,20 @@
 package game.round;
 
-import com.google.gson.JsonArray;
 import game.Game;
 import game.Player;
 import game.gameActions.MoveRobot;
-import game.gameActions.PowerUpRobot;
 import game.gameActions.RebootAction;
-import game.gameActions.RotateRobot;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.ControlPoint;
 import game.gameObjects.tiles.Tile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.Energy;
 import utilities.JSONProtocol.body.GameWon;
 import utilities.JSONProtocol.body.Reboot;
-import utilities.Orientation;
 
 import java.util.ArrayList;
 
@@ -38,7 +32,7 @@ public class ActivationElements {
                         && player.getRobot().getPosition().getY() == coordinate.getY()) {
                     new RebootAction().doAction(player.getRobot().getOrientation(), player);
 
-                    JSONBody jsonBody = new Reboot(player.getId());
+                    JSONBody jsonBody = new Reboot(player.getID());
                     player.message(jsonBody);
                 }
             }
@@ -54,7 +48,7 @@ public class ActivationElements {
 
                    //new RotateRobot().doAction();
 
-                    JSONBody jsonBody = new Reboot(player.getId());
+                    JSONBody jsonBody = new Reboot(player.getID());
                     player.message(jsonBody);
                 }
             }
@@ -80,11 +74,11 @@ public class ActivationElements {
                     if (player.getRobot().getPosition().getX() == coordinate.getX()
                             && player.getRobot().getPosition().getY() == coordinate.getY()) {
 
-                        JSONBody jsonBody = new CheckpointReached(player.getId(),count);
+                        JSONBody jsonBody = new CheckpointReached(player.getID(),count);
                         player.message(jsonBody);
 
                         if (game.getNoOfCheckPoints() == 1) {
-                            JSONBody jsonBody1 = new GameWon(player.getId());
+                            JSONBody jsonBody1 = new GameWon(player.getID());
                             player.message(jsonBody1);
                             // TODO End the game:
                         }
@@ -102,7 +96,7 @@ public class ActivationElements {
                                 player.setCheckPointCounter(checkPoint);
 
                                 if ((game.getNoOfCheckPoints() == 2) && (count == 2)) {
-                                    JSONBody jsonBody1 = new GameWon(player.getId());
+                                    JSONBody jsonBody1 = new GameWon(player.getID());
                                     player.message(jsonBody1);
                                     // TODO End the game:
                                 }
@@ -130,7 +124,7 @@ public class ActivationElements {
                     player.setEnergyCubes(energy);
                     // Todo Decrease the energy cube number
 
-                    JSONBody jsonBody = new Energy(player.getId(), player.getEnergyCubes());
+                    JSONBody jsonBody = new Energy(player.getID(), player.getEnergyCubes());
                     player.message(jsonBody);
 
                 }

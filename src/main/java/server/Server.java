@@ -102,9 +102,9 @@ public class Server extends Thread {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
                 if (hs.getProtocol() == Utilities.PROTOCOL) {
-                    user.setId(idCounter++);
-                    currentThread().setName("UserThread-" + user.getId());
-                    user.message(new Welcome(user.getId()));
+                    user.setID(idCounter++);
+                    currentThread().setName("UserThread-" + user.getID());
+                    user.message(new Welcome(user.getID()));
 
                     for (PlayerAdded addedPlayer : addedPlayers) {
                         user.message(addedPlayer);
@@ -127,10 +127,10 @@ public class Server extends Thread {
                 }
                 if (!figureTaken) {
                     if (!pv.getName().isBlank()){
-                        user.setId(user.getId());
+                        user.setID(user.getID());
                         user.setName(pv.getName());
                         user.setFigure(pv.getFigure());
-                        PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
+                        PlayerAdded addedPlayer = new PlayerAdded(user.getID(), pv.getName(), pv.getFigure());
                         addedPlayers.add(addedPlayer);
                         communicateAll(addedPlayer);
                     }else{
@@ -142,7 +142,7 @@ public class Server extends Thread {
             }
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
-                communicateAll(new PlayerStatus(user.getId(), status.isReady()));
+                communicateAll(new PlayerStatus(user.getID(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
                 if (allUsersReady) {
                     game.play();
@@ -152,16 +152,16 @@ public class Server extends Thread {
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
-                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getId(), false), user);
+                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
                 else {
-                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getId(), true), sc.getTo());
+                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getID(), true), sc.getTo());
                 }
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
                 //Game.getInstance().messageToPhases(selectCard);
-                communicateUsers(new CardSelected(user.getId(), selectCard.getRegister()), user);
+                communicateUsers(new CardSelected(user.getID(), selectCard.getRegister()), user);
             }
             case SetStartingPoint -> {
                 SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
@@ -241,7 +241,7 @@ public class Server extends Thread {
 
     public void communicateDirect(JSONBody jsonBody, int receiver) {
         for (User user : users) {
-            if (user.getId() == receiver) {
+            if (user.getID() == receiver) {
                 user.message(jsonBody);
             }
         }
