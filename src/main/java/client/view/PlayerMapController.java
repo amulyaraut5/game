@@ -57,6 +57,7 @@ public class PlayerMapController extends Controller{
         }
     }
 
+
     private StackPane createNewPane(){
         StackPane pane = new StackPane();
 
@@ -92,7 +93,7 @@ public class PlayerMapController extends Controller{
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(imageView.getImage());
-        setImageDropped(imageView.getImage().getUrl());
+        //setImageDropped(imageView.getImage().getUrl());
         db.setContent(content);
         imageView.setImage(null);
         mouseEvent.consume();
@@ -132,7 +133,11 @@ public class PlayerMapController extends Controller{
             }
             Image img = db.getImage();
             addImage(img, pane);
-            System.out.println("in PlayerMapController " + getImageDropped());
+            System.out.println("CardName playerMapController" + getImageDropped());
+            System.out.println("Register " + registerHBox.getChildren().indexOf(pane)+1);
+            String cardName = getImageDropped();
+            int registerNumber = registerHBox.getChildren().indexOf(pane)+1;
+            client.sendMessage(new SelectCard(cardName, registerNumber));
             //TODO getting url
             //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
 
