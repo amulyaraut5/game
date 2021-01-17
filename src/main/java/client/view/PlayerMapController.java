@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import utilities.JSONProtocol.body.PlayerAdded;
@@ -27,8 +28,10 @@ public class PlayerMapController extends Controller{
     @FXML
     private Label playerMapLabelName;
 
+    @FXML
+    private ImageView registerNumber;
 
-
+    public AnchorPane playerMapAnchorPane;
     private double widthRegisterCard;
     private double heightRegisterCard;
 
@@ -36,11 +39,19 @@ public class PlayerMapController extends Controller{
         widthRegisterCard = registerHBox.getPrefWidth()/5;
         heightRegisterCard = registerHBox.getPrefHeight();
         registerHBox.setSpacing(20);
-
+        /*ImageView im = new ImageView(new Image(getClass().getResource("/backgrounds/register/register_2.png").toString()));
+        im.setFitHeight(registerNumber.getFitHeight());
+        im.setFitWidth(registerNumber.getFitWidth());
+        double x = registerNumber.getX();
+        double y= registerNumber.getX();
+        im.setTranslateX(x);
+        im.setY(y);
+        playerMapAnchorPane.getChildren().add(im);*/ //TODO other numbers of registers
         int register = 5;
 
         for (int i = 0; i<5; i++){
             StackPane pane = createNewPane();
+
             registerHBox.getChildren().add(pane);
         }
 
@@ -83,7 +94,7 @@ public class PlayerMapController extends Controller{
         content.putImage(imageView.getImage());
 
         db.setContent(content);
-        imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+        //imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
         mouseEvent.consume();
     }
 
@@ -105,7 +116,7 @@ public class PlayerMapController extends Controller{
 
 
     void addImage(Image i, StackPane pane){
-        imageView = new ImageView();
+        ImageView imageView = new ImageView();
         imageView.setFitWidth(widthRegisterCard-20);
         imageView.setFitHeight(heightRegisterCard);
         imageView.setImage(i);

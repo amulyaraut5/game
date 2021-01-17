@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import utilities.JSONProtocol.body.PlayerAdded;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Abstract super class of all view-controller
@@ -23,6 +24,7 @@ public abstract class Controller {
      */
     protected Client client = Client.getInstance();
 
+    private String imageDropped;
     /**
      * it stores a list of names of the robots
      */
@@ -40,7 +42,13 @@ public abstract class Controller {
     }
 
 
+    public String getImageDropped() {
+        return imageDropped;
+    }
 
+    public void setImageDropped(String imageDropped) {
+        this.imageDropped = imageDropped;
+    }
 
     /**
      * This private class represents a robot with its name and id

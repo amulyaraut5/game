@@ -9,15 +9,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 
-public class ProgrammingController {
+public class ProgrammingController extends Controller {
     //@FXML
     //public ImageView imageView;
     //@FXML
     //public ImageView programCard;
-    private ImageView imageView;
+    //private ImageView imageView;
     public AnchorPane programmingPhasePane;
     @FXML
     private HBox hBox1;
@@ -135,16 +137,16 @@ public class ProgrammingController {
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(imageView.getImage());
-
+        //setImageDropped();
         db.setContent(content);
-        imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+        //imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
         mouseEvent.consume();
     }
 
 
 
     void addImage(Image i, StackPane pane){
-        imageView = new ImageView();
+        ImageView imageView = new ImageView();
         imageView.setFitWidth(widthHBox-20);
         imageView.setFitHeight(heightHBox);
         imageView.setImage(i);
@@ -154,6 +156,10 @@ public class ProgrammingController {
                 setOnDragDetected(mouseEvent, imageView);
             }
         });
+        /*String [] url = i.getUrl().split("/");
+        String imageName = url[url.length-1];
+        String cardName = imageName.substring(0, imageName.length()-9);
+        System.out.println(cardName);*/
         pane.getChildren().add(imageView);
 
 
@@ -167,6 +173,7 @@ public class ProgrammingController {
             if (!pane.getChildren().isEmpty()) {
                 pane.getChildren().remove(0);
             }
+
             Image img = db.getImage();
 
             addImage(img, pane);
@@ -178,12 +185,11 @@ public class ProgrammingController {
 
     private  void mouseDragOver(DragEvent event, StackPane pane) {
 
-
         pane.setStyle("-fx-border-color: red;"
                 + "-fx-border-width: 5;"
                 + "-fx-background-color: #C6C6C6;"
                 + "-fx-border-style: solid;");
-        event.acceptTransferModes(TransferMode.COPY);
+        event.acceptTransferModes(TransferMode.ANY);
         event.consume();
     }
 }
