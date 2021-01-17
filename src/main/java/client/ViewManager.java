@@ -36,12 +36,10 @@ public class ViewManager {
     private Scene gameScene;
     private Pane chatPane;
     private Pane playerMap;
-    //private Scene mapSelectionScene;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
     private PlayerMapController playerMapController;
-    //private MapSelectionController mapSelectionController;
 
     private ViewManager() {
         Platform.runLater(() -> {
@@ -68,10 +66,6 @@ public class ViewManager {
         if (menuStage.isShowing()) {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
-
-            /*else if (menuStage.getScene() == loginScene) {
-                menuStage.setScene(mapSelectionScene);}*/
-
             else if (menuStage.getScene() == loginScene) {
                 menuStage.setScene(lobbyScene);
                 lobbyController.attachChatPane(chatPane);

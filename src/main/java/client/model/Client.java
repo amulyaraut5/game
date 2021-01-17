@@ -2,7 +2,6 @@ package client.model;
 
 import client.ViewManager;
 import client.view.*;
-import game.gameObjects.maps.Map;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,12 +10,13 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.MapConverter;
 import utilities.Utilities;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static utilities.Utilities.PORT;
@@ -28,15 +28,15 @@ import static utilities.Utilities.PORT;
  * @author sarah,
  */
 public class Client {
-    /**
-     * Logger to log information/warning
-     */
     private static final Logger logger = LogManager.getLogger();
-    /**
-     * Singleton instance of Client
-     */
+
     private static Client instance;
     private final ViewManager viewManager = ViewManager.getInstance();
+
+    private GameViewController gameViewController;
+    private LoginController loginController;
+    private LobbyController lobbyController;
+    private ChatController chatController;
     /**
      * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
      */
@@ -56,17 +56,6 @@ public class Client {
     private boolean exit = false;
     private int playerID;
 
-    private GameViewController gameViewController;
-    private LoginController loginController;
-    private LobbyController lobbyController;
-    private ChatController chatController;
-
-    /**
-     * constructor of ChatClient to initialize the attributes hostname and port.
-     */
-    private Client() {
-    }
-
     public static Client getInstance() {
         if (instance == null) instance = new Client();
         return instance;
@@ -80,7 +69,7 @@ public class Client {
         try {
             String hostname = "localhost";
             socket = new Socket(hostname, PORT);
-            writer = new PrintWriter(socket.getOutputStream(), true);
+            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 
             readerThread = new ReaderThread(socket, this);
             readerThread.start();
@@ -127,7 +116,6 @@ public class Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameViewController = (GameViewController) controllerList.get(2);
-        //mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public void setChatController(ChatController chatController) {
@@ -157,7 +145,6 @@ public class Client {
      * is casted down to respective class and then it interacts with the different controllers.
      *
      * @param message
-     * @throws ClassNotFoundException
      */
     public void handleMessage(JSONMessage message) {
         Utilities.MessageType type = message.getType();
@@ -165,39 +152,31 @@ public class Client {
         Platform.runLater(() -> {
             switch (type) {
                 case HelloClient -> {
-                    HelloClient hc = (HelloClient) message.getBody();
-                    connect(hc);
+                    connect();
                 }
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
                     playerID = wc.getPlayerID();
+                    viewManager.nextScene();
                 }
                 case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
                 case Error -> {
-                    Error error = (Error) message.getBody();
-                    //TODO display error message in current view
+                    Error error = (Error) message.getBody(); //TODO
                 }
                 case PlayerStatus -> {
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    lobbyController.displayPlayerStatus(playerStatus);
+                    lobbyController.displayStatus(playerStatus);
                 }
                 case ReceivedChat -> {
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
-                    String receivedMessage;
-                    if (receivedChat.isPrivat())
-                        receivedMessage = "[" + receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
-                    else receivedMessage = "[" + receivedChat.getFrom() + "] " + receivedChat.getMessage();
-                    //lobbyController.setTextArea(receivedMessage);//TODO
-                    chatController.setTextArea(receivedMessage);
+                    chatController.receivedChat(receivedChat);
                 }
                 case GameStarted -> {
                     GameStarted gameStarted = (GameStarted) message.getBody();
-                    //TODO start gameView
-                    Map map = MapConverter.reconvert(gameStarted);
-                    gameViewController.buildMap(map);
+                    gameViewController.buildMap(gameStarted);
                     viewManager.nextScene();
                 }
                 case StartingPointTaken -> {
@@ -209,8 +188,7 @@ public class Client {
                     gameViewController.programCards(yourCards);
                 }
                 case ConnectionUpdate -> {
-                    ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody();
-                    logger.info("Player " + connectionUpdate.getId() + " has lost connection to server.");
+                    ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody(); //TODO
                 }
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
@@ -247,24 +225,21 @@ public class Client {
     /**
      * This method creates a HelloServer protocol message and sends it to server
      * it gets called when client gets a HelloClient message
-     *
-     * @param helloClient //TODO more than one protocol possible?
      */
-    public void connect(HelloClient helloClient) {
-        JSONBody jsonBody = new HelloServer(1.0, "Astreine Akazien", false);
+    public void connect() {
+        JSONBody jsonBody = new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", false);
         sendMessage(jsonBody);
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
-        boolean thisUser = false;
-        if (playerAdded.getID() == this.playerID) {
+        if (playerID == playerAdded.getID()) {
             gameViewController.getPlayerMapController().loadPlayerMap(playerAdded);
+            viewManager.nextScene();
         }
         lobbyController.setJoinedUsers(playerAdded, false);
         chatController.addNewUser(playerAdded);
 
         playerList.add(playerAdded);
-        logger.debug(playerList.size() + " = playerList Size");
     }
 
     /**
@@ -278,10 +253,6 @@ public class Client {
         logger.debug("Protocol sent: " + json);
         writer.println(json);
         writer.flush();
-    }
-
-    public PrintWriter getWriter() {
-        return writer;
     }
 
     public ArrayList<PlayerAdded> getPlayerList() {

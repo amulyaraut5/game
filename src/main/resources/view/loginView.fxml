@@ -71,7 +71,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                <children>
-                    <Label id="label" fx:id="labelResponse" alignment="TOP_CENTER" maxWidth="400.0" prefHeight="26.0" prefWidth="400.0">
+                    <Label id="label" fx:id="responseLabel" alignment="TOP_CENTER" maxWidth="400.0" prefHeight="26.0" prefWidth="400.0">
                         <font>
                             <Font size="18.0" />
                         </font>

@@ -126,15 +126,18 @@ public class Server extends Thread {
                     }
                 }
                 if (!figureTaken) {
-                    user.setId(user.getId());
-                    user.setName(pv.getName());
-                    user.setFigure(pv.getFigure());
-                    PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
-                    addedPlayers.add(addedPlayer);
-                    communicateAll(addedPlayer);
+                    if (!pv.getName().isBlank()){
+                        user.setId(user.getId());
+                        user.setName(pv.getName());
+                        user.setFigure(pv.getFigure());
+                        PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
+                        addedPlayers.add(addedPlayer);
+                        communicateAll(addedPlayer);
+                    }else{
+                        user.message(new Error("Username can't be blank!"));
+                    }
                 } else {
-                    JSONBody error = new Error("Robot is already taken!");
-                    user.message(error);
+                    user.message(new Error("Robot is already taken!"));
                 }
             }
             case SetStatus -> {

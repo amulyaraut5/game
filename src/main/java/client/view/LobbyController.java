@@ -190,7 +190,7 @@ public class LobbyController extends Controller {
      *
      * @param playerStatus
      */
-    public void displayPlayerStatus(PlayerStatus playerStatus) {
+    public void displayStatus(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
                 String path = "/lobby/" + robotNames[robotIcon.getFigure()];

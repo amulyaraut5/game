@@ -7,9 +7,9 @@ import utilities.JSONProtocol.Multiplex;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
@@ -30,7 +30,7 @@ public class ReaderThread extends Thread {
     /**
      * BufferedReader which is wrap around the InputStream of the socket.
      */
-    private BufferedReader bReader;
+    private BufferedReader reader;
 
     /**
      * Constructor of ReaderThread initializes the attributes socket and client
@@ -45,8 +45,7 @@ public class ReaderThread extends Thread {
         setDaemon(true);
 
         try {
-            InputStream in = socket.getInputStream();
-            bReader = new BufferedReader(new InputStreamReader(in));
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException ex) {
             if (!isInterrupted()) client.disconnect(ex);
         }
@@ -60,7 +59,7 @@ public class ReaderThread extends Thread {
 
         while (!isInterrupted()) {
             try {
-                String jsonText = bReader.readLine();
+                String jsonText = reader.readLine();
                 if (jsonText == null) {
                     throw new IOException("Connection closed");
                 }

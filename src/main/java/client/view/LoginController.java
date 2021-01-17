@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.PlayerValues;
 
 
@@ -34,7 +33,7 @@ public class LoginController extends Controller {
      * a label to check if everything works //TODO delete or change purpose
      */
     @FXML
-    private Label labelResponse;
+    private Label responseLabel;
     /**
      * the button for checking whether input is valid
      */
@@ -80,7 +79,6 @@ public class LoginController extends Controller {
      */
     private void createRobotList() {
         ImageView robot;
-        Image robotImage;
         double scaleSize = 50;
         for (int i = 0; i < robotNames.length; i++) {
             String path = "/lobby/" + robotNames[i] + ".png";
@@ -104,20 +102,13 @@ public class LoginController extends Controller {
      */
     @FXML
     private void fxButtonClicked(ActionEvent event) {
-        labelResponse.setText("");
+        responseLabel.setText("");
         userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
-        if (userName.isBlank()) labelResponse.setText("Please insert a Username!");
-        else if (chosenRobot < 0) labelResponse.setText("You have to choose a robot!");
-        else if (client.playerListContains(robotList.get(chosenRobot).getRobotID()))
-            labelResponse.setText("This robot is already taken!"); //TODO catch also in server and send error protocol
-        else {
-            labelResponse.setText("you chose " + robotList.get(chosenRobot).getRobotName() + " with id " + robotList.get(chosenRobot).getRobotID());
-            JSONBody jsonBody = new PlayerValues(userName, robotList.get(chosenRobot).getRobotID());
-            client.sendMessage(jsonBody);
-            viewManager.nextScene();
 
-        }
+        if (userName.isBlank()) responseLabel.setText("Please insert a Username!");
+        else if (chosenRobot < 0) responseLabel.setText("You have to choose a robot!");
+        else client.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
     public void setImageViewDisabled(int figure) {
@@ -133,7 +124,7 @@ public class LoginController extends Controller {
     public void serverResponse(boolean taken) {
         //TODO username can't be already taken, only robot could be taken
         if (taken) {
-            labelResponse.setText("Already taken, try again");
+            responseLabel.setText("Already taken, try again");
         } else {
             viewManager.nextScene();
         }
@@ -145,14 +136,14 @@ public class LoginController extends Controller {
      */
     public void noConnection() {
         okButton.setDisable(true);
-        labelResponse.setText("No connection to the server!");
+        responseLabel.setText("No connection to the server!");
     }
 
     /**
      * @param message
      */
     public void write(String message) {
-        labelResponse.setText(message);
+        responseLabel.setText(message);
     }
 
 

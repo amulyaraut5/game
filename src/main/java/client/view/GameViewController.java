@@ -13,10 +13,14 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
 import utilities.MapConverter;
@@ -105,7 +109,8 @@ public class GameViewController extends Controller {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-    public void buildMap(Map map) {
+    public void buildMap(GameStarted gameStarted) {
+        Map map = MapConverter.reconvert(gameStarted);
         int xMax = Utilities.MAP_WIDTH;
         int yMax = Utilities.MAP_HEIGHT;
 
@@ -295,7 +300,6 @@ public class GameViewController extends Controller {
         return innerPane;
 
     }
-
 
 
 }

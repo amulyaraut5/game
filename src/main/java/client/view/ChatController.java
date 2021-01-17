@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.PlayerAdded;
+import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.JSONProtocol.body.SendChat;
 
 public class ChatController extends Controller {
@@ -87,7 +88,13 @@ public class ChatController extends Controller {
         }
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
-
     }
 
+    public void receivedChat(ReceivedChat receivedChat) {
+        String chat;
+        if (receivedChat.isPrivat())
+            chat = "[" + receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
+        else chat = "[" + receivedChat.getFrom() + "] " + receivedChat.getMessage();
+        setTextArea(chat);
+    }
 }
