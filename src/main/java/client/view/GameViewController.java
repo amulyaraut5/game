@@ -6,6 +6,7 @@ import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -76,14 +77,26 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
-        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+        boardPane.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandler);
+        /*boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
             int pos = x + y * Utilities.MAP_WIDTH;
             client.sendMessage(new SetStartingPoint(pos));
-        });
+        });*/
         this.soundHandler = new SoundHandler();
     }
+    EventHandler<MouseEvent> eventHandler =
+            new EventHandler<javafx.scene.input.MouseEvent>() {
+                @Override
+                public void handle(javafx.scene.input.MouseEvent e) {
+                    int x = (int) e.getX() / Utilities.FIELD_SIZE;
+                    int y = (int) e.getY() / Utilities.FIELD_SIZE;
+                    int pos = x + y * Utilities.MAP_WIDTH;
+                    client.sendMessage(new SetStartingPoint(pos));
+                    boardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+                }
+            };
 
     public Group[][] getFields() {
         return fields;
