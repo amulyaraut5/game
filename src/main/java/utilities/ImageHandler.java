@@ -14,14 +14,28 @@ public abstract class ImageHandler {
 
     /**
      * Creates an ImageView from the image at given path.
+     * The image size is specified by the size of tiles on the game field.
      *
      * @param path path to the desired image
      * @return A ImageView containing the image; null if no resource with this name is found.
      */
     public static ImageView createImageView(String path) {
+        int size = Utilities.FIELD_SIZE;
+        return createImageView(path, size, size);
+    }
+
+    /**
+     * Creates an ImageView from the image at given path. The image size can be specified.
+     *
+     * @param path   path to the desired image
+     * @param width  specifies the width of the image
+     * @param height specifies the height of the image
+     * @return A ImageView containing the image; null if no resource with this name is found.
+     */
+    public static ImageView createImageView(String path, int width, int height) {
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         if (stream != null) {
-            Image image = new Image(stream, 60, 60, true, true);
+            Image image = new Image(stream, width, height, true, true);
             return new ImageView(image);
         }
         return null;
@@ -37,7 +51,8 @@ public abstract class ImageHandler {
     public static ImageView createImageView(String path, Orientation orientation) {
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         if (stream != null) {
-            var image = new Image(stream, 60, 60, true, true);
+            int size = Utilities.FIELD_SIZE;
+            var image = new Image(stream, size, size, true, true);
             var imageView = new ImageView(image);
 
             switch (orientation) {

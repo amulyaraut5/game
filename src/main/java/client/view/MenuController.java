@@ -46,7 +46,6 @@ public class MenuController extends Controller {
     private void connect() {
         infoLabel.setText("");
         boolean connected = client.establishConnection();
-        if (connected) viewManager.nextScene();
-        else infoLabel.setText("The Server is not reachable!");
+        if (!connected) infoLabel.setText("The Server is not reachable!");
     }
 }

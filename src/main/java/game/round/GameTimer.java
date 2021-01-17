@@ -1,9 +1,6 @@
 package game.round;
 
-import game.Game;
-import game.Player;
 import server.Server;
-import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.TimerStarted;
 
 /**
@@ -30,7 +27,7 @@ public class GameTimer extends Thread {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		programmingPhase.timerHasEnded();
+		programmingPhase.endProgrammingTimer();
 	}
 
 

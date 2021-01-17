@@ -1,6 +1,5 @@
 package server;
 
-import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -11,6 +10,7 @@ import utilities.Utilities;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Handles connection for each connected client,
@@ -20,13 +20,9 @@ import java.net.Socket;
  */
 
 public class UserThread extends Thread {
-
-    /**
-     * Logger to log information/warning
-     */
     private static final Logger logger = LogManager.getLogger();
 
-    private final User user; //Connected user, which data has to be filled in logIn()
+    private final User user;
     private final Socket socket;
     private final Server server = Server.getInstance();
     private PrintWriter writer;
@@ -40,10 +36,8 @@ public class UserThread extends Thread {
         this.user.setThread(this);
 
         try {
-            InputStream input = socket.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(input));
-            OutputStream output = socket.getOutputStream();
-            writer = new PrintWriter(output, true);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
         } catch (IOException ex) {
             disconnect(ex);
         }
@@ -59,15 +53,16 @@ public class UserThread extends Thread {
             sendMessage(new HelloClient(Utilities.PROTOCOL));
 
             while (!exit) {
-                String text = reader.readLine();
-                if (text == null) {
-                    throw new IOException();
+                String jsonText = reader.readLine();
+                if (jsonText == null) {
+                    throw new IOException("Connection closed");
                 }
-                else {
-                    //logger.debug("Protocol received: " + text);
-                    JSONMessage msg = Multiplex.deserialize(text);
-                    QueueMessage queueMessage = new QueueMessage(msg, this.user);
-                    server.getMessageQueue().add(queueMessage); //TODO put?
+                //logger.debug("Protocol received: " + text);
+
+                JSONMessage msg = Multiplex.deserialize(jsonText);
+                server.getMessageQueue().add(new QueueMessage(msg, user));
+                synchronized (server) {
+                    server.notify();
                 }
             }
 
@@ -95,9 +90,7 @@ public class UserThread extends Thread {
     void disconnect() {
         if (!exit) {
             exit = true;
-            //sendMessage("Bye " + user);
             server.removeUser(user);
-            //server.communicate(user + " left the room.", user);
             logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
             try {
                 socket.close();
@@ -116,10 +109,9 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         if (!exit) {
             exit = true;
-            logger.fatal("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+            logger.warn("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
             server.removeUser(user);
-            //server.communicate(user + " left the room.", user);
-            logger.fatal("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+            logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
             try {
                 socket.close();
             } catch (IOException e) {
@@ -135,7 +127,7 @@ public class UserThread extends Thread {
             //else {
             //sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
-            user.setId(user.getId());
+            user.setID(user.getID());
             welcome();
         }
 

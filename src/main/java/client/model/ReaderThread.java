@@ -7,9 +7,9 @@ import utilities.JSONProtocol.Multiplex;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
@@ -30,7 +30,7 @@ public class ReaderThread extends Thread {
     /**
      * BufferedReader which is wrap around the InputStream of the socket.
      */
-    private BufferedReader bReader;
+    private BufferedReader reader;
 
     /**
      * Constructor of ReaderThread initializes the attributes socket and client
@@ -45,31 +45,29 @@ public class ReaderThread extends Thread {
         setDaemon(true);
 
         try {
-            InputStream in = socket.getInputStream();
-            bReader = new BufferedReader(new InputStreamReader(in));
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException ex) {
             if (!isInterrupted()) client.disconnect(ex);
         }
     }
 
     /**
-     * run() method to start Thread and read input from the server and print it out on the console
+     * run() method to start Thread and read input from the server
      */
     @Override
     public void run() {
 
         while (!isInterrupted()) {
             try {
-                String text = bReader.readLine();
-                if (text == null) {
+                String jsonText = reader.readLine();
+                if (jsonText == null) {
                     throw new IOException("Connection closed");
                 }
-                logger.debug("Protocol received: " + text);
-                // After the reader object reads the serialized message from the socket it is then
-                // deserialized and handled in handleMessage method.
+                logger.debug("Protocol received: " + jsonText);
 
-                JSONMessage jsonMessage = Multiplex.deserialize(text);
-                client.getMessageQueue().add(jsonMessage); //TODO put?
+                JSONMessage msg = Multiplex.deserialize(jsonText);
+                client.handleMessage(msg);
+
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);
                 break;

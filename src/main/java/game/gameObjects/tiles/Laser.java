@@ -22,18 +22,6 @@ public class Laser extends Attribute {
         this.type = AttributeType.Laser;
     }
 
-    /**
-     * The effect of Laser is handled separately in Laser class,
-     * as the laser should not only fire when the robot steps on laser tile
-     * but also at every instance after every register.
-     * The robot can get hit at any tile as long as it is in the range of laser.
-     *
-     * @param player
-     */
-    @Override
-    public void performAction(Player player) {
-        // Read javadoc
-    }
 
     @Override
     public Node createImage() {
@@ -44,6 +32,8 @@ public class Laser extends Attribute {
     public Orientation getOrientation() {
         return orientation;
     }
+
+
 
     public int getCount() {
         return count;

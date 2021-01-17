@@ -4,6 +4,7 @@ import game.Game;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Laser;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * @author Amulya
  */
 
-public class Laser {
+public class LaserAction {
 
     private static final Logger logger = LogManager.getLogger();
     ArrayList<Coordinate> coordinates = new ArrayList<>();
@@ -32,7 +33,7 @@ public class Laser {
     /**
      * Constructor for laser
      */
-    public Laser() {
+    public LaserAction() {
     }
 
     /**
@@ -82,17 +83,17 @@ public class Laser {
      * penetrate more than one robot.
      */
     //TODO Antenna Case and Delete unnecessary logger.info
-    private void determineLaserPaths() {
+    public void determineLaserPaths() {
         for (Coordinate coordinate : map.getLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
 
             Tile tile = map.getTile(xC, yC);
+            logger.info("X" + xC + "y" + yC);
 
             for (Attribute a : tile.getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
-                    Orientation orientation = ((game.gameObjects.tiles.Laser) a).getOrientation();
-
+                    Orientation orientation = ((Laser) a).getOrientation();
                     coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
                 }
             }

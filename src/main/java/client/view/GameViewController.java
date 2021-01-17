@@ -1,25 +1,30 @@
 package client.view;
 
+import game.Game;
+import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
+import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Coordinate;
+import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
+import utilities.MapConverter;
+import utilities.Orientation;
 import utilities.Utilities;
 import utilities.Utilities.AttributeType;
 
@@ -35,9 +40,11 @@ import java.util.List;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
+    private static LobbyController lobbyController;
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
     @FXML
-    public AnchorPane playerMap; //TODO make it private
+    private StackPane playerMap;
+
     private int currentPhaseView = 0;
     private int ActivePhase = 0; //TODO enum? move to client?
     @FXML
@@ -45,22 +52,35 @@ public class GameViewController extends Controller {
     @FXML
     private BorderPane chatPane;
     @FXML
-    private FlowPane boardPane;
+    private StackPane boardPane; //stacks the map-, animation-, and playerPane
+    @FXML
+    private FlowPane mapPane;
+    @FXML
+    private Pane animationPane;
+    @FXML
+    private Pane robotPane;
+    private PlayerMapController playerMapController;
+
+    public static void setLobbyController(LobbyController lobbyController) {
+        GameViewController.lobbyController = lobbyController;
+    }
+
+    public PlayerMapController getPlayerMapController() {
+        return playerMapController;
+    }
+
+    public void setPlayerMapController(PlayerMapController playerMapController) {
+        this.playerMapController = playerMapController;
+    }
 
     @FXML
     public void initialize() {
-        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                mouseEvent -> {
-                    int xMax = Utilities.MAP_WIDTH;
-                    int fieldSize = Utilities.FIELD_SIZE;
-                    int x = (int) mouseEvent.getX() / fieldSize;
-                    int y = (int) mouseEvent.getY() / fieldSize;
-                    int pos = y * xMax + x;
-                    client.sendMessage(new SetStartingPoint(pos));
-                    //placeRobotInMap(x,y);
-
-                });
-        ActivationController.setGameViewController(this);
+        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
+            int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
+            int pos = x + y * Utilities.MAP_WIDTH;
+            client.sendMessage(new SetStartingPoint(pos));
+        });
     }
 
     public Group[][] getFields() {
@@ -68,9 +88,11 @@ public class GameViewController extends Controller {
     }
 
     public void attachPlayerMap(Pane playerM) {
-        playerM.setPrefHeight(playerM.getPrefWidth());
-        playerM.setPrefHeight(playerM.getPrefHeight());
+        //playerM.setPrefHeight(playerMap.getPrefWidth());
+        //playerM.setPrefWidth(playerMap.getPrefHeight());
+        playerMap.setAlignment(Pos.CENTER);
         playerMap.getChildren().add(playerM);
+        //playerMapController.loadPlayerMap();
     }
 
 
@@ -87,7 +109,8 @@ public class GameViewController extends Controller {
         //client.disconnect(); TODO disconnect client on closure of window
     }
 
-    public void buildMap(Map map) {
+    public void buildMap(GameStarted gameStarted) {
+        Map map = MapConverter.reconvert(gameStarted);
         int xMax = Utilities.MAP_WIDTH;
         int yMax = Utilities.MAP_HEIGHT;
 
@@ -107,18 +130,103 @@ public class GameViewController extends Controller {
                         fields[x][y].getChildren().add(attributeImage);
                     }
                 }
-                boardPane.getChildren().add(fields[x][y]);
+                mapPane.getChildren().add(fields[x][y]);
             }
         }
     }
-    public void placeRobotInMap(){
 
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm()));
+    // <----------------------Only For Test---------------------------->
+
+
+    public void placeRobotInMap(int playerID, int position) {
+        Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
+        int newX = newRobotPosition.getX();
+        int newY = newRobotPosition.getY();
+        Image image = lobbyController.getImageHashmap().get(playerID);
+
+        ImageView imageView = new ImageView(image);
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
-        fields[7][8].getChildren().add(imageView);
-        //fields[88].getChildren().add(new MoveI().drawCardImage());
+
+        robotPane.getChildren().add(imageView);
+        imageView.setX(newX * Utilities.FIELD_SIZE);
+        imageView.setY(newY * Utilities.FIELD_SIZE);
+    }
+
+    public void changeDirection() {
+
+        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
+        double currentDirection = robotImageView.rotateProperty().getValue();
+        robotImageView.rotateProperty().setValue(currentDirection - 90);
+    }
+
+    // Called twice will move the tile image
+    public void moveRobot() {
+        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
+        getFields()[7][8].getChildren().remove(getFields()[7][8].getChildren().size() - 1);
+        getFields()[7][6].getChildren().add(robotImageView);
+
+        /*TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(2));
+        transition.setToX(35);
+        transition.setToY(45);
+        transition.setNode(robotImageView);
+        transition.play();
+         */
+    }
+    // <----------------------Only For Test---------------------------->
+
+    public void handleMovement(int playerId, int to) {
+        // TODO Handle Player differently???
+
+        for (Player player : Game.getInstance().getPlayers()) {
+            if (player.getID() == playerId) {
+                // Get the Robot position from the Board
+                Coordinate oldRobotPosition = player.getRobot().getOldPosition();
+                int x = oldRobotPosition.getX();
+                int y = oldRobotPosition.getY();
+
+                Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(to);
+                int newX = newRobotPosition.getX();
+                int newY = newRobotPosition.getY();
+
+                // Get ImageView from the old position
+                ImageView imageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size() - 1);
+                // Remove the imageView from the old position
+                getFields()[x][y].getChildren().remove(getFields()[x][y].getChildren().size() - 1);
+                // Set the imageView to new position
+
+                getFields()[newX][newY].getChildren().add(imageView);
+            }
+        }
+        // TODO Should other player map also be updated????
+    }
+
+    public void handlePlayerTurning(int playerID, Orientation rotation) {
+        // TODO Handle Player differently???
+
+        for (Player player : Game.getInstance().getPlayers()) {
+            if (player.getID() == playerID) {
+
+                Coordinate oldRobotPosition = player.getRobot().getOldPosition();
+                int x = oldRobotPosition.getX();
+                int y = oldRobotPosition.getY();
+
+                // Get the imageView from that position
+                ImageView robotImageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size() - 1);
+                // Direction of robotImageView
+                double currentDirection = robotImageView.rotateProperty().getValue();
+
+                //Turn the robot based on the direction
+                if (rotation.equals(Orientation.LEFT)) {
+                    robotImageView.rotateProperty().setValue(currentDirection - 90);
+                } else {
+                    robotImageView.rotateProperty().setValue(currentDirection + 90);
+                }
+            }
+        }
+        // TODO Should other player map also be updated????
     }
 
 
@@ -182,17 +290,8 @@ public class GameViewController extends Controller {
         currentPhaseView = ++currentPhaseView % 3;
 
         if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhase.fxml";
+        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhaseView.fxml";
         else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
-
-        try {
-            innerPane = FXMLLoader.load(getClass().getResource(path));
-        } catch (IOException e) {
-            logger.error("Inner phase View could not be loaded: " + e.getMessage());
-        }
-        return innerPane;
-        /*
-        path = "/view/innerViews/programmingPhase.fxml";
         try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
@@ -200,7 +299,6 @@ public class GameViewController extends Controller {
         }
         return innerPane;
 
-         */
     }
 
 

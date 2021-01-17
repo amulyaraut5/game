@@ -23,6 +23,6 @@ public class Again extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/again-card.png");
+        return ImageHandler.createImageView("/cards/programming/Again-card.png");
     }
 }

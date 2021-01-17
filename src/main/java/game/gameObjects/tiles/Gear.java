@@ -19,19 +19,6 @@ public class Gear extends Attribute {
         type = AttributeType.Gear;
     }
 
-    /**
-     * Rotates the robot in anti-clockwise direction and clock wise direction.
-     * Orientation is initialized by constructor.
-     *
-     * @param player
-     */
-
-    @Override
-    public void performAction(Player player) {
-
-        //new RotateRobot(this.orientation).doAction(this.orientation, player);
-
-    }
 
     @Override
     public Node createImage() {

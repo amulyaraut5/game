@@ -7,6 +7,7 @@ import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
+import utilities.JSONProtocol.body.PlayerAdded;
 
 import java.util.ArrayList;
 
@@ -37,17 +38,6 @@ public class Player extends User {
 
     private int checkPointCounter;
     private int energyCubes;
-
-    private int playerID;
-
-    public int getPlayerID() {
-        return playerID;
-    }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
-    }
-
     /**
      * the players robot
      */
@@ -56,17 +46,39 @@ public class Player extends User {
     private ArrayList<PermUpgradeCard> installedUpgrades;
     private ArrayList<TempUpgradeCard> tempUpgradeCards;
 
-
-    public Player(User user, Robot robot) {
-        id = user.getId();
+    /**
+     * Constructor for a player object on the serverside which is connected with an user.
+     * It is possible to <code>message()</code> the player.
+     *
+     * @param user User to create a player from
+     */
+    public Player(User user) {
+        id = user.getID();
         name = user.getName();
         figure = user.getFigure();
         thread = user.getThread();
 
-        this.robot = robot;
+        robot = Robot.create(figure);
+
         energyCubes = 5;
-        drawProgrammingDeck=new ProgrammingDeck();
-        discardedProgrammingDeck=new DiscardDeck();
+        drawProgrammingDeck = new ProgrammingDeck();
+        discardedProgrammingDeck = new DiscardDeck();
+        registerCards = new ArrayList<Card>();
+        createRegister();
+    }
+
+    /**
+     * Constructor to create a player on the clientside.
+     * Used as a data structure to store received information about each player which can be displayed on the view.
+     *
+     * @param message Received PlayerAdded message to create a player from
+     */
+    public Player(PlayerAdded message) {
+        id = message.getID();
+        name = message.getName();
+        figure = message.getFigure();
+
+        robot = Robot.create(figure);
     }
 
     /**
@@ -139,6 +151,18 @@ public class Player extends User {
         this.checkPointCounter = checkPointCounter;
     }
 
+    public void addEnergyCubes(int n) {
+        this.energyCubes = this.energyCubes + n;
+    }
+
+    public void takeEnergyCubes(int n) {
+        this.energyCubes = this.energyCubes - n;
+    }
+
+    public void checkPointReached() {
+        this.checkPointCounter++;
+    }
+
     public int getEnergyCubes() {
         return energyCubes;
     }
@@ -177,6 +201,7 @@ public class Player extends User {
         for (Card card : cards) {
             discardDeck.addCard(card);
         }
+        cards.clear();
     }
 
     /**

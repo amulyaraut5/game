@@ -38,16 +38,6 @@ public class Wall extends Attribute {
         this.type = AttributeType.Wall;
     }
 
-    /**
-     * Wall itself does not have any functionality but robots cannot
-     * move through walls and board lasers cannot pass through walls.
-     *
-     * @param player
-     */
-    @Override
-    public void performAction(Player player) {
-        // Does nothing
-    }
 
     /**
      * @return
@@ -114,12 +104,12 @@ public class Wall extends Attribute {
         return new Group(imageView1, imageView2);
     }
 
-    public Orientation[] getOrientations() {
-        return orientations;
-    }
-
     public Orientation getOrientation() {
         return orientation;
+    }
+
+    public Orientation[] getOrientations(){
+        return this.orientations;
     }
 }
 

@@ -28,8 +28,6 @@ public class ViewManager {
      */
     private static ViewManager instance;
 
-    private Client client = Client.getInstance();
-
     private Stage menuStage = new Stage();
     private Stage gameStage = new Stage();
     private Scene menuScene;
@@ -38,18 +36,18 @@ public class ViewManager {
     private Scene gameScene;
     private Pane chatPane;
     private Pane playerMap;
-    //private Scene mapSelectionScene;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
-    //private MapSelectionController mapSelectionController;
+    private PlayerMapController playerMapController;
 
     private ViewManager() {
         Platform.runLater(() -> {
             try {
+                constructScenes();
                 createChatPane();
                 createPlayerMap();
-                constructScenes();
+
                 constructMenuStage();
                 constructGameStage();
                 menuStage.show();
@@ -68,15 +66,10 @@ public class ViewManager {
         if (menuStage.isShowing()) {
 
             if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
-
-            /*else if (menuStage.getScene() == loginScene) {
-                menuStage.setScene(mapSelectionScene);}*/
-
-            else if (menuStage.getScene() == loginScene){
+            else if (menuStage.getScene() == loginScene) {
                 menuStage.setScene(lobbyScene);
                 lobbyController.attachChatPane(chatPane);
-            }
-            else if (menuStage.getScene() == lobbyScene) showGameStage();
+            } else if (menuStage.getScene() == lobbyScene) showGameStage();
 
         } else {
             logger.warn("There is no next Scene!");
@@ -110,7 +103,8 @@ public class ViewManager {
     private void showGameStage() {
         gameViewController.attachChatPane(chatPane);
         gameViewController.attachPlayerMap(playerMap);
-       //gameViewController.changeInnerView();
+
+        //gameViewController.changeInnerView();
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
             gameStage.show();
@@ -134,8 +128,10 @@ public class ViewManager {
             if (menuStage.getScene() == menuScene) {
                 menuStage.close();
             } else {
-                showGameStage();    //TODO just for testing, remove later, add menuStage.show();
+                Client.getInstance().disconnect();
                 menuStage.setScene(menuScene);
+                menuStage.show();
+                //TODO open menu
             }
         });
     }
@@ -146,7 +142,9 @@ public class ViewManager {
         gameStage.setScene(gameScene);
 
         gameStage.setOnCloseRequest(event -> {
+            menuStage.setScene(menuScene);
             //TODO leave game
+            Client.getInstance().disconnect();
             showMenuStage();
         });
     }
@@ -158,42 +156,39 @@ public class ViewManager {
             logger.error("ChatPane could not be created: " + e.getMessage());
         }
     }
+
     private void createPlayerMap() {
         try {
-            playerMap = FXMLLoader.load(getClass().getResource("/view/innerViews/playerMap.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMap.fxml"));
+            playerMap = fxmlLoader.load();
+            playerMapController = fxmlLoader.getController();
+            gameViewController.setPlayerMapController(playerMapController);
         } catch (IOException e) {
             logger.error("PlayerMap could not be created: " + e.getMessage());
         }
     }
 
     private void constructScenes() throws IOException {
-        /*String[] views = {"menuView", "loginView", "lobbyView", "gameView"};
-        for (int i = 0; i < views.length; i++) {
-            FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("/view/" + views[i] + ".fxml"));
-        }*/
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
         FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/view/lobbyView.fxml"));
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
-        //FXMLLoader mapSceneLoader = new FXMLLoader(getClass().getResource("/view/mapSelection.fxml"));
 
         menuScene = new Scene(menuLoader.load());
         loginScene = new Scene(loginLoader.load());
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
-        //mapSelectionScene = new Scene(mapSceneLoader.load());
 
         loginController = loginLoader.getController();
         lobbyController = lobbyLoader.getController();
         gameViewController = gameLoader.getController();
-        //mapSelectionController = mapSceneLoader.getController();
 
         ArrayList<Controller> controllerList = new ArrayList<>();
 
         controllerList.add(loginController);
         controllerList.add(lobbyController);
         controllerList.add(gameViewController);
-        //controllerList.add(mapSelectionController);
-        client.setController(controllerList);
+
+        Client.getInstance().setController(controllerList);
     }
 }

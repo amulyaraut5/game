@@ -9,20 +9,20 @@ public enum Orientation {
     @SerializedName("right") RIGHT;
 
     static {
-        Orientation.UP.opposite = Orientation.DOWN;
-        Orientation.RIGHT.opposite = Orientation.LEFT;
-        Orientation.DOWN.opposite = Orientation.UP;
-        Orientation.LEFT.opposite = Orientation.RIGHT;
+        UP.opposite = DOWN;
+        RIGHT.opposite = LEFT;
+        DOWN.opposite = UP;
+        LEFT.opposite = RIGHT;
 
-        Orientation.UP.next = Orientation.RIGHT;
-        Orientation.RIGHT.next = Orientation.DOWN;
-        Orientation.DOWN.next = Orientation.LEFT;
-        Orientation.LEFT.next = Orientation.UP;
+        UP.next = RIGHT;
+        RIGHT.next = DOWN;
+        DOWN.next = LEFT;
+        LEFT.next = UP;
 
-        Orientation.UP.prior = Orientation.LEFT;
-        Orientation.RIGHT.prior = Orientation.LEFT;
-        Orientation.DOWN.prior = Orientation.UP;
-        Orientation.LEFT.prior = Orientation.RIGHT;
+        UP.prior = LEFT;
+        RIGHT.prior = LEFT;
+        DOWN.prior = UP;
+        LEFT.prior = RIGHT;
     }
 
     private Orientation opposite;

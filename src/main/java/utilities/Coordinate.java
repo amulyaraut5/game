@@ -63,6 +63,7 @@ public class Coordinate {
     }
 
     public boolean equals(Coordinate c) {
+        if (c == null) return false;
         return (this.getX() == c.getX()) && (this.getY() == c.getY());
     }
 

@@ -22,27 +22,6 @@ public class PushPanel extends Attribute {
         this.type = AttributeType.PushPanel;
     }
 
-    /**
-     * Push panels push any robots resting on them into the next space in the direction the push
-     * panel faces. They activate only in the register that corresponds to the number on them. For
-     * example, if you end register two on a push panel labeled “2, 4” you will be pushed. If you end
-     * register three on the same push panel, you won’t be pushed.
-     */
-
-    @Override
-    public void performAction(Player player) {
-
-        for (int i : registers) {
-
-            if (i == player.getCurrentRegister()) {
-                new MoveRobot().doAction(orientation, player);
-
-            } else {
-                // Do nothing
-                // Print message saying that this push panel has no effect for current register.
-            }
-        }
-    }
 
     @Override
     public Node createImage() {

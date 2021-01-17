@@ -18,9 +18,16 @@ public abstract class Robot {
 
     protected Orientation orientation;
     protected Coordinate position;
+    protected Coordinate oldPosition;
 
+    /**
+     * method creates a robot from given figure ID.
+     *
+     * @param figure figure ID of the wanted robot, from 0 to 5.
+     * @return Robot associated with given ID.
+     */
     public static Robot create(int figure) {
-        Robot robot = null;
+        Robot robot;
 
         switch (figure) {
             case 0 -> robot = new Hulk();
@@ -29,6 +36,7 @@ public abstract class Robot {
             case 3 -> robot = new Twonky();
             case 4 -> robot = new SpinBot();
             case 5 -> robot = new ZoomBot();
+            default -> throw new UnsupportedOperationException("Robot ID has to be in between 0 and 5.");
         }
         return robot;
     }
@@ -59,13 +67,9 @@ public abstract class Robot {
     public void move(int moveCount, Orientation direction) {
         int x = position.getX();
         int y = position.getY();
-        //position.add(direction.toVector());
 
-        switch (direction) {
-            case UP -> position.setY(y - moveCount);
-            case RIGHT -> position.setX(x + moveCount);
-            case DOWN -> position.setY(y + moveCount);
-            case LEFT -> position.setX(x - moveCount);
+        for (int i = 0; i < moveCount; i++) {
+            position.add(direction.toVector());
         }
     }
 
@@ -76,22 +80,8 @@ public abstract class Robot {
      */
     public void rotate(Rotation rotation) {
         switch (rotation) {
-            case RIGHT:
-                switch (getOrientation()) {
-                    case UP -> setOrientation(Orientation.RIGHT);
-                    case RIGHT -> setOrientation(Orientation.DOWN);
-                    case DOWN -> setOrientation(Orientation.LEFT);
-                    case LEFT -> setOrientation(Orientation.UP);
-                }
-                break;
-            case LEFT:
-                switch (getOrientation()) {
-                    case UP -> setOrientation(Orientation.LEFT);
-                    case LEFT -> setOrientation(Orientation.DOWN);
-                    case DOWN -> setOrientation(Orientation.RIGHT);
-                    case RIGHT -> setOrientation(Orientation.UP);
-                }
-                break;
+            case RIGHT -> orientation = orientation.getNext();
+            case LEFT -> orientation = orientation.getPrevious();
         }
     }
 
@@ -121,11 +111,21 @@ public abstract class Robot {
         return position;
     }
 
-    public void setPosition(Coordinate position) {
-        this.position = position;
+    public void setPosition(Coordinate p) {
+        oldPosition = position;
+        position = p;
+    }
+
+    public Coordinate getOldPosition() {
+        return oldPosition;
     }
 
     public void setPosition(int x, int y) {
-        this.position = new Coordinate(x, y);
+        oldPosition = position;
+        position = new Coordinate(x, y);
+    }
+
+    //TODO
+    public void reboot() {
     }
 }

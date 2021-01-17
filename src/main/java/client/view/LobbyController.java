@@ -1,5 +1,6 @@
 package client.view;
 
+import game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -10,11 +11,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -115,6 +116,11 @@ public class LobbyController extends Controller {
      */
     private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
+    private HashMap<Integer, Image> imageHashmap = new HashMap<>();
+
+    public HashMap<Integer, Image> getImageHashmap() {
+        return imageHashmap;
+    }
 
     /**
      * this method gets called automatically by constructing view
@@ -140,6 +146,7 @@ public class LobbyController extends Controller {
 
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
+        GameViewController.setLobbyController(this);
     }
 
     public void attachChatPane(Pane chat) {
@@ -153,20 +160,28 @@ public class LobbyController extends Controller {
      * with its choosed robot, name and also the name is added to the choicebox
      * so that other users in lobby can send direct messages.
      * Also
-     *
-     * @param playerAdded
      */
-    public void setJoinedUsers(PlayerAdded playerAdded) {
-        String path = "/lobby/" + robotNames[playerAdded.getFigure()] + ".png";
-        String newName = playerAdded.getName() + " " + playerAdded.getID();
+    public void setJoinedUsers(Player player, boolean thisUser) {
+        String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
+        String newName = player.getName() + " " + player.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
+
+        //<-----------------------------Test-------------------------->
+        imageHashmap.put(player.getID(), new Image(getClass().getResource(path).toString()));
+        //<-----------------------------Test-------------------------->
         currentLabel.setText(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
-        RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer);
+
+        int position = robotImageViews.indexOf(currentImageView) + 1;
+        RobotIcon robotIcon = new RobotIcon(position, player, imageViewPuffer, labelPuffer, thisUser);
+        addRobotIcon(robotIcon);
         robotIcons.add(robotIcon);
+
+
         nextRobot();
     }
+
 
     /**
      * The robot image of the user who clicked the ready button gets changed. Now the icon has a pink
@@ -174,7 +189,7 @@ public class LobbyController extends Controller {
      *
      * @param playerStatus
      */
-    public void displayPlayerStatus(PlayerStatus playerStatus) {
+    public void displayStatus(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
             if (robotIcon.getUserID() == playerStatus.getId()) {
                 String path = "/lobby/" + robotNames[robotIcon.getFigure()];
@@ -207,58 +222,7 @@ public class LobbyController extends Controller {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
     }
 
-    /**
-     * This private class is a data structure to easily connect the different information
-     * that are necessary to assign one user to a specific place in the lobby with his image, name etc.
-     */
-    private class RobotIcon {
-        private String userName;
-        private int userID;
-        private int position;
-        private int figure;
-        private ImageView robotImageView;
-        private Label labelOfUser;
 
-        /**
-         * the constructor of RobotIcon where one RobotIcon can be created with the
-         * values of one player and the image of the figure he choosed
-         *
-         * @param position
-         * @param playerAdded
-         * @param imageViewPuffer
-         * @param labelPuffer
-         */
-        public RobotIcon(int position, PlayerAdded playerAdded, ImageView imageViewPuffer, Label labelPuffer) {
-            this.position = position;
-            this.userID = playerAdded.getID();
-            this.userName = playerAdded.getName() + " " + playerAdded.getID();
-            this.figure = playerAdded.getFigure();
-            this.robotImageView = imageViewPuffer;
-            this.labelOfUser = labelPuffer;
-        }
-
-        public int getFigure() {
-            return figure;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public int getUserID() {
-            return userID;
-        }
-
-        public ImageView getRobotImageView() {
-            return robotImageView;
-        }
-
-        public Label getLabelOfUser() {
-            return labelOfUser;
-        }
-
-
-    }
 }
 
 

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 public class Map {
 
     private Tile[][] tiles;
-    private ArrayList<Coordinate> laserCoordinates;
     private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
+    private Coordinate RestartPoint;
 
 
     /**
@@ -77,27 +77,112 @@ public class Map {
         return coordinates;
     }
 
-
     /**
-     * Based on the type of attribute it returns the arraylist of coordinate of that specific
-     * tile from the map.
-     *
-     * @return the coordinate
+     * This method returns the coordinate for the RestartPoint from the map.
+     * @return
      */
-    public ArrayList<Coordinate> lookInMapFor(Attribute attribute) {
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
+    public Coordinate getRestartPointCoordinate(){
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == attribute.getType()) {
-                        coordinates.add(new Coordinate(i, j));
-                        return coordinates;
+                    if (a.getType() == Utilities.AttributeType.Laser) {
+                       return new Coordinate(i, j);
                     }
                 }
             }
         }
         return null;
     }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Coordinate> getEnergySpaceCoordinate(){
+        ArrayList<Coordinate> energyCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.EnergySpace) {
+                        Coordinate temp = new Coordinate(i, j);
+                        energyCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return energyCoordinates;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Coordinate> getPushPanelCoordinate(){
+        ArrayList<Coordinate> pushPanelCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.PushPanel) {
+                        Coordinate temp = new Coordinate(i, j);
+                        pushPanelCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return pushPanelCoordinates;
+    }
+
+    public ArrayList<Coordinate> getControlPointCoordinate(){
+        ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                        Coordinate temp = new Coordinate(i, j);
+                        controlPointCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return controlPointCoordinates;
+    }
+
+    public ArrayList<Coordinate> getPitCoordinate(){
+        ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                        Coordinate temp = new Coordinate(i, j);
+                        pitCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return pitCoordinates;
+    }
+
+    public ArrayList<Coordinate> getGearCoordinate(){
+        ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                        Coordinate temp = new Coordinate(i, j);
+                        gearCoordinates.add(temp);
+                    }
+                }
+            }
+        }
+        return gearCoordinates;
+    }
+
+
+    public void readAll(){
+        readBeltCoordinates();
+        readRestartPointCoordinate();
+    }
+
 
     public void readBeltCoordinates() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
@@ -137,6 +222,18 @@ public class Map {
 
         }
     }
+    public void readRestartPointCoordinate() {
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if(a.getType() == Utilities.AttributeType.RestartPoint){
+                        this.RestartPoint = new Coordinate(i, j);
+                    }
+                }
+            }
+        }
+    }
+
 
     private void addGreenBelt(Coordinate c){
         GreenBelts.add(c);
@@ -152,5 +249,9 @@ public class Map {
 
     public ArrayList<Coordinate> getBlueBelts(){
         return BlueBelts;
+    }
+
+    public Coordinate getRestartPoint(){
+        return this.RestartPoint;
     }
 }

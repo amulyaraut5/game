@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="programmingPhasePane" prefHeight="524.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.ProgrammingController">
+   <children>
+      <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="47.0" text="ProgrammingPhase">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutX="28.0" layoutY="114.0" prefHeight="37.0" prefWidth="373.0" text="Choose a maximum of 5 cards from your Deck">
+         <font>
+            <Font size="14.0" />
+         </font>
+
+      </Label>
+      <HBox fx:id="hBox1" alignment="CENTER" layoutX="14.0" layoutY="178.0" prefHeight="84.0" prefWidth="386.0" />
+      <HBox fx:id="hBox2" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
+
+   </children>
+</AnchorPane>

@@ -9,6 +9,17 @@
     /*-fx-control-inner-background: blue ;
     -fx-control-inner-background-alt: derive(-fx-control-inner-background, 50%);*/
 }
+
+.register{
+-fx-background-color: blue;
+}
+
+#gameViewAnchorPane{
+-fx-background-color: #999999;
+}
+#playerMap{
+    -fx-background-color: blue;
+}
 /*
 Label{
 -fx-text-alignment: right;

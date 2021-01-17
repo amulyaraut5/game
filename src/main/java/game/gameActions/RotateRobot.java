@@ -1,20 +1,22 @@
 package game.gameActions;
 
 import game.Player;
+import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.Orientation;
 
 /**
  * The RotateRobot class contains only overriden method that rotates the robot either clockwise
  * or antoclockwise based on the orientation.
  * Orientation RIGHT: Clockwise Rotation  & LEFT: Anticlockwise Rotation
+ *
  * @author Amulya
  */
 
-public class RotateRobot extends Action{
+public class RotateRobot extends Action {
 
     private Orientation orientation;
 
-    public RotateRobot(Orientation rotation){
+    public RotateRobot(Orientation rotation) {
         this.orientation = rotation;
     }
 
@@ -38,5 +40,6 @@ public class RotateRobot extends Action{
                 }
                 break;
         }
+        server.communicateAll(new PlayerTurning(player.getID(), orientation));
     }
 }

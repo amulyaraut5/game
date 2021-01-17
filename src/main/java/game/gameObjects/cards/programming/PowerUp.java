@@ -23,6 +23,6 @@ public class PowerUp extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/power-up-card.png");
+        return ImageHandler.createImageView("/cards/programming/PowerUp-card.png");
     }
 }

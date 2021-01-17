@@ -26,21 +26,6 @@ public class RotatingBelt extends Attribute {
 
     }
 
-    /**
-     * The RotatingBelt moves a Robot in a non-linear fashion.
-     *
-     * @param player
-     */
-    @Override
-    public void performAction(Player player) {
-        if (collisionPointExist()) {
-            // No movement
-        } else {
-            if (speed == 2) {
-                new MoveRobotInCurve().doAction2(this.orientations, player);
-            }
-        }
-    }
 
     @Override
     public Node createImage() {

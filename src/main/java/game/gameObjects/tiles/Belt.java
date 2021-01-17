@@ -22,28 +22,6 @@ public class Belt extends Attribute {
         type = AttributeType.Belt;
     }
 
-    /**
-     * The Belt pushes the robot in the direction of tile by
-     * one space or two space based on speed of Belt.
-     * Once a robot has moved off a belt, the belt has no longer effect.
-     *
-     * @param player
-     */
-    @Override
-    public void performAction(Player player) {
-
-        if (collisionPointExist()) {
-            // No movement
-        } else {
-            if (speed == 1) {
-                new MoveRobot().doAction(this.orientation, player);
-
-            } else {
-                new MoveRobot().doAction(this.orientation, player);
-                new MoveRobot().doAction(this.orientation, player);
-            }
-        }
-    }
 
     @Override
     public Node createImage() {
@@ -52,16 +30,6 @@ public class Belt extends Attribute {
         else if (speed == 2) path = "/tiles/blue.png";
 
         return ImageHandler.createImageView(path, orientation);
-    }
-
-    /**
-     * This method checks if two robots converge at the same point or not.
-     *
-     * @return
-     */
-    private boolean collisionPointExist() {
-        //TODO
-        return false;
     }
 
     public int getSpeed() {

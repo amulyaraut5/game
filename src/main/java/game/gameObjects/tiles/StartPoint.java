@@ -11,9 +11,6 @@ public class StartPoint extends Attribute {
         type = AttributeType.StartPoint;
     }
 
-    @Override
-    public void performAction(Player player) {
-    }
 
     @Override
     public Node createImage() {

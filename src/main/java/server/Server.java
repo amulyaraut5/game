@@ -1,10 +1,6 @@
 package server;
 
 import game.Game;
-import game.gameObjects.cards.Card;
-import game.gameObjects.cards.programming.Again;
-import game.gameObjects.cards.programming.MoveI;
-import game.gameObjects.cards.programming.MoveII;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -26,12 +22,11 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-
     private final ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
     private final ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
-
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
+    private Game game;
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
     private boolean exit = false; //TODO Server
 
@@ -63,22 +58,23 @@ public class Server extends Thread {
      */
     @Override
     public void run() {
-        currentThread().setName("ServerThread");
+        game = Game.getInstance();
+        setName("ServerThread");
         logger.info("SERVER STARTED");
-
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
             Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.start();
+
             while (!exit) {
-                try {
-                    synchronized (this){
-                        this.wait(10); //FIXME workaround, find better solution
+                synchronized (this) {
+                    try {
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        logger.warn(e.getMessage());
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 QueueMessage queueMessage;
                 while ((queueMessage = messageQueue.poll()) != null) {
@@ -106,9 +102,9 @@ public class Server extends Thread {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
                 if (hs.getProtocol() == Utilities.PROTOCOL) {
-                    user.setId(idCounter++);
-                    currentThread().setName("UserThread-" + user.getId());
-                    user.message(new Welcome(user.getId()));
+                    user.setID(idCounter++);
+                    currentThread().setName("UserThread-" + user.getID());
+                    user.message(new Welcome(user.getID()));
 
                     for (PlayerAdded addedPlayer : addedPlayers) {
                         user.message(addedPlayer);
@@ -130,45 +126,47 @@ public class Server extends Thread {
                     }
                 }
                 if (!figureTaken) {
-                    user.setId(user.getId());
-                    user.setName(pv.getName());
-                    user.setFigure(pv.getFigure());
-                    PlayerAdded addedPlayer = new PlayerAdded(user.getId(), pv.getName(), pv.getFigure());
-                    addedPlayers.add(addedPlayer);
-                    communicateAll(addedPlayer);
+                    if (!pv.getName().isBlank()){
+                        user.setID(user.getID());
+                        user.setName(pv.getName());
+                        user.setFigure(pv.getFigure());
+                        PlayerAdded addedPlayer = new PlayerAdded(user.getID(), pv.getName(), pv.getFigure());
+                        addedPlayers.add(addedPlayer);
+                        communicateAll(addedPlayer);
+                    }else{
+                        user.message(new Error("Username can't be blank!"));
+                    }
                 } else {
-                    JSONBody error = new Error("Robot is already taken!");
-                    user.message(error);
+                    user.message(new Error("Robot is already taken!"));
                 }
             }
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
-                communicateAll(new PlayerStatus(user.getId(), status.isReady()));
+                communicateAll(new PlayerStatus(user.getID(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
-
                 if (allUsersReady) {
-                    Game.getInstance().play();
+                    game.play();
                 }
-                //TODO now just hardcoded and for testing purposes (Sarah)
-                ArrayList<Card> programmingCards = new ArrayList<>();
-                programmingCards.add(new Again());
-                programmingCards.add(new MoveII());
-                programmingCards.add(new MoveI());
                 //user.message(new YourCards(programmingCards));
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
                 if (sc.getTo() < 0)
-                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getId(), false), user);
+                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
                 else {
-                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getId(), true), sc.getTo());
+                    communicateDirect(new ReceivedChat(sc.getMessage(), user.getID(), true), sc.getTo());
                 }
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
                 //TODO send selectCard to ProgrammingPhase
                 //Game.getInstance().messageToPhases(selectCard);
-                communicateUsers(new CardSelected(user.getId(), selectCard.getRegister()), user);
+                communicateUsers(new CardSelected(user.getID(), selectCard.getRegister()), user);
+            }
+            case SetStartingPoint -> {
+                SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
+
+                game.setStartingPoint(user, setStartingPoint.getPosition());
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
@@ -196,7 +194,7 @@ public class Server extends Thread {
                 thread.start();
             } catch (IOException e) {
                 accept = false;
-                logger.info("Accept failed on: " + PORT);
+                logger.error("Accepting clients failed on port " + PORT + ": " + e.getMessage());
             }
         }
     }
@@ -243,7 +241,7 @@ public class Server extends Thread {
 
     public void communicateDirect(JSONBody jsonBody, int receiver) {
         for (User user : users) {
-            if (user.getId() == receiver) {
+            if (user.getID() == receiver) {
                 user.message(jsonBody);
             }
         }
