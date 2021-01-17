@@ -49,26 +49,38 @@ public class ActivationPhase extends Phase {
      */
     @Override
     public void startPhase() {
-        activateCards();
+        for (int register = 1; register <6; register++) {
+            turnCards();
+            activateCards();
+        }
         activateBoard();
         //throw new UnsupportedOperationException();
     }
 
     /**
-     * The player needs to confirm that he want to play the card (PlayIt).
-     * If he confirms this method needs to be called.
+     * At the beginning of each register the current cards are shown.
      */
 
-    private void activateCards() {
+    private void turnCards () {
         for (int register = 1; register < 6; register++) {
-            for (Player player : playerList) {
+            for (Player player : playerList) { //TODO in order of priority List
                 currentCards.put(player.getId(), player.getRegisterCard(register));
             }
             server.communicateAll(new CurrentCards(currentCards));
         }
-        for (Integer key : currentCards.keySet()) {
-            Card currentCard = currentCards.get(key);
-            Player currentPlayer = game.getPlayerFromID(key);
+    }
+
+    /**
+     * After the cards of each player for the current register have been shown,
+     * this method activates the cards depending on the priority of the player.
+     * Each player has to confirm with the PlayIt protocol.
+     */
+
+    private void activateCards() {
+        for (Integer playerID : currentCards.keySet()) { //if cards are saved in current cards based on priority this works
+            //TODO player needs to send PlayIt protocol
+            Card currentCard = currentCards.get(playerID);
+            Player currentPlayer = game.getPlayerFromID(playerID);
             currentCard.handleCard(game, currentPlayer);
         }
     }
