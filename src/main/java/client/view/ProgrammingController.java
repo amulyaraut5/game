@@ -28,12 +28,16 @@ public class ProgrammingController extends Controller {
     private double widthHBox;
     private double heightHBox;
 
-    public void initialize(){ //TODO method that gets called when cards were dealt
-        widthHBox = hBox1.getPrefWidth()/5;
+    public void initialize() { //TODO method that gets called when cards were dealt
+        widthHBox = hBox1.getPrefWidth() / 5;
         heightHBox = hBox1.getPrefHeight();
         hBox1.setSpacing(20);
         hBox2.setSpacing(20);
-        ArrayList<String> cardList = new ArrayList<>(); //HARDCODED
+    }
+
+    public void startProgrammingPhase(ArrayList<String> cardList){
+
+        ArrayList<String> cardLists = new ArrayList<>(); //HARDCODED
         cardList.add("Again");
         cardList.add("MoveI");
         cardList.add("MoveII");
@@ -44,42 +48,12 @@ public class ProgrammingController extends Controller {
         cardList.add("MoveII");
         cardList.add("MoveIII");
 
-        ////////////////////SHORT TEST HOW TO GET CARDNAME OUT OF URL
-        Image image = new Image(getClass().getResource("/cards/programming/Again-card.png").toString());
-        //System.out.println("Url. " +image.getUrl());
-        String [] a = image.getUrl().split("/");
-        String imageName = a[a.length-1];
-        //System.out.println(imageName.substring(0, imageName.length()-9));
-
-        Image image2 = new Image(getClass().getResource("/cards/programming/TurnLeft-card.png").toString());
-        //System.out.println("Url. " +image2.getUrl());
-        String [] a2 = image2.getUrl().split("/");
-        String imageName2 = a2[a2.length-1];
-        //System.out.println(imageName2.substring(0, imageName2.length()-9));
-
-        ////////////////////
-
-        for (String card : cardList){
+        for (String card : cardLists){
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + card +"-card.png").toString()), pane);
-            //ImageView programCard = new ImageView();
-            //programCard.setImage(new Image("/programming-cards/" + card +"-card.png"));
-            //programCard.setFitWidth(90);
-            //programCard.setFitHeight(116);
-            /*pane.setOnDragDetected(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    setOnDragDetected(mouseEvent, programCard);
-                }
-            });*/
-            if(!(hBox1.getChildren().size()>=5)){
-                hBox1.getChildren().add(pane);
-            } else {
-                hBox2.getChildren().add(pane);
-            }
-
+            if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
+            else hBox2.getChildren().add(pane);
         }
-
    }
 
 
@@ -176,13 +150,13 @@ public class ProgrammingController extends Controller {
             if (!pane.getChildren().isEmpty()) {
                 pane.getChildren().remove(0);
             }
-            Image img = new Image(getClass().getResource(db.getImage().getUrl()).toString());
+            //Image img = new Image(getClass().getResource(db.getImage().getUrl()).toString());
 
-            //Image img = db.getImage();
+            Image img = db.getImage();
             //System.out.println("Url in mouseDragDropped" + db.getContentTypes());
-            //System.out.println("Url in mouseDragDropped" + db.toString());
+            System.out.println("CardName programmingController" + getImageDropped());
             addImage(img, pane);
-            System.out.println("in ProgrammingController " + getImageDropped());
+            //System.out.println("in ProgrammingController " + getImageDropped());
 
 
         }
