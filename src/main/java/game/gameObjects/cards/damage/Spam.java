@@ -14,7 +14,7 @@ import utilities.Utilities.CardType;
 public class Spam extends DamageCard {
 
     public Spam() {
-        super(CardType.Spam);
+        card = CardType.Spam;
     }
 
     /**

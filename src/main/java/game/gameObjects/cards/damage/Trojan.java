@@ -14,7 +14,7 @@ import utilities.Utilities.CardType;
 public class Trojan extends DamageCard {
 
     public Trojan() {
-        super(CardType.Trojan);
+        card = CardType.Trojan;
     }
 
     /**

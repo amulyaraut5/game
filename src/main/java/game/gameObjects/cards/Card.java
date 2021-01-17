@@ -7,11 +7,7 @@ import utilities.Utilities.CardType;
 
 public abstract class Card {
 
-    private CardType card;
-
-    public Card(CardType card) {
-        this.card = card;
-    }
+    protected CardType card;
 
     public abstract ImageView drawCardImage();
 

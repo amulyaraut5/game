@@ -4,7 +4,7 @@ package game.round;
  * The UpgradePhase is the first Phase of every Round.
  * The Upgrade Shop is filled/refilled and the players can purchase Upgrades.
  *
- * @author janau 
+ * @author janau
  */
 
 public class UpgradePhase extends Phase {
@@ -26,7 +26,7 @@ public class UpgradePhase extends Phase {
      * Handles the purchasing of upgrades.
      * First the priorityList gets called and according to that each player is asked one by one
      * if he wants to purchase upgrade cards.
-     * If yes it's checked if the player can afford the cardand if he has enough upgradeSlots left.
+     * If yes it's checked if the player can afford the card and if he has enough upgradeSlots left.
      * If not he has to remove one of his cards and in the end the card is added to him.
      */
     private void purchaseUpgrades() {
