@@ -46,16 +46,16 @@ public class ProgrammingController extends Controller {
 
         ////////////////////SHORT TEST HOW TO GET CARDNAME OUT OF URL
         Image image = new Image(getClass().getResource("/cards/programming/Again-card.png").toString());
-        System.out.println("Url. " +image.getUrl());
+        //System.out.println("Url. " +image.getUrl());
         String [] a = image.getUrl().split("/");
         String imageName = a[a.length-1];
-        System.out.println(imageName.substring(0, imageName.length()-9));
+        //System.out.println(imageName.substring(0, imageName.length()-9));
 
         Image image2 = new Image(getClass().getResource("/cards/programming/TurnLeft-card.png").toString());
-        System.out.println("Url. " +image2.getUrl());
+        //System.out.println("Url. " +image2.getUrl());
         String [] a2 = image2.getUrl().split("/");
         String imageName2 = a2[a2.length-1];
-        System.out.println(imageName2.substring(0, imageName2.length()-9));
+        //System.out.println(imageName2.substring(0, imageName2.length()-9));
 
         ////////////////////
 
@@ -125,6 +125,7 @@ public class ProgrammingController extends Controller {
         pane.setOnDragExited(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent dragEvent) {
+                pane.setStyle("-fx-background-color: #FFFFFF;");
                 pane.setStyle("-fx-border-color: #C6C6C6;");
             }
         });
@@ -137,9 +138,11 @@ public class ProgrammingController extends Controller {
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(imageView.getImage());
-        //setImageDropped();
+        //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
+        setImageDropped(imageView.getImage().getUrl());
+        //System.out.println(imageDropped);
         db.setContent(content);
-        //imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+        imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
         mouseEvent.consume();
     }
 
@@ -173,10 +176,14 @@ public class ProgrammingController extends Controller {
             if (!pane.getChildren().isEmpty()) {
                 pane.getChildren().remove(0);
             }
+            Image img = new Image(getClass().getResource(db.getImage().getUrl()).toString());
 
-            Image img = db.getImage();
-
+            //Image img = db.getImage();
+            //System.out.println("Url in mouseDragDropped" + db.getContentTypes());
+            //System.out.println("Url in mouseDragDropped" + db.toString());
             addImage(img, pane);
+            System.out.println("in ProgrammingController " + getImageDropped());
+
 
         }
         event.setDropCompleted(success);
