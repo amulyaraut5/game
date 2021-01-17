@@ -187,7 +187,11 @@ public class ProgrammingPhase extends Phase {
     private void dealProgrammingCards() {
         for (Player player : playerList) {
             drawProgrammingCards(9, player);
-            player.message(new YourCards(player.getDrawnProgrammingCards()));
+            ArrayList<String> cards = new ArrayList<>(9);
+            for (Card card : player.getDrawnProgrammingCards()) {
+                cards.add(card.getName().toString());
+            }
+            player.message(new YourCards(cards));
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
     }
