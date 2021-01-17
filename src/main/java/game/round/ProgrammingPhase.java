@@ -40,7 +40,6 @@ public class ProgrammingPhase extends Phase {
             player.createRegister();
         }
         dealProgrammingCards();
-        game.nextPhase();
     }
 
 
@@ -126,7 +125,6 @@ public class ProgrammingPhase extends Phase {
      * @param player
      */
     private void startProgrammingTimer(Player player) {
-        //isFinished = true;
         server.communicateAll(new SelectionFinished(player.getID()));
         GameTimer gameTimer = new GameTimer(this);
         gameTimer.start();
@@ -137,13 +135,14 @@ public class ProgrammingPhase extends Phase {
      * TimerEnded and calls dealRandomCards() if some players haven't filled their registers yet
      */
     public void endProgrammingTimer() {
-        if (timerFinished) {
+        if (!(timerFinished)) {
             timerFinished = true;
             server.communicateAll(new TimerEnded(notReadyPlayers));
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
         }
+        game.nextPhase();
     }
 
     /**
@@ -200,7 +199,7 @@ public class ProgrammingPhase extends Phase {
      * @param amount of cards to draw
      * @param player player that needs to draw cards
      */
-    private void drawProgrammingCards (int amount, Player player) {
+    private void drawProgrammingCards(int amount, Player player) {
         ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
         if (!(currentDeck.size() < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));
