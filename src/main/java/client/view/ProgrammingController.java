@@ -41,9 +41,25 @@ public class ProgrammingController {
         cardList.add("MoveI");
         cardList.add("MoveII");
         cardList.add("MoveIII");
+
+        ////////////////////SHORT TEST HOW TO GET CARDNAME OUT OF URL
+        Image image = new Image(getClass().getResource("/cards/programming/Again-card.png").toString());
+        System.out.println("Url. " +image.getUrl());
+        String [] a = image.getUrl().split("/");
+        String imageName = a[a.length-1];
+        System.out.println(imageName.substring(0, imageName.length()-9));
+
+        Image image2 = new Image(getClass().getResource("/cards/programming/TurnLeft-card.png").toString());
+        System.out.println("Url. " +image2.getUrl());
+        String [] a2 = image2.getUrl().split("/");
+        String imageName2 = a2[a2.length-1];
+        System.out.println(imageName2.substring(0, imageName2.length()-9));
+
+        ////////////////////
+
         for (String card : cardList){
             StackPane pane = createNewPane();
-            addImage(new Image("/cards/programming/" + card +"-card.png"), pane);
+            addImage(new Image(getClass().getResource("/cards/programming/" + card +"-card.png").toString()), pane);
             //ImageView programCard = new ImageView();
             //programCard.setImage(new Image("/programming-cards/" + card +"-card.png"));
             //programCard.setFitWidth(90);
@@ -62,7 +78,7 @@ public class ProgrammingController {
 
         }
 
-    }
+   }
 
 
 
