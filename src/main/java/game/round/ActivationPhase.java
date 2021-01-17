@@ -3,7 +3,10 @@ package game.round;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
-import game.gameObjects.tiles.*;
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.RotatingBelt;
+import game.gameObjects.tiles.Wall;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
 import utilities.MapConverter;
@@ -142,69 +145,6 @@ public class ActivationPhase extends Phase {
             }
         }
     }
-
-    public void activatePushPanels(){
-        for (Coordinate tileCoordinate : gameMap.getPushPanelCoordinate()) {
-            for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                        if(a.getType() == Utilities.AttributeType.PushPanel){
-                            PushPanel temp = (PushPanel) a;
-                            for (int n : temp.getRegisters()) {
-                                if(n==this.currentRegister){
-                                    handleMove(currentPlayer, temp.getOrientation().getOpposite());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void activateGears(){
-        for (Coordinate tileCoordinate : gameMap.getGearCoordinate()) {
-            for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                        if(a.getType() == Utilities.AttributeType.Gear){
-                            Gear temp = (Gear) a;
-                            switch(temp.getOrientation()){
-                                case RIGHT:
-                                    currentPlayer.getRobot().rotate(Utilities.Rotation.RIGHT);
-                                case LEFT:
-                                    currentPlayer.getRobot().rotate(Utilities.Rotation.LEFT);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void activateEnergySpaces(){
-        for (Coordinate tileCoordinate : gameMap.getEnergySpaceCoordinate()) {
-            for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                        if(a.getType() == Utilities.AttributeType.EnergySpace){
-                            if(this.currentRegister == 5){
-                                currentPlayer.addEnergyCubes(1);
-                            }
-                            else{
-                                if(((EnergySpace) a).getCount() >= 1){
-                                    currentPlayer.addEnergyCubes(1);
-                                    ((EnergySpace) a).removeCubes(1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
 
     //Supposed o handle a robot moving one tile.
     //TODO Once the game can be started, it needs to check wheiher the robots really move in the right direction
