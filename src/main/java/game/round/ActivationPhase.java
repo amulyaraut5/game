@@ -3,16 +3,19 @@ package game.round;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
-import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.*;
+import javafx.geometry.Point2D;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
 import utilities.Orientation;
 import utilities.Utilities;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+
+import static java.lang.StrictMath.abs;
 
 /**
  * The Activation Phase is the third phase in the Round.
@@ -24,6 +27,9 @@ import java.util.HashMap;
 public class ActivationPhase extends Phase {
 
     // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
+
+    private Antenna antenna = new Antenna();
+
 
     /**
      * saves the Player ID and the card for the current register
@@ -161,8 +167,92 @@ public class ActivationPhase extends Phase {
             }
         }
 
-
     }
 
 
+    /**
+     * This class contains a constructor getter and setter to handle robots by distance from antenna
+     */
+    public class RobotDistance {
+        private int playerID;
+        private double distance;
+
+        //playerID and calculated distance
+        public RobotDistance(int playerID, double distance) {
+            this.playerID = playerID;
+            this.distance = distance;
+        }
+        public int getPlayerID() { return playerID; }
+        public double getDistance() { return distance; }
+    }
+
+
+    //List containing information for determining the next player in line (next robot with priority)
+    ArrayList<RobotDistance> nextPriority = new ArrayList<>();
+
+    /**
+     * calculates the distance between antenna and robot on the map
+     * and returns the distance by the number of tiles between them
+     * @param antenna
+     * @param robot
+     * @return the tiles between antenna and robot
+     */
+    public double calculateDistance (Point2D antenna, Point2D robot) {
+        Point2D antennaRobotDifference = antenna.subtract(robot);
+        double tileDistance = abs(antennaRobotDifference.getX()) + abs(antennaRobotDifference.getY());
+        return tileDistance;
+    }
+
+    /**
+     * calculates the priority of the robots and returns the matching playerID of the player whose turn it is
+     * @param antenna
+     * @return
+     */
+    public int calculatePriority(Point2D antenna) {
+        //Fill List nextPriority with matching objects
+        if (nextPriority.size() == 0) {
+            int i = 0;
+            ArrayList<Player> players = game.getPlayers();
+            while (i < players.size()) {
+                //Point is generated with robot x and y position
+                Point2D robot = new Point2D(
+                        players.get(i).getRobot().getPosition().getX(),
+                        players.get(i).getRobot().getPosition().getY());
+
+                //get playerID
+                int playerID = players.get(i).getPlayerID();
+                //get distance to antenna
+                double distance = calculateDistance(antenna, robot);
+                //safe object in nextPriority
+                nextPriority.add(new RobotDistance(playerID, distance));
+
+                i++;
+            }
+        }
+
+        // sort RobotDistance by distance
+        Collections.sort(nextPriority, Comparator.comparingDouble(RobotDistance::getDistance));
+
+
+        //first object in list nextPriority
+        int firstPlayerID = nextPriority.get(0).getPlayerID();
+        double firstRobotDistance = nextPriority.get(0).getDistance();
+
+        //first and second object have different distance values -> first player in list is currentPlayer
+        if (firstRobotDistance != nextPriority.get(1).getDistance()) {
+            nextPriority.remove(0);
+            return firstPlayerID;
+        //objects have the same distance values -> selection by clockwise antenna beam
+        } else {
+            for(int j = 0; j < nextPriority.size(); j++){
+                ArrayList<RobotDistance> sameDistance = new ArrayList<>();
+                if(firstRobotDistance == nextPriority.get(j).getDistance()){
+                    sameDistance.add(nextPriority.get(j));
+                }
+            }
+            //TODO selection by clockwise antenna beam
+            nextPriority.remove(0);
+            return firstPlayerID;
+        }
+    }
 }
