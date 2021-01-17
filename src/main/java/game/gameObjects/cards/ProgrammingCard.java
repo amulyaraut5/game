@@ -26,7 +26,6 @@ public abstract class ProgrammingCard extends Card {
 
     @Override
     public void handleCard(Game game, Player player) {
-
     }
 
     public void addAction(Action action) {

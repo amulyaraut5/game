@@ -181,7 +181,7 @@ public class GameViewController extends Controller {
         // TODO Handle Player differently???
 
         for (Player player : Game.getInstance().getPlayers()) {
-            if (player.getPlayerID() == playerId) {
+            if (player.getID() == playerId) {
                 // Get the Robot position from the Board
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
                 int x = oldRobotPosition.getX();
@@ -207,7 +207,7 @@ public class GameViewController extends Controller {
         // TODO Handle Player differently???
 
         for (Player player : Game.getInstance().getPlayers()) {
-            if (player.getPlayerID() == playerID) {
+            if (player.getID() == playerID) {
 
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
                 int x = oldRobotPosition.getX();

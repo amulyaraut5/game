@@ -64,7 +64,7 @@ public class ActivationPhase extends Phase {
     private void turnCards () {
         for (int register = 1; register < 6; register++) {
             for (Player player : playerList) { //TODO in order of priority List
-                currentCards.put(player.getId(), player.getRegisterCard(register));
+                currentCards.put(player.getID(), player.getRegisterCard(register));
             }
             server.communicateAll(new CurrentCards(currentCards));
         }

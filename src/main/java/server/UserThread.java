@@ -127,7 +127,7 @@ public class UserThread extends Thread {
             //else {
             //sendMessage(new JSONMessage("userNameTaken", "false"));
             user.setName(userName);
-            user.setId(user.getId());
+            user.setID(user.getID());
             welcome();
         }
 

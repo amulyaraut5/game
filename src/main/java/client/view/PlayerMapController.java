@@ -2,6 +2,7 @@ package client.view;
 
 
 
+import game.Player;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -98,10 +99,10 @@ public class PlayerMapController extends Controller{
         mouseEvent.consume();
     }
 
-    public void loadPlayerMap(PlayerAdded playerAdded){
-        String name = robotNames[playerAdded.getFigure()];
+    public void loadPlayerMap(Player player){
+        String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name +".png").toString()));
-        playerMapLabelName.setText(playerAdded.getName() + " " + playerAdded.getID());
+        playerMapLabelName.setText(player.getName() + " " + player.getID());
         /*System.out.println(getPlayersAdded().size());
         for (RobotIcon icon : getPlayersAdded()){
             System.out.println("twwwta");
