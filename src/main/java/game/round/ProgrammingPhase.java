@@ -28,6 +28,7 @@ public class ProgrammingPhase extends Phase {
 
     public ProgrammingPhase() {
         super();
+        startPhase();
     }
 
     @Override
@@ -39,6 +40,7 @@ public class ProgrammingPhase extends Phase {
             player.createRegister();
         }
         dealProgrammingCards();
+        game.nextPhase();
     }
 
 
@@ -141,7 +143,6 @@ public class ProgrammingPhase extends Phase {
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
-            game.nextPhase();
         }
     }
 
