@@ -14,9 +14,6 @@
       <HBox fx:id="registerHBox" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0" />
       <ImageView fx:id="playerIcon" fitHeight="56.0" fitWidth="57.0" layoutX="9.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="playerMapLabelName" layoutX="66.0" layoutY="6.0" prefHeight="17.0" prefWidth="20.0" textFill="#1b02fc" />
-      <ImageView fx:id="registerNumber" fitHeight="29.0" fitWidth="30.0" layoutX="131.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../backgrounds/register/register_1.png" />
-         </image></ImageView>
+
    </children>
 </AnchorPane>
