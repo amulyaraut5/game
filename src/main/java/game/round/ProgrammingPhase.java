@@ -28,6 +28,10 @@ public class ProgrammingPhase extends Phase {
 
     public ProgrammingPhase() {
         super();
+    }
+
+    @Override
+    public void startPhase() {
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
             notReadyPlayers.add(player.getId());
@@ -35,11 +39,6 @@ public class ProgrammingPhase extends Phase {
             player.createRegister();
         }
         dealProgrammingCards();
-    }
-
-    @Override
-    public void startPhase() {
-
     }
 
 
