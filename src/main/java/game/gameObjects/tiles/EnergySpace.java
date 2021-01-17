@@ -37,4 +37,8 @@ public class EnergySpace extends Attribute {
         return count;
     }
 
+    public void removeCubes(int n){
+        this.count = this.count - n;
+    }
+
 }

@@ -162,6 +162,48 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    public void activateGears(){
+        for (Coordinate tileCoordinate : gameMap.getGearCoordinate()) {
+            for (Player currentPlayer : playerList) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
+                        if(a.getType() == Utilities.AttributeType.Gear){
+                            Gear temp = (Gear) a;
+                            switch(temp.getOrientation()){
+                                case RIGHT:
+                                    currentPlayer.getRobot().rotate(Utilities.Rotation.RIGHT);
+                                case LEFT:
+                                    currentPlayer.getRobot().rotate(Utilities.Rotation.LEFT);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void activateEnergySpaces(){
+        for (Coordinate tileCoordinate : gameMap.getEnergySpaceCoordinate()) {
+            for (Player currentPlayer : playerList) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
+                        if(a.getType() == Utilities.AttributeType.EnergySpace){
+                            if(this.currentRegister == 5){
+                                currentPlayer.addEnergyCubes(1);
+                            }
+                            else{
+                                if(((EnergySpace) a).getCount() >= 1){
+                                    currentPlayer.addEnergyCubes(1);
+                                    ((EnergySpace) a).removeCubes(1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     //Supposed o handle a robot moving one tile.
