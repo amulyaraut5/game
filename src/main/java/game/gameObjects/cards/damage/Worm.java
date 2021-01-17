@@ -36,7 +36,7 @@ public class Worm extends DamageCard{
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/worm-card.png");
+        return ImageHandler.createImageView("/cards/programming/worm-card.png");
     }
 
 }

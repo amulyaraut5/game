@@ -10,6 +10,7 @@ import utilities.Utilities;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Handles connection for each connected client,
@@ -35,10 +36,8 @@ public class UserThread extends Thread {
         this.user.setThread(this);
 
         try {
-            InputStream input = socket.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(input));
-            OutputStream output = socket.getOutputStream();
-            writer = new PrintWriter(output, true);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
         } catch (IOException ex) {
             disconnect(ex);
         }
@@ -91,9 +90,7 @@ public class UserThread extends Thread {
     void disconnect() {
         if (!exit) {
             exit = true;
-            //sendMessage("Bye " + user);
             server.removeUser(user);
-            //server.communicate(user + " left the room.", user);
             logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
             try {
                 socket.close();
@@ -112,10 +109,9 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         if (!exit) {
             exit = true;
-            logger.fatal("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+            logger.warn("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
             server.removeUser(user);
-            //server.communicate(user + " left the room.", user);
-            logger.fatal("Closed the connection with address:   " + socket.getRemoteSocketAddress());
+            logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
             try {
                 socket.close();
             } catch (IOException e) {

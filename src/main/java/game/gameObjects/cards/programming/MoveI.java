@@ -23,7 +23,7 @@ public class MoveI extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/MoveI-card.png");
+        return ImageHandler.createImageView("/cards/programming/MoveI-card.png");
 
     }
 }

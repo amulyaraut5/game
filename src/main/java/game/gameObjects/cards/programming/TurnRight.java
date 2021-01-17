@@ -24,6 +24,6 @@ public class TurnRight extends ProgrammingCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/TurnRight-card.png");
+        return ImageHandler.createImageView("/cards/programming/TurnRight-card.png");
     }
 }

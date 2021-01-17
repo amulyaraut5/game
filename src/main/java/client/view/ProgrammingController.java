@@ -1,8 +1,5 @@
 package client.view;
 
-import game.gameObjects.cards.Card;
-import game.gameObjects.cards.programming.*;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -11,7 +8,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import utilities.JSONProtocol.body.PlayerAdded;
 
 import java.util.ArrayList;
 
@@ -47,7 +43,7 @@ public class ProgrammingController {
         cardList.add("MoveIII");
         for (String card : cardList){
             StackPane pane = createNewPane();
-            addImage(new Image("/programming-cards/" + card +"-card.png"), pane);
+            addImage(new Image("/cards/programming/" + card +"-card.png"), pane);
             //ImageView programCard = new ImageView();
             //programCard.setImage(new Image("/programming-cards/" + card +"-card.png"));
             //programCard.setFitWidth(90);
@@ -125,7 +121,7 @@ public class ProgrammingController {
         content.putImage(imageView.getImage());
 
         db.setContent(content);
-        imageView.setImage(new Image(getClass().getResource("/programming-cards/backside-card.png").toString()));
+        imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
         mouseEvent.consume();
     }
 

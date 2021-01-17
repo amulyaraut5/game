@@ -104,7 +104,7 @@ public class ProgrammingPhase extends Phase {
      * TimerEnded and calls dealRandomCards()
      */
     public void endProgrammingTimer() {
-        if(timerFinished){
+        if (timerFinished) {
             timerFinished = true;
             server.communicateAll(new TimerEnded(notReadyPlayers));
             if (!(notReadyPlayers.size() == 0)) {

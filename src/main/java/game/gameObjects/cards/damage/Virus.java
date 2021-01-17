@@ -44,7 +44,7 @@ public class Virus extends DamageCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/virus-card.png");
+        return ImageHandler.createImageView("/cards/programming/virus-card.png");
     }
 
 }

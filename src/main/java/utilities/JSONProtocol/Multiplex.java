@@ -3,10 +3,13 @@ package utilities.JSONProtocol;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import game.gameObjects.cards.Card;
+import game.gameObjects.cards.ProgrammingCard;
 import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.body.YourCards;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.lang.reflect.Type;
@@ -63,11 +66,10 @@ public class Multiplex {
             String messageType = jsonObject.get("messageType").getAsString();
             JsonObject messageBody = jsonObject.get("messageBody").getAsJsonObject();
 
-            Gson gsonTile = new GsonBuilder()
-                    .registerTypeAdapter(Attribute.class, new AttributeDeserializer()).create();
-
             if (messageType != null) {
                 if (messageType.equals("GameStarted")) {
+                    Gson gsonTile = new GsonBuilder()
+                            .registerTypeAdapter(Attribute.class, new AttributeDeserializer()).create();
 
                     JsonArray mapArray = messageBody.get("map").getAsJsonArray();
                     Type mapType = new TypeToken<ArrayList<BoardElement>>() {
@@ -75,6 +77,17 @@ public class Multiplex {
                     ArrayList<BoardElement> mapBody = gsonTile.fromJson(mapArray, mapType);
                     GameStarted gameStarted = new GameStarted(mapBody);
                     return JSONMessage.build(gameStarted);
+                } else if (messageType.equals("YourCards")) {
+                    Gson gsonCard = new GsonBuilder()
+                            .registerTypeAdapter(Card.class, new CardDeserializer()).create();
+
+                    JsonArray cardArray = messageBody.get("cards").getAsJsonArray();
+                    Type cardType = new TypeToken<ArrayList<Card>>() {
+                    }.getType();
+
+                    ArrayList<Card> cards = gsonCard.fromJson(cardArray, cardType);
+                    YourCards yourCards = new YourCards(cards);
+                    return JSONMessage.build(yourCards);
                 } else try {
                     JSONBody body = gson.fromJson(messageBody, (Type) Class.forName("utilities.JSONProtocol.body." + messageType));
                     return JSONMessage.build(body);
@@ -103,6 +116,25 @@ public class Multiplex {
             Gson gson = new GsonBuilder().create();
             try {
                 return gson.fromJson(jsonElement, (Type) Class.forName("game.gameObjects.tiles." + tileType));
+            } catch (ClassNotFoundException e) {
+                logger.error("tileType could not be converted to a Attribute Class: " + e.getMessage());
+            }
+            return null;
+        }
+    }
+
+    static class CardDeserializer implements JsonDeserializer<Attribute> {
+
+        @Override
+        public Attribute deserialize(JsonElement jsonElement, Type typeofT,
+                                     JsonDeserializationContext jsonDeserializationContext)
+                throws JsonParseException {
+            JsonObject tileObject = jsonElement.getAsJsonObject();
+            String cardType = tileObject.get("card").getAsString();
+
+            Gson gson = new GsonBuilder().create();
+            try {
+                return gson.fromJson(jsonElement, (Type) Class.forName("game.gameObjects.cards.programming." + cardType));
             } catch (ClassNotFoundException e) {
                 logger.error("tileType could not be converted to a Attribute Class: " + e.getMessage());
             }

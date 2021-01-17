@@ -128,6 +128,7 @@ public class ViewManager {
             if (menuStage.getScene() == menuScene) {
                 menuStage.close();
             } else {
+                Client.getInstance().disconnect();
                 menuStage.setScene(menuScene);
                 menuStage.show();
                 //TODO open menu
@@ -141,7 +142,9 @@ public class ViewManager {
         gameStage.setScene(gameScene);
 
         gameStage.setOnCloseRequest(event -> {
+            menuStage.setScene(menuScene);
             //TODO leave game
+            Client.getInstance().disconnect();
             showMenuStage();
         });
     }

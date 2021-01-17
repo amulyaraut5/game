@@ -42,7 +42,7 @@ public class Trojan extends DamageCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/programming-cards/trojanhorse-card.png");
+        return ImageHandler.createImageView("/cards/programming/trojanhorse-card.png");
     }
 
 }
