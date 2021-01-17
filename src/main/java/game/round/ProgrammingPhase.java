@@ -2,10 +2,8 @@ package game.round;
 
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.programming.Again;
-import game.gameObjects.cards.programming.MoveI;
-import game.gameObjects.cards.programming.MoveII;
-import game.gameObjects.cards.programming.MoveIII;
+import game.gameObjects.cards.damage.*;
+import game.gameObjects.cards.programming.*;
 import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
 
@@ -72,7 +70,30 @@ public class ProgrammingPhase extends Phase {
             case "moveIII":
                 chosenCard = new MoveIII();
                 break;
-            //TODO other types of cards
+            case "powerUp":
+                chosenCard = new PowerUp();
+                break;
+            case "turnLeft":
+                chosenCard = new TurnLeft();
+                break;
+            case "rightTurn":
+                chosenCard = new TurnRight();
+                break;
+            case "uTurn":
+                chosenCard = new UTurn();
+                break;
+            case "spam":
+                chosenCard = new Spam();
+                break;
+            case "trojan":
+                chosenCard = new Trojan();
+                break;
+            case "virus":
+                chosenCard = new Virus();
+                break;
+            case "worm":
+                chosenCard = new Worm();
+                break;
             case "null":
                 // if player removes one card
                 break;
