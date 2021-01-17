@@ -251,7 +251,7 @@ public class GameViewController extends Controller {
 
     //TODO inner view with activation phase
     public void programCards(YourCards yourCards) {
-
+        programmingController.startProgrammingPhase(yourCards.getCards());
     }
 
     /**
@@ -339,10 +339,11 @@ public class GameViewController extends Controller {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
-        }
+        }*/
         return innerPane;
 
     }
+
 
 
     public void soundsOnAction(javafx.event.ActionEvent event) {this.soundHandler.musicOn(); }
