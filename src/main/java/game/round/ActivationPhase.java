@@ -180,7 +180,7 @@ public class ActivationPhase extends Phase {
         //Handle board elements
         boolean canMove = true;
         boolean inPit = false;
-        fixed things that have been messed up by megre        boolean onCheckpoint = false;
+        boolean onCheckpoint = false;
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
             switch (a.getType()) {
                 //handle different tile effects here
