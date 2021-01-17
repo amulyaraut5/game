@@ -48,7 +48,7 @@ public class ProgrammingController extends Controller {
         cardList.add("MoveII");
         cardList.add("MoveIII");
 
-        for (String card : cardLists){
+        for (String card : cardList){
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + card +"-card.png").toString()), pane);
             if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
