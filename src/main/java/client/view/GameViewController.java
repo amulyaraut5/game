@@ -5,6 +5,7 @@ import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,14 +20,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Coordinate;
+import utilities.*;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
-import utilities.MapConverter;
-import utilities.Orientation;
-import utilities.Utilities;
 import utilities.Utilities.AttributeType;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,6 +60,8 @@ public class GameViewController extends Controller {
     private Pane robotPane;
     private PlayerMapController playerMapController;
 
+    private SoundHandler soundHandler;
+
     public static void setLobbyController(LobbyController lobbyController) {
         GameViewController.lobbyController = lobbyController;
     }
@@ -81,6 +82,7 @@ public class GameViewController extends Controller {
             int pos = x + y * Utilities.MAP_WIDTH;
             client.sendMessage(new SetStartingPoint(pos));
         });
+        this.soundHandler = new SoundHandler();
     }
 
     public Group[][] getFields() {
@@ -302,4 +304,7 @@ public class GameViewController extends Controller {
     }
 
 
+    public void soundsOnAction(javafx.event.ActionEvent event) {this.soundHandler.musicOn(); }
+
+    public void soundsOffAction(javafx.event.ActionEvent event) {this.soundHandler.musicOff(); }
 }
