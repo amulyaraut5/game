@@ -7,7 +7,6 @@ import game.gameObjects.decks.WormDeck;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
-import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
 import game.round.LaserAction;
 import game.round.ProgrammingPhase;
@@ -100,7 +99,7 @@ public class Game {
         ArrayList<User> users = server.getUsers();
         for (User user : users) {
             int figure = user.getFigure();
-            players.add(new Player(user, Robot.create(figure)));
+            players.add(new Player(user));
         }
 
         map = MapBuilder.constructMap(new DizzyHighway());
@@ -180,7 +179,7 @@ public class Game {
                     if (!pos.equals(otherPos)) {
                         //chosen StartingPoint is valid
                         player.getRobot().setPosition(pos);
-                        server.communicateAll(new StartingPointTaken(player.getId(), position));
+                        server.communicateAll(new StartingPointTaken(player.getID(), position));
                     } else player.message(new Error("Your chosen position is already taken!"));
                 }
             }

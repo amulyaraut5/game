@@ -2,6 +2,7 @@ package client.model;
 
 import client.ViewManager;
 import client.view.*;
+import game.Player;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ public class Client {
     /**
      * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
      */
-    private ArrayList<PlayerAdded> playerList = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -120,24 +121,6 @@ public class Client {
 
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
-    }
-
-    public boolean playerListContains(int robotID) {
-        for (PlayerAdded playerAdded : playerList) {
-            if (playerAdded.getFigure() == robotID) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int getIDFrom(String destinationUser) {
-        for (PlayerAdded playerAdded : playerList) {
-            if (destinationUser.equals(playerAdded.getName())) {
-                return playerAdded.getID();
-            }
-        }
-        return -2;
     }
 
     /**
@@ -232,14 +215,15 @@ public class Client {
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
-        if (playerID == playerAdded.getID()) {
-            gameViewController.getPlayerMapController().loadPlayerMap(playerAdded);
+        Player player = new Player(playerAdded);
+        players.add(player);
+
+        if (playerID == player.getID()) {
+            gameViewController.getPlayerMapController().loadPlayerMap(player);
             viewManager.nextScene();
         }
-        lobbyController.setJoinedUsers(playerAdded, false);
-        chatController.addNewUser(playerAdded);
-
-        playerList.add(playerAdded);
+        lobbyController.setJoinedUsers(player, false);
+        chatController.addUser(player);
     }
 
     /**
@@ -255,7 +239,7 @@ public class Client {
         writer.flush();
     }
 
-    public ArrayList<PlayerAdded> getPlayerList() {
-        return playerList;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

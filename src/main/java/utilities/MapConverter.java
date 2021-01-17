@@ -56,7 +56,7 @@ public abstract class MapConverter {
 
     public static Movement convertCoordinate(Player player, Coordinate coordinate){
         int position = coordinate.getY() * Utilities.MAP_WIDTH + coordinate.getX() + 1;
-        return new Movement(player.getId(), position);
+        return new Movement(player.getID(), position);
     }
 
     public static Coordinate reconvertToCoordinate(int position){

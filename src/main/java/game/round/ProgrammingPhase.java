@@ -35,7 +35,7 @@ public class ProgrammingPhase extends Phase {
     public void startPhase() {
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
-            notReadyPlayers.add(player.getId());
+            notReadyPlayers.add(player.getID());
             player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
             player.createRegister();
         }
@@ -106,7 +106,7 @@ public class ProgrammingPhase extends Phase {
 
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
-            notReadyPlayers.remove(player.getId());
+            notReadyPlayers.remove(player.getID());
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == playerList.size() - 1) {
@@ -127,7 +127,7 @@ public class ProgrammingPhase extends Phase {
      */
     private void startProgrammingTimer(Player player) {
         //isFinished = true;
-        server.communicateAll(new SelectionFinished(player.getId()));
+        server.communicateAll(new SelectionFinished(player.getID()));
         GameTimer gameTimer = new GameTimer(this);
         gameTimer.start();
     }
@@ -163,7 +163,7 @@ public class ProgrammingPhase extends Phase {
             //Discard all hand cards
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             // TODO: still needed? player.getDrawnProgrammingCards().clear();
-            player.message(new DiscardHand(player.getId()));
+            player.message(new DiscardHand(player.getID()));
 
             //Take 5 cards from the draw Deck
             drawProgrammingCards(5, player);
@@ -189,7 +189,7 @@ public class ProgrammingPhase extends Phase {
         for (Player player : playerList) {
             drawProgrammingCards(9, player);
             player.message(new YourCards(player.getDrawnProgrammingCards()));
-            server.communicateUsers((new NotYourCards(player.getId(), player.getDrawnProgrammingCards().size())), player);
+            server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
     }
 
@@ -208,7 +208,7 @@ public class ProgrammingPhase extends Phase {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeck.size()));
             player.reuseDiscardedDeck();
             player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeck.size()));
-            player.message(new ShuffleCoding(player.getId()));
+            player.message(new ShuffleCoding(player.getID()));
         }
     }
 }

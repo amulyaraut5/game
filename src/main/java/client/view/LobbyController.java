@@ -1,5 +1,6 @@
 package client.view;
 
+import game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -10,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
@@ -160,22 +160,21 @@ public class LobbyController extends Controller {
      * with its choosed robot, name and also the name is added to the choicebox
      * so that other users in lobby can send direct messages.
      * Also
-     *
-     * @param playerAdded
      */
-    public void setJoinedUsers(PlayerAdded playerAdded, boolean thisUser) {
-        String path = "/lobby/" + robotNames[playerAdded.getFigure()] + ".png";
-        String newName = playerAdded.getName() + " " + playerAdded.getID();
+    public void setJoinedUsers(Player player, boolean thisUser) {
+        String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
+        String newName = player.getName() + " " + player.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
 
         //<-----------------------------Test-------------------------->
-        imageHashmap.put(playerAdded.getID(),new Image(getClass().getResource(path).toString()) );
+        imageHashmap.put(player.getID(), new Image(getClass().getResource(path).toString()));
         //<-----------------------------Test-------------------------->
         currentLabel.setText(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
 
-        RobotIcon robotIcon = new RobotIcon(robotImageViews.indexOf(currentImageView) + 1, playerAdded, imageViewPuffer, labelPuffer, thisUser);
+        int position = robotImageViews.indexOf(currentImageView) + 1;
+        RobotIcon robotIcon = new RobotIcon(position, player, imageViewPuffer, labelPuffer, thisUser);
         addRobotIcon(robotIcon);
         robotIcons.add(robotIcon);
 
