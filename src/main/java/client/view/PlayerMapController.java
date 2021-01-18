@@ -29,6 +29,8 @@ public class PlayerMapController extends Controller{
     @FXML
     private HBox registerHBox;
 
+    public HBox registerHBoxBackground;
+
     @FXML
     private ImageView playerIcon;
 
@@ -49,6 +51,7 @@ public class PlayerMapController extends Controller{
         widthRegisterCard = registerHBox.getPrefWidth()/5;
         heightRegisterCard = registerHBox.getPrefHeight();
         registerHBox.setSpacing(20);
+        registerHBoxBackground.setSpacing(20);
         createRegisterNumberImages();
         int register = 5;
         for (int i = 0; i<register; i++){
@@ -63,8 +66,7 @@ public class PlayerMapController extends Controller{
 
         pane.setPrefHeight(heightRegisterCard);
         pane.setPrefWidth(widthRegisterCard);
-        pane.setStyle("-fx-border-color: #d100ea;");
-        pane.setStyle("-fx-background-color: #FFFFFF;");
+
 
         pane.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
