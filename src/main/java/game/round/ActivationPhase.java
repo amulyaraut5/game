@@ -48,7 +48,7 @@ public class ActivationPhase extends Phase {
     public ActivationPhase() {
         super();
         for (int register = 1; register <6; register++) {
-            turnCards();
+            turnCards(register);
             activateCards();
         }
         activateBoard();
@@ -62,15 +62,13 @@ public class ActivationPhase extends Phase {
      * At the beginning of each register the current cards are shown.
      */
 
-    private void turnCards () {
-        for (int register = 1; register < 6; register++) {
+    private void turnCards (int register) {
             for (Player player : playerList) { //TODO in order of priority List
                 RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
                 currentCards.add(playerRegisterCard);
             }
             server.communicateAll(new CurrentCards(currentCards));
         }
-    }
 
     /**
      * After the cards of each player for the current register have been shown,
