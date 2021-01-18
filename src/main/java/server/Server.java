@@ -170,7 +170,7 @@ public class Server extends Thread {
                 game.setStartingPoint(user, setStartingPoint.getPosition());
             }
             case PlayIt -> {
-                game.playIt(user.getID());
+                game.getActivationPhase().activateCards(user.getID());
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }

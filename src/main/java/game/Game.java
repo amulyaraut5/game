@@ -73,6 +73,14 @@ public class Game {
         return instance;
     }
 
+    public ActivationPhase getActivationPhase() {
+        return activationPhase;
+    }
+
+    public ProgrammingPhase getProgrammingPhase() {
+        return programmingPhase;
+    }
+
     /**
      * Initialises the game attributes at the beginning of each game
      */
@@ -202,9 +210,5 @@ public class Game {
             }
         }
         return null;
-    }
-
-    public void playIt(int playerID) {
-        activationPhase.activateCards(playerID);
     }
 }
