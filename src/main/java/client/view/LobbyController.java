@@ -15,7 +15,6 @@ import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -140,7 +139,6 @@ public class LobbyController extends Controller {
 
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
-        GameViewController.setLobbyController(this);
     }
 
     public void attachChatPane(Pane chat) {
@@ -168,7 +166,6 @@ public class LobbyController extends Controller {
         RobotIcon robotIcon = new RobotIcon(position, player, imageViewPuffer, labelPuffer, thisUser);
         addRobotIcon(robotIcon);
         robotIcons.add(robotIcon);
-
 
         nextRobot();
     }
@@ -212,8 +209,6 @@ public class LobbyController extends Controller {
     private void checkBoxAction(ActionEvent event) {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
     }
-
-
 }
 
 

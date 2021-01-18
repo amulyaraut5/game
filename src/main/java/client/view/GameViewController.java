@@ -44,27 +44,10 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
  */
 public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    private static LobbyController lobbyController;
+
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
-    @FXML
-    private StackPane playerMap;
 
-    private PhaseState currentPhase = PhaseState.CONSTRUCTION;
-
-    @FXML
-    private BorderPane phasePane;
-    @FXML
-    private BorderPane chatPane;
-    @FXML
-    private StackPane boardPane; //stacks the map-, animation-, and playerPane
-    @FXML
-    private FlowPane mapPane;
-    @FXML
-    private Pane animationPane;
-    @FXML
-    private Pane robotPane;
-    private PlayerMapController playerMapController;
-
+    private PlayerMatController playerMatController;
     private ConstructionController constructionController;
     private ProgrammingController programmingController;
     private ActivationController activationController;
@@ -76,21 +59,44 @@ public class GameViewController extends Controller {
     private SoundHandler soundHandler;
     private EventHandler<MouseEvent> onMapClicked;
 
-    public static void setLobbyController(LobbyController lobbyController) {
-        GameViewController.lobbyController = lobbyController;
+    private PhaseState currentPhase = PhaseState.CONSTRUCTION;
+
+    @FXML
+    private StackPane playerMap;
+    @FXML
+    private BorderPane phasePane;
+    @FXML
+    private BorderPane chatPane;
+
+    @FXML
+    private StackPane boardPane; //stacks the map-, animation-, and playerPane
+    @FXML
+    private FlowPane mapPane;
+    @FXML
+    private Pane animationPane;
+    @FXML
+    private Pane robotPane;
+
+    public PlayerMatController getPlayerMapController() {
+        return playerMatController;
     }
 
-    public PlayerMapController getPlayerMapController() {
-        return playerMapController;
-    }
-
-    public void setPlayerMapController(PlayerMapController playerMapController) {
-        this.playerMapController = playerMapController;
+    public void setPlayerMapController(PlayerMatController playerMatController) {
+        this.playerMatController = playerMatController;
     }
 
     @FXML
     public void initialize() {
         constructPhaseViews();
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
+            playerMap.setAlignment(Pos.CENTER);
+            playerMap.getChildren().add(fxmlLoader.load());
+            playerMatController = fxmlLoader.getController();
+        } catch (IOException e) {
+            logger.error("PlayerMap could not be created: " + e.getMessage());
+        }
 
         boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
@@ -112,16 +118,6 @@ public class GameViewController extends Controller {
     public Group[][] getFields() {
         return fields;
     }
-
-
-    public void attachPlayerMap(Pane playerM) {
-        //playerM.setPrefHeight(playerMap.getPrefWidth());
-        //playerM.setPrefWidth(playerMap.getPrefHeight());
-        playerMap.setAlignment(Pos.CENTER);
-        playerMap.getChildren().add(playerM);
-        //playerMapController.loadPlayerMap();
-    }
-
 
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
@@ -314,7 +310,7 @@ public class GameViewController extends Controller {
 
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
-        FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingPhaseView.fxml"));
+        FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingView.fxml"));
         FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
 
         try {
@@ -330,12 +326,13 @@ public class GameViewController extends Controller {
         }
     }
 
-
-    public void soundsOnAction(javafx.event.ActionEvent event) {
+    @FXML
+    private void soundsOnAction(javafx.event.ActionEvent event) {
         this.soundHandler.musicOn();
     }
 
-    public void soundsOffAction(javafx.event.ActionEvent event) {
+    @FXML
+    private void soundsOffAction(javafx.event.ActionEvent event) {
         this.soundHandler.musicOff();
     }
 }

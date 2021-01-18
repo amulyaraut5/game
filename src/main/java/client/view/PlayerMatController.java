@@ -21,7 +21,7 @@ import utilities.JSONProtocol.body.SelectCard;
  *
  * @author sarah
  */
-public class PlayerMapController extends Controller{
+public class PlayerMatController extends Controller{
 
     @FXML
     private ImageView imageView;
