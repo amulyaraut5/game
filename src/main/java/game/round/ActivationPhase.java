@@ -78,16 +78,16 @@ public class ActivationPhase extends Phase {
      * it is checked if its the given players turn. If yes, the cards is handled.
      */
 
-    private void activateCards(Player player) {
+    public void activateCards(int playerID) {
         //Because current Cards ist in priority order the first person to activate their cards is at index 0.
         //So by removing the index 0 after every players turn the current player is always at index 0.
         RegisterCard playerRegisterCard = currentCards.get(0);
-        if (playerRegisterCard.getPlayerID() == player.getID()) {
+        if (playerRegisterCard.getPlayerID() == playerID) {
             Card currentCard = playerRegisterCard.getCard();
-            currentCard.handleCard(game, player);
+            currentCard.handleCard(game, game.getPlayerFromID(playerID));
             currentCards.remove(0);
         } else {
-            server.communicateDirect(new Error("It's not your turn!"), player.getID());
+            server.communicateDirect(new Error("It's not your turn!"), playerID);
         }
     }
 
