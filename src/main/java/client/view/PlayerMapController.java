@@ -53,6 +53,7 @@ public class PlayerMapController extends Controller{
         registerHBox.setSpacing(20);
         registerHBoxBackground.setSpacing(20);
         createRegisterNumberImages();
+        createRegisterBackground();
         int register = 5;
         for (int i = 0; i<register; i++){
             StackPane pane = createNewPane();
@@ -172,6 +173,16 @@ public class PlayerMapController extends Controller{
             playerMapAnchorPane.getChildren().add(imageView); //TODO other numbers of registers
         }
 
+    }
+
+    private void createRegisterBackground(){
+        for(int i=0; i<=4; i++) {
+            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+            background.setFitHeight(heightRegisterCard);
+            background.setFitWidth(widthRegisterCard-20);
+            background.setDisable(true);
+            registerHBoxBackground.getChildren().add(background);
+        }
     }
     }
 
