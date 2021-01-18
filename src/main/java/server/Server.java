@@ -1,6 +1,7 @@
 package server;
 
 import game.Game;
+import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -160,8 +161,8 @@ public class Server extends Thread {
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
-                //TODO send selectCard to ProgrammingPhase
-                //Game.getInstance().messageToPhases(selectCard);
+
+                game.getProgrammingPhase().putCardToRegister(game.userToPlayer(user), selectCard);
                 communicateUsers(new CardSelected(user.getID(), selectCard.getRegister()), user);
             }
             case SetStartingPoint -> {
