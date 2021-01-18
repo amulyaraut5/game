@@ -3,22 +3,14 @@ package game.round;
 import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
-import game.gameObjects.tiles.Wall;
 import game.gameObjects.tiles.*;
 import javafx.geometry.Point2D;
-import utilities.Coordinate;
+import utilities.*;
 import utilities.JSONProtocol.body.CurrentCards;
-import utilities.MapConverter;
-import utilities.Orientation;
-import utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 import static java.lang.StrictMath.abs;
 
@@ -39,7 +31,7 @@ public class ActivationPhase extends Phase {
     /**
      * saves the Player ID and the card for the current register
      */
-    private HashMap<Integer, Card> currentCards = new HashMap<>();
+    private ArrayList<RegisterCard> currentCards = new ArrayList<>();
 
     private Map gameMap;
 
@@ -74,7 +66,8 @@ public class ActivationPhase extends Phase {
     private void turnCards () {
         for (int register = 1; register < 6; register++) {
             for (Player player : playerList) { //TODO in order of priority List
-                currentCards.put(player.getID(), player.getRegisterCard(register));
+                RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
+                currentCards.add(playerRegisterCard);
             }
             server.communicateAll(new CurrentCards(currentCards));
         }
@@ -87,10 +80,10 @@ public class ActivationPhase extends Phase {
      */
 
     private void activateCards() {
-        for (Integer playerID : currentCards.keySet()) { //if cards are saved in current cards based on priority this works
+        for (RegisterCard playersCard : currentCards) { //if cards are saved in current cards based on priority this works
             //TODO player needs to send PlayIt protocol
-            Card currentCard = currentCards.get(playerID);
-            Player currentPlayer = game.getPlayerFromID(playerID);
+            Card currentCard = playersCard.getCard();
+            Player currentPlayer = game.getPlayerFromID(playersCard.getPlayerID());
             currentCard.handleCard(game, currentPlayer);
         }
     }
