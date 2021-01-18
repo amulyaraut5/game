@@ -7,6 +7,7 @@ import game.gameObjects.tiles.*;
 import javafx.geometry.Point2D;
 import utilities.*;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.Error;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,41 +48,46 @@ public class ActivationPhase extends Phase {
 
     public ActivationPhase() {
         super();
-        for (int register = 1; register <6; register++) {
+        for (int register = 1; register < 6; register++) {
             turnCards(register);
-            activateCards();
+            //Because whenever a players card was activated he is removed from the current Player list the board
+            //is only activated after each player took their turn
+            if (currentCards.size() == 0) {
+                activateBoard();
+                //throw new UnsupportedOperationException();
+            }
         }
-        activateBoard();
-        //throw new UnsupportedOperationException();
+        game.nextPhase();
     }
-
-
 
 
     /**
      * At the beginning of each register the current cards are shown.
      */
 
-    private void turnCards (int register) {
-            for (Player player : playerList) { //TODO in order of priority List
-                RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
-                currentCards.add(playerRegisterCard);
-            }
-            server.communicateAll(new CurrentCards(currentCards));
+    private void turnCards(int register) {
+        for (Player player : playerList) { //TODO in order of priority List
+            RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
+            currentCards.add(playerRegisterCard);
         }
+        server.communicateAll(new CurrentCards(currentCards));
+    }
 
     /**
-     * After the cards of each player for the current register have been shown,
-     * this method activates the cards depending on the priority of the player.
-     * Each player has to confirm with the PlayIt protocol.
+     * This method is called whenever a PlayIt() protocol is received.
+     * it is checked if its the given players turn. If yes, the cards is handled.
      */
 
-    private void activateCards() {
-        for (RegisterCard playersCard : currentCards) { //if cards are saved in current cards based on priority this works
-            //TODO player needs to send PlayIt protocol
-            Card currentCard = playersCard.getCard();
-            Player currentPlayer = game.getPlayerFromID(playersCard.getPlayerID());
-            currentCard.handleCard(game, currentPlayer);
+    private void activateCards(Player player) {
+        //Because current Cards ist in priority order the first person to activate their cards is at index 0.
+        //So by removing the index 0 after every players turn the current player is always at index 0.
+        RegisterCard playerRegisterCard = currentCards.get(0);
+        if (playerRegisterCard.getPlayerID() == player.getID()) {
+            Card currentCard = playerRegisterCard.getCard();
+            currentCard.handleCard(game, player);
+            currentCards.remove(0);
+        } else {
+            server.communicateDirect(new Error("It's not your turn!"), player.getID());
         }
     }
 
@@ -234,19 +240,26 @@ public class ActivationPhase extends Phase {
             this.playerID = playerID;
             this.distance = distance;
         }
-        public int getPlayerID() { return playerID; }
-        public double getDistance() { return distance; }
+
+        public int getPlayerID() {
+            return playerID;
+        }
+
+        public double getDistance() {
+            return distance;
+        }
     }
 
 
     /**
      * calculates the distance between antenna and robot on the map
      * and returns the distance by the number of tiles between them
+     *
      * @param antenna
      * @param robot
      * @return the tiles between antenna and robot
      */
-    public double calculateDistance (Point2D antenna, Point2D robot) {
+    public double calculateDistance(Point2D antenna, Point2D robot) {
         Point2D antennaRobotDifference = antenna.subtract(robot);
         double tileDistance = abs(antennaRobotDifference.getX()) + abs(antennaRobotDifference.getY());
         return tileDistance;
@@ -255,6 +268,7 @@ public class ActivationPhase extends Phase {
 
     /**
      * calculates the priority and returns the playerID of the player whose turn it is
+     *
      * @param antenna
      * @return
      */
@@ -294,11 +308,11 @@ public class ActivationPhase extends Phase {
         if (firstRobotDistance != nextPriority.get(1).getDistance()) {
             nextPriority.remove(0);
             return firstPlayerID;
-        //objects have the same distance values -> selection by clockwise antenna beam
+            //objects have the same distance values -> selection by clockwise antenna beam
         } else {
-            for(int j = 0; j < nextPriority.size(); j++){
+            for (int j = 0; j < nextPriority.size(); j++) {
                 ArrayList<RobotDistance> sameDistance = new ArrayList<>();
-                if(firstRobotDistance == nextPriority.get(j).getDistance()){
+                if (firstRobotDistance == nextPriority.get(j).getDistance()) {
                     sameDistance.add(nextPriority.get(j));
                 }
             }
