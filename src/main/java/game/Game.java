@@ -200,4 +200,8 @@ public class Game {
         }
         return null;
     }
+
+    public void playIt (int playerID) {
+        activationPhase.activateCards(playerID);
+    }
 }
