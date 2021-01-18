@@ -22,7 +22,7 @@ public class ProgrammingPhase extends Phase {
     /**
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
      */
-    private ArrayList<Integer> notReadyPlayers = new ArrayList<>();
+    private ArrayList<Player> notReadyPlayers = new ArrayList<>();
     private boolean timerFinished = false;
     private ArrayList<Card> discardCards = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class ProgrammingPhase extends Phase {
         super();
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
-            notReadyPlayers.add(player.getID());
+            notReadyPlayers.add(player);
             if (!(player.getRegisterCards().contains(null))) {
                 player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
@@ -56,44 +56,44 @@ public class ProgrammingPhase extends Phase {
     // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
-    private void putCardToRegister(Player player, SelectCard selectCard) {
+    public void putCardToRegister(Player player, SelectCard selectCard) {
         String cardType = selectCard.getCard();
         Card chosenCard = null;
         switch (cardType) {
-            case "again":
+            case "Again":
                 chosenCard = new Again();
                 break;
-            case "moveI":
+            case "MoveI":
                 chosenCard = new MoveI();
                 break;
-            case "moveII":
+            case "MoveII":
                 chosenCard = new MoveII();
                 break;
-            case "moveIII":
+            case "MoveIII":
                 chosenCard = new MoveIII();
                 break;
-            case "powerUp":
+            case "PowerUp":
                 chosenCard = new PowerUp();
                 break;
-            case "turnLeft":
+            case "TurnLeft":
                 chosenCard = new TurnLeft();
                 break;
-            case "rightTurn":
+            case "RightTurn":
                 chosenCard = new TurnRight();
                 break;
-            case "uTurn":
+            case "UTurn":
                 chosenCard = new UTurn();
                 break;
-            case "spam":
+            case "Spam":
                 chosenCard = new Spam();
                 break;
-            case "trojan":
+            case "Trojan":
                 chosenCard = new Trojan();
                 break;
-            case "virus":
+            case "Virus":
                 chosenCard = new Virus();
                 break;
-            case "worm":
+            case "Worm":
                 chosenCard = new Worm();
                 break;
             case "null":
@@ -107,7 +107,7 @@ public class ProgrammingPhase extends Phase {
 
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
-            notReadyPlayers.remove(player.getID());
+            notReadyPlayers.remove(player);
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == playerList.size() - 1) {
@@ -139,7 +139,11 @@ public class ProgrammingPhase extends Phase {
     public void endProgrammingTimer() {
         if (!(timerFinished)) {
             timerFinished = true;
-            server.communicateAll(new TimerEnded(notReadyPlayers));
+            ArrayList<Integer> playerIDs = new ArrayList<>();
+            for (Player player : notReadyPlayers) {
+                playerIDs.add(player.getID());
+            }
+            server.communicateAll(new TimerEnded(playerIDs));
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
@@ -154,8 +158,7 @@ public class ProgrammingPhase extends Phase {
     private void dealRandomCards() {
 
         //this method is only handled for players who didn't manage to put their cards down in time
-        for (Integer id : notReadyPlayers) {
-            Player player = game.getPlayerFromID(id);
+        for (Player player : notReadyPlayers) {
 
             //Take all cards from the register and discard them to have an empty register
             player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
