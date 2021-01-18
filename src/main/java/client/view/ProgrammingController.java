@@ -122,8 +122,6 @@ public class ProgrammingController extends Controller {
 
         pane.setPrefHeight(heightHBox);
         pane.setPrefWidth(widthHBox-20);
-        pane.setStyle("-fx-border-color: #d100ea;");
-        pane.setStyle("-fx-background-color: #FFFFFF;");
 
         pane.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
@@ -140,7 +138,6 @@ public class ProgrammingController extends Controller {
         pane.setOnDragExited(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent dragEvent) {
-                pane.setStyle("-fx-background-color: #FFFFFF;");
                 pane.setStyle("-fx-border-color: #C6C6C6;");
             }
         });
@@ -150,15 +147,17 @@ public class ProgrammingController extends Controller {
 
 
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(imageView.getImage());
-        //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
-        setImageDropped(imageView.getImage().getUrl());
-        //System.out.println(imageDropped);
-        db.setContent(content);
-        imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
-        mouseEvent.consume();
+
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(imageView.getImage());
+            //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
+            setImageDropped(imageView.getImage().getUrl());
+            //System.out.println(imageDropped);
+            db.setContent(content);
+            imageView.setImage(null);
+            mouseEvent.consume();
+
     }
 
 
@@ -174,10 +173,7 @@ public class ProgrammingController extends Controller {
                 setOnDragDetected(mouseEvent, imageView);
             }
         });
-        /*String [] url = i.getUrl().split("/");
-        String imageName = url[url.length-1];
-        String cardName = imageName.substring(0, imageName.length()-9);
-        System.out.println(cardName);*/
+
         pane.getChildren().add(imageView);
 
 
@@ -191,13 +187,10 @@ public class ProgrammingController extends Controller {
             if (!pane.getChildren().isEmpty()) {
                 pane.getChildren().remove(0);
             }
-            //Image img = new Image(getClass().getResource(db.getImage().getUrl()).toString());
 
             Image img = db.getImage();
-            //System.out.println("Url in mouseDragDropped" + db.getContentTypes());
             System.out.println("CardName programmingController" + getImageDropped());
             addImage(img, pane);
-            //System.out.println("in ProgrammingController " + getImageDropped());
 
 
         }
