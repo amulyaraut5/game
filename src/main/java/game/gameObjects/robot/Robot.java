@@ -2,8 +2,10 @@ package game.gameObjects.robot;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import utilities.Coordinate;
+import utilities.ImageHandler;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
@@ -16,7 +18,7 @@ public abstract class Robot {
     protected String name;
     protected Color color;
 
-    protected Orientation orientation;
+    protected Orientation orientation= Orientation.RIGHT;
     protected Coordinate position;
     protected Coordinate oldPosition;
 
@@ -71,6 +73,7 @@ public abstract class Robot {
         for (int i = 0; i < moveCount; i++) {
             position.add(direction.toVector());
         }
+
     }
 
     /**
@@ -82,13 +85,14 @@ public abstract class Robot {
         switch (rotation) {
             case RIGHT -> orientation = orientation.getNext();
             case LEFT -> orientation = orientation.getPrevious();
+            //default -> throw new UnsupportedOperationException()
         }
+
     }
 
-    public void draw(GraphicsContext gc) {
-        final Image image = new Image(imagePath);
-        final int size = 100;//TODO define size (w,h)
-        gc.drawImage(image, size * position.getX(), size * position.getY(), size, size);
+    public ImageView drawRobotImage() {
+        return ImageHandler.createImageView(imagePath, orientation);
+
     }
 
     public String getName() {

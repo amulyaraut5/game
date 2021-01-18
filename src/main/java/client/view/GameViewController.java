@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -20,7 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.*;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
@@ -159,13 +158,15 @@ public class GameViewController extends Controller {
     // <----------------------Only For Test---------------------------->
 
 
-    public void placeRobotInMap(int playerID, int position) {
+    public void placeRobotInMap(Player player, int position) {
+        if (player.getID() == client.getThisPlayersID()) {
+            boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
+        }
 
         Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
         int newX = newRobotPosition.getX();
         int newY = newRobotPosition.getY();
-        Image image = lobbyController.getImageHashmap().get(playerID);
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = player.getRobot().drawRobotImage();
 
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
@@ -174,7 +175,6 @@ public class GameViewController extends Controller {
         robotPane.getChildren().add(imageView);
         imageView.setX(newX * Utilities.FIELD_SIZE);
         imageView.setY(newY * Utilities.FIELD_SIZE);
-        //boardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
     // Called twice will move the tile image
@@ -305,7 +305,7 @@ public class GameViewController extends Controller {
         currentPhaseView = ++currentPhaseView % 3;
 
 
-        if (currentPhaseView == 0){
+        if (currentPhaseView == 0) {
             FXMLLoader upgradeLoader = new FXMLLoader(getClass().getResource("/view/innerViews/upgradeView.fxml"));
             try {
                 innerPane = upgradeLoader.load();
@@ -321,8 +321,7 @@ public class GameViewController extends Controller {
                 logger.error("Inner phase View could not be loaded: " + e.getMessage());
             }
             programmingController = programmingLoader.getController();
-        }
-        else if (currentPhaseView == 2) {
+        } else if (currentPhaseView == 2) {
             FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
             try {
                 innerPane = activationLoader.load();

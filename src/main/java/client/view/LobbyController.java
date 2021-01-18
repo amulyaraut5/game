@@ -116,12 +116,6 @@ public class LobbyController extends Controller {
      */
     private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
 
-    private HashMap<Integer, Image> imageHashmap = new HashMap<>();
-
-    public HashMap<Integer, Image> getImageHashmap() {
-        return imageHashmap;
-    }
-
     /**
      * this method gets called automatically by constructing view
      * it adds the different ImageViews and Labels to lists and also
@@ -166,9 +160,6 @@ public class LobbyController extends Controller {
         String newName = player.getName() + " " + player.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
 
-        //<-----------------------------Test-------------------------->
-        imageHashmap.put(player.getID(), new Image(getClass().getResource(path).toString()));
-        //<-----------------------------Test-------------------------->
         currentLabel.setText(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
