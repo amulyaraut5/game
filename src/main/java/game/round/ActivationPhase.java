@@ -1,14 +1,16 @@
 package game.round;
 
 import game.Player;
-import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.*;
 import javafx.geometry.Point2D;
-import utilities.*;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
 import utilities.JSONProtocol.body.Error;
+import utilities.MapConverter;
+import utilities.RegisterCard;
 import utilities.enums.AttributeType;
+import utilities.enums.CardType;
 import utilities.enums.Orientation;
 
 import java.util.ArrayList;
@@ -85,8 +87,8 @@ public class ActivationPhase extends Phase {
         //So by removing the index 0 after every players turn the current player is always at index 0.
         RegisterCard playerRegisterCard = currentCards.get(0);
         if (playerRegisterCard.getPlayerID() == playerID) {
-            Card currentCard = playerRegisterCard.getCard();
-            currentCard.handleCard(game, game.getPlayerFromID(playerID));
+            CardType currentCard = playerRegisterCard.getCard();
+            //currentCard.handleCard(game, game.getPlayerFromID(playerID));
             currentCards.remove(0);
         } else {
             server.communicateDirect(new Error("It's not your turn!"), playerID);
