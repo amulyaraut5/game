@@ -28,6 +28,7 @@ import utilities.SoundHandler;
 import utilities.Utilities;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
+import utilities.enums.PhaseState;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,10 +49,10 @@ public class GameViewController extends Controller {
     @FXML
     private StackPane playerMap;
 
-    private int currentPhaseView = 0;
-    private int ActivePhase = 0; //TODO enum? move to client?
+    private PhaseState currentPhase = PhaseState.CONSTRUCTION;
+
     @FXML
-    private BorderPane outerPane;
+    private BorderPane phasePane;
     @FXML
     private BorderPane chatPane;
     @FXML
@@ -64,9 +65,13 @@ public class GameViewController extends Controller {
     private Pane robotPane;
     private PlayerMapController playerMapController;
 
-    private UpgradeController upgradeController;
+    private ConstructionController constructionController;
     private ProgrammingController programmingController;
     private ActivationController activationController;
+
+    private Pane constructionPane;
+    private Pane programmingPane;
+    private Pane activationPane;
 
     private SoundHandler soundHandler;
     private EventHandler<MouseEvent> onMapClicked;
@@ -85,6 +90,8 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
+        constructPhaseViews();
+
         boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
@@ -271,8 +278,8 @@ public class GameViewController extends Controller {
                 {AttributeType.Pit, AttributeType.Empty},
                 {AttributeType.Belt, AttributeType.RotatingBelt, AttributeType.Gear,
                         AttributeType.EnergySpace, AttributeType.Antenna},
-                {AttributeType.PushPanel, AttributeType.Laser},
                 {AttributeType.ControlPoint, AttributeType.RestartPoint, AttributeType.StartPoint},
+                {AttributeType.PushPanel, AttributeType.Laser},
                 {AttributeType.Wall}};
 
         for (AttributeType[] priority : priorityArray) {
@@ -291,52 +298,36 @@ public class GameViewController extends Controller {
      * Button press to test the change of inner phase panes.
      */
     @FXML
-    private void changeInnerView() throws IOException {
-        Pane innerPane = setNextPhase();
-        outerPane.setCenter(innerPane);
+    private void setNextPhaseView() {
+        changePhaseView(currentPhase.getNext());
     }
 
-    /**
-     * @return
-     */
-    private Pane setNextPhase() throws IOException {
-        Pane innerPane = null;
-        String path = "";
-        currentPhaseView = ++currentPhaseView % 3;
+    public void changePhaseView(PhaseState phase) {
+        currentPhase = phase;
 
-
-        if (currentPhaseView == 0) {
-            FXMLLoader upgradeLoader = new FXMLLoader(getClass().getResource("/view/innerViews/upgradeView.fxml"));
-            try {
-                innerPane = upgradeLoader.load();
-            } catch (IOException e) {
-                logger.error("Inner phase View could not be loaded: " + e.getMessage());
-            }
-            upgradeController = upgradeLoader.getController();
-        } else if (currentPhaseView == 1) {
-            FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingPhaseView.fxml"));
-            try {
-                innerPane = programmingLoader.load();
-            } catch (IOException e) {
-                logger.error("Inner phase View could not be loaded: " + e.getMessage());
-            }
-            programmingController = programmingLoader.getController();
-        } else if (currentPhaseView == 2) {
-            FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
-            try {
-                innerPane = activationLoader.load();
-            } catch (IOException e) {
-                logger.error("Inner phase View could not be loaded: " + e.getMessage());
-            }
-            activationController = activationLoader.getController();
+        switch (phase) {
+            case CONSTRUCTION -> phasePane.setCenter(constructionPane);
+            case PROGRAMMING -> phasePane.setCenter(programmingPane);
+            case ACTIVATION -> phasePane.setCenter(activationPane);
         }
-        /*try {
-            innerPane = FXMLLoader.load(getClass().getResource(path));
+    }
+
+    private void constructPhaseViews() {
+        FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
+        FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingPhaseView.fxml"));
+        FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
+
+        try {
+            constructionPane = constructionLoader.load();
+            programmingPane = programmingLoader.load();
+            activationPane = activationLoader.load();
+
+            constructionController = constructionLoader.getController();
+            programmingController = programmingLoader.getController();
+            activationController = activationLoader.getController();
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
-        }*/
-        return innerPane;
-
+        }
     }
 
 

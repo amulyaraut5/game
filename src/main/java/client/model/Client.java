@@ -171,6 +171,10 @@ public class Client {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), msg.getPosition());
                 }
+                case ActivePhase -> {
+                    ActivePhase activePhase = (ActivePhase) message.getBody();
+                    gameViewController.changePhaseView(activePhase.getPhase());
+                }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
                     gameViewController.programCards(yourCards);
