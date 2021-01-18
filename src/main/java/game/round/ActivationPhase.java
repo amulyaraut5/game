@@ -8,7 +8,6 @@ import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Wall;
 import game.gameObjects.tiles.*;
-import javafx.geometry.Point2D;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
 import utilities.MapConverter;
@@ -248,7 +247,6 @@ public class ActivationPhase extends Phase {
         public double getDistance() { return distance; }
     }
 
-
     /**
      * calculates the distance between antenna and robot on the map
      * and returns the distance by the number of tiles between them
@@ -256,19 +254,18 @@ public class ActivationPhase extends Phase {
      * @param robot
      * @return the tiles between antenna and robot
      */
-    public double calculateDistance (Point2D antenna, Point2D robot) {
-        Point2D antennaRobotDifference = antenna.subtract(robot);
+    public double calculateDistance (Coordinate antenna, Coordinate robot) {
+        Coordinate antennaRobotDifference = antenna.subtract(robot);
         double tileDistance = abs(antennaRobotDifference.getX()) + abs(antennaRobotDifference.getY());
         return tileDistance;
     }
-
 
     /**
      * calculates the priority and returns the playerID of the player whose turn it is
      * @param antenna
      * @return
      */
-    public int calculatePriority(Point2D antenna) {
+    public int calculatePriority(Coordinate antenna) {
         //List containing information for determining the next player in line (next robot with priority)
         ArrayList<RobotDistance> nextPriority = new ArrayList<>();
 
@@ -278,7 +275,7 @@ public class ActivationPhase extends Phase {
             ArrayList<Player> players = game.getPlayers();
             while (i < players.size()) {
                 //Point is generated with robot x and y position
-                Point2D robot = new Point2D(
+                Coordinate robot = new Coordinate(
                         players.get(i).getRobot().getPosition().getX(),
                         players.get(i).getRobot().getPosition().getY());
                 //get playerID
@@ -303,7 +300,7 @@ public class ActivationPhase extends Phase {
         //first and second object have different distance values -> first player in list is currentPlayer
         if (firstRobotDistance != nextPriority.get(1).getDistance()) {
             nextPriority.remove(0);
-            return firstPlayerID;
+            return firstPlayerID; //return list ->
         //objects have the same distance values -> selection by clockwise antenna beam
         } else {
             for(int j = 0; j < nextPriority.size(); j++){
