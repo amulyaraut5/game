@@ -26,22 +26,24 @@ public class ProgrammingPhase extends Phase {
     private boolean timerFinished = false;
     private ArrayList<Card> discardCards = new ArrayList<>();
 
+    /**
+     * starts the ProgrammingPhase.
+     * All Players get added to notReadyPlayers to track who has/hasn't finished programming
+     * If the register ist filled with cards from the previous round those get discarded.
+     * After that new cards are dealt.
+     */
     public ProgrammingPhase() {
         super();
-        startPhase();
-    }
-
-    @Override
-    public void startPhase() {
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
             notReadyPlayers.add(player.getID());
-            player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
-            player.createRegister();
+            if (!(player.getRegisterCards().contains(null))) {
+                player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+                player.createRegister();
+            }
         }
         dealProgrammingCards();
     }
-
 
     /**
      * if

@@ -9,17 +9,13 @@ package game.round;
 
 public class UpgradePhase extends Phase {
 
-    public UpgradePhase() {
-        super();
-    }
 
     /**
      * starts the Upgrade Phase.
      * Calls the refill Method from the upgrade Shop and the purchase Upgrades method.
      */
-    @Override
-    public void startPhase() {
-
+    public UpgradePhase() {
+        super();
     }
 
     /**

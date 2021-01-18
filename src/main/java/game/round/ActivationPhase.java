@@ -38,19 +38,15 @@ public class ActivationPhase extends Phase {
     //Saves current Register number(for push panels and energy fields)
     private int currentRegister;
 
-    public ActivationPhase() {
-        super();
-    }
-
-
     /**
      * starts the ActivationPhase.
      * After each register the method for activating the board tiles ist called.
      * TODO In every register the priority is determined and the players cards get activated
      * * in priority order.
      */
-    @Override
-    public void startPhase() {
+
+    public ActivationPhase() {
+        super();
         for (int register = 1; register <6; register++) {
             turnCards();
             activateCards();
@@ -58,6 +54,9 @@ public class ActivationPhase extends Phase {
         activateBoard();
         //throw new UnsupportedOperationException();
     }
+
+
+
 
     /**
      * At the beginning of each register the current cards are shown.
