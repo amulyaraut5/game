@@ -80,12 +80,21 @@ public class ProgrammingController extends Controller {
         cardList.add("MoveII");
         cardList.add("MoveIII");
 
-        for (String card : cardList){
+        /*
+        for (String card : cardList){ //TODO send (?) only 9 cards
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + card +"-card.png").toString()), pane);
             if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
             else hBox2.getChildren().add(pane);
+
+            }*/
+        for(int i = 0; i<=8; i++){
+            StackPane pane = createNewPane();
+            addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) +"-card.png").toString()), pane);
+            if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
+            else hBox2.getChildren().add(pane);
         }
+
    }
 
 
