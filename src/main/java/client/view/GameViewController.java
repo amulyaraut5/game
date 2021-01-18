@@ -1,5 +1,6 @@
 package client.view;
 
+import client.model.Client;
 import game.Game;
 import game.Player;
 import game.gameObjects.maps.Map;
@@ -81,6 +82,7 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
+
         boardPane.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandler);
         /*boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
@@ -89,7 +91,17 @@ public class GameViewController extends Controller {
             client.sendMessage(new SetStartingPoint(pos));
         });*/
         this.soundHandler = new SoundHandler();
+
     }
+
+
+    public void changeDirection() {
+
+        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
+        double currentDirection = robotImageView.rotateProperty().getValue();
+        robotImageView.rotateProperty().setValue(currentDirection - 90);
+    }
+
     EventHandler<MouseEvent> eventHandler =
             new EventHandler<javafx.scene.input.MouseEvent>() {
                 @Override
@@ -98,13 +110,18 @@ public class GameViewController extends Controller {
                     int y = (int) e.getY() / Utilities.FIELD_SIZE;
                     int pos = x + y * Utilities.MAP_WIDTH;
                     client.sendMessage(new SetStartingPoint(pos));
-                    boardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+                    int[] startPoints = {14,39,53,66,78,105};
+                    for(int i: startPoints){
+                        if(i == pos) boardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+                    }
                 }
             };
+
 
     public Group[][] getFields() {
         return fields;
     }
+
 
     public void attachPlayerMap(Pane playerM) {
         //playerM.setPrefHeight(playerMap.getPrefWidth());
@@ -158,12 +175,13 @@ public class GameViewController extends Controller {
 
 
     public void placeRobotInMap(int playerID, int position) {
+
         Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
         int newX = newRobotPosition.getX();
         int newY = newRobotPosition.getY();
         Image image = lobbyController.getImageHashmap().get(playerID);
-
         ImageView imageView = new ImageView(image);
+
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
@@ -171,17 +189,12 @@ public class GameViewController extends Controller {
         robotPane.getChildren().add(imageView);
         imageView.setX(newX * Utilities.FIELD_SIZE);
         imageView.setY(newY * Utilities.FIELD_SIZE);
-    }
-
-    public void changeDirection() {
-
-        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
-        double currentDirection = robotImageView.rotateProperty().getValue();
-        robotImageView.rotateProperty().setValue(currentDirection - 90);
+        //boardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
     // Called twice will move the tile image
     public void moveRobot() {
+
         ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
         getFields()[7][8].getChildren().remove(getFields()[7][8].getChildren().size() - 1);
         getFields()[7][6].getChildren().add(robotImageView);
@@ -197,9 +210,9 @@ public class GameViewController extends Controller {
     // <----------------------Only For Test---------------------------->
 
     public void handleMovement(int playerId, int to) {
-        // TODO Handle Player differently???
+        // TODO Handled Player from Client
 
-        for (Player player : Game.getInstance().getPlayers()) {
+        for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerId) {
                 // Get the Robot position from the Board
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
@@ -219,13 +232,12 @@ public class GameViewController extends Controller {
                 getFields()[newX][newY].getChildren().add(imageView);
             }
         }
-        // TODO Should other player map also be updated????
     }
 
     public void handlePlayerTurning(int playerID, Orientation rotation) {
-        // TODO Handle Player differently???
+        // TODO Handled Player from Client
 
-        for (Player player : Game.getInstance().getPlayers()) {
+        for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerID) {
 
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
@@ -245,7 +257,6 @@ public class GameViewController extends Controller {
                 }
             }
         }
-        // TODO Should other player map also be updated????
     }
 
 
