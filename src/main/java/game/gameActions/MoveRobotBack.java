@@ -2,7 +2,7 @@ package game.gameActions;
 
 import game.Player;
 import game.gameObjects.robot.Robot;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 /**
  * Moves the robot one space back. The robot does not change the direction it is facing.

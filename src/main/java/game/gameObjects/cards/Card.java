@@ -3,7 +3,7 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
-import utilities.Utilities.CardType;
+import utilities.enums.CardType;
 
 public abstract class Card {
 

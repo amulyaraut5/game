@@ -2,7 +2,7 @@ package game.gameActions;
 
 import game.Player;
 import utilities.JSONProtocol.body.PlayerTurning;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 /**
  * The RotateRobot class contains only overriden method that rotates the robot either clockwise

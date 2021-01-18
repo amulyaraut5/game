@@ -1,11 +1,9 @@
 package game.gameObjects.tiles;
 
-import game.Player;
-import game.gameActions.MoveRobot;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.Orientation;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 /**
  * @author Amulya

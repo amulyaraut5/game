@@ -8,6 +8,8 @@ import javafx.geometry.Point2D;
 import utilities.*;
 import utilities.JSONProtocol.body.CurrentCards;
 import utilities.JSONProtocol.body.Error;
+import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,10 +120,10 @@ public class ActivationPhase extends Phase {
             for (Player currentPlayer : playerList) {
                 if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
                     for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                        if (a.getType() == Utilities.AttributeType.Belt) {
+                        if (a.getType() == AttributeType.Belt) {
                             handleMove(currentPlayer, ((Belt) a).getOrientation());
                         }
-                        if (a.getType() == Utilities.AttributeType.RotatingBelt) {
+                        if (a.getType() == AttributeType.RotatingBelt) {
                             RotatingBelt temp = (RotatingBelt) a;
                             handleMove(currentPlayer, temp.getOrientations()[1]);
                         }
@@ -137,11 +139,11 @@ public class ActivationPhase extends Phase {
                 for (Player currentPlayer : playerList) {
                     if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
                         for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                            if (a.getType() == Utilities.AttributeType.Belt) {
+                            if (a.getType() == AttributeType.Belt) {
                                 handleMove(currentPlayer, ((Belt) a).getOrientation());
 
                             }
-                            if (a.getType() == Utilities.AttributeType.RotatingBelt) {
+                            if (a.getType() == AttributeType.RotatingBelt) {
                                 RotatingBelt temp = (RotatingBelt) a;
                                 handleMove(currentPlayer, temp.getOrientations()[1]);
                             }

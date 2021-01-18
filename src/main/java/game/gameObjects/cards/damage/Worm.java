@@ -7,8 +7,8 @@ import game.gameObjects.cards.DamageCard;
 import game.gameObjects.tiles.RestartPoint;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
-import utilities.Orientation;
-import utilities.Utilities.CardType;
+import utilities.enums.Orientation;
+import utilities.enums.CardType;
 
 /**
  * @author annika

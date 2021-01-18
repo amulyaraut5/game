@@ -1,12 +1,10 @@
 package client.view;
 
 import client.model.Client;
-import game.Game;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +24,8 @@ import utilities.*;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 
 import java.io.IOException;

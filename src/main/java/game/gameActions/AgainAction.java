@@ -7,7 +7,7 @@ import game.gameObjects.cards.damage.Spam;
 import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 import java.util.Arrays;
 import java.util.List;

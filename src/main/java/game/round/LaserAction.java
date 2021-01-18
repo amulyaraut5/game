@@ -10,8 +10,8 @@ import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.Orientation;
-import utilities.Utilities.AttributeType;
+import utilities.enums.Orientation;
+import utilities.enums.AttributeType;
 
 import java.util.ArrayList;
 

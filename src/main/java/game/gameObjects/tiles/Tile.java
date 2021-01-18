@@ -1,6 +1,6 @@
 package game.gameObjects.tiles;
 
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
 
 import java.util.ArrayList;
 

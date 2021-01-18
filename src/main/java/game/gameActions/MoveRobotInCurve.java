@@ -2,7 +2,7 @@ package game.gameActions;
 
 import game.Player;
 import utilities.Utilities;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 /**
  * The MoveRobotInCurve class contains only overriden method that moves the robot in a non-linear fashion

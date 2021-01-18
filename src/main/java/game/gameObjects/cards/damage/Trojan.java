@@ -6,7 +6,7 @@ import game.gameObjects.cards.Card;
 import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
-import utilities.Utilities.CardType;
+import utilities.enums.CardType;
 
 /**
  * @author annika

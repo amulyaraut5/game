@@ -3,13 +3,8 @@ package game.gameActions;
 import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Tile;
-import utilities.Coordinate;
-import utilities.JSONProtocol.body.Movement;
 import utilities.MapConverter;
-import utilities.Orientation;
-import utilities.Utilities;
+import utilities.enums.Orientation;
 
 /**
  * @author annika

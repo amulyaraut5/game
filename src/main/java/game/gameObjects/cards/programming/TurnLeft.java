@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
-import utilities.Utilities.CardType;
+import utilities.enums.CardType;
 
 /**
  * @author annika

@@ -5,7 +5,7 @@ import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
-import utilities.Utilities;
+import utilities.enums.AttributeType;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.Laser) {
+                    if (a.getType() == AttributeType.Laser) {
                         Coordinate temp = new Coordinate(i, j);
                         coordinates.add(temp);
                     }
@@ -85,7 +85,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.Laser) {
+                    if (a.getType() == AttributeType.Laser) {
                        return new Coordinate(i, j);
                     }
                 }
@@ -103,7 +103,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.EnergySpace) {
+                    if (a.getType() == AttributeType.EnergySpace) {
                         Coordinate temp = new Coordinate(i, j);
                         energyCoordinates.add(temp);
                     }
@@ -122,7 +122,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.PushPanel) {
+                    if (a.getType() == AttributeType.PushPanel) {
                         Coordinate temp = new Coordinate(i, j);
                         pushPanelCoordinates.add(temp);
                     }
@@ -137,7 +137,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                    if (a.getType() == AttributeType.ControlPoint) {
                         Coordinate temp = new Coordinate(i, j);
                         controlPointCoordinates.add(temp);
                     }
@@ -152,7 +152,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                    if (a.getType() == AttributeType.ControlPoint) {
                         Coordinate temp = new Coordinate(i, j);
                         pitCoordinates.add(temp);
                     }
@@ -167,7 +167,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.ControlPoint) {
+                    if (a.getType() == AttributeType.ControlPoint) {
                         Coordinate temp = new Coordinate(i, j);
                         gearCoordinates.add(temp);
                     }
@@ -189,7 +189,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == Utilities.AttributeType.Belt || a.getType() == Utilities.AttributeType.RotatingBelt) {
+                    if (a.getType() == AttributeType.Belt || a.getType() == AttributeType.RotatingBelt) {
                         Coordinate temp = new Coordinate(i, j);
                         coordinates.add(temp);
                     }
@@ -200,7 +200,7 @@ public class Map {
         //Add Belts to Green and Blue Belt lists
         for (Coordinate c : coordinates) {
             for (Attribute a : getTile(c).getAttributes()) {
-                if(a.getType() == Utilities.AttributeType.Belt){
+                if(a.getType() == AttributeType.Belt){
                     Belt temp = (Belt) a;
                     if(temp.getSpeed() == 1){
                         addGreenBelt(c);
@@ -209,7 +209,7 @@ public class Map {
                         addBlueBelt(c);
                     }
                 }
-                if(a.getType() == Utilities.AttributeType.RotatingBelt){
+                if(a.getType() == AttributeType.RotatingBelt){
                     RotatingBelt temp = (RotatingBelt) a;
                     if(temp.getSpeed() == 1){
                         addGreenBelt(c);
@@ -226,7 +226,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if(a.getType() == Utilities.AttributeType.RestartPoint){
+                    if(a.getType() == AttributeType.RestartPoint){
                         this.RestartPoint = new Coordinate(i, j);
                     }
                 }

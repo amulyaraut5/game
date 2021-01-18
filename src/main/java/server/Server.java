@@ -8,6 +8,7 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
+import utilities.enums.MessageType;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -96,7 +97,7 @@ public class Server extends Thread {
      */
     private void handleMessage(QueueMessage queueMessage) {
         JSONMessage message = queueMessage.getJsonMessage();
-        Utilities.MessageType type = message.getType();
+        MessageType type = message.getType();
         User user = queueMessage.getUser();
         switch (type) {
             case HelloServer -> {

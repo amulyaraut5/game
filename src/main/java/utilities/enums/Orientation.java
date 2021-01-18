@@ -1,6 +1,7 @@
-package utilities;
+package utilities.enums;
 
 import com.google.gson.annotations.SerializedName;
+import utilities.Coordinate;
 
 public enum Orientation {
     @SerializedName("up") UP,

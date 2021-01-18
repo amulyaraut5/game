@@ -4,8 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import utilities.Coordinate;
-import utilities.Orientation;
-import utilities.Utilities.Rotation;
+import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 /**
  * @author simon
