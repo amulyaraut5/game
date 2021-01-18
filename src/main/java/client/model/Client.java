@@ -12,6 +12,7 @@ import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
+import utilities.enums.MessageType;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -130,7 +131,7 @@ public class Client {
      * @param message
      */
     public void handleMessage(JSONMessage message) {
-        Utilities.MessageType type = message.getType();
+        MessageType type = message.getType();
 
         Platform.runLater(() -> {
             switch (type) {

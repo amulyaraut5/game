@@ -1,9 +1,8 @@
 package game.gameObjects.tiles;
 
-import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
 
 public class StartPoint extends Attribute {
 

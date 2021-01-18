@@ -12,9 +12,15 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.PlayerAdded;
+import utilities.JSONProtocol.body.SelectCard;
 
-
+/**
+ *
+ * @author sarah
+ */
 public class PlayerMapController extends Controller{
 
     @FXML
@@ -22,6 +28,8 @@ public class PlayerMapController extends Controller{
 
     @FXML
     private HBox registerHBox;
+
+    public HBox registerHBoxBackground;
 
     @FXML
     private ImageView playerIcon;
@@ -32,39 +40,34 @@ public class PlayerMapController extends Controller{
     @FXML
     private ImageView registerNumber;
 
-    public AnchorPane playerMapAnchorPane;
+    @FXML
+    private AnchorPane playerMapAnchorPane;
+
     private double widthRegisterCard;
+
     private double heightRegisterCard;
 
     public void initialize(){
         widthRegisterCard = registerHBox.getPrefWidth()/5;
         heightRegisterCard = registerHBox.getPrefHeight();
         registerHBox.setSpacing(20);
-        /*ImageView im = new ImageView(new Image(getClass().getResource("/backgrounds/register/register_2.png").toString()));
-        im.setFitHeight(registerNumber.getFitHeight());
-        im.setFitWidth(registerNumber.getFitWidth());
-        double x = registerNumber.getX();
-        double y= registerNumber.getX();
-        im.setTranslateX(x);
-        im.setY(y);
-        playerMapAnchorPane.getChildren().add(im);*/ //TODO other numbers of registers
+        registerHBoxBackground.setSpacing(20);
+        createRegisterNumberImages();
+        createRegisterBackground();
         int register = 5;
-
-        for (int i = 0; i<5; i++){
+        for (int i = 0; i<register; i++){
             StackPane pane = createNewPane();
-
             registerHBox.getChildren().add(pane);
         }
-
     }
+
 
     private StackPane createNewPane(){
         StackPane pane = new StackPane();
 
         pane.setPrefHeight(heightRegisterCard);
         pane.setPrefWidth(widthRegisterCard);
-        pane.setStyle("-fx-border-color: #d100ea;");
-        pane.setStyle("-fx-background-color: #FFFFFF;");
+
 
         pane.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
@@ -93,9 +96,9 @@ public class PlayerMapController extends Controller{
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(imageView.getImage());
-
+        //setImageDropped(imageView.getImage().getUrl());
         db.setContent(content);
-        //imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+        imageView.setImage(null);
         mouseEvent.consume();
     }
 
@@ -103,16 +106,6 @@ public class PlayerMapController extends Controller{
         String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name +".png").toString()));
         playerMapLabelName.setText(player.getName() + " " + player.getID());
-        /*System.out.println(getPlayersAdded().size());
-        for (RobotIcon icon : getPlayersAdded()){
-            System.out.println("twwwta");
-            if (icon.isThisUser()){
-                System.out.println("twwwta");
-                //playerIcon = new ImageView(new Image());
-            }
-            System.out.println("twwwta");
-        }*/
-
     }
 
 
@@ -125,6 +118,7 @@ public class PlayerMapController extends Controller{
             @Override
             public void handle(MouseEvent mouseEvent) {
                 setOnDragDetected(mouseEvent, imageView);
+
             }
         });
         pane.getChildren().add(imageView);
@@ -141,8 +135,15 @@ public class PlayerMapController extends Controller{
                     pane.getChildren().remove(0);
             }
             Image img = db.getImage();
-
             addImage(img, pane);
+            System.out.println("CardName playerMapController" + getImageDropped());
+            System.out.println("Register " + registerHBox.getChildren().indexOf(pane)+1);
+            String cardName = getImageDropped();
+            int registerNumber = registerHBox.getChildren().indexOf(pane)+1;
+            client.sendMessage(new SelectCard(cardName, registerNumber));
+            //TODO getting url
+            //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
+
 
         }
         event.setDropCompleted(success);
@@ -150,14 +151,38 @@ public class PlayerMapController extends Controller{
     }
 
     private  void mouseDragOver(DragEvent event, StackPane pane) {
-
-
         pane.setStyle("-fx-border-color: red;"
                 + "-fx-border-width: 5;"
                 + "-fx-background-color: #C6C6C6;"
                 + "-fx-border-style: solid;");
-        event.acceptTransferModes(TransferMode.COPY);
+        event.acceptTransferModes(TransferMode.ANY);
         event.consume();
+    }
+
+    private void createRegisterNumberImages(){
+        double positionX = widthRegisterCard*2-20;
+        double positionY = heightRegisterCard-20;
+        for (int i = 1; i<=5; i++){
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/backgrounds/register/register_" + i +".png").toString()));
+            imageView.setFitHeight(30);
+            imageView.setFitWidth(30);
+            imageView.setTranslateX(positionX);
+            imageView.setTranslateY(positionY);
+            positionX += widthRegisterCard;
+            positionX += 3;
+            playerMapAnchorPane.getChildren().add(imageView); //TODO other numbers of registers
+        }
+
+    }
+
+    private void createRegisterBackground(){
+        for(int i=0; i<=4; i++) {
+            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+            background.setFitHeight(heightRegisterCard);
+            background.setFitWidth(widthRegisterCard-20);
+            background.setDisable(true);
+            registerHBoxBackground.getChildren().add(background);
+        }
     }
     }
 

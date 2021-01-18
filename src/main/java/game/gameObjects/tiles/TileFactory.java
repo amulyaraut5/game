@@ -3,8 +3,8 @@ package game.gameObjects.tiles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Utilities;
-import utilities.Orientation;
-import utilities.Utilities.Rotation;
+import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 public class TileFactory {
     private static final Logger logger = LogManager.getLogger();

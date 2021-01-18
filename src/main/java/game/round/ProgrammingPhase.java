@@ -26,23 +26,24 @@ public class ProgrammingPhase extends Phase {
     private boolean timerFinished = false;
     private ArrayList<Card> discardCards = new ArrayList<>();
 
+    /**
+     * starts the ProgrammingPhase.
+     * All Players get added to notReadyPlayers to track who has/hasn't finished programming
+     * If the register ist filled with cards from the previous round those get discarded.
+     * After that new cards are dealt.
+     */
     public ProgrammingPhase() {
         super();
-        startPhase();
-    }
-
-    @Override
-    public void startPhase() {
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
             notReadyPlayers.add(player.getID());
-            player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
-            player.createRegister();
+            if (!(player.getRegisterCards().contains(null))) {
+                player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+                player.createRegister();
+            }
         }
         dealProgrammingCards();
-        game.nextPhase();
     }
-
 
     /**
      * if
@@ -126,7 +127,6 @@ public class ProgrammingPhase extends Phase {
      * @param player
      */
     private void startProgrammingTimer(Player player) {
-        //isFinished = true;
         server.communicateAll(new SelectionFinished(player.getID()));
         GameTimer gameTimer = new GameTimer(this);
         gameTimer.start();
@@ -137,13 +137,14 @@ public class ProgrammingPhase extends Phase {
      * TimerEnded and calls dealRandomCards() if some players haven't filled their registers yet
      */
     public void endProgrammingTimer() {
-        if (timerFinished) {
+        if (!(timerFinished)) {
             timerFinished = true;
             server.communicateAll(new TimerEnded(notReadyPlayers));
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
         }
+        game.nextPhase();
     }
 
     /**
@@ -188,7 +189,11 @@ public class ProgrammingPhase extends Phase {
     private void dealProgrammingCards() {
         for (Player player : playerList) {
             drawProgrammingCards(9, player);
-            player.message(new YourCards(player.getDrawnProgrammingCards()));
+            ArrayList<String> cards = new ArrayList<>(9);
+            for (Card card : player.getDrawnProgrammingCards()) {
+                cards.add(card.getName().toString());
+            }
+            player.message(new YourCards(cards));
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
     }
@@ -200,7 +205,7 @@ public class ProgrammingPhase extends Phase {
      * @param amount of cards to draw
      * @param player player that needs to draw cards
      */
-    private void drawProgrammingCards (int amount, Player player) {
+    private void drawProgrammingCards(int amount, Player player) {
         ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
         if (!(currentDeck.size() < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));

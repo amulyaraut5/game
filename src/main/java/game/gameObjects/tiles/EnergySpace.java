@@ -1,11 +1,8 @@
 package game.gameObjects.tiles;
 
-import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.body.Energy;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
 
 /**
  * @author Amulya

@@ -1,13 +1,12 @@
 package game.gameObjects.tiles;
 
-import game.Player;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
-import utilities.Orientation;
-import utilities.Utilities.AttributeType;
+import utilities.enums.Orientation;
+import utilities.enums.AttributeType;
 
 /**
  * @author Amulya

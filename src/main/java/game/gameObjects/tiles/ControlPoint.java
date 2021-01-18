@@ -1,12 +1,8 @@
 package game.gameObjects.tiles;
 
-import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.CheckpointReached;
-import utilities.JSONProtocol.body.GameWon;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
 
 /**
  * @author Amulya

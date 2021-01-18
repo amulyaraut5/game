@@ -4,7 +4,7 @@ import game.Game;
 import game.Player;
 import game.gameObjects.maps.Map;
 import server.Server;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 /**
  * The abstract class Action is then extended by different sub-classes

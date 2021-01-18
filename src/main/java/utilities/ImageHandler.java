@@ -2,6 +2,7 @@ package utilities;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import utilities.enums.Orientation;
 
 import java.io.InputStream;
 

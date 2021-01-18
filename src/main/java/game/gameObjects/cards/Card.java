@@ -3,15 +3,11 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
-import utilities.Utilities.CardType;
+import utilities.enums.CardType;
 
 public abstract class Card {
 
-    private CardType card;
-
-    public Card(CardType card) {
-        this.card = card;
-    }
+    protected CardType card;
 
     public abstract ImageView drawCardImage();
 

@@ -77,7 +77,6 @@ public class Player extends User {
         id = message.getID();
         name = message.getName();
         figure = message.getFigure();
-
         robot = Robot.create(figure);
     }
 

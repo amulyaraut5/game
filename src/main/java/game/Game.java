@@ -21,8 +21,8 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
 import utilities.Utilities;
-import utilities.Utilities.AttributeType;
-import utilities.Utilities.PhaseState;
+import utilities.enums.AttributeType;
+import utilities.enums.PhaseState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -199,5 +199,9 @@ public class Game {
             }
         }
         return null;
+    }
+
+    public void playIt (int playerID) {
+        activationPhase.activateCards(playerID);
     }
 }

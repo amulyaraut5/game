@@ -24,16 +24,52 @@ public class ProgrammingController extends Controller {
     @FXML
     private HBox hBox1;
 
-    public HBox hBox2;
+    @FXML
+    private HBox hBox2;
+
+    public HBox hBox1Background;
+    public HBox hBox2Background;
+
     private double widthHBox;
     private double heightHBox;
 
-    public void initialize(){ //TODO method that gets called when cards were dealt
-        widthHBox = hBox1.getPrefWidth()/5;
+    public void initialize() { //TODO method that gets called when cards were dealt
+        widthHBox = hBox1.getPrefWidth() / 5;
         heightHBox = hBox1.getPrefHeight();
         hBox1.setSpacing(20);
         hBox2.setSpacing(20);
-        ArrayList<String> cardList = new ArrayList<>(); //HARDCODED
+        hBox1Background.setSpacing(20);
+        hBox2Background.setSpacing(20);
+        /*HBox backgroundHBox1 = new HBox();
+        HBox backgroundHBox2 = new HBox();
+        backgroundHBox1.setSpacing(20);
+        backgroundHBox1.setLayoutX(hBox1.getLayoutX());
+        System.out.println(hBox1.getTranslateX());
+        System.out.println(hBox1.getLayoutX());
+        System.out.println(hBox1.getScaleX());
+        System.out.println(backgroundHBox1.getLayoutX());*/
+        /*ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+        background.setFitHeight(heightHBox);
+        background.setFitWidth(widthHBox - 20);
+        for(int i=0; i<5; i++) hBox1Background.getChildren().add(background);
+        for(int i=0; i<4; i++) hBox2Background.getChildren().add(background);*/
+        for(int i=0; i<5; i++) {
+            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+            background.setFitHeight(heightHBox);
+            background.setFitWidth(widthHBox - 20);
+            hBox1Background.getChildren().add(background);
+        }
+        for(int i=0; i<4; i++) {
+            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+            background.setFitHeight(heightHBox);
+            background.setFitWidth(widthHBox - 20);
+            hBox2Background.getChildren().add(background);
+        }
+    }
+
+    public void startProgrammingPhase(ArrayList<String> cardList){
+
+        ArrayList<String> cardLists = new ArrayList<>(); //HARDCODED
         cardList.add("Again");
         cardList.add("MoveI");
         cardList.add("MoveII");
@@ -44,40 +80,19 @@ public class ProgrammingController extends Controller {
         cardList.add("MoveII");
         cardList.add("MoveIII");
 
-        ////////////////////SHORT TEST HOW TO GET CARDNAME OUT OF URL
-        Image image = new Image(getClass().getResource("/cards/programming/Again-card.png").toString());
-        System.out.println("Url. " +image.getUrl());
-        String [] a = image.getUrl().split("/");
-        String imageName = a[a.length-1];
-        System.out.println(imageName.substring(0, imageName.length()-9));
-
-        Image image2 = new Image(getClass().getResource("/cards/programming/TurnLeft-card.png").toString());
-        System.out.println("Url. " +image2.getUrl());
-        String [] a2 = image2.getUrl().split("/");
-        String imageName2 = a2[a2.length-1];
-        System.out.println(imageName2.substring(0, imageName2.length()-9));
-
-        ////////////////////
-
-        for (String card : cardList){
+        /*
+        for (String card : cardList){ //TODO send (?) only 9 cards
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + card +"-card.png").toString()), pane);
-            //ImageView programCard = new ImageView();
-            //programCard.setImage(new Image("/programming-cards/" + card +"-card.png"));
-            //programCard.setFitWidth(90);
-            //programCard.setFitHeight(116);
-            /*pane.setOnDragDetected(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    setOnDragDetected(mouseEvent, programCard);
-                }
-            });*/
-            if(!(hBox1.getChildren().size()>=5)){
-                hBox1.getChildren().add(pane);
-            } else {
-                hBox2.getChildren().add(pane);
-            }
+            if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
+            else hBox2.getChildren().add(pane);
 
+            }*/
+        for(int i = 0; i<=8; i++){
+            StackPane pane = createNewPane();
+            addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) +"-card.png").toString()), pane);
+            if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
+            else hBox2.getChildren().add(pane);
         }
 
    }
@@ -107,8 +122,6 @@ public class ProgrammingController extends Controller {
 
         pane.setPrefHeight(heightHBox);
         pane.setPrefWidth(widthHBox-20);
-        pane.setStyle("-fx-border-color: #d100ea;");
-        pane.setStyle("-fx-background-color: #FFFFFF;");
 
         pane.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
@@ -134,13 +147,17 @@ public class ProgrammingController extends Controller {
 
 
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(imageView.getImage());
-        //setImageDropped();
-        db.setContent(content);
-        //imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
-        mouseEvent.consume();
+
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(imageView.getImage());
+            //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
+            setImageDropped(imageView.getImage().getUrl());
+            //System.out.println(imageDropped);
+            db.setContent(content);
+            imageView.setImage(null);
+            mouseEvent.consume();
+
     }
 
 
@@ -156,10 +173,7 @@ public class ProgrammingController extends Controller {
                 setOnDragDetected(mouseEvent, imageView);
             }
         });
-        /*String [] url = i.getUrl().split("/");
-        String imageName = url[url.length-1];
-        String cardName = imageName.substring(0, imageName.length()-9);
-        System.out.println(cardName);*/
+
         pane.getChildren().add(imageView);
 
 
@@ -175,8 +189,9 @@ public class ProgrammingController extends Controller {
             }
 
             Image img = db.getImage();
-
+            System.out.println("CardName programmingController" + getImageDropped());
             addImage(img, pane);
+
 
         }
         event.setDropCompleted(success);

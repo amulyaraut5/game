@@ -1,7 +1,7 @@
 package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 public class PlayerTurning extends JSONBody {
 
