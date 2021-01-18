@@ -24,7 +24,12 @@ public class ProgrammingController extends Controller {
     @FXML
     private HBox hBox1;
 
-    public HBox hBox2;
+    @FXML
+    private HBox hBox2;
+
+    public HBox hBox1Background;
+    public HBox hBox2Background;
+
     private double widthHBox;
     private double heightHBox;
 
@@ -33,6 +38,33 @@ public class ProgrammingController extends Controller {
         heightHBox = hBox1.getPrefHeight();
         hBox1.setSpacing(20);
         hBox2.setSpacing(20);
+        hBox1Background.setSpacing(20);
+        hBox2Background.setSpacing(20);
+        /*HBox backgroundHBox1 = new HBox();
+        HBox backgroundHBox2 = new HBox();
+        backgroundHBox1.setSpacing(20);
+        backgroundHBox1.setLayoutX(hBox1.getLayoutX());
+        System.out.println(hBox1.getTranslateX());
+        System.out.println(hBox1.getLayoutX());
+        System.out.println(hBox1.getScaleX());
+        System.out.println(backgroundHBox1.getLayoutX());*/
+        /*ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+        background.setFitHeight(heightHBox);
+        background.setFitWidth(widthHBox - 20);
+        for(int i=0; i<5; i++) hBox1Background.getChildren().add(background);
+        for(int i=0; i<4; i++) hBox2Background.getChildren().add(background);*/
+        for(int i=0; i<5; i++) {
+            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+            background.setFitHeight(heightHBox);
+            background.setFitWidth(widthHBox - 20);
+            hBox1Background.getChildren().add(background);
+        }
+        for(int i=0; i<4; i++) {
+            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+            background.setFitHeight(heightHBox);
+            background.setFitWidth(widthHBox - 20);
+            hBox2Background.getChildren().add(background);
+        }
     }
 
     public void startProgrammingPhase(ArrayList<String> cardList){
