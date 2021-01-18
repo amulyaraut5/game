@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -17,7 +18,10 @@
          </font>
 
       </Label>
+      <HBox fx:id="hBox1Background" alignment="CENTER" layoutX="14.0" layoutY="178.0" prefHeight="84.0" prefWidth="386.0" />
       <HBox fx:id="hBox1" alignment="CENTER" layoutX="14.0" layoutY="178.0" prefHeight="84.0" prefWidth="386.0" />
+
+      <HBox fx:id="hBox2Background" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
       <HBox fx:id="hBox2" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
 
    </children>
