@@ -24,6 +24,10 @@ public class Coordinate {
         y += c.getY();
     }
 
+    public Coordinate subtract(Coordinate another) {
+        return new Coordinate(this.x - another.x, this.y - another.y);
+    }
+
     /**
      * Methods updates the position of a coordinate to given attributes.
      *
