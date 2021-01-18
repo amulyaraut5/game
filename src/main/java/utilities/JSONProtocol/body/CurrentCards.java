@@ -1,18 +1,18 @@
 package utilities.JSONProtocol.body;
 
-import game.gameObjects.cards.Card;
 import utilities.JSONProtocol.JSONBody;
+import utilities.RegisterCard;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class CurrentCards extends JSONBody {
-    HashMap<Integer, Card> activeCards;
+   ArrayList<RegisterCard> activeCards;
 
-    public CurrentCards(HashMap<Integer, Card> activeCards) {
+    public CurrentCards(ArrayList<RegisterCard> activeCards) {
         this.activeCards = activeCards;
     }
 
-    public HashMap<Integer, Card> getActiveCards() {
+    public ArrayList<RegisterCard> getActiveCards() {
         return activeCards;
     }
 }

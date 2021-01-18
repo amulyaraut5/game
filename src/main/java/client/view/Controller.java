@@ -4,6 +4,7 @@ import client.ViewManager;
 import client.model.Client;
 import game.Player;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ public abstract class Controller {
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
     protected ArrayList<RobotIcon> playersAdded = new ArrayList<>();
-    private String imageDropped;
+
+    public static String imageDropped;
 
     public ArrayList<RobotIcon> getPlayersAdded() {
         return playersAdded;
@@ -44,7 +46,10 @@ public abstract class Controller {
     }
 
     public void setImageDropped(String imageDropped) {
-        this.imageDropped = imageDropped;
+        String [] a = imageDropped.split("/");
+        String imageName = a[a.length-1];
+        String cardName = imageName.substring(0, imageName.length()-9);
+        this.imageDropped = cardName;
     }
 
     /**

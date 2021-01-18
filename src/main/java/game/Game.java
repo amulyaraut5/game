@@ -21,8 +21,8 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
 import utilities.Utilities;
-import utilities.Utilities.AttributeType;
-import utilities.Utilities.PhaseState;
+import utilities.enums.AttributeType;
+import utilities.enums.PhaseState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +71,14 @@ public class Game {
     public static Game getInstance() {
         if (instance == null) instance = new Game();
         return instance;
+    }
+
+    public ActivationPhase getActivationPhase() {
+        return activationPhase;
+    }
+
+    public ProgrammingPhase getProgrammingPhase() {
+        return programmingPhase;
     }
 
     /**
@@ -169,21 +177,24 @@ public class Game {
         Coordinate pos = MapConverter.reconvertToCoordinate(position);
         Player player = userToPlayer(user);
 
-        //check if chosen tile is StartingPoint
-        boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
-        if (isOnStartPoint) {
-            //check if no other player is on the chosen tile
-            for (Player other : players) {
-                if (!other.equals(player)) {
-                    Coordinate otherPos = other.getRobot().getPosition();
-                    if (!pos.equals(otherPos)) {
-                        //chosen StartingPoint is valid
-                        player.getRobot().setPosition(pos);
-                        server.communicateAll(new StartingPointTaken(player.getID(), position));
-                    } else player.message(new Error("Your chosen position is already taken!"));
+        //check if playes has already set their starting point
+        if (player.getRobot().getPosition() == null) {
+            //check if chosen tile is StartingPoint
+            boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
+            if (isOnStartPoint) {
+                //check if no other player is on the chosen tile
+                for (Player other : players) {
+                    if (!other.equals(player)) {
+                        Coordinate otherPos = other.getRobot().getPosition();
+                        if (!pos.equals(otherPos)) {
+                            //chosen StartingPoint is valid
+                            player.getRobot().setPosition(pos);
+                            server.communicateAll(new StartingPointTaken(player.getID(), position));
+                        } else player.message(new Error("Your chosen position is already taken!"));
+                    }
                 }
-            }
-        } else player.message(new Error("This is no valid StartPoint!"));
+            } else player.message(new Error("This is no valid StartPoint!"));
+        } else player.message(new Error("You have already set your starting point!"));
 
         //check if all players have set their StartingPoint
         for (Player p : players) {

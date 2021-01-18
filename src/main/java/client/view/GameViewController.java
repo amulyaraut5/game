@@ -1,16 +1,16 @@
 package client.view;
 
-import game.Game;
+import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -24,14 +24,17 @@ import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
 import utilities.MapConverter;
-import utilities.Orientation;
+import utilities.SoundHandler;
 import utilities.Utilities;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 
 /**
  * The GameViewController class controls the GameView and coordinates its inner views
@@ -61,6 +64,13 @@ public class GameViewController extends Controller {
     private Pane robotPane;
     private PlayerMapController playerMapController;
 
+    private UpgradeController upgradeController;
+    private ProgrammingController programmingController;
+    private ActivationController activationController;
+
+    private SoundHandler soundHandler;
+    private EventHandler<MouseEvent> onMapClicked;
+
     public static void setLobbyController(LobbyController lobbyController) {
         GameViewController.lobbyController = lobbyController;
     }
@@ -75,17 +85,27 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
-        boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+        boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
             int pos = x + y * Utilities.MAP_WIDTH;
             client.sendMessage(new SetStartingPoint(pos));
         });
+
+        this.soundHandler = new SoundHandler();
+    }
+
+    public void changeDirection() {
+
+        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
+        double currentDirection = robotImageView.rotateProperty().getValue();
+        robotImageView.rotateProperty().setValue(currentDirection - 90);
     }
 
     public Group[][] getFields() {
         return fields;
     }
+
 
     public void attachPlayerMap(Pane playerM) {
         //playerM.setPrefHeight(playerMap.getPrefWidth());
@@ -138,13 +158,16 @@ public class GameViewController extends Controller {
     // <----------------------Only For Test---------------------------->
 
 
-    public void placeRobotInMap(int playerID, int position) {
+    public void placeRobotInMap(Player player, int position) {
+        if (player.getID() == client.getThisPlayersID()) {
+            boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
+        }
+
         Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
         int newX = newRobotPosition.getX();
         int newY = newRobotPosition.getY();
-        Image image = lobbyController.getImageHashmap().get(playerID);
+        ImageView imageView = player.getRobot().drawRobotImage();
 
-        ImageView imageView = new ImageView(image);
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
@@ -154,15 +177,9 @@ public class GameViewController extends Controller {
         imageView.setY(newY * Utilities.FIELD_SIZE);
     }
 
-    public void changeDirection() {
-
-        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
-        double currentDirection = robotImageView.rotateProperty().getValue();
-        robotImageView.rotateProperty().setValue(currentDirection - 90);
-    }
-
     // Called twice will move the tile image
     public void moveRobot() {
+
         ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
         getFields()[7][8].getChildren().remove(getFields()[7][8].getChildren().size() - 1);
         getFields()[7][6].getChildren().add(robotImageView);
@@ -178,9 +195,9 @@ public class GameViewController extends Controller {
     // <----------------------Only For Test---------------------------->
 
     public void handleMovement(int playerId, int to) {
-        // TODO Handle Player differently???
+        // TODO Handled Player from Client
 
-        for (Player player : Game.getInstance().getPlayers()) {
+        for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerId) {
                 // Get the Robot position from the Board
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
@@ -200,13 +217,12 @@ public class GameViewController extends Controller {
                 getFields()[newX][newY].getChildren().add(imageView);
             }
         }
-        // TODO Should other player map also be updated????
     }
 
     public void handlePlayerTurning(int playerID, Orientation rotation) {
-        // TODO Handle Player differently???
+        // TODO Handled Player from Client
 
-        for (Player player : Game.getInstance().getPlayers()) {
+        for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerID) {
 
                 Coordinate oldRobotPosition = player.getRobot().getOldPosition();
@@ -226,13 +242,12 @@ public class GameViewController extends Controller {
                 }
             }
         }
-        // TODO Should other player map also be updated????
     }
 
 
     //TODO inner view with activation phase
     public void programCards(YourCards yourCards) {
-
+        programmingController.startProgrammingPhase(yourCards.getCards());
     }
 
     /**
@@ -276,7 +291,7 @@ public class GameViewController extends Controller {
      * Button press to test the change of inner phase panes.
      */
     @FXML
-    public void changeInnerView() {//TODO set it private
+    private void changeInnerView() throws IOException {
         Pane innerPane = setNextPhase();
         outerPane.setCenter(innerPane);
     }
@@ -284,22 +299,52 @@ public class GameViewController extends Controller {
     /**
      * @return
      */
-    private Pane setNextPhase() {
+    private Pane setNextPhase() throws IOException {
         Pane innerPane = null;
         String path = "";
         currentPhaseView = ++currentPhaseView % 3;
 
-        if (currentPhaseView == 0) path = "/view/innerViews/upgradeView.fxml";
-        else if (currentPhaseView == 1) path = "/view/innerViews/programmingPhaseView.fxml";
-        else if (currentPhaseView == 2) path = "/view/innerViews/activationView.fxml";
-        try {
+
+        if (currentPhaseView == 0) {
+            FXMLLoader upgradeLoader = new FXMLLoader(getClass().getResource("/view/innerViews/upgradeView.fxml"));
+            try {
+                innerPane = upgradeLoader.load();
+            } catch (IOException e) {
+                logger.error("Inner phase View could not be loaded: " + e.getMessage());
+            }
+            upgradeController = upgradeLoader.getController();
+        } else if (currentPhaseView == 1) {
+            FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingPhaseView.fxml"));
+            try {
+                innerPane = programmingLoader.load();
+            } catch (IOException e) {
+                logger.error("Inner phase View could not be loaded: " + e.getMessage());
+            }
+            programmingController = programmingLoader.getController();
+        } else if (currentPhaseView == 2) {
+            FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
+            try {
+                innerPane = activationLoader.load();
+            } catch (IOException e) {
+                logger.error("Inner phase View could not be loaded: " + e.getMessage());
+            }
+            activationController = activationLoader.getController();
+        }
+        /*try {
             innerPane = FXMLLoader.load(getClass().getResource(path));
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
-        }
+        }*/
         return innerPane;
 
     }
 
 
+    public void soundsOnAction(javafx.event.ActionEvent event) {
+        this.soundHandler.musicOn();
+    }
+
+    public void soundsOffAction(javafx.event.ActionEvent event) {
+        this.soundHandler.musicOff();
+    }
 }

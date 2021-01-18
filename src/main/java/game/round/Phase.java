@@ -14,6 +14,4 @@ public abstract class Phase {
 
     public Phase() {
     }
-
-    public abstract void startPhase();
 }

@@ -1,12 +1,10 @@
 package game.gameObjects.tiles;
 
 import game.Game;
-import game.Player;
 import javafx.scene.Node;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Orientation;
-import utilities.Utilities.AttributeType;
+import utilities.enums.AttributeType;
 
 /**
  * @author Amulya

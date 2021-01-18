@@ -1,7 +1,6 @@
 package game.round;
 
 import game.Player;
-import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
@@ -11,14 +10,16 @@ import game.gameObjects.tiles.Wall;
 import game.gameObjects.tiles.*;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.Error;
 import utilities.MapConverter;
-import utilities.Orientation;
-import utilities.Utilities;
+import utilities.RegisterCard;
+import utilities.enums.AttributeType;
+import utilities.enums.CardType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 import static java.lang.StrictMath.abs;
 
@@ -39,17 +40,12 @@ public class ActivationPhase extends Phase {
     /**
      * saves the Player ID and the card for the current register
      */
-    private HashMap<Integer, Card> currentCards = new HashMap<>();
+    private ArrayList<RegisterCard> currentCards = new ArrayList<>();
 
     private Map gameMap;
 
     //Saves current Register number(for push panels and energy fields)
     private int currentRegister;
-
-    public ActivationPhase() {
-        super();
-    }
-
 
     /**
      * starts the ActivationPhase.
@@ -57,41 +53,49 @@ public class ActivationPhase extends Phase {
      * TODO In every register the priority is determined and the players cards get activated
      * * in priority order.
      */
-    @Override
-    public void startPhase() {
-        for (int register = 1; register <6; register++) {
-            turnCards();
-            activateCards();
+
+    public ActivationPhase() {
+        super();
+        for (int register = 1; register < 6; register++) {
+            turnCards(register);
+            //Because whenever a players card was activated he is removed from the current Player list the board
+            //is only activated after each player took their turn
+            if (currentCards.size() == 0) {
+                activateBoard();
+                //throw new UnsupportedOperationException();
+            }
         }
-        activateBoard();
-        //throw new UnsupportedOperationException();
+        game.nextPhase();
     }
+
 
     /**
      * At the beginning of each register the current cards are shown.
      */
 
-    private void turnCards () {
-        for (int register = 1; register < 6; register++) {
-            for (Player player : playerList) { //TODO in order of priority List
-                currentCards.put(player.getID(), player.getRegisterCard(register));
-            }
-            server.communicateAll(new CurrentCards(currentCards));
+    private void turnCards(int register) {
+        for (Player player : playerList) { //TODO in order of priority List
+            RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
+            currentCards.add(playerRegisterCard);
         }
+        server.communicateAll(new CurrentCards(currentCards));
     }
 
     /**
-     * After the cards of each player for the current register have been shown,
-     * this method activates the cards depending on the priority of the player.
-     * Each player has to confirm with the PlayIt protocol.
+     * This method is called whenever a PlayIt() protocol is received.
+     * it is checked if its the given players turn. If yes, the cards is handled.
      */
 
-    private void activateCards() {
-        for (Integer playerID : currentCards.keySet()) { //if cards are saved in current cards based on priority this works
-            //TODO player needs to send PlayIt protocol
-            Card currentCard = currentCards.get(playerID);
-            Player currentPlayer = game.getPlayerFromID(playerID);
-            currentCard.handleCard(game, currentPlayer);
+    public void activateCards(int playerID) {
+        //Because current Cards ist in priority order the first person to activate their cards is at index 0.
+        //So by removing the index 0 after every players turn the current player is always at index 0.
+        RegisterCard playerRegisterCard = currentCards.get(0);
+        if (playerRegisterCard.getPlayerID() == playerID) {
+            CardType currentCard = playerRegisterCard.getCard();
+            //currentCard.handleCard(game, game.getPlayerFromID(playerID));
+            currentCards.remove(0);
+        } else {
+            server.communicateDirect(new Error("It's not your turn!"), playerID);
         }
     }
 
@@ -122,10 +126,10 @@ public class ActivationPhase extends Phase {
             for (Player currentPlayer : playerList) {
                 if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
                     for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                        if (a.getType() == Utilities.AttributeType.Belt) {
+                        if (a.getType() == AttributeType.Belt) {
                             handleMove(currentPlayer, ((Belt) a).getOrientation());
                         }
-                        if (a.getType() == Utilities.AttributeType.RotatingBelt) {
+                        if (a.getType() == AttributeType.RotatingBelt) {
                             RotatingBelt temp = (RotatingBelt) a;
                             handleMove(currentPlayer, temp.getOrientations()[1]);
                         }
@@ -141,11 +145,11 @@ public class ActivationPhase extends Phase {
                 for (Player currentPlayer : playerList) {
                     if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
                         for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                            if (a.getType() == Utilities.AttributeType.Belt) {
+                            if (a.getType() == AttributeType.Belt) {
                                 handleMove(currentPlayer, ((Belt) a).getOrientation());
 
                             }
-                            if (a.getType() == Utilities.AttributeType.RotatingBelt) {
+                            if (a.getType() == AttributeType.RotatingBelt) {
                                 RotatingBelt temp = (RotatingBelt) a;
                                 handleMove(currentPlayer, temp.getOrientations()[1]);
                             }
@@ -256,6 +260,7 @@ public class ActivationPhase extends Phase {
     /**
      * calculates the distance between antenna and robot on the map
      * and returns the distance by the number of tiles between them
+     *
      * @param antenna
      * @param robot
      * @return the tiles between antenna and robot

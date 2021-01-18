@@ -1,7 +1,7 @@
 package game.gameActions;
 
 import game.Player;
-import utilities.Orientation;
+import utilities.enums.Orientation;
 
 /**
  * The MoveRobot class contains only overriden method that moves the Robot one space

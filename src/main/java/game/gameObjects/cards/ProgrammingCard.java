@@ -3,7 +3,6 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import game.gameActions.Action;
-import utilities.Utilities.CardType;
 
 import java.util.ArrayList;
 
@@ -18,8 +17,7 @@ public abstract class ProgrammingCard extends Card {
 
     private ArrayList<Action> actions = new ArrayList<>();
 
-    public ProgrammingCard(CardType card) {
-        super(card);
+    public ProgrammingCard() {
         this.isHidden = false;
         this.isLocked = false;
     }

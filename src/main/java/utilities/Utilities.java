@@ -1,6 +1,6 @@
 package utilities;
 
-import com.google.gson.annotations.SerializedName;
+import utilities.enums.Orientation;
 
 public abstract class Utilities {
 
@@ -46,63 +46,4 @@ public abstract class Utilities {
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 6;
     public static final int ENERGY_BANK = 48;
-
-    public enum CardType {
-        MoveI, MoveII, MoveIII, TurnLeft, TurnRight, UTurn, BackUp, PowerUp, Again,
-        Spam, Worm, Virus, Trojan
-    }
-
-    public enum Rotation {
-        @SerializedName("counterClockwise") LEFT,
-        @SerializedName("clockwise") RIGHT
-    }
-
-
-    public enum Difficulty {
-        BEGINNER, ADVANCED, EXTREME
-
-    }
-
-    public enum PhaseState {
-        @SerializedName("0") CONSTRUCTION(0),
-        @SerializedName("1") UPGRADE(1),
-        @SerializedName("2") PROGRAMMING(2),
-        @SerializedName("3") ACTIVATION(3);
-        static {
-            CONSTRUCTION.next = UPGRADE;
-            UPGRADE.next = PROGRAMMING;
-            PROGRAMMING.next = ACTIVATION;
-            ACTIVATION.next = UPGRADE;
-        }
-
-        private final int phase;
-        private PhaseState next;
-
-        PhaseState(int phase) {
-            this.phase = phase;
-        }
-        public PhaseState getNext(){
-            return next;
-        }
-    }
-
-    public enum MessageType {
-        HelloClient, HelloServer, Welcome,
-        PlayerValues, PlayerAdded, SetStatus,
-        PlayerStatus, GameStarted, SendChat,
-        ReceivedChat, Error, ConnectionUpdate,
-        ActivePhase, CardPlayed, CardSelected,
-        CardsYouGotNow, CurrentCards, CurrentPlayer,
-        DiscardHand, DrawDamage, Movement, NotYourCards,
-        PickDamage, PlayCard, SelectCard, SelectDamage,
-        SelectionFinished, SetStartingPoint, ShufflingCoding,
-        StartingPointTaken, TimerEnded, TimerStarted,
-        YourCards, PlayerTurning, PlayIt, Reboot, Energy,
-        GameWon, CheckPointReached
-    }
-
-    public enum AttributeType {
-        Antenna, Belt, ControlPoint, Empty, EnergySpace, Gear,
-        Laser, Pit, PushPanel, StartPoint, RestartPoint, RotatingBelt, Wall
-    }
 }

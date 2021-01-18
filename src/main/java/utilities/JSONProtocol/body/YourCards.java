@@ -6,17 +6,17 @@ import utilities.JSONProtocol.JSONBody;
 import java.util.ArrayList;
 
 public class YourCards extends JSONBody {
-    ArrayList<Card> cards;
+    ArrayList<String> cards;
 
-    public YourCards(ArrayList<Card> cards) {
+    public YourCards(ArrayList<String> cards) {
         this.cards = cards;
     }
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<String> getCards() {
         return cards;
     }
 
-    public void setCards(ArrayList<Card> cards) {
+    public void setCards(ArrayList<String> cards) {
         this.cards = cards;
     }
 }

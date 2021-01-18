@@ -1,10 +1,9 @@
 package game.gameObjects.tiles;
 
-import game.Player;
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.Utilities.AttributeType;
-import utilities.Utilities.Rotation;
+import utilities.enums.AttributeType;
+import utilities.enums.Rotation;
 
 /**
  * @author Amulya

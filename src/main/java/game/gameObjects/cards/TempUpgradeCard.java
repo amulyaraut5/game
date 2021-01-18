@@ -3,12 +3,10 @@ package game.gameObjects.cards;
 import game.Game;
 import game.Player;
 import javafx.scene.image.ImageView;
-import utilities.Utilities.CardType;
 
 public abstract class TempUpgradeCard extends UpgradeCard {
 
-    public TempUpgradeCard(CardType card) {
-        super(card);
+    public TempUpgradeCard() {
     }
 
     @Override

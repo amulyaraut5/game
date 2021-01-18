@@ -7,21 +7,22 @@ import game.gameObjects.cards.DamageCard;
 import game.gameObjects.tiles.RestartPoint;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
-import utilities.Orientation;
-import utilities.Utilities.CardType;
+import utilities.enums.Orientation;
+import utilities.enums.CardType;
 
 /**
  * @author annika
  */
-public class Worm extends DamageCard{
+public class Worm extends DamageCard {
     private RestartPoint restartPoint;
 
     public Worm() {
-        super(CardType.Worm);
+        card = CardType.Worm;
     }
 
     /**
      * When programming a worm damage card, the player must immediately reboot the robot.
+     *
      * @param game
      * @param player
      */
