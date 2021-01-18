@@ -56,11 +56,15 @@ public class Client {
      */
     private PrintWriter writer;
     private boolean exit = false;
-    private int playerID;
+    private int thisPlayersID;
 
     public static Client getInstance() {
         if (instance == null) instance = new Client();
         return instance;
+    }
+
+    public int getThisPlayersID() {
+        return thisPlayersID;
     }
 
     /**
@@ -140,7 +144,7 @@ public class Client {
                 }
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
-                    playerID = wc.getPlayerID();
+                    thisPlayersID = wc.getPlayerID();
                     viewManager.nextScene();
                 }
                 case PlayerAdded -> {
@@ -165,7 +169,7 @@ public class Client {
                 }
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                    gameViewController.placeRobotInMap(msg.getPlayerID(), msg.getPosition());
+                    gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), msg.getPosition());
                 }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
@@ -219,7 +223,7 @@ public class Client {
         Player player = new Player(playerAdded);
         players.add(player);
 
-        if (playerID == player.getID()) {
+        if (thisPlayersID == player.getID()) {
             gameViewController.getPlayerMapController().loadPlayerMap(player);
             viewManager.nextScene();
         }
@@ -242,5 +246,18 @@ public class Client {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    /**
+     * Gets a player based on their ID from the list of players saved in {@code Client}.
+     *
+     * @param id ID of the wanted player.
+     * @return Unique player with the ID, {@code null} if no player with the ID exists.
+     */
+    public Player getPlayerFromID(int id) {
+        for (Player player : players) {
+            if (player.getID() == id) return player;
+        }
+        return null;
     }
 }

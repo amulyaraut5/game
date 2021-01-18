@@ -24,14 +24,18 @@ import utilities.*;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
+import utilities.MapConverter;
+import utilities.SoundHandler;
+import utilities.Utilities;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 
 /**
  * The GameViewController class controls the GameView and coordinates its inner views
@@ -66,6 +70,7 @@ public class GameViewController extends Controller {
     private ActivationController activationController;
 
     private SoundHandler soundHandler;
+    private EventHandler<MouseEvent> onMapClicked;
 
     public static void setLobbyController(LobbyController lobbyController) {
         GameViewController.lobbyController = lobbyController;
@@ -81,18 +86,15 @@ public class GameViewController extends Controller {
 
     @FXML
     public void initialize() {
-
-        boardPane.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandler);
-        /*boardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+        boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
             int pos = x + y * Utilities.MAP_WIDTH;
             client.sendMessage(new SetStartingPoint(pos));
-        });*/
+        });
+
         this.soundHandler = new SoundHandler();
-
     }
-
 
     public void changeDirection() {
 
@@ -100,22 +102,6 @@ public class GameViewController extends Controller {
         double currentDirection = robotImageView.rotateProperty().getValue();
         robotImageView.rotateProperty().setValue(currentDirection - 90);
     }
-
-    EventHandler<MouseEvent> eventHandler =
-            new EventHandler<javafx.scene.input.MouseEvent>() {
-                @Override
-                public void handle(javafx.scene.input.MouseEvent e) {
-                    int x = (int) e.getX() / Utilities.FIELD_SIZE;
-                    int y = (int) e.getY() / Utilities.FIELD_SIZE;
-                    int pos = x + y * Utilities.MAP_WIDTH;
-                    client.sendMessage(new SetStartingPoint(pos));
-                    int[] startPoints = {14,39,53,66,78,105};
-                    for(int i: startPoints){
-                        if(i == pos) boardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-                    }
-                }
-            };
-
 
     public Group[][] getFields() {
         return fields;
@@ -305,7 +291,7 @@ public class GameViewController extends Controller {
      * Button press to test the change of inner phase panes.
      */
     @FXML
-    public void changeInnerView() throws IOException {//TODO set it private
+    private void changeInnerView() throws IOException {
         Pane innerPane = setNextPhase();
         outerPane.setCenter(innerPane);
     }
@@ -355,8 +341,11 @@ public class GameViewController extends Controller {
     }
 
 
+    public void soundsOnAction(javafx.event.ActionEvent event) {
+        this.soundHandler.musicOn();
+    }
 
-    public void soundsOnAction(javafx.event.ActionEvent event) {this.soundHandler.musicOn(); }
-
-    public void soundsOffAction(javafx.event.ActionEvent event) {this.soundHandler.musicOff(); }
+    public void soundsOffAction(javafx.event.ActionEvent event) {
+        this.soundHandler.musicOff();
+    }
 }
