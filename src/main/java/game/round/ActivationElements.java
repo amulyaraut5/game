@@ -129,18 +129,6 @@ public class ActivationElements {
             }
         }
     }
-    //Set ActivationPhase instance in order for this to work
-    public void moveAll(ArrayList<Player> players){
-        for (Player player : players) {
-            player.getRobot().setOldPosition(player.getRobot().getPosition());
-            for (Attribute a : map.getTile(player.getRobot().getPosition()).getAttributes()) {
-                if(a.getType() == AttributeType.Belt){
-
-                }
-
-            }
-        }
-    }
 
     public void activateGreenBelts() {
         ArrayList<Player> playersOnBelt = new ArrayList<>();

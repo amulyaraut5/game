@@ -1,7 +1,5 @@
 package game.gameObjects.robot;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import utilities.Coordinate;
@@ -121,10 +119,6 @@ public abstract class Robot {
 
     public void setPosition(int x, int y) {
         position = new Coordinate(x, y);
-    }
-
-    public void setOldPosition(Coordinate c){
-        this.oldPosition = oldPosition;
     }
 
     //TODO

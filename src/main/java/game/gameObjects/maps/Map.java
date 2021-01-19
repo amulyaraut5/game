@@ -242,7 +242,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if(a.getType() == Utilities.AttributeType.EnergySpace){
+                    if(a.getType() == AttributeType.EnergySpace){
                         this.EnergySpaces.add(new Coordinate(i, j));
                     }
                 }
