@@ -19,6 +19,12 @@ public class Coordinate {
         this.y = y;
     }
 
+    /**
+     * Parses a one-dimensional position on the map into a two-dimensional {@link Coordinate}.
+     *
+     * @param position Position on the map starting from top right to bottom left.
+     * @return Coordinate of the given position.
+     */
     public static Coordinate parse(int position) {
         int xMax = Utilities.MAP_WIDTH;
         int x = position % xMax;
@@ -26,6 +32,11 @@ public class Coordinate {
         return new Coordinate(x, y);
     }
 
+    /**
+     * Converts this {@link Coordinate} into a one-dimensional position on the map starting from top right to bottom left.
+     *
+     * @return position on the map.
+     */
     public int toPosition() {
         return x + y * Utilities.MAP_WIDTH;
     }
@@ -37,17 +48,6 @@ public class Coordinate {
 
     public Coordinate subtract(Coordinate another) {
         return new Coordinate(this.x - another.x, this.y - another.y);
-    }
-
-    /**
-     * Methods updates the position of a coordinate to given attributes.
-     *
-     * @param x horizontal parameter of a position
-     * @param y vertical parameter of a position
-     */
-    public void update(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 
     public int getX() {
@@ -72,14 +72,32 @@ public class Coordinate {
         this.y = y;
     }
 
+    /**
+     * @param obj Coordinate to test
+     * @return true if both coordinates are at the same position
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj instanceof Coordinate) {
+            Coordinate c = (Coordinate) obj;
+            return (this.getX() == c.getX()) && (this.getY() == c.getY());
+        } else return false;
+    }
+
+    /**
+     * Creates a clone of this {@link Coordinate}, which is on the same x and y position.
+     * <blockquote>
+     * <pre>x.clone() != x</pre>
+     * <pre>x.clone().getClass() == x.getClass()</pre>
+     * <pre>x.clone().equals(x)</pre>
+     * </blockquote>
+     *
+     * @return a clone of this Coordinate.
+     */
     @Override
     public Coordinate clone() {
         return new Coordinate(x, y);
-    }
-
-    public boolean equals(Coordinate c) {
-        if (c == null) return false;
-        return (this.getX() == c.getX()) && (this.getY() == c.getY());
     }
 
     public void addToX(int x) {
