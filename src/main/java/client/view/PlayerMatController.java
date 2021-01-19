@@ -106,22 +106,21 @@ public class PlayerMatController extends Controller {
     }
 
     private void mouseDragDropped(DragEvent event, StackPane pane) {
-        Dragboard db = event.getDragboard();
-        boolean success = false;
-        if (db.hasImage()) {
-            success = true;
-            if (!pane.getChildren().isEmpty()) {
-                pane.getChildren().remove(0);
-            }
-            Image img = db.getImage();
-            addImage(img, pane);
-            System.out.println("CardName playerMapController" + getImageDropped());
-            System.out.println("Register " + registerHBox.getChildren().indexOf(pane) + 1);
-            String cardName = getImageDropped();
-            int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
-            client.sendMessage(new SelectCard(cardName, registerNumber));
-            //TODO getting url
-            //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
+
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasImage()) {
+                success = true;
+                if (!pane.getChildren().isEmpty()) {
+                    pane.getChildren().remove(0);
+                }
+                Image img = db.getImage();
+                addImage(img, pane);
+                String cardName = getImageDropped();
+                int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
+                client.sendMessage(new SelectCard(cardName, registerNumber));
+                //TODO getting url
+                //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
 
             }
             event.setDropCompleted(false);
@@ -130,18 +129,9 @@ public class PlayerMatController extends Controller {
 
     }
     public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow){
-        /*for ( int i = 4; i > 0; i--){
-            System.out.println(i);
-            registerHBox.getChildren().remove(i);
-            System.out.println(i);
-        }*/
-        System.out.println(registerHBox.getChildren().size());
         registerHBox.getChildren().clear();
-        System.out.println(registerHBox.getChildren().size());
         for (CardType card : cardsYouGotNow.getCards()){
             StackPane pane = createNewPane(false);
-            System.out.println(card);
-            System.out.println(card.name());
             addImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()), pane);
             registerHBox.getChildren().add(pane);
         }
