@@ -75,7 +75,7 @@ public class PlayerMatController extends Controller {
         //setImageDropped(imageView.getImage().getUrl());
         db.setContent(content);
         imageView.setImage(null);
-        client.sendMessage(new SelectCard(null, registerHBox.getChildren().indexOf(pane)));
+        client.sendMessage(new SelectCard("null", registerHBox.getChildren().indexOf(pane)));
         mouseEvent.consume();
     }
 

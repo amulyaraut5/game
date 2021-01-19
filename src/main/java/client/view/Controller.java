@@ -46,10 +46,12 @@ public abstract class Controller {
     }
 
     public void setImageDropped(String imageDropped) {
-        String [] a = imageDropped.split("/");
-        String imageName = a[a.length-1];
-        String cardName = imageName.substring(0, imageName.length()-9);
-        this.imageDropped = cardName;
+        //if(imageDropped!= null){
+            String [] a = imageDropped.split("/");
+            String imageName = a[a.length-1];
+            String cardName = imageName.substring(0, imageName.length()-9);
+            this.imageDropped = cardName;
+        //}
     }
 
     /**
