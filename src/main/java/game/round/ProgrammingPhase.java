@@ -6,6 +6,7 @@ import game.gameObjects.cards.damage.*;
 import game.gameObjects.cards.programming.*;
 import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +23,7 @@ public class ProgrammingPhase extends Phase {
     /**
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
      */
-    private ArrayList<Integer> notReadyPlayers = new ArrayList<>();
+    private ArrayList<Player> notReadyPlayers = new ArrayList<>();
     private boolean timerFinished = false;
     private ArrayList<Card> discardCards = new ArrayList<>();
 
@@ -36,7 +37,7 @@ public class ProgrammingPhase extends Phase {
         super();
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
-            notReadyPlayers.add(player.getID());
+            notReadyPlayers.add(player);
             if (!(player.getRegisterCards().contains(null))) {
                 player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
@@ -107,7 +108,7 @@ public class ProgrammingPhase extends Phase {
 
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
-            notReadyPlayers.remove(player.getID());
+            notReadyPlayers.remove(player);
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == playerList.size() - 1) {
@@ -139,7 +140,11 @@ public class ProgrammingPhase extends Phase {
     public void endProgrammingTimer() {
         if (!(timerFinished)) {
             timerFinished = true;
-            server.communicateAll(new TimerEnded(notReadyPlayers));
+            ArrayList<Integer> playerIds = new ArrayList<>();
+            for (Player player : notReadyPlayers){
+                playerIds.add(player.getID());
+            }
+            server.communicateAll(new TimerEnded(playerIds));
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
@@ -154,8 +159,7 @@ public class ProgrammingPhase extends Phase {
     private void dealRandomCards() {
 
         //this method is only handled for players who didn't manage to put their cards down in time
-        for (Integer id : notReadyPlayers) {
-            Player player = game.getPlayerFromID(id);
+        for (Player player : notReadyPlayers) {
 
             //Take all cards from the register and discard them to have an empty register
             player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
