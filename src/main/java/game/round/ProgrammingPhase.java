@@ -185,7 +185,11 @@ public class ProgrammingPhase extends Phase {
                 player.setRegisterCards(register, randomElement);
                 player.getDrawnProgrammingCards().remove(randomElement);
             }
-            player.message(new CardsYouGotNow(player.getRegisterCards()));
+            ArrayList<CardType> cardNames = new ArrayList<>();
+            for (Card card: player.getRegisterCards()){
+                cardNames.add(card.getName());
+            }
+            player.message(new CardsYouGotNow(cardNames));
         }
     }
 
