@@ -61,40 +61,43 @@ public class ProgrammingPhase extends Phase {
         String cardType = selectCard.getCard();
         Card chosenCard = null;
         switch (cardType) {
-            case "again":
+            case "Again":
                 chosenCard = new Again();
                 break;
-            case "moveI":
+            case "MoveI":
                 chosenCard = new MoveI();
                 break;
-            case "moveII":
+            case "MoveII":
                 chosenCard = new MoveII();
                 break;
-            case "moveIII":
+            case "MoveIII":
                 chosenCard = new MoveIII();
                 break;
-            case "powerUp":
+            case "PowerUp":
                 chosenCard = new PowerUp();
                 break;
-            case "turnLeft":
+            case "BackUp":
+                chosenCard = new BackUp();
+                break;
+            case "TurnLeft":
                 chosenCard = new TurnLeft();
                 break;
-            case "rightTurn":
+            case "RightTurn":
                 chosenCard = new TurnRight();
                 break;
-            case "uTurn":
+            case "UTurn":
                 chosenCard = new UTurn();
                 break;
-            case "spam":
+            case "Spam":
                 chosenCard = new Spam();
                 break;
-            case "trojan":
+            case "Trojan":
                 chosenCard = new Trojan();
                 break;
-            case "virus":
+            case "Virus":
                 chosenCard = new Virus();
                 break;
-            case "worm":
+            case "Worm":
                 chosenCard = new Worm();
                 break;
             case "null":
