@@ -82,7 +82,7 @@ public class ProgrammingPhase extends Phase {
             case "TurnLeft":
                 chosenCard = new TurnLeft();
                 break;
-            case "RightTurn":
+            case "TurnRight":
                 chosenCard = new TurnRight();
                 break;
             case "UTurn":
@@ -101,7 +101,7 @@ public class ProgrammingPhase extends Phase {
                 chosenCard = new Worm();
                 break;
             case "null":
-                // if player removes one card
+                chosenCard = null;
                 break;
         }
 
