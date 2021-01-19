@@ -147,7 +147,7 @@ public class GameViewController extends Controller {
             boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
         }
 
-        Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
+        Coordinate newRobotPosition = Coordinate.parse(position);
         int newX = newRobotPosition.getX();
         int newY = newRobotPosition.getY();
         ImageView imageView = player.getRobot().drawRobotImage();
@@ -201,7 +201,7 @@ public class GameViewController extends Controller {
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
 
-                Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(to);
+                Coordinate newRobotPosition = Coordinate.parse(to);
                 int newX = newRobotPosition.getX();
                 int newY = newRobotPosition.getY();
 
