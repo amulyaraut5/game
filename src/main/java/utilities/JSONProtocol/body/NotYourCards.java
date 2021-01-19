@@ -3,8 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class NotYourCards extends JSONBody {
-    int playerID;
-    int cards; //Die anderen Spieler werden lediglich über die Anzahl der Karten benachrichtigt
+    private int playerID;
+    private int cards;
 
     public NotYourCards(int playerID, int cards) {
         this.playerID = playerID;

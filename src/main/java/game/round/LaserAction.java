@@ -48,7 +48,7 @@ public class LaserAction {
         determineLaserPaths();
         for (Coordinate coordinate : coordinates) {
             for (Player player : playerList) {
-                if (player.getRobot().getPosition() == coordinate) {
+                if (player.getRobot().getCoordinate() == coordinate) {
                     //player.getDiscardedProgrammingDeck().addSpamCard();
 
                 }
@@ -69,7 +69,7 @@ public class LaserAction {
             for (Player targetPlayer : playerList) {
                 if (currentPlayer != targetPlayer) { //TODO
 
-                    if (targetPlayer.getRobot().getPosition() == coordinate) {
+                    if (targetPlayer.getRobot().getCoordinate() == coordinate) {
                         //targetPlayer.getDiscardedProgrammingDeck().addSpamCard();
 
                     }
@@ -110,7 +110,7 @@ public class LaserAction {
     // TODO //TODO Antenna Case and Delete unnecessary logger.info
     public void determineRobotLaserPath(Player player) {
         Orientation orientation = player.getRobot().getOrientation();
-        Coordinate robotPosition = player.getRobot().getPosition();
+        Coordinate robotPosition = player.getRobot().getCoordinate();
 
         roboCoordinates = determinePath(orientation, robotPosition); //TODO "roboCoordinates =" or "roboCoordinates.addAll()"
     }

@@ -30,7 +30,7 @@ public class ActivationElements {
     public void activatePit() {
         for (Coordinate coordinate : map.getPitCoordinate()) {
             for(Player player: playerList){
-                if (player.getRobot().getPosition() == coordinate) {
+                if (player.getRobot().getCoordinate() == coordinate) {
                     new RebootAction().doAction(player.getRobot().getOrientation(), player);
 
                     JSONBody jsonBody = new Reboot(player.getID());
@@ -43,7 +43,7 @@ public class ActivationElements {
     public void activateGear(){
         for (Coordinate coordinate : map.getGearCoordinate()) {
             for(Player player: playerList){
-                if (player.getRobot().getPosition() == coordinate) {
+                if (player.getRobot().getCoordinate() == coordinate) {
                     //TODO Change Rotation to Orientation or vice verse
 
                    //new RotateRobot().doAction();
@@ -71,7 +71,7 @@ public class ActivationElements {
                 int count = ((game.gameObjects.tiles.Laser) a).getCount();
 
                 for(Player player: playerList){
-                    if (player.getRobot().getPosition() == coordinate){
+                    if (player.getRobot().getCoordinate() == coordinate){
 
                         JSONBody jsonBody = new CheckpointReached(player.getID(),count);
                         player.message(jsonBody);
@@ -115,7 +115,7 @@ public class ActivationElements {
     public void activateEnergySpace(){
         for(Coordinate coordinate: map.getEnergySpaceCoordinate()){
             for(Player player: playerList){
-                if (player.getRobot().getPosition() == coordinate) {
+                if (player.getRobot().getCoordinate() == coordinate) {
 
                     int energy = player.getEnergyCubes();
                     energy += energy;
@@ -140,7 +140,7 @@ public class ActivationElements {
 
         for (Coordinate tileCoordinate : map.getGreenBelts()) {
             for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
                     playersOnBelt.add(currentPlayer);
                     actionFinished.add(false);
 
@@ -158,7 +158,7 @@ public class ActivationElements {
         }
 
         for (Player player : playersOnBelt) {
-            oldPositions.add(player.getRobot().getPosition());
+            oldPositions.add(player.getRobot().getCoordinate());
         }
         boolean finished = false;
         while(!finished){
@@ -168,13 +168,13 @@ public class ActivationElements {
                     boolean move = true;
                     Coordinate newPos = calculateNew(player, orientations.get(playersOnBelt.indexOf(player)));
                     for (Player collisionPlayer : playerList) {
-                        if(collisionPlayer.getRobot().getPosition().equals(newPos)) {
+                        if(collisionPlayer.getRobot().getCoordinate().equals(newPos)) {
                             move = false;
                             if (!playersOnBelt.contains(collisionPlayer)) {
                                 actionFinished.set(playersOnBelt.indexOf(player), true);
                             } else {
                                 if (actionFinished.get(playersOnBelt.indexOf(collisionPlayer))) {
-                                    collisionPlayer.getRobot().setPosition(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
+                                    collisionPlayer.getRobot().setCoordinate(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
                                     movedPlayers.remove(collisionPlayer);
                                     actionFinished.set(playersOnBelt.indexOf(player), true);
                                 }
@@ -182,7 +182,7 @@ public class ActivationElements {
                         }
                     }
                     if(move){
-                        player.getRobot().setPosition(newPos);
+                        player.getRobot().setCoordinate(newPos);
                         movedPlayers.add(player);
                     }
                 }
@@ -201,19 +201,19 @@ public class ActivationElements {
     public Coordinate calculateNew(Player player, Orientation o){
         Coordinate newPosition = null;
         if (o == Orientation.UP) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToY(-1);
         }
         if (o == Orientation.RIGHT) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToX(1);
         }
         if (o == Orientation.DOWN) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToY(1);
         }
         if (o == Orientation.LEFT) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToX(-1);
         }
 
@@ -230,7 +230,7 @@ public class ActivationElements {
 
         for (Coordinate tileCoordinate : map.getBlueBelts()) {
             for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
                     playersOnBelt.add(currentPlayer);
                     actionFinished.add(false);
 
@@ -248,7 +248,7 @@ public class ActivationElements {
         }
 
         for (Player player : playersOnBelt) {
-            oldPositions.add(player.getRobot().getPosition());
+            oldPositions.add(player.getRobot().getCoordinate());
         }
 
         for (int i = 0; i < 2; i++){
@@ -264,20 +264,20 @@ public class ActivationElements {
                         boolean move = true;
                         Coordinate newPos = calculateNew(player, orientations.get(playersOnBelt.indexOf(player)));
                         for (Player collisionPlayer : playerList) {
-                            if (collisionPlayer.getRobot().getPosition().equals(newPos)) {
+                            if (collisionPlayer.getRobot().getCoordinate().equals(newPos)) {
                                 move = false;
                                 if (!playersOnBelt.contains(collisionPlayer)) {
                                     actionFinished.set(playersOnBelt.indexOf(player), true);
                                 } else {
                                     if (actionFinished.get(playersOnBelt.indexOf(collisionPlayer))) {
-                                        collisionPlayer.getRobot().setPosition(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
+                                        collisionPlayer.getRobot().setCoordinate(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
                                         actionFinished.set(playersOnBelt.indexOf(player), true);
                                     }
                                 }
                             }
                         }
                         if (move) {
-                            player.getRobot().setPosition(newPos);
+                            player.getRobot().setCoordinate(newPos);
                         }
                     }
                 }
@@ -289,7 +289,7 @@ public class ActivationElements {
         }
 
         for (Player p : playersOnBelt) {
-            if(p.getRobot().getPosition().equals(oldPositions.get(playersOnBelt.indexOf(p)))){
+            if(p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))){
                 activationPhase.communicateBeltMovement(p);
             }
         }
@@ -307,7 +307,7 @@ public class ActivationElements {
         for(Coordinate coordinate: map.getPushPanelCoordinate()){
             Tile tile = map.getTile(coordinate);
             for(Player player: playerList){
-                if (player.getRobot().getPosition() == coordinate) {
+                if (player.getRobot().getCoordinate() == coordinate) {
                     for(Attribute a : tile.getAttributes()){
                         for(int i : ((game.gameObjects.tiles.PushPanel) a).getRegisters()){
                             if( i == player.getCurrentRegister()){

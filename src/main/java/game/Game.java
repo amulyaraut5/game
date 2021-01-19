@@ -178,17 +178,17 @@ public class Game {
         Player player = userToPlayer(user);
 
         //check if playes has already set their starting point
-        if (player.getRobot().getPosition() == null) {
+        if (player.getRobot().getCoordinate() == null) {
             //check if chosen tile is StartingPoint
             boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
             if (isOnStartPoint) {
                 //check if no other player is on the chosen tile
                 for (Player other : players) {
                     if (!other.equals(player)) {
-                        Coordinate otherPos = other.getRobot().getPosition();
+                        Coordinate otherPos = other.getRobot().getCoordinate();
                         if (!pos.equals(otherPos)) {
                             //chosen StartingPoint is valid
-                            player.getRobot().setPosition(pos);
+                            player.getRobot().setCoordinate(pos);
                             server.communicateAll(new StartingPointTaken(player.getID(), position));
                         } else player.message(new Error("Your chosen position is already taken!"));
                     }
@@ -198,7 +198,7 @@ public class Game {
 
         //check if all players have set their StartingPoint
         for (Player p : players) {
-            if (p.getRobot().getPosition() == null) return;
+            if (p.getRobot().getCoordinate() == null) return;
         }
         nextPhase();
     }

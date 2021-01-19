@@ -15,8 +15,8 @@ public class MoveRobot extends Action{
 
     @Override
     public void doAction(Orientation orientation, Player player) {
-        int xCoordinate = player.getRobot().getPosition().getX();
-        int yCoordinate = player.getRobot().getPosition().getY();
+        int xCoordinate = player.getRobot().getCoordinate().getX();
+        int yCoordinate = player.getRobot().getCoordinate().getY();
 
         switch (orientation) {
             case UP -> player.getRobot().setPosition(xCoordinate, yCoordinate - 1);

@@ -52,7 +52,7 @@ public class Multiplex {
      * of different classes correctly.
      */
 
-    static class Deserializer implements JsonDeserializer<JSONMessage> {
+    private static class Deserializer implements JsonDeserializer<JSONMessage> {
 
         @Override
         public JSONMessage deserialize(JsonElement jsonElement, Type typeofT,
@@ -90,7 +90,7 @@ public class Multiplex {
      * through different subclasses of abstract class Attribute.
      */
 
-    static class AttributeDeserializer implements JsonDeserializer<Attribute> {
+    private static class AttributeDeserializer implements JsonDeserializer<Attribute> {
 
         @Override
         public Attribute deserialize(JsonElement jsonElement, Type typeofT,

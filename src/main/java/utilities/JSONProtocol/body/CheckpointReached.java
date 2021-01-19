@@ -3,9 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class CheckpointReached extends JSONBody {
-
-    int playerID;
-    int number;
+    private int playerID;
+    private int number;
 
     public CheckpointReached(int playerID, int number) {
 

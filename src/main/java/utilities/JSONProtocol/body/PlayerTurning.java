@@ -4,9 +4,8 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.enums.Orientation;
 
 public class PlayerTurning extends JSONBody {
-
-    int playerID;
-    Orientation direction;
+    private int playerID;
+    private Orientation direction;
 
     public PlayerTurning(int playerID, Orientation direction) {
         this.playerID = playerID;

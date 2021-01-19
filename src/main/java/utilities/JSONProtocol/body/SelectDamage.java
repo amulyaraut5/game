@@ -6,7 +6,7 @@ import utilities.JSONProtocol.JSONBody;
 import java.util.ArrayList;
 
 public class SelectDamage extends JSONBody {
-    ArrayList<Card> cards; //Schadenskarten
+    private ArrayList<Card> cards;
 
     public SelectDamage(ArrayList<Card> cards) {
         this.cards = cards;

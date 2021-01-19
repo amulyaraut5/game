@@ -6,8 +6,8 @@ import utilities.JSONProtocol.JSONBody;
 import java.util.ArrayList;
 
 public class DrawDamage extends JSONBody {
-    int playerID;
-    ArrayList<Card> cards; //Schadenskarten
+    private int playerID;
+    private ArrayList<Card> cards; //Schadenskarten
 
     public DrawDamage(int playerID, ArrayList<Card> cards) {
         this.playerID = playerID;

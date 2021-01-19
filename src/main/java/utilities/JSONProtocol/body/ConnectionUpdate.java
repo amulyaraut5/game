@@ -3,7 +3,6 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class ConnectionUpdate extends JSONBody {
-
     private int playerID;
     private boolean connected;
     private String action;

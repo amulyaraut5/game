@@ -10,8 +10,6 @@ import java.util.Collections;
  */
 public abstract class Deck {
 
-    private ArrayList<Card> deck;
-
     /**
      * Creates a suitable deck with the respective cards,
      * has to be implemented in each deck class.
@@ -40,7 +38,7 @@ public abstract class Deck {
      * @return
      */
     public boolean isEmpty() {
-        return deck.isEmpty();
+        return this.getDeck().isEmpty();
     }
 
     /**

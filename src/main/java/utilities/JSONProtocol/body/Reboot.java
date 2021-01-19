@@ -3,8 +3,7 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class Reboot extends JSONBody {
-
-    int playerID;
+    private int playerID;
 
     public Reboot(int playerID) {
         this.playerID = playerID;
