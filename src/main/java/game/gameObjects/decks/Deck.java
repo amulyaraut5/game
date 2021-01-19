@@ -57,9 +57,9 @@ public abstract class Deck {
      * @return the removed card
      */
     public Card pop() {
-        Card poped = this.getDeck().get(0);
-        this.getDeck().remove(poped);
-        return poped;
+        Card popped = this.getDeck().get(0);
+        this.getDeck().remove(popped);
+        return popped;
     }
 
     /**
