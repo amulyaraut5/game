@@ -1,7 +1,6 @@
 package client.view;
 
 import game.Player;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -15,7 +14,6 @@ import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -24,10 +22,22 @@ import java.util.HashMap;
  */
 public class LobbyController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-
+    /**
+     * In robotImageViews the different ImageViews that can be assigned
+     * are stored together
+     */
+    private final ArrayList<ImageView> robotImageViews = new ArrayList<>();
+    /**
+     * In robotLabels the different Labels that can be assigned
+     * are stored together
+     */
+    private final ArrayList<Label> robotLabels = new ArrayList<>();
+    /**
+     * In robotIcons
+     */
+    private final ArrayList<RobotIcon> robotIcons = new ArrayList<>();
     @FXML
     private BorderPane chatPane;
-
     @FXML
     private CheckBox readyCheckbox;
     /**
@@ -102,27 +112,6 @@ public class LobbyController extends Controller {
     private Label currentLabel;
 
     /**
-     * In robotImageViews the different ImageViews that can be assigned
-     * are stored together
-     */
-    private ArrayList<ImageView> robotImageViews = new ArrayList<>();
-    /**
-     * In robotLabels the different Labels that can be assigned
-     * are stored together
-     */
-    private ArrayList<Label> robotLabels = new ArrayList<>();
-    /**
-     * In robotIcons
-     */
-    private ArrayList<RobotIcon> robotIcons = new ArrayList<>();
-
-    private HashMap<Integer, Image> imageHashmap = new HashMap<>();
-
-    public HashMap<Integer, Image> getImageHashmap() {
-        return imageHashmap;
-    }
-
-    /**
      * this method gets called automatically by constructing view
      * it adds the different ImageViews and Labels to lists and also
      * sets the default of the choiceBox to all. Additionally the current imageView
@@ -146,7 +135,6 @@ public class LobbyController extends Controller {
 
         currentImageView = robot1ImageView;
         currentLabel = robot1Label;
-        GameViewController.setLobbyController(this);
     }
 
     public void attachChatPane(Pane chat) {
@@ -157,7 +145,7 @@ public class LobbyController extends Controller {
 
     /**
      * this method displays an user who joined to the lobby
-     * with its choosed robot, name and also the name is added to the choicebox
+     * with its chosen robot, name and also the name is added to the ChoiceBox
      * so that other users in lobby can send direct messages.
      * Also
      */
@@ -166,9 +154,6 @@ public class LobbyController extends Controller {
         String newName = player.getName() + " " + player.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
 
-        //<-----------------------------Test-------------------------->
-        imageHashmap.put(player.getID(), new Image(getClass().getResource(path).toString()));
-        //<-----------------------------Test-------------------------->
         currentLabel.setText(newName);
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
@@ -177,7 +162,6 @@ public class LobbyController extends Controller {
         RobotIcon robotIcon = new RobotIcon(position, player, imageViewPuffer, labelPuffer, thisUser);
         addRobotIcon(robotIcon);
         robotIcons.add(robotIcon);
-
 
         nextRobot();
     }
@@ -214,15 +198,11 @@ public class LobbyController extends Controller {
     /**
      * by clicking the ready checkbox a message will be send to the client (and then to the server)
      * to signal the ready status of the user.
-     *
-     * @param event
      */
     @FXML
-    private void checkBoxAction(ActionEvent event) {
+    private void checkBoxAction() {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
     }
-
-
 }
 
 

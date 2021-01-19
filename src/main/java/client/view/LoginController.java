@@ -20,13 +20,7 @@ import utilities.JSONProtocol.body.PlayerValues;
  */
 public class LoginController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    /**
-     * the user can choose an username which gets saved and passed on to the client
-     */
-    private String userName;
-    /**
-     * the user can type in its name
-     */
+
     @FXML
     private TextField textUserName;
     /**
@@ -46,21 +40,14 @@ public class LoginController extends Controller {
     private ListView listView;
     /**
      * it stores the imageViews of the different robots,
-     * so that name and id from the choosed robot
+     * so that name and id from the chosen robot
      * can be recognized
      */
-    private ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
+    private final ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
     /**
      * this list stores the different robots (with name and id)
      */
-    private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
-
-    /**
-     *
-     */
-    public void close() {
-        //client.disconnect(); TODO disconnect client on closure of window
-    }
+    private final ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
 
     /**
      * by initializing the view the listView gets filled with the imageViews of the robots and
@@ -97,13 +84,11 @@ public class LoginController extends Controller {
      * This method gets called by clicking on the button, it checks if the username is
      * valid and if a robot is selected and then it sends a PlayerValues protocol message
      * and switches to the gameStage
-     *
-     * @param event
      */
     @FXML
-    private void fxButtonClicked(ActionEvent event) {
+    private void fxButtonClicked() {
         responseLabel.setText("");
-        userName = textUserName.getText();
+        String userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
 
         if (userName.isBlank()) responseLabel.setText("Please insert a Username!");
@@ -112,7 +97,7 @@ public class LoginController extends Controller {
     }
 
     public void setImageViewDisabled(int figure) {
-        //TODO set cell of figure not selectable with cellfactory from initialize method
+        //TODO set cell of figure not selectable with CellFactory from initialize method
         //robotImageViewList.get(figure).setDisable(true);
         //robotImageViewList.get(figure).setMouseTransparent(true);
     }
@@ -129,22 +114,4 @@ public class LoginController extends Controller {
             viewManager.nextScene();
         }
     }
-
-
-    /**
-     * Methods gets called by the ChatClient if no connection to the server could be established.
-     */
-    public void noConnection() {
-        okButton.setDisable(true);
-        responseLabel.setText("No connection to the server!");
-    }
-
-    /**
-     * @param message
-     */
-    public void write(String message) {
-        responseLabel.setText(message);
-    }
-
-
 }

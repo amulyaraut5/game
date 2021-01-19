@@ -1,6 +1,7 @@
 package utilities;
 
 import game.gameObjects.cards.Card;
+import utilities.enums.CardType;
 
 /**
  * This class saves a player ID and a card.
@@ -13,26 +14,18 @@ import game.gameObjects.cards.Card;
 public class RegisterCard {
 
     private int playerID;
-    private Card card;
+    private CardType cardName;
 
     public RegisterCard (int playerID, Card card) {
         this.playerID = playerID;
-        this.card = card;
+        this.cardName = card.getName();
     }
 
-    public Card getCard() {
-        return card;
+    public CardType getCard() {
+        return cardName;
     }
 
     public int getPlayerID() {
         return playerID;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
-    }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
     }
 }

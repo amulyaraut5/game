@@ -73,6 +73,14 @@ public class Game {
         return instance;
     }
 
+    public ActivationPhase getActivationPhase() {
+        return activationPhase;
+    }
+
+    public ProgrammingPhase getProgrammingPhase() {
+        return programmingPhase;
+    }
+
     /**
      * Initialises the game attributes at the beginning of each game
      */
@@ -169,21 +177,24 @@ public class Game {
         Coordinate pos = MapConverter.reconvertToCoordinate(position);
         Player player = userToPlayer(user);
 
-        //check if chosen tile is StartingPoint
-        boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
-        if (isOnStartPoint) {
-            //check if no other player is on the chosen tile
-            for (Player other : players) {
-                if (!other.equals(player)) {
-                    Coordinate otherPos = other.getRobot().getPosition();
-                    if (!pos.equals(otherPos)) {
-                        //chosen StartingPoint is valid
-                        player.getRobot().setPosition(pos);
-                        server.communicateAll(new StartingPointTaken(player.getID(), position));
-                    } else player.message(new Error("Your chosen position is already taken!"));
+        //check if playes has already set their starting point
+        if (player.getRobot().getPosition() == null) {
+            //check if chosen tile is StartingPoint
+            boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
+            if (isOnStartPoint) {
+                //check if no other player is on the chosen tile
+                for (Player other : players) {
+                    if (!other.equals(player)) {
+                        Coordinate otherPos = other.getRobot().getPosition();
+                        if (!pos.equals(otherPos)) {
+                            //chosen StartingPoint is valid
+                            player.getRobot().setPosition(pos);
+                            server.communicateAll(new StartingPointTaken(player.getID(), position));
+                        } else player.message(new Error("Your chosen position is already taken!"));
+                    }
                 }
-            }
-        } else player.message(new Error("This is no valid StartPoint!"));
+            } else player.message(new Error("This is no valid StartPoint!"));
+        } else player.message(new Error("You have already set your starting point!"));
 
         //check if all players have set their StartingPoint
         for (Player p : players) {
@@ -199,9 +210,5 @@ public class Game {
             }
         }
         return null;
-    }
-
-    public void playIt (int playerID) {
-        activationPhase.activateCards(playerID);
     }
 }
