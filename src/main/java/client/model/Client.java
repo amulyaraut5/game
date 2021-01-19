@@ -157,6 +157,10 @@ public class Client {
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), msg.getPosition());
+                    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
+                    gameViewController.tempRobot();
+                    gameViewController.moveRobot();
+                    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();

@@ -20,7 +20,7 @@ public abstract class Robot {
 
     protected Orientation orientation= Orientation.RIGHT;
     protected Coordinate position;
-    protected Coordinate oldPosition;
+
 
     /**
      * method creates a robot from given figure ID.
@@ -116,16 +116,10 @@ public abstract class Robot {
     }
 
     public void setPosition(Coordinate p) {
-        oldPosition = position;
         position = p;
     }
 
-    public Coordinate getOldPosition() {
-        return oldPosition;
-    }
-
     public void setPosition(int x, int y) {
-        oldPosition = position;
         position = new Coordinate(x, y);
     }
 

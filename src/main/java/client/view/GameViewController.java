@@ -5,18 +5,21 @@ import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -139,9 +142,6 @@ public class GameViewController extends Controller {
         }
     }
 
-
-    // <----------------------Only For Test---------------------------->
-
     public void placeRobotInMap(Player player, int position) {
         if (player.getID() == client.getThisPlayersID()) {
             boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
@@ -160,32 +160,44 @@ public class GameViewController extends Controller {
         imageView.setX(newX * Utilities.FIELD_SIZE);
         imageView.setY(newY * Utilities.FIELD_SIZE);
     }
+    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
+    public void tempRobot(){
+        int newX = 7;
+        int newY = 8;
+        Image image = new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm());
+        ImageView imageView = new ImageView(image);
+        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
+        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+        imageView.setPreserveRatio(true);
 
-    // Called twice will move the tile image
-
-    public void moveRobot() {
-
-        ImageView robotImageView = (ImageView) fields[7][8].getChildren().get(fields[7][8].getChildren().size() - 1);
-        fields[7][8].getChildren().remove(fields[7][8].getChildren().size() - 1);
-        fields[7][6].getChildren().add(robotImageView);
-
-        /*TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(2));
-        transition.setToX(35);
-        transition.setToY(45);
-        transition.setNode(robotImageView);
-        transition.play();
-         */
+        robotPane.getChildren().add(imageView);
+        imageView.setX(newX * Utilities.FIELD_SIZE);
+        imageView.setY(newY * Utilities.FIELD_SIZE);
     }
 
+    public void moveRobot() {
+        int x = 7;
+        int y = 8;
+        ImageView imageView = (ImageView) robotPane.getChildren().get(fields[x][y].getChildren().size() - 1);
+        int newX = 1;
+        int newY = 3;
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(2));
+        transition.setToX(newX *Utilities.FIELD_SIZE - x* Utilities.FIELD_SIZE);
+        transition.setToY(newY * Utilities.FIELD_SIZE - y*Utilities.FIELD_SIZE);
+        transition.setNode(imageView);
+        //transition.setInterpolator(Interpolator.LINEAR);
+        transition.play();
+    }
     // <----------------------Only For Test---------------------------->
+
     public void handleMovement(int playerId, int to) {
         // TODO Handled Player from Client
 
         for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerId) {
                 // Get the Robot position from the Board
-                Coordinate oldRobotPosition = player.getRobot().getOldPosition();
+                Coordinate oldRobotPosition = player.getRobot().getPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
 
@@ -210,7 +222,7 @@ public class GameViewController extends Controller {
         for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerID) {
 
-                Coordinate oldRobotPosition = player.getRobot().getOldPosition();
+                Coordinate oldRobotPosition = player.getRobot().getPosition();
                 int x = oldRobotPosition.getX();
                 int y = oldRobotPosition.getY();
 
