@@ -170,6 +170,10 @@ public class Client {
                     YourCards yourCards = (YourCards) message.getBody();
                     gameViewController.programCards(yourCards);
                 }
+                case CardsYouGotNow -> {
+                    CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
+                    gameViewController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+                }
                 case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody(); //TODO
                 }
