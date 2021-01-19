@@ -2,9 +2,11 @@ package game.round;
 
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.*;
+import game.gameObjects.cards.damage.Spam;
+import game.gameObjects.cards.damage.Trojan;
+import game.gameObjects.cards.damage.Virus;
+import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
-import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
@@ -144,7 +146,7 @@ public class ProgrammingPhase extends Phase {
         if (!(timerFinished)) {
             timerFinished = true;
             ArrayList<Integer> playerIds = new ArrayList<>();
-            for (Player player : notReadyPlayers){
+            for (Player player : notReadyPlayers) {
                 playerIds.add(player.getID());
             }
             server.communicateAll(new TimerEnded(playerIds));
@@ -165,7 +167,11 @@ public class ProgrammingPhase extends Phase {
         for (Player player : notReadyPlayers) {
 
             //Take all cards from the register and discard them to have an empty register
-            player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+            for (Card card : player.getRegisterCards()) {
+                if (card != null) {
+                    player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+                }
+            }
             player.createRegister();
 
             //Discard all hand cards
@@ -186,10 +192,12 @@ public class ProgrammingPhase extends Phase {
                 player.getDrawnProgrammingCards().remove(randomElement);
             }
             ArrayList<CardType> cardNames = new ArrayList<>();
-            for (Card card: player.getRegisterCards()){
+            for (Card card : player.getRegisterCards()) {
                 cardNames.add(card.getName());
             }
             player.message(new CardsYouGotNow(cardNames));
+            //System.out.println("discard" + player.getDiscardedProgrammingDeck().getDeck());
+            //System.out.println("draw" + player.getDrawProgrammingDeck().getDeck());
         }
     }
 
@@ -217,7 +225,8 @@ public class ProgrammingPhase extends Phase {
      * @param player player that needs to draw cards
      */
     private void drawProgrammingCards(int amount, Player player) {
-        ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
+        ArrayList<Card> currentDeck = player.getDrawProgrammingDeck().getDeck();
+        //System.out.println("1" + currentDeck.size());
         if (!(currentDeck.size() < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));
         } else {
