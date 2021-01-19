@@ -7,9 +7,11 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Laser;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.Wall;
+import javafx.scene.media.AudioClip;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
+import utilities.SoundHandler;
 import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
 
@@ -29,11 +31,13 @@ public class LaserAction {
     Game game = Game.getInstance();
     ArrayList<Player> playerList = game.getPlayers();
     Map map = game.getMap();
+    SoundHandler soundHandler = new SoundHandler();
 
     /**
      * Constructor for laser
      */
     public LaserAction() {
+
     }
 
     /**
@@ -45,8 +49,7 @@ public class LaserAction {
         determineLaserPaths();
         for (Coordinate coordinate : coordinates) {
             for (Player player : playerList) {
-                if (player.getRobot().getPosition().getX() == coordinate.getX()
-                        && player.getRobot().getPosition().getY() == coordinate.getY()) {
+                if (player.getRobot().getPosition() == coordinate) {
                     //player.getDiscardedProgrammingDeck().addSpamCard();
 
                 }
@@ -67,8 +70,7 @@ public class LaserAction {
             for (Player targetPlayer : playerList) {
                 if (currentPlayer != targetPlayer) { //TODO
 
-                    if (targetPlayer.getRobot().getPosition().getX() == coordinate.getX()
-                            && targetPlayer.getRobot().getPosition().getY() == coordinate.getY()) {
+                    if (targetPlayer.getRobot().getPosition() == coordinate) {
                         //targetPlayer.getDiscardedProgrammingDeck().addSpamCard();
 
                     }
@@ -95,6 +97,7 @@ public class LaserAction {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
                     coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
+                    soundHandler.pitSound();
                 }
             }
         }

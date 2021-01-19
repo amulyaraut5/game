@@ -10,7 +10,8 @@ import utilities.enums.AttributeType;
 import java.util.ArrayList;
 
 /**
- * The map class helps in retrieving all the important aspects of the map.
+ * The map class helps in retrieving all the important aspects of the map either tiles from coordinate
+ * or coordinates from tiles.
  */
 public class Map {
 
