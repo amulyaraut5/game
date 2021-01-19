@@ -2,11 +2,15 @@ package client.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.PlayerValues;
@@ -21,12 +25,15 @@ import utilities.JSONProtocol.body.PlayerValues;
 public class LoginController extends Controller {
     private static final Logger logger = LogManager.getLogger();
     /**
-     * the user can choose an username which gets saved and passed on to the client
+     * it stores the imageViews of the different robots,
+     * so that name and id from the chosen robot
+     * can be recognized
      */
-    private String userName;
+    private final ObservableList<Figure> figures = FXCollections.observableArrayList();
     /**
-     * the user can type in its name
+     * this list stores the different robots (with name and id)
      */
+    private final ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
     @FXML
     private TextField textUserName;
     /**
@@ -43,24 +50,7 @@ public class LoginController extends Controller {
      * the listView for choosing one robot, it stores different ImageViews
      */
     @FXML
-    private ListView listView;
-    /**
-     * it stores the imageViews of the different robots,
-     * so that name and id from the choosed robot
-     * can be recognized
-     */
-    private ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
-    /**
-     * this list stores the different robots (with name and id)
-     */
-    private ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
-
-    /**
-     *
-     */
-    public void close() {
-        //client.disconnect(); TODO disconnect client on closure of window
-    }
+    private ListView<Figure> listView;
 
     /**
      * by initializing the view the listView gets filled with the imageViews of the robots and
@@ -68,9 +58,28 @@ public class LoginController extends Controller {
      */
     public void initialize() {
         createRobotList();
-        listView.setItems(robotImageViewList);
+        listView.setItems(figures);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+        listView.setCellFactory(listCell -> new ListCell<>() {
+
+            @Override
+            public void updateItem(Figure figure, boolean empty) {
+                super.updateItem(figure, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setGraphic(figure.getImageView());
+                    if (figure.isTaken()) {
+                        figure.getImageView().setDisable(true);
+                        setDisable(true);
+                        setBackground(new Background(new BackgroundFill(Color.GRAY,
+                                CornerRadii.EMPTY, Insets.EMPTY)));
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -88,7 +97,7 @@ public class LoginController extends Controller {
 
             RobotPrivate robotPrivate = new RobotPrivate(robotNames[i], i);
             robotList.add(robotPrivate);
-            robotImageViewList.add(robot);
+            figures.add(new Figure(robot));
         }
 
     }
@@ -97,13 +106,11 @@ public class LoginController extends Controller {
      * This method gets called by clicking on the button, it checks if the username is
      * valid and if a robot is selected and then it sends a PlayerValues protocol message
      * and switches to the gameStage
-     *
-     * @param event
      */
     @FXML
-    private void fxButtonClicked(ActionEvent event) {
+    private void fxButtonClicked() {
         responseLabel.setText("");
-        userName = textUserName.getText();
+        String userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
 
         if (userName.isBlank()) responseLabel.setText("Please insert a Username!");
@@ -112,11 +119,10 @@ public class LoginController extends Controller {
     }
 
     public void setImageViewDisabled(int figure) {
-        //TODO set cell of figure not selectable with cellfactory from initialize method
+        //TODO set cell of figure not selectable with CellFactory from initialize method
         //robotImageViewList.get(figure).setDisable(true);
         //robotImageViewList.get(figure).setMouseTransparent(true);
     }
-
 
     /**
      * @param taken
@@ -130,21 +136,30 @@ public class LoginController extends Controller {
         }
     }
 
-
-    /**
-     * Methods gets called by the ChatClient if no connection to the server could be established.
-     */
-    public void noConnection() {
-        okButton.setDisable(true);
-        responseLabel.setText("No connection to the server!");
+    public void setFigureTaken(int id, boolean taken) {
+        Figure figure = figures.get(id);
+        figure.setTaken(taken);
+        figures.set(id, figure);
     }
 
-    /**
-     * @param message
-     */
-    public void write(String message) {
-        responseLabel.setText(message);
+    private class Figure {
+        private boolean taken = false;
+        private ImageView imageView;
+
+        public Figure(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        public boolean isTaken() {
+            return taken;
+        }
+
+        public void setTaken(boolean taken) {
+            this.taken = taken;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
+        }
     }
-
-
 }

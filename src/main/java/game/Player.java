@@ -21,7 +21,7 @@ public class Player extends User {
     /**
      * contains the chosen Cards for each register
      */
-    private ArrayList<Card> registerCards;
+    private ArrayList<Card> registerCards ;
 
     /**
      * Programming deck that cards can be drawn from
@@ -100,7 +100,8 @@ public class Player extends User {
      */
     public void setRegisterCards(int register, Card card) {
         int index = register - 1;
-        registerCards.add(index, card);
+        registerCards.set(index, card);
+
     }
 
     public ArrayList<Card> getRegisterCards() {

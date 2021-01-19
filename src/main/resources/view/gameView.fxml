@@ -33,13 +33,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <BorderPane fx:id="outerPane" />
+                  <BorderPane fx:id="phasePane" />
                   <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Button layoutX="355.0" layoutY="137.0" mnemonicParsing="false" onAction="#changeInnerView" text="test inner view" />
+                  <Button layoutX="355.0" layoutY="137.0" mnemonicParsing="false" onAction="#setNextPhaseView" text="test inner view" />
                   <MenuButton layoutX="21.0" layoutY="14.0" mnemonicParsing="false" text="Sounds">
                     <items>
                       <MenuItem fx:id="soundsOn" mnemonicParsing="false" onAction="#soundsOnAction" text="On" />

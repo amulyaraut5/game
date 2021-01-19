@@ -29,7 +29,6 @@ public class Server extends Thread {
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
     private Game game;
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
-    private boolean exit = false; //TODO Server
 
     /**
      * private Constructor for the ChatServer class
@@ -69,7 +68,7 @@ public class Server extends Thread {
             Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.start();
 
-            while (!exit) {
+            while (!isInterrupted()) {
                 synchronized (this) {
                     try {
                         this.wait();
@@ -102,53 +101,17 @@ public class Server extends Thread {
         switch (type) {
             case HelloServer -> {
                 HelloServer hs = (HelloServer) message.getBody();
-                if (hs.getProtocol() == Utilities.PROTOCOL) {
-                    user.setID(idCounter++);
-                    currentThread().setName("UserThread-" + user.getID());
-                    user.message(new Welcome(user.getID()));
-
-                    for (PlayerAdded addedPlayer : addedPlayers) {
-                        user.message(addedPlayer);
-                    }
-                } else {
-                    JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
-                            "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
-                    user.message(error);
-                    user.getThread().disconnect();
-                }
+                addNewUser(user, hs);
             }
             case PlayerValues -> {
                 PlayerValues pv = (PlayerValues) message.getBody();
-                boolean figureTaken = false;
-                for (User userLoop : getUsers()) {
-                    if (pv.getFigure() == userLoop.getFigure()) {
-                        figureTaken = true;
-                        break;
-                    }
-                }
-                if (!figureTaken) {
-                    if (!pv.getName().isBlank()){
-                        user.setID(user.getID());
-                        user.setName(pv.getName());
-                        user.setFigure(pv.getFigure());
-                        PlayerAdded addedPlayer = new PlayerAdded(user.getID(), pv.getName(), pv.getFigure());
-                        addedPlayers.add(addedPlayer);
-                        communicateAll(addedPlayer);
-                    }else{
-                        user.message(new Error("Username can't be blank!"));
-                    }
-                } else {
-                    user.message(new Error("Robot is already taken!"));
-                }
+                addPlayerValues(user, pv);
             }
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
-                if (allUsersReady) {
-                    game.play();
-                }
-                //user.message(new YourCards(programmingCards));
+                if (allUsersReady) game.play();
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -160,19 +123,59 @@ public class Server extends Thread {
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
-                //TODO send selectCard to ProgrammingPhase
-                //Game.getInstance().messageToPhases(selectCard);
+                game.getProgrammingPhase().putCardToRegister(game.userToPlayer(user), selectCard);
                 communicateUsers(new CardSelected(user.getID(), selectCard.getRegister()), user);
             }
             case SetStartingPoint -> {
                 SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
-
                 game.setStartingPoint(user, setStartingPoint.getPosition());
             }
-            case PlayIt -> {
-                game.getActivationPhase().activateCards(user.getID());
-            }
+            case PlayIt -> game.getActivationPhase().activateCards(user.getID());
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
+        }
+    }
+
+    private void addPlayerValues(User user, PlayerValues pv) {
+        boolean figureTaken = false;
+        for (User userLoop : getUsers()) {
+            if (pv.getFigure() == userLoop.getFigure()) {
+                figureTaken = true;
+                break;
+            }
+        }
+        if (!figureTaken) {
+            if (!pv.getName().isBlank()) {
+                user.setID(user.getID());
+                user.setName(pv.getName());
+                user.setFigure(pv.getFigure());
+                PlayerAdded addedPlayer = new PlayerAdded(user.getID(), pv.getName(), pv.getFigure());
+                addedPlayers.add(addedPlayer);
+                communicateAll(addedPlayer);
+            } else {
+                user.message(new Error("Username can't be blank!"));
+            }
+        } else {
+            user.message(new Error("Robot is already taken!"));
+        }
+    }
+
+    private void addNewUser(User user, HelloServer hs) {
+        if (hs.getProtocol() == Utilities.PROTOCOL) {
+            user.setID(idCounter++);
+            currentThread().setName("UserThread-" + user.getID());
+            user.message(new Welcome(user.getID()));
+
+            for (PlayerAdded addedPlayer : addedPlayers) {
+                user.message(addedPlayer);
+            }
+            for (User readyUser : readyUsers) {
+                user.message(new PlayerStatus(readyUser.getID(), true));
+            }
+        } else {
+            JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
+                    "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
+            user.message(error);
+            user.getThread().disconnect();
         }
     }
 
