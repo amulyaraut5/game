@@ -209,6 +209,7 @@ public class Client {
             gameViewController.getPlayerMapController().loadPlayerMap(player);
             viewManager.nextScene();
         }
+        loginController.setFigureTaken(player.getFigure(),true);
         lobbyController.setJoinedUsers(player, false);
         chatController.addUser(player);
     }

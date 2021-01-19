@@ -307,6 +307,7 @@ public class ActivationPhase extends Phase {
                 player.getRegisterCards().remove(spam);
                 player.getRegisterCards().set(spamIndex, topCard);
 
+                logger.info(player.getName() + "played a spam card.");
                 //Play the new register card
                 handleCard(topCard.getName(), player);
             }
@@ -316,6 +317,7 @@ public class ActivationPhase extends Phase {
                 new RebootAction().doAction(orientation, player);
                 //Add worm card back into the worm deck
                 game.getWormDeck().getDeck().add(worm);
+                logger.info(player.getName() + "played a worm card.");
             }
             case Virus -> {
                 int robotX = player.getRobot().getPosition().getX();
@@ -331,6 +333,7 @@ public class ActivationPhase extends Phase {
                         otherPlayer.getDiscardedProgrammingDeck().getDeck().add(virusCard);
                     }
                 }
+                logger.info(player.getName() + "played a virus card.");
             }
             case Trojan -> {
                 Trojan trojan = new Trojan();
@@ -347,9 +350,11 @@ public class ActivationPhase extends Phase {
                     Card spamCard = game.getSpamDeck().pop();
                     player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
                 }
+                logger.info(player.getName() + "played a trojan card.");
                 //Play the new register card
                 handleCard(topCard.getName(), player);
             }
+            default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
         }
     }
 

@@ -2,11 +2,15 @@ package client.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.PlayerValues;
@@ -20,7 +24,16 @@ import utilities.JSONProtocol.body.PlayerValues;
  */
 public class LoginController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-
+    /**
+     * it stores the imageViews of the different robots,
+     * so that name and id from the chosen robot
+     * can be recognized
+     */
+    private final ObservableList<Figure> figures = FXCollections.observableArrayList();
+    /**
+     * this list stores the different robots (with name and id)
+     */
+    private final ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
     @FXML
     private TextField textUserName;
     /**
@@ -37,17 +50,7 @@ public class LoginController extends Controller {
      * the listView for choosing one robot, it stores different ImageViews
      */
     @FXML
-    private ListView listView;
-    /**
-     * it stores the imageViews of the different robots,
-     * so that name and id from the chosen robot
-     * can be recognized
-     */
-    private final ObservableList<ImageView> robotImageViewList = FXCollections.observableArrayList();
-    /**
-     * this list stores the different robots (with name and id)
-     */
-    private final ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
+    private ListView<Figure> listView;
 
     /**
      * by initializing the view the listView gets filled with the imageViews of the robots and
@@ -55,9 +58,28 @@ public class LoginController extends Controller {
      */
     public void initialize() {
         createRobotList();
-        listView.setItems(robotImageViewList);
+        listView.setItems(figures);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+        listView.setCellFactory(listCell -> new ListCell<>() {
+
+            @Override
+            public void updateItem(Figure figure, boolean empty) {
+                super.updateItem(figure, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setGraphic(figure.getImageView());
+                    if (figure.isTaken()) {
+                        figure.getImageView().setDisable(true);
+                        setDisable(true);
+                        setBackground(new Background(new BackgroundFill(Color.GRAY,
+                                CornerRadii.EMPTY, Insets.EMPTY)));
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -75,7 +97,7 @@ public class LoginController extends Controller {
 
             RobotPrivate robotPrivate = new RobotPrivate(robotNames[i], i);
             robotList.add(robotPrivate);
-            robotImageViewList.add(robot);
+            figures.add(new Figure(robot));
         }
 
     }
@@ -102,7 +124,6 @@ public class LoginController extends Controller {
         //robotImageViewList.get(figure).setMouseTransparent(true);
     }
 
-
     /**
      * @param taken
      */
@@ -112,6 +133,33 @@ public class LoginController extends Controller {
             responseLabel.setText("Already taken, try again");
         } else {
             viewManager.nextScene();
+        }
+    }
+
+    public void setFigureTaken(int id, boolean taken) {
+        Figure figure = figures.get(id);
+        figure.setTaken(taken);
+        figures.set(id, figure);
+    }
+
+    private class Figure {
+        private boolean taken = false;
+        private ImageView imageView;
+
+        public Figure(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        public boolean isTaken() {
+            return taken;
+        }
+
+        public void setTaken(boolean taken) {
+            this.taken = taken;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
         }
     }
 }

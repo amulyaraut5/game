@@ -30,8 +30,7 @@ public class ActivationElements {
     public void activatePit() {
         for (Coordinate coordinate : map.getPitCoordinate()) {
             for(Player player: playerList){
-                if (player.getRobot().getPosition().getX() == coordinate.getX()
-                        && player.getRobot().getPosition().getY() == coordinate.getY()) {
+                if (player.getRobot().getPosition() == coordinate) {
                     new RebootAction().doAction(player.getRobot().getOrientation(), player);
 
                     JSONBody jsonBody = new Reboot(player.getID());
@@ -44,8 +43,7 @@ public class ActivationElements {
     public void activateGear(){
         for (Coordinate coordinate : map.getGearCoordinate()) {
             for(Player player: playerList){
-                if (player.getRobot().getPosition().getX() == coordinate.getX()
-                        && player.getRobot().getPosition().getY() == coordinate.getY()) {
+                if (player.getRobot().getPosition() == coordinate) {
                     //TODO Change Rotation to Orientation or vice verse
 
                    //new RotateRobot().doAction();
@@ -73,8 +71,7 @@ public class ActivationElements {
                 int count = ((game.gameObjects.tiles.Laser) a).getCount();
 
                 for(Player player: playerList){
-                    if (player.getRobot().getPosition().getX() == coordinate.getX()
-                            && player.getRobot().getPosition().getY() == coordinate.getY()) {
+                    if (player.getRobot().getPosition() == coordinate){
 
                         JSONBody jsonBody = new CheckpointReached(player.getID(),count);
                         player.message(jsonBody);
@@ -118,8 +115,7 @@ public class ActivationElements {
     public void activateEnergySpace(){
         for(Coordinate coordinate: map.getEnergySpaceCoordinate()){
             for(Player player: playerList){
-                if (player.getRobot().getPosition().getX() == coordinate.getX()
-                        && player.getRobot().getPosition().getY() == coordinate.getY()) {
+                if (player.getRobot().getPosition() == coordinate) {
 
                     int energy = player.getEnergyCubes();
                     energy += energy;
@@ -323,8 +319,7 @@ public class ActivationElements {
         for(Coordinate coordinate: map.getPushPanelCoordinate()){
             Tile tile = map.getTile(coordinate);
             for(Player player: playerList){
-                if (player.getRobot().getPosition().getX() == coordinate.getX()
-                        && player.getRobot().getPosition().getY() == coordinate.getY()) {
+                if (player.getRobot().getPosition() == coordinate) {
                     for(Attribute a : tile.getAttributes()){
                         for(int i : ((game.gameObjects.tiles.PushPanel) a).getRegisters()){
                             if( i == player.getCurrentRegister()){
