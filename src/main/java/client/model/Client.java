@@ -174,9 +174,19 @@ public class Client {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
                     gameViewController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
                 }
+                case SelectionFinished -> {
+                    SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
+                    if(selectionFinished.getPlayerID() == thisPlayersID){
+                        gameViewController.getPlayerMapController().fixSelectedCards();
+                    } else {
+                        gameViewController.getPlayerMapController().fixSelectedCards(); //TODO else
+                    }
+
+                }
                 case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody(); //TODO
                 }
+
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
                     // TODO display the message
