@@ -106,7 +106,6 @@ public class ProgrammingPhase extends Phase {
                 chosenCard = null;
                 break;
         }
-
         //put the card in the register and remove it from the players hand
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
         player.getDrawnProgrammingCards().remove(chosenCard);
@@ -162,7 +161,6 @@ public class ProgrammingPhase extends Phase {
      * They draw 5 programming cards and put them on their registers in random order
      */
     private void dealRandomCards() {
-
         //this method is only handled for players who didn't manage to put their cards down in time
         for (Player player : notReadyPlayers) {
 
@@ -181,7 +179,6 @@ public class ProgrammingPhase extends Phase {
 
             //Take 5 cards from the draw Deck
             drawProgrammingCards(5, player);
-
             //Put the 5 drawn cards down in random order
             Random random = new Random();
             for (int register = 1; register < 6; register++) {
