@@ -7,13 +7,12 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Laser;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.Wall;
-import javafx.scene.media.AudioClip;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.SoundHandler;
-import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
@@ -97,7 +96,7 @@ public class LaserAction {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
                     coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
-                    soundHandler.pitSound();
+                    //soundHandler.pitSound(); TODO uncomment
                 }
             }
         }
