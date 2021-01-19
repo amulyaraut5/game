@@ -19,6 +19,17 @@ public class Coordinate {
         this.y = y;
     }
 
+    public static Coordinate parse(int position) {
+        int xMax = Utilities.MAP_WIDTH;
+        int x = position % xMax;
+        int y = position / xMax;
+        return new Coordinate(x, y);
+    }
+
+    public int toPosition() {
+        return x + y * Utilities.MAP_WIDTH;
+    }
+
     public void add(Coordinate c) {
         x += c.getX();
         y += c.getY();

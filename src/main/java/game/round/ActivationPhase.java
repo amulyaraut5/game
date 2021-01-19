@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.CurrentCards;
 import utilities.JSONProtocol.body.Error;
-import utilities.MapConverter;
+import utilities.JSONProtocol.body.Movement;
 import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -235,11 +235,11 @@ public class ActivationPhase extends Phase {
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+        server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
     }
 
     public void communicateBeltMovement(Player player){
-        server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+        server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
     }
 
 
@@ -265,25 +265,25 @@ public class ActivationPhase extends Phase {
             case  TurnLeft -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.LEFT));
                 rotateRobot.doAction(Orientation.LEFT, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
                 logger.info(player.getName() + "turned left.");
             }
             case TurnRight -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
                 logger.info(player.getName() + "turned right.");
             }
             case UTurn -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
                 logger.info(player.getName() + "performed U-Turn");
             }
             case BackUp -> {
                 new MoveRobotBack().doAction(orientation, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
                 logger.info(player.getName() + "moved back.");
             }
             case PowerUp -> {
@@ -292,7 +292,7 @@ public class ActivationPhase extends Phase {
             }
             case Again -> {
                 new AgainAction().doAction(orientation, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getPosition().toPosition()));
             }
             case Spam -> {
                 Spam spam = new Spam();

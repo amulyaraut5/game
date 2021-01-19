@@ -174,7 +174,7 @@ public class Game {
     }
 
     public void setStartingPoint(User user, int position) {
-        Coordinate pos = MapConverter.reconvertToCoordinate(position);
+        Coordinate pos = Coordinate.parse(position);
         Player player = userToPlayer(user);
 
         //check if playes has already set their starting point

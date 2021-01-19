@@ -1,12 +1,10 @@
 package utilities;
 
-import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.StartZone;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.Movement;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.util.ArrayList;
@@ -52,19 +50,5 @@ public abstract class MapConverter {
             tiles[x][y] = temp;
         }
         return new Map(tiles);
-    }
-
-    public static Movement convertCoordinate(Player player, Coordinate coordinate){
-        //int position = coordinate.getY() * Utilities.MAP_WIDTH + coordinate.getX() + 1;
-        int position = coordinate.getX() + coordinate.getY()* Utilities.MAP_WIDTH;
-        return new Movement(player.getID(), position);
-    }
-
-    public static Coordinate reconvertToCoordinate(int position){
-        int xMax = Utilities.MAP_WIDTH;
-        int x = position % xMax;
-        int y = position / xMax;
-        Coordinate coordinate = new Coordinate(x, y);
-        return coordinate;
     }
 }
