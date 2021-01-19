@@ -10,7 +10,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
+import utilities.enums.CardType;
 
 /**
  * @author sarah
@@ -47,22 +49,24 @@ public class PlayerMatController extends Controller {
         createRegisterBackground();
         int register = 5;
         for (int i = 0; i < register; i++) {
-            StackPane pane = createNewPane();
+            StackPane pane = createNewPane(true);
             registerHBox.getChildren().add(pane);
         }
     }
 
 
-    private StackPane createNewPane() {
+    private StackPane createNewPane(boolean event) {
         StackPane pane = new StackPane();
 
         pane.setPrefHeight(heightRegisterCard);
         pane.setPrefWidth(widthRegisterCard);
 
+        if(event){
+            pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
+            pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
+            pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
+        }
 
-        pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
-        pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
-        pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
 
         return pane;
     }
