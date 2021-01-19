@@ -2,6 +2,7 @@ package client.view;
 
 
 import game.Player;
+import game.gameObjects.cards.Card;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -124,7 +125,25 @@ public class PlayerMatController extends Controller {
         event.setDropCompleted(success);
         event.consume();
     }
+    public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow){
+        /*for ( int i = 4; i > 0; i--){
+            System.out.println(i);
+            registerHBox.getChildren().remove(i);
+            System.out.println(i);
+        }*/
+        System.out.println(registerHBox.getChildren().size());
+        registerHBox.getChildren().clear();
+        System.out.println(registerHBox.getChildren().size());
+        for (CardType card : cardsYouGotNow.getCards()){
+            StackPane pane = createNewPane(false);
+            System.out.println(card);
+            System.out.println(card.name());
+            addImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()), pane);
+            registerHBox.getChildren().add(pane);
+        }
 
+
+    }
     private void mouseDragOver(DragEvent event, StackPane pane) {
         pane.setStyle("-fx-border-color: #ff0000;"
                 + "-fx-border-width: 5;"
