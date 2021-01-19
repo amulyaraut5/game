@@ -123,10 +123,11 @@ public class PlayerMatController extends Controller {
             //TODO getting url
             //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
 
+            }
+            event.setDropCompleted(false);
+            //event.consume();
 
-        }
-        event.setDropCompleted(success);
-        event.consume();
+
     }
     public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow){
         /*for ( int i = 4; i > 0; i--){
@@ -147,13 +148,20 @@ public class PlayerMatController extends Controller {
 
 
     }
+    public void fixSelectedCards(){
+        eventOn = false;
+    }
+
     private void mouseDragOver(DragEvent event, StackPane pane) {
-        pane.setStyle("-fx-border-color: #ff0000;"
-                + "-fx-border-width: 5;"
-                + "-fx-background-color: #C6C6C6;"
-                + "-fx-border-style: solid;");
-        event.acceptTransferModes(TransferMode.ANY);
-        event.consume();
+
+            pane.setStyle("-fx-border-color: #ff0000;"
+                    + "-fx-border-width: 5;"
+                    + "-fx-background-color: #C6C6C6;"
+                    + "-fx-border-style: solid;");
+            event.acceptTransferModes(TransferMode.ANY);
+            event.consume();
+
+
     }
 
     private void createRegisterNumberImages() {
