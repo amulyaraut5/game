@@ -239,6 +239,10 @@ public class ActivationPhase extends Phase {
         server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
     }
 
+    public void communicateBeltMovement(Player player){
+        server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+    }
+
 
     public void handleCard(CardType cardType, Player player) {
         Orientation orientation = player.getRobot().getOrientation();
