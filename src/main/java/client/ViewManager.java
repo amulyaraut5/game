@@ -1,7 +1,10 @@
 package client;
 
 import client.model.Client;
-import client.view.*;
+import client.view.Controller;
+import client.view.GameViewController;
+import client.view.LobbyController;
+import client.view.LoginController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
  * <p>
  * The Scenes of the view can be changed with nextScenes() and previousScene(). showMenu() return to the main menu.
  *
- * @author simon, sarah
+ * @author Simon, sarah
  */
 public class ViewManager {
     private static final Logger logger = LogManager.getLogger();
@@ -28,25 +31,22 @@ public class ViewManager {
      */
     private static ViewManager instance;
 
-    private Stage menuStage = new Stage();
-    private Stage gameStage = new Stage();
+    private final Stage menuStage = new Stage();
+    private final Stage gameStage = new Stage();
     private Scene menuScene;
     private Scene loginScene;
     private Scene lobbyScene;
     private Scene gameScene;
     private Pane chatPane;
-    private Pane playerMap;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
-    private PlayerMapController playerMapController;
 
     private ViewManager() {
         Platform.runLater(() -> {
             try {
                 constructScenes();
                 createChatPane();
-                createPlayerMap();
 
                 constructMenuStage();
                 constructGameStage();
@@ -102,9 +102,7 @@ public class ViewManager {
 
     private void showGameStage() {
         gameViewController.attachChatPane(chatPane);
-        gameViewController.attachPlayerMap(playerMap);
 
-        //gameViewController.changeInnerView();
         if (menuStage.getScene() == lobbyScene) {
             menuStage.close();
             gameStage.show();
@@ -154,17 +152,6 @@ public class ViewManager {
             chatPane = FXMLLoader.load(getClass().getResource("/view/innerViews/chatView.fxml"));
         } catch (IOException e) {
             logger.error("ChatPane could not be created: " + e.getMessage());
-        }
-    }
-
-    private void createPlayerMap() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMap.fxml"));
-            playerMap = fxmlLoader.load();
-            playerMapController = fxmlLoader.getController();
-            gameViewController.setPlayerMapController(playerMapController);
-        } catch (IOException e) {
-            logger.error("PlayerMap could not be created: " + e.getMessage());
         }
     }
 

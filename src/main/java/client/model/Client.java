@@ -25,24 +25,25 @@ import static utilities.Utilities.PORT;
 
 /**
  * This Singleton Class handles the connection and disconnection to the server.
- * It also communicates between ViewModel and server.
+ * It also stores in the data structure {@code players} all information from other players
+ * relevant for displaying them in the view and updates the ViewModel.
  *
- * @author sarah,
+ * @author sarah
  */
 public class Client {
     private static final Logger logger = LogManager.getLogger();
 
     private static Client instance;
     private final ViewManager viewManager = ViewManager.getInstance();
+    private final ArrayList<Player> players = new ArrayList<>();
+    private int thisPlayersID;
+    private PrintWriter writer;
 
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
-    /**
-     * every time the ReaderThread gets the MessageType PlayerAdded the new player will be stored in that list
-     */
-    private ArrayList<Player> players = new ArrayList<>();
+
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -51,12 +52,10 @@ public class Client {
      * The readerThread reads the input of the user from given socket.
      */
     private ReaderThread readerThread;
+
     /**
      * the printWriter which writes messages onto the socket connected to the server.
      */
-    private PrintWriter writer;
-    private boolean exit = false;
-    private int thisPlayersID;
 
     public static Client getInstance() {
         if (instance == null) instance = new Client();
@@ -118,30 +117,18 @@ public class Client {
         }
     }
 
-    public void setController(ArrayList<Controller> controllerList) {
-        loginController = (LoginController) controllerList.get(0);
-        lobbyController = (LobbyController) controllerList.get(1);
-        gameViewController = (GameViewController) controllerList.get(2);
-    }
-
-    public void setChatController(ChatController chatController) {
-        this.chatController = chatController;
-    }
-
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is casted down to respective class and then it interacts with the different controllers.
      *
-     * @param message
+     * @param message received JSONMessage from the server which needs to be handled
      */
     public void handleMessage(JSONMessage message) {
         MessageType type = message.getType();
 
         Platform.runLater(() -> {
             switch (type) {
-                case HelloClient -> {
-                    connect();
-                }
+                case HelloClient -> sendMessage(new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", false));
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
                     thisPlayersID = wc.getPlayerID();
@@ -170,6 +157,10 @@ public class Client {
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), msg.getPosition());
+                    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
+                    gameViewController.tempRobot();
+                    gameViewController.moveRobot();
+                    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
@@ -184,22 +175,18 @@ public class Client {
                 }
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
-                    logger.info("Player " + reboot.getPlayerID() + "fell into pit");
-                    // TODO set the Robot image back to reboot token
+                    // TODO display the message
                 }
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
-                    logger.info("Player " + energy.getPlayerID() + "received 1 energy cube");
                 }
                 case CheckPointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
-                    logger.info("Player " + checkpointsReached.getPlayerID() + "has reached checkpoint: " + checkpointsReached.getNumber());
-                    //TODO Display the message in chat for players/users
+                    //TODO display the message, update player mat
                 }
                 case GameWon -> {
                     GameWon gameWon = (GameWon) message.getBody();
-                    logger.info("Player " + gameWon.getPlayerID() + "has won the game");
-                    //TODO Display the message in chat for players/users
+                    //TODO display and end game
                 }
                 case Movement -> {
                     Movement movement = (Movement) message.getBody();
@@ -212,15 +199,6 @@ public class Client {
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
-    }
-
-    /**
-     * This method creates a HelloServer protocol message and sends it to server
-     * it gets called when client gets a HelloClient message
-     */
-    public void connect() {
-        JSONBody jsonBody = new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", false);
-        sendMessage(jsonBody);
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
@@ -236,20 +214,15 @@ public class Client {
     }
 
     /**
-     * This message changes a JSONMessage so that it's possible
-     * to send it as a String over the socket to the server
+     * Sends a JSONMessage to the server. The JSONMessage is serialized therefore.
      *
-     * @param jsonBody
+     * @param jsonBody Body of the JSONMessage which should be sent.
      */
     public void sendMessage(JSONBody jsonBody) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
         writer.println(json);
         writer.flush();
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
     }
 
     /**
@@ -263,5 +236,19 @@ public class Client {
             if (player.getID() == id) return player;
         }
         return null;
+    }
+
+    public void setController(ArrayList<Controller> controllerList) {
+        loginController = (LoginController) controllerList.get(0);
+        lobbyController = (LobbyController) controllerList.get(1);
+        gameViewController = (GameViewController) controllerList.get(2);
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setChatController(ChatController chatController) {
+        this.chatController = chatController;
     }
 }

@@ -6,6 +6,7 @@ import game.gameObjects.cards.damage.*;
 import game.gameObjects.cards.programming.*;
 import game.gameObjects.decks.ProgrammingDeck;
 import utilities.JSONProtocol.body.*;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -75,6 +76,9 @@ public class ProgrammingPhase extends Phase {
             case "PowerUp":
                 chosenCard = new PowerUp();
                 break;
+            case "BackUp":
+                chosenCard = new BackUp();
+                break;
             case "TurnLeft":
                 chosenCard = new TurnLeft();
                 break;
@@ -139,11 +143,11 @@ public class ProgrammingPhase extends Phase {
     public void endProgrammingTimer() {
         if (!(timerFinished)) {
             timerFinished = true;
-            ArrayList<Integer> playerIDs = new ArrayList<>();
-            for (Player player : notReadyPlayers) {
-                playerIDs.add(player.getID());
+            ArrayList<Integer> playerIds = new ArrayList<>();
+            for (Player player : notReadyPlayers){
+                playerIds.add(player.getID());
             }
-            server.communicateAll(new TimerEnded(playerIDs));
+            server.communicateAll(new TimerEnded(playerIds));
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
@@ -181,7 +185,11 @@ public class ProgrammingPhase extends Phase {
                 player.setRegisterCards(register, randomElement);
                 player.getDrawnProgrammingCards().remove(randomElement);
             }
-            player.message(new CardsYouGotNow(player.getRegisterCards()));
+            ArrayList<CardType> cardNames = new ArrayList<>();
+            for (Card card: player.getRegisterCards()){
+                cardNames.add(card.getName());
+            }
+            player.message(new CardsYouGotNow(cardNames));
         }
     }
 

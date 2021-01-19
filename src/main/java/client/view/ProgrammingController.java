@@ -1,6 +1,5 @@
 package client.view;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,8 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
 
@@ -21,15 +18,12 @@ public class ProgrammingController extends Controller {
     //public ImageView programCard;
     //private ImageView imageView;
     public AnchorPane programmingPhasePane;
-    @FXML
-    private HBox hBox1;
-
-    @FXML
-    private HBox hBox2;
-
     public HBox hBox1Background;
     public HBox hBox2Background;
-
+    @FXML
+    private HBox hBox1;
+    @FXML
+    private HBox hBox2;
     private double widthHBox;
     private double heightHBox;
 
@@ -53,13 +47,13 @@ public class ProgrammingController extends Controller {
         background.setFitWidth(widthHBox - 20);
         for(int i=0; i<5; i++) hBox1Background.getChildren().add(background);
         for(int i=0; i<4; i++) hBox2Background.getChildren().add(background);*/
-        for(int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
             background.setFitHeight(heightHBox);
             background.setFitWidth(widthHBox - 20);
             hBox1Background.getChildren().add(background);
         }
-        for(int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
             background.setFitHeight(heightHBox);
             background.setFitWidth(widthHBox - 20);
@@ -67,7 +61,7 @@ public class ProgrammingController extends Controller {
         }
     }
 
-    public void startProgrammingPhase(ArrayList<String> cardList){
+    public void startProgrammingPhase(ArrayList<String> cardList) {
 
         ArrayList<String> cardLists = new ArrayList<>(); //HARDCODED
         cardList.add("Again");
@@ -88,24 +82,24 @@ public class ProgrammingController extends Controller {
             else hBox2.getChildren().add(pane);
 
             }*/
-        for(int i = 0; i<=8; i++){
+        for (int i = 0; i <= 8; i++) {
             StackPane pane = createNewPane();
-            addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) +"-card.png").toString()), pane);
-            if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
+            addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) + "-card.png").toString()), pane);
+            if (!(hBox1.getChildren().size() >= 5)) hBox1.getChildren().add(pane);
             else hBox2.getChildren().add(pane);
         }
 
-   }
+    }
 
 
 
 /*
     @FXML
     private void setOnDragDetected(Event event, ImageView imageView) {
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        //Dragboard db = programCard1.startDragAndDrop(TransferMode.ANY);
-        //Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-        /* Put a string on a dragboard
+        DragBoard db = imageView.startDragAndDrop(TransferMode.ANY);
+        //DragBoard db = programCard1.startDragAndDrop(TransferMode.ANY);
+        //DragBoard db = source.startDragAndDrop(TransferMode.ANY);
+        /* Put a string on a DragBoard
         ClipboardContent content = new ClipboardContent();
 
         //content.put(new DataFormat(cardName),imageView.getImage());
@@ -117,30 +111,15 @@ public class ProgrammingController extends Controller {
     }*/
 
 
-    private StackPane createNewPane(){
+    private StackPane createNewPane() {
         StackPane pane = new StackPane();
 
         pane.setPrefHeight(heightHBox);
-        pane.setPrefWidth(widthHBox-20);
+        pane.setPrefWidth(widthHBox - 20);
 
-        pane.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                mouseDragOver(dragEvent, pane);
-            }
-        });
-        pane.setOnDragDropped(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                mouseDragDropped(dragEvent, pane);
-            }
-        });
-        pane.setOnDragExited(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                pane.setStyle("-fx-border-color: #C6C6C6;");
-            }
-        });
+        pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
+        pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
+        pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
 
         return pane;
     }
@@ -148,31 +127,25 @@ public class ProgrammingController extends Controller {
 
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
 
-            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putImage(imageView.getImage());
-            //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
-            setImageDropped(imageView.getImage().getUrl());
-            //System.out.println(imageDropped);
-            db.setContent(content);
-            imageView.setImage(null);
-            mouseEvent.consume();
+        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putImage(imageView.getImage());
+        //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
+        setImageDropped(imageView.getImage().getUrl());
+        //System.out.println(imageDropped);
+        db.setContent(content);
+        imageView.setImage(null);
+        mouseEvent.consume();
 
     }
 
 
-
-    void addImage(Image i, StackPane pane){
+    void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(widthHBox-20);
+        imageView.setFitWidth(widthHBox - 20);
         imageView.setFitHeight(heightHBox);
         imageView.setImage(i);
-        imageView.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                setOnDragDetected(mouseEvent, imageView);
-            }
-        });
+        imageView.setOnDragDetected(mouseEvent -> setOnDragDetected(mouseEvent, imageView));
 
         pane.getChildren().add(imageView);
 
@@ -198,7 +171,7 @@ public class ProgrammingController extends Controller {
         event.consume();
     }
 
-    private  void mouseDragOver(DragEvent event, StackPane pane) {
+    private void mouseDragOver(DragEvent event, StackPane pane) {
 
         pane.setStyle("-fx-border-color: red;"
                 + "-fx-border-width: 5;"
