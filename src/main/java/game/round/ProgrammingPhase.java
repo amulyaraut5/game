@@ -56,7 +56,7 @@ public class ProgrammingPhase extends Phase {
     // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
-    private void putCardToRegister(Player player, SelectCard selectCard) {
+    public void putCardToRegister(Player player, SelectCard selectCard) {
         String cardType = selectCard.getCard();
         Card chosenCard = null;
         switch (cardType) {

@@ -5,10 +5,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-
 public class Main extends Application {
-
     private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
@@ -18,7 +15,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage menuStage) throws IOException {
+    public void start(Stage menuStage) {
         ViewManager.getInstance();
     }
 }

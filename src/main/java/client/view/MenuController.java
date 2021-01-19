@@ -27,7 +27,7 @@ public class MenuController extends Controller {
         Server server = Server.getInstance();
         if (!server.isAlive()) {
             Server.getInstance().start();
-        }else{
+        } else {
             logger.warn("Server is already running.");
         }
         connect();

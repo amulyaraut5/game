@@ -1,7 +1,10 @@
 package client;
 
 import client.model.Client;
-import client.view.*;
+import client.view.Controller;
+import client.view.GameViewController;
+import client.view.LobbyController;
+import client.view.LoginController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
  * <p>
  * The Scenes of the view can be changed with nextScenes() and previousScene(). showMenu() return to the main menu.
  *
- * @author simon, sarah
+ * @author Simon, sarah
  */
 public class ViewManager {
     private static final Logger logger = LogManager.getLogger();
@@ -28,8 +31,8 @@ public class ViewManager {
      */
     private static ViewManager instance;
 
-    private Stage menuStage = new Stage();
-    private Stage gameStage = new Stage();
+    private final Stage menuStage = new Stage();
+    private final Stage gameStage = new Stage();
     private Scene menuScene;
     private Scene loginScene;
     private Scene lobbyScene;

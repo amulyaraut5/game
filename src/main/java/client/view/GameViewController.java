@@ -77,14 +77,6 @@ public class GameViewController extends Controller {
     @FXML
     private Pane robotPane;
 
-    public PlayerMatController getPlayerMapController() {
-        return playerMatController;
-    }
-
-    public void setPlayerMapController(PlayerMatController playerMatController) {
-        this.playerMatController = playerMatController;
-    }
-
     @FXML
     public void initialize() {
         constructPhaseViews();
@@ -110,26 +102,15 @@ public class GameViewController extends Controller {
 
     public void changeDirection() {
 
-        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
+        ImageView robotImageView = (ImageView) fields[7][8].getChildren().get(fields[7][8].getChildren().size() - 1);
         double currentDirection = robotImageView.rotateProperty().getValue();
         robotImageView.rotateProperty().setValue(currentDirection - 90);
-    }
-
-    public Group[][] getFields() {
-        return fields;
     }
 
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
         chat.setPrefHeight(chatPane.getPrefHeight());
         chatPane.setCenter(chat);
-    }
-
-    /**
-     *
-     */
-    public void close() {
-        //client.disconnect(); TODO disconnect client on closure of window
     }
 
     public void buildMap(GameStarted gameStarted) {
@@ -158,8 +139,8 @@ public class GameViewController extends Controller {
         }
     }
 
-    // <----------------------Only For Test---------------------------->
 
+    // <----------------------Only For Test---------------------------->
 
     public void placeRobotInMap(Player player, int position) {
         if (player.getID() == client.getThisPlayersID()) {
@@ -181,11 +162,12 @@ public class GameViewController extends Controller {
     }
 
     // Called twice will move the tile image
+
     public void moveRobot() {
 
-        ImageView robotImageView = (ImageView) getFields()[7][8].getChildren().get(getFields()[7][8].getChildren().size() - 1);
-        getFields()[7][8].getChildren().remove(getFields()[7][8].getChildren().size() - 1);
-        getFields()[7][6].getChildren().add(robotImageView);
+        ImageView robotImageView = (ImageView) fields[7][8].getChildren().get(fields[7][8].getChildren().size() - 1);
+        fields[7][8].getChildren().remove(fields[7][8].getChildren().size() - 1);
+        fields[7][6].getChildren().add(robotImageView);
 
         /*TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(2));
@@ -195,8 +177,8 @@ public class GameViewController extends Controller {
         transition.play();
          */
     }
-    // <----------------------Only For Test---------------------------->
 
+    // <----------------------Only For Test---------------------------->
     public void handleMovement(int playerId, int to) {
         // TODO Handled Player from Client
 
@@ -212,12 +194,12 @@ public class GameViewController extends Controller {
                 int newY = newRobotPosition.getY();
 
                 // Get ImageView from the old position
-                ImageView imageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size() - 1);
+                ImageView imageView = (ImageView) fields[x][y].getChildren().get(fields[x][y].getChildren().size() - 1);
                 // Remove the imageView from the old position
-                getFields()[x][y].getChildren().remove(getFields()[x][y].getChildren().size() - 1);
+                fields[x][y].getChildren().remove(fields[x][y].getChildren().size() - 1);
                 // Set the imageView to new position
 
-                getFields()[newX][newY].getChildren().add(imageView);
+                fields[newX][newY].getChildren().add(imageView);
             }
         }
     }
@@ -233,7 +215,7 @@ public class GameViewController extends Controller {
                 int y = oldRobotPosition.getY();
 
                 // Get the imageView from that position
-                ImageView robotImageView = (ImageView) getFields()[x][y].getChildren().get(getFields()[x][y].getChildren().size() - 1);
+                ImageView robotImageView = (ImageView) fields[x][y].getChildren().get(fields[x][y].getChildren().size() - 1);
                 // Direction of robotImageView
                 double currentDirection = robotImageView.rotateProperty().getValue();
 
@@ -249,6 +231,7 @@ public class GameViewController extends Controller {
 
 
     //TODO inner view with activation phase
+
     public void programCards(YourCards yourCards) {
         programmingController.startProgrammingPhase(yourCards.getCards());
     }
@@ -327,12 +310,16 @@ public class GameViewController extends Controller {
     }
 
     @FXML
-    private void soundsOnAction(javafx.event.ActionEvent event) {
+    private void soundsOnAction() {
         this.soundHandler.musicOn();
     }
 
     @FXML
-    private void soundsOffAction(javafx.event.ActionEvent event) {
+    private void soundsOffAction() {
         this.soundHandler.musicOff();
+    }
+
+    public PlayerMatController getPlayerMapController() {
+        return playerMatController;
     }
 }

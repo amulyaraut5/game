@@ -1,6 +1,5 @@
 package client.view;
 
-
 import game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

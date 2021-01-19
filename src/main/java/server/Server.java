@@ -167,7 +167,6 @@ public class Server extends Thread {
             }
             case SetStartingPoint -> {
                 SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
-
                 game.setStartingPoint(user, setStartingPoint.getPosition());
             }
             case PlayIt -> {
