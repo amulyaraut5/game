@@ -33,7 +33,7 @@ public class PlayerMatController extends Controller {
 
     @FXML
     private ImageView registerNumber;
-
+    private boolean eventOn = true;
     @FXML
     private AnchorPane playerMapAnchorPane;
 
@@ -62,8 +62,8 @@ public class PlayerMatController extends Controller {
         pane.setPrefHeight(heightRegisterCard);
         pane.setPrefWidth(widthRegisterCard);
 
-        if(event){
-            pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
+        if(event && eventOn){
+            pane.setOnDragOver(dragEvent ->  mouseDragOver(dragEvent, pane));
             pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
             pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
         }
@@ -74,14 +74,17 @@ public class PlayerMatController extends Controller {
 
 
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView, StackPane pane) {
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(imageView.getImage());
-        //setImageDropped(imageView.getImage().getUrl());
-        db.setContent(content);
-        imageView.setImage(null);
-        client.sendMessage(new SelectCard("null", registerHBox.getChildren().indexOf(pane)));
-        mouseEvent.consume();
+        if(eventOn) {
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(imageView.getImage());
+            //setImageDropped(imageView.getImage().getUrl());
+            db.setContent(content);
+            imageView.setImage(null);
+            client.sendMessage(new SelectCard("null", registerHBox.getChildren().indexOf(pane)));
+            mouseEvent.consume();
+        }
+
     }
 
     public void loadPlayerMap(Player player) {
