@@ -123,6 +123,10 @@ public abstract class Robot {
         position = new Coordinate(x, y);
     }
 
+    public void setOldPosition(Coordinate c){
+        this.oldPosition = oldPosition;
+    }
+
     //TODO
     public void reboot() {
     }

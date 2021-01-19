@@ -1,5 +1,6 @@
 package utilities;
 
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -33,17 +34,33 @@ public class SoundHandler{
     }
 
     /**
+     * This method gets triggered during laserAction.
+     */
+    public void laserSound(){
+
+    }
+
+    /**
      * This method gets triggered if the player falls in the pit.
      */
     public void pitSound(){
-        Media m = new Media(getClass().getResource("/sounds/pitSound.wav").toExternalForm());
-        mediaPlayer = new MediaPlayer(m);
-        mediaPlayer.play();
+        AudioClip audioClip = new AudioClip(getClass().getResource("/sounds/pitSound.wav").toExternalForm());
+        audioClip.play();
     }
 
+    /**
+     * This method gets triggered if the player reaches any one of checkpoint..
+     */
     public void checkPoint(){
-        Media m = new Media(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
-        mediaPlayer = new MediaPlayer(m);
-        mediaPlayer.play();
+        AudioClip audioClip = new AudioClip(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
+        audioClip.play();
+    }
+
+    /**
+     * This method gets triggered if the player reaches final checkpoint..
+     */
+    public void victorySound(){
+        AudioClip audioClip = new AudioClip(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
+        audioClip.play();
     }
 }

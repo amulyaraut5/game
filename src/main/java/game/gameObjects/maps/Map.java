@@ -10,13 +10,15 @@ import utilities.enums.AttributeType;
 import java.util.ArrayList;
 
 /**
- * The map class helps in retrieving all the important aspects of the map.
+ * The map class helps in retrieving all the important aspects of the map either tiles from coordinate
+ * or coordinates from tiles.
  */
 public class Map {
 
     private Tile[][] tiles;
     private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
+    private ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
     private Coordinate RestartPoint;
 
 
@@ -181,6 +183,7 @@ public class Map {
     public void readAll(){
         readBeltCoordinates();
         readRestartPointCoordinate();
+        readEnergySpaceCoordinates();
     }
 
 
@@ -228,6 +231,19 @@ public class Map {
                 for (Attribute a : tiles[i][j].getAttributes()) {
                     if(a.getType() == AttributeType.RestartPoint){
                         this.RestartPoint = new Coordinate(i, j);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public void readEnergySpaceCoordinates(){
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if(a.getType() == Utilities.AttributeType.EnergySpace){
+                        this.EnergySpaces.add(new Coordinate(i, j));
                     }
                 }
             }
@@ -253,5 +269,9 @@ public class Map {
 
     public Coordinate getRestartPoint(){
         return this.RestartPoint;
+    }
+
+    public ArrayList<Coordinate> getEnergySpaces(){
+        return EnergySpaces;
     }
 }
