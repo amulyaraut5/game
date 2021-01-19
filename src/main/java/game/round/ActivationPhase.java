@@ -12,7 +12,6 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Wall;
-import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -71,7 +70,7 @@ public class ActivationPhase extends Phase {
                 //throw new UnsupportedOperationException();
             }
         }
-        game.nextPhase();
+        //game.nextPhase(); TODO set next Phase somewehere else
     }
 
 
@@ -84,7 +83,7 @@ public class ActivationPhase extends Phase {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
-        server.communicateAll(new CurrentCards(currentCards));
+        server.communicateAll(new CurrentCards(currentCards)); //TODO CurrentCards is sent multiple times
     }
 
     /**
