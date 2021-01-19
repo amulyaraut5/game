@@ -68,13 +68,14 @@ public class PlayerMatController extends Controller {
     }
 
 
-    private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
+    private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView, StackPane pane) {
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(imageView.getImage());
         //setImageDropped(imageView.getImage().getUrl());
         db.setContent(content);
         imageView.setImage(null);
+        client.sendMessage(new SelectCard(null, registerHBox.getChildren().indexOf(pane)));
         mouseEvent.consume();
     }
 
@@ -90,7 +91,7 @@ public class PlayerMatController extends Controller {
         imageView.setFitWidth(widthRegisterCard - 20);
         imageView.setFitHeight(heightRegisterCard);
         imageView.setImage(i);
-        imageView.setOnDragDetected(mouseEvent -> setOnDragDetected(mouseEvent, imageView));
+        imageView.setOnDragDetected(mouseEvent -> setOnDragDetected(mouseEvent, imageView, pane));
         pane.getChildren().add(imageView);
 
 
@@ -140,7 +141,7 @@ public class PlayerMatController extends Controller {
             imageView.setTranslateY(positionY);
             positionX += widthRegisterCard;
             positionX += 3;
-            playerMapAnchorPane.getChildren().add(imageView); //TODO other numbers of registers
+            playerMapAnchorPane.getChildren().add(imageView);
         }
 
     }
