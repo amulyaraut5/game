@@ -6,6 +6,7 @@ import game.Player;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
@@ -44,7 +45,6 @@ public class Client {
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
-
 
 
     /**
@@ -159,7 +159,7 @@ public class Client {
                 }
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                    gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), msg.getPosition());
+                    gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
                     // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
                     //gameViewController.tempRobot();
                     //gameViewController.moveRobot();
@@ -180,7 +180,7 @@ public class Client {
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
-                    if(selectionFinished.getPlayerID() == thisPlayersID){
+                    if (selectionFinished.getPlayerID() == thisPlayersID) {
                         gameViewController.getPlayerMapController().fixSelectedCards();
                         allRegistersAsFirst = true; //TODO reset after one round
                     } else {
@@ -212,12 +212,12 @@ public class Client {
                     //TODO display and end game
                 }
                 case Movement -> {
-                    Movement movement = (Movement) message.getBody();
-                    gameViewController.handleMovement(movement.getPlayerID(), movement.getTo());
+                    Movement msg = (Movement) message.getBody();
+                    gameViewController.handleMovement(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
                 }
                 case PlayerTurning -> {
                     PlayerTurning pT = (PlayerTurning) message.getBody();
-                    gameViewController.handlePlayerTurning(pT.getPlayerID(), pT.getDirection());
+                    gameViewController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
@@ -232,7 +232,7 @@ public class Client {
             gameViewController.getPlayerMapController().loadPlayerMap(player);
             viewManager.nextScene();
         }
-        loginController.setFigureTaken(player.getFigure(),true);
+        loginController.setFigureTaken(player.getFigure(), true);
         lobbyController.setJoinedUsers(player, false);
         chatController.addUser(player);
     }
@@ -250,7 +250,7 @@ public class Client {
     }
 
     /**
-     * Gets a player based on their ID from the list of players saved in {@code Client}.
+     * Gets a player based on their ID from the list of players saved in {@link Client}.
      *
      * @param id ID of the wanted player.
      * @return Unique player with the ID, {@code null} if no player with the ID exists.

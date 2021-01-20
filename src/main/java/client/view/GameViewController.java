@@ -1,10 +1,11 @@
 package client.view;
 
-import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
+import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -81,7 +81,7 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
-    private HashMap<Integer,Coordinate> intCo = new HashMap<>();
+    private HashMap<Player, ImageView> robotImageViews = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -145,137 +145,67 @@ public class GameViewController extends Controller {
         }
     }
 
-    public void placeRobotInMap(Player player, int position) {
+    public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == client.getThisPlayersID()) {
             boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
         }
+        player.getRobot().setCoordinate(coordinate);
 
-        Coordinate newRobotPosition = Coordinate.parse(position);
-        int newX = newRobotPosition.getX();
-        int newY = newRobotPosition.getY();
         ImageView imageView = player.getRobot().drawRobotImage();
 
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
-        robotPane.getChildren().add(imageView);
-        imageView.setX(newX * Utilities.FIELD_SIZE);
-        imageView.setY(newY * Utilities.FIELD_SIZE);
-
-        // Stores the coordinate of player: Key playerID
-        intCo.put(player.getID(), newRobotPosition);
-    }
-    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
-    /*public void tempRobot(){
-        int newX = 7;
-        int newY = 8;
-        Image image = new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm());
-        ImageView imageView = new ImageView(image);
-        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
-        imageView.setPreserveRatio(true);
 
         robotPane.getChildren().add(imageView);
-        imageView.setX(newX * Utilities.FIELD_SIZE);
-        imageView.setY(newY * Utilities.FIELD_SIZE);
+        imageView.setX(coordinate.getX() * Utilities.FIELD_SIZE);
+        imageView.setY(coordinate.getY() * Utilities.FIELD_SIZE);
+
+        // Stores the imageView of to change its coordinates later.
+        robotImageViews.put(player, imageView);
     }
 
-     */
+    public void handleMovement(Player player, Coordinate newPos) {
+        ImageView imageView = robotImageViews.get(player);
+        Coordinate oldPos = player.getRobot().getCoordinate();
 
-    /*public void moveRobot() {
-        int x = 7;
-        int y = 8;
-        ImageView imageView = (ImageView) robotPane.getChildren().get(fields[x][y].getChildren().size() - 1);
-        int newX = 1;
-        int newY = 3;
         TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(2));
-        transition.setToX(newX *Utilities.FIELD_SIZE - x* Utilities.FIELD_SIZE);
-        transition.setToY(newY * Utilities.FIELD_SIZE - y*Utilities.FIELD_SIZE);
+        transition.setDuration(Duration.seconds(1));
         transition.setNode(imageView);
-        //transition.setInterpolator(Interpolator.LINEAR);
+        transition.setToX((newPos.getX() - oldPos.getX()) * Utilities.FIELD_SIZE);
+        transition.setToY((newPos.getY() - oldPos.getY()) * Utilities.FIELD_SIZE);
+        transition.play();
+
+        player.getRobot().setCoordinate(newPos);
+    }
+
+    public void handlePlayerTurning(Player player, Orientation rotation) {
+        ImageView imageView = robotImageViews.get(player);
+        int angle = 0;
+        Robot r = player.getRobot();
+        if (rotation == Orientation.LEFT) {
+            angle = -90;
+            r.setOrientation(r.getOrientation().getPrevious());
+        } else if (rotation == Orientation.RIGHT) {
+            angle = 90;
+            r.setOrientation(r.getOrientation().getNext());
+        }
+
+        RotateTransition transition = new RotateTransition();
+        transition.setDuration(Duration.seconds(1));
+        transition.setNode(imageView);
+        transition.setByAngle(angle);
         transition.play();
     }
-
-     */
-    // <----------------------Only For Test---------------------------->
-
-    public void handleMovement(int playerId, int to) {
-        System.out.println("Position to get to: "+ to);
-        System.out.println("PlayerID to move: "+ playerId);
-
-        // Retreives the position from the hashmap based on key
-        Coordinate oldRobotPosition = intCo.get(playerId);
-        int x = oldRobotPosition.getX();
-        int y = oldRobotPosition.getY();
-        System.out.println("Current Position: "+ "x:"+x + "y:"+y);
-
-        Coordinate newRobotPosition = Coordinate.parse(to);
-        int newX = newRobotPosition.getX();
-        int newY = newRobotPosition.getY();
-        System.out.println("New Position: "+ "x:"+newX +"y:"+newY);
-
-        //TODO Problem in retrieving correct imageView from the Field
-        // It does not return the imageview from x and y coordinate
-        ImageView imageView = (ImageView) robotPane.getChildren().get(fields[x][y].getChildren().size()-1);
-        robotPane.getChildren().remove(imageView);
-        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
-        imageView.setPreserveRatio(true);
-
-        robotPane.getChildren().add(imageView);
-        imageView.setX(newX * Utilities.FIELD_SIZE);
-        imageView.setY(newY * Utilities.FIELD_SIZE);
-
-        intCo.replace(playerId,newRobotPosition);
-        System.out.println("PlayerID: "+ playerId + "x: "+newRobotPosition.getX() + "y: "+newRobotPosition.getY());
-
-
-        /*ImageView imageView = (ImageView) robotPane.getChildren().get(fields[0][0].getChildren().size()-1);
-        TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(2));
-        transition.setToX(newX *Utilities.FIELD_SIZE - x* Utilities.FIELD_SIZE);
-        transition.setToY(newY * Utilities.FIELD_SIZE - y*Utilities.FIELD_SIZE);
-        transition.setNode(imageView);
-        transition.play();*/
-
-    }
-
-    public void handlePlayerTurning(int playerID, Orientation rotation) {
-
-        for (Player player : Client.getInstance().getPlayers()) {
-            if (player.getID() == playerID) {
-
-                Coordinate oldRobotPosition = player.getRobot().getCoordinate();
-                int x = oldRobotPosition.getX();
-                int y = oldRobotPosition.getY();
-
-                // Get the imageView from that position
-                ImageView robotImageView = (ImageView) fields[x][y].getChildren().get(fields[x][y].getChildren().size() - 1);
-                // Direction of robotImageView
-                double currentDirection = robotImageView.rotateProperty().getValue();
-
-                //Turn the robot based on the direction
-                if (rotation.equals(Orientation.LEFT)) {
-                    robotImageView.rotateProperty().setValue(currentDirection - 90);
-                } else {
-                    robotImageView.rotateProperty().setValue(currentDirection + 90);
-                }
-            }
-        }
-    }
-
-
-
-
-    //TODO inner view with activation phase
 
     public void programCards(YourCards yourCards) {
         programmingController.startProgrammingPhase(yourCards.getCards());
     }
-    public void startTimer(boolean allRegistersAsFirst){
+
+    public void startTimer(boolean allRegistersAsFirst) {
         programmingController.startTimer(allRegistersAsFirst);
     }
+
     /**
      * Method tests if the background of all attributes on a field are transparent.
      *

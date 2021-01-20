@@ -7,7 +7,7 @@ import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
-
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
@@ -23,7 +23,6 @@ import java.util.Random;
  */
 
 public class ProgrammingPhase extends Phase {
-
 
 
     /**
@@ -52,7 +51,10 @@ public class ProgrammingPhase extends Phase {
         }
         dealProgrammingCards();
         //<----- Test for Movement Protocol----->
-        server.communicateAll(new Movement(1,87));
+        server.communicateAll(new Movement(1, new Coordinate(4, 4).toPosition()));
+        server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
+        server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
+        server.communicateAll(new PlayerTurning(2, Orientation.RIGHT));
     }
 
     /**
