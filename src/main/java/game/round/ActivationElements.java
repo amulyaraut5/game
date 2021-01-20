@@ -1,5 +1,6 @@
 package game.round;
 
+import com.google.gson.JsonArray;
 import game.Game;
 import game.Player;
 import game.gameActions.MoveRobot;
@@ -10,10 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.body.CheckpointReached;
-import utilities.JSONProtocol.body.Energy;
-import utilities.JSONProtocol.body.GameWon;
-import utilities.JSONProtocol.body.Reboot;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 
@@ -28,7 +26,7 @@ public class ActivationElements {
 
 
     public void activatePit() {
-        for (Coordinate coordinate : map.getPitCoordinate()) {
+        for (Coordinate coordinate :map.getPitCoordinates()) {
             for(Player player: playerList){
                 if (player.getRobot().getCoordinate() == coordinate) {
                     new RebootAction().doAction(player.getRobot().getOrientation(), player);
@@ -41,20 +39,15 @@ public class ActivationElements {
     }
 
     public void activateGear(){
-        for (Coordinate coordinate : map.getGearCoordinate()) {
+        for (Coordinate coordinate : map.getGearCoordinates()) {
             for(Player player: playerList){
                 if (player.getRobot().getCoordinate() == coordinate) {
                     //TODO Change Rotation to Orientation or vice verse
 
-                   //new RotateRobot().doAction();
-
-                    JSONBody jsonBody = new Reboot(player.getID());
-                    player.message(jsonBody);
                 }
             }
         }
     }
-
 
     /**
      * Checkpoint is the final destination of the game and player wins the game as
@@ -64,8 +57,7 @@ public class ActivationElements {
      */
 
     public void activateControlPoint(){
-        for(Coordinate coordinate: map.getEnergySpaceCoordinate()){
-
+        for(Coordinate coordinate: map.getPushPanel()){
             Tile tile = map.getTile(coordinate);
             for(Attribute a : tile.getAttributes()){
                 int count = ((game.gameObjects.tiles.Laser) a).getCount();
@@ -108,27 +100,30 @@ public class ActivationElements {
     }
 
     /**
-     * Whenever the player finds in this tile, player gets the energy token.
-     *
+     * Push panels push any robots resting on them into the next space in the direction the push
+     * panel faces. They activate only in the register that corresponds to the number on them. For
+     * example, if you end register two on a push panel labeled “2, 4” you will be pushed. If you end
+     * register three on the same push panel, you won’t be pushed.
      */
 
-    public void activateEnergySpace(){
-        for(Coordinate coordinate: map.getEnergySpaceCoordinate()){
+    public void activatePushPanel(){
+        for(Coordinate coordinate: map.getPushPanel()){
+            Tile tile = map.getTile(coordinate);
             for(Player player: playerList){
                 if (player.getRobot().getCoordinate() == coordinate) {
-
-                    int energy = player.getEnergyCubes();
-                    energy += energy;
-                    player.setEnergyCubes(energy);
-                    // Todo Decrease the energy cube number
-
-                    JSONBody jsonBody = new Energy(player.getID(), player.getEnergyCubes());
-                    player.message(jsonBody);
-
+                    for(Attribute a : tile.getAttributes()){
+                        for(int i : ((game.gameObjects.tiles.PushPanel) a).getRegisters()){
+                            if( i == player.getCurrentRegister()){
+                                new MoveRobot().doAction(((game.gameObjects.tiles.Laser) a).getOrientation(), player);
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
+
 
     public void activateGreenBelts() {
         ArrayList<Player> playersOnBelt = new ArrayList<>();
@@ -295,28 +290,27 @@ public class ActivationElements {
         }
     }
 
-
     /**
-     * Push panels push any robots resting on them into the next space in the direction the push
-     * panel faces. They activate only in the register that corresponds to the number on them. For
-     * example, if you end register two on a push panel labeled “2, 4” you will be pushed. If you end
-     * register three on the same push panel, you won’t be pushed.
+     * Whenever the player finds in this tile, player gets the energy token.
      */
+    // No more usage
 
-    public void activatePushPanel(){
-        for(Coordinate coordinate: map.getPushPanelCoordinate()){
-            Tile tile = map.getTile(coordinate);
+    public void activateEnergySpace(){
+        for(Coordinate coordinate: map.getEnergySpaces()){
             for(Player player: playerList){
                 if (player.getRobot().getCoordinate() == coordinate) {
-                    for(Attribute a : tile.getAttributes()){
-                        for(int i : ((game.gameObjects.tiles.PushPanel) a).getRegisters()){
-                            if( i == player.getCurrentRegister()){
-                                new MoveRobot().doAction(((game.gameObjects.tiles.Laser) a).getOrientation(), player);
-                            }
-                        }
-                    }
+
+                    int energy = player.getEnergyCubes();
+                    energy += energy;
+                    player.setEnergyCubes(energy);
+                    // Todo Decrease the energy cube number
+
+                    JSONBody jsonBody = new Energy(player.getID(), player.getEnergyCubes());
+                    player.message(jsonBody);
+
                 }
             }
         }
     }
+
 }
