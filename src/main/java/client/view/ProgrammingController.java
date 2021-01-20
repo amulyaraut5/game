@@ -50,7 +50,9 @@ public class ProgrammingController extends Controller {
     @FXML
     private AnchorPane timerAnchorPane;
 
-    public Label timerLabel;
+    public Label programInfoLabel;
+    @FXML
+    private Label timerLabel;
 
 
     public void initialize() { //TODO method that gets called when cards were dealt
@@ -155,8 +157,12 @@ public class ProgrammingController extends Controller {
 
     /**
      * by getting protocol TimerStarted, the countdown in the label and the video will start
+     * @param allRegistersAsFirst
      */
-    public void startTimer(){
+    public void startTimer(boolean allRegistersAsFirst){
+        if(allRegistersAsFirst) programInfoLabel.setText("You were first!");
+        else programInfoLabel.setText("Hurry to fill all 5 registers in time!");
+
         setTimer();
         startVideo();
     }
