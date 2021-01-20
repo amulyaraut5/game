@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -23,6 +22,12 @@
 
       <HBox fx:id="hBox2Background" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
       <HBox fx:id="hBox2" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
+      <AnchorPane fx:id="timerAnchorPane" layoutX="138.0" layoutY="393.0" prefHeight="117.0" prefWidth="115.0" />
+      <Label fx:id="timerLabel" contentDisplay="CENTER" layoutX="160.0" layoutY="439.0" prefHeight="21.0" prefWidth="85.0" textFill="#860808">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
 
    </children>
 </AnchorPane>

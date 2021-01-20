@@ -7,6 +7,7 @@ import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
+
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
@@ -21,6 +22,8 @@ import java.util.Random;
  */
 
 public class ProgrammingPhase extends Phase {
+
+
 
     /**
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
@@ -165,6 +168,7 @@ public class ProgrammingPhase extends Phase {
             for (Card card : player.getRegisterCards()) {
                 cardNames.add(card.getName());
             }
+
             player.message(new CardsYouGotNow(cardNames));
             //System.out.println("discard" + player.getDiscardedProgrammingDeck().getDeck());
             //System.out.println("draw" + player.getDrawProgrammingDeck().getDeck());
