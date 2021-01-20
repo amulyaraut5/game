@@ -250,7 +250,9 @@ public class GameViewController extends Controller {
     public void programCards(YourCards yourCards) {
         programmingController.startProgrammingPhase(yourCards.getCards());
     }
-
+    public void startTimer(){
+        programmingController.startTimer();
+    }
     /**
      * Method tests if the background of all attributes on a field are transparent.
      *
