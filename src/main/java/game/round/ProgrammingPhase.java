@@ -60,51 +60,24 @@ public class ProgrammingPhase extends Phase {
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
     public void putCardToRegister(Player player, SelectCard selectCard) {
-        String cardType = selectCard.getCard();
         Card chosenCard = null;
-        switch (cardType) {
-            case "Again":
-                chosenCard = new Again();
-                break;
-            case "MoveI":
-                chosenCard = new MoveI();
-                break;
-            case "MoveII":
-                chosenCard = new MoveII();
-                break;
-            case "MoveIII":
-                chosenCard = new MoveIII();
-                break;
-            case "PowerUp":
-                chosenCard = new PowerUp();
-                break;
-            case "BackUp":
-                chosenCard = new BackUp();
-                break;
-            case "TurnLeft":
-                chosenCard = new TurnLeft();
-                break;
-            case "TurnRight":
-                chosenCard = new TurnRight();
-                break;
-            case "UTurn":
-                chosenCard = new UTurn();
-                break;
-            case "Spam":
-                chosenCard = new Spam();
-                break;
-            case "Trojan":
-                chosenCard = new Trojan();
-                break;
-            case "Virus":
-                chosenCard = new Virus();
-                break;
-            case "Worm":
-                chosenCard = new Worm();
-                break;
-            case "null":
-                chosenCard = null;
-                break;
+        CardType type = selectCard.getCard();
+        if (type != null) {
+            switch (type) {
+                case Again -> chosenCard = new Again();
+                case MoveI -> chosenCard = new MoveI();
+                case MoveII -> chosenCard = new MoveII();
+                case MoveIII -> chosenCard = new MoveIII();
+                case PowerUp -> chosenCard = new PowerUp();
+                case BackUp -> chosenCard = new BackUp();
+                case TurnLeft -> chosenCard = new TurnLeft();
+                case TurnRight -> chosenCard = new TurnRight();
+                case UTurn -> chosenCard = new UTurn();
+                case Spam -> chosenCard = new Spam();
+                case Trojan -> chosenCard = new Trojan();
+                case Virus -> chosenCard = new Virus();
+                case Worm -> chosenCard = new Worm();
+            }
         }
         //put the card in the register and remove it from the players hand
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
@@ -205,9 +178,9 @@ public class ProgrammingPhase extends Phase {
     private void dealProgrammingCards() {
         for (Player player : playerList) {
             drawProgrammingCards(9, player);
-            ArrayList<String> cards = new ArrayList<>(9);
+            ArrayList<CardType> cards = new ArrayList<>(9);
             for (Card card : player.getDrawnProgrammingCards()) {
-                cards.add(card.getName().toString());
+                cards.add(card.getName());
             }
             player.message(new YourCards(cards));
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);

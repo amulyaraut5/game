@@ -2,14 +2,15 @@ package utilities.JSONProtocol.body;
 
 import game.gameObjects.cards.Card;
 import utilities.JSONProtocol.JSONBody;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 
 public class DrawDamage extends JSONBody {
     private int playerID;
-    private ArrayList<Card> cards; //Schadenskarten
+    private ArrayList<CardType> cards; //Schadenskarten
 
-    public DrawDamage(int playerID, ArrayList<Card> cards) {
+    public DrawDamage(int playerID, ArrayList<CardType> cards) {
         this.playerID = playerID;
         this.cards = cards;
     }
@@ -18,7 +19,7 @@ public class DrawDamage extends JSONBody {
         return playerID;
     }
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<CardType> getCards() {
         return cards;
     }
 }
