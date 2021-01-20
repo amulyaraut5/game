@@ -184,6 +184,9 @@ public class Client {
                     }
 
                 }
+                case TimerStarted -> {
+                    gameViewController.startTimer();
+                }
                 case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody(); //TODO
                 }
