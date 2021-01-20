@@ -25,20 +25,33 @@ import java.util.TimerTask;
 
 
 public class ProgrammingController extends Controller {
-    //@FXML
-    //public ImageView imageView;
-    //@FXML
-    //public ImageView programCard;
-    //private ImageView imageView;
-    public AnchorPane programmingPhasePane;
-    public HBox hBox1Background;
-    public HBox hBox2Background;
+
+
+
+
+
+    private int interval = 30;
+    private Media media;
+    private MediaPlayer mediaPlayer;
+    private MediaView mediaView;
+    private double widthHBox;
+    private double heightHBox;
+
+    @FXML
+    private AnchorPane programmingPhasePane;
+    @FXML
+    private HBox hBox1Background;
+    @FXML
+    private HBox hBox2Background;
     @FXML
     private HBox hBox1;
     @FXML
     private HBox hBox2;
-    private double widthHBox;
-    private double heightHBox;
+    @FXML
+    private AnchorPane timerAnchorPane;
+
+    public Label timerLabel;
+
 
     public void initialize() { //TODO method that gets called when cards were dealt
         widthHBox = hBox1.getPrefWidth() / 5;
@@ -63,7 +76,6 @@ public class ProgrammingController extends Controller {
     }
 
     public void startProgrammingPhase(ArrayList<CardType> cardList) {
-
         for (int i = 0; i < 9; i++) {
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) + "-card.png").toString()), pane);
@@ -140,6 +152,44 @@ public class ProgrammingController extends Controller {
         event.acceptTransferModes(TransferMode.ANY);
         event.consume();
     }
+
+    /**
+     * by getting protocol TimerStarted, the countdown in the label and the video will start
+     */
+    public void startTimer(){
+        setTimer();
+        startVideo();
+    }
+
+    private void startVideo(){
+        String path = "/video/hourglass-video.mp4";
+        media = new Media(getClass().getResource(path).toString());
+        mediaPlayer = new MediaPlayer(media);
+        mediaView = new MediaView(mediaPlayer);
+        mediaView.setFitHeight(200);
+        mediaView.setFitWidth(200);
+        mediaPlayer.setAutoPlay(true);
+        timerAnchorPane.getChildren().add(mediaView);
+
+    }
+    private void setTimer() {
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            public void run() {
+                if(interval > 0)
+                {
+                    Platform.runLater(() -> timerLabel.setText(String.valueOf(interval)));
+                    System.out.println(interval);
+                    interval--;
+                }
+                else
+                    timer.cancel();
+            }
+        }, 1000,1000);
+
+    }
+
 }
 
 
