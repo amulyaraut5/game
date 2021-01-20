@@ -35,9 +35,7 @@ public class LaserAction {
     /**
      * Constructor for laser
      */
-    public LaserAction() {
-
-    }
+    public LaserAction() { }
 
     /**
      * The effect of lasers will be seen if it finds any robot standing in its
@@ -49,7 +47,7 @@ public class LaserAction {
         for (Coordinate coordinate : coordinates) {
             for (Player player : playerList) {
                 if (player.getRobot().getCoordinate() == coordinate) {
-                    //player.getDiscardedProgrammingDeck().addSpamCard();
+
 
                 }
             }
@@ -68,7 +66,6 @@ public class LaserAction {
         for (Coordinate coordinate : roboCoordinates) {
             for (Player targetPlayer : playerList) {
                 if (currentPlayer != targetPlayer) { //TODO
-
                     if (targetPlayer.getRobot().getCoordinate() == coordinate) {
                         //targetPlayer.getDiscardedProgrammingDeck().addSpamCard();
 
@@ -85,7 +82,7 @@ public class LaserAction {
      */
     //TODO Antenna Case and Delete unnecessary logger.info
     public void determineLaserPaths() {
-        for (Coordinate coordinate : map.getLaserCoordinates()) {
+        for (Coordinate coordinate : map.readLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
 
