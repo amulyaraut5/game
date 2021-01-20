@@ -158,8 +158,9 @@ public class Client {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), msg.getPosition());
                     // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
-                    gameViewController.tempRobot();
-                    gameViewController.moveRobot();
+                    //gameViewController.tempRobot();
+                    //gameViewController.moveRobot();
+                    //gameViewController.showLaserPath();
                     // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
                 }
                 case ActivePhase -> {
@@ -204,11 +205,11 @@ public class Client {
                 }
                 case Movement -> {
                     Movement movement = (Movement) message.getBody();
-                    gameViewController.handleMovement(movement.getPlayerID(), movement.getTo());
+                    //gameViewController.handleMovement(movement.getPlayerID(), movement.getTo());
                 }
                 case PlayerTurning -> {
-                    PlayerTurning playerTurning = (PlayerTurning) message.getBody();
-                    gameViewController.handlePlayerTurning(playerTurning.getPlayerID(), playerTurning.getDirection());
+                    PlayerTurning pT = (PlayerTurning) message.getBody();
+                    //gameViewController.handlePlayerTurning(pT.getPlayerID(), pT.getDirection());
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }

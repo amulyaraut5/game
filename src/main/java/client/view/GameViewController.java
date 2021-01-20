@@ -192,7 +192,7 @@ public class GameViewController extends Controller {
     }
     // <----------------------Only For Test---------------------------->
 
-    public void handleMovement(int playerId, int to) {
+    /*public void handleMovement(int playerId, int to) {
         // TODO Handled Player from Client
 
         for (Player player : Client.getInstance().getPlayers()) {
@@ -241,6 +241,8 @@ public class GameViewController extends Controller {
             }
         }
     }
+
+     */
 
 
     //TODO inner view with activation phase

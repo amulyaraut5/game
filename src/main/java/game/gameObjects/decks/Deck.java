@@ -69,7 +69,7 @@ public abstract class Deck {
             tempDeck.add(this.getDeck().get(i));
         }
         for (int i = 0; i < amount; i++) {
-            this.getDeck().remove(i);
+            //this.getDeck().remove(i);
         }
         return tempDeck;
     }
