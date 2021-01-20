@@ -22,13 +22,13 @@
 
       <HBox fx:id="hBox2Background" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
       <HBox fx:id="hBox2" alignment="CENTER" layoutX="22.0" layoutY="294.0" prefHeight="84.0" prefWidth="386.0" />
-      <AnchorPane fx:id="timerAnchorPane" layoutX="151.0" layoutY="434.0" prefHeight="117.0" prefWidth="115.0" />
-      <Label fx:id="timerLabel" contentDisplay="CENTER" layoutX="173.0" layoutY="480.0" prefHeight="21.0" prefWidth="85.0" textFill="WHITE">
+      <AnchorPane fx:id="timerAnchorPane" layoutX="150.0" layoutY="440.0" prefHeight="117.0" prefWidth="115.0" />
+      <Label fx:id="timerLabel" contentDisplay="CENTER" layoutX="173.0" layoutY="480.0" prefHeight="37.0" prefWidth="93.0" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Label fx:id="programInfoLabel" alignment="CENTER" layoutX="119.0" layoutY="413.0" prefHeight="21.0" prefWidth="193.0" />
+      <Label fx:id="programInfoLabel" alignment="CENTER" layoutX="97.0" layoutY="413.0" prefHeight="21.0" prefWidth="268.0" />
 
    </children>
 </AnchorPane>
