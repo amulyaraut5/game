@@ -49,6 +49,7 @@ public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+    private Map map;
 
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -117,7 +118,7 @@ public class GameViewController extends Controller {
     }
 
     public void buildMap(GameStarted gameStarted) {
-        Map map = MapConverter.reconvert(gameStarted);
+        map = MapConverter.reconvert(gameStarted);
         int xMax = Utilities.MAP_WIDTH;
         int yMax = Utilities.MAP_HEIGHT;
 

@@ -2,7 +2,6 @@ package client.view;
 
 
 import game.Player;
-import game.gameObjects.cards.Card;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -62,8 +61,8 @@ public class PlayerMatController extends Controller {
         pane.setPrefHeight(heightRegisterCard);
         pane.setPrefWidth(widthRegisterCard);
 
-        if(event && eventOn){
-            pane.setOnDragOver(dragEvent ->  mouseDragOver(dragEvent, pane));
+        if (event && eventOn) {
+            pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
             pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
             pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
         }
@@ -74,7 +73,7 @@ public class PlayerMatController extends Controller {
 
 
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView, StackPane pane) {
-        if(eventOn) {
+        if (eventOn) {
             Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
             content.putImage(imageView.getImage());
@@ -94,7 +93,7 @@ public class PlayerMatController extends Controller {
     }
 
 
-    void addImage(Image i, StackPane pane) {
+    private void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(widthRegisterCard - 20);
         imageView.setFitHeight(heightRegisterCard);
@@ -107,30 +106,31 @@ public class PlayerMatController extends Controller {
 
     private void mouseDragDropped(DragEvent event, StackPane pane) {
 
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasImage()) {
-                success = true;
-                if (!pane.getChildren().isEmpty()) {
-                    pane.getChildren().remove(0);
-                }
-                Image img = db.getImage();
-                addImage(img, pane);
-                String cardName = getImageDropped();
-                int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
-                client.sendMessage(new SelectCard(cardName, registerNumber));
-                //TODO getting url
-                //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
-
+        Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasImage()) {
+            success = true;
+            if (!pane.getChildren().isEmpty()) {
+                pane.getChildren().remove(0);
             }
-            event.setDropCompleted(false);
-            //event.consume();
+            Image img = db.getImage();
+            addImage(img, pane);
+            String cardName = getImageDropped();
+            int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
+            client.sendMessage(new SelectCard(CardType.valueOf(cardName), registerNumber));
+            //TODO getting url
+            //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
+
+        }
+        event.setDropCompleted(false);
+        //event.consume();
 
 
     }
-    public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow){
+
+    public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow) {
         registerHBox.getChildren().clear();
-        for (CardType card : cardsYouGotNow.getCards()){
+        for (CardType card : cardsYouGotNow.getCards()) {
             StackPane pane = createNewPane(false);
             addImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()), pane);
             registerHBox.getChildren().add(pane);
@@ -138,18 +138,19 @@ public class PlayerMatController extends Controller {
 
 
     }
-    public void fixSelectedCards(){
+
+    public void fixSelectedCards() {
         eventOn = false;
     }
 
     private void mouseDragOver(DragEvent event, StackPane pane) {
 
-            pane.setStyle("-fx-border-color: #ff0000;"
-                    + "-fx-border-width: 5;"
-                    + "-fx-background-color: #C6C6C6;"
-                    + "-fx-border-style: solid;");
-            event.acceptTransferModes(TransferMode.ANY);
-            event.consume();
+        pane.setStyle("-fx-border-color: #ff0000;"
+                + "-fx-border-width: 5;"
+                + "-fx-background-color: #C6C6C6;"
+                + "-fx-border-style: solid;");
+        event.acceptTransferModes(TransferMode.ANY);
+        event.consume();
 
 
     }

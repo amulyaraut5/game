@@ -25,12 +25,12 @@ import java.util.ArrayList;
 public class LaserAction {
 
     private static final Logger logger = LogManager.getLogger();
-    ArrayList<Coordinate> coordinates = new ArrayList<>();
-    ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
-    Game game = Game.getInstance();
-    ArrayList<Player> playerList = game.getPlayers();
-    Map map = game.getMap();
-    SoundHandler soundHandler = new SoundHandler();
+    private ArrayList<Coordinate> coordinates = new ArrayList<>();
+    private ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
+    private Game game = Game.getInstance();
+    private ArrayList<Player> playerList = game.getPlayers();
+    private Map map = game.getMap();
+    private SoundHandler soundHandler = new SoundHandler();
 
     /**
      * Constructor for laser

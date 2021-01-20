@@ -11,8 +11,7 @@ import static utilities.Utilities.*;
  * @author annika
  */
 public class ProgrammingDeck extends Deck {
-
-    ArrayList<Card> programmingDeck;
+    private ArrayList<Card> programmingDeck;
 
     public ProgrammingDeck() {
         createDeck();

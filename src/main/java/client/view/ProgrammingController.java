@@ -7,6 +7,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 
@@ -49,20 +50,9 @@ public class ProgrammingController extends Controller {
         }
     }
 
-    public void startProgrammingPhase(ArrayList<String> cardList) {
+    public void startProgrammingPhase(ArrayList<CardType> cardList) {
 
-        ArrayList<String> cardLists = new ArrayList<>(); //HARDCODED
-        cardList.add("Again");
-        cardList.add("MoveI");
-        cardList.add("MoveII");
-        cardList.add("MoveIII");
-        cardList.add("UTurn");
-        cardList.add("Again");
-        cardList.add("MoveI");
-        cardList.add("MoveII");
-        cardList.add("MoveIII");
-
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i < 9; i++) {
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) + "-card.png").toString()), pane);
             if (!(hBox1.getChildren().size() >= 5)) hBox1.getChildren().add(pane);
@@ -70,7 +60,6 @@ public class ProgrammingController extends Controller {
         }
 
     }
-
 
 
     private StackPane createNewPane() {
@@ -100,7 +89,7 @@ public class ProgrammingController extends Controller {
     }
 
 
-    void addImage(Image i, StackPane pane) {
+    private void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(widthHBox - 20);
         imageView.setFitHeight(heightHBox);

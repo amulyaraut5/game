@@ -4,7 +4,6 @@ import client.ViewManager;
 import client.model.Client;
 import game.Player;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
  * @author simon, sarah
  */
 public abstract class Controller {
+    public static String imageDropped;
     /**
      * instance of the ViewManager to call the next or previous scene
      */
@@ -29,8 +29,6 @@ public abstract class Controller {
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
     protected ArrayList<RobotIcon> playersAdded = new ArrayList<>();
-
-    public static String imageDropped;
 
     public ArrayList<RobotIcon> getPlayersAdded() {
         return playersAdded;
@@ -47,21 +45,20 @@ public abstract class Controller {
 
     public void setImageDropped(String imageDropped) {
         //if(imageDropped!= null){
-            String [] a = imageDropped.split("/");
-            String imageName = a[a.length-1];
-            String cardName = imageName.substring(0, imageName.length()-9);
-            this.imageDropped = cardName;
+        String[] a = imageDropped.split("/");
+        String imageName = a[a.length - 1];
+        String cardName = imageName.substring(0, imageName.length() - 9);
+        this.imageDropped = cardName;
         //}
     }
-
 
 
     /**
      * This private class represents a robot with its name and id
      */
     protected class RobotPrivate {
-        int id = 0;
-        String name = "default";
+        private int id = 0;
+        private String name = "default";
 
         /**
          * constructor of RobotPrivate

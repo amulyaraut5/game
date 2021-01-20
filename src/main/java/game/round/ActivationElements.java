@@ -21,10 +21,10 @@ import java.util.ArrayList;
 
 public class ActivationElements {
     private static final Logger logger = LogManager.getLogger();
-    Game game = Game.getInstance();
-    ArrayList<Player> playerList = game.getPlayers();
-    Map map = game.getMap();
-    ActivationPhase activationPhase;
+    private Game game = Game.getInstance();
+    private ArrayList<Player> playerList = game.getPlayers();
+    private Map map = game.getMap();
+    private ActivationPhase activationPhase;
 
 
     public void activatePit() {

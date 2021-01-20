@@ -12,7 +12,7 @@ import static utilities.Utilities.WORM_CARDCOUNT;
  */
 public class WormDeck extends DamageCardDeck {
 
-    ArrayList<Card> wormDeck;
+    private ArrayList<Card> wormDeck;
 
     /**
      * Creates the deck of Worm cards.

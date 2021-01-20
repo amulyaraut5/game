@@ -1,8 +1,6 @@
 package game;
 
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.PermUpgradeCard;
-import game.gameObjects.cards.TempUpgradeCard;
 import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
@@ -21,7 +19,7 @@ public class Player extends User {
     /**
      * contains the chosen Cards for each register
      */
-    private ArrayList<Card> registerCards ;
+    private ArrayList<Card> registerCards;
 
     /**
      * Programming deck that cards can be drawn from
@@ -42,9 +40,6 @@ public class Player extends User {
      * the players robot
      */
     private Robot robot;
-
-    private ArrayList<PermUpgradeCard> installedUpgrades;
-    private ArrayList<TempUpgradeCard> tempUpgradeCards;
 
     /**
      * Constructor for a player object on the serverside which is connected with an user.
