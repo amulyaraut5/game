@@ -108,20 +108,13 @@ public class ActivationPhase extends Phase {
      * Method that activates the board elements in their right order.
      */
     private void activateBoard() {
-        // TODO - implement ActivationPhase.activateBoard
         gameMap = game.getMap();
-
-        // And then we can execute other board elements in order
 
         activateBlueBelts();
         activateGreenBelts();
-		/*
-           all board elements functionality are handled in activation elements class except laser
-		 */
+        //all board elements functionality are handled in activation elements class except laser
 
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
-        //throw new UnsupportedOperationException();
-
     }
 
     public void activateGreenBelts() {
@@ -191,18 +184,14 @@ public class ActivationPhase extends Phase {
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
             switch (a.getType()) {
                 //handle different tile effects here
-                case Wall:
+                case Wall -> {
                     Wall temp = (Wall) a;
                     for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o.getOpposite()) {
-                            canMove = false;
-                        }
+                        if (orientation == o.getOpposite()) canMove = false;
                     }
-                case Pit:
-                    inPit = true;
-
-                case ControlPoint:
-                    onCheckpoint = true;
+                }
+                case Pit ->  inPit = true;
+                case ControlPoint ->  onCheckpoint = true;
             }
         }
 
@@ -226,9 +215,7 @@ public class ActivationPhase extends Phase {
                 moveOne(player, o);
                 player.checkPointReached();
             } else {
-                if (canMove) {
-                    moveOne(player, o);
-                }
+                if (canMove) moveOne(player, o);
             }
         }
     }

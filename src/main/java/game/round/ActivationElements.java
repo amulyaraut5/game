@@ -57,7 +57,7 @@ public class ActivationElements {
      */
 
     public void activateControlPoint(){
-        for(Coordinate coordinate: map.getPushPanel()){
+        for(Coordinate coordinate: map.getControlPointCoordinates()){
             Tile tile = map.getTile(coordinate);
             for(Attribute a : tile.getAttributes()){
                 int count = ((game.gameObjects.tiles.Laser) a).getCount();
@@ -122,8 +122,6 @@ public class ActivationElements {
             }
         }
     }
-
-
 
     public void activateGreenBelts() {
         ArrayList<Player> playersOnBelt = new ArrayList<>();
