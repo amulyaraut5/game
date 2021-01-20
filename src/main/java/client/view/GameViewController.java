@@ -36,6 +36,7 @@ import utilities.enums.PhaseState;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
@@ -80,6 +81,7 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
+    private HashMap<Integer,Coordinate> intCo = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -156,13 +158,15 @@ public class GameViewController extends Controller {
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
         imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
-
         robotPane.getChildren().add(imageView);
         imageView.setX(newX * Utilities.FIELD_SIZE);
         imageView.setY(newY * Utilities.FIELD_SIZE);
+
+        // Stores the coordinate of player: Key playerID
+        intCo.put(player.getID(), newRobotPosition);
     }
     // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
-    public void tempRobot(){
+    /*public void tempRobot(){
         int newX = 7;
         int newY = 8;
         Image image = new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm());
@@ -176,7 +180,9 @@ public class GameViewController extends Controller {
         imageView.setY(newY * Utilities.FIELD_SIZE);
     }
 
-    public void moveRobot() {
+     */
+
+    /*public void moveRobot() {
         int x = 7;
         int y = 8;
         ImageView imageView = (ImageView) robotPane.getChildren().get(fields[x][y].getChildren().size() - 1);
@@ -190,35 +196,52 @@ public class GameViewController extends Controller {
         //transition.setInterpolator(Interpolator.LINEAR);
         transition.play();
     }
+
+     */
     // <----------------------Only For Test---------------------------->
 
-    /*public void handleMovement(int playerId, int to) {
-        // TODO Handled Player from Client
+    public void handleMovement(int playerId, int to) {
+        System.out.println("Position to get to: "+ to);
+        System.out.println("PlayerID to move: "+ playerId);
 
-        for (Player player : Client.getInstance().getPlayers()) {
-            if (player.getID() == playerId) {
-                // Get the Robot position from the Board
-                Coordinate oldRobotPosition = player.getRobot().getCoordinate();
-                int x = oldRobotPosition.getX();
-                int y = oldRobotPosition.getY();
+        // Retreives the position from the hashmap based on key
+        Coordinate oldRobotPosition = intCo.get(playerId);
+        int x = oldRobotPosition.getX();
+        int y = oldRobotPosition.getY();
+        System.out.println("Current Position: "+ "x:"+x + "y:"+y);
 
-                Coordinate newRobotPosition = Coordinate.parse(to);
-                int newX = newRobotPosition.getX();
-                int newY = newRobotPosition.getY();
+        Coordinate newRobotPosition = Coordinate.parse(to);
+        int newX = newRobotPosition.getX();
+        int newY = newRobotPosition.getY();
+        System.out.println("New Position: "+ "x:"+newX +"y:"+newY);
 
-                // Get ImageView from the old position
-                ImageView imageView = (ImageView) fields[x][y].getChildren().get(fields[x][y].getChildren().size() - 1);
-                // Remove the imageView from the old position
-                fields[x][y].getChildren().remove(fields[x][y].getChildren().size() - 1);
-                // Set the imageView to new position
+        //TODO Problem in retrieving correct imageView from the Field
+        // It does not return the imageview from x and y coordinate
+        ImageView imageView = (ImageView) robotPane.getChildren().get(fields[x][y].getChildren().size()-1);
+        robotPane.getChildren().remove(imageView);
+        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
+        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+        imageView.setPreserveRatio(true);
 
-                fields[newX][newY].getChildren().add(imageView);
-            }
-        }
+        robotPane.getChildren().add(imageView);
+        imageView.setX(newX * Utilities.FIELD_SIZE);
+        imageView.setY(newY * Utilities.FIELD_SIZE);
+
+        intCo.replace(playerId,newRobotPosition);
+        System.out.println("PlayerID: "+ playerId + "x: "+newRobotPosition.getX() + "y: "+newRobotPosition.getY());
+
+
+        /*ImageView imageView = (ImageView) robotPane.getChildren().get(fields[0][0].getChildren().size()-1);
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(2));
+        transition.setToX(newX *Utilities.FIELD_SIZE - x* Utilities.FIELD_SIZE);
+        transition.setToY(newY * Utilities.FIELD_SIZE - y*Utilities.FIELD_SIZE);
+        transition.setNode(imageView);
+        transition.play();*/
+
     }
 
     public void handlePlayerTurning(int playerID, Orientation rotation) {
-        // TODO Handled Player from Client
 
         for (Player player : Client.getInstance().getPlayers()) {
             if (player.getID() == playerID) {
@@ -242,7 +265,7 @@ public class GameViewController extends Controller {
         }
     }
 
-     */
+
 
 
     //TODO inner view with activation phase

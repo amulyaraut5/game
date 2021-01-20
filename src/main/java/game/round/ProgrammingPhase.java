@@ -10,6 +10,7 @@ import game.gameObjects.cards.programming.*;
 
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,9 +47,12 @@ public class ProgrammingPhase extends Phase {
             if (!(player.getRegisterCards().contains(null))) {
                 player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
+                //player.message(new Movement(1,22));
             }
         }
         dealProgrammingCards();
+        //<----- Test for Movement Protocol----->
+        server.communicateAll(new Movement(1,87));
     }
 
     /**

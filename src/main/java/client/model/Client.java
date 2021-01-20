@@ -213,11 +213,11 @@ public class Client {
                 }
                 case Movement -> {
                     Movement movement = (Movement) message.getBody();
-                    //gameViewController.handleMovement(movement.getPlayerID(), movement.getTo());
+                    gameViewController.handleMovement(movement.getPlayerID(), movement.getTo());
                 }
                 case PlayerTurning -> {
                     PlayerTurning pT = (PlayerTurning) message.getBody();
-                    //gameViewController.handlePlayerTurning(pT.getPlayerID(), pT.getDirection());
+                    gameViewController.handlePlayerTurning(pT.getPlayerID(), pT.getDirection());
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
