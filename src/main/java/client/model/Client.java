@@ -38,11 +38,14 @@ public class Client {
     private final ArrayList<Player> players = new ArrayList<>();
     private int thisPlayersID;
     private PrintWriter writer;
+    private boolean allRegistersAsFirst = false;
 
     private GameViewController gameViewController;
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
+
+
 
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
@@ -179,13 +182,15 @@ public class Client {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if(selectionFinished.getPlayerID() == thisPlayersID){
                         gameViewController.getPlayerMapController().fixSelectedCards();
+                        allRegistersAsFirst = true; //TODO reset after one round
                     } else {
                         gameViewController.getPlayerMapController().fixSelectedCards(); //TODO else
+                        allRegistersAsFirst = false;
                     }
 
                 }
                 case TimerStarted -> {
-                    gameViewController.startTimer();
+                    gameViewController.startTimer(allRegistersAsFirst);
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody(); //TODO
