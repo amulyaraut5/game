@@ -1,5 +1,6 @@
 package client.view;
 
+import game.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -71,12 +72,12 @@ public class LoginController extends Controller {
                     setGraphic(null);
                 } else {
                     setGraphic(figure.getImageView());
-                    if (figure.isTaken()) {
-                        figure.getImageView().setDisable(true);
-                        setDisable(true);
-                        setBackground(new Background(new BackgroundFill(Color.GRAY,
-                                CornerRadii.EMPTY, Insets.EMPTY)));
-                    }
+                    figure.getImageView().setDisable(figure.isTaken());
+                    setDisable(figure.isTaken());
+                    if (figure.isTaken()) setBackground(new Background(new BackgroundFill(Color.GRAY,
+                            CornerRadii.EMPTY, Insets.EMPTY)));
+                    else setBackground(new Background(new BackgroundFill(Color.WHITE,
+                            CornerRadii.EMPTY, Insets.EMPTY)));
                 }
             }
         });
@@ -139,6 +140,14 @@ public class LoginController extends Controller {
     public void setFigureTaken(int id, boolean taken) {
         Figure figure = figures.get(id);
         figure.setTaken(taken);
+        figures.set(id, figure);
+    }
+
+    public void removePlayer(Player player) {
+        System.out.println(player.getFigure());
+        int id = player.getFigure();
+        Figure figure = figures.get(id);
+        figure.setTaken(false);
         figures.set(id, figure);
     }
 

@@ -270,13 +270,16 @@ public class Server extends Thread {
     }
 
     /**
-     * This method removes a user from the list of users.
+     * This method removes a saved user from the server and game.
+     * If no user is left on the server, the server is closed.
      *
      * @param user User to be removed
      */
     public void removeUser(User user) {
         readyUsers.remove(user);
         users.remove(user);
+
+        communicateAll(new ConnectionUpdate(user.getID(), false, "Remove"));
 
         if (users.size() == 0) {
             interrupt();

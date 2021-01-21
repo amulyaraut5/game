@@ -11,7 +11,7 @@ public class PlayerStatus extends JSONBody {
         this.ready = ready;
     }
 
-    public int getId() {
+    public int getID() {
         return playerID;
     }
 
