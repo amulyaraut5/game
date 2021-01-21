@@ -36,6 +36,7 @@ public class ProgrammingController extends Controller {
     private MediaView mediaView;
     private double widthHBox;
     private double heightHBox;
+    private boolean timerEnded = false;
 
     @FXML
     private AnchorPane programmingPhasePane;
@@ -183,7 +184,7 @@ public class ProgrammingController extends Controller {
 
         timer.schedule(new TimerTask() {
             public void run() {
-                if(interval > 0)
+                if(interval > 0 && !timerEnded)
                 {
                     Platform.runLater(() -> timerLabel.setText(String.valueOf(interval)));
                     System.out.println(interval);
@@ -196,6 +197,9 @@ public class ProgrammingController extends Controller {
 
     }
 
+    public void setTimerEnded(boolean timerEnded) {
+        this.timerEnded = timerEnded;
+    }
 }
 
 
