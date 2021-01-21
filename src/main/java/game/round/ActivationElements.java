@@ -265,14 +265,29 @@ public class ActivationElements {
         }
 
         for (int i = 0; i < 2; i++){
-            for (boolean b : actionFinished) {
-                b = false;
+            for (int j = 0; j < actionFinished.size(); j++){
+                actionFinished.set(j,false);
             }
 
             boolean finished = false;
             while(!finished) {
 
                 for (Player player : playersOnBelt) {
+                    //for the 2nd movement, it must be checked whether the player is still on a belt or not.
+                    if(i == 1){
+                        boolean stillOnBelt = false;
+                        for(Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()){
+                            if(a.getType() == AttributeType.Belt){
+                                stillOnBelt =  true;
+                            }
+                            else{
+                                if(a.getType() == AttributeType.RotatingBelt){
+                                    stillOnBelt = true;
+                                }
+                            }
+                            if(!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
+                        }
+                    }
                     if (!actionFinished.get(playersOnBelt.indexOf(player))) {
                         boolean move = true;
                         Coordinate newPos = calculateNew(player, orientations.get(playersOnBelt.indexOf(player)));
