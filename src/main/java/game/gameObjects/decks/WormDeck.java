@@ -1,5 +1,6 @@
 package game.gameObjects.decks;
 
+import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Worm;
 
@@ -24,6 +25,11 @@ public class WormDeck extends DamageCardDeck {
         for (int i = 0; i < WORM_CARDCOUNT; i++) {
             wormDeck.add(new Worm());
         }
+    }
+
+    @Override
+    public void handleEmptyDeck(Player player) {
+
     }
 
     @Override

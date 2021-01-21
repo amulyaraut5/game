@@ -1,9 +1,8 @@
 package game.gameActions;
 
-import game.Game;
 import game.Player;
-import game.gameObjects.cards.Card;
 import utilities.JSONProtocol.body.Movement;
+import utilities.JSONProtocol.body.Reboot;
 import utilities.enums.Orientation;
 
 /**
@@ -22,10 +21,9 @@ public class RebootAction extends Action {
     @Override
     public void doAction(Orientation orientation, Player player) {
         //Draw two spam cards
-        for (int i = 0; i < 2; i++) {
-            Card spamCard = Game.getInstance().getSpamDeck().pop();
-            player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
-        }
+        //TODO handle empty Spam-Deck -> in handleEmptyDeck() ?
+        game.getSpamDeck().drawTwoSpam(player);
+
         //discard cards in registers on discard pile
         player.getRegisterCards().addAll(player.getDiscardedProgrammingDeck().getDeck());
         player.getRegisterCards().clear();
@@ -36,6 +34,7 @@ public class RebootAction extends Action {
         player.getRobot().setCoordinate(map.getRestartPoint());
         int restartPos = map.getRestartPoint().toPosition();
         server.communicateAll(new Movement(player.getID(), restartPos));
+        server.communicateAll(new Reboot(player.getID()));
         //TODO The player can turn the robot to face any direction.
     }
 }

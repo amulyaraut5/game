@@ -1,5 +1,6 @@
 package game.gameObjects.decks;
 
+import game.Player;
 import game.gameObjects.cards.Card;
 
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ public class UpgradeDeck extends Deck {
 
     @Override
     public void createDeck() {
+
+    }
+
+    @Override
+    public void handleEmptyDeck(Player player) {
 
     }
 
