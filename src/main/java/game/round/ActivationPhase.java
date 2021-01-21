@@ -15,11 +15,9 @@ import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.MapConverter;
-import utilities.JSONProtocol.body.Movement;
 import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -260,14 +258,14 @@ public class ActivationPhase extends Phase {
             case TurnRight -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+                server.communicateAll(new PlayerTurning(player.getID(), player.getRobot().getOrientation()));
                 logger.info(player.getName() + "turned right.");
             }
             case UTurn -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+                server.communicateAll(new PlayerTurning(player.getID(), player.getRobot().getOrientation()));
                 logger.info(player.getName() + "performed U-Turn");
             }
             case BackUp -> {
@@ -277,11 +275,11 @@ public class ActivationPhase extends Phase {
             }
             case PowerUp -> {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
+                server.communicateAll(new Energy(player.getID(), player.getEnergyCubes()));
                 logger.info(player.getName() + "got one EnergyCube.");
             }
             case Again -> {
                 new AgainAction().doAction(orientation, player);
-                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
             }
             case Spam -> {
                 Spam spam = new Spam();
@@ -334,10 +332,8 @@ public class ActivationPhase extends Phase {
                 player.getRegisterCards().set(trojanIndex, topCard);
 
                 //Draw two spam cards
-                for (int i = 0; i < 2; i++) {
-                    Card spamCard = game.getSpamDeck().pop();
-                    player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
-                }
+                game.getSpamDeck().drawTwoSpam(player);
+
                 logger.info(player.getName() + "played a trojan card.");
                 //Play the new register card
                 handleCard(topCard.getName(), player);
@@ -462,7 +458,7 @@ public class ActivationPhase extends Phase {
 
                         for (RobotDistance rd : sameDistance) {
                             int antennaY = antenna.getY();
-                            int robotY = rd.getRobot().getPosition().getY();
+                            int robotY = rd.getRobot().getCoordinate().getY();
 
                             if (robotY < antennaY) {
                                 smallerThanAntenna.add(rd.getPlayerID());
