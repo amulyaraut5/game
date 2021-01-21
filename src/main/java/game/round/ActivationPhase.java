@@ -8,10 +8,7 @@ import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
-import game.gameObjects.tiles.Wall;
+import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -22,6 +19,7 @@ import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -166,8 +164,6 @@ public class ActivationPhase extends Phase {
                         if (orientation == o.getOpposite()) canMove = false;
                     }
                 }
-                case Pit ->  inPit = true;
-                case ControlPoint ->  onCheckpoint = true;
             }
         }
 
@@ -193,13 +189,8 @@ public class ActivationPhase extends Phase {
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+        //server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
     }
-
-    public void communicateBeltMovement(Player player){
-        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
-    }
-
 
     public void handleCard(CardType cardType, Player player) {
         Orientation orientation = player.getRobot().getOrientation();
