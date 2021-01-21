@@ -1,17 +1,18 @@
 package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
+import utilities.enums.CardType;
 
 public class SelectCard extends JSONBody {
-    String card;
-    int register;
+    private CardType card;
+    private int register;
 
-    public SelectCard(String card, int register) {
+    public SelectCard(CardType card, int register) {
         this.card = card;
         this.register = register;
     }
 
-    public String getCard() {
+    public CardType getCard() {
         return card;
     }
 

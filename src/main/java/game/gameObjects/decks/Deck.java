@@ -11,8 +11,6 @@ import java.util.Collections;
  */
 public abstract class Deck {
 
-    private ArrayList<Card> deck;
-
     /**
      * Creates a suitable deck with the respective cards,
      * has to be implemented in each deck class.
@@ -58,9 +56,9 @@ public abstract class Deck {
      * @return the removed card
      */
     public Card pop() {
-        Card poped = this.getDeck().get(0);
-        this.getDeck().remove(poped);
-        return poped;
+        Card popped = this.getDeck().get(0);
+        this.getDeck().remove(popped);
+        return popped;
     }
 
     /**

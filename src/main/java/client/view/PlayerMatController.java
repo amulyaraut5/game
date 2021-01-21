@@ -10,7 +10,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
+import utilities.enums.CardType;
 
 /**
  * @author sarah
@@ -30,7 +32,7 @@ public class PlayerMatController extends Controller {
 
     @FXML
     private ImageView registerNumber;
-
+    private boolean eventOn = true;
     @FXML
     private AnchorPane playerMapAnchorPane;
 
@@ -47,36 +49,41 @@ public class PlayerMatController extends Controller {
         createRegisterBackground();
         int register = 5;
         for (int i = 0; i < register; i++) {
-            StackPane pane = createNewPane();
+            StackPane pane = createNewPane(true);
             registerHBox.getChildren().add(pane);
         }
     }
 
 
-    private StackPane createNewPane() {
+    private StackPane createNewPane(boolean event) {
         StackPane pane = new StackPane();
 
         pane.setPrefHeight(heightRegisterCard);
         pane.setPrefWidth(widthRegisterCard);
 
+        if (event && eventOn) {
+            pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
+            pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
+            pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
+        }
 
-        pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
-        pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
-        pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
 
         return pane;
     }
 
 
     private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView, StackPane pane) {
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(imageView.getImage());
-        //setImageDropped(imageView.getImage().getUrl());
-        db.setContent(content);
-        imageView.setImage(null);
-        client.sendMessage(new SelectCard(null, registerHBox.getChildren().indexOf(pane)));
-        mouseEvent.consume();
+        if (eventOn) {
+            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(imageView.getImage());
+            //setImageDropped(imageView.getImage().getUrl());
+            db.setContent(content);
+            imageView.setImage(null);
+            client.sendMessage(new SelectCard(null, registerHBox.getChildren().indexOf(pane)));
+            mouseEvent.consume();
+        }
+
     }
 
     public void loadPlayerMap(Player player) {
@@ -86,7 +93,7 @@ public class PlayerMatController extends Controller {
     }
 
 
-    void addImage(Image i, StackPane pane) {
+    private void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(widthRegisterCard - 20);
         imageView.setFitHeight(heightRegisterCard);
@@ -98,6 +105,7 @@ public class PlayerMatController extends Controller {
     }
 
     private void mouseDragDropped(DragEvent event, StackPane pane) {
+
         Dragboard db = event.getDragboard();
         boolean success = false;
         if (db.hasImage()) {
@@ -107,27 +115,44 @@ public class PlayerMatController extends Controller {
             }
             Image img = db.getImage();
             addImage(img, pane);
-            System.out.println("CardName playerMapController" + getImageDropped());
-            System.out.println("Register " + registerHBox.getChildren().indexOf(pane) + 1);
             String cardName = getImageDropped();
             int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
-            client.sendMessage(new SelectCard(cardName, registerNumber));
+            client.sendMessage(new SelectCard(CardType.valueOf(cardName), registerNumber));
             //TODO getting url
             //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
 
-
         }
-        event.setDropCompleted(success);
-        event.consume();
+        event.setDropCompleted(false);
+        //event.consume();
+
+
+    }
+
+    public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow) {
+        registerHBox.getChildren().clear();
+        for (CardType card : cardsYouGotNow.getCards()) {
+            StackPane pane = createNewPane(false);
+            addImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()), pane);
+            registerHBox.getChildren().add(pane);
+        }
+
+
+    }
+
+    public void fixSelectedCards() {
+        eventOn = false;
     }
 
     private void mouseDragOver(DragEvent event, StackPane pane) {
+
         pane.setStyle("-fx-border-color: #ff0000;"
                 + "-fx-border-width: 5;"
                 + "-fx-background-color: #C6C6C6;"
                 + "-fx-border-style: solid;");
         event.acceptTransferModes(TransferMode.ANY);
         event.consume();
+
+
     }
 
     private void createRegisterNumberImages() {

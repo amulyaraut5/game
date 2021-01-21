@@ -1,22 +1,22 @@
 package utilities.JSONProtocol.body;
 
-import game.gameObjects.cards.Card;
 import utilities.JSONProtocol.JSONBody;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 
 public class YourCards extends JSONBody {
-    ArrayList<String> cards;
+    private ArrayList<CardType> cards;
 
-    public YourCards(ArrayList<String> cards) {
+    public YourCards(ArrayList<CardType> cards) {
         this.cards = cards;
     }
 
-    public ArrayList<String> getCards() {
+    public ArrayList<CardType> getCards() {
         return cards;
     }
 
-    public void setCards(ArrayList<String> cards) {
+    public void setCards(ArrayList<CardType> cards) {
         this.cards = cards;
     }
 }

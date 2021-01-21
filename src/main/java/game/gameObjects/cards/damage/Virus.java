@@ -28,13 +28,13 @@ public class Virus extends DamageCard {
     @Override
     public void handleCard(Game game, Player player) {
 
-        int robotX = player.getRobot().getPosition().getX();
-        int robotY = player.getRobot().getPosition().getY();
+        int robotX = player.getRobot().getCoordinate().getX();
+        int robotY = player.getRobot().getCoordinate().getY();
         ArrayList<Player> allPlayers = game.getPlayers();
 
         for (Player otherPlayer : allPlayers) {
-            int otherRobotX = otherPlayer.getRobot().getPosition().getX();
-            int otherRobotY = otherPlayer.getRobot().getPosition().getY();
+            int otherRobotX = otherPlayer.getRobot().getCoordinate().getX();
+            int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
 
             if (otherPlayer != player && (otherRobotX <= robotX + 6 || otherRobotY <= robotY + 6)) {
                 Card virusCard = game.getVirusDeck().pop();

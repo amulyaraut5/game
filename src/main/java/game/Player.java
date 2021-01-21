@@ -21,7 +21,7 @@ public class Player extends User {
     /**
      * contains the chosen Cards for each register
      */
-    private ArrayList<Card> registerCards ;
+    private ArrayList<Card> registerCards;
 
     /**
      * Programming deck that cards can be drawn from

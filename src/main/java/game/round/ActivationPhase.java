@@ -12,7 +12,6 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Belt;
 import game.gameObjects.tiles.RotatingBelt;
 import game.gameObjects.tiles.Wall;
-import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -20,6 +19,7 @@ import utilities.JSONProtocol.body.CurrentCards;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.MapConverter;
+import utilities.JSONProtocol.body.Movement;
 import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -72,7 +72,7 @@ public class ActivationPhase extends Phase {
                 //throw new UnsupportedOperationException();
             }
         }
-        game.nextPhase();
+        //game.nextPhase(); TODO set next Phase somewehere else
     }
 
 
@@ -85,7 +85,7 @@ public class ActivationPhase extends Phase {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
-        server.communicateAll(new CurrentCards(currentCards));
+        server.communicateAll(new CurrentCards(currentCards)); //TODO CurrentCards is sent multiple times
     }
 
     /**
@@ -110,26 +110,19 @@ public class ActivationPhase extends Phase {
      * Method that activates the board elements in their right order.
      */
     private void activateBoard() {
-        // TODO - implement ActivationPhase.activateBoard
         gameMap = game.getMap();
-
-        // And then we can execute other board elements in order
 
         activateBlueBelts();
         activateGreenBelts();
-		/*
-           all board elements functionality are handled in activation elements class except laser
-		 */
+        //all board elements functionality are handled in activation elements class except laser
 
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
-        //throw new UnsupportedOperationException();
-
     }
 
     public void activateGreenBelts() {
         for (Coordinate tileCoordinate : gameMap.getGreenBelts()) {
             for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
                     for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
                         if (a.getType() == AttributeType.Belt) {
                             handleMove(currentPlayer, ((Belt) a).getOrientation());
@@ -148,7 +141,7 @@ public class ActivationPhase extends Phase {
         for (int i = 0; i < 2; i++) {
             for (Coordinate tileCoordinate : gameMap.getBlueBelts()) {
                 for (Player currentPlayer : playerList) {
-                    if (tileCoordinate.equals(currentPlayer.getRobot().getPosition())) {
+                    if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
                         for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
                             if (a.getType() == AttributeType.Belt) {
                                 handleMove(currentPlayer, ((Belt) a).getOrientation());
@@ -171,19 +164,19 @@ public class ActivationPhase extends Phase {
         //calculate potential new position
         Coordinate newPosition = null;
         if (o == Orientation.UP) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToY(-1);
         }
         if (o == Orientation.RIGHT) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToX(1);
         }
         if (o == Orientation.DOWN) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToY(1);
         }
         if (o == Orientation.LEFT) {
-            newPosition = player.getRobot().getPosition().clone();
+            newPosition = player.getRobot().getCoordinate().clone();
             newPosition.addToX(-1);
         }
         //Handle board elements
@@ -193,27 +186,23 @@ public class ActivationPhase extends Phase {
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
             switch (a.getType()) {
                 //handle different tile effects here
-                case Wall:
+                case Wall -> {
                     Wall temp = (Wall) a;
                     for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o.getOpposite()) {
-                            canMove = false;
-                        }
+                        if (orientation == o.getOpposite()) canMove = false;
                     }
-                case Pit:
-                    inPit = true;
-
-                case ControlPoint:
-                    onCheckpoint = true;
+                }
+                case Pit ->  inPit = true;
+                case ControlPoint ->  onCheckpoint = true;
             }
         }
 
         //Handle collisions
         for (Player currentPlayer : playerList) {
-            if (newPosition.equals(currentPlayer.getRobot().getPosition())) {
-                Coordinate old = currentPlayer.getRobot().getPosition();
+            if (newPosition.equals(currentPlayer.getRobot().getCoordinate())) {
+                Coordinate old = currentPlayer.getRobot().getCoordinate();
                 handleMove(currentPlayer, o);
-                if ((old.equals(currentPlayer.getRobot().getPosition()))) {
+                if ((old.equals(currentPlayer.getRobot().getCoordinate()))) {
                     canMove = false;
                 }
             }
@@ -228,16 +217,18 @@ public class ActivationPhase extends Phase {
                 moveOne(player, o);
                 player.checkPointReached();
             } else {
-                if (canMove) {
-                    moveOne(player, o);
-                }
+                if (canMove) moveOne(player, o);
             }
         }
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+    }
+
+    public void communicateBeltMovement(Player player){
+        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
     }
 
 
@@ -264,25 +255,24 @@ public class ActivationPhase extends Phase {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.LEFT));
                 rotateRobot.doAction(Orientation.LEFT, player);
                 server.communicateAll(new PlayerTurning(player.getID(), player.getRobot().getOrientation()));
-                //player turning protocol
                 logger.info(player.getName() + "turned left.");
             }
             case TurnRight -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
                 logger.info(player.getName() + "turned right.");
             }
             case UTurn -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
                 logger.info(player.getName() + "performed U-Turn");
             }
             case BackUp -> {
                 new MoveRobotBack().doAction(orientation, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
                 logger.info(player.getName() + "moved back.");
             }
             case PowerUp -> {
@@ -291,7 +281,7 @@ public class ActivationPhase extends Phase {
             }
             case Again -> {
                 new AgainAction().doAction(orientation, player);
-                server.communicateAll(MapConverter.convertCoordinate(player, player.getRobot().getPosition()));
+                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
             }
             case Spam -> {
                 Spam spam = new Spam();
@@ -318,13 +308,13 @@ public class ActivationPhase extends Phase {
                 logger.info(player.getName() + "played a worm card.");
             }
             case Virus -> {
-                int robotX = player.getRobot().getPosition().getX();
-                int robotY = player.getRobot().getPosition().getY();
+                int robotX = player.getRobot().getCoordinate().getX();
+                int robotY = player.getRobot().getCoordinate().getY();
                 ArrayList<Player> allPlayers = game.getPlayers();
 
                 for (Player otherPlayer : allPlayers) {
-                    int otherRobotX = otherPlayer.getRobot().getPosition().getX();
-                    int otherRobotY = otherPlayer.getRobot().getPosition().getY();
+                    int otherRobotX = otherPlayer.getRobot().getCoordinate().getX();
+                    int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
 
                     if (otherPlayer != player && (otherRobotX <= robotX + 6 || otherRobotY <= robotY + 6)) {
                         Card virusCard = game.getVirusDeck().pop();
@@ -422,8 +412,8 @@ public class ActivationPhase extends Phase {
             while (i < players.size()) {
                 //Point is generated with robot x and y position
                 Coordinate robotPosition = new Coordinate(
-                        players.get(i).getRobot().getPosition().getX(),
-                        players.get(i).getRobot().getPosition().getY());
+                        players.get(i).getRobot().getCoordinate().getX(),
+                        players.get(i).getRobot().getCoordinate().getY());
                 //get playerID
                 int playerID = players.get(i).getID();
                 //get robot
@@ -431,7 +421,7 @@ public class ActivationPhase extends Phase {
                 //get distance to antenna
                 double distance = calculateDistance(antenna, robotPosition);
                 //get y coordinate
-                int yRobot = robot.getPosition().getY();
+                int yRobot = robot.getCoordinate().getY();
                 //safe object in sortedDistance
                 sortedDistance.add(new RobotDistance(playerID, robot, distance, yRobot));
 

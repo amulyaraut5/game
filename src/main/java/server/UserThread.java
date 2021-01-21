@@ -87,7 +87,7 @@ public class UserThread extends Thread {
     /**
      * The connection is closed and other users get notified that the user left.
      */
-    void disconnect() {
+    protected void disconnect() {
         if (!exit) {
             exit = true;
             server.removeUser(user);

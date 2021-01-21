@@ -13,7 +13,7 @@ import static utilities.Utilities.VIRUS_CARDCOUNT;
  */
 public class VirusDeck extends DamageCardDeck {
 
-    ArrayList<Card> virusDeck;
+    private ArrayList<Card> virusDeck;
 
     /**
      * Creates the deck of Virus cards.

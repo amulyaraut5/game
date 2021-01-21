@@ -20,8 +20,8 @@ public class MoveRobotInCurve extends Action{
     // Todo Split cases with boolean isCrossing
     public void doAction2(Orientation[] orientations,Player player){
 
-        int xCoordinate = player.getRobot().getPosition().getX();
-        int yCoordinate = player.getRobot().getPosition().getY();
+        int xCoordinate = player.getRobot().getCoordinate().getX();
+        int yCoordinate = player.getRobot().getCoordinate().getY();
 
         if (orientations == Utilities.RIGHT_UP) {
             player.getRobot().setPosition(xCoordinate-1, yCoordinate +1);

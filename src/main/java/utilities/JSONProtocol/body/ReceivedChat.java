@@ -3,11 +3,9 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class ReceivedChat extends JSONBody {
-    String message;
-
-    int from;
-
-    boolean privat;
+    private String message;
+    private int from;
+    private boolean privat;
 
     public ReceivedChat(String message, int from, boolean privat) {
         this.message = message;

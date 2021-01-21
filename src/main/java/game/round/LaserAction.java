@@ -10,8 +10,9 @@ import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.enums.Orientation;
+import utilities.SoundHandler;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
@@ -24,57 +25,54 @@ import java.util.ArrayList;
 public class LaserAction {
 
     private static final Logger logger = LogManager.getLogger();
-    ArrayList<Coordinate> coordinates = new ArrayList<>();
-    ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
-    Game game = Game.getInstance();
-    ArrayList<Player> playerList = game.getPlayers();
-    Map map = game.getMap();
+    private ArrayList<Coordinate> coordinates = new ArrayList<>();
+    private ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
+    private Game game = Game.getInstance();
+    private ArrayList<Player> playerList = game.getPlayers();
+    private Map map = game.getMap();
+    private SoundHandler soundHandler = new SoundHandler();
 
     /**
      * Constructor for laser
      */
-    public LaserAction() {
-    }
+    public LaserAction() { }
 
     /**
-     * The effect of lasers will be seen if it finds any robot standing in its
-     * traversing direction.
+     *  This method gets triggered in activation phase.All the Board Lasers are activated at once.
+     *  Only the first player standing in it's way gets affected.
      */
 
     public void activateBoardLaser() {
+        //soundHandler.pitSound();
         determineLaserPaths();
+        // TODO Check whether the lasers affect two players
         for (Coordinate coordinate : coordinates) {
-            for (Player player : playerList) {
-                if (player.getRobot().getPosition().getX() == coordinate.getX()
-                        && player.getRobot().getPosition().getY() == coordinate.getY()) {
-                    //player.getDiscardedProgrammingDeck().addSpamCard();
-
-                }
-            }
+            for (Player player : playerList)
+                if (player.getRobot().getCoordinate() == coordinate) receiveDamage(player);
+            break;
         }
     }
 
     /**
      * This method gets triggered after every register.
      * The player on the receiving end gets one spam card as a damage.
-     *
+     * The Robot can only fire in one direction.
      * @param currentPlayer
      */
 
     public void activateRobotLaser(Player currentPlayer) {
+        //soundHandler.pitSound();
         determineRobotLaserPath(currentPlayer);
         for (Coordinate coordinate : roboCoordinates) {
             for (Player targetPlayer : playerList) {
-                if (currentPlayer != targetPlayer) { //TODO
-
-                    if (targetPlayer.getRobot().getPosition().getX() == coordinate.getX()
-                            && targetPlayer.getRobot().getPosition().getY() == coordinate.getY()) {
-                        //targetPlayer.getDiscardedProgrammingDeck().addSpamCard();
-
-                    }
-                }
+                if (currentPlayer.getID() != targetPlayer.getID())
+                    if (targetPlayer.getRobot().getCoordinate() == coordinate) receiveDamage(targetPlayer);
             }
         }
+    }
+
+    // TODO player receive the spam cards and add in the discarded pile
+    private void receiveDamage(Player player){
     }
 
     /**
@@ -82,19 +80,18 @@ public class LaserAction {
      * Lasers cannot traverse through wall, antenna and cannot
      * penetrate more than one robot.
      */
-    //TODO Antenna Case and Delete unnecessary logger.info
+
     public void determineLaserPaths() {
-        for (Coordinate coordinate : map.getLaserCoordinates()) {
+        for (Coordinate coordinate : map.readLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
-
-            Tile tile = map.getTile(xC, yC);
-            logger.info("X" + xC + "y" + yC);
-
-            for (Attribute a : tile.getAttributes()) {
+            for (Attribute a : map.getTile(xC, yC).getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
-                    coordinates = determinePath(orientation, coordinate); //TODO "coordinates =" or "coordinates.addAll()"
+                    coordinates = determinePath(orientation, coordinate);
+                    for(Coordinate coordinate1: coordinates){
+                        logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + coordinate1.getX() + "," + coordinate1.getY() + ")");
+                    }
                 }
             }
         }
@@ -105,35 +102,43 @@ public class LaserAction {
      * Lasers cannot traverse through wall, antenna and cannot
      * penetrate more than one robot.
      */
-    // TODO //TODO Antenna Case and Delete unnecessary logger.info
+
     public void determineRobotLaserPath(Player player) {
         Orientation orientation = player.getRobot().getOrientation();
-        Coordinate robotPosition = player.getRobot().getPosition();
-
-        roboCoordinates = determinePath(orientation, robotPosition); //TODO "roboCoordinates =" or "roboCoordinates.addAll()"
+        Coordinate robotPosition = player.getRobot().getCoordinate();
+        roboCoordinates = determinePath(orientation, robotPosition);
     }
 
+
+    /**
+     * Helper function that returns the arraylist of laser affected coordinates.
+     * @param orientation  Either robot orientation or orientation of tile, depends on who calls this method
+     * @param position Either robot position or position of tile in map, depends on who calls this method
+     * @return
+     */
     private ArrayList<Coordinate> determinePath(Orientation orientation, Coordinate position) {
         ArrayList<Coordinate> path = new ArrayList<>();
+        path.add(position);
         position = position.clone();
         Coordinate step = orientation.toVector();
 
         outerLoop:
         while (position.getX() >= 0 || position.getX() <= 10 || position.getY() >= 0 || position.getY() <= 10) {
             position.add(step);
-            Tile affectedTile = map.getTile(position.getX(), position.getY());
-            for (Attribute b : affectedTile.getAttributes()) {
-                if (b.getType() != AttributeType.Wall) { //TODO test if there is a Antenna, robot
+            for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
+                // Pay Attention: We have a wall with laser in Extra crispy map.
+                // Wall with laser  is not checked. Gives Array out of BoundException
+                if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna) {
                     path.add(position.clone());
-                    logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + position.getX() + "," + position.getY() + ")");
-                    break; //TODO what is if at the next attribute is a Wall?
+                    break;
                 } else if (b.getType() == AttributeType.Wall) {
-                    if (((Wall) b).getOrientation() == orientation) {  //TODO test if wall orientation is opposite of robot orientation
+                    if (((Wall) b).getOrientation() == orientation) {
                         path.add(position.clone());
-                        logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + position.getX() + "," + position.getY() + ")");
                         break outerLoop;
+                    }else if (((Wall) b).getOrientation() != orientation){
+                        path.add(position.clone());
                     }
-                }
+                }else if (b.getType() == AttributeType.Antenna) break outerLoop;
             }
         }
         return path;

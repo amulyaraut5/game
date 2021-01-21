@@ -1,10 +1,11 @@
 package client.view;
 
-import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
+import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -36,6 +36,7 @@ import utilities.enums.PhaseState;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
@@ -49,6 +50,7 @@ public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+    private Map map;
 
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -79,6 +81,7 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
+    private HashMap<Player, ImageView> robotImageViews = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -117,7 +120,7 @@ public class GameViewController extends Controller {
     }
 
     public void buildMap(GameStarted gameStarted) {
-        Map map = MapConverter.reconvert(gameStarted);
+        map = MapConverter.reconvert(gameStarted);
         int xMax = Utilities.MAP_WIDTH;
         int yMax = Utilities.MAP_HEIGHT;
 
@@ -142,14 +145,12 @@ public class GameViewController extends Controller {
         }
     }
 
-    public void placeRobotInMap(Player player, int position) {
+    public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == client.getThisPlayersID()) {
             boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
         }
+        player.getRobot().setCoordinate(coordinate);
 
-        Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(position);
-        int newX = newRobotPosition.getX();
-        int newY = newRobotPosition.getY();
         ImageView imageView = player.getRobot().drawRobotImage();
 
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
@@ -157,95 +158,52 @@ public class GameViewController extends Controller {
         imageView.setPreserveRatio(true);
 
         robotPane.getChildren().add(imageView);
-        imageView.setX(newX * Utilities.FIELD_SIZE);
-        imageView.setY(newY * Utilities.FIELD_SIZE);
-    }
-    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
-    public void tempRobot(){
-        int newX = 7;
-        int newY = 8;
-        Image image = new Image(getClass().getResource("/lobby/hammerbot.png").toExternalForm());
-        ImageView imageView = new ImageView(image);
-        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
-        imageView.setPreserveRatio(true);
+        imageView.setX(coordinate.getX() * Utilities.FIELD_SIZE);
+        imageView.setY(coordinate.getY() * Utilities.FIELD_SIZE);
 
-        robotPane.getChildren().add(imageView);
-        imageView.setX(newX * Utilities.FIELD_SIZE);
-        imageView.setY(newY * Utilities.FIELD_SIZE);
+        // Stores the imageView of to change its coordinates later.
+        robotImageViews.put(player, imageView);
     }
 
-    public void moveRobot() {
-        int x = 7;
-        int y = 8;
-        ImageView imageView = (ImageView) robotPane.getChildren().get(fields[x][y].getChildren().size() - 1);
-        int newX = 1;
-        int newY = 3;
+    public void handleMovement(Player player, Coordinate newPos) {
+        ImageView imageView = robotImageViews.get(player);
+        Coordinate oldPos = player.getRobot().getCoordinate();
+
         TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(2));
-        transition.setToX(newX *Utilities.FIELD_SIZE - x* Utilities.FIELD_SIZE);
-        transition.setToY(newY * Utilities.FIELD_SIZE - y*Utilities.FIELD_SIZE);
+        transition.setDuration(Duration.seconds(1));
         transition.setNode(imageView);
-        //transition.setInterpolator(Interpolator.LINEAR);
+        transition.setToX((newPos.getX() - oldPos.getX()) * Utilities.FIELD_SIZE);
+        transition.setToY((newPos.getY() - oldPos.getY()) * Utilities.FIELD_SIZE);
+        transition.play();
+
+        player.getRobot().setCoordinate(newPos);
+    }
+
+    public void handlePlayerTurning(Player player, Orientation rotation) {
+        ImageView imageView = robotImageViews.get(player);
+        int angle = 0;
+        Robot r = player.getRobot();
+        if (rotation == Orientation.LEFT) {
+            angle = -90;
+            r.setOrientation(r.getOrientation().getPrevious());
+        } else if (rotation == Orientation.RIGHT) {
+            angle = 90;
+            r.setOrientation(r.getOrientation().getNext());
+        }
+
+        RotateTransition transition = new RotateTransition();
+        transition.setDuration(Duration.seconds(1));
+        transition.setNode(imageView);
+        transition.setByAngle(angle);
         transition.play();
     }
-    // <----------------------Only For Test---------------------------->
-
-    public void handleMovement(int playerId, int to) {
-        // TODO Handled Player from Client
-
-        for (Player player : Client.getInstance().getPlayers()) {
-            if (player.getID() == playerId) {
-                // Get the Robot position from the Board
-                Coordinate oldRobotPosition = player.getRobot().getPosition();
-                int x = oldRobotPosition.getX();
-                int y = oldRobotPosition.getY();
-
-                Coordinate newRobotPosition = MapConverter.reconvertToCoordinate(to);
-                int newX = newRobotPosition.getX();
-                int newY = newRobotPosition.getY();
-
-                // Get ImageView from the old position
-                ImageView imageView = (ImageView) fields[x][y].getChildren().get(fields[x][y].getChildren().size() - 1);
-                // Remove the imageView from the old position
-                fields[x][y].getChildren().remove(fields[x][y].getChildren().size() - 1);
-                // Set the imageView to new position
-
-                fields[newX][newY].getChildren().add(imageView);
-            }
-        }
-    }
-
-    public void handlePlayerTurning(int playerID, Orientation rotation) {
-        // TODO Handled Player from Client
-
-        for (Player player : Client.getInstance().getPlayers()) {
-            if (player.getID() == playerID) {
-
-                Coordinate oldRobotPosition = player.getRobot().getPosition();
-                int x = oldRobotPosition.getX();
-                int y = oldRobotPosition.getY();
-
-                // Get the imageView from that position
-                ImageView robotImageView = (ImageView) fields[x][y].getChildren().get(fields[x][y].getChildren().size() - 1);
-                // Direction of robotImageView
-                double currentDirection = robotImageView.rotateProperty().getValue();
-
-                //Turn the robot based on the direction
-                if (rotation.equals(Orientation.LEFT)) {
-                    robotImageView.rotateProperty().setValue(currentDirection - 90);
-                } else {
-                    robotImageView.rotateProperty().setValue(currentDirection + 90);
-                }
-            }
-        }
-    }
-
-
-    //TODO inner view with activation phase
 
     public void programCards(YourCards yourCards) {
         programmingController.startProgrammingPhase(yourCards.getCards());
+    }
+
+    public void startTimer(boolean allRegistersAsFirst) {
+        programmingController.startTimer(allRegistersAsFirst);
     }
 
     /**

@@ -13,8 +13,8 @@ import static utilities.Utilities.*;
  * @author annika
  */
 public class ProgrammingDeck extends Deck {
+    private ArrayList<Card> programmingDeck;
 
-    ArrayList<Card> programmingDeck;
     DiscardDeck discardDeck = new DiscardDeck();
 
 

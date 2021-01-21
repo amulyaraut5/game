@@ -13,7 +13,7 @@ import static utilities.Utilities.SPAM_CARDCOUNT;
  */
 public class SpamDeck extends DamageCardDeck {
 
-    ArrayList<Card> spamDeck;
+    private ArrayList<Card> spamDeck;
 
     /**
      * Creates the deck of Spam cards.

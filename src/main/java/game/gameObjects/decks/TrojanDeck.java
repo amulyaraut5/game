@@ -13,7 +13,7 @@ import static utilities.Utilities.TROJANHORSE_CARDCOUNT;
  */
 public class TrojanDeck extends DamageCardDeck {
 
-    ArrayList<Card> trojanDeck;
+    private ArrayList<Card> trojanDeck;
 
     /**
      * Creates the deck of Trojan cards.

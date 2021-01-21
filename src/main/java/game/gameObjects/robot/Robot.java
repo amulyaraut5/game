@@ -1,7 +1,5 @@
 package game.gameObjects.robot;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import utilities.Coordinate;
@@ -18,8 +16,8 @@ public abstract class Robot {
     protected String name;
     protected Color color;
 
-    protected Orientation orientation= Orientation.RIGHT;
-    protected Coordinate position;
+    protected Orientation orientation = Orientation.RIGHT;
+    protected Coordinate coordinate;
 
 
     /**
@@ -67,11 +65,11 @@ public abstract class Robot {
      * @param direction Direction of the movement
      */
     public void move(int moveCount, Orientation direction) {
-        int x = position.getX();
-        int y = position.getY();
+        int x = coordinate.getX();
+        int y = coordinate.getY();
 
         for (int i = 0; i < moveCount; i++) {
-            position.add(direction.toVector());
+            coordinate.add(direction.toVector());
         }
 
     }
@@ -111,16 +109,16 @@ public abstract class Robot {
         this.orientation = orientation;
     }
 
-    public Coordinate getPosition() {
-        return position;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public void setPosition(Coordinate p) {
-        position = p;
+    public void setCoordinate(Coordinate p) {
+        coordinate = p;
     }
 
     public void setPosition(int x, int y) {
-        position = new Coordinate(x, y);
+        coordinate = new Coordinate(x, y);
     }
 
     //TODO

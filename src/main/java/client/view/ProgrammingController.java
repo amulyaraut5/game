@@ -1,31 +1,59 @@
 package client.view;
 
+
+import javafx.application.Platform;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.util.Duration;
+import utilities.enums.CardType;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class ProgrammingController extends Controller {
-    //@FXML
-    //public ImageView imageView;
-    //@FXML
-    //public ImageView programCard;
-    //private ImageView imageView;
-    public AnchorPane programmingPhasePane;
-    public HBox hBox1Background;
-    public HBox hBox2Background;
+
+
+
+
+
+    private int interval = 30;
+    private Media media;
+    private MediaPlayer mediaPlayer;
+    private MediaView mediaView;
+    private double widthHBox;
+    private double heightHBox;
+
+    @FXML
+    private AnchorPane programmingPhasePane;
+    @FXML
+    private HBox hBox1Background;
+    @FXML
+    private HBox hBox2Background;
     @FXML
     private HBox hBox1;
     @FXML
     private HBox hBox2;
-    private double widthHBox;
-    private double heightHBox;
+    @FXML
+    private AnchorPane timerAnchorPane;
+
+    public Label programInfoLabel;
+    @FXML
+    private Label timerLabel;
+
 
     public void initialize() { //TODO method that gets called when cards were dealt
         widthHBox = hBox1.getPrefWidth() / 5;
@@ -34,19 +62,7 @@ public class ProgrammingController extends Controller {
         hBox2.setSpacing(20);
         hBox1Background.setSpacing(20);
         hBox2Background.setSpacing(20);
-        /*HBox backgroundHBox1 = new HBox();
-        HBox backgroundHBox2 = new HBox();
-        backgroundHBox1.setSpacing(20);
-        backgroundHBox1.setLayoutX(hBox1.getLayoutX());
-        System.out.println(hBox1.getTranslateX());
-        System.out.println(hBox1.getLayoutX());
-        System.out.println(hBox1.getScaleX());
-        System.out.println(backgroundHBox1.getLayoutX());*/
-        /*ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
-        background.setFitHeight(heightHBox);
-        background.setFitWidth(widthHBox - 20);
-        for(int i=0; i<5; i++) hBox1Background.getChildren().add(background);
-        for(int i=0; i<4; i++) hBox2Background.getChildren().add(background);*/
+
         for (int i = 0; i < 5; i++) {
             ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
             background.setFitHeight(heightHBox);
@@ -61,28 +77,8 @@ public class ProgrammingController extends Controller {
         }
     }
 
-    public void startProgrammingPhase(ArrayList<String> cardList) {
-
-        ArrayList<String> cardLists = new ArrayList<>(); //HARDCODED
-        cardList.add("Again");
-        cardList.add("MoveI");
-        cardList.add("MoveII");
-        cardList.add("MoveIII");
-        cardList.add("UTurn");
-        cardList.add("Again");
-        cardList.add("MoveI");
-        cardList.add("MoveII");
-        cardList.add("MoveIII");
-
-        /*
-        for (String card : cardList){ //TODO send (?) only 9 cards
-            StackPane pane = createNewPane();
-            addImage(new Image(getClass().getResource("/cards/programming/" + card +"-card.png").toString()), pane);
-            if(!(hBox1.getChildren().size()>=5)) hBox1.getChildren().add(pane);
-            else hBox2.getChildren().add(pane);
-
-            }*/
-        for (int i = 0; i <= 8; i++) {
+    public void startProgrammingPhase(ArrayList<CardType> cardList) {
+        for (int i = 0; i < 9; i++) {
             StackPane pane = createNewPane();
             addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) + "-card.png").toString()), pane);
             if (!(hBox1.getChildren().size() >= 5)) hBox1.getChildren().add(pane);
@@ -90,25 +86,6 @@ public class ProgrammingController extends Controller {
         }
 
     }
-
-
-
-/*
-    @FXML
-    private void setOnDragDetected(Event event, ImageView imageView) {
-        DragBoard db = imageView.startDragAndDrop(TransferMode.ANY);
-        //DragBoard db = programCard1.startDragAndDrop(TransferMode.ANY);
-        //DragBoard db = source.startDragAndDrop(TransferMode.ANY);
-        /* Put a string on a DragBoard
-        ClipboardContent content = new ClipboardContent();
-
-        //content.put(new DataFormat(cardName),imageView.getImage());
-        content.putImage(imageView.getImage());
-        db.setContent(content);
-
-        event.consume();
-
-    }*/
 
 
     private StackPane createNewPane() {
@@ -130,9 +107,7 @@ public class ProgrammingController extends Controller {
         Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putImage(imageView.getImage());
-        //System.out.println("setOnDragDetected" + imageView.getImage().getUrl());
         setImageDropped(imageView.getImage().getUrl());
-        //System.out.println(imageDropped);
         db.setContent(content);
         imageView.setImage(null);
         mouseEvent.consume();
@@ -140,7 +115,7 @@ public class ProgrammingController extends Controller {
     }
 
 
-    void addImage(Image i, StackPane pane) {
+    private void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(widthHBox - 20);
         imageView.setFitHeight(heightHBox);
@@ -162,7 +137,6 @@ public class ProgrammingController extends Controller {
             }
 
             Image img = db.getImage();
-            System.out.println("CardName programmingController" + getImageDropped());
             addImage(img, pane);
 
 
@@ -180,6 +154,48 @@ public class ProgrammingController extends Controller {
         event.acceptTransferModes(TransferMode.ANY);
         event.consume();
     }
+
+    /**
+     * by getting protocol TimerStarted, the countdown in the label and the video will start
+     * @param allRegistersAsFirst
+     */
+    public void startTimer(boolean allRegistersAsFirst){
+        if(allRegistersAsFirst) programInfoLabel.setText("You were first!");
+        else programInfoLabel.setText("Hurry to fill all 5 registers in time!");
+
+        setTimer();
+        startVideo();
+    }
+
+    private void startVideo(){
+        String path = "/video/hourglass-video.mp4";
+        media = new Media(getClass().getResource(path).toString());
+        mediaPlayer = new MediaPlayer(media);
+        mediaView = new MediaView(mediaPlayer);
+        mediaView.setFitHeight(200);
+        mediaView.setFitWidth(200);
+        mediaPlayer.setAutoPlay(true);
+        timerAnchorPane.getChildren().add(mediaView);
+
+    }
+    private void setTimer() {
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            public void run() {
+                if(interval > 0)
+                {
+                    Platform.runLater(() -> timerLabel.setText(String.valueOf(interval)));
+                    System.out.println(interval);
+                    interval--;
+                }
+                else
+                    timer.cancel();
+            }
+        }, 1000,1000);
+
+    }
+
 }
 
 

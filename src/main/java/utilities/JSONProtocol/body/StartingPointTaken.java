@@ -3,8 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class StartingPointTaken extends JSONBody {
-    int playerID;
-    int position;
+    private int playerID;
+    private int position;
 
     public StartingPointTaken(int playerID, int position) {
         this.playerID = playerID;

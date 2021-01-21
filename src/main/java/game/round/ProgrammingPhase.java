@@ -2,9 +2,13 @@ package game.round;
 
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.*;
+import game.gameObjects.cards.damage.Spam;
+import game.gameObjects.cards.damage.Trojan;
+import game.gameObjects.cards.damage.Virus;
+import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
-import game.gameObjects.decks.ProgrammingDeck;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
@@ -20,12 +24,14 @@ import java.util.Random;
 
 public class ProgrammingPhase extends Phase {
 
+
     /**
      * saves the player id's. a player gets removed if he has already chose 5 cards in the time
      */
     private ArrayList<Player> notReadyPlayers = new ArrayList<>();
     private boolean timerFinished = false;
     private ArrayList<Card> discardCards = new ArrayList<>();
+    private static final Logger logger = LogManager.getLogger();
 
     /**
      * starts the ProgrammingPhase.
@@ -35,15 +41,25 @@ public class ProgrammingPhase extends Phase {
      */
     public ProgrammingPhase() {
         super();
+        /*for (Player player : playerList) {
+            logger.info("discard1" + player.getDiscardedProgrammingDeck().getDeck());
+            logger.info("draw1" + player.getDrawProgrammingDeck().getDeck());
+        }*/
         //discard all Programming cards left in the registers and create empty register
         for (Player player : playerList) {
             notReadyPlayers.add(player);
             if (!(player.getRegisterCards().contains(null))) {
                 player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
+                //player.message(new Movement(1,22));
             }
         }
         dealProgrammingCards();
+        //<----- Test for Movement Protocol----->
+        //server.communicateAll(new Movement(1, new Coordinate(4, 4).toPosition()));
+        //server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
+        //server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
+        //server.communicateAll(new PlayerTurning(2, Orientation.RIGHT));
     }
 
     /**
@@ -58,61 +74,39 @@ public class ProgrammingPhase extends Phase {
     // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
     //TODO server has to call this method if he gets the protocol cardselected
     public void putCardToRegister(Player player, SelectCard selectCard) {
-        String cardType = selectCard.getCard();
         Card chosenCard = null;
-        switch (cardType) {
-            case "Again":
-                chosenCard = new Again();
-                break;
-            case "MoveI":
-                chosenCard = new MoveI();
-                break;
-            case "MoveII":
-                chosenCard = new MoveII();
-                break;
-            case "MoveIII":
-                chosenCard = new MoveIII();
-                break;
-            case "PowerUp":
-                chosenCard = new PowerUp();
-                break;
-            case "BackUp":
-                chosenCard = new BackUp();
-                break;
-            case "TurnLeft":
-                chosenCard = new TurnLeft();
-                break;
-            case "RightTurn":
-                chosenCard = new TurnRight();
-                break;
-            case "UTurn":
-                chosenCard = new UTurn();
-                break;
-            case "Spam":
-                chosenCard = new Spam();
-                break;
-            case "Trojan":
-                chosenCard = new Trojan();
-                break;
-            case "Virus":
-                chosenCard = new Virus();
-                break;
-            case "Worm":
-                chosenCard = new Worm();
-                break;
-            case "null":
-                // if player removes one card
-                break;
+        CardType type = selectCard.getCard();
+        if (type != null) {
+            switch (type) {
+                case Again -> chosenCard = new Again();
+                case MoveI -> chosenCard = new MoveI();
+                case MoveII -> chosenCard = new MoveII();
+                case MoveIII -> chosenCard = new MoveIII();
+                case PowerUp -> chosenCard = new PowerUp();
+                case BackUp -> chosenCard = new BackUp();
+                case TurnLeft -> chosenCard = new TurnLeft();
+                case TurnRight -> chosenCard = new TurnRight();
+                case UTurn -> chosenCard = new UTurn();
+                case Spam -> chosenCard = new Spam();
+                case Trojan -> chosenCard = new Trojan();
+                case Virus -> chosenCard = new Virus();
+                case Worm -> chosenCard = new Worm();
+            }
         }
-
         //put the card in the register and remove it from the players hand
         player.setRegisterCards(selectCard.getRegister(), chosenCard);
+        //logger.info("drawn7" + player.getDrawnProgrammingCards());
+        //logger.info("register8" + player.getRegisterCards());
         player.getDrawnProgrammingCards().remove(chosenCard);
+
+        //logger.info("discard7" + player.getDrawnProgrammingCards());
 
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player);
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
+            //logger.info("discard4" + player.getDiscardedProgrammingDeck().getDeck());
+            //logger.info("draw4" + player.getDrawProgrammingDeck().getDeck());
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == playerList.size() - 1) {
                 startProgrammingTimer(player);
@@ -141,10 +135,14 @@ public class ProgrammingPhase extends Phase {
      * TimerEnded and calls dealRandomCards() if some players haven't filled their registers yet
      */
     public void endProgrammingTimer() {
+        /*for (Player player : playerList) {
+            logger.info("discard5" + player.getDiscardedProgrammingDeck().getDeck());
+            logger.info("draw5" + player.getDrawProgrammingDeck().getDeck());
+        }*/
         if (!(timerFinished)) {
             timerFinished = true;
             ArrayList<Integer> playerIds = new ArrayList<>();
-            for (Player player : notReadyPlayers){
+            for (Player player : notReadyPlayers) {
                 playerIds.add(player.getID());
             }
             server.communicateAll(new TimerEnded(playerIds));
@@ -156,16 +154,27 @@ public class ProgrammingPhase extends Phase {
     }
 
     /**
-     * For every player that didn't manage to put down their cards in time all cardss on their hand and registers get discarded.
+     * For every player that didn't manage to put down their cards in time all cards on their hand and registers get discarded.
      * They draw 5 programming cards and put them on their registers in random order
      */
     private void dealRandomCards() {
+
+       /* for (Player player : playerList) {
+            logger.info("discard2" + player.getDiscardedProgrammingDeck().getDeck());
+            logger.info("draw2" + player.getDrawProgrammingDeck().getDeck());
+        } */
 
         //this method is only handled for players who didn't manage to put their cards down in time
         for (Player player : notReadyPlayers) {
 
             //Take all cards from the register and discard them to have an empty register
-            player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+            ArrayList<Card> tempCards = new ArrayList<>();
+            for (Card card : player.getRegisterCards()) {
+                if (card != null) {
+                    tempCards.add(card);
+                }
+            }
+            player.discardCards(tempCards, player.getDiscardedProgrammingDeck());
             player.createRegister();
 
             //Discard all hand cards
@@ -175,7 +184,6 @@ public class ProgrammingPhase extends Phase {
 
             //Take 5 cards from the draw Deck
             drawProgrammingCards(5, player);
-
             //Put the 5 drawn cards down in random order
             Random random = new Random();
             for (int register = 1; register < 6; register++) {
@@ -186,11 +194,17 @@ public class ProgrammingPhase extends Phase {
                 player.getDrawnProgrammingCards().remove(randomElement);
             }
             ArrayList<CardType> cardNames = new ArrayList<>();
-            for (Card card: player.getRegisterCards()){
+            for (Card card : player.getRegisterCards()) {
                 cardNames.add(card.getName());
             }
+
             player.message(new CardsYouGotNow(cardNames));
         }
+
+        /*for (Player player : playerList) {
+            logger.info("discard3" + player.getDiscardedProgrammingDeck().getDeck());
+            logger.info("draw3" + player.getDrawProgrammingDeck().getDeck());
+        }*/
     }
 
     /**
@@ -200,9 +214,9 @@ public class ProgrammingPhase extends Phase {
     private void dealProgrammingCards() {
         for (Player player : playerList) {
             drawProgrammingCards(9, player);
-            ArrayList<String> cards = new ArrayList<>(9);
+            ArrayList<CardType> cards = new ArrayList<>(9);
             for (Card card : player.getDrawnProgrammingCards()) {
-                cards.add(card.getName().toString());
+                cards.add(card.getName());
             }
             player.message(new YourCards(cards));
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
@@ -217,7 +231,8 @@ public class ProgrammingPhase extends Phase {
      * @param player player that needs to draw cards
      */
     private void drawProgrammingCards(int amount, Player player) {
-        ProgrammingDeck currentDeck = player.getDrawProgrammingDeck();
+        ArrayList<Card> currentDeck = player.getDrawProgrammingDeck().getDeck();
+        //System.out.println("1" + currentDeck.size());
         if (!(currentDeck.size() < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));
         } else {
