@@ -6,7 +6,7 @@ package game.round;
  *
  * @author janau
  */
-
+@Deprecated
 public class UpgradePhase extends Phase {
 
 

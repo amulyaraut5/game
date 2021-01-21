@@ -1,19 +1,16 @@
 package utilities.enums;
 
 import com.google.gson.annotations.SerializedName;
-import utilities.Utilities;
 
 public enum PhaseState {
     @SerializedName("0") CONSTRUCTION(0),
-    @SerializedName("1") UPGRADE(1),
     @SerializedName("2") PROGRAMMING(2),
     @SerializedName("3") ACTIVATION(3);
 
     static {
-        CONSTRUCTION.next = UPGRADE;
-        UPGRADE.next = PROGRAMMING;
+        CONSTRUCTION.next = PROGRAMMING;
         PROGRAMMING.next = ACTIVATION;
-        ACTIVATION.next = UPGRADE;
+        ACTIVATION.next = PROGRAMMING;
     }
 
     private final int phase;

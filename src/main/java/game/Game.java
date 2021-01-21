@@ -10,7 +10,6 @@ import game.gameObjects.maps.MapBuilder;
 import game.round.ActivationPhase;
 import game.round.LaserAction;
 import game.round.ProgrammingPhase;
-import game.round.UpgradePhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
@@ -38,7 +37,6 @@ public class Game {
 
     private final Server server = Server.getInstance();
     private int energyBank;
-    private UpgradeShop upgradeShop;
     private ArrayList<Player> players;
     private HashMap<Integer, Player> playerIDs = new HashMap<>();
 
@@ -52,7 +50,6 @@ public class Game {
 
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
-    private UpgradePhase upgradePhase;
 
     private PhaseState activePhase;
 
@@ -87,7 +84,6 @@ public class Game {
     public void reset() {
         energyBank = Utilities.ENERGY_BANK;
         activePhase = PhaseState.CONSTRUCTION;
-        upgradeShop = new UpgradeShop();
         players = new ArrayList<>(6);
         createdGame = false;
         runningGame = false;
@@ -130,15 +126,12 @@ public class Game {
      */
     public void nextPhase() {
         activePhase = activePhase.getNext();
-        //upgradePhase is skipped in current milestone
-        if (activePhase == PhaseState.UPGRADE) activePhase = activePhase.getNext();
+        server.communicateAll(new ActivePhase(activePhase));
 
         switch (activePhase) {
-            case UPGRADE -> upgradePhase = new UpgradePhase();
             case PROGRAMMING -> programmingPhase = new ProgrammingPhase();
             case ACTIVATION -> activationPhase = new ActivationPhase();
         }
-        server.communicateAll(new ActivePhase(activePhase));
     }
 
     public int getNoOfCheckPoints() {
