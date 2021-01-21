@@ -93,20 +93,39 @@ public class ProgrammingPhase extends Phase {
                 case Worm -> chosenCard = new Worm();
             }
         }
-        //put the card in the register and remove it from the players hand
-        player.setRegisterCards(selectCard.getRegister(), chosenCard);
-        //logger.info("drawn7" + player.getDrawnProgrammingCards());
-        //logger.info("register8" + player.getRegisterCards());
-        player.getDrawnProgrammingCards().remove(chosenCard);
 
-        //logger.info("discard7" + player.getDrawnProgrammingCards());
+        //put the card in the register
+        player.setRegisterCards(selectCard.getRegister(), chosenCard);
+
+        //logger.info("drawn2" + player.getDrawnProgrammingCards());
+        //logger.info("register2" + player.getRegisterCards());
+
+        //Here the card with the same cardType enum as the chosen card is removed from the hand cards
+        CardType chosenCardType = chosenCard.getName();
+        ArrayList<CardType> cardTypes = new ArrayList<>();
+        for (Card card : player.getDrawnProgrammingCards()) {
+            cardTypes.add(card.getName());
+        }
+
+        for( int i = 0; i< cardTypes.size(); i++) {
+            if (cardTypes.get(i) == chosenCardType) {
+                player.getDrawnProgrammingCards().remove(i);
+                break;
+            }
+        }
+
+        //logger.info("drawn3" + player.getDrawnProgrammingCards());
+        //logger.info("register3" + player.getRegisterCards());
+        //logger.info("discard3" + player.getDiscardedProgrammingDeck().getDeck());
 
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player);
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
+
             //logger.info("discard4" + player.getDiscardedProgrammingDeck().getDeck());
             //logger.info("draw4" + player.getDrawProgrammingDeck().getDeck());
+
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == playerList.size() - 1) {
                 startProgrammingTimer(player);
@@ -159,10 +178,10 @@ public class ProgrammingPhase extends Phase {
      */
     private void dealRandomCards() {
 
-       /* for (Player player : playerList) {
-            logger.info("discard2" + player.getDiscardedProgrammingDeck().getDeck());
-            logger.info("draw2" + player.getDrawProgrammingDeck().getDeck());
-        } */
+       /*for (Player player : playerList) {
+            logger.info("discard6" + player.getDiscardedProgrammingDeck().getDeck());
+            logger.info("draw6" + player.getDrawProgrammingDeck().getDeck());
+        }*/
 
         //this method is only handled for players who didn't manage to put their cards down in time
         for (Player player : notReadyPlayers) {
@@ -188,6 +207,7 @@ public class ProgrammingPhase extends Phase {
             Random random = new Random();
             for (int register = 1; register < 6; register++) {
                 ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
+
                 //choose a card depending on a randomly generated index
                 Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
                 player.setRegisterCards(register, randomElement);
@@ -202,8 +222,8 @@ public class ProgrammingPhase extends Phase {
         }
 
         /*for (Player player : playerList) {
-            logger.info("discard3" + player.getDiscardedProgrammingDeck().getDeck());
-            logger.info("draw3" + player.getDrawProgrammingDeck().getDeck());
+            logger.info("discard7" + player.getDiscardedProgrammingDeck().getDeck());
+            logger.info("draw7" + player.getDrawProgrammingDeck().getDeck());
         }*/
     }
 
@@ -232,7 +252,6 @@ public class ProgrammingPhase extends Phase {
      */
     private void drawProgrammingCards(int amount, Player player) {
         ArrayList<Card> currentDeck = player.getDrawProgrammingDeck().getDeck();
-        //System.out.println("1" + currentDeck.size());
         if (!(currentDeck.size() < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));
         } else {
