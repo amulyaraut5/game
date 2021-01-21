@@ -149,7 +149,7 @@ public class LobbyController extends Controller {
      * so that other users in lobby can send direct messages.
      * Also
      */
-    public void setJoinedUsers(Player player, boolean thisUser) {
+    public void addJoinedPlayer(Player player, boolean thisUser) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
         String newName = player.getName() + " " + player.getID();
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
@@ -175,7 +175,7 @@ public class LobbyController extends Controller {
      */
     public void displayStatus(PlayerStatus playerStatus) {
         for (RobotIcon robotIcon : robotIcons) {
-            if (robotIcon.getUserID() == playerStatus.getId()) {
+            if (robotIcon.getUserID() == playerStatus.getID()) {
                 String path = "/lobby/" + robotNames[robotIcon.getFigure()];
                 if (playerStatus.isReady()) path += "-ready.png";
                 else path += ".png";
@@ -202,6 +202,16 @@ public class LobbyController extends Controller {
     @FXML
     private void checkBoxAction() {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
+    }
+
+    public void removePlayer(Player player) {
+        for (RobotIcon robotIcon : robotIcons) {
+            if (player.getID() == robotIcon.getUserID()) {
+                //TODO remove imageView. But Player and ImageView are currently not connected.
+                robotImageViews.get(player.getID()-1).setImage(null);
+                robotLabels.get(player.getID()-1).setText("");
+            }
+        }
     }
 }
 

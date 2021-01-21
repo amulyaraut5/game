@@ -50,6 +50,7 @@ public class GameViewController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+    private HashMap<Player, ImageView> robotImageViews = new HashMap<>();
     private Map map;
 
     private PlayerMatController playerMatController;
@@ -81,7 +82,6 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
-    private HashMap<Player, ImageView> robotImageViews = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -291,5 +291,11 @@ public class GameViewController extends Controller {
 
     public PlayerMatController getPlayerMapController() {
         return playerMatController;
+    }
+
+    public void removePlayer(Player player) {
+        ImageView imageView = robotImageViews.get(player);
+        robotPane.getChildren().remove(imageView);
+        //TODO remove small player mat
     }
 }

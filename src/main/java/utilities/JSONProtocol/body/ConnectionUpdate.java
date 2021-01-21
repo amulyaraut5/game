@@ -13,7 +13,7 @@ public class ConnectionUpdate extends JSONBody {
         this.action = action;
     }
 
-    public int getId() {
+    public int getID() {
         return playerID;
     }
 

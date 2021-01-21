@@ -144,6 +144,17 @@ public class Client {
                 case Error -> {
                     Error error = (Error) message.getBody(); //TODO
                 }
+                case ConnectionUpdate -> {
+                    ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
+                    if (msg.getAction().equals("Remove") && msg.isConnected() == false) {
+                        Player player = getPlayerFromID(msg.getID());
+                        loginController.removePlayer(player);
+                        lobbyController.removePlayer(player);
+                        gameViewController.removePlayer(player);
+                        players.remove(player);
+
+                    }
+                }
                 case PlayerStatus -> {
                     PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                     lobbyController.displayStatus(playerStatus);
@@ -192,10 +203,6 @@ public class Client {
                 case TimerStarted -> {
                     gameViewController.startTimer(allRegistersAsFirst);
                 }
-                case ConnectionUpdate -> {
-                    ConnectionUpdate connectionUpdate = (ConnectionUpdate) message.getBody(); //TODO
-                }
-
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
                     // TODO display the message
@@ -233,7 +240,7 @@ public class Client {
             viewManager.nextScene();
         }
         loginController.setFigureTaken(player.getFigure(), true);
-        lobbyController.setJoinedUsers(player, false);
+        lobbyController.addJoinedPlayer(player, false);
         chatController.addUser(player);
     }
 
