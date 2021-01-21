@@ -2,6 +2,7 @@ package game.gameObjects.decks;
 
 import game.Player;
 import game.gameObjects.cards.Card;
+import server.Server;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +11,7 @@ import java.util.Collections;
  * @author annika
  */
 public abstract class Deck {
+    protected Server server = Server.getInstance();
 
     /**
      * Creates a suitable deck with the respective cards,
