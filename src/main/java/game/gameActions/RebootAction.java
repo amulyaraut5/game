@@ -21,6 +21,8 @@ public class RebootAction extends Action{
     @Override
     public void doAction(Orientation orientation, Player player) {
         //Draw two spam cards
+        // evt. Game.getInstance().getSpamDeck().drawCards(2);
+        //TODO handle empty Spam-Deck
         for (int i = 0; i < 2; i++) {
             Card spamCard = Game.getInstance().getSpamDeck().pop();
             player.getDiscardedProgrammingDeck().getDeck().add(spamCard);

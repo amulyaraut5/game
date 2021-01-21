@@ -43,8 +43,6 @@ public class Player extends User {
      */
     private Robot robot;
 
-    private ArrayList<PermUpgradeCard> installedUpgrades;
-    private ArrayList<TempUpgradeCard> tempUpgradeCards;
 
     /**
      * Constructor for a player object on the serverside which is connected with an user.
