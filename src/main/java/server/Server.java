@@ -23,7 +23,6 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-    private final ArrayList<PlayerAdded> addedPlayers = new ArrayList<>(10);
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
     private final ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
@@ -66,6 +65,7 @@ public class Server extends Thread {
             ServerSocket serverSocket = new ServerSocket(PORT);
             logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
             Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
+            acceptClients.setDaemon(true);
             acceptClients.start();
 
             while (!isInterrupted()) {
@@ -80,7 +80,6 @@ public class Server extends Thread {
                 while ((queueMessage = messageQueue.poll()) != null) {
                     handleMessage(queueMessage);
                 }
-
             }
         } catch (IOException e) {
             logger.error("Server could not be created: " + e.getMessage());
@@ -148,9 +147,7 @@ public class Server extends Thread {
                 user.setID(user.getID());
                 user.setName(pv.getName());
                 user.setFigure(pv.getFigure());
-                PlayerAdded addedPlayer = new PlayerAdded(user.getID(), pv.getName(), pv.getFigure());
-                addedPlayers.add(addedPlayer);
-                communicateAll(addedPlayer);
+                communicateAll(new PlayerAdded(user.getID(), pv.getName(), pv.getFigure()));
             } else {
                 user.message(new Error("Username can't be blank!"));
             }
@@ -165,8 +162,10 @@ public class Server extends Thread {
             currentThread().setName("UserThread-" + user.getID());
             user.message(new Welcome(user.getID()));
 
-            for (PlayerAdded addedPlayer : addedPlayers) {
-                user.message(addedPlayer);
+            for (User u : users) {
+                if (u.getName() != null) {
+                    user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
+                }
             }
             for (User readyUser : readyUsers) {
                 user.message(new PlayerStatus(readyUser.getID(), true));
@@ -197,8 +196,9 @@ public class Server extends Thread {
                 logger.info("Accepted the connection from address: " + clientSocket.getRemoteSocketAddress());
                 User user = new User();
                 users.add(user);
-                UserThread thread = new UserThread(clientSocket, user);
-                thread.start();
+                UserThread userThread = new UserThread(clientSocket, user);
+                userThread.setDaemon(true);
+                userThread.start();
             } catch (IOException e) {
                 accept = false;
                 logger.error("Accepting clients failed on port " + PORT + ": " + e.getMessage());
@@ -277,5 +277,12 @@ public class Server extends Thread {
     public void removeUser(User user) {
         readyUsers.remove(user);
         users.remove(user);
+
+        if (users.size() == 0) {
+            interrupt();
+            synchronized (this) {
+                this.notify();
+            }
+        }
     }
 }
