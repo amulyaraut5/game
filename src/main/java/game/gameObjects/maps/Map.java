@@ -23,6 +23,8 @@ public class Map {
     private ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
     private ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
     private ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
+    private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
+
     private Coordinate RestartPoint;
 
 
@@ -69,7 +71,7 @@ public class Map {
      * version of map.
      */
 
-    public ArrayList<Coordinate> readLaserCoordinates() {
+    public void readLaserCoordinates() {
         ArrayList<Coordinate> laser = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
@@ -81,8 +83,10 @@ public class Map {
                 }
             }
         }
-        return laser;
+        this.laserCoordinates = laser;
     }
+
+
 
     /**
      * This method initializes the restartPoint coordinates from the actual
@@ -231,6 +235,11 @@ public class Map {
         readBeltCoordinates();
         readRestartPointCoordinate();
         readEnergySpaceCoordinates();
+        readPitCoordinate();
+        readGearCoordinate();
+        readPushPanelCoordinate();
+        readLaserCoordinates();
+        readControlPointCoordinate();
     }
 
 
@@ -265,6 +274,11 @@ public class Map {
     public ArrayList<Coordinate> getPitCoordinates() { return pitCoordinates; }
 
     public ArrayList<Coordinate> getGearCoordinates() { return gearCoordinates; }
+
+    public ArrayList<Coordinate> getLaserCoordinates(){ return laserCoordinates; }
+
+
+
 
 
 }

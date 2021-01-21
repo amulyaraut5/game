@@ -16,9 +16,7 @@ public class RotateRobot extends Action {
 
     private Orientation orientation;
 
-    public RotateRobot(Orientation rotation) {
-        this.orientation = rotation;
-    }
+    public RotateRobot(Orientation rotation){ this.orientation = rotation;}
 
     @Override
     public void doAction(Orientation orientation, Player player) {

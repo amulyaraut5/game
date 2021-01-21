@@ -8,21 +8,19 @@ import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
-import game.gameObjects.tiles.Wall;
+import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.Movement;
 import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
+import javax.crypto.Cipher;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,6 +49,8 @@ public class ActivationPhase extends Phase {
 
     //Saves current Register number(for push panels and energy fields)
     private int currentRegister;
+
+    private ActivationElements activationElements;
 
     /**
      * starts the ActivationPhase.
@@ -110,50 +110,11 @@ public class ActivationPhase extends Phase {
     private void activateBoard() {
         gameMap = game.getMap();
 
-        activateBlueBelts();
-        activateGreenBelts();
+        activationElements.activateBlueBelts();
+        activationElements.activateGreenBelts();
         //all board elements functionality are handled in activation elements class except laser
 
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
-    }
-
-    public void activateGreenBelts() {
-        for (Coordinate tileCoordinate : gameMap.getGreenBelts()) {
-            for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
-                    for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                        if (a.getType() == AttributeType.Belt) {
-                            handleMove(currentPlayer, ((Belt) a).getOrientation());
-                        }
-                        if (a.getType() == AttributeType.RotatingBelt) {
-                            RotatingBelt temp = (RotatingBelt) a;
-                            handleMove(currentPlayer, temp.getOrientations()[1]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void activateBlueBelts() {
-        for (int i = 0; i < 2; i++) {
-            for (Coordinate tileCoordinate : gameMap.getBlueBelts()) {
-                for (Player currentPlayer : playerList) {
-                    if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
-                        for (Attribute a : gameMap.getTile(tileCoordinate).getAttributes()) {
-                            if (a.getType() == AttributeType.Belt) {
-                                handleMove(currentPlayer, ((Belt) a).getOrientation());
-
-                            }
-                            if (a.getType() == AttributeType.RotatingBelt) {
-                                RotatingBelt temp = (RotatingBelt) a;
-                                handleMove(currentPlayer, temp.getOrientations()[1]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     //Supposed o handle a robot moving one tile.
@@ -179,8 +140,21 @@ public class ActivationPhase extends Phase {
         }
         //Handle board elements
         boolean canMove = true;
-        boolean inPit = false;
-        boolean onCheckpoint = false;
+
+        //look for a blocking wall on current Tile
+        for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+            switch (a.getType()) {
+                //handle different tile effects here
+                case Wall -> {
+                    Wall temp = (Wall) a;
+                    for (Orientation orientation : temp.getOrientations()) {
+                        if (orientation == o) canMove = false;
+                    }
+                }
+            }
+        }
+
+        //look for a blocking wall on new tile
         for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
             switch (a.getType()) {
                 //handle different tile effects here
@@ -190,8 +164,6 @@ public class ActivationPhase extends Phase {
                         if (orientation == o.getOpposite()) canMove = false;
                     }
                 }
-                case Pit ->  inPit = true;
-                case ControlPoint ->  onCheckpoint = true;
             }
         }
 
@@ -207,22 +179,17 @@ public class ActivationPhase extends Phase {
         }
 
         //move robot, activate board element if given
-        if (inPit && canMove) {
+        if (canMove) {
             moveOne(player, o);
-            player.getRobot().reboot();
-        } else {
-            if (onCheckpoint && canMove) {
-                moveOne(player, o);
-                player.checkPointReached();
-            } else {
-                if (canMove) moveOne(player, o);
-            }
+            handleTile(player);
         }
+
+
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+        //server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
     }
 
     public void communicateBeltMovement(Player player){
@@ -341,6 +308,29 @@ public class ActivationPhase extends Phase {
                 handleCard(topCard.getName(), player);
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
+        }
+    }
+
+    public void handleTile(Player player){
+        for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+            switch (a.getType()){
+                case Gear :
+                    if(((Gear) a).getOrientation() == Rotation.RIGHT){
+                        new RotateRobot(Orientation.RIGHT).doAction(Orientation.RIGHT, player);
+                    }
+                    else{
+                        new RotateRobot(Orientation.LEFT).doAction(Orientation.LEFT, player);
+                    }
+                case Pit:
+                    new RebootAction().doAction(Orientation.LEFT, player);
+
+                case ControlPoint:
+                    player.checkPointReached();
+                    server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
+
+                default:
+                    server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+            }
         }
     }
 

@@ -153,8 +153,6 @@ public class ActivationElements {
         ArrayList<Orientation> orientations = new ArrayList<>();
         ArrayList<Coordinate> oldPositions = new ArrayList<>();
 
-        ArrayList<Player> movedPlayers = new ArrayList<>();
-
         for (Coordinate tileCoordinate : map.getGreenBelts()) {
             for (Player currentPlayer : playerList) {
                 if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
@@ -192,7 +190,6 @@ public class ActivationElements {
                             } else {
                                 if (actionFinished.get(playersOnBelt.indexOf(collisionPlayer))) {
                                     collisionPlayer.getRobot().setCoordinate(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
-                                    movedPlayers.remove(collisionPlayer);
                                     actionFinished.set(playersOnBelt.indexOf(player), true);
                                 }
                             }
@@ -200,7 +197,6 @@ public class ActivationElements {
                     }
                     if(move){
                         player.getRobot().setCoordinate(newPos);
-                        movedPlayers.add(player);
                     }
                 }
             }
@@ -210,8 +206,10 @@ public class ActivationElements {
             }
         }
 
-        for (Player p : movedPlayers) {
-            activationPhase.communicateBeltMovement(p);
+        for (Player p : playersOnBelt) {
+            if(p.getRobot().getCoordinate()==oldPositions.get(playersOnBelt.indexOf(p))){
+                activationPhase.handleTile(p);
+            }
         }
     }
 
@@ -242,8 +240,6 @@ public class ActivationElements {
         ArrayList<Boolean> actionFinished = new ArrayList<>();
         ArrayList<Orientation> orientations = new ArrayList<>();
         ArrayList<Coordinate> oldPositions = new ArrayList<>();
-
-        ArrayList<Player> movedPlayers = new ArrayList<>();
 
         for (Coordinate tileCoordinate : map.getBlueBelts()) {
             for (Player currentPlayer : playerList) {
@@ -307,7 +303,7 @@ public class ActivationElements {
 
         for (Player p : playersOnBelt) {
             if(p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))){
-                activationPhase.communicateBeltMovement(p);
+                activationPhase.handleTile(p);
             }
         }
     }

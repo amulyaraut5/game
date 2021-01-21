@@ -82,7 +82,7 @@ public class LaserAction {
      */
 
     public void determineLaserPaths() {
-        for (Coordinate coordinate : map.readLaserCoordinates()) {
+        for (Coordinate coordinate : map.getLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
             for (Attribute a : map.getTile(xC, yC).getAttributes()) {
