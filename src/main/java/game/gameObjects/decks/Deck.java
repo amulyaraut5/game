@@ -1,5 +1,6 @@
 package game.gameObjects.decks;
 
+import game.Player;
 import game.gameObjects.cards.Card;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public abstract class Deck {
      * @return
      */
     public boolean isEmpty() {
-        return deck.isEmpty();
+        return this.getDeck().isEmpty();
     }
 
     /**
@@ -66,15 +67,32 @@ public abstract class Deck {
      * Return the desired amount of cards and then removes them from the deck.
      */
     public ArrayList<Card> drawCards(int amount) {
-        ArrayList<Card> tempDeck = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            tempDeck.add(this.getDeck().get(i));
+        //if(this.getDeck().size() >= amount) {
+            ArrayList<Card> tempDeck = new ArrayList<>();
+            for (int i = 0; i < amount; i++) {
+                tempDeck.add(this.getDeck().get(i));
+                this.getDeck().remove(i);
+            }
+            return tempDeck;
+            /*
+        } else {
+            ArrayList<Card> tempDeck = new ArrayList<>();
+            for (int i = 0; i < this.getDeck().size(); i++) {
+                tempDeck.add(this.getDeck().get(i));
+                this.getDeck().remove(i);
+            }
+            this.handleEmptyDeck(player);
+            for (int i = 0; i < amount - tempDeck.size(); i++) {
+                tempDeck.add(this.getDeck().get(i));
+                this.getDeck().remove(i);
+            }
+            return tempDeck;
         }
-        for (int i = 0; i < amount; i++) {
-            this.getDeck().remove(i);
-        }
-        return tempDeck;
+
+             */
     }
+
+    public abstract void handleEmptyDeck(Player player);
 
     /**
      * Returns the deck.

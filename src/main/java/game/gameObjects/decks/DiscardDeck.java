@@ -1,5 +1,6 @@
 package game.gameObjects.decks;
 
+import game.Player;
 import game.gameObjects.cards.Card;
 
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ public class DiscardDeck extends Deck {
     @Override
     public void createDeck() {
         this.discardDeck = new ArrayList<>();
+    }
+
+    @Override
+    public void handleEmptyDeck(Player player) {
     }
 
     @Override

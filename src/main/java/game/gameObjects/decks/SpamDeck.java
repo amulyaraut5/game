@@ -1,5 +1,6 @@
 package game.gameObjects.decks;
 
+import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Spam;
 
@@ -14,7 +15,6 @@ public class SpamDeck extends DamageCardDeck {
 
     ArrayList<Card> spamDeck;
 
-
     /**
      * Creates the deck of Spam cards.
      */
@@ -25,6 +25,11 @@ public class SpamDeck extends DamageCardDeck {
         for (int i = 0; i < SPAM_CARDCOUNT; i++) {
             spamDeck.add(new Spam());
         }
+    }
+
+    @Override
+    public void handleEmptyDeck(Player player) {
+
     }
 
     @Override
