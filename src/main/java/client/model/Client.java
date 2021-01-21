@@ -203,6 +203,9 @@ public class Client {
                 case TimerStarted -> {
                     gameViewController.startTimer(allRegistersAsFirst);
                 }
+                case TimerEnded -> {
+                    gameViewController.endTimer();
+                }
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
                     // TODO display the message

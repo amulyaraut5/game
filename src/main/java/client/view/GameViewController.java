@@ -197,15 +197,17 @@ public class GameViewController extends Controller {
         transition.setByAngle(angle);
         transition.play();
     }
-
+    /////////PROGRAMMING PHASE
     public void programCards(YourCards yourCards) {
         programmingController.startProgrammingPhase(yourCards.getCards());
     }
-
     public void startTimer(boolean allRegistersAsFirst) {
         programmingController.startTimer(allRegistersAsFirst);
     }
+    public void endTimer(){ programmingController.setTimerEnded(true); //TODO reset after one round
 
+    }
+    /////////PROGRAMMING PHASE
     /**
      * Method tests if the background of all attributes on a field are transparent.
      *
