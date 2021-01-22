@@ -175,7 +175,7 @@ public class Client {
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
-                    //gameViewController.handleShooting(players);
+                    gameViewController.handleShooting(players);
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
@@ -238,6 +238,7 @@ public class Client {
                 case PlayerTurning -> {
                     PlayerTurning pT = (PlayerTurning) message.getBody();
                     gameViewController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
+
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
