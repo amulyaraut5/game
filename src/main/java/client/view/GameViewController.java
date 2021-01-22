@@ -5,7 +5,11 @@ import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
+import game.gameObjects.tiles.Laser;
+import game.gameObjects.tiles.Wall;
+import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -53,6 +58,7 @@ public class GameViewController extends Controller {
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
     private HashMap<Player, ImageView> robotImageViews = new HashMap<>();
     private Map map;
+    ArrayList<Coordinate> path = new ArrayList<>();
 
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -105,13 +111,6 @@ public class GameViewController extends Controller {
         });
 
         this.soundHandler = new SoundHandler();
-    }
-
-    public void changeDirection() {
-
-        ImageView robotImageView = (ImageView) fields[7][8].getChildren().get(fields[7][8].getChildren().size() - 1);
-        double currentDirection = robotImageView.rotateProperty().getValue();
-        robotImageView.rotateProperty().setValue(currentDirection - 90);
     }
 
     public void attachChatPane(Pane chat) {
@@ -197,6 +196,90 @@ public class GameViewController extends Controller {
         transition.setNode(imageView);
         transition.setByAngle(angle);
         transition.play();
+    }
+    public void handleShooting(ArrayList<Player> players){
+        for(Coordinate c : map.readLaserCoordinates()) {
+            for (Attribute a : map.getTile(c).getAttributes()) {
+                ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/laser/animation/laserBeam_1.png").toExternalForm()));
+                imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
+                imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+                imageView.setPreserveRatio(true);
+                robotPane.getChildren().add(imageView);
+
+                if (a.getType() == AttributeType.Laser) {
+                    Orientation orientation = ((Laser) a).getOrientation();
+                    switch (orientation) {
+                        case LEFT , RIGHT -> imageView.setRotate(270);
+                    }
+                    Coordinate newPos = calculateEndCoordinate(orientation,c,players);
+
+                    imageView.setX(c.getX() * Utilities.FIELD_SIZE);
+                    imageView.setY(c.getY() * Utilities.FIELD_SIZE);
+
+                    TranslateTransition transition = new TranslateTransition();
+                    transition.setDuration(Duration.seconds(2));
+                    transition.setNode(imageView);
+                    transition.setToX((newPos.getX() - c.getX()) * Utilities.FIELD_SIZE);
+                    transition.setToY((newPos.getY() - c.getY()) * Utilities.FIELD_SIZE);
+
+                    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
+                    fadeTransition.setFromValue(1.0f);
+                    fadeTransition.setToValue(0.3f);
+                    fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+
+                    SequentialTransition sequentialTransition = new SequentialTransition();
+                    sequentialTransition.getChildren().addAll(transition, fadeTransition);
+                    sequentialTransition.play();
+                }
+            }
+        }
+    }
+
+
+    private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> playerArrayList) {
+
+        path.add(position);
+        position = position.clone();
+        Coordinate step = orientation.toVector();
+
+        outerLoop:
+        while ((position.getX() >= 0 && position.getX() < 13) && (position.getY() >= 0 && position.getY() < 10)) {
+            position.add(step);
+            for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
+                if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
+                        && b.getType() != AttributeType.ControlPoint) {
+                    path.add(position.clone());
+                    break;
+                } else if (b.getType() == AttributeType.Wall) {
+                    if (((Wall) b).getOrientation() == orientation) {
+                        path.add(position.clone());
+                        break outerLoop;
+                    }else if (((Wall) b).getOrientation() != orientation){
+                        path.add(position.clone());
+                        break outerLoop;
+                    }
+                }else if (b.getType() == AttributeType.Antenna) break outerLoop;
+                else if(b.getType() == AttributeType.Laser){
+                    if (((Laser) b).getOrientation() == orientation) {
+                        path.add(position.clone());
+                        break outerLoop;
+                    }else if (((Laser) b).getOrientation() != orientation){
+                        path.add(position.clone());
+                        break outerLoop;
+                    }
+                }else if (b.getType() == AttributeType.ControlPoint) {
+                    path.add(position.clone());break outerLoop;
+                }
+            }
+        }
+        /*forLoop:
+        for (Coordinate coordinate: path){
+            for(Player player:playerArrayList){
+                if(player.getRobot().getCoordinate().equals(coordinate)) return player.getRobot().getCoordinate();
+                break forLoop;
+            }
+        }*/
+        return path.get(path.size()-1);
     }
 
 

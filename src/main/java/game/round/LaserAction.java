@@ -2,16 +2,19 @@ package game.round;
 
 import game.Game;
 import game.Player;
+import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Laser;
-import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import server.Server;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.DrawDamage;
 import utilities.SoundHandler;
 import utilities.enums.AttributeType;
+import utilities.enums.CardType;
 import utilities.enums.Orientation;
 
 import java.util.ArrayList;
@@ -25,12 +28,16 @@ import java.util.ArrayList;
 public class LaserAction {
 
     private static final Logger logger = LogManager.getLogger();
-    private ArrayList<Coordinate> coordinates = new ArrayList<>();
-    private ArrayList<Coordinate> roboCoordinates = new ArrayList<>();
+    private SoundHandler soundHandler = new SoundHandler();
+    protected Server server = Server.getInstance();
     private Game game = Game.getInstance();
+
+    private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
+    private ArrayList<Coordinate> robotCoordinates = new ArrayList<>();
+
     private ArrayList<Player> playerList = game.getPlayers();
     private Map map = game.getMap();
-    private SoundHandler soundHandler = new SoundHandler();
+
 
     /**
      * Constructor for laser
@@ -46,7 +53,7 @@ public class LaserAction {
         //soundHandler.pitSound();
         determineLaserPaths();
         // TODO Check whether the lasers affect two players
-        for (Coordinate coordinate : coordinates) {
+        for (Coordinate coordinate : laserCoordinates) {
             for (Player player : playerList)
                 if (player.getRobot().getCoordinate() == coordinate) receiveDamage(player);
             break;
@@ -57,22 +64,33 @@ public class LaserAction {
      * This method gets triggered after every register.
      * The player on the receiving end gets one spam card as a damage.
      * The Robot can only fire in one direction.
-     * @param currentPlayer
      */
 
-    public void activateRobotLaser(Player currentPlayer) {
+    public void activateRobotLaser() {
         //soundHandler.pitSound();
-        determineRobotLaserPath(currentPlayer);
-        for (Coordinate coordinate : roboCoordinates) {
-            for (Player targetPlayer : playerList) {
-                if (currentPlayer.getID() != targetPlayer.getID())
-                    if (targetPlayer.getRobot().getCoordinate() == coordinate) receiveDamage(targetPlayer);
-            }
+       determineRobotLaserPath();
+        for (Coordinate coordinate : robotCoordinates) {
+            for (Player targetPlayer : playerList)
+                if (targetPlayer.getRobot().getCoordinate() == coordinate) receiveDamage(targetPlayer);
+            break;
         }
     }
 
-    // TODO player receive the spam cards and add in the discarded pile
+    /**
+     * This method handles the afterEffect of being shot by Laser.
+     * Players receive spam card and adds to the discarded programming deck.
+     * The number of damage received depends on laser count.
+     * Draw Damage Protocol is sent to all players.
+     * @param player
+     */
     private void receiveDamage(Player player){
+        ArrayList<Card> spamCard = game.getSpamDeck().drawCards(1);
+        ArrayList<CardType> cardType = new ArrayList<>();
+        for(Card card : spamCard){
+            player.getDiscardedProgrammingDeck().addCard(card);
+            cardType.add(CardType.Spam);
+        }
+        server.communicateAll(new DrawDamage(player.getID(), cardType));
     }
 
     /**
@@ -89,25 +107,29 @@ public class LaserAction {
             for (Attribute a : map.getTile(xC, yC).getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
-                    coordinates = determinePath(orientation, coordinate);
-                    for(Coordinate coordinate1: coordinates){
+                    laserCoordinates = determinePath(orientation, coordinate);
+                    for(Coordinate coordinate1: laserCoordinates){
                         logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + coordinate1.getX() + "," + coordinate1.getY() + ")");
                     }
                 }
             }
         }
+
     }
 
     /**
      * It determines the path for Robot based on its position and direction through which the lasers traverse.
      * Lasers cannot traverse through wall, antenna and cannot
      * penetrate more than one robot.
-     */
+     * */
 
-    public void determineRobotLaserPath(Player player) {
-        Orientation orientation = player.getRobot().getOrientation();
-        Coordinate robotPosition = player.getRobot().getCoordinate();
-        roboCoordinates = determinePath(orientation, robotPosition);
+    public void determineRobotLaserPath() {
+        for(Player player: playerList){
+            Orientation orientation = player.getRobot().getOrientation();
+            Coordinate robotPosition = player.getRobot().getCoordinate();
+            robotCoordinates = determinePath(orientation, robotPosition);
+            robotCoordinates.remove(0);
+        }
     }
 
 
