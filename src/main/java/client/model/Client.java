@@ -205,6 +205,16 @@ public class Client {
                 case TimerStarted -> {
                     gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
                     gameViewController.handleShooting(players);
+
+                    ///////////JUST FOR TESTING PURPOSE
+                    gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
+                    gameViewController.getPlayerMapController().checkPointReached(2);
+                    gameViewController.getPlayerMapController().checkPointReached(3);
+
+                    gameViewController.getPlayerMapController().addEnergy(7);//TODO remove
+                    for (Player player : players) if(player.getID()!= thisPlayersID) gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
+                    ///////////JUST FOR TESTING PURPOSE
+
                 }
                 case TimerEnded -> {
                     gameViewController.getProgrammingController().setTimerEnded(true);
