@@ -8,9 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
@@ -39,76 +42,8 @@ public class LobbyController extends Controller {
     private BorderPane chatPane;
     @FXML
     private CheckBox readyCheckbox;
-    /**
-     * ImageView of the first possible user
-     */
     @FXML
-    private ImageView robot1ImageView;
-    /**
-     * ImageView of the second possible user
-     */
-    @FXML
-    private ImageView robot2ImageView;
-    /**
-     * ImageView of the third possible user
-     */
-    @FXML
-    private ImageView robot3ImageView;
-    /**
-     * ImageView of the fourth possible user
-     */
-    @FXML
-    private ImageView robot4ImageView;
-    /**
-     * ImageView of the fifth possible user
-     */
-    @FXML
-    private ImageView robot5ImageView;
-    /**
-     * ImageView of the sixth possible user
-     */
-    @FXML
-    private ImageView robot6ImageView;
-    /**
-     * Label of the first possible user
-     */
-    @FXML
-    private Label robot1Label;
-    /**
-     * Label of the second possible user
-     */
-    @FXML
-    private Label robot2Label;
-    /**
-     * Label of the third possible user
-     */
-    @FXML
-    private Label robot3Label;
-    /**
-     * Label of the fourth possible user
-     */
-    @FXML
-    private Label robot4Label;
-    /**
-     * Label of the fifth possible user
-     */
-    @FXML
-    private Label robot5Label;
-    /**
-     * Label of the sixth possible user
-     */
-    @FXML
-    private Label robot6Label;
-    /**
-     * the currentImageView that gets filled if the next user
-     * joins (all robotImageViews before  have already been filled)
-     */
-    private ImageView currentImageView;
-    /**
-     * the Label that gets filled if the next user
-     * joins (all Labels before have already been filled)
-     */
-    private Label currentLabel;
+    private FlowPane playerTilePane;
 
     /**
      * this method gets called automatically by constructing view
@@ -150,12 +85,8 @@ public class LobbyController extends Controller {
      */
     public void addJoinedPlayer(Player player) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
-        String newName = client.getUniqueName(player.getID());
-        currentImageView.setImage(new Image(getClass().getResource(path).toString()));
-
-        currentLabel.setText(newName);
-        ImageView imageViewPuffer = currentImageView;
-        Label labelPuffer = currentLabel;
+        String name = client.getUniqueName(player.getID());
+        ImageView imageView = ImageHandler.createImageView(path, 90, 90);
 
         int position = robotImageViewPuffer.indexOf(currentImageView) + 1;
 
