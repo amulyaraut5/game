@@ -28,13 +28,15 @@ public class RebootAction extends Action {
         player.getRegisterCards().addAll(player.getDiscardedProgrammingDeck().getDeck());
         player.getRegisterCards().clear();
         //Out of the round, must wait until the next round to program the robot again.
-        //game.getActiveRound().getPlayerList().remove(player);
-        player.freeze();
+        game.getActivationPhase().getActivePlayers().remove(player);
+
         //Robot is placed on reboot token
         player.getRobot().setCoordinate(map.getRestartPoint());
         int restartPos = map.getRestartPoint().toPosition();
+
         server.communicateAll(new Movement(player.getID(), restartPos));
         server.communicateAll(new Reboot(player.getID()));
+
         //TODO The player can turn the robot to face any direction.
     }
 }
