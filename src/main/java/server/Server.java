@@ -9,7 +9,7 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
 import utilities.enums.MessageType;
-import utilities.enums.PhaseState;
+import utilities.enums.GameState;
 import utilities.enums.ServerState;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class Server extends Thread {
     private Game game;
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
 
-    private ServerState serverState = ServerState.ADD_PLAYERS;
+    private ServerState serverState = ServerState.LOBBY;
 
     /**
      * private Constructor for the ChatServer class
@@ -83,7 +83,6 @@ public class Server extends Thread {
                 QueueMessage queueMessage;
                 while ((queueMessage = messageQueue.poll()) != null) {
                     if (isMessageValid(queueMessage)) handleMessage(queueMessage);
-                    else queueMessage.getUser().message(new Error("MessageType " +queueMessage.getJsonMessage().getType()+" is not valid in the current state!"));
                 }
             }
         } catch (IOException e) {
@@ -93,18 +92,26 @@ public class Server extends Thread {
     }
 
     private boolean isMessageValid(QueueMessage queueMessage) {
-        boolean isValid = false;
         MessageType type = queueMessage.getJsonMessage().getType();
+        boolean isValid = false;
+        String state = serverState.toString();
 
         switch (serverState) {
-            case ADD_PLAYERS -> {
-                isValid = ServerState.ADD_PLAYERS.getAllowedMessages().contains(type);
+            case LOBBY -> {
+                isValid = serverState.getAllowedMessages().contains(type);
+                if (!isValid) queueMessage.getUser().message(new Error("The game has not yet started!"));
             }
             case RUNNING_GAME -> {
-                PhaseState state = game.getGameState();
-                isValid = state.getAllowedMessages().contains(type);
+                GameState gameState = game.getGameState();
+                isValid = gameState.getAllowedMessages().contains(type);
+                if (!isValid) {
+                    queueMessage.getUser().message(new Error("The game has already started, you can't join anymore!"));
+                    state += " " + gameState.toString();
+                }
             }
         }
+        if (!isValid)
+            logger.warn("MessageType " + type + " is not valid in the current state: " + state + "!");
         return isValid;
     }
 

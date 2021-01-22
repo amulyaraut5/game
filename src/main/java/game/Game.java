@@ -4,7 +4,6 @@ import game.gameObjects.decks.SpamDeck;
 import game.gameObjects.decks.TrojanDeck;
 import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.decks.WormDeck;
-import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
@@ -22,7 +21,7 @@ import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
 import utilities.Utilities;
 import utilities.enums.AttributeType;
-import utilities.enums.PhaseState;
+import utilities.enums.GameState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class Game {
 
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
-    private PhaseState gameState;
+    private GameState gameState;
     /**
      * Shows if a game has already been created or not (false = not created)
      **/
@@ -82,7 +81,7 @@ public class Game {
      */
     public void reset() {
         energyBank = Utilities.ENERGY_BANK;
-        gameState = PhaseState.CONSTRUCTION;
+        gameState = GameState.CONSTRUCTION;
         players = new ArrayList<>(6);
         createdGame = false;
         runningGame = false;
@@ -195,7 +194,7 @@ public class Game {
         return playerIDs.get(id);
     }
 
-    public PhaseState getGameState() {
+    public GameState getGameState() {
         return gameState;
     }
 }

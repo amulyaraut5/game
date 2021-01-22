@@ -52,7 +52,7 @@ public class ChatController extends Controller {
      * Also
      */
     public void addUser(Player player) {
-        String newName = player.getName() + " " + player.getID();
+        String newName = client.getUniqueName(player.getID());
         directChoiceBox.getItems().add(newName);
     }
 
@@ -88,9 +88,10 @@ public class ChatController extends Controller {
 
     public void receivedChat(ReceivedChat receivedChat) {
         String chat;
+        String sender = client.getUniqueName(receivedChat.getFrom());
         if (receivedChat.isPrivat())
-            chat = "[" + receivedChat.getFrom() + "] @You: " + receivedChat.getMessage();
-        else chat = "[" + receivedChat.getFrom() + "] " + receivedChat.getMessage();
+            chat = "[" + sender + "] @You: " + receivedChat.getMessage();
+        else chat = "[" + sender + "] " + receivedChat.getMessage();
         setTextArea(chat);
     }
 }
