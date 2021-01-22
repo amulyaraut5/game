@@ -3,14 +3,17 @@ package client.view;
 
 import game.Player;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import utilities.JSONProtocol.body.CardsYouGotNow;
+import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
@@ -20,33 +23,39 @@ import utilities.enums.CardType;
 public class PlayerMatController extends Controller {
 
     public HBox registerHBoxBackground;
-    @FXML
-    private ImageView imageView;
+
     @FXML
     private HBox registerHBox;
     @FXML
     private ImageView playerIcon;
-
     @FXML
     private Label playerMapLabelName;
-
     @FXML
-    private ImageView registerNumber;
-    private boolean eventOn = true;
+    private HBox checkPointsHBox;
     @FXML
     private AnchorPane playerMapAnchorPane;
+    public Label discardDeckLabel; //TODO ?
+    @FXML
+    private HBox energyHBox;
+    public HBox energyHBox2;
 
+    private boolean eventOn = true;
     private double widthRegisterCard;
-
     private double heightRegisterCard;
 
+    private Image energyCubeImage;
     public void initialize() {
+        energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
+        energyHBox.setSpacing(5);
+        energyHBox2.setSpacing(5);
+        addEnergy(5);
         widthRegisterCard = registerHBox.getPrefWidth() / 5;
         heightRegisterCard = registerHBox.getPrefHeight();
         registerHBox.setSpacing(20);
         registerHBoxBackground.setSpacing(20);
         createRegisterNumberImages();
         createRegisterBackground();
+
         int register = 5;
         for (int i = 0; i < register; i++) {
             StackPane pane = createNewPane(true);
@@ -179,6 +188,53 @@ public class PlayerMatController extends Controller {
             background.setDisable(true);
             registerHBoxBackground.getChildren().add(background);
         }
+    }
+
+    public void checkPointReached(int number){
+        String controlPoint = String.valueOf(number);
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/controlPoint/controlPoint_" + controlPoint + ".png").toString()));
+        if(checkPointsHBox.getChildren().size()<4){
+            imageView.setFitHeight(35);
+            imageView.setFitWidth(35);
+        } else {
+            for (Node node : checkPointsHBox.getChildren()){
+                if(node.getClass().equals(imageView.getClass())){
+                    ImageView im = (ImageView) node;
+                    im.setFitWidth(20);
+                    im.setFitHeight(20);
+
+                }
+            }
+            imageView.setFitHeight(20);
+            imageView.setFitWidth(20);
+        }
+
+        checkPointsHBox.getChildren().add(imageView);
+    }
+
+    public void addEnergy(int count){
+        while(count>0){
+            ImageView energyCube = new ImageView(energyCubeImage);
+            if(energyHBox.getChildren().size()>9){
+                for (Node node : energyHBox.getChildren()){
+                    if(node.getClass().equals(energyCube.getClass())){
+                        ImageView im = (ImageView) node;
+                        im.setFitWidth(10);
+                        im.setFitHeight(10);
+                    }
+                }
+                energyCube.setFitHeight(10);
+                energyCube.setFitWidth(10);
+                energyHBox2.getChildren().add(energyCube);
+            } else {
+                energyCube.setFitHeight(15);
+                energyCube.setFitWidth(15);
+                energyHBox.getChildren().add(energyCube);
+            }
+
+            count --;
+        }
+
     }
 }
 
