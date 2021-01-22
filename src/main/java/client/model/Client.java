@@ -175,7 +175,7 @@ public class Client {
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
-                    gameViewController.handleShooting(players);
+
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
@@ -202,6 +202,7 @@ public class Client {
                 }
                 case TimerStarted -> {
                     gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
+                    gameViewController.handleShooting(players);
                 }
                 case TimerEnded -> {
                     gameViewController.getProgrammingController().setTimerEnded(true);
@@ -234,6 +235,7 @@ public class Client {
                 case Movement -> {
                     Movement msg = (Movement) message.getBody();
                     gameViewController.handleMovement(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
+
                 }
                 case PlayerTurning -> {
                     PlayerTurning pT = (PlayerTurning) message.getBody();

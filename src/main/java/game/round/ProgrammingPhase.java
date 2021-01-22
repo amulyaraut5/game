@@ -9,8 +9,10 @@ import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -51,15 +53,14 @@ public class ProgrammingPhase extends Phase {
             if (!(player.getRegisterCards().contains(null))) {
                 player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
-                //player.message(new Movement(1,22));
             }
         }
         dealProgrammingCards();
         //<----- Test for Movement Protocol----->
-        //server.communicateAll(new Movement(1, new Coordinate(4, 4).toPosition()));
-        //server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
-        //server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
-        //server.communicateAll(new PlayerTurning(2, Orientation.RIGHT));
+        server.communicateAll(new Movement(1, new Coordinate(5, 4).toPosition()));
+        server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
+        server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
+        server.communicateAll(new PlayerTurning(2, Orientation.RIGHT));
     }
 
     /**

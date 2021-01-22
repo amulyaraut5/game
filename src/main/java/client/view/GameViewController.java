@@ -28,10 +28,8 @@ import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.CurrentCards;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
-import utilities.JSONProtocol.body.YourCards;
 import utilities.MapConverter;
 import utilities.SoundHandler;
 import utilities.Utilities;
@@ -211,7 +209,8 @@ public class GameViewController extends Controller {
                     switch (orientation) {
                         case LEFT , RIGHT -> imageView.setRotate(270);
                     }
-                    Coordinate newPos = calculateEndCoordinate(orientation,c,players);
+
+                    Coordinate newPos = calculateEndCoordinate(orientation,c ,players);
 
                     imageView.setX(c.getX() * Utilities.FIELD_SIZE);
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
@@ -230,13 +229,14 @@ public class GameViewController extends Controller {
                     SequentialTransition sequentialTransition = new SequentialTransition();
                     sequentialTransition.getChildren().addAll(transition, fadeTransition);
                     sequentialTransition.play();
+                    path.clear();
                 }
             }
         }
     }
 
 
-    private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> playerArrayList) {
+    private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
 
         path.add(position);
         position = position.clone();
@@ -272,17 +272,14 @@ public class GameViewController extends Controller {
                 }
             }
         }
-        /*forLoop:
+
         for (Coordinate coordinate: path){
-            for(Player player:playerArrayList){
-                if(player.getRobot().getCoordinate().equals(coordinate)) return player.getRobot().getCoordinate();
-                break forLoop;
+            for(Player player:players){
+                if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
             }
-        }*/
+        }
         return path.get(path.size()-1);
     }
-
-
 
     public ProgrammingController getProgrammingController() {
         return programmingController;
