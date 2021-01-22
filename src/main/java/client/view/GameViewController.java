@@ -23,6 +23,7 @@ import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.CurrentCards;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.JSONProtocol.body.YourCards;
@@ -197,17 +198,17 @@ public class GameViewController extends Controller {
         transition.setByAngle(angle);
         transition.play();
     }
-    /////////PROGRAMMING PHASE
-    public void programCards(YourCards yourCards) {
-        programmingController.startProgrammingPhase(yourCards.getCards());
-    }
-    public void startTimer(boolean allRegistersAsFirst) {
-        programmingController.startTimer(allRegistersAsFirst);
-    }
-    public void endTimer(){ programmingController.setTimerEnded(true); //TODO reset after one round
 
+
+
+    public ProgrammingController getProgrammingController() {
+        return programmingController;
     }
-    /////////PROGRAMMING PHASE
+
+    public ActivationController getActivationController() {
+        return activationController;
+    }
+
     /**
      * Method tests if the background of all attributes on a field are transparent.
      *

@@ -186,7 +186,7 @@ public class Client {
                 }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
-                    gameViewController.programCards(yourCards);
+                    gameViewController.getProgrammingController().startProgrammingPhase(yourCards.getCards());
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
@@ -204,10 +204,10 @@ public class Client {
 
                 }
                 case TimerStarted -> {
-                    gameViewController.startTimer(allRegistersAsFirst);
+                    gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
                 }
                 case TimerEnded -> {
-                    gameViewController.endTimer();
+                    gameViewController.getProgrammingController().setTimerEnded(true);
                 }
                 case CurrentCards -> {
                     //CurrentCards currentCards = (CurrentCards) message.getBody();
