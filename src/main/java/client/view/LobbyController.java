@@ -2,7 +2,7 @@ package client.view;
 
 import game.Player;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,7 +17,7 @@ import utilities.ImageHandler;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.HashMap;
 
 /**
@@ -27,17 +27,8 @@ import java.util.HashMap;
  */
 public class LobbyController extends Controller {
     private static final Logger logger = LogManager.getLogger();
-    /**
-     * In robotImageViews the different ImageViews that can be assigned
-     * are stored together
-     */
-    private final ArrayList<ImageView> robotImageViewPuffer = new ArrayList<>();
-    /**
-     * In robotLabels the different Labels that can be assigned
-     * are stored together
-     */
-    private final ArrayList<Label> robotLabels = new ArrayList<>();
-    private HashMap<Player, Group> robotImageViews = new HashMap<>();
+    private final HashMap<Player, VBox> playerTiles = new HashMap<>();
+
     @FXML
     private BorderPane chatPane;
     @FXML
@@ -53,22 +44,6 @@ public class LobbyController extends Controller {
      */
     @FXML
     public void initialize() {
-        robotImageViewPuffer.add(robot1ImageView);
-        robotImageViewPuffer.add(robot2ImageView);
-        robotImageViewPuffer.add(robot3ImageView);
-        robotImageViewPuffer.add(robot4ImageView);
-        robotImageViewPuffer.add(robot5ImageView);
-        robotImageViewPuffer.add(robot6ImageView);
-
-        robotLabels.add(robot1Label);
-        robotLabels.add(robot2Label);
-        robotLabels.add(robot3Label);
-        robotLabels.add(robot4Label);
-        robotLabels.add(robot5Label);
-        robotLabels.add(robot6Label);
-
-        currentImageView = robot1ImageView;
-        currentLabel = robot1Label;
     }
 
     public void attachChatPane(Pane chat) {
@@ -88,12 +63,14 @@ public class LobbyController extends Controller {
         String name = client.getUniqueName(player.getID());
         ImageView imageView = ImageHandler.createImageView(path, 90, 90);
 
-        int position = robotImageViewPuffer.indexOf(currentImageView) + 1;
+        Label label = new Label(name);
+        label.setPrefWidth(90);
+        label.setPrefHeight(30);
+        label.setAlignment(Pos.TOP_CENTER);
 
-        Group group = new Group(imageViewPuffer, labelPuffer);
-        robotImageViews.put(player, group);
-
-        nextRobot();
+        VBox group = new VBox(imageView, label);
+        playerTilePane.getChildren().add(group);
+        playerTiles.put(player, group);
     }
 
 
@@ -108,19 +85,10 @@ public class LobbyController extends Controller {
         String path = "/lobby/" + robotNames[player.getFigure()];
         if (playerStatus.isReady()) path += "-ready.png";
         else path += ".png";
-        Image image = new Image(getClass().getResource(path).toString());
-        ImageView imageView = (ImageView) robotImageViews.get(player).getChildren().get(0);
+        InputStream stream = ImageHandler.class.getResourceAsStream(path);
+        Image image = new Image(stream, 90, 90, true, true);
+        ImageView imageView = (ImageView) playerTiles.get(player).getChildren().get(0);
         imageView.setImage(image);
-    }
-
-    /**
-     * The next free place in the lobby is presented by the next current Label and
-     * ImageView.
-     */
-    private void nextRobot() {
-        currentImageView = robotImageViewPuffer.get(robotImageViewPuffer.indexOf(currentImageView) + 1);
-        currentLabel = robotLabels.get(robotLabels.indexOf(currentLabel) + 1);
-
     }
 
     /**
@@ -133,10 +101,7 @@ public class LobbyController extends Controller {
     }
 
     public void removePlayer(Player player) {
-        ImageView imageView = (ImageView) robotImageViews.get(player).getChildren().get(0);
-        Label label = (Label) robotImageViews.get(player).getChildren().get(0);
-
-        imageView.setImage(null);
-        label.setText("");
+        VBox tile = playerTiles.get(player);
+        playerTilePane.getChildren().remove(tile);
     }
 }
