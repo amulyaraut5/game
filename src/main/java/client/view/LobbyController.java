@@ -2,6 +2,7 @@ package client.view;
 
 import game.Player;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +15,7 @@ import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
@@ -26,16 +28,13 @@ public class LobbyController extends Controller {
      * In robotImageViews the different ImageViews that can be assigned
      * are stored together
      */
-    private final ArrayList<ImageView> robotImageViews = new ArrayList<>();
+    private final ArrayList<ImageView> robotImageViewPuffer = new ArrayList<>();
     /**
      * In robotLabels the different Labels that can be assigned
      * are stored together
      */
     private final ArrayList<Label> robotLabels = new ArrayList<>();
-    /**
-     * In robotIcons
-     */
-    private final ArrayList<RobotIcon> robotIcons = new ArrayList<>();
+    private HashMap<Player, Group> robotImageViews = new HashMap<>();
     @FXML
     private BorderPane chatPane;
     @FXML
@@ -119,12 +118,12 @@ public class LobbyController extends Controller {
      */
     @FXML
     public void initialize() {
-        robotImageViews.add(robot1ImageView);
-        robotImageViews.add(robot2ImageView);
-        robotImageViews.add(robot3ImageView);
-        robotImageViews.add(robot4ImageView);
-        robotImageViews.add(robot5ImageView);
-        robotImageViews.add(robot6ImageView);
+        robotImageViewPuffer.add(robot1ImageView);
+        robotImageViewPuffer.add(robot2ImageView);
+        robotImageViewPuffer.add(robot3ImageView);
+        robotImageViewPuffer.add(robot4ImageView);
+        robotImageViewPuffer.add(robot5ImageView);
+        robotImageViewPuffer.add(robot6ImageView);
 
         robotLabels.add(robot1Label);
         robotLabels.add(robot2Label);
@@ -149,7 +148,7 @@ public class LobbyController extends Controller {
      * so that other users in lobby can send direct messages.
      * Also
      */
-    public void addJoinedPlayer(Player player, boolean thisUser) {
+    public void addJoinedPlayer(Player player) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
         String newName = client.getUniqueName(player.getID());
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
@@ -158,10 +157,10 @@ public class LobbyController extends Controller {
         ImageView imageViewPuffer = currentImageView;
         Label labelPuffer = currentLabel;
 
-        int position = robotImageViews.indexOf(currentImageView) + 1;
-        RobotIcon robotIcon = new RobotIcon(position, player, imageViewPuffer, labelPuffer, thisUser);
-        addRobotIcon(robotIcon);
-        robotIcons.add(robotIcon);
+        int position = robotImageViewPuffer.indexOf(currentImageView) + 1;
+
+        Group group = new Group(imageViewPuffer, labelPuffer);
+        robotImageViews.put(player, group);
 
         nextRobot();
     }
@@ -174,15 +173,13 @@ public class LobbyController extends Controller {
      * @param playerStatus
      */
     public void displayStatus(PlayerStatus playerStatus) {
-        for (RobotIcon robotIcon : robotIcons) {
-            if (robotIcon.getUserID() == playerStatus.getID()) {
-                String path = "/lobby/" + robotNames[robotIcon.getFigure()];
-                if (playerStatus.isReady()) path += "-ready.png";
-                else path += ".png";
-                Image image = new Image(getClass().getResource(path).toString());
-                robotIcon.getRobotImageView().setImage(image);
-            }
-        }
+        Player player = client.getPlayerFromID(playerStatus.getID());
+        String path = "/lobby/" + robotNames[player.getFigure()];
+        if (playerStatus.isReady()) path += "-ready.png";
+        else path += ".png";
+        Image image = new Image(getClass().getResource(path).toString());
+        ImageView imageView = (ImageView) robotImageViews.get(player).getChildren().get(0);
+        imageView.setImage(image);
     }
 
     /**
@@ -190,7 +187,7 @@ public class LobbyController extends Controller {
      * ImageView.
      */
     private void nextRobot() {
-        currentImageView = robotImageViews.get(robotImageViews.indexOf(currentImageView) + 1);
+        currentImageView = robotImageViewPuffer.get(robotImageViewPuffer.indexOf(currentImageView) + 1);
         currentLabel = robotLabels.get(robotLabels.indexOf(currentLabel) + 1);
 
     }
@@ -205,15 +202,10 @@ public class LobbyController extends Controller {
     }
 
     public void removePlayer(Player player) {
-        for (RobotIcon robotIcon : robotIcons) {
-            if (player.getID() == robotIcon.getUserID()) {
-                //TODO remove imageView. But Player and ImageView are currently not connected.
-                robotImageViews.get(player.getID() - 1).setImage(null);
-                robotLabels.get(player.getID() - 1).setText("");
-            }
-        }
+        ImageView imageView = (ImageView) robotImageViews.get(player).getChildren().get(0);
+        Label label = (Label) robotImageViews.get(player).getChildren().get(0);
+
+        imageView.setImage(null);
+        label.setText("");
     }
 }
-
-
-
