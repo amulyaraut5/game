@@ -234,8 +234,6 @@ public class GameViewController extends Controller {
             }
         }
     }
-
-
     private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
 
         path.add(position);

@@ -32,6 +32,7 @@ public class Map {
      */
     public Map(Tile[][] tiles) {
         this.tiles = tiles;
+        readAll();
     }
 
     /**
@@ -85,7 +86,18 @@ public class Map {
         return  laser;
     }
 
-
+    public void readAntennaCoordinate() {
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == AttributeType.Antenna) {
+                        this.antenna = new Coordinate(i, j);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * This method initializes the restartPoint coordinates from the actual
@@ -239,6 +251,7 @@ public class Map {
         readPushPanelCoordinate();
         readLaserCoordinates();
         readControlPointCoordinate();
+        readAntennaCoordinate();
     }
 
 

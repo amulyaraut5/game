@@ -24,7 +24,6 @@ public class SoundHandler{
         Media m = new Media(getClass().getResource("/sounds/background_music.mp3").toExternalForm());
         mediaPlayer = new MediaPlayer(m);
         mediaPlayer.play();
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     /**
