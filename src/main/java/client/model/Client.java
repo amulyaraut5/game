@@ -255,7 +255,7 @@ public class Client {
             viewManager.nextScene();
         }
         loginController.setFigureTaken(player.getFigure(), true);
-        lobbyController.addJoinedPlayer(player, false);
+        lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
     }
 

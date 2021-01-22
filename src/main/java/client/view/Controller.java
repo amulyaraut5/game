@@ -2,11 +2,6 @@ package client.view;
 
 import client.ViewManager;
 import client.model.Client;
-import game.Player;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
 
 /**
  * Abstract super class of all view-controller
@@ -28,16 +23,6 @@ public abstract class Controller {
      */
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
-    protected ArrayList<RobotIcon> playersAdded = new ArrayList<>();
-
-    public ArrayList<RobotIcon> getPlayersAdded() {
-        return playersAdded;
-    }
-
-    public void addRobotIcon(RobotIcon robotIcon) {
-        playersAdded.add(robotIcon);
-    }
-
 
     public String getImageDropped() {
         return imageDropped;
@@ -79,62 +64,4 @@ public abstract class Controller {
             return this.id;
         }
     }
-
-    /**
-     * This private class is a data structure to easily connect the different information
-     * that are necessary to assign one user to a specific place in the lobby with his image, name etc.
-     */
-    protected class RobotIcon {
-        private String userName;
-        private int userID;
-        private int position;
-        private int figure;
-        private ImageView robotImageView;
-        private Label labelOfUser;
-        private boolean thisUser;
-
-        /**
-         * the constructor of RobotIcon where one RobotIcon can be created with the
-         * values of one player and the image of the figure he choosed
-         *
-         * @param position
-         * @param player
-         * @param imageViewPuffer
-         * @param labelPuffer
-         */
-        public RobotIcon(int position, Player player, ImageView imageViewPuffer, Label labelPuffer, boolean thisUser) {
-            this.position = position;
-            this.userID = player.getID();
-            this.userName = player.getName() + " " + player.getID();
-            this.figure = player.getFigure();
-            this.robotImageView = imageViewPuffer;
-            this.labelOfUser = labelPuffer;
-            this.thisUser = thisUser;
-        }
-
-        public int getFigure() {
-            return figure;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public int getUserID() {
-            return userID;
-        }
-
-        public ImageView getRobotImageView() {
-            return robotImageView;
-        }
-
-        public Label getLabelOfUser() {
-            return labelOfUser;
-        }
-
-        public boolean isThisUser() {
-            return thisUser;
-        }
-    }
-
 }
