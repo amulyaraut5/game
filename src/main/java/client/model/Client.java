@@ -196,7 +196,8 @@ public class Client {
                         gameViewController.getPlayerMapController().fixSelectedCards();
                         allRegistersAsFirst = true; //TODO reset after one round
                     } else {
-                        gameViewController.getPlayerMapController().fixSelectedCards(); //TODO else
+                        gameViewController.getPlayerMapController().fixSelectedCards();
+                        gameViewController.getOthersController().playerWasFirst(selectionFinished);
                         allRegistersAsFirst = false;
                     }
 
