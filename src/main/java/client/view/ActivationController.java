@@ -1,13 +1,18 @@
 package client.view;
 
+import game.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import utilities.JSONProtocol.body.CurrentCards;
+
+import java.util.ArrayList;
 
 public class ActivationController extends Controller {
 
     @FXML
-    private Label registerNr;
+    public Label register;
     @FXML
     private Label activateProgOrBoard;
     @FXML
@@ -17,11 +22,23 @@ public class ActivationController extends Controller {
     @FXML
     private ImageView imageView1;
     @FXML
-    private ImageView imageView2;
+    public ImageView currentCardImageView;
     @FXML
     private ImageView imageView3;
 
+    private int registerNr = 1; //TODO reset after 5 registers
 
     public void initialize() {
+    }
+
+    public void currentCards(CurrentCards currentCards){
+        for (int i = 0; i<2; i++){
+            if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()){
+                String card = currentCards.getActiveCards().get(i).getCard().name();
+                currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
+                register.setText("Register " + registerNr);
+            }
+        }
+
     }
 }
