@@ -3,6 +3,8 @@ package client.model;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
+import game.gameObjects.cards.programming.Again;
+import game.gameObjects.cards.programming.MoveI;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +15,7 @@ import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
+import utilities.enums.CardType;
 import utilities.enums.MessageType;
 
 import java.io.IOException;
@@ -205,6 +208,16 @@ public class Client {
                 }
                 case TimerEnded -> {
                     gameViewController.endTimer();
+                }
+                case CurrentCards -> {
+                    //CurrentCards currentCards = (CurrentCards) message.getBody();
+                    ArrayList<RegisterCard> registerCards = new ArrayList<>();
+                    registerCards.add(new RegisterCard(thisPlayersID, new Again()));
+                    registerCards.add(new RegisterCard(players.get(1).getID(), new MoveI()));
+                    CurrentCards currentCards = new CurrentCards(registerCards);
+                    //HARDCODED eigentlich kein Kartenobjekt hier !
+                    gameViewController.getActivationController().currentCards(currentCards);
+
                 }
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
