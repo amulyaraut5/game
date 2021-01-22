@@ -1,5 +1,6 @@
 package client.view;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.apache.logging.log4j.LogManager;
@@ -24,13 +25,12 @@ public class MenuController extends Controller {
     public void hostGameClicked() {
         logger.info("Host Game Clicked.");
 
-        Server server = Server.getInstance();
-        if (!server.isAlive()) {
-            server.start();
-        } else {
-            logger.warn("Server is already running.");
-        }
-        connect();
+        new Thread(() -> {
+            Server server = Server.getInstance();
+            if (!server.isAlive()) server.start();
+            else logger.warn("The server is already running.");
+            connect();
+        }).start();
     }
 
     /**
@@ -39,13 +39,14 @@ public class MenuController extends Controller {
     @FXML
     public void joinGameClicked() {
         logger.info("Join Game Clicked.");
-
-        connect();
+        new Thread(this::connect).start();
     }
 
     private void connect() {
-        infoLabel.setText("");
         boolean connected = client.establishConnection();
-        if (!connected) infoLabel.setText("The Server is not reachable!");
+        Platform.runLater(() -> {
+            if (!connected) infoLabel.setText("The server is not reachable!");
+            else infoLabel.setText("");
+        });
     }
 }
