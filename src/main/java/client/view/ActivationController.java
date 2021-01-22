@@ -6,13 +6,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.PlayIt;
 
 import java.util.ArrayList;
 
 public class ActivationController extends Controller {
 
     @FXML
-    public Label register;
+    private Label register;
     @FXML
     private Label activateProgOrBoard;
     @FXML
@@ -22,7 +23,7 @@ public class ActivationController extends Controller {
     @FXML
     private ImageView imageView1;
     @FXML
-    public ImageView currentCardImageView;
+    private ImageView currentCardImageView;
     @FXML
     private ImageView imageView3;
 
@@ -40,5 +41,9 @@ public class ActivationController extends Controller {
             }
         }
 
+    }
+    @FXML
+    private void playItButton(){
+        client.sendMessage(new PlayIt());
     }
 }

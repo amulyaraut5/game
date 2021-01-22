@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -23,6 +24,11 @@
                   <ImageView fx:id="currentCardImageView" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="displayResult" layoutX="57.0" layoutY="316.0" prefHeight="26.0" prefWidth="352.0" />
                   <Label fx:id="showPriority" layoutX="74.0" layoutY="58.0" prefHeight="26.0" prefWidth="318.0" />
+                  <JFXButton buttonType="RAISED" layoutX="88.0" layoutY="309.0" onAction="#playItButton" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: orange;" text="Play It" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </AnchorPane>
          </children>
