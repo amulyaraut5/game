@@ -20,10 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,6 +59,7 @@ public class GameViewController extends Controller {
     private ConstructionController constructionController;
     private ProgrammingController programmingController;
     private ActivationController activationController;
+    private OthersController othersController;
 
     private Pane constructionPane;
     private Pane programmingPane;
@@ -74,6 +72,9 @@ public class GameViewController extends Controller {
 
     @FXML
     private StackPane playerMap;
+
+    @FXML
+    public HBox otherPlayerSpace;
     @FXML
     private BorderPane phasePane;
     @FXML
@@ -96,9 +97,18 @@ public class GameViewController extends Controller {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
             playerMap.setAlignment(Pos.CENTER);
             playerMap.getChildren().add(fxmlLoader.load());
+
             playerMatController = fxmlLoader.getController();
         } catch (IOException e) {
             logger.error("PlayerMap could not be created: " + e.getMessage());
+        }
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/otherPlayer.fxml"));
+            otherPlayerSpace.setSpacing(20);
+            otherPlayerSpace.getChildren().add(fxmlLoader.load());
+            othersController = fxmlLoader.getController();
+        } catch (IOException e) {
+            logger.error("Other player maps could not be created: " + e.getMessage());
         }
 
         boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
@@ -285,6 +295,10 @@ public class GameViewController extends Controller {
 
     public ActivationController getActivationController() {
         return activationController;
+    }
+
+    public OthersController getOthersController() {
+        return othersController;
     }
 
     /**
