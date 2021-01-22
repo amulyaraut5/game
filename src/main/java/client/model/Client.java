@@ -243,7 +243,12 @@ public class Client {
                 }
                 case CheckPointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
-                    //TODO display the message, update player mat
+                    if(checkpointsReached.getPlayerID() == thisPlayersID){
+                        gameViewController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
+                    } else {
+                        gameViewController.getOthersController().checkPointReached(checkpointsReached);
+                    }
+
                 }
                 case GameWon -> {
                     GameWon gameWon = (GameWon) message.getBody();
