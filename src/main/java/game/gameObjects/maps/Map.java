@@ -1,9 +1,6 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
-import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.*;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 
@@ -26,6 +23,8 @@ public class Map {
     private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
 
     private Coordinate RestartPoint;
+
+    private Coordinate antenna;
 
 
     /**
@@ -277,8 +276,7 @@ public class Map {
 
     public ArrayList<Coordinate> getLaserCoordinates(){ return laserCoordinates; }
 
-
-
-
-
+    public Coordinate getAntenna() {
+        return antenna;
+    }
 }

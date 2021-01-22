@@ -78,9 +78,8 @@ public class ActivationPhase extends Phase {
     /**
      * At the beginning of each register the current cards are shown.
      */
-
     private void turnCards(int register) {
-        for (Player player : playerList) { //TODO in order of priority List
+        for (Player player : calculatePriority(gameMap.getAntenna())) {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
@@ -91,9 +90,8 @@ public class ActivationPhase extends Phase {
      * This method is called whenever a PlayIt() protocol is received.
      * it is checked if its the given players turn. If yes, the cards is handled.
      */
-
     public void activateCards(int playerID) {
-        //Because current Cards ist in priority order the first person to activate their cards is at index 0.
+        //Because current Cards is in priority order the first person to activate their cards is at index 0.
         //So by removing the index 0 after every players turn the current player is always at index 0.
         RegisterCard playerRegisterCard = currentCards.get(0);
         if (playerRegisterCard.getPlayerID() == playerID) {
@@ -333,19 +331,20 @@ public class ActivationPhase extends Phase {
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
     public class RobotDistance {
-        private int playerID;
+        private Player player;
         private Robot robot;
         private double distance;
         private int yCoordinate;
 
-        public RobotDistance(int playerID, Robot robot, double distance, int yCoordinate) {
-            this.playerID = playerID;
+        public RobotDistance(Player player, Robot robot, double distance, int yCoordinate) {
+            this.player = player;
             this.robot = robot;
             this.distance = distance;
             this.yCoordinate = yCoordinate;
         }
-        public int getPlayerID() {
-            return playerID;
+
+        public Player getPlayer() {
+            return player;
         }
         public Robot getRobot() {
             return robot;
@@ -384,7 +383,7 @@ public class ActivationPhase extends Phase {
                     players.get(i).getRobot().getCoordinate().getX(),
                     players.get(i).getRobot().getCoordinate().getY());
             //get playerID
-            int playerID = players.get(i).getID();
+            Player player = players.get(i);
             //get robot
             Robot robot = players.get(i).getRobot();
             //get distance to antenna
@@ -392,7 +391,7 @@ public class ActivationPhase extends Phase {
             //get y coordinate
             int yRobot = robot.getCoordinate().getY();
             //safe object in sortedDistance
-            sortedDistance.add(new RobotDistance(playerID, robot, distance, yRobot));
+            sortedDistance.add(new RobotDistance(player, robot, distance, yRobot));
 
             i++;
         }
@@ -408,13 +407,13 @@ public class ActivationPhase extends Phase {
      * @param antenna
      * @return
      */
-    public ArrayList<Integer> calculatePriority(Coordinate antenna) {
+    public ArrayList<Player> calculatePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
 
-        //first object in list sortedDistance
-        int firstPlayerID = sortedDistance.get(0).getPlayerID();
+        //first player in list sortedDistance
+        Player firstPlayer = sortedDistance.get(0).getPlayer();
 
-        ArrayList<Integer> playerPriority = new ArrayList<>();
+        ArrayList<Player> playerPriority = new ArrayList<>();
 
         for (RobotDistance robotDistance : sortedDistance) {
             for (int j = 1; j <= sortedDistance.size(); j++) {
@@ -435,19 +434,19 @@ public class ActivationPhase extends Phase {
                         //sort sameDistance by yCoordinate -> smallest y coordinate first
                         sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
 
-                        ArrayList<Integer> greaterThanAntenna = new ArrayList<>();
-                        ArrayList<Integer> smallerThanAntenna = new ArrayList<>();
+                        ArrayList<Player> greaterThanAntenna = new ArrayList<>();
+                        ArrayList<Player> smallerThanAntenna = new ArrayList<>();
 
                         for (RobotDistance rd : sameDistance) {
                             int antennaY = antenna.getY();
                             int robotY = rd.getRobot().getCoordinate().getY();
 
                             if (robotY < antennaY) {
-                                smallerThanAntenna.add(rd.getPlayerID());
+                                smallerThanAntenna.add(rd.getPlayer());
                             } else if (robotY > antennaY) {
-                                greaterThanAntenna.add(rd.getPlayerID());
+                                greaterThanAntenna.add(rd.getPlayer());
                             } else {
-                                playerPriority.add(rd.getPlayerID());
+                                playerPriority.add(rd.getPlayer());
                             }
                             }
                         playerPriority.addAll(greaterThanAntenna);
@@ -455,7 +454,7 @@ public class ActivationPhase extends Phase {
                         }
                 //first and second object have different distance values -> first player in list is currentPlayer
                 } else {
-                    playerPriority.add(firstPlayerID);
+                    playerPriority.add(firstPlayer);
                 }
             }
         }
