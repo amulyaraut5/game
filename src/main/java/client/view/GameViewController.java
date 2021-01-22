@@ -35,7 +35,7 @@ import utilities.SoundHandler;
 import utilities.Utilities;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
-import utilities.enums.PhaseState;
+import utilities.enums.GameState;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class GameViewController extends Controller {
     private SoundHandler soundHandler;
     private EventHandler<MouseEvent> onMapClicked;
 
-    private PhaseState currentPhase = PhaseState.CONSTRUCTION;
+    private GameState currentPhase = GameState.CONSTRUCTION;
 
     @FXML
     private StackPane playerMap;
@@ -334,7 +334,7 @@ public class GameViewController extends Controller {
         changePhaseView(currentPhase.getNext());
     }
 
-    public void changePhaseView(PhaseState phase) {
+    public void changePhaseView(GameState phase) {
         currentPhase = phase;
 
         switch (phase) {

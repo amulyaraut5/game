@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.EnumSet;
 
-public enum PhaseState {
+public enum GameState {
     @SerializedName("0") CONSTRUCTION,
     @SerializedName("2") PROGRAMMING,
     @SerializedName("3") ACTIVATION;
@@ -19,10 +19,10 @@ public enum PhaseState {
         ACTIVATION.allowedMessages = EnumSet.of(MessageType.SendChat, MessageType.SelectDamage, MessageType.PlayIt);
     }
 
-    private PhaseState next;
+    private GameState next;
     private EnumSet<MessageType> allowedMessages;
 
-    public PhaseState getNext() {
+    public GameState getNext() {
         return next;
     }
 

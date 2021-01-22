@@ -16,7 +16,6 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
 import utilities.Utilities;
-import utilities.enums.CardType;
 import utilities.enums.MessageType;
 
 import java.io.IOException;
@@ -283,6 +282,24 @@ public class Client {
             if (player.getID() == id) return player;
         }
         return null;
+    }
+
+    /**
+     * Obtains a unique name of the player.
+     * <p>
+     * If {@code player.getName()} is not unique, the id is appended to the name.
+     * <p>
+     * e.g. '{@code Alice}' or '{@code Alice #3}' could be the returned name.
+     *
+     * @param id ID of the player from whom a unique name should be obtained.
+     * @return unique name of the player.
+     */
+    public String getUniqueName(int id) {
+        Player player = getPlayerFromID(id);
+        for (Player p : players) {
+            if (player != p && player.getName().equals(p.getName())) return player.getName() + " #" + player.getID();
+        }
+        return player.getName();
     }
 
     public void setController(ArrayList<Controller> controllerList) {
