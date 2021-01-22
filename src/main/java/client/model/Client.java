@@ -143,6 +143,7 @@ public class Client {
                 case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
+
                 }
                 case Error -> {
                     Error error = (Error) message.getBody(); //TODO
@@ -169,6 +170,7 @@ public class Client {
                 case GameStarted -> {
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     gameViewController.buildMap(gameStarted);
+                    gameViewController.getOthersController().createPlayerMats(players);
                     viewManager.nextScene();
                 }
                 case StartingPointTaken -> {
