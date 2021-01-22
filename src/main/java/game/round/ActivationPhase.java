@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
-import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -51,6 +50,8 @@ public class ActivationPhase extends Phase {
     private int currentRegister;
 
     private ActivationElements activationElements;
+
+    private ArrayList<Player> activePlayers = playerList;
 
     /**
      * starts the ActivationPhase.
@@ -329,7 +330,7 @@ public class ActivationPhase extends Phase {
 
 
     /**
-     * Class to handle the players robots by distance from antenna
+     * Class to handle the players robots by y-coordinate and distance from antenna
      */
     public class RobotDistance {
         private int playerID;
@@ -337,27 +338,22 @@ public class ActivationPhase extends Phase {
         private double distance;
         private int yCoordinate;
 
-        //playerID and calculated distance
         public RobotDistance(int playerID, Robot robot, double distance, int yCoordinate) {
             this.playerID = playerID;
             this.robot = robot;
             this.distance = distance;
             this.yCoordinate = yCoordinate;
         }
-
         public int getPlayerID() {
             return playerID;
         }
-
         public Robot getRobot() {
             return robot;
         }
-
         public double getDistance() {
             return distance;
         }
-
-        public int getyCoordinate() {
+        public int getYCoordinate() {
             return yCoordinate;
         }
     }
@@ -372,8 +368,38 @@ public class ActivationPhase extends Phase {
      */
     public double calculateDistance(Coordinate antenna, Coordinate robot) {
         Coordinate antennaRobotDifference = antenna.subtract(robot);
-        double tileDistance = abs(antennaRobotDifference.getX()) + abs(antennaRobotDifference.getY());
-        return tileDistance;
+        return abs(antennaRobotDifference.getX()) + abs(antennaRobotDifference.getY());
+    }
+
+    public ArrayList<RobotDistance> sortDistance(Coordinate antenna){
+        //List containing information for determining the next player in line (next robot with priority)
+        ArrayList<RobotDistance> sortedDistance = new ArrayList<>();
+
+        //Fill List sortedDistance with matching objects
+        int i = 0;
+        ArrayList<Player> players = activePlayers;
+        while (i < players.size()) {
+            //Point is generated with robot x and y position
+            Coordinate robotPosition = new Coordinate(
+                    players.get(i).getRobot().getCoordinate().getX(),
+                    players.get(i).getRobot().getCoordinate().getY());
+            //get playerID
+            int playerID = players.get(i).getID();
+            //get robot
+            Robot robot = players.get(i).getRobot();
+            //get distance to antenna
+            double distance = calculateDistance(antenna, robotPosition);
+            //get y coordinate
+            int yRobot = robot.getCoordinate().getY();
+            //safe object in sortedDistance
+            sortedDistance.add(new RobotDistance(playerID, robot, distance, yRobot));
+
+            i++;
+        }
+        // sort RobotDistance by distance
+        sortedDistance.sort(Comparator.comparingDouble(RobotDistance::getDistance));
+
+        return sortedDistance;
     }
 
     /**
@@ -383,41 +409,12 @@ public class ActivationPhase extends Phase {
      * @return
      */
     public ArrayList<Integer> calculatePriority(Coordinate antenna) {
-        //List containing information for determining the next player in line (next robot with priority)
-        ArrayList<RobotDistance> sortedDistance = new ArrayList<>();
-
-        //Fill List sortedDistance with matching objects
-        if (sortedDistance.size() == 0) {
-            int i = 0;
-            ArrayList<Player> players = game.getPlayers();
-            while (i < players.size()) {
-                //Point is generated with robot x and y position
-                Coordinate robotPosition = new Coordinate(
-                        players.get(i).getRobot().getCoordinate().getX(),
-                        players.get(i).getRobot().getCoordinate().getY());
-                //get playerID
-                int playerID = players.get(i).getID();
-                //get robot
-                Robot robot = players.get(i).getRobot();
-                //get distance to antenna
-                double distance = calculateDistance(antenna, robotPosition);
-                //get y coordinate
-                int yRobot = robot.getCoordinate().getY();
-                //safe object in sortedDistance
-                sortedDistance.add(new RobotDistance(playerID, robot, distance, yRobot));
-
-                i++;
-            }
-        }
-        // sort RobotDistance by distance
-        Collections.sort(sortedDistance, Comparator.comparingDouble(RobotDistance::getDistance));
+        ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
 
         //first object in list sortedDistance
         int firstPlayerID = sortedDistance.get(0).getPlayerID();
-        double firstRobotDistance = sortedDistance.get(0).getDistance();
 
         ArrayList<Integer> playerPriority = new ArrayList<>();
-
 
         for (RobotDistance robotDistance : sortedDistance) {
             for (int j = 1; j <= sortedDistance.size(); j++) {
@@ -436,7 +433,7 @@ public class ActivationPhase extends Phase {
                             sameDistance.add(sortedDistance.get(k));
                         }
                         //sort sameDistance by yCoordinate -> smallest y coordinate first
-                        Collections.sort(sameDistance, Comparator.comparingInt(RobotDistance::getyCoordinate));
+                        sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
 
                         ArrayList<Integer> greaterThanAntenna = new ArrayList<>();
                         ArrayList<Integer> smallerThanAntenna = new ArrayList<>();
@@ -463,5 +460,10 @@ public class ActivationPhase extends Phase {
             }
         }
         return playerPriority;
+    }
+
+
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
     }
 }
