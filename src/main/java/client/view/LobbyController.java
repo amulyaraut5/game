@@ -151,7 +151,7 @@ public class LobbyController extends Controller {
      */
     public void addJoinedPlayer(Player player, boolean thisUser) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
-        String newName = player.getName() + " " + player.getID();
+        String newName = client.getUniqueName(player.getID());
         currentImageView.setImage(new Image(getClass().getResource(path).toString()));
 
         currentLabel.setText(newName);
@@ -208,8 +208,8 @@ public class LobbyController extends Controller {
         for (RobotIcon robotIcon : robotIcons) {
             if (player.getID() == robotIcon.getUserID()) {
                 //TODO remove imageView. But Player and ImageView are currently not connected.
-                robotImageViews.get(player.getID()-1).setImage(null);
-                robotLabels.get(player.getID()-1).setText("");
+                robotImageViews.get(player.getID() - 1).setImage(null);
+                robotLabels.get(player.getID() - 1).setText("");
             }
         }
     }
