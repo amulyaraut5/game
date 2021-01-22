@@ -9,6 +9,8 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
 import utilities.enums.MessageType;
+import utilities.enums.PhaseState;
+import utilities.enums.ServerState;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -28,6 +30,8 @@ public class Server extends Thread {
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
     private Game game;
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
+
+    private ServerState serverState = ServerState.ADD_PLAYERS;
 
     /**
      * private Constructor for the ChatServer class
@@ -78,13 +82,30 @@ public class Server extends Thread {
                 }
                 QueueMessage queueMessage;
                 while ((queueMessage = messageQueue.poll()) != null) {
-                    handleMessage(queueMessage);
+                    if (isMessageValid(queueMessage)) handleMessage(queueMessage);
+                    else queueMessage.getUser().message(new Error("MessageType " +queueMessage.getJsonMessage().getType()+" is not valid in the current state!"));
                 }
             }
         } catch (IOException e) {
             logger.error("Server could not be created: " + e.getMessage());
         }
         logger.info("SERVER CLOSED");
+    }
+
+    private boolean isMessageValid(QueueMessage queueMessage) {
+        boolean isValid = false;
+        MessageType type = queueMessage.getJsonMessage().getType();
+
+        switch (serverState) {
+            case ADD_PLAYERS -> {
+                isValid = ServerState.ADD_PLAYERS.getAllowedMessages().contains(type);
+            }
+            case RUNNING_GAME -> {
+                PhaseState state = game.getGameState();
+                isValid = state.getAllowedMessages().contains(type);
+            }
+        }
+        return isValid;
     }
 
     /**
@@ -110,7 +131,10 @@ public class Server extends Thread {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
-                if (allUsersReady) game.play();
+                if (allUsersReady) {
+                    game.play();
+                    serverState = ServerState.RUNNING_GAME;
+                }
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();

@@ -50,9 +50,7 @@ public class Game {
 
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
-
-    private PhaseState activePhase;
-
+    private PhaseState gameState;
     /**
      * Shows if a game has already been created or not (false = not created)
      **/
@@ -83,7 +81,7 @@ public class Game {
      */
     public void reset() {
         energyBank = Utilities.ENERGY_BANK;
-        activePhase = PhaseState.CONSTRUCTION;
+        gameState = PhaseState.CONSTRUCTION;
         players = new ArrayList<>(6);
         createdGame = false;
         runningGame = false;
@@ -108,62 +106,21 @@ public class Game {
 
         map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
-        server.communicateAll(new ActivePhase(activePhase));
+        server.communicateAll(new ActivePhase(gameState));
         new LaserAction().determineLaserPaths();
-
-/*        while (players.size() >= MIN_PLAYERS && players.size() <= MAX_PLAYERS) {
-            nextPhase(Utilities.Phase.CONSTRUCTION);
-            logger.info("Game has started");
-            upgradePhase.startPhase();
-            programmingPhase.startPhase();
-            activationPhase.startPhase();
-        }
-        throw new UnsupportedOperationException();*/
     }
 
     /**
      * This method gets called from the phases, it calls the next phase
      */
     public void nextPhase() {
-        activePhase = activePhase.getNext();
-        server.communicateAll(new ActivePhase(activePhase));
+        gameState = gameState.getNext();
+        server.communicateAll(new ActivePhase(gameState));
 
-        switch (activePhase) {
+        switch (gameState) {
             case PROGRAMMING -> programmingPhase = new ProgrammingPhase();
             case ACTIVATION -> activationPhase = new ActivationPhase();
         }
-    }
-
-    public int getNoOfCheckPoints() {
-        return this.noOfCheckpoints;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public SpamDeck getSpamDeck() {
-        return spamDeck;
-    }
-
-    public VirusDeck getVirusDeck() {
-        return virusDeck;
-    }
-
-    public WormDeck getWormDeck() {
-        return wormDeck;
-    }
-
-    public TrojanDeck getTrojanHorseDeck() {
-        return trojanDeck;
-    }
-
-    public Player getPlayerFromID(Integer id) {
-        return playerIDs.get(id);
     }
 
     public void setStartingPoint(User user, int position) {
@@ -203,5 +160,41 @@ public class Game {
             }
         }
         return null;
+    }
+
+    public int getNoOfCheckPoints() {
+        return this.noOfCheckpoints;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public SpamDeck getSpamDeck() {
+        return spamDeck;
+    }
+
+    public VirusDeck getVirusDeck() {
+        return virusDeck;
+    }
+
+    public WormDeck getWormDeck() {
+        return wormDeck;
+    }
+
+    public TrojanDeck getTrojanHorseDeck() {
+        return trojanDeck;
+    }
+
+    public Player getPlayerFromID(Integer id) {
+        return playerIDs.get(id);
+    }
+
+    public PhaseState getGameState() {
+        return gameState;
     }
 }
