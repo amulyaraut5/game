@@ -82,9 +82,10 @@ public class LaserAction {
      */
 
     public void determineLaserPaths() {
-        for (Coordinate coordinate : map.getLaserCoordinates()) {
+        for (Coordinate coordinate : map.readLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
+            System.out.println("x"+xC + "y"+yC);
             for (Attribute a : map.getTile(xC, yC).getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
@@ -123,12 +124,11 @@ public class LaserAction {
         Coordinate step = orientation.toVector();
 
         outerLoop:
-        while (position.getX() >= 0 || position.getX() <= 10 || position.getY() >= 0 || position.getY() <= 10) {
+        while ((position.getX() >= 0 && position.getX() < 13) && (position.getY() >= 0 && position.getY() < 10)) {
             position.add(step);
             for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
-                // Pay Attention: We have a wall with laser in Extra crispy map.
-                // Wall with laser  is not checked. Gives Array out of BoundException
-                if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna) {
+                if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
+                        && b.getType() != AttributeType.ControlPoint) {
                     path.add(position.clone());
                     break;
                 } else if (b.getType() == AttributeType.Wall) {
@@ -137,8 +137,20 @@ public class LaserAction {
                         break outerLoop;
                     }else if (((Wall) b).getOrientation() != orientation){
                         path.add(position.clone());
+                        break outerLoop;
                     }
                 }else if (b.getType() == AttributeType.Antenna) break outerLoop;
+                else if(b.getType() == AttributeType.Laser){
+                    if (((Laser) b).getOrientation() == orientation) {
+                        path.add(position.clone());
+                        break outerLoop;
+                    }else if (((Laser) b).getOrientation() != orientation){
+                        path.add(position.clone());
+                        break outerLoop;
+                    }
+                }else if (b.getType() == AttributeType.ControlPoint) {
+                    path.add(position.clone());break outerLoop;
+                }
             }
         }
         return path;

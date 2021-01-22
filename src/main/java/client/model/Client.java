@@ -14,6 +14,7 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.RegisterCard;
 import utilities.Utilities;
 import utilities.enums.CardType;
 import utilities.enums.MessageType;
@@ -174,11 +175,7 @@ public class Client {
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
                     gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
-                    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
-                    //gameViewController.tempRobot();
-                    //gameViewController.moveRobot();
-                    //gameViewController.showLaserPath();
-                    // <----------------------Only For Test to show Robot movement by translate transition---------------------------->
+                    //gameViewController.handleShooting(players);
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();

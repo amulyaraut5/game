@@ -21,7 +21,7 @@ public class SoundHandler{
      * if the player wishes to play.
      */
     public void musicOn(){
-        Media m = new Media(getClass().getResource("/sounds/robotDance.mp3").toExternalForm());
+        Media m = new Media(getClass().getResource("/sounds/background_music.mp3").toExternalForm());
         mediaPlayer = new MediaPlayer(m);
         mediaPlayer.play();
     }

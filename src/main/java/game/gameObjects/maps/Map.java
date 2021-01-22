@@ -71,7 +71,7 @@ public class Map {
      * version of map.
      */
 
-    public void readLaserCoordinates() {
+    public ArrayList<Coordinate> readLaserCoordinates() {
         ArrayList<Coordinate> laser = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
@@ -83,7 +83,7 @@ public class Map {
                 }
             }
         }
-        this.laserCoordinates = laser;
+        return  laser;
     }
 
 

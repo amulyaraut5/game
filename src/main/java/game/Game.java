@@ -5,6 +5,7 @@ import game.gameObjects.decks.TrojanDeck;
 import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.decks.WormDeck;
 import game.gameObjects.maps.DizzyHighway;
+import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
 import game.round.ActivationPhase;
@@ -104,7 +105,7 @@ public class Game {
             players.add(new Player(user));
         }
 
-        map = MapBuilder.constructMap(new DizzyHighway());
+        map = MapBuilder.constructMap(new ExtraCrispy());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
         new LaserAction().determineLaserPaths();
