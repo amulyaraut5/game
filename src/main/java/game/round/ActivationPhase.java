@@ -1,7 +1,10 @@
 package game.round;
 
 import game.Player;
-import game.gameActions.*;
+import game.gameActions.AgainAction;
+import game.gameActions.MoveRobotBack;
+import game.gameActions.RebootAction;
+import game.gameActions.RotateRobot;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Spam;
 import game.gameObjects.cards.damage.Trojan;
@@ -12,16 +15,14 @@ import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
-import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import static java.lang.StrictMath.abs;
@@ -53,6 +54,8 @@ public class ActivationPhase extends Phase {
 
     private ArrayList<Player> activePlayers = playerList;
 
+    private int register = 1;
+
     /**
      * starts the ActivationPhase.
      * After each register the method for activating the board tiles ist called.
@@ -62,16 +65,9 @@ public class ActivationPhase extends Phase {
 
     public ActivationPhase() {
         super();
-        for (int register = 1; register < 6; register++) {
-            turnCards(register);
-            //Because whenever a players card was activated he is removed from the current Player list the board
-            //is only activated after each player took their turn
-            if (currentCards.size() == 0) {
-                activateBoard();
-                //throw new UnsupportedOperationException();
-            }
-        }
-        //game.nextPhase(); TODO set next Phase somewehere else
+        turnCards(register);
+        //Because whenever a players card was activated he is removed from the current Player list the board
+        //is only activated after each player took their turn
     }
 
 
@@ -83,7 +79,7 @@ public class ActivationPhase extends Phase {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
-        server.communicateAll(new CurrentCards(currentCards)); //TODO CurrentCards is sent multiple times
+        server.communicateAll(new CurrentCards(currentCards));
     }
 
     /**
@@ -96,10 +92,19 @@ public class ActivationPhase extends Phase {
         RegisterCard playerRegisterCard = currentCards.get(0);
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
-            //currentCard.handleCard(game, game.getPlayerFromID(playerID));
+            //currentCard.handleCard(game, game.getPlayerFromID(playerID)); TODO handle the card
             currentCards.remove(0);
         } else {
             server.communicateDirect(new Error("It's not your turn!"), playerID);
+        }
+        if (currentCards.isEmpty()) {
+            //activateBoard(); TODO activate the board
+            //throw new UnsupportedOperationException();
+            if (register < 5) {
+                turnCards(register++);
+            } else {
+                game.nextPhase();
+            }
         }
     }
 
@@ -231,7 +236,7 @@ public class ActivationPhase extends Phase {
             }
             case BackUp -> {
                 new MoveRobotBack().doAction(orientation, player);
-                server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+                server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 logger.info(player.getName() + "moved back.");
             }
             case PowerUp -> {
@@ -303,14 +308,13 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void handleTile(Player player){
+    public void handleTile(Player player) {
         for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-            switch (a.getType()){
-                case Gear :
-                    if(((Gear) a).getOrientation() == Rotation.RIGHT){
+            switch (a.getType()) {
+                case Gear:
+                    if (((Gear) a).getOrientation() == Rotation.RIGHT) {
                         new RotateRobot(Orientation.RIGHT).doAction(Orientation.RIGHT, player);
-                    }
-                    else{
+                    } else {
                         new RotateRobot(Orientation.LEFT).doAction(Orientation.LEFT, player);
                     }
                 case Pit:
@@ -321,7 +325,7 @@ public class ActivationPhase extends Phase {
                     server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
 
                 default:
-                    server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+                    server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
             }
         }
     }
@@ -346,12 +350,15 @@ public class ActivationPhase extends Phase {
         public Player getPlayer() {
             return player;
         }
+
         public Robot getRobot() {
             return robot;
         }
+
         public double getDistance() {
             return distance;
         }
+
         public int getYCoordinate() {
             return yCoordinate;
         }
@@ -370,7 +377,7 @@ public class ActivationPhase extends Phase {
         return abs(antennaRobotDifference.getX()) + abs(antennaRobotDifference.getY());
     }
 
-    public ArrayList<RobotDistance> sortDistance(Coordinate antenna){
+    public ArrayList<RobotDistance> sortDistance(Coordinate antenna) {
         //List containing information for determining the next player in line (next robot with priority)
         ArrayList<RobotDistance> sortedDistance = new ArrayList<>();
 
@@ -448,11 +455,11 @@ public class ActivationPhase extends Phase {
                             } else {
                                 playerPriority.add(rd.getPlayer());
                             }
-                            }
+                        }
                         playerPriority.addAll(greaterThanAntenna);
                         playerPriority.addAll(smallerThanAntenna);
-                        }
-                //first and second object have different distance values -> first player in list is currentPlayer
+                    }
+                    //first and second object have different distance values -> first player in list is currentPlayer
                 } else {
                     playerPriority.add(firstPlayer);
                 }
