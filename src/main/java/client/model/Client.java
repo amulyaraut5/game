@@ -235,6 +235,11 @@ public class Client {
                 }
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
+                    if(energy.getPlayerID()==thisPlayersID){
+                        gameViewController.getPlayerMapController().addEnergy(energy.getCount());
+                    } else {
+                        gameViewController.getOthersController().addEnergy(energy);
+                    }
                 }
                 case CheckPointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
