@@ -61,6 +61,18 @@ public class OthersController extends Controller {
         return null;
     }
 
+
+    public void addEnergy(Energy energy){
+        getOtherPlayer(energy.getPlayerID()).getOnePlayerController().addEnergy(energy.getCount());
+    }
+
+    public void playerWasFirst(SelectionFinished selectionFinished){
+        getOtherPlayer(selectionFinished.getPlayerID()).getOnePlayerController().setInfoLabel("This player was first");
+    }
+    public void checkPointReached(CheckpointReached checkpointReached){
+        getOtherPlayer(checkpointReached.getPlayerID()).getOnePlayerController().addCheckPoint(checkpointReached.getNumber());
+    }
+
     private class OtherPlayer{
         private Player otherPlayer;
         private OnePlayerController onePlayerController;
