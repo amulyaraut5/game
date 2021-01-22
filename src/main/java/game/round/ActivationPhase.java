@@ -40,6 +40,8 @@ public class ActivationPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private Map gameMap = game.getMap();
+
     // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
 
     /**
@@ -47,34 +49,39 @@ public class ActivationPhase extends Phase {
      */
     private ArrayList<RegisterCard> currentCards = new ArrayList<>();
 
-    private Map gameMap = game.getMap();
-
-    //Saves current Register number(for push panels and energy fields)
+    /**
+     * Saves current Register number(for push panels and energy fields)
+     */
     private int currentRegister;
 
+    /**
+     * TODO
+     */
     private ActivationElements activationElements;
 
     private ArrayList<Player> activePlayers = playerList;
 
+    /**
+     * keeps track of the current register
+     */
     private int register = 1;
 
     /**
      * starts the ActivationPhase.
      * After each register the method for activating the board tiles ist called.
-     * TODO In every register the priority is determined and the players cards get activated
-     * * in priority order.
+     * In every register the priority is determined and the players cards get activated
+     * in priority order.
      */
 
     public ActivationPhase() {
         super();
         turnCards(register);
-        //Because whenever a players card was activated he is removed from the current Player list the board
-        //is only activated after each player took their turn
     }
 
 
     /**
-     * At the beginning of each register the current cards are shown.
+     * At the beginning of each register the cards of each player in the current register is shown.
+     * This is already in priority order.
      */
     private void turnCards(int register) {
         for (Player player : calculatePriority(gameMap.getAntenna())) {
@@ -89,24 +96,30 @@ public class ActivationPhase extends Phase {
      * it is checked if its the given players turn. If yes, the cards is handled.
      */
     public void activateCards(int playerID) {
-        //Because current Cards is in priority order the first person to activate their cards is at index 0.
+
+        //Because currentCards is in priority order the first person to activate their cards is at index 0.
         //So by removing the index 0 after every players turn the current player is always at index 0.
         RegisterCard playerRegisterCard = currentCards.get(0);
+
+        //if its this players turn his card is activated
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
             //currentCard.handleCard(game, game.getPlayerFromID(playerID)); TODO handle the card
             currentCards.remove(0);
-        } else {
-            server.communicateDirect(new Error("It's not your turn!"), playerID);
-        }
-        if (currentCards.isEmpty()) {
-            //activateBoard(); TODO activate the board
-            //throw new UnsupportedOperationException();
-            if (register < 5) {
-                turnCards(register++);
-            } else {
-                game.nextPhase();
+
+            //if he was the last player to send the PlayIt() protocol for this register the board is activated
+            if (currentCards.isEmpty()) {
+                //activateBoard(); TODO activate the board
+                //throw new UnsupportedOperationException();
+                if (register < 5) { //if it is not the 5th register yet the cards from the next register are turned
+                    register++;
+                    turnCards(register);
+                } else { //if it is already the 5th register the next phase is called
+                    game.nextPhase();
+                }
             }
+        } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
+            server.communicateDirect(new Error("It's not your turn!"), playerID);
         }
     }
 
@@ -327,37 +340,6 @@ public class ActivationPhase extends Phase {
                 default:
                     server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
             }
-        }
-    }
-
-
-    /**
-     * Class to handle the players robots by y-coordinate and distance from antenna
-     */
-    public class RobotDistance {
-        private Player player;
-        private Robot robot;
-        private double distance;
-        private int yCoordinate;
-
-        public RobotDistance(Player player, Robot robot, double distance, int yCoordinate) {
-            this.player = player;
-            this.robot = robot;
-            this.distance = distance;
-            this.yCoordinate = yCoordinate;
-        }
-
-        public Player getPlayer() {
-            return player;
-        }
-        public Robot getRobot() {
-            return robot;
-        }
-        public double getDistance() {
-            return distance;
-        }
-        public int getYCoordinate() {
-            return yCoordinate;
         }
     }
 
