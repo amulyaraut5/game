@@ -340,23 +340,30 @@ public class ActivationPhase extends Phase {
     }
 
     public void handleTile(Player player) {
-        for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-            switch (a.getType()) {
-                case Gear:
-                    if (((Gear) a).getOrientation() == Rotation.RIGHT) {
-                        new RotateRobot(Orientation.RIGHT).doAction(Orientation.RIGHT, player);
-                    } else {
-                        new RotateRobot(Orientation.LEFT).doAction(Orientation.LEFT, player);
-                    }
-                case Pit:
-                    new RebootAction().doAction(Orientation.LEFT, player);
+        if(player.getRobot().getCoordinate().isOutOfBound()){
+            new RebootAction().doAction(Orientation.LEFT, player);
+        }
+        else {
+            for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+                switch (a.getType()) {
+                    case Gear:
+                        if (((Gear) a).getOrientation() == Rotation.RIGHT) {
+                            new RotateRobot(Orientation.RIGHT).doAction(Orientation.RIGHT, player);
+                        } else {
+                            new RotateRobot(Orientation.LEFT).doAction(Orientation.LEFT, player);
+                        }
+                    case Pit:
+                        new RebootAction().doAction(Orientation.LEFT, player);
 
-                case ControlPoint:
-                    player.checkPointReached();
-                    server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
+                    case ControlPoint:
+                        player.checkPointReached();
+                        server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
 
-                default:
-                    server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
+                    default:
+                        server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
+                }
+
+
             }
         }
     }
