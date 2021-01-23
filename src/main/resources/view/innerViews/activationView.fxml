@@ -18,7 +18,7 @@
             <Label fx:id="register" alignment="CENTER" contentDisplay="CENTER" layoutX="133.0" layoutY="81.0" prefHeight="26.0" prefWidth="367.0" />
             <AnchorPane layoutX="83.0" layoutY="126.0" prefHeight="399.0" prefWidth="466.0">
                <children>
-                  <Label fx:id="ProgOrBoard" layoutX="53.0" layoutY="14.0" prefHeight="26.0" prefWidth="318.0" />
+                  <Label fx:id="ProgOrBoard" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="14.0" prefHeight="26.0" prefWidth="318.0" textAlignment="CENTER" />
                   <ImageView fx:id="imageView1" fitHeight="150.0" fitWidth="110.0" layoutX="19.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="imageView3" fitHeight="150.0" fitWidth="110.0" layoutX="325.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="currentCardImageView" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
@@ -29,6 +29,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </JFXButton>
+                  <Label fx:id="infoLabel" layoutX="-6.0" layoutY="13.0" prefHeight="59.0" prefWidth="343.0" />
                </children>
             </AnchorPane>
          </children>
