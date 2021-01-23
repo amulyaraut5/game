@@ -171,8 +171,13 @@ public class ActivationPhase extends Phase {
                 //handle different tile effects here
                 case Wall -> {
                     Wall temp = (Wall) a;
-                    for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o) canMove = false;
+                    if(!(temp.getOrientations()==null)){
+                        for (Orientation orientation : temp.getOrientations()) {
+                            if (orientation == o.getOpposite()) canMove = false;
+                        }
+                    }
+                    else{
+                        if(temp.getOrientation()==o.getOpposite()) canMove=false;
                     }
                 }
             }
@@ -184,8 +189,13 @@ public class ActivationPhase extends Phase {
                 //handle different tile effects here
                 case Wall -> {
                     Wall temp = (Wall) a;
-                    for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o.getOpposite()) canMove = false;
+                    if(!(temp.getOrientations()==null)){
+                        for (Orientation orientation : temp.getOrientations()) {
+                            if (orientation == o.getOpposite()) canMove = false;
+                        }
+                    }
+                    else{
+                        if(temp.getOrientation()==o.getOpposite()) canMove=false;
                     }
                 }
             }
