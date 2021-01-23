@@ -39,5 +39,10 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <JFXButton buttonType="RAISED" layoutX="409.0" layoutY="265.0" onAction="#aiJoinClicked" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: green;" text="Test AI Join" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

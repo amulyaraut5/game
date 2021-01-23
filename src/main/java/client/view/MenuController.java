@@ -42,6 +42,12 @@ public class MenuController extends Controller {
         new Thread(this::connect).start();
     }
 
+    @FXML
+    public void aiJoinClicked() {
+        client.createAI();
+        connect();
+    }
+
     private void connect() {
         boolean connected = client.establishConnection();
         Platform.runLater(() -> {
