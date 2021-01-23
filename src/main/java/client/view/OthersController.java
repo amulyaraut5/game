@@ -49,7 +49,7 @@ public class OthersController extends Controller {
      * @param id of searched player
      * @return the player who is desired
      */
-    private OtherPlayer getOtherPlayer(int id){
+    public OtherPlayer getOtherPlayer(int id){
         for (OtherPlayer otherPlayer : otherPlayers){
             if(id == otherPlayer.getPlayer().getID()){
                 return otherPlayer;
@@ -66,7 +66,11 @@ public class OthersController extends Controller {
         return null;
     }
 
-
+    public void visibleHBoxRegister(boolean visible){
+        for (OtherPlayer otherPlayer : otherPlayers){
+            otherPlayer.getOnePlayerController().setHBoxRegisterVisible(visible);
+        }
+    }
     public void addEnergy(Energy energy){
         getOtherPlayer(energy.getPlayerID()).getOnePlayerController().addEnergy(energy.getCount());
     }
