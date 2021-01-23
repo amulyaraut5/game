@@ -49,10 +49,6 @@ public class ActivationPhase extends Phase {
      */
     private ArrayList<RegisterCard> currentCards = new ArrayList<>();
 
-    /**
-     * Saves current Register number(for push panels and energy fields)
-     */
-    private int currentRegister;
 
     /**
      * TODO
@@ -64,7 +60,8 @@ public class ActivationPhase extends Phase {
     /**
      * keeps track of the current register
      */
-    private int register = 1;
+    private int currentRegister = 1;
+
 
     /**
      * starts the ActivationPhase.
@@ -74,12 +71,7 @@ public class ActivationPhase extends Phase {
      */
     public ActivationPhase() {
         super();
-        for (int register = 1; register < 6; register++) {
-            turnCards(register);
-            for(Player player : calculatePriority(gameMap.getAntenna())){
-                activateCards(player.getID());
-            }
-        }
+        turnCards(currentRegister);
     }
 
 
@@ -116,15 +108,15 @@ public class ActivationPhase extends Phase {
             if (currentCards.isEmpty()) {
                 activateBoard();
                 //throw new UnsupportedOperationException();
-                if (register < 5) { //if it is not the 5th register yet the cards from the next register are turned
-                    register++;
-                    turnCards(register);
+                if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+                    currentRegister++;
+                    turnCards(currentRegister);
                 } else { //if it is already the 5th register the next phase is called
                     game.nextPhase();
                 }
             }
         } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
-            server.communicateDirect(new Error("It's not your turn!"), playerID);
+            server.communicateDirect(new Error("It is not your turn!"), playerID);
         }
     }
 
