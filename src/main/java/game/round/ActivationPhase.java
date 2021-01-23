@@ -57,7 +57,7 @@ public class ActivationPhase extends Phase {
     /**
      * TODO
      */
-    private ActivationElements activationElements;
+    private ActivationElements activationElements = new ActivationElements();
 
     private ArrayList<Player> activePlayers = playerList;
 
