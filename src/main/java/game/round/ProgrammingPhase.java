@@ -173,8 +173,8 @@ public class ProgrammingPhase extends Phase {
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
+            game.nextPhase();
         }
-        game.nextPhase();
     }
 
     /**
