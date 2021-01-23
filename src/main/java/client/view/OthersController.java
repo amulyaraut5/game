@@ -11,6 +11,7 @@ import utilities.JSONProtocol.body.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class OthersController extends Controller {
     private static final Logger logger = LogManager.getLogger();
     public HBox hBoxPlayer;
@@ -69,6 +70,11 @@ public class OthersController extends Controller {
     public void visibleHBoxRegister(boolean visible){
         for (OtherPlayer otherPlayer : otherPlayers){
             otherPlayer.getOnePlayerController().setHBoxRegisterVisible(visible);
+        }
+    }
+    public void currentCards(ArrayList<RegisterCard> currentCards){
+        for(RegisterCard registerCard : currentCards){
+             getOtherPlayerController(registerCard.getPlayerID()).currentCard(registerCard.getCard());
         }
     }
     public void addEnergy(Energy energy){
