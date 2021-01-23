@@ -45,14 +45,27 @@ public class ProgrammingPhase extends Phase {
             logger.info("draw1" + player.getDrawProgrammingDeck().getDeck());
         }*/
 
-
         for (Player player : playerList) {
             notReadyPlayers.add(player);
-            //discard all Programming cards left in the registers and create empty register
+
+            //discard all Programming cards left in the registers and put all played Damage Cards back to their decks. Then create an empty register
             if (!(player.getRegisterCards().contains(null))) {
-                player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+                ArrayList<Card> cardsToDiscard = new ArrayList<>();
+                for (int register = 1; register < 6; register++) {
+                    Card registerCard = player.getRegisterCard(register);
+                    CardType type = player.getRegisterCard(register).getName();
+                    switch (type) {
+                        case Spam: game.getSpamDeck().addCard(registerCard);
+                        case Worm: game.getWormDeck().addCard(registerCard);
+                        case Virus: game.getVirusDeck().addCard(registerCard);
+                        case Trojan: game.getTrojanHorseDeck().addCard(registerCard);
+                        default: cardsToDiscard.add(registerCard);
+                    }
+                }
+                player.discardCards(cardsToDiscard, player.getDiscardedProgrammingDeck());
                 player.createRegister();
             }
+
             //draw 9 cards to program the robot
             drawProgrammingCards(9, player);
             ArrayList<CardType> cards = new ArrayList<>(9);
