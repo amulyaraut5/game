@@ -5,7 +5,7 @@ public enum MessageType {
     PlayerValues, PlayerAdded, SetStatus,
     PlayerStatus, GameStarted, SendChat,
     ReceivedChat, Error, ConnectionUpdate,
-    ActivePhase, CardPlayed, CardSelected,
+    ActivePhase, CardSelected,
     CardsYouGotNow, CurrentCards, CurrentPlayer,
     DiscardHand, DrawDamage, Movement, NotYourCards,
     PickDamage, PlayCard, SelectCard, SelectDamage,
