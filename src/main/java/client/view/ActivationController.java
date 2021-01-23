@@ -14,6 +14,7 @@ public class ActivationController extends Controller {
 
     @FXML
     private Label register;
+    public Label infoLabel;
     @FXML
     private Label activateProgOrBoard;
     @FXML
@@ -45,5 +46,9 @@ public class ActivationController extends Controller {
     @FXML
     private void playItButton(){
         client.sendMessage(new PlayIt());
+    }
+
+    public  void setInfoLabel(String text){
+        infoLabel.setText(text);
     }
 }

@@ -76,10 +76,10 @@ public class ProgrammingPhase extends Phase {
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
         //<----- Test for Movement Protocol----->
-        server.communicateAll(new Movement(1, new Coordinate(5, 4).toPosition()));
+        /*server.communicateAll(new Movement(1, new Coordinate(5, 4).toPosition()));
         server.communicateAll(new PlayerTurning(1, Rotation.LEFT));
         server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
-        server.communicateAll(new PlayerTurning(2, Rotation.RIGHT));
+        server.communicateAll(new PlayerTurning(2, Rotation.RIGHT));*/
     }
 
     /**

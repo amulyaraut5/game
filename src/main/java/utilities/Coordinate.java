@@ -107,4 +107,13 @@ public class Coordinate {
     public void addToY(int y) {
         this.y = this.y + y;
     }
+
+    public boolean isOutOfBound(){
+        if((this.getX() > Utilities.MAP_WIDTH || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT || this.getY() < 0)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

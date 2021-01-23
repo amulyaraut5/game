@@ -66,7 +66,8 @@ public class ReaderThread extends Thread {
                 logger.debug("Protocol received: " + jsonText);
 
                 JSONMessage msg = Multiplex.deserialize(jsonText);
-                client.handleMessage(msg);
+                if (client.isAI()) client.getAiCoordinator().handleMessage(msg);
+                else client.handleMessage(msg);
 
             } catch (IOException e) {
                 if (!isInterrupted()) client.disconnect(e);

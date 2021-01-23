@@ -352,8 +352,14 @@ public class GameViewController extends Controller {
 
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
-            case PROGRAMMING -> phasePane.setCenter(programmingPane);
-            case ACTIVATION -> phasePane.setCenter(activationPane);
+            case PROGRAMMING -> {
+                phasePane.setCenter(programmingPane);
+                othersController.visibleHBoxRegister(true);
+            }
+            case ACTIVATION -> {
+                phasePane.setCenter(activationPane);
+                othersController.visibleHBoxRegister(false);
+            }
         }
     }
 
