@@ -33,6 +33,7 @@ import utilities.Utilities;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 import utilities.enums.GameState;
+import utilities.enums.Rotation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -187,14 +188,14 @@ public class GameViewController extends Controller {
         player.getRobot().setCoordinate(newPos);
     }
 
-    public void handlePlayerTurning(Player player, Orientation rotation) {
+    public void handlePlayerTurning(Player player, Rotation rotation) {
         ImageView imageView = robotImageViews.get(player);
         int angle = 0;
         Robot r = player.getRobot();
-        if (rotation == Orientation.LEFT) {
+        if (rotation == Rotation.LEFT) {
             angle = -90;
             r.setOrientation(r.getOrientation().getPrevious());
-        } else if (rotation == Orientation.RIGHT) {
+        } else if (rotation == Rotation.RIGHT) {
             angle = 90;
             r.setOrientation(r.getOrientation().getNext());
         }

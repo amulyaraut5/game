@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
-import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,14 +25,12 @@ import java.util.Random;
 
 public class ProgrammingPhase extends Phase {
 
+    private static final Logger logger = LogManager.getLogger();
     /**
      * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
      */
     private ArrayList<Player> notReadyPlayers = new ArrayList<>();
-
     private boolean timerFinished = false;
-
-    private static final Logger logger = LogManager.getLogger();
 
     /**
      * starts the ProgrammingPhase.
@@ -66,9 +64,9 @@ public class ProgrammingPhase extends Phase {
         }
         //<----- Test for Movement Protocol----->
         server.communicateAll(new Movement(1, new Coordinate(5, 4).toPosition()));
-        server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
+        server.communicateAll(new PlayerTurning(1, Rotation.LEFT));
         server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
-        server.communicateAll(new PlayerTurning(2, Orientation.RIGHT));
+        server.communicateAll(new PlayerTurning(2, Rotation.RIGHT));
     }
 
     /**

@@ -19,7 +19,6 @@ public abstract class Robot {
     protected Orientation orientation = Orientation.RIGHT;
     protected Coordinate coordinate;
 
-
     /**
      * method creates a robot from given figure ID.
      *
@@ -65,13 +64,9 @@ public abstract class Robot {
      * @param direction Direction of the movement
      */
     public void move(int moveCount, Orientation direction) {
-        int x = coordinate.getX();
-        int y = coordinate.getY();
-
         for (int i = 0; i < moveCount; i++) {
             coordinate.add(direction.toVector());
         }
-
     }
 
     /**
@@ -83,9 +78,7 @@ public abstract class Robot {
         switch (rotation) {
             case RIGHT -> orientation = orientation.getNext();
             case LEFT -> orientation = orientation.getPrevious();
-            //default -> throw new UnsupportedOperationException()
         }
-
     }
 
     public ImageView drawRobotImage() {

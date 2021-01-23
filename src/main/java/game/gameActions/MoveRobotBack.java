@@ -13,7 +13,7 @@ public class MoveRobotBack extends Action {
     @Override
     public void doAction(Orientation orientation, Player player) {
         Robot robot = player.getRobot();
-        robot.setOrientation(robot.getOrientation().getOpposite());
+        robot.setOrientation(robot.getOrientation().getOpposite());//TODO should the robot change its orientation?
         new MoveRobot().doAction(orientation, player);
     }
 }

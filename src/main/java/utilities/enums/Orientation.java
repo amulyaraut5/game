@@ -42,6 +42,20 @@ public enum Orientation {
         return opposite;
     }
 
+    public Rotation toRotation() {
+        switch (this) {
+            case RIGHT -> {
+                return Rotation.RIGHT;
+            }
+            case LEFT -> {
+                return Rotation.LEFT;
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
     public Coordinate toVector() {
         switch (this) {
             case UP -> {

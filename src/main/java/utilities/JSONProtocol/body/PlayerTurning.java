@@ -1,15 +1,15 @@
 package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
-import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 public class PlayerTurning extends JSONBody {
     private int playerID;
-    private Orientation direction;
+    private Rotation direction;
 
-    public PlayerTurning(int playerID, Orientation direction) {
+    public PlayerTurning(int playerID, Rotation rotation) {
         this.playerID = playerID;
-        this.direction = direction;
+        this.direction = rotation;
     }
 
     public int getPlayerID() {
@@ -20,11 +20,11 @@ public class PlayerTurning extends JSONBody {
         this.playerID = playerID;
     }
 
-    public Orientation getDirection() {
+    public Rotation getDirection() {
         return direction;
     }
 
-    public void setDirection(Orientation direction) {
+    public void setDirection(Rotation direction) {
         this.direction = direction;
     }
 }
