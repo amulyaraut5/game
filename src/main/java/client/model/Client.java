@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static utilities.Utilities.PORT;
 
@@ -199,7 +200,7 @@ public class Client {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
                         gameViewController.getPlayerMapController().fixSelectedCards();
-                        allRegistersAsFirst = true; //TODO reset after one round
+                        allRegistersAsFirst = true;
                     } else {
                         gameViewController.getPlayerMapController().fixSelectedCards();
                         gameViewController.getOthersController().playerWasFirst(selectionFinished);
@@ -212,7 +213,7 @@ public class Client {
                     gameViewController.handleShooting(players);
 
                     ///////////JUST FOR TESTING PURPOSE
-                    gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
+                    /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
                     gameViewController.getPlayerMapController().checkPointReached(2);
                     gameViewController.getPlayerMapController().checkPointReached(3);
 
@@ -221,10 +222,8 @@ public class Client {
                         if (player.getID() != thisPlayersID) {
                             gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
                             gameViewController.getOthersController().checkPointReached(new CheckpointReached(player.getID(), 3));//TODO remove
-
                         }
-
-
+                    */
                     ///////////JUST FOR TESTING PURPOSE!
 
                 }
@@ -240,6 +239,16 @@ public class Client {
                     }
                     gameViewController.getOthersController().currentCards(otherPlayer);
 
+                }
+                case CurrentPlayer -> {
+                    CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
+                    if( currentPlayer.getPlayerID() == thisPlayersID){
+                        gameViewController.getActivationController().currentPlayer(true);
+                        gameViewController.getOthersController().setInfoLabel(currentPlayer, true);
+                    } else {
+                        gameViewController.getActivationController().currentPlayer(false);
+                        gameViewController.getOthersController().setInfoLabel(currentPlayer, false);
+                    }
                 }
                 case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
