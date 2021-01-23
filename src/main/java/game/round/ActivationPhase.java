@@ -374,7 +374,7 @@ public class ActivationPhase extends Phase {
         ArrayList<Player> playerPriority = new ArrayList<>();
 
         for (RobotDistance robotDistance : sortedDistance) {
-            for (int j = 1; j <= sortedDistance.size(); j++) {
+            for (int j = 0; j < sortedDistance.size(); j++) {
 
                 //objects have the same distance values -> selection by clockwise antenna beam
                 if (robotDistance.getDistance() == sortedDistance.get(j).getDistance()) {
@@ -385,7 +385,7 @@ public class ActivationPhase extends Phase {
                     sameDistance.add(firstSameDistance);
 
                     //compare first element with same distance with all following elements and add matching ones to list sameDistance
-                    for (int k = 1; k <= sortedDistance.size(); k++) {
+                    for (int k = 0; k < sortedDistance.size(); k++) {
                         if (firstSameDistance.getDistance() == sortedDistance.get(k).getDistance()) {
                             sameDistance.add(sortedDistance.get(k));
                         }

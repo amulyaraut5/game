@@ -24,7 +24,6 @@ import utilities.enums.AttributeType;
 import utilities.enums.GameState;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * This class handles the game itself.
@@ -38,7 +37,6 @@ public class Game {
     private final Server server = Server.getInstance();
     private int energyBank;
     private ArrayList<Player> players;
-    private HashMap<Integer, Player> playerIDs = new HashMap<>();
 
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
@@ -190,8 +188,17 @@ public class Game {
         return trojanDeck;
     }
 
-    public Player getPlayerFromID(Integer id) {
-        return playerIDs.get(id);
+    /**
+     * Gets a player based on their ID from the list of players saved in {@link Game}.
+     *
+     * @param id ID of the wanted player.
+     * @return Unique player with the ID, {@code null} if no player with the ID exists.
+     */
+    public Player getPlayerFromID(int id) {
+        for (Player player : players) {
+            if (player.getID() == id) return player;
+        }
+        return null;
     }
 
     public GameState getGameState() {
