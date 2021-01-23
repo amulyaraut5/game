@@ -25,6 +25,7 @@
                 </font>
             </Label>
             <HBox fx:id="registerHBox" layoutY="115.0" prefHeight="30.0" prefWidth="101.0" />
+            <ImageView fx:id="currentCardImageView" fitHeight="62.0" fitWidth="41.0" layoutX="29.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true" />
         </children>
     </Pane>
       <Pane layoutX="102.0" layoutY="52.0" prefHeight="37.0" prefWidth="47.0">

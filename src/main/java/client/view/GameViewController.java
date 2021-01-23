@@ -353,6 +353,7 @@ public class GameViewController extends Controller {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
+                client.setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }

@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import utilities.JSONProtocol.body.CardSelected;
 import utilities.JSONProtocol.body.PlayerAdded;
-
+import utilities.enums.CardType;
 
 
 public class OnePlayerController extends Controller{
@@ -19,6 +19,7 @@ public class OnePlayerController extends Controller{
     @FXML
     private Label infoLabel;
 
+    public ImageView currentCardImageView;
     public HBox registerHBox;
     public Label energyLabel;
     public Label checkBoxLabel;
@@ -32,6 +33,7 @@ public class OnePlayerController extends Controller{
         addEnergy(0);
     }
     public void initialize(){
+        currentCardImageView.setVisible(false);
         for(int i = 0; i<5; i++){
             ImageView imageView = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
             imageView.setFitWidth(20);
@@ -43,6 +45,12 @@ public class OnePlayerController extends Controller{
     }
     public void setInfoLabel(String text){
         infoLabel.setText(text);
+    }
+    public void currentCard(CardType card){
+        infoLabel.setText("Current card ");
+        currentCardImageView.setVisible(true);
+
+        currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/"+ card +"-card.png").toString()));
     }
 
     public void addCheckPoint(int number){
@@ -61,5 +69,10 @@ public class OnePlayerController extends Controller{
 
     public void setHBoxRegisterVisible(boolean visible) {
         registerHBox.setVisible(visible);
+    }
+
+    public void reset(){ //AFTER ONE ROUND
+        currentCardImageView.setVisible(false);
+        registerHBox.getChildren().clear();
     }
 }
