@@ -52,6 +52,17 @@ public class ActivationController extends Controller {
         registerNr ++;
 
     }
+
+    public void currentPlayer(boolean turn){
+        if(turn){
+            setInfoLabel("It's your turn! Click on the button to validate your card!");
+            playItButton.setDisable(false);
+        } else {
+            setInfoLabel("It's your turn! Click on the button to validate your card!");
+            playItButton.setDisable(true);
+        }
+
+    }
     @FXML
     private void playItButton(){
         client.sendMessage(new PlayIt());
