@@ -39,7 +39,7 @@ public class Spam extends DamageCard {
 
     @Override
     public ImageView drawCardImage() {
-        return ImageHandler.createImageView("/cards/programming/spam-card.png");
+        return ImageHandler.createImageView("/cards/programming/Spam-card.png");
     }
 
 }
