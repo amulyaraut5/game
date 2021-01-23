@@ -9,7 +9,7 @@ public enum MessageType {
     CardsYouGotNow, CurrentCards, CurrentPlayer,
     DiscardHand, DrawDamage, Movement, NotYourCards,
     PickDamage, PlayCard, SelectCard, SelectDamage,
-    SelectionFinished, SetStartingPoint, ShufflingCoding,
+    SelectionFinished, SetStartingPoint, ShuffleCoding,
     StartingPointTaken, TimerEnded, TimerStarted,
     YourCards, PlayerTurning, PlayIt, Reboot, Energy,
     GameWon, CheckPointReached
