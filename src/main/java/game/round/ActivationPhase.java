@@ -104,12 +104,12 @@ public class ActivationPhase extends Phase {
         //if its this players turn his card is activated
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
-            //currentCard.handleCard(game, game.getPlayerFromID(playerID)); TODO handle the card
+            handleCard(currentCard, game.getPlayerFromID(playerID));
             currentCards.remove(0);
 
             //if he was the last player to send the PlayIt() protocol for this register the board is activated
             if (currentCards.isEmpty()) {
-                //activateBoard(); TODO activate the board
+                activateBoard();
                 //throw new UnsupportedOperationException();
                 if (register < 5) { //if it is not the 5th register yet the cards from the next register are turned
                     register++;
@@ -129,13 +129,15 @@ public class ActivationPhase extends Phase {
     private void activateBoard() {
         activationElements.activateBlueBelts();
         activationElements.activateGreenBelts();
-        //all board elements functionality are handled in activation elements class except laser
-
+        activationElements.activatePushPanel();
+        activationElements.activateGear();
+        //TODO Laser
+        //TODO Checkpoint reached
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
-    //Supposed o handle a robot moving one tile.
-    //TODO Once the game can be started, it needs to check wheiher the robots really move in the right direction
+    //Supposed to handle a robot moving one tile.
+    //TODO Once the game can be started, it needs to check whether the robots really move in the right direction
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
         Coordinate newPosition = null;
