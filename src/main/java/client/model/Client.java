@@ -264,6 +264,8 @@ public class Client {
                     gameViewController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
 
                 }
+                case CardSelected -> {} //TODO
+                case NotYourCards -> {} //TODO
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
