@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
-import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,14 +25,12 @@ import java.util.Random;
 
 public class ProgrammingPhase extends Phase {
 
+    private static final Logger logger = LogManager.getLogger();
     /**
      * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
      */
     private ArrayList<Player> notReadyPlayers = new ArrayList<>();
-
     private boolean timerFinished = false;
-
-    private static final Logger logger = LogManager.getLogger();
 
     /**
      * starts the ProgrammingPhase.
@@ -47,14 +45,27 @@ public class ProgrammingPhase extends Phase {
             logger.info("draw1" + player.getDrawProgrammingDeck().getDeck());
         }*/
 
-
         for (Player player : playerList) {
             notReadyPlayers.add(player);
-            //discard all Programming cards left in the registers and create empty register
+
+            //discard all Programming cards left in the registers and put all played Damage Cards back to their decks. Then create an empty register
             if (!(player.getRegisterCards().contains(null))) {
-                player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
+                ArrayList<Card> cardsToDiscard = new ArrayList<>();
+                for (int register = 1; register < 6; register++) {
+                    Card registerCard = player.getRegisterCard(register);
+                    CardType type = player.getRegisterCard(register).getName();
+                    switch (type) {
+                        case Spam: game.getSpamDeck().addCard(registerCard);
+                        case Worm: game.getWormDeck().addCard(registerCard);
+                        case Virus: game.getVirusDeck().addCard(registerCard);
+                        case Trojan: game.getTrojanHorseDeck().addCard(registerCard);
+                        default: cardsToDiscard.add(registerCard);
+                    }
+                }
+                player.discardCards(cardsToDiscard, player.getDiscardedProgrammingDeck());
                 player.createRegister();
             }
+
             //draw 9 cards to program the robot
             drawProgrammingCards(9, player);
             ArrayList<CardType> cards = new ArrayList<>(9);
@@ -66,9 +77,9 @@ public class ProgrammingPhase extends Phase {
         }
         //<----- Test for Movement Protocol----->
         server.communicateAll(new Movement(1, new Coordinate(5, 4).toPosition()));
-        server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
+        server.communicateAll(new PlayerTurning(1, Rotation.LEFT));
         server.communicateAll(new Movement(2, new Coordinate(1, 1).toPosition()));
-        server.communicateAll(new PlayerTurning(2, Orientation.RIGHT));
+        server.communicateAll(new PlayerTurning(2, Rotation.RIGHT));
     }
 
     /**

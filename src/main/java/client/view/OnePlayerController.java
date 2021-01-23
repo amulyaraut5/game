@@ -26,7 +26,7 @@ public class OnePlayerController extends Controller{
         nameLabel.setText(otherPlayer.getName());
         String robot = robotNames[otherPlayer.getFigure()];
         robotIcon.setImage(new Image(getClass().getResource("/lobby/" + robot + ".png").toString()));
-        energyLabel.setText("Energy " + energy);
+        addEnergy(0);
     }
 
     public void setInfoLabel(String text){
@@ -34,11 +34,11 @@ public class OnePlayerController extends Controller{
     }
 
     public void addCheckPoint(int number){
-        checkBoxLabel.setText("Checkpoints " + number);
+        checkBoxLabel.setText( String.valueOf(number));
     }
 
     public void addEnergy(int energyCount){
         energy += energyCount;
-        energyLabel.setText("Energy " + energy);
+        energyLabel.setText(String.valueOf(energy));
     }
 }

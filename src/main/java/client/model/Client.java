@@ -212,8 +212,14 @@ public class Client {
                     gameViewController.getPlayerMapController().checkPointReached(3);
 
                     gameViewController.getPlayerMapController().addEnergy(7);//TODO remove
-                    for (Player player : players) if(player.getID()!= thisPlayersID) gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
-                    ///////////JUST FOR TESTING PURPOSE
+                    for (Player player : players) if(player.getID()!= thisPlayersID) {
+                        gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
+                        gameViewController.getOthersController().checkPointReached(new CheckpointReached(player.getID(), 3));//TODO remove
+
+                    }
+
+
+                    ///////////JUST FOR TESTING PURPOSE!
 
                 }
                 case TimerEnded -> {

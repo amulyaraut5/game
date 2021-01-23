@@ -16,28 +16,13 @@ public class RotateRobot extends Action {
 
     private Orientation orientation;
 
-    public RotateRobot(Orientation rotation){ this.orientation = rotation;}
+    public RotateRobot(Orientation rotation) {
+        this.orientation = rotation;
+    }
 
     @Override
     public void doAction(Orientation orientation, Player player) {
-        switch (orientation) {
-            case RIGHT:
-                switch (player.getRobot().getOrientation()) {
-                    case UP -> player.getRobot().setOrientation(Orientation.RIGHT);
-                    case RIGHT -> player.getRobot().setOrientation(Orientation.DOWN);
-                    case DOWN -> player.getRobot().setOrientation(Orientation.LEFT);
-                    case LEFT -> player.getRobot().setOrientation(Orientation.UP);
-                }
-                break;
-            case LEFT:
-                switch (player.getRobot().getOrientation()) {
-                    case UP -> player.getRobot().setOrientation(Orientation.LEFT);
-                    case LEFT -> player.getRobot().setOrientation(Orientation.DOWN);
-                    case DOWN -> player.getRobot().setOrientation(Orientation.RIGHT);
-                    case RIGHT -> player.getRobot().setOrientation(Orientation.UP);
-                }
-                break;
-        }
-        server.communicateAll(new PlayerTurning(player.getID(), orientation));
+        player.getRobot().rotate(orientation.toRotation());
+        server.communicateAll(new PlayerTurning(player.getID(), orientation.toRotation()));
     }
 }
