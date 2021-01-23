@@ -27,8 +27,15 @@ public class ActivationController extends Controller {
     @FXML
     private ImageView currentCardImageView;
     @FXML
-    private ImageView imageView3;
+    private HBox selectedDamageHBox;
+    public Button playItButton;
+    @FXML
+    private AnchorPane selectDamageAnchorPane;
+    @FXML
+    private AnchorPane playCardAnchorPane;
 
+    private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
+    private int pickDamage;
     private int registerNr = 1; //TODO reset after 5 registers
 
     public void initialize() {
