@@ -39,16 +39,17 @@ public class ActivationController extends Controller {
     private int registerNr = 1; //TODO reset after 5 registers
 
     public void initialize() {
+        selectDamageAnchorPane.setVisible(false);
+        playItButton.setDisable(true);
+
     }
 
-    public void currentCards(CurrentCards currentCards){
-        for (int i = 0; i<2; i++){
-            if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()){
-                String card = currentCards.getActiveCards().get(i).getCard().name();
-                currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
-                register.setText("Register " + registerNr);
-            }
-        }
+
+    public void currentCards(CardType cardType){
+        currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + cardType + "-card.png").toString()));
+        register.setText("Register " + registerNr);
+
+        registerNr ++;
 
     }
     @FXML
