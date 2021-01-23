@@ -287,9 +287,12 @@ public class Client {
                 }
                 case CardSelected -> {
                     CardSelected cardSelected = (CardSelected) message.getBody();
+                    gameViewController.getOthersController().getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
+
                 } //TODO
                 case NotYourCards -> {
                     NotYourCards notYourCards = (NotYourCards) message.getBody();
+                    gameViewController.getOthersController().setNotYourCards(notYourCards);
                 } //TODO
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
@@ -297,9 +300,17 @@ public class Client {
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                 } //TODO
+                case PickDamage -> {
+                    PickDamage pickDamage = (PickDamage) message.getBody();
+                    gameViewController.getActivationController().pickDamage(pickDamage);
+                }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
+    }
+
+    public void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
+        this.allRegistersAsFirst = allRegistersAsFirst;
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
