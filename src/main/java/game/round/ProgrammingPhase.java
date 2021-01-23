@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * The Programming phase is the second Phase of every round.
  * In this class the players put down their programming cards for the five registers.
  *
  * @author janau, sarah
@@ -26,13 +25,13 @@ import java.util.Random;
 
 public class ProgrammingPhase extends Phase {
 
-
     /**
-     * saves the player id's. a player gets removed if he has already chose 5 cards in the time
+     * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
      */
     private ArrayList<Player> notReadyPlayers = new ArrayList<>();
+
     private boolean timerFinished = false;
-    private ArrayList<Card> discardCards = new ArrayList<>();
+
     private static final Logger logger = LogManager.getLogger();
 
     /**
@@ -47,15 +46,24 @@ public class ProgrammingPhase extends Phase {
             logger.info("discard1" + player.getDiscardedProgrammingDeck().getDeck());
             logger.info("draw1" + player.getDrawProgrammingDeck().getDeck());
         }*/
-        //discard all Programming cards left in the registers and create empty register
+
+
         for (Player player : playerList) {
             notReadyPlayers.add(player);
+            //discard all Programming cards left in the registers and create empty register
             if (!(player.getRegisterCards().contains(null))) {
                 player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
             }
+            //draw 9 cards to program the robot
+            drawProgrammingCards(9, player);
+            ArrayList<CardType> cards = new ArrayList<>(9);
+            for (Card card : player.getDrawnProgrammingCards()) {
+                cards.add(card.getName());
+            }
+            player.message(new YourCards(cards));
+            server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
-        dealProgrammingCards();
         //<----- Test for Movement Protocol----->
         server.communicateAll(new Movement(1, new Coordinate(5, 4).toPosition()));
         server.communicateAll(new PlayerTurning(1, Orientation.LEFT));
@@ -64,16 +72,12 @@ public class ProgrammingPhase extends Phase {
     }
 
     /**
-     * if
+     * If a player puts a card (or removes one) into a register it is saved there.
+     * If the player has filled all 5 registers and he is the first one to do so the timer is started.
      *
-     * @param player
-     * @param selectCard
+     * @param player     The player moved a card in the register
+     * @param selectCard Message that was received
      */
-    //Damit müsste die Reihenfolge wie folgt sein: "TimerEnded" (an alle) ->
-    // "DiscardHand" (an den Spieler der seine Hand wegwerfen muss)  -> CardsYouGotNow (neugezogene Karten).
-    // Spielt denn die Reihenfolge von "TimerEnded" und "DiscardHand" eine für euch relevante Rolle
-    // (weil soweit ich das sehe ist das ja im gleichen Zeitschritt)
-    //TODO server has to call this method if he gets the protocol cardselected
     public void putCardToRegister(Player player, SelectCard selectCard) {
         Card chosenCard = null;
         CardType type = selectCard.getCard();
@@ -108,7 +112,7 @@ public class ProgrammingPhase extends Phase {
             cardTypes.add(card.getName());
         }
 
-        for( int i = 0; i< cardTypes.size(); i++) {
+        for (int i = 0; i < cardTypes.size(); i++) {
             if (cardTypes.get(i) == chosenCardType) {
                 player.getDrawnProgrammingCards().remove(i);
                 break;
@@ -122,6 +126,7 @@ public class ProgrammingPhase extends Phase {
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
             notReadyPlayers.remove(player);
+            server.communicateAll(new SelectionFinished(player.getID()));
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
 
             //logger.info("discard4" + player.getDiscardedProgrammingDeck().getDeck());
@@ -140,19 +145,18 @@ public class ProgrammingPhase extends Phase {
 
 
     /**
-     * TODO
+     * Starts a 30 second timer when the first player filled all 5 registers.
      *
-     * @param player
+     * @param player Player who starts the timer
      */
     private void startProgrammingTimer(Player player) {
-        server.communicateAll(new SelectionFinished(player.getID()));
         GameTimer gameTimer = new GameTimer(this);
         gameTimer.start();
     }
 
     /**
-     * method that gets called from gameTimer if he has ended and then sends the message
-     * TimerEnded and calls dealRandomCards() if some players haven't filled their registers yet
+     * Ends the timer. Either if 30sec ran through or if all players finished their selection.
+     * If some players still haven't filled their registers the dealRandomCard() method is called.
      */
     public void endProgrammingTimer() {
         /*for (Player player : playerList) {
@@ -161,11 +165,11 @@ public class ProgrammingPhase extends Phase {
         }*/
         if (!(timerFinished)) {
             timerFinished = true;
-            ArrayList<Integer> playerIds = new ArrayList<>();
+            ArrayList<Integer> playerIDs = new ArrayList<>();
             for (Player player : notReadyPlayers) {
-                playerIds.add(player.getID());
+                playerIDs.add(player.getID());
             }
-            server.communicateAll(new TimerEnded(playerIds));
+            server.communicateAll(new TimerEnded(playerIDs));
             if (!(notReadyPlayers.isEmpty())) {
                 dealRandomCards();
             }
@@ -202,9 +206,8 @@ public class ProgrammingPhase extends Phase {
             // TODO: still needed? player.getDrawnProgrammingCards().clear();
             player.message(new DiscardHand(player.getID()));
 
-            //Take 5 cards from the draw Deck
+            //Take 5 cards from the draw Deck and put them down in random order
             drawProgrammingCards(5, player);
-            //Put the 5 drawn cards down in random order
             Random random = new Random();
             for (int register = 1; register < 6; register++) {
                 ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
@@ -214,11 +217,12 @@ public class ProgrammingPhase extends Phase {
                 player.setRegisterCards(register, randomElement);
                 player.getDrawnProgrammingCards().remove(randomElement);
             }
+
+            //save the CardNames of cards to send them in CardsYouGotNow
             ArrayList<CardType> cardNames = new ArrayList<>();
             for (Card card : player.getRegisterCards()) {
                 cardNames.add(card.getName());
             }
-
             player.message(new CardsYouGotNow(cardNames));
         }
 
@@ -226,22 +230,6 @@ public class ProgrammingPhase extends Phase {
             logger.info("discard7" + player.getDiscardedProgrammingDeck().getDeck());
             logger.info("draw7" + player.getDrawProgrammingDeck().getDeck());
         }*/
-    }
-
-    /**
-     * players get their cards for programming their robot in this method.
-     * YourCards and NotYourCards protocol is send.
-     */
-    private void dealProgrammingCards() {
-        for (Player player : playerList) {
-            drawProgrammingCards(9, player);
-            ArrayList<CardType> cards = new ArrayList<>(9);
-            for (Card card : player.getDrawnProgrammingCards()) {
-                cards.add(card.getName());
-            }
-            player.message(new YourCards(cards));
-            server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
-        }
     }
 
     /**
