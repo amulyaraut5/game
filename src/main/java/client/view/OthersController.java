@@ -82,6 +82,24 @@ public class OthersController extends Controller {
         getOtherPlayer(checkpointReached.getPlayerID()).getOnePlayerController().addCheckPoint(checkpointReached.getNumber());
     }
 
+    public void setInfoLabel(CurrentPlayer currentPlayer, boolean thisPlayer){
+        if(thisPlayer)
+            for(OtherPlayer otherPlayer: otherPlayers) otherPlayer.getOnePlayerController().setInfoLabel(" ");
+        else {
+            for(OtherPlayer otherPlayer: otherPlayers){
+                if(otherPlayer.getPlayer().getID() == currentPlayer.getPlayerID()){
+                    getOtherPlayer(otherPlayer.getPlayer().getID()).getOnePlayerController().setInfoLabel("It's this players turn");
+                } else {
+                    getOtherPlayer(otherPlayer.getPlayer().getID()).getOnePlayerController().setInfoLabel(" ");
+                }
+            }
+        }
+    }
+
+    public void setNotYourCards(NotYourCards notYourCards){
+        getOtherPlayer(notYourCards.getPlayerID()).getOnePlayerController().setInfoLabel(notYourCards.getCards() + " programming cards");
+    }
+
     private class OtherPlayer{
         private Player otherPlayer;
         private OnePlayerController onePlayerController;
@@ -104,6 +122,8 @@ public class OthersController extends Controller {
         public int getPositionHBox() {
             return positionHBox;
         }
+
+
     }
 
 }
