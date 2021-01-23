@@ -21,9 +21,9 @@ public enum Orientation {
         LEFT.next = UP;
 
         UP.prior = LEFT;
-        RIGHT.prior = LEFT;
-        DOWN.prior = UP;
-        LEFT.prior = RIGHT;
+        RIGHT.prior = UP;
+        DOWN.prior = RIGHT;
+        LEFT.prior = DOWN;
     }
 
     private Orientation opposite;
@@ -59,4 +59,22 @@ public enum Orientation {
             default -> throw new IllegalStateException("Unexpected value: " + this);
         }
     }
+    public Coordinate toVectorForRobot() {
+        switch (this) {
+            case UP -> {
+                return new Coordinate(0, -1);
+            }
+            case RIGHT -> {
+                return new Coordinate(1, 0);
+            }
+            case DOWN -> {
+                return new Coordinate(0, 1);
+            }
+            case LEFT -> {
+                return new Coordinate(-1, 0);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        }
+    }
+
 }
