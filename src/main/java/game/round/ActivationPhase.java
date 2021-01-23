@@ -137,7 +137,6 @@ public class ActivationPhase extends Phase {
         activationElements.activatePushPanel();
         activationElements.activateGear();
         //TODO Laser
-        //TODO Checkpoint reached
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
