@@ -41,7 +41,7 @@ public class AICoordinator {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     Player player = new Player(playerAdded);
                     players.add(player);
-                    if(player.getID()==thisPlayersID){
+                    if (player.getID() == thisPlayersID) {
                         client.sendMessage(new SetStatus(true));
                     }
                 }
@@ -137,6 +137,12 @@ public class AICoordinator {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                 } //TODO
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
+                case CurrentPlayer -> {
+                    CurrentPlayer msg = (CurrentPlayer) message.getBody();
+                    if (msg.getPlayerID() == thisPlayersID) {
+                        client.sendMessage(new PlayIt());
+                    }
+                }
             }
         });
     }
@@ -150,7 +156,7 @@ public class AICoordinator {
 
     private void chooseCards(YourCards yourCards) {
         for (int i = 0; i < 5; i++) {
-            client.sendMessage(new SelectCard(yourCards.getCards().get(i), i));
+            client.sendMessage(new SelectCard(yourCards.getCards().get(i), i + 1));
         }
     }
 
