@@ -6,10 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.CheckpointReached;
-import utilities.JSONProtocol.body.Energy;
-import utilities.JSONProtocol.body.PlayerAdded;
-import utilities.JSONProtocol.body.SelectionFinished;
+import utilities.JSONProtocol.body.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +53,14 @@ public class OthersController extends Controller {
         for (OtherPlayer otherPlayer : otherPlayers){
             if(id == otherPlayer.getPlayer().getID()){
                 return otherPlayer;
+            }
+        }
+        return null;
+    }
+    public OnePlayerController getOtherPlayerController(int id){
+        for (OtherPlayer otherPlayer : otherPlayers){
+            if(id == otherPlayer.getPlayer().getID()){
+                return otherPlayer.getOnePlayerController();
             }
         }
         return null;
