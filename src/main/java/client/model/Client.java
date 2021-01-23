@@ -266,6 +266,8 @@ public class Client {
                 }
                 case CardSelected -> {} //TODO
                 case NotYourCards -> {} //TODO
+                case ShuffleCoding -> {} //TODO
+                case DiscardHand -> {} //TODO
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
