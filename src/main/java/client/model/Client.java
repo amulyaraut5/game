@@ -144,7 +144,7 @@ public class Client {
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
                     thisPlayersID = wc.getPlayerID();
-                    viewManager.nextScene();
+                    viewManager.showLogin();
                 }
                 case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
@@ -177,7 +177,7 @@ public class Client {
                     GameStarted gameStarted = (GameStarted) message.getBody();
                     gameViewController.buildMap(gameStarted);
                     gameViewController.getOthersController().createPlayerMats(players);
-                    viewManager.nextScene();
+                    viewManager.showGame();
                 }
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
@@ -319,7 +319,7 @@ public class Client {
 
         if (thisPlayersID == player.getID()) {
             gameViewController.getPlayerMapController().loadPlayerMap(player);
-            viewManager.nextScene();
+            viewManager.showLobby();
         }
         loginController.setFigureTaken(player.getFigure(), true);
         lobbyController.addJoinedPlayer(player);

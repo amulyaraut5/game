@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Player extends User {
 
-    private int currentRegister;
+    private int currentRegister;//TODO remove
     /**
      * contains the chosen Cards for each register
      */

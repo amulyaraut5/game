@@ -119,24 +119,6 @@ public class LoginController extends Controller {
         else client.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
-    public void setImageViewDisabled(int figure) {
-        //TODO set cell of figure not selectable with CellFactory from initialize method
-        //robotImageViewList.get(figure).setDisable(true);
-        //robotImageViewList.get(figure).setMouseTransparent(true);
-    }
-
-    /**
-     * @param taken
-     */
-    public void serverResponse(boolean taken) {
-        //TODO username can't be already taken, only robot could be taken
-        if (taken) {
-            responseLabel.setText("Already taken, try again");
-        } else {
-            viewManager.nextScene();
-        }
-    }
-
     public void setFigureTaken(int id, boolean taken) {
         Figure figure = figures.get(id);
         figure.setTaken(taken);

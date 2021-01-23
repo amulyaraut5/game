@@ -1,10 +1,7 @@
 package client;
 
 import client.model.Client;
-import client.view.Controller;
-import client.view.GameViewController;
-import client.view.LobbyController;
-import client.view.LoginController;
+import client.view.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,14 +30,20 @@ public class ViewManager {
 
     private final Stage menuStage = new Stage();
     private final Stage gameStage = new Stage();
+
     private Scene menuScene;
     private Scene loginScene;
     private Scene lobbyScene;
     private Scene gameScene;
+
     private Pane chatPane;
+
+    private MenuController menuController;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
     private LoginController loginController;
+
+    private Scene currentScene;
 
     private ViewManager() {
         Platform.runLater(() -> {
@@ -62,58 +65,51 @@ public class ViewManager {
         return instance;
     }
 
-    public void nextScene() {
-        if (menuStage.isShowing()) {
-
-            if (menuStage.getScene() == menuScene) menuStage.setScene(loginScene);
-            else if (menuStage.getScene() == loginScene) {
-                menuStage.setScene(lobbyScene);
-                lobbyController.attachChatPane(chatPane);
-            } else if (menuStage.getScene() == lobbyScene) showGameStage();
-
-        } else {
-            logger.warn("There is no next Scene!");
-        }
-    }
-
-    public void previousScene() {
-        if (gameStage.isShowing()) showMenuStage();
-        else {
-            if (menuStage.getScene() == loginScene || menuStage.getScene() == lobbyScene) {
-                menuStage.setScene(menuScene);
-            } else logger.warn("There is no previous Scene!");
-        }
+    public void displayErrorMessage(String error) {
+        //TODO currentView.
     }
 
     public void showMenu() {
-        if (gameStage.isShowing()) {
-            menuStage.setScene(menuScene);
-            showMenuStage();
-        } else {
-            if (menuStage.getScene() == loginScene || menuStage.getScene() == lobbyScene) {
-                menuStage.setScene(menuScene);
-            } else logger.warn("The menuScene is already the currently shown Scene!");
-        }
+        menuStage.setScene(menuScene);
+        if (currentScene == gameScene) openMenuStage();
+        currentScene = menuScene;
     }
 
-    public void displayErrorMessage(String error) {
-        //TODO
+    public void showLogin() {
+        menuStage.setScene(loginScene);
+        if (currentScene == gameScene) openMenuStage();
+        currentScene = loginScene;
     }
 
-    private void showGameStage() {
+    public void showLobby() {
+        lobbyController.attachChatPane(chatPane);
+        menuStage.setScene(lobbyScene);
+        if (currentScene == gameScene) openMenuStage();
+        currentScene = lobbyScene;
+    }
+
+    public void showGame() {
+        openGameStage();
+        currentScene = gameScene;
+    }
+
+    private void openGameStage() {
         gameViewController.attachChatPane(chatPane);
-
-        if (menuStage.getScene() == lobbyScene) {
-            menuStage.close();
-            gameStage.show();
-        } else {
-            logger.warn("Game starts only from the lobby!");
-        }
+        menuStage.close();
+        gameStage.show();
     }
 
-    private void showMenuStage() {
+    private void openMenuStage() {
         gameStage.close();
         menuStage.show();
+    }
+
+    private void createChatPane() {
+        try {
+            chatPane = FXMLLoader.load(getClass().getResource("/view/innerViews/chatView.fxml"));
+        } catch (IOException e) {
+            logger.error("ChatPane could not be created: " + e.getMessage());
+        }
     }
 
     private void constructMenuStage() {
@@ -122,15 +118,7 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
-            //TODO check if current scene is lobbyScene -> leave lobby & disconnect
-            if (menuStage.getScene() == menuScene) {
-                menuStage.close();
-            } else {
-                Client.getInstance().disconnect();
-                menuStage.setScene(menuScene);
-                menuStage.show();
-                //TODO open menu
-            }
+            Client.getInstance().disconnect();
         });
     }
 
@@ -140,19 +128,9 @@ public class ViewManager {
         gameStage.setScene(gameScene);
 
         gameStage.setOnCloseRequest(event -> {
-            menuStage.setScene(menuScene);
-            //TODO leave game
             Client.getInstance().disconnect();
-            showMenuStage();
+            showMenu();
         });
-    }
-
-    private void createChatPane() {
-        try {
-            chatPane = FXMLLoader.load(getClass().getResource("/view/innerViews/chatView.fxml"));
-        } catch (IOException e) {
-            logger.error("ChatPane could not be created: " + e.getMessage());
-        }
     }
 
     private void constructScenes() throws IOException {
@@ -166,6 +144,7 @@ public class ViewManager {
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
 
+        menuController = menuLoader.getController();
         loginController = loginLoader.getController();
         lobbyController = lobbyLoader.getController();
         gameViewController = gameLoader.getController();
