@@ -109,7 +109,7 @@ public class Coordinate {
     }
 
     public boolean isOutOfBound(){
-        if((this.getX() > Utilities.MAP_WIDTH || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT || this.getY() < 0)){
+        if((this.getX() > Utilities.MAP_WIDTH-1 || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT-1 || this.getY() < 0)){
             return true;
         }
         else{
