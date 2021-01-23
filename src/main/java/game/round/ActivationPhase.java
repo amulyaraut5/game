@@ -86,6 +86,7 @@ public class ActivationPhase extends Phase {
         }
         server.communicateAll(new CurrentCards(currentCards));
         //logger.info("turnCards" + calculatePriority((gameMap.getAntenna())));
+        server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
     }
 
     /**
@@ -114,6 +115,8 @@ public class ActivationPhase extends Phase {
                 } else { //if it is already the 5th register the next phase is called
                     game.nextPhase();
                 }
+            } else {
+                server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
             }
         } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
             server.communicateDirect(new Error("It is not your turn!"), playerID);
