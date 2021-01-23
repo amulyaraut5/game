@@ -1,5 +1,6 @@
 package client.model;
 
+import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
@@ -48,6 +49,10 @@ public class Client {
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
+
+    private boolean isAI = false;
+
+    private AICoordinator aiCoordinator;
 
 
     /**
@@ -212,11 +217,12 @@ public class Client {
                     gameViewController.getPlayerMapController().checkPointReached(3);
 
                     gameViewController.getPlayerMapController().addEnergy(7);//TODO remove
-                    for (Player player : players) if(player.getID()!= thisPlayersID) {
-                        gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
-                        gameViewController.getOthersController().checkPointReached(new CheckpointReached(player.getID(), 3));//TODO remove
+                    for (Player player : players)
+                        if (player.getID() != thisPlayersID) {
+                            gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
+                            gameViewController.getOthersController().checkPointReached(new CheckpointReached(player.getID(), 3));//TODO remove
 
-                    }
+                        }
 
 
                     ///////////JUST FOR TESTING PURPOSE!
@@ -241,7 +247,7 @@ public class Client {
                 }
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
-                    if(energy.getPlayerID()==thisPlayersID){
+                    if (energy.getPlayerID() == thisPlayersID) {
                         gameViewController.getPlayerMapController().addEnergy(energy.getCount());
                     } else {
                         gameViewController.getOthersController().addEnergy(energy);
@@ -249,7 +255,7 @@ public class Client {
                 }
                 case CheckPointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
-                    if(checkpointsReached.getPlayerID() == thisPlayersID){
+                    if (checkpointsReached.getPlayerID() == thisPlayersID) {
                         gameViewController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
                     } else {
                         gameViewController.getOthersController().checkPointReached(checkpointsReached);
@@ -355,5 +361,22 @@ public class Client {
 
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
+    }
+
+    public boolean isAI() {
+        return isAI;
+    }
+
+    public void setAI(boolean AI) {
+        isAI = AI;
+    }
+
+    public AICoordinator getAiCoordinator() {
+        return aiCoordinator;
+    }
+
+    public void createAI() {
+        isAI = true;
+        aiCoordinator = new AICoordinator();
     }
 }
