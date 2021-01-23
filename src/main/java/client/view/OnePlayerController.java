@@ -17,6 +17,7 @@ public class OnePlayerController extends Controller{
     @FXML
     private Label infoLabel;
 
+    public HBox registerHBox;
     public Label energyLabel;
     public Label checkBoxLabel;
     private int energy = 5;
@@ -28,7 +29,16 @@ public class OnePlayerController extends Controller{
         robotIcon.setImage(new Image(getClass().getResource("/lobby/" + robot + ".png").toString()));
         addEnergy(0);
     }
+    public void initialize(){
+        for(int i = 0; i<5; i++){
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+            imageView.setFitWidth(20);
+            imageView.setFitHeight(30);
+            registerHBox.getChildren().add(imageView);
+        }
+        setHBoxRegisterVisible(false);
 
+    }
     public void setInfoLabel(String text){
         infoLabel.setText(text);
     }
