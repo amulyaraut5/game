@@ -264,10 +264,18 @@ public class Client {
                     gameViewController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
 
                 }
-                case CardSelected -> {} //TODO
-                case NotYourCards -> {} //TODO
-                case ShuffleCoding -> {} //TODO
-                case DiscardHand -> {} //TODO
+                case CardSelected -> {
+                    CardSelected cardSelected = (CardSelected) message.getBody();
+                } //TODO
+                case NotYourCards -> {
+                    NotYourCards notYourCards = (NotYourCards) message.getBody();
+                } //TODO
+                case ShuffleCoding -> {
+                    ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
+                } //TODO
+                case DiscardHand -> {
+                    DiscardHand discardHand = (DiscardHand) message.getBody();
+                } //TODO
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
