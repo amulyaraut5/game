@@ -1,12 +1,20 @@
 package client.view;
 
 import game.Player;
+import game.gameObjects.cards.DamageCard;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import utilities.JSONProtocol.body.CurrentCards;
+import utilities.JSONProtocol.body.PickDamage;
 import utilities.JSONProtocol.body.PlayIt;
+import utilities.JSONProtocol.body.SelectDamage;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 
@@ -15,14 +23,7 @@ public class ActivationController extends Controller {
     @FXML
     private Label register;
     public Label infoLabel;
-    @FXML
-    private Label activateProgOrBoard;
-    @FXML
-    private Label displayResult;
-    @FXML
-    private Label showPriority;
-    @FXML
-    private ImageView imageView1;
+
     @FXML
     private ImageView currentCardImageView;
     @FXML
