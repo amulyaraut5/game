@@ -232,13 +232,13 @@ public class Client {
                     gameViewController.getProgrammingController().setTimerEnded(true);
                 }
                 case CurrentCards -> {
-                    //CurrentCards currentCards = (CurrentCards) message.getBody();
-                    ArrayList<RegisterCard> registerCards = new ArrayList<>();
-                    registerCards.add(new RegisterCard(thisPlayersID, new Again()));
-                    registerCards.add(new RegisterCard(players.get(1).getID(), new MoveI()));
-                    CurrentCards currentCards = new CurrentCards(registerCards);
-                    //HARDCODED eigentlich kein Kartenobjekt hier !
-                    gameViewController.getActivationController().currentCards(currentCards);
+                    CurrentCards currentCards = (CurrentCards) message.getBody();
+                    ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
+                    for(RegisterCard registerCard : currentCards.getActiveCards()){
+                        if(registerCard.getPlayerID() == thisPlayersID) gameViewController.getActivationController().currentCards(registerCard.getCard());
+                        else otherPlayer.add(registerCard);
+                    }
+                    gameViewController.getOthersController().currentCards(otherPlayer);
 
                 }
                 case Reboot -> {
