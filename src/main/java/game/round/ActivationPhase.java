@@ -61,7 +61,7 @@ public class ActivationPhase extends Phase {
     /**
      * keeps track of the current register
      */
-    public int currentRegister = 1;
+    private int currentRegister = 1;
 
 
     /**

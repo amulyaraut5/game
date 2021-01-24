@@ -119,7 +119,7 @@ public class Player extends User {
     }
 
     public CardType getLastRegisterCard(){
-        return getRegisterCard(game.getActivationPhase().currentRegister-1).getName(); //TODO
+        return getRegisterCard(game.getActivationPhase().getCurrentRegister()-1).getName();
     }
 
     public Card getCurrentAction() {
