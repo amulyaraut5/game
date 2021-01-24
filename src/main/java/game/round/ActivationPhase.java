@@ -4,10 +4,10 @@ import game.Player;
 import game.gameActions.AgainAction;
 import game.gameActions.MoveRobotBack;
 import game.gameActions.RebootAction;
-import game.gameActions.RotateRobot;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Spam;
 import game.gameObjects.cards.damage.Trojan;
+import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
@@ -272,19 +272,13 @@ public class ActivationPhase extends Phase {
                 new AgainAction().doAction(orientation, player);
             }
             case Spam -> {
-                Spam spam = new Spam();
                 //Add spam card back into the spam deck
-                game.getSpamDeck().getDeck().add(spam);
+                game.getSpamDeck().addCard(new Spam());
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
 
-                //exchange spam card and new programming card in the current register
-                int spamIndex = player.getRegisterCards().indexOf(spam);
-                player.getRegisterCards().remove(spam);
-                player.getRegisterCards().set(spamIndex, topCard);
-
                 logger.info(player.getName() + " played a spam card.");
-                //Play the new register card
+                //Play the top-card
                 handleCard(topCard.getName(), player);
             }
             case Worm -> {
@@ -306,26 +300,23 @@ public class ActivationPhase extends Phase {
 
                     if (otherPlayer != player && (otherRobotX <= robotX + 6 || otherRobotY <= robotY + 6)) {
                         Card virusCard = game.getVirusDeck().pop();
-                        otherPlayer.getDiscardedProgrammingDeck().getDeck().add(virusCard);
+                        otherPlayer.getDiscardedProgrammingDeck().addCard(virusCard);
                     }
                 }
+                game.getVirusDeck().addCard(new Virus());
+                //remove top card from programming deck
+                Card topCard = player.getDrawProgrammingDeck().pop();
                 logger.info(player.getName() + " played a virus card.");
+                //Play the top-card
+                handleCard(topCard.getName(), player);
             }
             case Trojan -> {
-                Trojan trojan = new Trojan();
-                game.getTrojanHorseDeck().getDeck().add(trojan);
-                Card topCard = player.getDrawProgrammingDeck().pop();
-
-                //exchange spam card and new programming card in the current register
-                int trojanIndex = player.getRegisterCards().indexOf(trojan);
-                player.getRegisterCards().remove(trojan);
-                player.getRegisterCards().set(trojanIndex, topCard);
-
+                game.getTrojanHorseDeck().addCard(new Trojan());
                 //Draw two spam cards
                 game.getSpamDeck().drawTwoSpam(player);
-
+                Card topCard = player.getDrawProgrammingDeck().pop();
                 logger.info(player.getName() + " played a trojan card.");
-                //Play the new register card
+                //Play the top-card
                 handleCard(topCard.getName(), player);
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");

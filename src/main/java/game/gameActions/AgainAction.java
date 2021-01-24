@@ -1,18 +1,11 @@
 package game.gameActions;
 
-import game.Game;
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.Spam;
-import game.gameObjects.cards.damage.Trojan;
-import game.gameObjects.cards.damage.Virus;
-import game.gameObjects.cards.damage.Worm;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Repeats the programming in the players previous register.
@@ -36,6 +29,7 @@ public class AgainAction extends Action{
         damageCards.add(CardType.Virus);
         damageCards.add(CardType.Worm);
 
+        //TODO Rule: This card cannot be played in the first register. - prohibit discarding in the first register?
         for (CardType damageCard : damageCards) {
             if (player.getLastRegisterCard() == damageCard) {
                 //draw top card from programming deck and play it
