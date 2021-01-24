@@ -180,18 +180,19 @@ public class ActivationPhase extends Phase {
         }
 
         //look for a blocking wall on new tile
-        for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
-            switch (a.getType()) {
-                //handle different tile effects here
-                case Wall -> {
-                    Wall temp = (Wall) a;
-                    if(!(temp.getOrientations()==null)){
-                        for (Orientation orientation : temp.getOrientations()) {
-                            if (orientation == o.getOpposite()) canMove = false;
+        if(!newPosition.isOutOfBound()) {
+            for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
+                switch (a.getType()) {
+                    //handle different tile effects here
+                    case Wall -> {
+                        Wall temp = (Wall) a;
+                        if (!(temp.getOrientations() == null)) {
+                            for (Orientation orientation : temp.getOrientations()) {
+                                if (orientation == o.getOpposite()) canMove = false;
+                            }
+                        } else {
+                            if (temp.getOrientation() == o.getOpposite()) canMove = false;
                         }
-                    }
-                    else{
-                        if(temp.getOrientation()==o.getOpposite()) canMove=false;
                     }
                 }
             }
