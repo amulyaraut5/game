@@ -80,7 +80,8 @@ public class GameViewController extends Controller {
     private BorderPane phasePane;
     @FXML
     private BorderPane chatPane;
-
+    public Label roundLabel;
+    public Pane roundPane;
     @FXML
     private StackPane boardPane; //stacks the map-, animation-, and playerPane
     @FXML
@@ -89,11 +90,12 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
-
+    private int currentRound = 1;
+    private boolean first = true;
     @FXML
     public void initialize() {
         constructPhaseViews();
-
+        roundPane.setVisible(false);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
             playerMap.setAlignment(Pos.CENTER);
