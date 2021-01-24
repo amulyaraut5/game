@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -456,15 +457,26 @@ public class GameViewController extends Controller {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
+                roundPane.setVisible(true);
+                roundLabel.setText("Round " +currentRound);
+                currentRound ++;
+                if(!first) {
+                    getPlayerMapController().reset();
+                    othersController.reset();
+                }
                 client.setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
+                getPlayerMapController().fixSelectedCards();
+                getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
+
             }
         }
+        first = false;
     }
 
     private void constructPhaseViews() {
