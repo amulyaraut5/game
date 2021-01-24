@@ -33,7 +33,7 @@ import static java.lang.StrictMath.abs;
  * The Activation Phase is the third phase in the Round.
  * In this class the Programming Cards and GameBoard Tiles are activated.
  *
- * @author janau, sarah
+ * @author janau, sarah, annika
  */
 
 public class ActivationPhase extends Phase {
@@ -226,30 +226,30 @@ public class ActivationPhase extends Phase {
         switch (cardType) {
             case MoveI -> {
                 handleMove(player, orientation);
-                logger.info(player.getName() + "moved one Tile.");
+                logger.info(player.getName() + " moved one Tile.");
             }
             case MoveII -> {
                 handleMove(player, orientation);
                 handleMove(player, orientation);
-                logger.info(player.getName() + "moved two Tiles.");
+                logger.info(player.getName() + " moved two Tiles.");
             }
             case MoveIII -> {
                 handleMove(player, orientation);
                 handleMove(player, orientation);
                 handleMove(player, orientation);
-                logger.info(player.getName() + "moved three Tiles.");
+                logger.info(player.getName() + " moved three Tiles.");
             }
             case TurnLeft -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.LEFT));
                 rotateRobot.doAction(Orientation.LEFT, player);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                logger.info(player.getName() + "turned left.");
+                logger.info(player.getName() + " turned left.");
             }
             case TurnRight -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                logger.info(player.getName() + "turned right.");
+                logger.info(player.getName() + " turned right.");
             }
             case UTurn -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
@@ -257,17 +257,17 @@ public class ActivationPhase extends Phase {
                 rotateRobot.doAction(Orientation.RIGHT, player);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                logger.info(player.getName() + "performed U-Turn");
+                logger.info(player.getName() + " performed U-Turn");
             }
             case BackUp -> {
                 new MoveRobotBack().doAction(orientation, player);
                 server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
-                logger.info(player.getName() + "moved back.");
+                logger.info(player.getName() + " moved back.");
             }
             case PowerUp -> {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
                 server.communicateAll(new Energy(player.getID(), player.getEnergyCubes()));
-                logger.info(player.getName() + "got one EnergyCube.");
+                logger.info(player.getName() + " got one EnergyCube.");
             }
             case Again -> {
                 new AgainAction().doAction(orientation, player);
@@ -284,7 +284,7 @@ public class ActivationPhase extends Phase {
                 player.getRegisterCards().remove(spam);
                 player.getRegisterCards().set(spamIndex, topCard);
 
-                logger.info(player.getName() + "played a spam card.");
+                logger.info(player.getName() + " played a spam card.");
                 //Play the new register card
                 handleCard(topCard.getName(), player);
             }
@@ -294,7 +294,7 @@ public class ActivationPhase extends Phase {
                 new RebootAction().doAction(orientation, player);
                 //Add worm card back into the worm deck
                 game.getWormDeck().getDeck().add(worm);
-                logger.info(player.getName() + "played a worm card.");
+                logger.info(player.getName() + " played a worm card.");
             }
             case Virus -> {
                 int robotX = player.getRobot().getCoordinate().getX();
@@ -310,7 +310,7 @@ public class ActivationPhase extends Phase {
                         otherPlayer.getDiscardedProgrammingDeck().getDeck().add(virusCard);
                     }
                 }
-                logger.info(player.getName() + "played a virus card.");
+                logger.info(player.getName() + " played a virus card.");
             }
             case Trojan -> {
                 Trojan trojan = new Trojan();
@@ -325,7 +325,7 @@ public class ActivationPhase extends Phase {
                 //Draw two spam cards
                 game.getSpamDeck().drawTwoSpam(player);
 
-                logger.info(player.getName() + "played a trojan card.");
+                logger.info(player.getName() + " played a trojan card.");
                 //Play the new register card
                 handleCard(topCard.getName(), player);
             }
@@ -376,17 +376,16 @@ public class ActivationPhase extends Phase {
     }
 
     /**
-     * calculates the priority and returns the playerID of the player whose turn it is
+     * calculates the priority and returns a list of players in the order of priority
      *
      * @param antenna
      * @return
      */
     public ArrayList<Player> calculatePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
-        //logger.info("calculatePrio HIER - " + sortedDistance.toString());
+        logger.info("calculatePrio HIER - " + sortedDistance.toString());
 
-        //first player in list sortedDistance
-
+        //first and second player in list sortedDistance
         RobotDistance firstPlayer = sortedDistance.get(0);
         RobotDistance secondPlayer = sortedDistance.get(1);
 
@@ -395,7 +394,9 @@ public class ActivationPhase extends Phase {
         int sortedDistanceSize = sortedDistance.size();
 
     for(int i = 0; i < sortedDistanceSize; i++) {
-        if (sortedDistance.size() == 1) {
+        if (sortedDistance.size() == 0){
+            return playerPriority;
+        } else if (sortedDistance.size() == 1) {
             //logger.info("calculatePrio 1.if - HIER - " + sortedDistance.toString());
             playerPriority.add(sortedDistance.get(0).getPlayer());
             //logger.info("hier1");
@@ -409,33 +410,45 @@ public class ActivationPhase extends Phase {
 
             RobotDistance firstSameDistance = sortedDistance.get(0);
 
+            int tempSortedDistanceSize = sortedDistance.size();
+            //logger.info("00: " +tempSortedDistanceSize);
+
             //compare first element with same distance with all following elements and add matching ones to list sameDistance
-            for (int k = 0; k < sortedDistance.size(); k++) {
-                if (firstSameDistance.getDistance() == sortedDistance.get(k).getDistance()) {
-                    sameDistance.add(sortedDistance.get(k));
-                    sortedDistance.remove(sortedDistance.get(k));
+            for (int k = 0; k < tempSortedDistanceSize; k++) {
+                //logger.info("0for: " +sortedDistance.size());
+                if (firstSameDistance.getDistance() == sortedDistance.get(0).getDistance()) {
+                    sameDistance.add(sortedDistance.get(0));
+                    //logger.info("1for: " + sameDistance);
+                    sortedDistance.remove(sortedDistance.get(0));
+                    //logger.info("2for: " + sortedDistance);
                 }
-                //sort sameDistance by yCoordinate -> smallest y coordinate first
-                sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
-
-                ArrayList<Player> greaterThanAntenna = new ArrayList<>();
-                ArrayList<Player> smallerThanAntenna = new ArrayList<>();
-
-                for (RobotDistance rd : sameDistance) {
-                    int antennaY = antenna.getY();
-                    int robotY = rd.getRobot().getCoordinate().getY();
-
-                    if (robotY < antennaY) {
-                        smallerThanAntenna.add(rd.getPlayer());
-                    } else if (robotY > antennaY) {
-                        greaterThanAntenna.add(rd.getPlayer());
-                    } else {
-                        playerPriority.add(rd.getPlayer());
-                    }
-                }
-                playerPriority.addAll(greaterThanAntenna);
-                playerPriority.addAll(smallerThanAntenna);
             }
+            //sort sameDistance by yCoordinate -> smallest y coordinate first
+            sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
+            //logger.info("3- sameDistance.sort: " + sameDistance);
+
+            ArrayList<Player> greaterThanAntenna = new ArrayList<>();
+            ArrayList<Player> smallerThanAntenna = new ArrayList<>();
+
+            for (RobotDistance rd : sameDistance) {
+                int antennaY = antenna.getY();
+                int robotY = rd.getRobot().getCoordinate().getY();
+
+                if (robotY < antennaY) {
+                    smallerThanAntenna.add(rd.getPlayer());
+                    //logger.info("5- smaller: " +smallerThanAntenna);
+                } else if (robotY > antennaY) {
+                    greaterThanAntenna.add(rd.getPlayer());
+                    //logger.info("6- greater: " +greaterThanAntenna);
+                } else {
+                    playerPriority.add(rd.getPlayer());
+                    //logger.info("7- equal: " +playerPriority);
+                }
+            }
+            playerPriority.addAll(greaterThanAntenna);
+            playerPriority.addAll(smallerThanAntenna);
+            //logger.info("8- end of else if :" +playerPriority);
+
             //first and second object have different distance values -> first player in list is currentPlayer
         } else {
             playerPriority.add(sortedDistance.get(0).getPlayer());
@@ -445,7 +458,7 @@ public class ActivationPhase extends Phase {
         }
     }
 
-        //logger.info("calculatePrio -RETURN: " + playerPriority);
+        logger.info("calculatePrio -RETURN: " + playerPriority);
         return playerPriority;
     }
 
