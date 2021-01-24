@@ -26,9 +26,9 @@ public class Coordinate {
      * @return Coordinate of the given position.
      */
     public static Coordinate parse(int position) {
-        int xMax = Utilities.MAP_WIDTH;
-        int x = position % xMax;
-        int y = position / xMax;
+        position -= 1;
+        int x = position % Utilities.MAP_WIDTH;
+        int y = position / Utilities.MAP_WIDTH;
         return new Coordinate(x, y);
     }
 
@@ -38,7 +38,7 @@ public class Coordinate {
      * @return position on the map.
      */
     public int toPosition() {
-        return x + y * Utilities.MAP_WIDTH;
+        return 1 + x + y * Utilities.MAP_WIDTH;
     }
 
     public void add(Coordinate c) {
@@ -108,11 +108,10 @@ public class Coordinate {
         this.y = this.y + y;
     }
 
-    public boolean isOutOfBound(){
-        if((this.getX() > Utilities.MAP_WIDTH-1 || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT-1 || this.getY() < 0)){
+    public boolean isOutOfBound() {
+        if ((this.getX() > Utilities.MAP_WIDTH - 1 || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT - 1 || this.getY() < 0)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
