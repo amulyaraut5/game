@@ -242,21 +242,18 @@ public class ActivationPhase extends Phase {
                 logger.info(player.getName() + " moved three Tiles.");
             }
             case TurnLeft -> {
-                RotateRobot rotateRobot = new RotateRobot((Orientation.LEFT));
-                rotateRobot.doAction(Orientation.LEFT, player);
+                player.getRobot().rotate(Rotation.LEFT);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
                 logger.info(player.getName() + " turned left.");
             }
             case TurnRight -> {
-                RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
-                rotateRobot.doAction(Orientation.RIGHT, player);
+                player.getRobot().rotate(Rotation.RIGHT);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 logger.info(player.getName() + " turned right.");
             }
             case UTurn -> {
-                RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
-                rotateRobot.doAction(Orientation.RIGHT, player);
-                rotateRobot.doAction(Orientation.RIGHT, player);
+                player.getRobot().rotate(Rotation.RIGHT);
+                player.getRobot().rotate(Rotation.RIGHT);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 logger.info(player.getName() + " performed U-Turn");
@@ -344,9 +341,9 @@ public class ActivationPhase extends Phase {
                 switch (a.getType()) {
                     case Gear:
                         if (((Gear) a).getOrientation() == Rotation.RIGHT) {
-                            new RotateRobot(Orientation.RIGHT).doAction(Orientation.RIGHT, player);
+                            player.getRobot().rotate(Rotation.RIGHT);
                         } else {
-                            new RotateRobot(Orientation.LEFT).doAction(Orientation.LEFT, player);
+                            player.getRobot().rotate(Rotation.LEFT);
                         }
                     case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);

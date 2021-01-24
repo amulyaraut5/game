@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.*;
+import utilities.RegisterCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
