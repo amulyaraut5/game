@@ -146,32 +146,41 @@ public class LaserAction {
         Coordinate step = orientation.toVector();
 
         outerLoop:
-        while ((position.getX() >= 0 && position.getX() < 13) && (position.getY() >= 0 && position.getY() < 10)) {
+        while (true) {
             position.add(step);
-            for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
-                if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
-                        && b.getType() != AttributeType.ControlPoint) {
-                    path.add(position.clone());
-                    break;
-                } else if (b.getType() == AttributeType.Wall) {
-                    if (((Wall) b).getOrientation() == orientation) {
+            if(position.isOutOfBound()){
+                logger.info("Laser Out of Bound"); break outerLoop;
+            }
+            else{
+                for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
+                    if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
+                            && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
-                        break outerLoop;
-                    }else if (((Wall) b).getOrientation() != orientation){
-                        path.add(position.clone());
-                        break outerLoop;
+                        break;
+                    } else if (b.getType() == AttributeType.Wall) {
+                        if (((Wall) b).getOrientation() == orientation) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        }else if(((Wall) b).getOrientation() == orientation.getOpposite()){
+                            break outerLoop;
+                        }
+                        else if (((Wall) b).getOrientation() != orientation){
+                            path.add(position.clone());break;
+                        }
+                    }else if (b.getType() == AttributeType.Antenna) break outerLoop;
+                    else if(b.getType() == AttributeType.Laser){
+                        if (((Laser) b).getOrientation() == orientation) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        }else if(((Laser) b).getOrientation() == orientation.getOpposite()){
+                            break outerLoop;
+                        }
+                        else if (((Laser) b).getOrientation() != orientation){
+                            path.add(position.clone());break ;
+                        }
+                    }else if (b.getType() == AttributeType.ControlPoint) {
+                        path.add(position.clone()); break;
                     }
-                }else if (b.getType() == AttributeType.Antenna) break outerLoop;
-                else if(b.getType() == AttributeType.Laser){
-                    if (((Laser) b).getOrientation() == orientation) {
-                        path.add(position.clone());
-                        break outerLoop;
-                    }else if (((Laser) b).getOrientation() != orientation){
-                        path.add(position.clone());
-                        break outerLoop;
-                    }
-                }else if (b.getType() == AttributeType.ControlPoint) {
-                    path.add(position.clone());break outerLoop;
                 }
             }
         }

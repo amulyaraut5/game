@@ -235,7 +235,7 @@ public class GameViewController extends Controller {
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
                     fadeTransition.setFromValue(1.0f);
                     fadeTransition.setToValue(0.3f);
-                    fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+                    //fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
                     SequentialTransition sequentialTransition = new SequentialTransition();
                     sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -245,6 +245,98 @@ public class GameViewController extends Controller {
             }
         }
     }
+    public void handleRobotShooting(ArrayList<Player> players){
+        for(Player player: players){
+            Orientation orientation = player.getRobot().getOrientation();
+            Coordinate robotPosition = player.getRobot().getCoordinate();
+            System.out.println(orientation.name());
+
+            ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/laser/animation/laserBeam_1.png").toExternalForm()));
+            imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
+            imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+            imageView.setPreserveRatio(true);
+            robotPane.getChildren().add(imageView);
+
+            switch (orientation) {
+                case LEFT , RIGHT -> imageView.setRotate(270);
+            }
+
+            Coordinate newPos = calculateRobotEndCoordinate(orientation,robotPosition ,players);
+
+            imageView.setX(robotPosition.getX() * Utilities.FIELD_SIZE);
+            imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
+
+            TranslateTransition transition = new TranslateTransition();
+            transition.setDuration(Duration.seconds(2));
+            transition.setNode(imageView);
+            transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
+            transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);
+
+            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
+            fadeTransition.setFromValue(1.0f);
+            fadeTransition.setToValue(0.3f);
+            //fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+
+            SequentialTransition sequentialTransition = new SequentialTransition();
+            sequentialTransition.getChildren().addAll(transition, fadeTransition);
+            sequentialTransition.play();
+            path.clear();
+        }
+    }
+    private Coordinate calculateRobotEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
+        position = position.clone();
+        Coordinate step = orientation.toVector();
+
+        outerLoop:
+        while (true) {
+            position.add(step);
+            if(position.isOutOfBound()){
+                logger.info("Laser Out of Bound"); break outerLoop;
+            }
+            else{
+                for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
+                    if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
+                            && b.getType() != AttributeType.ControlPoint ) {
+                        path.add(position.clone());
+                        break;
+                    }else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                        path.add(position.clone()); break outerLoop;
+                    }
+                    else if(b.getType() == AttributeType.Laser) {
+                        if (((Laser) b).getOrientation() == orientation) {
+                            break outerLoop;
+                        } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        } else if (((Laser) b).getOrientation() != orientation) {
+                            path.add(position.clone());
+                            break;
+                        }
+                    }
+                    else if (b.getType() == AttributeType.Wall) {
+                        if (((Wall) b).getOrientation() == orientation) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        }else if(((Wall) b).getOrientation() == orientation.getOpposite()){
+                            break outerLoop;
+                        }
+                        else if (((Wall) b).getOrientation() != orientation){
+                            path.add(position.clone()); break;
+                        }
+                    }
+                    else if (b.getType() == AttributeType.Antenna) break outerLoop;
+                }
+            }
+        }
+        for (Coordinate coordinate: path){
+            for(Player player:players){
+                if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
+            }
+        }
+        // Exception if robot laser cannot move one space or is blocked by wall
+
+         return path.get(path.size()-1);
+    }
     private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
 
         path.add(position);
@@ -252,36 +344,45 @@ public class GameViewController extends Controller {
         Coordinate step = orientation.toVector();
 
         outerLoop:
-        while ((position.getX() >= 0 && position.getX() < 13) && (position.getY() >= 0 && position.getY() < 10)) {
+        while (true) {
             position.add(step);
-            for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
-                if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
-                        && b.getType() != AttributeType.ControlPoint) {
-                    path.add(position.clone());
-                    break;
-                } else if (b.getType() == AttributeType.Wall) {
-                    if (((Wall) b).getOrientation() == orientation) {
+            if(position.isOutOfBound()){
+                logger.info("Laser Out of Bound"); break outerLoop;
+            }
+            else{
+                for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
+                    if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
+                            && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
-                        break outerLoop;
-                    }else if (((Wall) b).getOrientation() != orientation){
-                        path.add(position.clone());
-                        break outerLoop;
+                        break;
+                    }else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                        path.add(position.clone()); break outerLoop;
                     }
-                }else if (b.getType() == AttributeType.Antenna) break outerLoop;
-                else if(b.getType() == AttributeType.Laser){
-                    if (((Laser) b).getOrientation() == orientation) {
-                        path.add(position.clone());
-                        break outerLoop;
-                    }else if (((Laser) b).getOrientation() != orientation){
-                        path.add(position.clone());
-                        break outerLoop;
+                    else if(b.getType() == AttributeType.Laser) {
+                        if (((Laser) b).getOrientation() == orientation) {
+                            break outerLoop;
+                        } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        } else if (((Laser) b).getOrientation() != orientation) {
+                            path.add(position.clone());
+                            break;
+                        }
                     }
-                }else if (b.getType() == AttributeType.ControlPoint) {
-                    path.add(position.clone());break outerLoop;
+                    else if (b.getType() == AttributeType.Wall) {
+                        if (((Wall) b).getOrientation() == orientation) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        }else if(((Wall) b).getOrientation() == orientation.getOpposite()){
+                            break outerLoop;
+                        }
+                        else if (((Wall) b).getOrientation() != orientation){
+                            path.add(position.clone());break;
+                        }
+                    }else if (b.getType() == AttributeType.Antenna) break outerLoop;
                 }
             }
         }
-
         for (Coordinate coordinate: path){
             for(Player player:players){
                 if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;

@@ -211,6 +211,7 @@ public class Client {
                 case TimerStarted -> {
                     gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
                     gameViewController.handleShooting(players);
+                    //gameViewController.handleRobotShooting(players);
 
                     ///////////JUST FOR TESTING PURPOSE
                     /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
