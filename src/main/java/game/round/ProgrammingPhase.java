@@ -9,10 +9,8 @@ import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Coordinate;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
-import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -50,19 +48,7 @@ public class ProgrammingPhase extends Phase {
 
             //discard all Programming cards left in the registers and put all played Damage Cards back to their decks. Then create an empty register
             if (!(player.getRegisterCards().contains(null))) {
-                ArrayList<Card> cardsToDiscard = new ArrayList<>();
-                for (int register = 1; register < 6; register++) {
-                    Card registerCard = player.getRegisterCard(register);
-                    CardType type = player.getRegisterCard(register).getName();
-                    switch (type) {
-                        case Spam: game.getSpamDeck().addCard(registerCard);
-                        case Worm: game.getWormDeck().addCard(registerCard);
-                        case Virus: game.getVirusDeck().addCard(registerCard);
-                        case Trojan: game.getTrojanHorseDeck().addCard(registerCard);
-                        default: cardsToDiscard.add(registerCard);
-                    }
-                }
-                player.discardCards(cardsToDiscard, player.getDiscardedProgrammingDeck());
+                player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
                 player.createRegister();
             }
 
