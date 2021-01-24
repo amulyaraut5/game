@@ -167,11 +167,11 @@ public class ActivationPhase extends Phase {
                     Wall temp = (Wall) a;
                     if(!(temp.getOrientations()==null)){
                         for (Orientation orientation : temp.getOrientations()) {
-                            if (orientation == o.getOpposite()) canMove = false;
+                            if (orientation == o) canMove = false;
                         }
                     }
                     else{
-                        if(temp.getOrientation()==o.getOpposite()) canMove=false;
+                        if(temp.getOrientation()==o) canMove=false;
                     }
                 }
             }
