@@ -7,10 +7,8 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import game.gameObjects.tiles.Laser;
 import game.gameObjects.tiles.Wall;
-import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -183,15 +181,26 @@ public class GameViewController extends Controller implements Updateable {
     public void handleMovement(Player player, Coordinate newPos) {
         ImageView imageView = robotImageViews.get(player);
         Coordinate oldPos = player.getRobot().getCoordinate();
+        player.getRobot().setCoordinate(newPos);
+        System.out.println("Old Coordinate: x " + oldPos.getX() + "y:"+ oldPos.getY());
+        System.out.println("New Coordinate: x " + newPos.getX() + "y:"+ newPos.getY());
+
+        imageView.setX(oldPos.getX() * Utilities.FIELD_SIZE);
+        imageView.setY(oldPos.getY() * Utilities.FIELD_SIZE);
 
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(1));
         transition.setNode(imageView);
         transition.setToX((newPos.getX() - oldPos.getX()) * Utilities.FIELD_SIZE);
         transition.setToY((newPos.getY() - oldPos.getY()) * Utilities.FIELD_SIZE);
-        transition.play();
+        transition.setOnFinished(event -> {
+            imageView.setX((oldPos.getX()  * Utilities.FIELD_SIZE) + imageView.getTranslateX());
+            imageView.setY((oldPos.getY() * Utilities.FIELD_SIZE)+ imageView.getTranslateY());
+            imageView.setTranslateX(0);
+            imageView.setTranslateY(0);
+        });
 
-        player.getRobot().setCoordinate(newPos);
+        transition.play();
     }
 
     public void handlePlayerTurning(Player player, Rotation rotation) {
@@ -237,6 +246,7 @@ public class GameViewController extends Controller implements Updateable {
                     transition.setNode(imageView);
                     transition.setToX((newPos.getX() - c.getX()) * Utilities.FIELD_SIZE);
                     transition.setToY((newPos.getY() - c.getY()) * Utilities.FIELD_SIZE);
+                    transition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
                     fadeTransition.setFromValue(1.0f);
@@ -277,6 +287,7 @@ public class GameViewController extends Controller implements Updateable {
             transition.setNode(imageView);
             transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
             transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);
+            transition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
             fadeTransition.setFromValue(1.0f);

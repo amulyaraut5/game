@@ -208,19 +208,16 @@ public class ActivationPhase extends Phase {
                 }
             }
         }
-
         //move robot, activate board element if given
         if (canMove) {
             moveOne(player, o);
             handleTile(player);
         }
-
-
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        //server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
     }
 
     public void handleCard(CardType cardType, Player player) {
@@ -343,12 +340,10 @@ public class ActivationPhase extends Phase {
                     case ControlPoint:
                         player.checkPointReached();
                         server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
-
                     default:
-                        server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
+                        logger.info("Hello");
+                        //server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 }
-
-
             }
         }
     }
