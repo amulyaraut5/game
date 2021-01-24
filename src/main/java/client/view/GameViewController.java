@@ -235,7 +235,7 @@ public class GameViewController extends Controller {
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
                     fadeTransition.setFromValue(1.0f);
                     fadeTransition.setToValue(0.3f);
-                    //fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+                    fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
                     SequentialTransition sequentialTransition = new SequentialTransition();
                     sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -275,7 +275,7 @@ public class GameViewController extends Controller {
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
             fadeTransition.setFromValue(1.0f);
             fadeTransition.setToValue(0.3f);
-            //fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+            fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
             SequentialTransition sequentialTransition = new SequentialTransition();
             sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -355,7 +355,8 @@ public class GameViewController extends Controller {
                             && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
                         break;
-                    }else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                    }
+                    else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
                         path.add(position.clone()); break outerLoop;
                     }
                     else if(b.getType() == AttributeType.Laser) {

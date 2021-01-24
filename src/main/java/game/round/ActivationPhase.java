@@ -54,6 +54,7 @@ public class ActivationPhase extends Phase {
      * TODO
      */
     private ActivationElements activationElements = new ActivationElements();
+    private LaserAction laserAction = new LaserAction();
 
     private ArrayList<Player> activePlayers = playerList;
 
@@ -131,7 +132,8 @@ public class ActivationPhase extends Phase {
         activationElements.activateGreenBelts();
         activationElements.activatePushPanel();
         activationElements.activateGear();
-        //TODO Laser
+        laserAction.activateBoardLaser();
+        laserAction.activateRobotLaser();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
