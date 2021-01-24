@@ -14,7 +14,9 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.PlayerValues;
+import utilities.Updateable;
 
 
 /**
@@ -23,7 +25,7 @@ import utilities.JSONProtocol.body.PlayerValues;
  *
  * @author sarah,
  */
-public class LoginController extends Controller {
+public class LoginController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
     /**
      * it stores the imageViews of the different robots,
@@ -131,6 +133,15 @@ public class LoginController extends Controller {
         Figure figure = figures.get(id);
         figure.setTaken(false);
         figures.set(id, figure);
+    }
+
+    @Override
+    public void update(JSONMessage message) {
+
+    }
+
+    public void displayError(String error) {
+        responseLabel.setText(error);
     }
 
     private class Figure {

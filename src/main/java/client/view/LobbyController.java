@@ -14,8 +14,10 @@ import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
+import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
+import utilities.Updateable;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -25,7 +27,7 @@ import java.util.HashMap;
  *
  * @author sarah, louis
  */
-public class LobbyController extends Controller {
+public class LobbyController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
     private final HashMap<Player, VBox> playerTiles = new HashMap<>();
 
@@ -35,6 +37,8 @@ public class LobbyController extends Controller {
     private CheckBox readyCheckbox;
     @FXML
     private FlowPane playerTilePane;
+    @FXML
+    private Label infoLabel;
 
     /**
      * this method gets called automatically by constructing view
@@ -103,5 +107,14 @@ public class LobbyController extends Controller {
     public void removePlayer(Player player) {
         VBox tile = playerTiles.get(player);
         playerTilePane.getChildren().remove(tile);
+    }
+
+    @Override
+    public void update(JSONMessage message) {
+
+    }
+
+    public void displayError(String error) {
+        infoLabel.setText(error);
     }
 }

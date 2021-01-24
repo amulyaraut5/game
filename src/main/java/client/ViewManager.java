@@ -39,9 +39,9 @@ public class ViewManager {
     private Pane chatPane;
 
     private MenuController menuController;
+    private LoginController loginController;
     private LobbyController lobbyController;
     private GameViewController gameViewController;
-    private LoginController loginController;
 
     private Scene currentScene;
 
@@ -66,7 +66,10 @@ public class ViewManager {
     }
 
     public void displayErrorMessage(String error) {
-        //TODO currentView.
+        if (currentScene == menuScene) menuController.displayError(error);
+        if (currentScene == loginScene) loginController.displayError(error);
+        if (currentScene == lobbyScene) lobbyController.displayError(error);
+        if (currentScene == gameScene) gameViewController.displayError(error);
     }
 
     public void showMenu() {

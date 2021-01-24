@@ -16,23 +16,28 @@
                 <Image url="@loginBackground.png" />
             </image>
         </ImageView>
-        <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="146.0" layoutY="30.0" text="Lobby">
+        <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="14.0" text="Lobby">
             <font>
                 <Font size="37.0" />
             </font>
         </Label>
-        <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="76.0" prefHeight="37.0" prefWidth="373.0" text="Chill a bit in the lobby, chat with other players &#10;and when you are ready to play press ready">
+        <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutX="11.0" layoutY="68.0" prefHeight="37.0" prefWidth="373.0" text="Chill a bit in the lobby, chat with other players &#10;and when you are ready to play press ready">
             <font>
                 <Font size="14.0" />
             </font>
             
         </Label>
       <BorderPane fx:id="chatPane" layoutX="376.0" prefHeight="300.0" prefWidth="250.0" />
-      <FlowPane fx:id="playerTilePane" layoutX="57.0" layoutY="131.0" prefHeight="240.0" prefWidth="280.0" />
+      <FlowPane fx:id="playerTilePane" layoutX="58.0" layoutY="115.0" prefHeight="240.0" prefWidth="280.0" />
       <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="460.0" layoutY="329.0" onAction="#checkBoxAction" text="Ready!" textFill="#363636" unCheckedColor="#727272">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </JFXCheckBox>
+      <Label fx:id="infoLabel" alignment="CENTER" layoutX="45.0" layoutY="355.0" prefHeight="27.0" prefWidth="367.0" textFill="#ff3600">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
