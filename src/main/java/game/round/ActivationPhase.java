@@ -529,4 +529,8 @@ public class ActivationPhase extends Phase {
     public ArrayList<Player> getActivePlayers() {
         return activePlayers;
     }
+
+    public int getCurrentRegister(){
+        return this.currentRegister;
+    }
 }

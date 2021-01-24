@@ -117,7 +117,7 @@ public class ActivationElements {
                 if (player.getRobot().getCoordinate() == coordinate) {
                     for(Attribute a : tile.getAttributes()){
                         for(int i : ((PushPanel) a).getRegisters()){
-                            if( i == player.getCurrentRegister()){
+                            if( i == activationPhase.getCurrentRegister()){
                                 new MoveRobot().doAction(((PushPanel) a).getOrientation(), player);
                             }
                         }
