@@ -8,21 +8,30 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.ActivationController">
    <children>
-      <Label fx:id="infoLabel" layoutX="68.0" layoutY="103.0" prefHeight="71.0" prefWidth="308.0" />
+      <Label fx:id="infoLabel" layoutX="32.0" layoutY="141.0" prefHeight="21.0" prefWidth="356.0" textFill="blue" />
       <AnchorPane layoutX="4.0" layoutY="4.0" prefHeight="593.0" prefWidth="642.0">
          <children>
-            <Label alignment="CENTER" layoutX="184.0" layoutY="25.0" prefHeight="43.0" prefWidth="258.0" text="Activation Phase">
-               <font>
-                  <Font name="Cambria Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="register" alignment="CENTER" contentDisplay="CENTER" layoutX="133.0" layoutY="81.0" prefHeight="26.0" prefWidth="367.0" />
-            <Label fx:id="ProgOrBoard" alignment="CENTER" contentDisplay="CENTER" layoutX="51.0" layoutY="124.0" prefHeight="26.0" prefWidth="464.0" textAlignment="CENTER" />
+            <Pane layoutX="22.0" layoutY="69.0" prefHeight="67.0" prefWidth="365.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
+               <children>
+                  <Label fx:id="label" alignment="CENTER" layoutX="1.0" layoutY="-2.0" prefHeight="44.0" prefWidth="356.0" text="Activation Phase" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label id="label" fx:id="register" alignment="CENTER" contentDisplay="TOP" layoutX="6.0" layoutY="37.0" prefHeight="21.0" prefWidth="350.0" text="Register" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+
+                  </Label>
+               </children>
+            </Pane>
+            <Label fx:id="ProgOrBoard" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="129.0" prefHeight="33.0" prefWidth="356.0" textAlignment="CENTER" textFill="#ffbc05" />
             <AnchorPane fx:id="playCardAnchorPane" layoutX="36.0" layoutY="78.0" prefHeight="447.0" prefWidth="557.0">
                <children>
                   <ImageView fx:id="currentCardImageView" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="displayResult" layoutX="57.0" layoutY="316.0" prefHeight="26.0" prefWidth="352.0" />
-                  <Label fx:id="showPriority" layoutX="74.0" layoutY="58.0" prefHeight="26.0" prefWidth="318.0" />
+                  <Label fx:id="showPriority" layoutX="5.0" layoutY="69.0" prefHeight="21.0" prefWidth="330.0" />
                   <JFXButton fx:id="playItButton" buttonType="RAISED" layoutX="88.0" layoutY="309.0" onAction="#playItButton" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: orange;" text="Play It" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="15.0" />
@@ -68,6 +77,7 @@
                      </graphic>
                   </JFXButton>
                   <HBox fx:id="selectedDamageHBox" layoutX="56.0" layoutY="340.0" prefHeight="71.0" prefWidth="308.0" />
+
                </children>
             </AnchorPane>
          </children>
