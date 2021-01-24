@@ -7,7 +7,6 @@ import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.*;
-import utilities.RegisterCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +18,10 @@ public class OthersController extends Controller {
 
     private ArrayList<OtherPlayer> otherPlayers = new ArrayList<>();
 
+
+    public void reset(){
+        for(OtherPlayer otherPlayer: otherPlayers) otherPlayer.getOnePlayerController().reset();
+    }
     public  void createPlayerMats(ArrayList<Player> players){
         hBoxPlayer.setAlignment(Pos.CENTER);
         for (Player player: players){
