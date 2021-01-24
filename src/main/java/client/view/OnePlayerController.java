@@ -34,14 +34,18 @@ public class OnePlayerController extends Controller{
     }
     public void initialize(){
         currentCardImageView.setVisible(false);
+        fillRegister();
+        setHBoxRegisterVisible(false);
+
+    }
+
+    private void fillRegister(){
         for(int i = 0; i<5; i++){
             ImageView imageView = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
             imageView.setFitWidth(20);
             imageView.setFitHeight(30);
             registerHBox.getChildren().add(imageView);
         }
-        setHBoxRegisterVisible(false);
-
     }
     public void setInfoLabel(String text){
         infoLabel.setText(text);
@@ -74,5 +78,6 @@ public class OnePlayerController extends Controller{
     public void reset(){ //AFTER ONE ROUND
         currentCardImageView.setVisible(false);
         registerHBox.getChildren().clear();
+        fillRegister();
     }
 }
