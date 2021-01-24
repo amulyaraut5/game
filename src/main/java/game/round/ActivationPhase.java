@@ -268,7 +268,7 @@ public class ActivationPhase extends Phase {
             }
             case PowerUp -> {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
-                server.communicateAll(new Energy(player.getID(), player.getEnergyCubes()));
+                server.communicateAll(new Energy(player.getID(), 1));
                 logger.info(player.getName() + " got one EnergyCube.");
             }
             case Again -> {
