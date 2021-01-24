@@ -19,6 +19,7 @@ import utilities.enums.Orientation;
 
 import java.io.CharArrayReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class AICoordinator {
@@ -38,7 +39,25 @@ public class AICoordinator {
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
                     thisPlayersID = wc.getPlayerID();
-                    client.sendMessage(new PlayerValues("AI Test", 2)); //TODO choose unselected figure
+
+                    List<Integer> a = new ArrayList<>();
+                    List<Integer> b = new ArrayList<>();
+
+                    for(Player player : players){
+                        a.add(player.getFigure());
+                    }
+
+                    for(int  i = 0; i < 6; i++){
+                        b.add(i);
+                    }
+
+                    b.removeAll(a);
+
+                    if(b.size() > 0){
+                        String name = b.get(0).toString() + "_AI";
+                        client.sendMessage(new PlayerValues(name, b.get(0)));
+                    }
+                    //client.sendMessage(new PlayerValues("AI Test", 2)); //TODO choose unselected figure
                 }
                 case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
@@ -162,7 +181,7 @@ public class AICoordinator {
 
         for(int i = 0; i < 5; i++){
             int rdm = new Random().nextInt(availableCards.size());
-            client.sendMessage(new SelectCard(availableCards.get(rdm), i));
+            client.sendMessage(new SelectCard(availableCards.get(rdm), i+1));
             availableCards.remove(rdm);
         }
     }
