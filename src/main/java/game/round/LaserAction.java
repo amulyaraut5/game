@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.DrawDamage;
+import utilities.JSONProtocol.body.PlayerShooting;
 import utilities.SoundHandler;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -51,6 +52,7 @@ public class LaserAction {
 
     public void activateBoardLaser() {
         //soundHandler.pitSound();
+        server.communicateAll(new PlayerShooting());
         determineLaserPaths();
         // TODO Check whether the lasers affect two players
         for (Coordinate coordinate : laserCoordinates) {
@@ -64,16 +66,19 @@ public class LaserAction {
      * This method gets triggered after every register.
      * The player on the receiving end gets one spam card as a damage.
      * The Robot can only fire in one direction.
+     * PlayerShooting Protocol is sent.
      */
 
     public void activateRobotLaser() {
         //soundHandler.pitSound();
-       determineRobotLaserPath();
+        server.communicateAll(new PlayerShooting());
+        determineRobotLaserPath();
         for (Coordinate coordinate : robotCoordinates) {
             for (Player targetPlayer : playerList)
                 if (targetPlayer.getRobot().getCoordinate() == coordinate) receiveDamage(targetPlayer);
             break;
         }
+
     }
 
     /**
@@ -103,14 +108,13 @@ public class LaserAction {
         for (Coordinate coordinate : map.readLaserCoordinates()) {
             int xC = coordinate.getX();
             int yC = coordinate.getY();
-            System.out.println("x"+xC + "y"+yC);
             for (Attribute a : map.getTile(xC, yC).getAttributes()) {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
                     laserCoordinates = determinePath(orientation, coordinate);
-                    for(Coordinate coordinate1: laserCoordinates){
+                    /*for(Coordinate coordinate1: laserCoordinates){
                         logger.info("Laser Affected Coordinate:" + "(x,y) =" + "(" + coordinate1.getX() + "," + coordinate1.getY() + ")");
-                    }
+                    }*/
                 }
             }
         }
@@ -157,7 +161,21 @@ public class LaserAction {
                             && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
                         break;
-                    } else if (b.getType() == AttributeType.Wall) {
+                    }else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                        path.add(position.clone()); break outerLoop;
+                    }
+                    else if(b.getType() == AttributeType.Laser) {
+                        if (((Laser) b).getOrientation() == orientation) {
+                            break outerLoop;
+                        } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
+                            path.add(position.clone());
+                            break outerLoop;
+                        } else if (((Laser) b).getOrientation() != orientation) {
+                            path.add(position.clone());
+                            break;
+                        }
+                    }
+                    else if (b.getType() == AttributeType.Wall) {
                         if (((Wall) b).getOrientation() == orientation) {
                             path.add(position.clone());
                             break outerLoop;
@@ -168,19 +186,6 @@ public class LaserAction {
                             path.add(position.clone());break;
                         }
                     }else if (b.getType() == AttributeType.Antenna) break outerLoop;
-                    else if(b.getType() == AttributeType.Laser){
-                        if (((Laser) b).getOrientation() == orientation) {
-                            path.add(position.clone());
-                            break outerLoop;
-                        }else if(((Laser) b).getOrientation() == orientation.getOpposite()){
-                            break outerLoop;
-                        }
-                        else if (((Laser) b).getOrientation() != orientation){
-                            path.add(position.clone());break ;
-                        }
-                    }else if (b.getType() == AttributeType.ControlPoint) {
-                        path.add(position.clone()); break;
-                    }
                 }
             }
         }

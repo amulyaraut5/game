@@ -210,8 +210,6 @@ public class Client {
                 }
                 case TimerStarted -> {
                     gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
-                    gameViewController.handleShooting(players);
-                    //gameViewController.handleRobotShooting(players);
 
                     ///////////JUST FOR TESTING PURPOSE
                     /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
@@ -305,6 +303,9 @@ public class Client {
                 case PickDamage -> {
                     PickDamage pickDamage = (PickDamage) message.getBody();
                     gameViewController.getActivationController().pickDamage(pickDamage);
+                }case PlayerShooting ->{
+                    gameViewController.handleShooting(players);
+                    gameViewController.handleRobotShooting(players);
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
