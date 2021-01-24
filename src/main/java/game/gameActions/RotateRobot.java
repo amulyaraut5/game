@@ -24,5 +24,6 @@ public class RotateRobot extends Action {
     public void doAction(Orientation orientation, Player player) {
         player.getRobot().rotate(orientation.toRotation());
         server.communicateAll(new PlayerTurning(player.getID(), orientation.toRotation()));
+        server.communicateAll(new PlayerTurning(player.getID(), orientation.toRotation()));
     }
 }

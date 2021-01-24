@@ -60,7 +60,7 @@ public class ActivationPhase extends Phase {
     /**
      * keeps track of the current register
      */
-    private int currentRegister = 1;
+    public int currentRegister = 1;
 
 
     /**
@@ -242,21 +242,21 @@ public class ActivationPhase extends Phase {
             case TurnLeft -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.LEFT));
                 rotateRobot.doAction(Orientation.LEFT, player);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
                 logger.info(player.getName() + " turned left.");
             }
             case TurnRight -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 logger.info(player.getName() + " turned right.");
             }
             case UTurn -> {
                 RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
                 rotateRobot.doAction(Orientation.RIGHT, player);
                 rotateRobot.doAction(Orientation.RIGHT, player);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 logger.info(player.getName() + " performed U-Turn");
             }
             case BackUp -> {

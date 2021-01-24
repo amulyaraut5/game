@@ -6,6 +6,7 @@ import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
 import utilities.JSONProtocol.body.PlayerAdded;
+import utilities.enums.CardType;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,8 @@ import java.util.ArrayList;
  */
 
 public class Player extends User {
+
+    protected Game game = Game.getInstance();
 
     private int currentRegister;//TODO remove
     /**
@@ -113,6 +116,10 @@ public class Player extends User {
     public Card getRegisterCard(int register) {
         int index = register - 1;
         return registerCards.get(index);
+    }
+
+    public CardType getLastRegisterCard(){
+        return getRegisterCard(game.getActivationPhase().currentRegister-1).getName(); //TODO
     }
 
     public Card getCurrentAction() {
