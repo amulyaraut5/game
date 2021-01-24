@@ -338,21 +338,26 @@ public class GameViewController extends Controller implements Updateable {
                             break outerLoop;
                         }
                         else if (((Wall) b).getOrientation() != orientation){
-                            path.add(position.clone()); break;
+                            path.add(position.clone()); break ;
                         }
                     }
                     else if (b.getType() == AttributeType.Antenna) break outerLoop;
                 }
             }
         }
-        for (Coordinate coordinate: path){
-            for(Player player:players){
-                if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
+        if(path.size() == 0){
+            logger.info("Nowhere to fire");
+            return position;
+        }else{
+            for (Coordinate coordinate: path){
+                for(Player player:players){
+                    if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
+                }
             }
-        }
-        // Exception if robot laser cannot move one space or is blocked by wall
+            // Exception if robot laser cannot move one space or is blocked by wall
 
-         return path.get(path.size()-1);
+            return path.get(path.size()-1);
+        }
     }
     private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
 
