@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -80,7 +81,8 @@ public class GameViewController extends Controller {
     private BorderPane phasePane;
     @FXML
     private BorderPane chatPane;
-
+    public Label roundLabel;
+    public Pane roundPane;
     @FXML
     private StackPane boardPane; //stacks the map-, animation-, and playerPane
     @FXML
@@ -89,11 +91,12 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
-
+    private int currentRound = 1;
+    private boolean first = true;
     @FXML
     public void initialize() {
         constructPhaseViews();
-
+        roundPane.setVisible(false);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
             playerMap.setAlignment(Pos.CENTER);
@@ -235,7 +238,7 @@ public class GameViewController extends Controller {
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
                     fadeTransition.setFromValue(1.0f);
                     fadeTransition.setToValue(0.3f);
-                    //fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+                    fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
                     SequentialTransition sequentialTransition = new SequentialTransition();
                     sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -275,7 +278,7 @@ public class GameViewController extends Controller {
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
             fadeTransition.setFromValue(1.0f);
             fadeTransition.setToValue(0.3f);
-            //fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+            fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
             SequentialTransition sequentialTransition = new SequentialTransition();
             sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -355,7 +358,8 @@ public class GameViewController extends Controller {
                             && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
                         break;
-                    }else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                    }
+                    else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
                         path.add(position.clone()); break outerLoop;
                     }
                     else if(b.getType() == AttributeType.Laser) {
@@ -454,15 +458,26 @@ public class GameViewController extends Controller {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
+                roundPane.setVisible(true);
+                roundLabel.setText("Round " +currentRound);
+                currentRound ++;
+                if(!first) {
+                    getPlayerMapController().reset();
+                    othersController.reset();
+                }
                 client.setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
+                getPlayerMapController().fixSelectedCards();
+                getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
+
             }
         }
+        first = false;
     }
 
     private void constructPhaseViews() {

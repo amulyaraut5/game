@@ -19,6 +19,10 @@ public class OthersController extends Controller {
 
     private ArrayList<OtherPlayer> otherPlayers = new ArrayList<>();
 
+
+    public void reset(){
+        for(OtherPlayer otherPlayer: otherPlayers) otherPlayer.getOnePlayerController().reset();
+    }
     public  void createPlayerMats(ArrayList<Player> players){
         hBoxPlayer.setAlignment(Pos.CENTER);
         for (Player player: players){

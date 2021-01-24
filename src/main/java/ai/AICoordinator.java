@@ -12,11 +12,14 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.Utilities;
+import utilities.enums.CardType;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
 import utilities.enums.Orientation;
 
+import java.io.CharArrayReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AICoordinator {
     private static final Logger logger = LogManager.getLogger();
@@ -155,8 +158,17 @@ public class AICoordinator {
     }
 
     private void chooseCards(YourCards yourCards) {
-        for (int i = 0; i < 5; i++) {
-            client.sendMessage(new SelectCard(yourCards.getCards().get(i), i + 1));
+        //for (int i = 0; i < 5; i++) {
+        //   client.sendMessage(new SelectCard(yourCards.getCards().get(i), i + 1));
+        //}
+        ArrayList<CardType> availableCards = new ArrayList<>();
+        for (CardType card  : yourCards.getCards()){
+            availableCards.add(card);
+        }
+        for(int i = 0; i < 5; i++){
+            int rdm = new Random().nextInt(availableCards.size());
+            client.sendMessage(new SelectCard(availableCards.get(rdm), i));
+            availableCards.remove(rdm);
         }
     }
 

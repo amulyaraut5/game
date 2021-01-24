@@ -202,7 +202,7 @@ public class Client {
                         gameViewController.getPlayerMapController().fixSelectedCards();
                         allRegistersAsFirst = true;
                     } else {
-                        gameViewController.getPlayerMapController().fixSelectedCards();
+                        //gameViewController.getPlayerMapController().fixSelectedCards();
                         gameViewController.getOthersController().playerWasFirst(selectionFinished);
                         allRegistersAsFirst = false;
                     }
@@ -210,8 +210,6 @@ public class Client {
                 }
                 case TimerStarted -> {
                     gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
-                    gameViewController.handleShooting(players);
-                    //gameViewController.handleRobotShooting(players);
 
                     ///////////JUST FOR TESTING PURPOSE
                     /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
@@ -230,6 +228,7 @@ public class Client {
                 }
                 case TimerEnded -> {
                     gameViewController.getProgrammingController().setTimerEnded(true);
+
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -304,6 +303,9 @@ public class Client {
                 case PickDamage -> {
                     PickDamage pickDamage = (PickDamage) message.getBody();
                     gameViewController.getActivationController().pickDamage(pickDamage);
+                }case PlayerShooting ->{
+                    gameViewController.handleShooting(players);
+                    gameViewController.handleRobotShooting(players);
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }

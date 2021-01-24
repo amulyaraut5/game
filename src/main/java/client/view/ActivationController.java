@@ -58,7 +58,7 @@ public class ActivationController extends Controller {
             setInfoLabel("It's your turn! Click on the button to validate your card!");
             playItButton.setDisable(false);
         } else {
-            setInfoLabel("It's your turn! Click on the button to validate your card!");
+            setInfoLabel("It's not your turn");
             playItButton.setDisable(true);
         }
 

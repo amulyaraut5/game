@@ -54,6 +54,7 @@ public class ActivationPhase extends Phase {
      * TODO
      */
     private ActivationElements activationElements = new ActivationElements();
+    private LaserAction laserAction = new LaserAction();
 
     private ArrayList<Player> activePlayers = playerList;
 
@@ -131,7 +132,8 @@ public class ActivationPhase extends Phase {
         activationElements.activateGreenBelts();
         activationElements.activatePushPanel();
         activationElements.activateGear();
-        //TODO Laser
+        laserAction.activateBoardLaser();
+        laserAction.activateRobotLaser();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
@@ -167,11 +169,11 @@ public class ActivationPhase extends Phase {
                     Wall temp = (Wall) a;
                     if(!(temp.getOrientations()==null)){
                         for (Orientation orientation : temp.getOrientations()) {
-                            if (orientation == o.getOpposite()) canMove = false;
+                            if (orientation == o) canMove = false;
                         }
                     }
                     else{
-                        if(temp.getOrientation()==o.getOpposite()) canMove=false;
+                        if(temp.getOrientation()==o) canMove=false;
                     }
                 }
             }
@@ -240,23 +242,20 @@ public class ActivationPhase extends Phase {
                 logger.info(player.getName() + " moved three Tiles.");
             }
             case TurnLeft -> {
-                RotateRobot rotateRobot = new RotateRobot((Orientation.LEFT));
-                rotateRobot.doAction(Orientation.LEFT, player);
-                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                player.getRobot().rotate(Rotation.LEFT);
+                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
                 logger.info(player.getName() + " turned left.");
             }
             case TurnRight -> {
-                RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
-                rotateRobot.doAction(Orientation.RIGHT, player);
-                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                player.getRobot().rotate(Rotation.RIGHT);
+                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 logger.info(player.getName() + " turned right.");
             }
             case UTurn -> {
-                RotateRobot rotateRobot = new RotateRobot((Orientation.RIGHT));
-                rotateRobot.doAction(Orientation.RIGHT, player);
-                rotateRobot.doAction(Orientation.RIGHT, player);
-                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                //server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                player.getRobot().rotate(Rotation.RIGHT);
+                player.getRobot().rotate(Rotation.RIGHT);
+                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
                 logger.info(player.getName() + " performed U-Turn");
             }
             case BackUp -> {
@@ -266,7 +265,7 @@ public class ActivationPhase extends Phase {
             }
             case PowerUp -> {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
-                server.communicateAll(new Energy(player.getID(), player.getEnergyCubes()));
+                server.communicateAll(new Energy(player.getID(), 1));
                 logger.info(player.getName() + " got one EnergyCube.");
             }
             case Again -> {
@@ -342,9 +341,9 @@ public class ActivationPhase extends Phase {
                 switch (a.getType()) {
                     case Gear:
                         if (((Gear) a).getOrientation() == Rotation.RIGHT) {
-                            new RotateRobot(Orientation.RIGHT).doAction(Orientation.RIGHT, player);
+                            player.getRobot().rotate(Rotation.RIGHT);
                         } else {
-                            new RotateRobot(Orientation.LEFT).doAction(Orientation.LEFT, player);
+                            player.getRobot().rotate(Rotation.LEFT);
                         }
                     case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
@@ -537,5 +536,9 @@ public class ActivationPhase extends Phase {
 
     public ArrayList<Player> getActivePlayers() {
         return activePlayers;
+    }
+
+    public int getCurrentRegister(){
+        return this.currentRegister;
     }
 }

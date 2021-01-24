@@ -61,8 +61,17 @@ public class PlayerMatController extends Controller {
             StackPane pane = createNewPane(true);
             registerHBox.getChildren().add(pane);
         }
+        //eventOn = true;
     }
+    public void reset(){
+        registerHBox.getChildren().clear();
+        eventOn = true;
+        for (int i = 0; i < 5; i++) {
+            StackPane pane = createNewPane(true);
+            registerHBox.getChildren().add(pane);
+        }
 
+    }
 
     private StackPane createNewPane(boolean event) {
         StackPane pane = new StackPane();
@@ -127,12 +136,10 @@ public class PlayerMatController extends Controller {
             String cardName = getImageDropped();
             int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
             client.sendMessage(new SelectCard(CardType.valueOf(cardName), registerNumber));
-            //TODO getting url
-            //JSONMessage jsonMessage = new JSONMessage( new SelectCard(getImageDropped(), registerHBox.getChildren().indexOf(pane)));
 
         }
-        event.setDropCompleted(false);
-        //event.consume();
+        event.setDropCompleted(true);
+        event.consume();
 
 
     }

@@ -23,14 +23,18 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ *
+ *
+ * @author sarah
+ */
 public class ProgrammingController extends Controller {
 
 
 
 
 
-    private int interval = 30;
+    private int interval;
     private Media media;
     private MediaPlayer mediaPlayer;
     private MediaView mediaView;
@@ -175,23 +179,24 @@ public class ProgrammingController extends Controller {
         mediaView = new MediaView(mediaPlayer);
         mediaView.setFitHeight(200);
         mediaView.setFitWidth(200);
-        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.play();
         timerAnchorPane.getChildren().add(mediaView);
 
     }
     private void setTimer() {
         Timer timer = new Timer();
-
+        interval = 30;
+        timerLabel.setVisible(true);
         timer.schedule(new TimerTask() {
             public void run() {
                 if(interval > 0 && !timerEnded)
                 {
                     Platform.runLater(() -> timerLabel.setText(String.valueOf(interval)));
-                    System.out.println(interval);
                     interval--;
                 }
                 else
                     timer.cancel();
+
             }
         }, 1000,1000);
 
@@ -199,6 +204,15 @@ public class ProgrammingController extends Controller {
 
     public void setTimerEnded(boolean timerEnded) {
         this.timerEnded = timerEnded;
+    }
+
+    public void reset(){
+        hBox2.getChildren().clear();
+        hBox1.getChildren().clear();
+        timerAnchorPane.getChildren().clear();
+        timerLabel.setVisible(false);
+        programInfoLabel.setText(" ");
+        timerEnded = false;
     }
 }
 
