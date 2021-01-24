@@ -3,9 +3,8 @@ package client.model;
 import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
+import client.view.ChatController;
 import game.Player;
-import game.gameObjects.cards.programming.Again;
-import game.gameObjects.cards.programming.MoveI;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +24,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static utilities.Utilities.PORT;
 
@@ -153,10 +151,11 @@ public class Client {
                 }
                 case Error -> {
                     Error error = (Error) message.getBody(); //TODO
+                    viewManager.displayErrorMessage(error.getError());
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
-                    if (msg.getAction().equals("Remove") && msg.isConnected() == false) {
+                    if (msg.getAction().equals("Remove") && !msg.isConnected()) {
                         Player player = getPlayerFromID(msg.getID());
                         loginController.removePlayer(player);
                         lobbyController.removePlayer(player);

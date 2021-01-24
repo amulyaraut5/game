@@ -103,7 +103,7 @@ public class Game {
             players.add(new Player(user));
         }
 
-        map = MapBuilder.constructMap(new ExtraCrispy());
+        map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
         new LaserAction().determineLaserPaths();
