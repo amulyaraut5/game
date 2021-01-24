@@ -219,6 +219,16 @@ public class GameViewController extends Controller implements Updateable {
         transition.setDuration(Duration.seconds(1));
         transition.setNode(imageView);
         transition.setByAngle(angle);
+
+        transition.setOnFinished(event -> {
+            switch(r.getOrientation()){
+                case UP -> imageView.setRotate(0);
+                case DOWN -> imageView.setRotate(180);
+                case RIGHT -> imageView.setRotate(90);
+                case LEFT -> imageView.setRotate(270);
+            }
+        });
+
         transition.play();
     }
     public void handleShooting(ArrayList<Player> players){
