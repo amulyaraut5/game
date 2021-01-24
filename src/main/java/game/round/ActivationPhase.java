@@ -385,10 +385,6 @@ public class ActivationPhase extends Phase {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
         logger.info("calculatePrio HIER - " + sortedDistance.toString());
 
-        //first and second player in list sortedDistance
-        RobotDistance firstPlayer = sortedDistance.get(0);
-        RobotDistance secondPlayer = sortedDistance.get(1);
-
         ArrayList<Player> playerPriority = new ArrayList<>();
 
         int sortedDistanceSize = sortedDistance.size();
@@ -449,7 +445,7 @@ public class ActivationPhase extends Phase {
             playerPriority.addAll(smallerThanAntenna);
             //logger.info("8- end of else if :" +playerPriority);
 
-            //first and second object have different distance values -> first player in list is currentPlayer
+        //first and second object have different distance values -> first player in list is currentPlayer
         } else {
             playerPriority.add(sortedDistance.get(0).getPlayer());
             //logger.info("calculatePrio - ELSE:" + playerPriority);
@@ -458,7 +454,7 @@ public class ActivationPhase extends Phase {
         }
     }
 
-        logger.info("calculatePrio -RETURN: " + playerPriority);
+        //logger.info("calculatePrio -RETURN: " + playerPriority);
         return playerPriority;
     }
 
