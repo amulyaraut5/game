@@ -202,7 +202,7 @@ public class Client {
                         gameViewController.getPlayerMapController().fixSelectedCards();
                         allRegistersAsFirst = true;
                     } else {
-                        gameViewController.getPlayerMapController().fixSelectedCards();
+                        //gameViewController.getPlayerMapController().fixSelectedCards();
                         gameViewController.getOthersController().playerWasFirst(selectionFinished);
                         allRegistersAsFirst = false;
                     }
@@ -230,6 +230,7 @@ public class Client {
                 }
                 case TimerEnded -> {
                     gameViewController.getProgrammingController().setTimerEnded(true);
+
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
