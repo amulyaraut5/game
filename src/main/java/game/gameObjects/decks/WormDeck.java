@@ -15,6 +15,10 @@ public class WormDeck extends DamageCardDeck {
 
     private ArrayList<Card> wormDeck;
 
+    public WormDeck(){
+        createDeck();
+    }
+
     /**
      * Creates the deck of Worm cards.
      */

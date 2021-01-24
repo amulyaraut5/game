@@ -15,6 +15,10 @@ public class VirusDeck extends DamageCardDeck {
 
     private ArrayList<Card> virusDeck;
 
+    public VirusDeck(){
+        createDeck();
+    }
+
     /**
      * Creates the deck of Virus cards.
      */

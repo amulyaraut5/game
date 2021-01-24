@@ -15,6 +15,10 @@ public class TrojanDeck extends DamageCardDeck {
 
     private ArrayList<Card> trojanDeck;
 
+    public TrojanDeck(){
+        createDeck();
+    }
+
     /**
      * Creates the deck of Trojan cards.
      */

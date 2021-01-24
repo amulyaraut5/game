@@ -250,10 +250,10 @@ public class ActivationPhase extends Phase {
                 logger.info(player.getName() + " turned right.");
             }
             case UTurn -> {
-                player.getRobot().rotate(Rotation.RIGHT);
-                player.getRobot().rotate(Rotation.RIGHT);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                player.getRobot().rotate(Rotation.LEFT);
+                player.getRobot().rotate(Rotation.LEFT);
+                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
                 logger.info(player.getName() + " performed U-Turn");
             }
             case BackUp -> {
@@ -334,8 +334,10 @@ public class ActivationPhase extends Phase {
                         } else {
                             player.getRobot().rotate(Rotation.LEFT);
                         }
-                    case Pit:
+                    /*case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
+
+                     */
 
                     case ControlPoint:
                         player.checkPointReached();

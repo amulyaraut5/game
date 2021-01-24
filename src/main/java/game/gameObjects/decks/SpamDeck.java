@@ -18,6 +18,10 @@ public class SpamDeck extends DamageCardDeck {
 
     private ArrayList<Card> spamDeck;
 
+    public SpamDeck(){
+        createDeck();
+    }
+
     /**
      * Creates the deck of Spam cards.
      */
