@@ -55,7 +55,17 @@ public class ActivationElements {
             for(Player player: playerList){
                 if (player.getRobot().getCoordinate() == coordinate) {
                     for(Attribute a:  map.getTile(coordinate.getX(),coordinate.getY()).getAttributes()){
-
+                        Rotation rotation = ((Gear) a).getOrientation();
+                        switch (rotation) {
+                            case LEFT  ->{
+                                player.getRobot().rotate(Rotation.LEFT);
+                                server.communicateAll(new PlayerTurning(player.getID(),Rotation.LEFT));
+                            }
+                            case RIGHT -> {
+                                player.getRobot().rotate(Rotation.RIGHT);
+                                server.communicateAll(new PlayerTurning(player.getID(),Rotation.RIGHT));
+                            }
+                        }
                     }
                 }
             }
