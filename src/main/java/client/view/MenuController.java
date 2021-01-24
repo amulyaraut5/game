@@ -6,13 +6,15 @@ import javafx.scene.control.Label;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
+import utilities.JSONProtocol.JSONMessage;
+import utilities.Updateable;
 
 /**
  * The MenuController is the Controller for the main menu view.
  *
  * @author simon
  */
-public class MenuController extends Controller {
+public class MenuController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
@@ -54,5 +56,14 @@ public class MenuController extends Controller {
             if (!connected) infoLabel.setText("The server is not reachable!");
             else infoLabel.setText("");
         });
+    }
+
+    @Override
+    public void update(JSONMessage message) {
+
+    }
+
+    public void displayError(String error) {
+        infoLabel.setText(error);
     }
 }

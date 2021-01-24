@@ -25,12 +25,10 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Coordinate;
+import utilities.*;
+import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
-import utilities.MapConverter;
-import utilities.SoundHandler;
-import utilities.Utilities;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 import utilities.enums.GameState;
@@ -49,7 +47,7 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
  *
  * @author Simon, Sarah
  */
-public class GameViewController extends Controller {
+public class GameViewController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
@@ -91,8 +89,13 @@ public class GameViewController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
+
+    @FXML
+    private Label infoLabel;
+
     private int currentRound = 1;
     private boolean first = true;
+
     @FXML
     public void initialize() {
         constructPhaseViews();
@@ -516,5 +519,14 @@ public class GameViewController extends Controller {
         ImageView imageView = robotImageViews.get(player);
         robotPane.getChildren().remove(imageView);
         //TODO remove small player mat
+    }
+
+    @Override
+    public void update(JSONMessage message) {
+
+    }
+
+    public void displayError(String error) {
+        infoLabel.setText(error);
     }
 }

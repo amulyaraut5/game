@@ -3,7 +3,7 @@ package game;
 /**
  * TODO
  */
-
+@Deprecated
 public class GameController{
 
 	private GameController instance;

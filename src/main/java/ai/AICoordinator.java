@@ -158,13 +158,8 @@ public class AICoordinator {
     }
 
     private void chooseCards(YourCards yourCards) {
-        //for (int i = 0; i < 5; i++) {
-        //   client.sendMessage(new SelectCard(yourCards.getCards().get(i), i + 1));
-        //}
-        ArrayList<CardType> availableCards = new ArrayList<>();
-        for (CardType card  : yourCards.getCards()){
-            availableCards.add(card);
-        }
+        ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
+
         for(int i = 0; i < 5; i++){
             int rdm = new Random().nextInt(availableCards.size());
             client.sendMessage(new SelectCard(availableCards.get(rdm), i));
