@@ -17,7 +17,6 @@ import utilities.enums.GameState;
 import utilities.enums.MessageType;
 import utilities.enums.Orientation;
 
-import java.io.CharArrayReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -107,7 +106,7 @@ public class AICoordinator {
                     Energy energy = (Energy) message.getBody();
                     //TODO nothing
                 }
-                case CheckPointReached -> {
+                case CheckpointReached -> {
                     CheckpointReached msg = (CheckpointReached) message.getBody();
                     getPlayerFromID(msg.getPlayerID()).setCheckPointCounter(msg.getNumber());
                 }
@@ -161,9 +160,9 @@ public class AICoordinator {
     private void chooseCards(YourCards yourCards) {
         ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
 
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             int rdm = new Random().nextInt(availableCards.size());
-            client.sendMessage(new SelectCard(availableCards.get(rdm), i+1));
+            client.sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
             availableCards.remove(rdm);
         }
     }
@@ -181,22 +180,22 @@ public class AICoordinator {
         return null;
     }
 
-    public void choosePlayerValues(){
+    public void choosePlayerValues() {
 
         List<Integer> a = new ArrayList<>();
         List<Integer> b = new ArrayList<>();
 
-        for(Player player : players){
+        for (Player player : players) {
             a.add(player.getFigure());
         }
 
-        for(int  i = 0; i < 6; i++){
+        for (int i = 0; i < 6; i++) {
             b.add(i);
         }
 
         b.removeAll(a);
 
-        if(b.size() > 0){
+        if (b.size() > 0) {
             String name = b.get(0).toString() + "_AI";
             client.sendMessage(new PlayerValues(name, b.get(0)));
         }

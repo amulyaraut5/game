@@ -2,7 +2,6 @@ package game.round;
 
 import game.Player;
 import game.gameActions.AgainAction;
-import game.gameActions.MoveRobotBack;
 import game.gameActions.RebootAction;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Spam;
@@ -11,15 +10,15 @@ import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
-import game.gameObjects.tiles.*;
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Gear;
+import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
-import utilities.Utilities;
-import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -58,7 +57,7 @@ public class ActivationPhase extends Phase {
 
     private ArrayList<Player> activePlayers = playerList;
 
-    ArrayList<Player> rebootedPlayers = new ArrayList<>();
+    private ArrayList<Player> rebootedPlayers = new ArrayList<>();
 
     /**
      * keeps track of the current register
@@ -117,7 +116,7 @@ public class ActivationPhase extends Phase {
                     turnCards(currentRegister);
                 } else { //if it is already the 5th register the next phase is called
 
-                    if(rebootedPlayers != null){
+                    if (rebootedPlayers != null) {
                         activePlayers.addAll(rebootedPlayers);
                         rebootedPlayers.clear();
                     }
@@ -176,21 +175,19 @@ public class ActivationPhase extends Phase {
                 //handle different tile effects here
                 case Wall -> {
                     Wall temp = (Wall) a;
-                    if(!(temp.getOrientations()==null)){
+                    if (!(temp.getOrientations() == null)) {
                         for (Orientation orientation : temp.getOrientations()) {
                             if (orientation == o) canMove = false;
                         }
+                    } else {
+                        if (temp.getOrientation() == o) canMove = false;
                     }
-                    else{
-                        if(temp.getOrientation()==o) canMove=false;
-                    }
-
                 }
             }
         }
 
         //look for a blocking wall on new tile
-        if(!newPosition.isOutOfBound()) {
+        if (!newPosition.isOutOfBound()) {
             for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
                 switch (a.getType()) {
                     //handle different tile effects here
@@ -204,10 +201,7 @@ public class ActivationPhase extends Phase {
                             if (temp.getOrientation() == o.getOpposite()) canMove = false;
                         }
                     }
-
-                    case Antenna -> {
-                        canMove = false;
-                    }
+                    case Antenna -> canMove = false;
                 }
             }
         }
@@ -337,10 +331,9 @@ public class ActivationPhase extends Phase {
     }
 
     public void handleTile(Player player) {
-        if(player.getRobot().getCoordinate().isOutOfBound()){
+        if (player.getRobot().getCoordinate().isOutOfBound()) {
             new RebootAction().doAction(Orientation.LEFT, player);
-        }
-        else {
+        } else {
             for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 switch (a.getType()) {
                     case Gear:
@@ -386,70 +379,70 @@ public class ActivationPhase extends Phase {
 
         int sortedDistanceSize = sortedDistance.size();
 
-    for(int i = 0; i < sortedDistanceSize; i++) {
-        if (sortedDistance.size() == 0){
-            return playerPriority;
-        } else if (sortedDistance.size() == 1) {
-            //logger.info("calculatePrio 1.if - HIER - " + sortedDistance.toString());
-            playerPriority.add(sortedDistance.get(0).getPlayer());
-            //logger.info("hier1");
-            sortedDistance.remove(0);
+        for (int i = 0; i < sortedDistanceSize; i++) {
+            if (sortedDistance.size() == 0) {
+                return playerPriority;
+            } else if (sortedDistance.size() == 1) {
+                //logger.info("calculatePrio 1.if - HIER - " + sortedDistance.toString());
+                playerPriority.add(sortedDistance.get(0).getPlayer());
+                //logger.info("hier1");
+                sortedDistance.remove(0);
 
-            //objects have the same distance values -> selection by clockwise antenna beam
-        } else if (sortedDistance.get(0).getDistance() == sortedDistance.get(1).getDistance()) {
-            //logger.info("hier");
-            //add the robots with same distance into a list
-            ArrayList<RobotDistance> sameDistance = new ArrayList<>();
+                //objects have the same distance values -> selection by clockwise antenna beam
+            } else if (sortedDistance.get(0).getDistance() == sortedDistance.get(1).getDistance()) {
+                //logger.info("hier");
+                //add the robots with same distance into a list
+                ArrayList<RobotDistance> sameDistance = new ArrayList<>();
 
-            RobotDistance firstSameDistance = sortedDistance.get(0);
+                RobotDistance firstSameDistance = sortedDistance.get(0);
 
-            int tempSortedDistanceSize = sortedDistance.size();
-            //logger.info("00: " +tempSortedDistanceSize);
+                int tempSortedDistanceSize = sortedDistance.size();
+                //logger.info("00: " +tempSortedDistanceSize);
 
-            //compare first element with same distance with all following elements and add matching ones to list sameDistance
-            for (int k = 0; k < tempSortedDistanceSize; k++) {
-                //logger.info("0for: " +sortedDistance.size());
-                if (firstSameDistance.getDistance() == sortedDistance.get(0).getDistance()) {
-                    sameDistance.add(sortedDistance.get(0));
-                    //logger.info("1for: " + sameDistance);
-                    sortedDistance.remove(sortedDistance.get(0));
-                    //logger.info("2for: " + sortedDistance);
+                //compare first element with same distance with all following elements and add matching ones to list sameDistance
+                for (int k = 0; k < tempSortedDistanceSize; k++) {
+                    //logger.info("0for: " +sortedDistance.size());
+                    if (firstSameDistance.getDistance() == sortedDistance.get(0).getDistance()) {
+                        sameDistance.add(sortedDistance.get(0));
+                        //logger.info("1for: " + sameDistance);
+                        sortedDistance.remove(sortedDistance.get(0));
+                        //logger.info("2for: " + sortedDistance);
+                    }
                 }
-            }
-            //sort sameDistance by yCoordinate -> smallest y coordinate first
-            sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
-            //logger.info("3- sameDistance.sort: " + sameDistance);
+                //sort sameDistance by yCoordinate -> smallest y coordinate first
+                sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
+                //logger.info("3- sameDistance.sort: " + sameDistance);
 
-            ArrayList<Player> greaterThanAntenna = new ArrayList<>();
-            ArrayList<Player> smallerThanAntenna = new ArrayList<>();
+                ArrayList<Player> greaterThanAntenna = new ArrayList<>();
+                ArrayList<Player> smallerThanAntenna = new ArrayList<>();
 
-            for (RobotDistance rd : sameDistance) {
-                int antennaY = antenna.getY();
-                int robotY = rd.getRobot().getCoordinate().getY();
+                for (RobotDistance rd : sameDistance) {
+                    int antennaY = antenna.getY();
+                    int robotY = rd.getRobot().getCoordinate().getY();
 
-                if (robotY < antennaY) {
-                    smallerThanAntenna.add(rd.getPlayer());
-                    //logger.info("5- smaller: " +smallerThanAntenna);
-                } else if (robotY > antennaY) {
-                    greaterThanAntenna.add(rd.getPlayer());
-                    //logger.info("6- greater: " +greaterThanAntenna);
-                } else {
-                    playerPriority.add(rd.getPlayer());
-                    //logger.info("7- equal: " +playerPriority);
+                    if (robotY < antennaY) {
+                        smallerThanAntenna.add(rd.getPlayer());
+                        //logger.info("5- smaller: " +smallerThanAntenna);
+                    } else if (robotY > antennaY) {
+                        greaterThanAntenna.add(rd.getPlayer());
+                        //logger.info("6- greater: " +greaterThanAntenna);
+                    } else {
+                        playerPriority.add(rd.getPlayer());
+                        //logger.info("7- equal: " +playerPriority);
+                    }
                 }
-            }
-            playerPriority.addAll(greaterThanAntenna);
-            playerPriority.addAll(smallerThanAntenna);
-            //logger.info("8- end of else if :" +playerPriority);
+                playerPriority.addAll(greaterThanAntenna);
+                playerPriority.addAll(smallerThanAntenna);
+                //logger.info("8- end of else if :" +playerPriority);
 
-        //first and second object have different distance values -> first player in list is currentPlayer
-        } else {
-            playerPriority.add(sortedDistance.get(0).getPlayer());
-            //logger.info("calculatePrio - ELSE:" + playerPriority);
-            sortedDistance.remove(0);
-            //logger.info("calculatePrio 3.else - HIER - " + sortedDistance.toString());
+                //first and second object have different distance values -> first player in list is currentPlayer
+            } else {
+                playerPriority.add(sortedDistance.get(0).getPlayer());
+                //logger.info("calculatePrio - ELSE:" + playerPriority);
+                sortedDistance.remove(0);
+                //logger.info("calculatePrio 3.else - HIER - " + sortedDistance.toString());
+            }
         }
-    }
 
         //logger.info("calculatePrio -RETURN: " + playerPriority);
         return playerPriority;
@@ -489,6 +482,18 @@ public class ActivationPhase extends Phase {
         return sortedDistance;
     }
 
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
+    }
+
+    public int getCurrentRegister() {
+        return this.currentRegister;
+    }
+
+    public ArrayList<Player> getRebootedPlayers() {
+        return rebootedPlayers;
+    }
+
     /**
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
@@ -520,7 +525,8 @@ public class ActivationPhase extends Phase {
         public int getYCoordinate() {
             return yCoordinate;
         }
-    //TODO remove after testing
+
+        //TODO remove after testing
         @Override
         public String toString() {
             return "RobotDistance{" +
@@ -530,17 +536,5 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
-    }
-
-    public ArrayList<Player> getActivePlayers() {
-        return activePlayers;
-    }
-
-    public int getCurrentRegister(){
-        return this.currentRegister;
-    }
-
-    public ArrayList<Player> getRebootedPlayers() {
-        return rebootedPlayers;
     }
 }
