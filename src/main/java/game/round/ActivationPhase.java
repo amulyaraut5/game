@@ -201,6 +201,7 @@ public class ActivationPhase extends Phase {
                             if (temp.getOrientation() == o.getOpposite()) canMove = false;
                         }
                     }
+                    case Antenna -> canMove = false;
                 }
             }
         }
