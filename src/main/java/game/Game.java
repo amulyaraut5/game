@@ -129,7 +129,7 @@ public class Game {
         //check if playes has already set their starting point
         if (player.getRobot().getCoordinate() == null) {
             //check if chosen tile is StartingPoint
-            boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);
+            boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);//TODO Index -1 out of bounds for length 13
             if (isOnStartPoint) {
                 //check if no other player is on the chosen tile
                 for (Player other : players) {

@@ -4,7 +4,6 @@ import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
-import game.gameObjects.cards.DamageCard;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -261,7 +260,7 @@ public class Client {
                         gameController.getOthersController().addEnergy(energy);
                     }
                 }
-                case CheckPointReached -> {
+                case CheckpointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     if (checkpointsReached.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
@@ -309,7 +308,7 @@ public class Client {
                 }
                 //TODO
                 case DrawDamage -> {
-                    DamageCard damageCard = (DamageCard) message.getBody();
+                    DrawDamage drawDamage = (DrawDamage) message.getBody();
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }

@@ -191,7 +191,6 @@ public class Server extends Thread {
         if (hs.getProtocol() == Utilities.PROTOCOL) {
             user.setID(idCounter++);
             currentThread().setName("UserThread-" + user.getID());
-            user.message(new Welcome(user.getID()));
 
             for (User u : users) {
                 if (u.getName() != null) {
@@ -201,6 +200,8 @@ public class Server extends Thread {
             for (User readyUser : readyUsers) {
                 user.message(new PlayerStatus(readyUser.getID(), true));
             }
+
+            user.message(new Welcome(user.getID()));
         } else {
             JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
                     "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
