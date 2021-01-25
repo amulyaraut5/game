@@ -58,6 +58,8 @@ public class ActivationPhase extends Phase {
 
     private ArrayList<Player> activePlayers = playerList;
 
+    ArrayList<Player> rebootedPlayers = new ArrayList<>();
+
     /**
      * keeps track of the current register
      */
@@ -114,6 +116,11 @@ public class ActivationPhase extends Phase {
                     currentRegister++;
                     turnCards(currentRegister);
                 } else { //if it is already the 5th register the next phase is called
+
+                    if(rebootedPlayers != null){
+                        activePlayers.addAll(rebootedPlayers);
+                        rebootedPlayers.clear();
+                    }
                     game.nextPhase();
                 }
             } else {
@@ -134,6 +141,8 @@ public class ActivationPhase extends Phase {
         activationElements.activateGear();
         laserAction.activateBoardLaser();
         laserAction.activateRobotLaser();
+        activationElements.activateEnergySpace();
+        activationElements.activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
@@ -335,14 +344,8 @@ public class ActivationPhase extends Phase {
                         } else {
                             player.getRobot().rotate(Rotation.LEFT);
                         }
-                    /*case Pit:
+                    case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
-
-                     */
-
-                    case ControlPoint:
-                        player.checkPointReached();
-                        server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
                     default:
                         logger.info("Hello");
                         server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
@@ -530,5 +533,9 @@ public class ActivationPhase extends Phase {
 
     public int getCurrentRegister(){
         return this.currentRegister;
+    }
+
+    public ArrayList<Player> getRebootedPlayers() {
+        return rebootedPlayers;
     }
 }

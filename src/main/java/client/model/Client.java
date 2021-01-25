@@ -4,6 +4,7 @@ import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
+import game.gameObjects.cards.DamageCard;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -305,6 +306,10 @@ public class Client {
                 case PlayerShooting -> {
                     gameController.handleShooting(players);
                     gameController.handleRobotShooting(players);
+                }
+                //TODO
+                case DrawDamage -> {
+                    DamageCard damageCard = (DamageCard) message.getBody();
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }

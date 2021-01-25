@@ -76,7 +76,7 @@ public class ActivationElements {
 
     /**
      * Checkpoint is the final destination of the game and player wins the game as
-     * soon as the player has reached all the checkpoints in chronological order.
+     * soon as the player has reached all the checkpoints in numerical order.
      * The player gets the checkpoint token.
      * CheckPointReached and GameWon Protocol are sent.
      */
