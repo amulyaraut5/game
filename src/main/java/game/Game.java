@@ -43,7 +43,6 @@ public class Game {
     private WormDeck wormDeck;
     private TrojanDeck trojanDeck;
 
-    private int noOfCheckpoints;
     private Map map;
 
     private ProgrammingPhase programmingPhase;
@@ -164,10 +163,6 @@ public class Game {
             }
         }
         return null;
-    }
-
-    public int getNoOfCheckPoints() {
-        return this.noOfCheckpoints;
     }
 
     public Map getMap() {

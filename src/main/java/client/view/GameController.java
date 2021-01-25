@@ -185,8 +185,8 @@ public class GameController extends Controller implements Updateable {
         ImageView imageView = robotTokens.get(player);
         Coordinate oldPos = player.getRobot().getCoordinate();
         player.getRobot().setCoordinate(newPos);
-        //System.out.println("Old Coordinate: x " + oldPos.getX() + "y:" + oldPos.getY());
-        //System.out.println("New Coordinate: x " + newPos.getX() + "y:" + newPos.getY());
+        //logger.info("Old Coordinate: x " + oldPos.getX() + "y:" + oldPos.getY());
+        //logger.info("New Coordinate: x " + newPos.getX() + "y:" + newPos.getY());
 
         imageView.setX(oldPos.getX() * Utilities.FIELD_SIZE);
         imageView.setY(oldPos.getY() * Utilities.FIELD_SIZE);
@@ -202,7 +202,6 @@ public class GameController extends Controller implements Updateable {
             imageView.setTranslateX(0);
             imageView.setTranslateY(0);
         });
-
         transition.play();
     }
 
@@ -280,7 +279,6 @@ public class GameController extends Controller implements Updateable {
         for (Player player : players) {
             Orientation orientation = player.getRobot().getOrientation();
             Coordinate robotPosition = player.getRobot().getCoordinate();
-            System.out.println(orientation.name());
 
             ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/laser/animation/laserBeam_1.png").toExternalForm()));
             imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));

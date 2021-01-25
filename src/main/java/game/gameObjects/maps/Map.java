@@ -141,17 +141,19 @@ public class Map {
      * This method stores all the control points coordinates from the actual
      * version of map and returns it.
      */
-    public void readControlPointCoordinate() {
+    public ArrayList<Coordinate> readControlPointCoordinate() {
+        ArrayList<Coordinate> checkPoints = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == AttributeType.ControlPoint) {
                         Coordinate temp = new Coordinate(i, j);
-                        controlPointCoordinates.add(temp);
+                        checkPoints.add(temp);
                     }
                 }
             }
         }
+        return checkPoints;
     }
 
     /**

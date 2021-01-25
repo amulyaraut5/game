@@ -159,7 +159,6 @@ public class Client {
                         lobbyController.removePlayer(player);
                         gameController.removePlayer(player);
                         players.remove(player);
-
                     }
                 }
                 case PlayerStatus -> {
