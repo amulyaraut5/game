@@ -38,19 +38,21 @@ public class ActivationController extends Controller {
     private int pickDamage;
     private int registerNr = 1; //TODO reset after 5 registers
 
+
+    public void reset(){
+        registerNr = 1;
+        playItButton.setDisable(true);
+    }
     public void initialize() {
         selectDamageAnchorPane.setVisible(false);
         playItButton.setDisable(true);
-
     }
 
 
     public void currentCards(CardType cardType){
         currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + cardType + "-card.png").toString()));
         register.setText("Register " + registerNr);
-
         registerNr ++;
-
     }
 
     public void currentPlayer(boolean turn){

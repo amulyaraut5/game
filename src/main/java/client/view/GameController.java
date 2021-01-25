@@ -490,19 +490,21 @@ public class GameController extends Controller implements Updateable {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
+                getPlayerMapController().fixSelectedCards(false);
                 roundPane.setVisible(true);
                 roundLabel.setText("Round " + currentRound);
                 currentRound++;
                 if (!first) {
                     getPlayerMapController().reset();
                     othersController.reset();
+                    getActivationController().reset();
                 }
                 client.setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
-                getPlayerMapController().fixSelectedCards();
+                getPlayerMapController().fixSelectedCards(true);
                 getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);

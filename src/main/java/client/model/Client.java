@@ -196,7 +196,7 @@ public class Client {
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().fixSelectedCards();
+                        gameController.getPlayerMapController().fixSelectedCards(true);
                         allRegistersAsFirst = true;
                     } else {
                         //gameViewController.getPlayerMapController().fixSelectedCards();
