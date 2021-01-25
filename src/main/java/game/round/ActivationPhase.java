@@ -258,7 +258,7 @@ public class ActivationPhase extends Phase {
                 logger.info(player.getName() + " performed U-Turn");
             }
             case BackUp -> {
-                new MoveRobotBack().doAction(orientation, player);
+                handleMove(player, player.getRobot().getOrientation().getOpposite());
                 server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 logger.info(player.getName() + " moved back.");
             }

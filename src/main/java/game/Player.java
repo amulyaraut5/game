@@ -18,7 +18,6 @@ public class Player extends User {
 
     protected Game game = Game.getInstance();
 
-    private int currentRegister;//TODO remove
     /**
      * contains the chosen Cards for each register
      */
@@ -140,10 +139,6 @@ public class Player extends User {
 
     public Robot getRobot() {
         return this.robot;
-    }
-
-    public int getCurrentRegister() {
-        return currentRegister;
     }
 
     public int getCheckPointCounter() {

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Timer;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.
@@ -56,7 +57,19 @@ public class ReaderThread extends Thread {
      */
     @Override
     public void run() {
-
+        if(client.isAI()) {
+            Timer t = new java.util.Timer();
+            t.schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            client.getAiCoordinator().choosePlayerValues();
+                            t.cancel();
+                        }
+                    },
+                    1000
+            );
+        }
         while (!isInterrupted()) {
             try {
                 String jsonText = reader.readLine();
