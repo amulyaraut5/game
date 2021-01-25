@@ -155,8 +155,9 @@ public class PlayerMatController extends Controller {
 
     }
 
-    public void fixSelectedCards() {
-        eventOn = false;
+    public void fixSelectedCards(boolean setOn) {
+        if(setOn) eventOn = false;
+        else eventOn = true;
     }
 
     private void mouseDragOver(DragEvent event, StackPane pane) {
