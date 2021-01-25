@@ -11,15 +11,15 @@ import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Gear;
-import game.gameObjects.tiles.Wall;
+import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
+import utilities.Utilities;
+import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -184,6 +184,7 @@ public class ActivationPhase extends Phase {
                     else{
                         if(temp.getOrientation()==o) canMove=false;
                     }
+
                 }
             }
         }
@@ -202,6 +203,10 @@ public class ActivationPhase extends Phase {
                         } else {
                             if (temp.getOrientation() == o.getOpposite()) canMove = false;
                         }
+                    }
+
+                    case Antenna -> {
+                        canMove = false;
                     }
                 }
             }
