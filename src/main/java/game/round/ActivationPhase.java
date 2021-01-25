@@ -207,13 +207,14 @@ public class ActivationPhase extends Phase {
         }
 
         //Handle collisions
-        for (Player currentPlayer : playerList) {
-            if (newPosition.equals(currentPlayer.getRobot().getCoordinate())) {
-                Coordinate old = currentPlayer.getRobot().getCoordinate();
-                handleMove(currentPlayer, o);
-                if ((old.equals(currentPlayer.getRobot().getCoordinate()))) {
+        for (Player collisionPlayer : playerList) {
+            if (newPosition.equals(collisionPlayer.getRobot().getCoordinate())) {
+                Coordinate old = collisionPlayer.getRobot().getCoordinate().clone();
+                handleMove(collisionPlayer, o);
+                if ((old.equals(collisionPlayer.getRobot().getCoordinate()))) {
                     canMove = false;
                 }
+
             }
         }
         //move robot, activate board element if given

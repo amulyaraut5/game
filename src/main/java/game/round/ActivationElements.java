@@ -35,17 +35,6 @@ public class ActivationElements {
     public ActivationElements(ActivationPhase activationPhase){
         this.activationPhase = activationPhase;
     }
-    public void activatePit() {
-        for (Coordinate coordinate :map.getPitCoordinates()) {
-            for(Player player: playerList){
-                if (player.getRobot().getCoordinate() == coordinate) {
-                    new RebootAction().doAction(player.getRobot().getOrientation(), player);
-                    JSONBody jsonBody = new Reboot(player.getID());
-                    player.message(jsonBody);
-                }
-            }
-        }
-    }
 
     /**
      * Gears rotate robots resting on them 90 degrees in the direction of the arrows.
@@ -185,7 +174,7 @@ public class ActivationElements {
         }
 
         for (Player player : playersOnBelt) {
-            oldPositions.add(player.getRobot().getCoordinate());
+            oldPositions.add(player.getRobot().getCoordinate().clone());
         }
         boolean finished = false;
         while(!finished){
@@ -275,7 +264,7 @@ public class ActivationElements {
         }
 
         for (Player player : playersOnBelt) {
-            oldPositions.add(player.getRobot().getCoordinate());
+            oldPositions.add(player.getRobot().getCoordinate().clone());
         }
 
         for (int i = 0; i < 2; i++){
