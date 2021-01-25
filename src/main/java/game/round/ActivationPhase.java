@@ -336,12 +336,6 @@ public class ActivationPhase extends Phase {
         } else {
             for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 switch (a.getType()) {
-                    case Gear:
-                        if (((Gear) a).getOrientation() == Rotation.RIGHT) {
-                            player.getRobot().rotate(Rotation.RIGHT);
-                        } else {
-                            player.getRobot().rotate(Rotation.LEFT);
-                        }
                     case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
                     default:
