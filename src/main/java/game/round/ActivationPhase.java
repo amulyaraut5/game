@@ -53,7 +53,7 @@ public class ActivationPhase extends Phase {
     /**
      * TODO
      */
-    private ActivationElements activationElements = new ActivationElements();
+    private ActivationElements activationElements = new ActivationElements(this);
     private LaserAction laserAction = new LaserAction();
 
     private ArrayList<Player> activePlayers = playerList;
@@ -211,13 +211,14 @@ public class ActivationPhase extends Phase {
         //move robot, activate board element if given
         if (canMove) {
             moveOne(player, o);
-            handleTile(player);
+            //handleTile(player);
         }
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+        //server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
+        handleTile(player);
     }
 
     public void handleCard(CardType cardType, Player player) {
@@ -344,7 +345,7 @@ public class ActivationPhase extends Phase {
                         server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
                     default:
                         logger.info("Hello");
-                        //server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
+                        server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 }
             }
         }

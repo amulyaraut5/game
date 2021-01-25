@@ -30,7 +30,11 @@ public class ActivationElements {
      * Player landing on pit needs to reboot.
      * Player is suspended from the current round and must discard all programming cards.
      * Reboot Protocol is sent to the player.
-     */
+     **/
+
+    public ActivationElements(ActivationPhase activationPhase){
+        this.activationPhase = activationPhase;
+    }
     public void activatePit() {
         for (Coordinate coordinate :map.getPitCoordinates()) {
             for(Player player: playerList){
@@ -172,7 +176,7 @@ public class ActivationElements {
                             orientations.add(((Belt) a).getOrientation());
                         }
                         if(a.getType() == AttributeType.RotatingBelt){
-                            orientations.add(((RotatingBelt) a).getOrientations()[1]);
+                            orientations.add(((RotatingBelt) a).getOrientations()[0]);
                         }
                     }
 
@@ -205,6 +209,8 @@ public class ActivationElements {
                     }
                     if(move){
                         player.getRobot().setCoordinate(newPos);
+                        actionFinished.set(playersOnBelt.indexOf(player), true);
+
                     }
                 }
             }
@@ -215,7 +221,7 @@ public class ActivationElements {
         }
 
         for (Player p : playersOnBelt) {
-            if(p.getRobot().getCoordinate()==oldPositions.get(playersOnBelt.indexOf(p))){
+            if(!(p.getRobot().getCoordinate()==oldPositions.get(playersOnBelt.indexOf(p)))){
                 activationPhase.handleTile(p);
             }
         }
@@ -260,7 +266,7 @@ public class ActivationElements {
                             orientations.add(((Belt) a).getOrientation());
                         }
                         if(a.getType() == AttributeType.RotatingBelt){
-                            orientations.add(((RotatingBelt) a).getOrientations()[1]);
+                            orientations.add(((RotatingBelt) a).getOrientations()[0]);
                         }
                     }
 
@@ -295,6 +301,11 @@ public class ActivationElements {
                             }
                             if(!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
                         }
+                        for(Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()){
+                            if(a.getType() == AttributeType.RotatingBelt){
+                                orientations.set(playersOnBelt.indexOf(player), ((RotatingBelt) a).getOrientations()[0]);
+                            }
+                        }
                     }
                     if (!actionFinished.get(playersOnBelt.indexOf(player))) {
                         boolean move = true;
@@ -314,22 +325,23 @@ public class ActivationElements {
                         }
                         if (move) {
                             player.getRobot().setCoordinate(newPos);
+                            actionFinished.set(playersOnBelt.indexOf(player), true);
                         }
                     }
                 }
 
                 if (!actionFinished.contains(false)) {
-                    finished = true;
+                   finished = true;
                 }
             }
         }
-
         for (Player p : playersOnBelt) {
-            if(p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))){
+            if(!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))){
                 activationPhase.handleTile(p);
             }
         }
     }
+
 
 
 
