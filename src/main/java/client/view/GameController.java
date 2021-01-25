@@ -256,7 +256,7 @@ public class GameController extends Controller implements Updateable {
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
 
                     TranslateTransition transition = new TranslateTransition();
-                    transition.setDuration(Duration.seconds(2));
+                    transition.setDuration(Duration.seconds(4));
                     transition.setNode(imageView);
                     transition.setToX((newPos.getX() - c.getX()) * Utilities.FIELD_SIZE);
                     transition.setToY((newPos.getY() - c.getY()) * Utilities.FIELD_SIZE);
@@ -298,7 +298,7 @@ public class GameController extends Controller implements Updateable {
             imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
 
             TranslateTransition transition = new TranslateTransition();
-            transition.setDuration(Duration.seconds(2));
+            transition.setDuration(Duration.seconds(4));
             transition.setNode(imageView);
             transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
             transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);
@@ -368,8 +368,6 @@ public class GameController extends Controller implements Updateable {
                     if (coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
                 }
             }
-            // Exception if robot laser cannot move one space or is blocked by wall
-
             return path.get(path.size() - 1);
         }
     }

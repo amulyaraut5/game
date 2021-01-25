@@ -335,11 +335,8 @@ public class ActivationPhase extends Phase {
                         } else {
                             player.getRobot().rotate(Rotation.LEFT);
                         }
-                    /*case Pit:
+                    case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
-
-                     */
-
                     case ControlPoint:
                         player.checkPointReached();
                         server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
