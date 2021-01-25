@@ -276,9 +276,8 @@ public class ActivationPhase extends Phase {
                 server.communicateAll(new Energy(player.getID(), 1));
                 logger.info(player.getName() + " got one EnergyCube.");
             }
-            case Again -> {
-                new AgainAction().doAction(orientation, player);
-            }
+            case Again -> handleRecursion(player, orientation);
+
             case Spam -> {
                 //Add spam card back into the spam deck
                 game.getSpamDeck().addCard(new Spam());
@@ -328,6 +327,22 @@ public class ActivationPhase extends Phase {
                 handleCard(topCard.getName(), player);
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
+        }
+    }
+
+    public void handleRecursion(Player player, Orientation orientation){
+        if (this.currentRegister == 1) {
+            player.message(new Error("No Previous Movement Recorded"));
+        }
+        else{
+            if(player.getLastRegisterCard() == CardType.Again){
+                int currentRegister = this.getCurrentRegister();
+                Card card = player.getRegisterCard(currentRegister-2);
+                handleCard(card.getName(), player);
+            }
+            else {
+                new AgainAction().doAction(orientation, player);
+            }
         }
     }
 
