@@ -3,7 +3,6 @@ package client.model;
 import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
-import client.view.ChatController;
 import game.Player;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
@@ -44,7 +43,7 @@ public class Client {
     private PrintWriter writer;
     private boolean allRegistersAsFirst = false;
 
-    private GameViewController gameViewController;
+    private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
     private ChatController chatController;
@@ -147,7 +146,6 @@ public class Client {
                 case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
-
                 }
                 case Error -> {
                     Error error = (Error) message.getBody(); //TODO
@@ -159,7 +157,7 @@ public class Client {
                         Player player = getPlayerFromID(msg.getID());
                         loginController.removePlayer(player);
                         lobbyController.removePlayer(player);
-                        gameViewController.removePlayer(player);
+                        gameController.removePlayer(player);
                         players.remove(player);
 
                     }
@@ -174,41 +172,41 @@ public class Client {
                 }
                 case GameStarted -> {
                     GameStarted gameStarted = (GameStarted) message.getBody();
-                    gameViewController.buildMap(gameStarted);
-                    gameViewController.getOthersController().createPlayerMats(players);
+                    gameController.buildMap(gameStarted);
+                    gameController.getOthersController().createPlayerMats(players);
                     viewManager.showGame();
                 }
                 case StartingPointTaken -> {
                     StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                    gameViewController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
+                    gameController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
 
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
-                    gameViewController.changePhaseView(activePhase.getPhase());
+                    gameController.changePhaseView(activePhase.getPhase());
                 }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
-                    gameViewController.getProgrammingController().startProgrammingPhase(yourCards.getCards());
+                    gameController.getProgrammingController().startProgrammingPhase(yourCards.getCards());
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
-                    gameViewController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+                    gameController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
-                        gameViewController.getPlayerMapController().fixSelectedCards();
+                        gameController.getPlayerMapController().fixSelectedCards();
                         allRegistersAsFirst = true;
                     } else {
                         //gameViewController.getPlayerMapController().fixSelectedCards();
-                        gameViewController.getOthersController().playerWasFirst(selectionFinished);
+                        gameController.getOthersController().playerWasFirst(selectionFinished);
                         allRegistersAsFirst = false;
                     }
 
                 }
                 case TimerStarted -> {
-                    gameViewController.getProgrammingController().startTimer(allRegistersAsFirst);
+                    gameController.getProgrammingController().startTimer(allRegistersAsFirst);
 
                     ///////////JUST FOR TESTING PURPOSE
                     /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
@@ -226,27 +224,28 @@ public class Client {
 
                 }
                 case TimerEnded -> {
-                    gameViewController.getProgrammingController().setTimerEnded(true);
+                    gameController.getProgrammingController().setTimerEnded(true);
 
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
                     ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
-                    for(RegisterCard registerCard : currentCards.getActiveCards()){
-                        if(registerCard.getPlayerID() == thisPlayersID) gameViewController.getActivationController().currentCards(registerCard.getCard());
+                    for (RegisterCard registerCard : currentCards.getActiveCards()) {
+                        if (registerCard.getPlayerID() == thisPlayersID)
+                            gameController.getActivationController().currentCards(registerCard.getCard());
                         else otherPlayer.add(registerCard);
                     }
-                    gameViewController.getOthersController().currentCards(otherPlayer);
+                    gameController.getOthersController().currentCards(otherPlayer);
 
                 }
                 case CurrentPlayer -> {
                     CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
-                    if( currentPlayer.getPlayerID() == thisPlayersID){
-                        gameViewController.getActivationController().currentPlayer(true);
-                        gameViewController.getOthersController().setInfoLabel(currentPlayer, true);
+                    if (currentPlayer.getPlayerID() == thisPlayersID) {
+                        gameController.getActivationController().currentPlayer(true);
+                        gameController.getOthersController().setInfoLabel(currentPlayer, true);
                     } else {
-                        gameViewController.getActivationController().currentPlayer(false);
-                        gameViewController.getOthersController().setInfoLabel(currentPlayer, false);
+                        gameController.getActivationController().currentPlayer(false);
+                        gameController.getOthersController().setInfoLabel(currentPlayer, false);
                     }
                 }
                 case Reboot -> {
@@ -256,17 +255,17 @@ public class Client {
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
                     if (energy.getPlayerID() == thisPlayersID) {
-                        gameViewController.getPlayerMapController().addEnergy(energy.getCount());
+                        gameController.getPlayerMapController().addEnergy(energy.getCount());
                     } else {
-                        gameViewController.getOthersController().addEnergy(energy);
+                        gameController.getOthersController().addEnergy(energy);
                     }
                 }
                 case CheckPointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     if (checkpointsReached.getPlayerID() == thisPlayersID) {
-                        gameViewController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
+                        gameController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
                     } else {
-                        gameViewController.getOthersController().checkPointReached(checkpointsReached);
+                        gameController.getOthersController().checkPointReached(checkpointsReached);
                     }
 
                 }
@@ -276,22 +275,22 @@ public class Client {
                 }
                 case Movement -> {
                     Movement msg = (Movement) message.getBody();
-                    gameViewController.handleMovement(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
+                    gameController.handleMovement(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
 
                 }
                 case PlayerTurning -> {
                     PlayerTurning pT = (PlayerTurning) message.getBody();
-                    gameViewController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
+                    gameController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
 
                 }
                 case CardSelected -> {
                     CardSelected cardSelected = (CardSelected) message.getBody();
-                    gameViewController.getOthersController().getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
+                    gameController.getOthersController().getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
 
                 } //TODO
                 case NotYourCards -> {
                     NotYourCards notYourCards = (NotYourCards) message.getBody();
-                    gameViewController.getOthersController().setNotYourCards(notYourCards);
+                    gameController.getOthersController().setNotYourCards(notYourCards);
                 } //TODO
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
@@ -301,10 +300,11 @@ public class Client {
                 } //TODO
                 case PickDamage -> {
                     PickDamage pickDamage = (PickDamage) message.getBody();
-                    gameViewController.getActivationController().pickDamage(pickDamage);
-                }case PlayerShooting ->{
-                    gameViewController.handleShooting(players);
-                    gameViewController.handleRobotShooting(players);
+                    gameController.getActivationController().pickDamage(pickDamage);
+                }
+                case PlayerShooting -> {
+                    gameController.handleShooting(players);
+                    gameController.handleRobotShooting(players);
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
@@ -320,7 +320,7 @@ public class Client {
         players.add(player);
 
         if (thisPlayersID == player.getID()) {
-            gameViewController.getPlayerMapController().loadPlayerMap(player);
+            gameController.getPlayerMapController().loadPlayerMap(player);
             viewManager.showLobby();
         }
         loginController.setFigureTaken(player.getFigure(), true);
@@ -366,7 +366,8 @@ public class Client {
     public String getUniqueName(int id) {
         Player player = getPlayerFromID(id);
         for (Player p : players) {
-            if (player != p && player.getName().equals(p.getName())) return player.getName() + " #" + player.getID();
+            if (player != p && player.getName().equals(p.getName()))
+                return player.getName() + " #" + player.getID();
         }
         return player.getName();
     }
@@ -374,7 +375,7 @@ public class Client {
     public void setController(ArrayList<Controller> controllerList) {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
-        gameViewController = (GameViewController) controllerList.get(2);
+        gameController = (GameController) controllerList.get(2);
     }
 
     public ArrayList<Player> getPlayers() {

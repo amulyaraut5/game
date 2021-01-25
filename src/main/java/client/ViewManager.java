@@ -41,7 +41,7 @@ public class ViewManager {
     private MenuController menuController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private GameViewController gameViewController;
+    private GameController gameController;
 
     private Scene currentScene;
 
@@ -53,7 +53,9 @@ public class ViewManager {
 
                 constructMenuStage();
                 constructGameStage();
-                menuStage.show();
+
+                showMenu();
+                openMenuStage();
             } catch (IOException e) {
                 logger.error("Constructing Scenes failed: " + e.getMessage());
             }
@@ -69,7 +71,7 @@ public class ViewManager {
         if (currentScene == menuScene) menuController.displayError(error);
         if (currentScene == loginScene) loginController.displayError(error);
         if (currentScene == lobbyScene) lobbyController.displayError(error);
-        if (currentScene == gameScene) gameViewController.displayError(error);
+        if (currentScene == gameScene) gameController.displayError(error);
     }
 
     public void showMenu() {
@@ -97,7 +99,7 @@ public class ViewManager {
     }
 
     private void openGameStage() {
-        gameViewController.attachChatPane(chatPane);
+        gameController.attachChatPane(chatPane);
         menuStage.close();
         gameStage.show();
     }
@@ -121,7 +123,7 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
-            Client.getInstance().disconnect();
+            if (currentScene != menuScene) Client.getInstance().disconnect();
         });
     }
 
@@ -150,13 +152,13 @@ public class ViewManager {
         menuController = menuLoader.getController();
         loginController = loginLoader.getController();
         lobbyController = lobbyLoader.getController();
-        gameViewController = gameLoader.getController();
+        gameController = gameLoader.getController();
 
         ArrayList<Controller> controllerList = new ArrayList<>();
 
         controllerList.add(loginController);
         controllerList.add(lobbyController);
-        controllerList.add(gameViewController);
+        controllerList.add(gameController);
 
         Client.getInstance().setController(controllerList);
     }

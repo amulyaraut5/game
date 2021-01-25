@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0" style="-fx-background-color: lightgray;" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameViewController">
+<AnchorPane id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0" style="-fx-background-color: lightgray;" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameController">
     <children>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0">
         <columnConstraints>
@@ -64,7 +64,7 @@
                   <Pane fx:id="animationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
                   <Pane fx:id="robotPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
                </children></StackPane>
-            <StackPane id="playerMapStackPane" fx:id="playerMap" prefHeight="189.0" prefWidth="647.0" stylesheets="@login.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0" stylesheets="@login.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
         <Pane fx:id="roundPane" layoutX="805.0" layoutY="13.0" prefHeight="41.0" prefWidth="379.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">

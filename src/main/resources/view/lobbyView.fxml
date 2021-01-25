@@ -28,7 +28,7 @@
             
         </Label>
       <BorderPane fx:id="chatPane" layoutX="376.0" prefHeight="300.0" prefWidth="250.0" />
-      <FlowPane fx:id="playerTilePane" layoutX="58.0" layoutY="115.0" prefHeight="240.0" prefWidth="280.0" />
+      <FlowPane fx:id="playerIconPane" layoutX="58.0" layoutY="115.0" prefHeight="240.0" prefWidth="280.0" />
       <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="460.0" layoutY="329.0" onAction="#checkBoxAction" text="Ready!" textFill="#363636" unCheckedColor="#727272">
          <font>
             <Font name="System Bold" size="17.0" />

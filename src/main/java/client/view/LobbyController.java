@@ -29,14 +29,14 @@ import java.util.HashMap;
  */
 public class LobbyController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
-    private final HashMap<Player, VBox> playerTiles = new HashMap<>();
+    private final HashMap<Player, VBox> playerIcons = new HashMap<>();
 
     @FXML
     private BorderPane chatPane;
     @FXML
     private CheckBox readyCheckbox;
     @FXML
-    private FlowPane playerTilePane;
+    private FlowPane playerIconPane;
     @FXML
     private Label infoLabel;
 
@@ -73,8 +73,8 @@ public class LobbyController extends Controller implements Updateable {
         label.setAlignment(Pos.TOP_CENTER);
 
         VBox group = new VBox(imageView, label);
-        playerTilePane.getChildren().add(group);
-        playerTiles.put(player, group);
+        playerIconPane.getChildren().add(group);
+        playerIcons.put(player, group);
     }
 
 
@@ -91,7 +91,7 @@ public class LobbyController extends Controller implements Updateable {
         else path += ".png";
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         Image image = new Image(stream, 90, 90, true, true);
-        ImageView imageView = (ImageView) playerTiles.get(player).getChildren().get(0);
+        ImageView imageView = (ImageView) playerIcons.get(player).getChildren().get(0);
         imageView.setImage(image);
     }
 
@@ -105,8 +105,8 @@ public class LobbyController extends Controller implements Updateable {
     }
 
     public void removePlayer(Player player) {
-        VBox tile = playerTiles.get(player);
-        playerTilePane.getChildren().remove(tile);
+        VBox tile = playerIcons.get(player);
+        playerIconPane.getChildren().remove(tile);
     }
 
     @Override

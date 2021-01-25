@@ -8,8 +8,8 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Utilities;
-import utilities.enums.MessageType;
 import utilities.enums.GameState;
+import utilities.enums.MessageType;
 import utilities.enums.ServerState;
 
 import java.io.IOException;

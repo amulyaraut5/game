@@ -7,8 +7,10 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import game.gameObjects.tiles.Laser;
 import game.gameObjects.tiles.Wall;
-import javafx.animation.*;
-import javafx.application.Platform;
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +30,8 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.enums.AttributeType;
-import utilities.enums.Orientation;
 import utilities.enums.GameState;
+import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
 import java.io.IOException;
@@ -45,13 +47,13 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
  *
  * @author Simon, Sarah
  */
-public class GameViewController extends Controller implements Updateable {
+public class GameController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
-    private HashMap<Player, ImageView> robotImageViews = new HashMap<>();
+    private ArrayList<Coordinate> path = new ArrayList<>();
+    private HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
-    ArrayList<Coordinate> path = new ArrayList<>();
 
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -69,16 +71,17 @@ public class GameViewController extends Controller implements Updateable {
     private GameState currentPhase = GameState.CONSTRUCTION;
 
     @FXML
-    private StackPane playerMap;
-
+    private HBox otherPlayerSpace;
     @FXML
-    public HBox otherPlayerSpace;
+    private StackPane playerMat;
     @FXML
     private BorderPane phasePane;
     @FXML
     private BorderPane chatPane;
-    public Label roundLabel;
-    public Pane roundPane;
+    @FXML
+    private Label roundLabel;
+    @FXML
+    private Pane roundPane;
     @FXML
     private StackPane boardPane; //stacks the map-, animation-, and playerPane
     @FXML
@@ -100,8 +103,8 @@ public class GameViewController extends Controller implements Updateable {
         roundPane.setVisible(false);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
-            playerMap.setAlignment(Pos.CENTER);
-            playerMap.getChildren().add(fxmlLoader.load());
+            playerMat.setAlignment(Pos.CENTER);
+            playerMat.getChildren().add(fxmlLoader.load());
 
             playerMatController = fxmlLoader.getController();
         } catch (IOException e) {
@@ -119,8 +122,8 @@ public class GameViewController extends Controller implements Updateable {
         boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
-            int pos = x + y * Utilities.MAP_WIDTH;
-            client.sendMessage(new SetStartingPoint(pos));
+            int position = new Coordinate(x, y).toPosition();
+            client.sendMessage(new SetStartingPoint(position));
         });
 
         this.soundHandler = new SoundHandler();
@@ -175,15 +178,15 @@ public class GameViewController extends Controller implements Updateable {
         imageView.setY(coordinate.getY() * Utilities.FIELD_SIZE);
 
         // Stores the imageView of to change its coordinates later.
-        robotImageViews.put(player, imageView);
+        robotTokens.put(player, imageView);
     }
 
     public void handleMovement(Player player, Coordinate newPos) {
-        ImageView imageView = robotImageViews.get(player);
+        ImageView imageView = robotTokens.get(player);
         Coordinate oldPos = player.getRobot().getCoordinate();
         player.getRobot().setCoordinate(newPos);
-        System.out.println("Old Coordinate: x " + oldPos.getX() + "y:"+ oldPos.getY());
-        System.out.println("New Coordinate: x " + newPos.getX() + "y:"+ newPos.getY());
+        //System.out.println("Old Coordinate: x " + oldPos.getX() + "y:" + oldPos.getY());
+        //System.out.println("New Coordinate: x " + newPos.getX() + "y:" + newPos.getY());
 
         imageView.setX(oldPos.getX() * Utilities.FIELD_SIZE);
         imageView.setY(oldPos.getY() * Utilities.FIELD_SIZE);
@@ -194,8 +197,8 @@ public class GameViewController extends Controller implements Updateable {
         transition.setToX((newPos.getX() - oldPos.getX()) * Utilities.FIELD_SIZE);
         transition.setToY((newPos.getY() - oldPos.getY()) * Utilities.FIELD_SIZE);
         transition.setOnFinished(event -> {
-            imageView.setX((oldPos.getX()  * Utilities.FIELD_SIZE) + imageView.getTranslateX());
-            imageView.setY((oldPos.getY() * Utilities.FIELD_SIZE)+ imageView.getTranslateY());
+            imageView.setX((oldPos.getX() * Utilities.FIELD_SIZE) + imageView.getTranslateX());
+            imageView.setY((oldPos.getY() * Utilities.FIELD_SIZE) + imageView.getTranslateY());
             imageView.setTranslateX(0);
             imageView.setTranslateY(0);
         });
@@ -204,7 +207,7 @@ public class GameViewController extends Controller implements Updateable {
     }
 
     public void handlePlayerTurning(Player player, Rotation rotation) {
-        ImageView imageView = robotImageViews.get(player);
+        ImageView imageView = robotTokens.get(player);
         int angle = 0;
         Robot r = player.getRobot();
         if (rotation == Rotation.LEFT) {
@@ -221,7 +224,7 @@ public class GameViewController extends Controller implements Updateable {
         transition.setByAngle(angle);
 
         transition.setOnFinished(event -> {
-            switch(r.getOrientation()){
+            switch (r.getOrientation()) {
                 case UP -> imageView.setRotate(0);
                 case DOWN -> imageView.setRotate(180);
                 case RIGHT -> imageView.setRotate(90);
@@ -231,8 +234,9 @@ public class GameViewController extends Controller implements Updateable {
 
         transition.play();
     }
-    public void handleShooting(ArrayList<Player> players){
-        for(Coordinate c : map.readLaserCoordinates()) {
+
+    public void handleShooting(ArrayList<Player> players) {
+        for (Coordinate c : map.readLaserCoordinates()) {
             for (Attribute a : map.getTile(c).getAttributes()) {
                 ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/laser/animation/laserBeam_1.png").toExternalForm()));
                 imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
@@ -243,10 +247,10 @@ public class GameViewController extends Controller implements Updateable {
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
                     switch (orientation) {
-                        case LEFT , RIGHT -> imageView.setRotate(270);
+                        case LEFT, RIGHT -> imageView.setRotate(270);
                     }
 
-                    Coordinate newPos = calculateEndCoordinate(orientation,c ,players);
+                    Coordinate newPos = calculateEndCoordinate(orientation, c, players);
 
                     imageView.setX(c.getX() * Utilities.FIELD_SIZE);
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
@@ -271,8 +275,9 @@ public class GameViewController extends Controller implements Updateable {
             }
         }
     }
-    public void handleRobotShooting(ArrayList<Player> players){
-        for(Player player: players){
+
+    public void handleRobotShooting(ArrayList<Player> players) {
+        for (Player player : players) {
             Orientation orientation = player.getRobot().getOrientation();
             Coordinate robotPosition = player.getRobot().getCoordinate();
             System.out.println(orientation.name());
@@ -284,10 +289,10 @@ public class GameViewController extends Controller implements Updateable {
             robotPane.getChildren().add(imageView);
 
             switch (orientation) {
-                case LEFT , RIGHT -> imageView.setRotate(270);
+                case LEFT, RIGHT -> imageView.setRotate(270);
             }
 
-            Coordinate newPos = calculateRobotEndCoordinate(orientation,robotPosition ,players);
+            Coordinate newPos = calculateRobotEndCoordinate(orientation, robotPosition, players);
 
             imageView.setX(robotPosition.getX() * Utilities.FIELD_SIZE);
             imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
@@ -310,26 +315,27 @@ public class GameViewController extends Controller implements Updateable {
             path.clear();
         }
     }
-    private Coordinate calculateRobotEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
+
+    private Coordinate calculateRobotEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
         position = position.clone();
         Coordinate step = orientation.toVector();
 
         outerLoop:
         while (true) {
             position.add(step);
-            if(position.isOutOfBound()){
-                logger.info("Laser Out of Bound"); break outerLoop;
-            }
-            else{
+            if (position.isOutOfBound()) {
+                logger.info("Laser Out of Bound");
+                break outerLoop;
+            } else {
                 for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
                     if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
-                            && b.getType() != AttributeType.ControlPoint ) {
+                            && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
                         break;
-                    }else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
-                        path.add(position.clone()); break outerLoop;
-                    }
-                    else if(b.getType() == AttributeType.Laser) {
+                    } else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                        path.add(position.clone());
+                        break outerLoop;
+                    } else if (b.getType() == AttributeType.Laser) {
                         if (((Laser) b).getOrientation() == orientation) {
                             break outerLoop;
                         } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
@@ -339,37 +345,36 @@ public class GameViewController extends Controller implements Updateable {
                             path.add(position.clone());
                             break;
                         }
-                    }
-                    else if (b.getType() == AttributeType.Wall) {
+                    } else if (b.getType() == AttributeType.Wall) {
                         if (((Wall) b).getOrientation() == orientation) {
                             path.add(position.clone());
                             break outerLoop;
-                        }else if(((Wall) b).getOrientation() == orientation.getOpposite()){
+                        } else if (((Wall) b).getOrientation() == orientation.getOpposite()) {
                             break outerLoop;
+                        } else if (((Wall) b).getOrientation() != orientation) {
+                            path.add(position.clone());
+                            break;
                         }
-                        else if (((Wall) b).getOrientation() != orientation){
-                            path.add(position.clone()); break ;
-                        }
-                    }
-                    else if (b.getType() == AttributeType.Antenna) break outerLoop;
+                    } else if (b.getType() == AttributeType.Antenna) break outerLoop;
                 }
             }
         }
-        if(path.size() == 0){
+        if (path.size() == 0) {
             logger.info("Nowhere to fire");
             return position;
-        }else{
-            for (Coordinate coordinate: path){
-                for(Player player:players){
-                    if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
+        } else {
+            for (Coordinate coordinate : path) {
+                for (Player player : players) {
+                    if (coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
                 }
             }
             // Exception if robot laser cannot move one space or is blocked by wall
 
-            return path.get(path.size()-1);
+            return path.get(path.size() - 1);
         }
     }
-    private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position,ArrayList<Player> players) {
+
+    private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
 
         path.add(position);
         position = position.clone();
@@ -378,20 +383,19 @@ public class GameViewController extends Controller implements Updateable {
         outerLoop:
         while (true) {
             position.add(step);
-            if(position.isOutOfBound()){
-                logger.info("Laser Out of Bound"); break outerLoop;
-            }
-            else{
+            if (position.isOutOfBound()) {
+                logger.info("Laser Out of Bound");
+                break outerLoop;
+            } else {
                 for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
                     if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
                             && b.getType() != AttributeType.ControlPoint) {
                         path.add(position.clone());
                         break;
-                    }
-                    else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
-                        path.add(position.clone()); break outerLoop;
-                    }
-                    else if(b.getType() == AttributeType.Laser) {
+                    } else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
+                        path.add(position.clone());
+                        break outerLoop;
+                    } else if (b.getType() == AttributeType.Laser) {
                         if (((Laser) b).getOrientation() == orientation) {
                             break outerLoop;
                         } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
@@ -401,27 +405,26 @@ public class GameViewController extends Controller implements Updateable {
                             path.add(position.clone());
                             break;
                         }
-                    }
-                    else if (b.getType() == AttributeType.Wall) {
+                    } else if (b.getType() == AttributeType.Wall) {
                         if (((Wall) b).getOrientation() == orientation) {
                             path.add(position.clone());
                             break outerLoop;
-                        }else if(((Wall) b).getOrientation() == orientation.getOpposite()){
+                        } else if (((Wall) b).getOrientation() == orientation.getOpposite()) {
                             break outerLoop;
+                        } else if (((Wall) b).getOrientation() != orientation) {
+                            path.add(position.clone());
+                            break;
                         }
-                        else if (((Wall) b).getOrientation() != orientation){
-                            path.add(position.clone());break;
-                        }
-                    }else if (b.getType() == AttributeType.Antenna) break outerLoop;
+                    } else if (b.getType() == AttributeType.Antenna) break outerLoop;
                 }
             }
         }
-        for (Coordinate coordinate: path){
-            for(Player player:players){
-                if(coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
+        for (Coordinate coordinate : path) {
+            for (Player player : players) {
+                if (coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
             }
         }
-        return path.get(path.size()-1);
+        return path.get(path.size() - 1);
     }
 
     public ProgrammingController getProgrammingController() {
@@ -488,9 +491,9 @@ public class GameViewController extends Controller implements Updateable {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
                 roundPane.setVisible(true);
-                roundLabel.setText("Round " +currentRound);
-                currentRound ++;
-                if(!first) {
+                roundLabel.setText("Round " + currentRound);
+                currentRound++;
+                if (!first) {
                     getPlayerMapController().reset();
                     othersController.reset();
                 }
@@ -542,7 +545,7 @@ public class GameViewController extends Controller implements Updateable {
     }
 
     public void removePlayer(Player player) {
-        ImageView imageView = robotImageViews.get(player);
+        ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
         //TODO remove small player mat
     }
