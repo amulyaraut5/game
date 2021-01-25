@@ -14,6 +14,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.PlayerValues;
 import utilities.Updateable;
@@ -94,9 +95,7 @@ public class LoginController extends Controller implements Updateable {
         double scaleSize = 50;
         for (int i = 0; i < robotNames.length; i++) {
             String path = "/lobby/" + robotNames[i] + ".png";
-            robot = new ImageView(new Image(getClass().getResource(path).toString()));
-            robot.setFitHeight(scaleSize);
-            robot.setFitWidth(scaleSize);
+            robot = ImageHandler.createImageView(path, 50, 50);
 
             RobotPrivate robotPrivate = new RobotPrivate(robotNames[i], i);
             robotList.add(robotPrivate);

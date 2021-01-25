@@ -152,8 +152,10 @@ public class AICoordinator {
 
     private void gameStarted(GameStarted gameStarted) {
         map = MapConverter.reconvert(gameStarted);
-        for (int i = 0; i < 130; i++) {
-            client.sendMessage(new SetStartingPoint(i)); //TODO try only for all 6 startingpoints
+        int[] startingPoints = {40, 79, 15, 54, 67, 106};
+
+        for (int i : startingPoints) {
+            client.sendMessage(new SetStartingPoint(i));
         }
     }
 

@@ -100,6 +100,11 @@ public class Coordinate {
         return new Coordinate(x, y);
     }
 
+    @Override
+    public String toString() {
+        return "Coordinate{" + "x=" + x + ", y=" + y + '}';
+    }
+
     public void addToX(int x) {
         this.x = this.x + x;
     }

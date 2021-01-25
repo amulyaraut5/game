@@ -5,7 +5,6 @@ import game.gameObjects.decks.TrojanDeck;
 import game.gameObjects.decks.VirusDeck;
 import game.gameObjects.decks.WormDeck;
 import game.gameObjects.maps.DizzyHighway;
-import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
 import game.round.ActivationPhase;
@@ -126,9 +125,15 @@ public class Game {
         Coordinate pos = Coordinate.parse(position);
         Player player = userToPlayer(user);
 
+        if (position < 1 || position > 130) {
+            player.message(new Error("This is no viable point on the map!"));
+            return;
+        }
+
         //check if playes has already set their starting point
         if (player.getRobot().getCoordinate() == null) {
             //check if chosen tile is StartingPoint
+            System.out.println(pos);
             boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);//TODO Index -1 out of bounds for length 13
             if (isOnStartPoint) {
                 //check if no other player is on the chosen tile
@@ -205,4 +210,6 @@ public class Game {
     public GameState getGameState() {
         return gameState;
     }
+
+
 }
