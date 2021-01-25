@@ -145,8 +145,6 @@ public class ActivationPhase extends Phase {
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
-    //Supposed to handle a robot moving one tile.
-    //TODO Once the game can be started, it needs to check whether the robots really move in the right direction
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
         Coordinate newPosition = null;
@@ -218,15 +216,11 @@ public class ActivationPhase extends Phase {
             }
         }
         //move robot, activate board element if given
-        if (canMove) {
-            moveOne(player, o);
-            //handleTile(player);
-        }
+        if (canMove) moveOne(player, o);
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        //server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
         handleTile(player);
     }
 
@@ -331,9 +325,8 @@ public class ActivationPhase extends Phase {
     }
 
     public void handleRecursion(Player player, Orientation orientation){
-        if (this.currentRegister == 1) {
+        if (this.currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
-        }
         else{
             if(player.getLastRegisterCard() == CardType.Again){
                 int currentRegister = this.getCurrentRegister();
@@ -355,7 +348,6 @@ public class ActivationPhase extends Phase {
                     case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
                     default:
-                        logger.info("Hello");
                         server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 }
             }

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 /**
  * This class handles the functionality of boardLasers as well as RobotLasers.
- *
  * @author Amulya
  */
 

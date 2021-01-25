@@ -45,7 +45,9 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 /**
  * The GameViewController class controls the GameView and coordinates its inner views
  *
- * @author Simon, Sarah
+ * @author Simon
+ * @author Sarah
+ * @author Amulya
  */
 public class GameController extends Controller implements Updateable {
     private static final Logger logger = LogManager.getLogger();
@@ -161,12 +163,17 @@ public class GameController extends Controller implements Updateable {
         }
     }
 
+    /**
+     * This method places the robot on the board based on the starting point player chooses.
+     * @param player
+     * @param coordinate
+     */
+
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == client.getThisPlayersID()) {
             boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
         }
         player.getRobot().setCoordinate(coordinate);
-
         ImageView imageView = player.getRobot().drawRobotImage();
 
         imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
@@ -181,12 +188,17 @@ public class GameController extends Controller implements Updateable {
         robotTokens.put(player, imageView);
     }
 
+    /**
+     * This method moves the player in the view based on the argument received
+     * and updates the player position after every method call on the client side to keep track of position
+     * to update the view later.
+     * @param player Player whose robot should be moved
+     * @param newPos new Position of robot after movement is handled
+     */
     public void handleMovement(Player player, Coordinate newPos) {
         ImageView imageView = robotTokens.get(player);
         Coordinate oldPos = player.getRobot().getCoordinate();
         player.getRobot().setCoordinate(newPos);
-        //logger.info("Old Coordinate: x " + oldPos.getX() + "y:" + oldPos.getY());
-        //logger.info("New Coordinate: x " + newPos.getX() + "y:" + newPos.getY());
 
         imageView.setX(oldPos.getX() * Utilities.FIELD_SIZE);
         imageView.setY(oldPos.getY() * Utilities.FIELD_SIZE);
@@ -204,6 +216,14 @@ public class GameController extends Controller implements Updateable {
         });
         transition.play();
     }
+
+    /**
+     * This method rotates the player in the view based on the argument received and updates
+     * the player orientation after every method call on the client side to keep track of
+     * orientation to update the view later.
+     * @param player Player whose robot should be turned
+     * @param rotation Parameter that determines how the player should be rotated.
+     */
 
     public void handlePlayerTurning(Player player, Rotation rotation) {
         ImageView imageView = robotTokens.get(player);
@@ -233,6 +253,12 @@ public class GameController extends Controller implements Updateable {
 
         transition.play();
     }
+
+    /**
+     * This method shows the animation of laser beam being fired in the view.
+     * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
+     * @param players active player list
+     */
 
     public void handleShooting(ArrayList<Player> players) {
         for (Coordinate c : map.readLaserCoordinates()) {
@@ -275,6 +301,13 @@ public class GameController extends Controller implements Updateable {
         }
     }
 
+    /**
+     * This method shows the animation of laser beam being fired in the view.
+     * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
+     * The robot can fire from any position as long as it is playing in the current round.
+     * @param players active player list
+     */
+
     public void handleRobotShooting(ArrayList<Player> players) {
         for (Player player : players) {
             Orientation orientation = player.getRobot().getOrientation();
@@ -291,7 +324,6 @@ public class GameController extends Controller implements Updateable {
             }
 
             Coordinate newPos = calculateRobotEndCoordinate(orientation, robotPosition, players);
-
             imageView.setX(robotPosition.getX() * Utilities.FIELD_SIZE);
             imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
 
@@ -313,6 +345,14 @@ public class GameController extends Controller implements Updateable {
             path.clear();
         }
     }
+
+    /**
+     * It calculates the last possible coordinate where laser terminates for the robot.
+     * @param orientation Direction at which robot is facing
+     * @param position Position of robot in board.
+     * @param players active players list from the game
+     * @return Coordinate
+     */
 
     private Coordinate calculateRobotEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
         position = position.clone();
@@ -370,6 +410,13 @@ public class GameController extends Controller implements Updateable {
         }
     }
 
+    /**
+     * It calculates the last possible coordinate where laser terminates for the board lasers.
+     * @param orientation Direction at which laser is facing
+     * @param position Position of laser in board
+     * @param players Possible player who could be affected
+     * @return Coordinate
+     */
     private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
 
         path.add(position);
