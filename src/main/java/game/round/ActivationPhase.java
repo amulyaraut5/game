@@ -141,6 +141,8 @@ public class ActivationPhase extends Phase {
         activationElements.activateGear();
         laserAction.activateBoardLaser();
         laserAction.activateRobotLaser();
+        activationElements.activateEnergySpace();
+        activationElements.activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
@@ -344,9 +346,6 @@ public class ActivationPhase extends Phase {
                         }
                     case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
-                    case ControlPoint:
-                        player.checkPointReached();
-                        server.communicateAll(new CheckpointReached(player.getID(), player.getCheckPointCounter()));
                     default:
                         logger.info("Hello");
                         server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
