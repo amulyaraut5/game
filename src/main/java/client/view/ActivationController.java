@@ -10,10 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import utilities.JSONProtocol.body.CurrentCards;
-import utilities.JSONProtocol.body.PickDamage;
-import utilities.JSONProtocol.body.PlayIt;
-import utilities.JSONProtocol.body.SelectDamage;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -36,6 +33,7 @@ public class ActivationController extends Controller {
 
     private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
+    private int drawDamage;
     private int registerNr = 1; //TODO reset after 5 registers
 
 
@@ -74,11 +72,11 @@ public class ActivationController extends Controller {
         infoLabel.setText(text);
     }
 
-    public void pickDamage(PickDamage pickDamage){
+    public void drawDamage(DrawDamage drawDamage){
         playCardAnchorPane.setVisible(false);
         selectDamageAnchorPane.setVisible(true);
-        setInfoLabel("You have to pick " + pickDamage.getCount() + " damage cards");
-        this.pickDamage = pickDamage.getCount();
+        setInfoLabel("You have to pick " + drawDamage.getCards().size() + " damage cards");
+        this.drawDamage = drawDamage.getCards().size();
     }
 
     @FXML

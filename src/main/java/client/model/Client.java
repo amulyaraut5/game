@@ -299,7 +299,7 @@ public class Client {
                 } //TODO
                 case PickDamage -> {
                     PickDamage pickDamage = (PickDamage) message.getBody();
-                    gameController.getActivationController().pickDamage(pickDamage);
+                    //gameController.getActivationController().pickDamage(pickDamage);
                 }
                 case PlayerShooting -> {
                     gameController.handleShooting(players);
@@ -308,6 +308,9 @@ public class Client {
                 //TODO
                 case DrawDamage -> {
                     DrawDamage drawDamage = (DrawDamage) message.getBody();
+                    if (drawDamage.getPlayerID() == thisPlayersID) {
+                        gameController.getActivationController().drawDamage(drawDamage);
+                    }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
