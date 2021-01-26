@@ -189,17 +189,13 @@ public class ProgrammingController extends Controller {
         timerLabel.setVisible(true);
         timer.schedule(new TimerTask() {
             public void run() {
-                if(interval > 0 && !timerEnded)
-                {
+                if(interval > 0 && !timerEnded){
                     Platform.runLater(() -> timerLabel.setText(String.valueOf(interval)));
                     interval--;
-                }
-                else
+                } else
                     timer.cancel();
-
             }
         }, 1000,1000);
-
     }
 
     public void setTimerEnded(boolean timerEnded) {
