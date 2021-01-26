@@ -327,6 +327,8 @@ public class ActivationPhase extends Phase {
     public void handleRecursion(Player player, Orientation orientation){
         if (this.currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
+        else if (this.currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
+            player.message(new Error("I am an Idiot."));
         else{
             if(player.getLastRegisterCard() == CardType.Again){
                 int currentRegister = this.getCurrentRegister();
