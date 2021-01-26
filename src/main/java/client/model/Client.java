@@ -308,9 +308,10 @@ public class Client {
                 //TODO
                 case DrawDamage -> {
                     DrawDamage drawDamage = (DrawDamage) message.getBody();
-                    if (drawDamage.getPlayerID() == thisPlayersID) {
+                    /*if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.getActivationController().drawDamage(drawDamage);
-                    }
+                    }*/
+                    gameController.setDrawDamage(drawDamage);
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
