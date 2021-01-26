@@ -95,12 +95,21 @@ public class GameController extends Controller implements Updateable {
 
     @FXML
     private Label infoLabel;
-
+    @FXML
+    private AnchorPane drawDamageAnchorPane;
+    @FXML
+    private Label drawDamageLabel;
+    @FXML
+    private HBox drawDamageHBox;
+    private int interval;
     private int currentRound = 1;
     private boolean first = true;
 
     @FXML
     public void initialize() {
+        drawDamageHBox.setAlignment(Pos.CENTER);
+        drawDamageHBox.setSpacing(5);
+        drawDamageAnchorPane.setVisible(false);
         constructPhaseViews();
         roundPane.setVisible(false);
         try {
@@ -129,6 +138,10 @@ public class GameController extends Controller implements Updateable {
         });
 
         this.soundHandler = new SoundHandler();
+    }
+
+    public void drawDamage(DrawDamage drawDamage){
+
     }
 
     public void attachChatPane(Pane chat) {
