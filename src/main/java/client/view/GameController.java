@@ -201,6 +201,28 @@ public class GameController extends Controller implements Updateable {
         robotTokens.put(player, imageView);
     }
 
+    public void setDrawDamage(DrawDamage drawDamage){
+        drawDamageAnchorPane.setVisible(true);
+        drawDamageLabel.setText("You got damage! ");
+        for(int i = 0; i < drawDamage.getCards().size(); i++){
+            String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
+            ImageView damage = new ImageView(new Image(getClass().getResource(path).toString()));
+            damage.setFitWidth(20);
+            damage.setFitHeight(50);
+            drawDamageHBox.getChildren().add(damage);
+        }
+        Timer timer = new Timer();
+        interval = 5;
+        timer.schedule(new TimerTask() {
+            public void run() {
+                if(interval > 0 ) interval--;
+                else{
+                    timer.cancel();
+                    drawDamageAnchorPane.setVisible(false);
+                }
+            }
+        }, 1000,1000);
+    }
     /**
      * This method moves the player in the view based on the argument received
      * and updates the player position after every method call on the client side to keep track of position
