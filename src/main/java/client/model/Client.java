@@ -7,13 +7,12 @@ import game.Player;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
+import utilities.Updatable;
 import utilities.Utilities;
 import utilities.enums.MessageType;
 
@@ -46,6 +45,9 @@ public class Client {
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
+
+    private Updatable currentController;
+
     private ChatController chatController;
 
     private boolean isAI = false;
@@ -57,6 +59,7 @@ public class Client {
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
     private Socket socket;
+
     /**
      * The readerThread reads the input of the user from given socket.
      */
@@ -147,9 +150,9 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case Error -> {
-                    Error error = (Error) message.getBody(); //TODO
-                    viewManager.displayErrorMessage(error.getError());
+                case Error, PlayerStatus, StartingPointTaken, ActivePhase, YourCards, CardsYouGotNow,
+                        Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting -> {
+                    currentController.update(message);
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
@@ -161,36 +164,13 @@ public class Client {
                         players.remove(player);
                     }
                 }
-                case PlayerStatus -> {
-                    PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    lobbyController.displayStatus(playerStatus);
-                }
                 case ReceivedChat -> {
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                     chatController.receivedChat(receivedChat);
                 }
                 case GameStarted -> {
-                    GameStarted gameStarted = (GameStarted) message.getBody();
-                    gameController.buildMap(gameStarted);
-                    gameController.getOthersController().createPlayerMats(players);
                     viewManager.showGame();
-                }
-                case StartingPointTaken -> {
-                    StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                    gameController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
-
-                }
-                case ActivePhase -> {
-                    ActivePhase activePhase = (ActivePhase) message.getBody();
-                    gameController.changePhaseView(activePhase.getPhase());
-                }
-                case YourCards -> {
-                    YourCards yourCards = (YourCards) message.getBody();
-                    gameController.getProgrammingController().startProgrammingPhase(yourCards.getCards());
-                }
-                case CardsYouGotNow -> {
-                    CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
-                    gameController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+                    currentController.update(message);
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -202,29 +182,12 @@ public class Client {
                         gameController.getOthersController().playerWasFirst(selectionFinished);
                         allRegistersAsFirst = false;
                     }
-
                 }
                 case TimerStarted -> {
                     gameController.getProgrammingController().startTimer(allRegistersAsFirst);
-
-                    ///////////JUST FOR TESTING PURPOSE
-                    /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
-                    gameViewController.getPlayerMapController().checkPointReached(2);
-                    gameViewController.getPlayerMapController().checkPointReached(3);
-
-                    gameViewController.getPlayerMapController().addEnergy(7);//TODO remove
-                    for (Player player : players)
-                        if (player.getID() != thisPlayersID) {
-                            gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
-                            gameViewController.getOthersController().checkPointReached(new CheckpointReached(player.getID(), 3));//TODO remove
-                        }
-                    */
-                    ///////////JUST FOR TESTING PURPOSE!
-
                 }
                 case TimerEnded -> {
                     gameController.getProgrammingController().setTimerEnded(true);
-
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -266,47 +229,17 @@ public class Client {
                     } else {
                         gameController.getOthersController().checkPointReached(checkpointsReached);
                     }
-
                 }
                 case GameWon -> {
                     GameWon gameWon = (GameWon) message.getBody();
                     //TODO display and end game
                 }
-                case Movement -> {
-                    Movement msg = (Movement) message.getBody();
-                    gameController.handleMovement(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
-
-                }
-                case PlayerTurning -> {
-                    PlayerTurning pT = (PlayerTurning) message.getBody();
-                    gameController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
-
-                }
-                case CardSelected -> {
-                    CardSelected cardSelected = (CardSelected) message.getBody();
-                    gameController.getOthersController().getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
-
-                } //TODO
-                case NotYourCards -> {
-                    NotYourCards notYourCards = (NotYourCards) message.getBody();
-                    gameController.getOthersController().setNotYourCards(notYourCards);
-                } //TODO
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                } //TODO
+                }
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
-                } //TODO
-                case PickDamage -> {
-                    PickDamage pickDamage = (PickDamage) message.getBody();
-                    gameController.getActivationController().pickDamage(pickDamage);
-
                 }
-                case PlayerShooting -> {
-                    gameController.handleShooting(players);
-                    gameController.handleRobotShooting(players);
-                }
-                //TODO
                 case DrawDamage -> {
                     DrawDamage drawDamage = (DrawDamage) message.getBody();
                     if (drawDamage.getPlayerID() == thisPlayersID) {
@@ -408,5 +341,9 @@ public class Client {
     public void createAI() {
         isAI = true;
         aiCoordinator = new AICoordinator();
+    }
+
+    public void setCurrentController(Updatable currentController) {
+        this.currentController = currentController;
     }
 }

@@ -67,26 +67,22 @@ public class ViewManager {
         return instance;
     }
 
-    public void displayErrorMessage(String error) {
-        if (currentScene == menuScene) menuController.displayError(error);
-        if (currentScene == loginScene) loginController.displayError(error);
-        if (currentScene == lobbyScene) lobbyController.displayError(error);
-        if (currentScene == gameScene) gameController.displayError(error);
-    }
-
     public void showMenu() {
+        Client.getInstance().setCurrentController(menuController);
         menuStage.setScene(menuScene);
         if (currentScene == gameScene) openMenuStage();
         currentScene = menuScene;
     }
 
     public void showLogin() {
+        Client.getInstance().setCurrentController(loginController);
         menuStage.setScene(loginScene);
         if (currentScene == gameScene) openMenuStage();
         currentScene = loginScene;
     }
 
     public void showLobby() {
+        Client.getInstance().setCurrentController(lobbyController);
         lobbyController.attachChatPane(chatPane);
         menuStage.setScene(lobbyScene);
         if (currentScene == gameScene) openMenuStage();
@@ -94,6 +90,7 @@ public class ViewManager {
     }
 
     public void showGame() {
+        Client.getInstance().setCurrentController(gameController);
         openGameStage();
         currentScene = gameScene;
     }

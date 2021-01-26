@@ -11,7 +11,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +27,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.*;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.DrawDamage;
-import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.SetStartingPoint;
+import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.AttributeType;
 import utilities.enums.GameState;
 import utilities.enums.Orientation;
@@ -48,7 +46,7 @@ import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
  * @author Sarah
  * @author Amulya
  */
-public class GameController extends Controller implements Updateable {
+public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
@@ -139,7 +137,7 @@ public class GameController extends Controller implements Updateable {
         this.soundHandler = new SoundHandler();
     }
 
-    public void drawDamage(DrawDamage drawDamage){
+    public void drawDamage(DrawDamage drawDamage) {
 
     }
 
@@ -177,6 +175,7 @@ public class GameController extends Controller implements Updateable {
 
     /**
      * This method places the robot on the board based on the starting point player chooses.
+     *
      * @param player
      * @param coordinate
      */
@@ -200,10 +199,10 @@ public class GameController extends Controller implements Updateable {
         robotTokens.put(player, imageView);
     }
 
-    public void setDrawDamage(DrawDamage drawDamage){
+    public void setDrawDamage(DrawDamage drawDamage) {
         drawDamageAnchorPane.setVisible(true);
         drawDamageLabel.setText("You got damage! ");
-        for(int i = 0; i < drawDamage.getCards().size(); i++){
+        for (int i = 0; i < drawDamage.getCards().size(); i++) {
             String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
             ImageView damage = new ImageView(new Image(getClass().getResource(path).toString()));
             damage.setFitWidth(30);
@@ -214,18 +213,20 @@ public class GameController extends Controller implements Updateable {
         interval = 5;
         timer.schedule(new TimerTask() {
             public void run() {
-                if(interval > 0 ) interval--;
-                else{
+                if (interval > 0) interval--;
+                else {
                     timer.cancel();
                     drawDamageAnchorPane.setVisible(false);
                 }
             }
-        }, 1000,1000);
+        }, 1000, 1000);
     }
+
     /**
      * This method moves the player in the view based on the argument received
      * and updates the player position after every method call on the client side to keep track of position
      * to update the view later.
+     *
      * @param player Player whose robot should be moved
      * @param newPos new Position of robot after movement is handled
      */
@@ -255,7 +256,8 @@ public class GameController extends Controller implements Updateable {
      * This method rotates the player in the view based on the argument received and updates
      * the player orientation after every method call on the client side to keep track of
      * orientation to update the view later.
-     * @param player Player whose robot should be turned
+     *
+     * @param player   Player whose robot should be turned
      * @param rotation Parameter that determines how the player should be rotated.
      */
 
@@ -291,6 +293,7 @@ public class GameController extends Controller implements Updateable {
     /**
      * This method only shows the animation of laser beam being fired in the view.
      * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
+     *
      * @param players active player list
      */
 
@@ -339,6 +342,7 @@ public class GameController extends Controller implements Updateable {
      * This method only shows the animation of laser beam being fired in the view.
      * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
      * The robot can fire from any position as long as it is playing in the current round.
+     *
      * @param players active player list
      */
 
@@ -382,9 +386,10 @@ public class GameController extends Controller implements Updateable {
 
     /**
      * It calculates the last possible coordinate where laser terminates for the robot.
+     *
      * @param orientation Direction at which robot is facing
-     * @param position Position of robot in board.
-     * @param players active players list from the game
+     * @param position    Position of robot in board.
+     * @param players     active players list from the game
      * @return Coordinate
      */
 
@@ -446,9 +451,10 @@ public class GameController extends Controller implements Updateable {
 
     /**
      * It calculates the last possible coordinate where laser terminates for the board lasers.
+     *
      * @param orientation Direction at which laser is facing
-     * @param position Position of laser in board
-     * @param players Possible player who could be affected
+     * @param position    Position of laser in board
+     * @param players     Possible player who could be affected
      * @return Coordinate
      */
     private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
@@ -631,10 +637,58 @@ public class GameController extends Controller implements Updateable {
 
     @Override
     public void update(JSONMessage message) {
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                infoLabel.setText(error.getError());
+            }
+            case GameStarted -> {
+                GameStarted gameStarted = (GameStarted) message.getBody();
 
-    }
-
-    public void displayError(String error) {
-        infoLabel.setText(error);
+                buildMap(gameStarted);
+                getOthersController().createPlayerMats(client.getPlayers());
+            }
+            case StartingPointTaken -> {
+                StartingPointTaken msg = (StartingPointTaken) message.getBody();
+                placeRobotInMap(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
+            }
+            case ActivePhase -> {
+                ActivePhase activePhase = (ActivePhase) message.getBody();
+                changePhaseView(activePhase.getPhase());
+            }
+            case YourCards -> {
+                YourCards yourCards = (YourCards) message.getBody();
+                getProgrammingController().startProgrammingPhase(yourCards.getCards());
+            }
+            case CardsYouGotNow -> {
+                CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
+                getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+            }
+            case Movement -> {
+                Movement msg = (Movement) message.getBody();
+                handleMovement(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
+            }
+            case PlayerTurning -> {
+                PlayerTurning pT = (PlayerTurning) message.getBody();
+                handlePlayerTurning(client.getPlayerFromID(pT.getPlayerID()), pT.getDirection());
+            }
+            case CardSelected -> {
+                CardSelected cardSelected = (CardSelected) message.getBody();
+                getOthersController().getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
+            }
+            case NotYourCards -> {
+                NotYourCards notYourCards = (NotYourCards) message.getBody();
+                getOthersController().setNotYourCards(notYourCards);
+            }
+            case PickDamage -> {
+                PickDamage pickDamage = (PickDamage) message.getBody();
+                getActivationController().pickDamage(pickDamage);
+            }
+            case PlayerShooting -> {
+                ArrayList<Player> players = client.getPlayers();
+                handleShooting(players);
+                handleRobotShooting(players);
+            }
+        }
     }
 }

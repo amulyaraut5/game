@@ -15,9 +15,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
-import utilities.Updateable;
+import utilities.Updatable;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import java.util.HashMap;
  *
  * @author sarah, louis
  */
-public class LobbyController extends Controller implements Updateable {
+public class LobbyController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
     private final HashMap<Player, VBox> playerIcons = new HashMap<>();
 
@@ -84,7 +85,7 @@ public class LobbyController extends Controller implements Updateable {
      *
      * @param playerStatus
      */
-    public void displayStatus(PlayerStatus playerStatus) {
+    private void displayStatus(PlayerStatus playerStatus) {
         Player player = client.getPlayerFromID(playerStatus.getID());
         String path = "/lobby/" + robotNames[player.getFigure()];
         if (playerStatus.isReady()) path += "-ready.png";
@@ -111,10 +112,15 @@ public class LobbyController extends Controller implements Updateable {
 
     @Override
     public void update(JSONMessage message) {
-
-    }
-
-    public void displayError(String error) {
-        infoLabel.setText(error);
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                infoLabel.setText(error.getError());
+            }
+            case PlayerStatus -> {
+                PlayerStatus playerStatus = (PlayerStatus) message.getBody();
+                displayStatus(playerStatus);
+            }
+        }
     }
 }
