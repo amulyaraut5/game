@@ -11,6 +11,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,10 +37,7 @@ import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 
