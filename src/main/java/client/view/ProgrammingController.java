@@ -30,10 +30,6 @@ import java.util.TimerTask;
  */
 public class ProgrammingController extends Controller {
 
-
-
-
-
     private int interval;
     private Media media;
     private MediaPlayer mediaPlayer;

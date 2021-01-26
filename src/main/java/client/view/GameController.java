@@ -27,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.*;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.DrawDamage;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.enums.AttributeType;
@@ -207,7 +208,7 @@ public class GameController extends Controller implements Updateable {
         for(int i = 0; i < drawDamage.getCards().size(); i++){
             String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
             ImageView damage = new ImageView(new Image(getClass().getResource(path).toString()));
-            damage.setFitWidth(20);
+            damage.setFitWidth(30);
             damage.setFitHeight(50);
             drawDamageHBox.getChildren().add(damage);
         }
