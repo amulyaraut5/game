@@ -104,7 +104,7 @@ public class Game {
         map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
-        new LaserAction().determineLaserPaths();
+
     }
 
     /**

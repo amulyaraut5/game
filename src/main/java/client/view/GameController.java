@@ -255,7 +255,7 @@ public class GameController extends Controller implements Updateable {
     }
 
     /**
-     * This method shows the animation of laser beam being fired in the view.
+     * This method only shows the animation of laser beam being fired in the view.
      * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
      * @param players active player list
      */
@@ -302,7 +302,7 @@ public class GameController extends Controller implements Updateable {
     }
 
     /**
-     * This method shows the animation of laser beam being fired in the view.
+     * This method only shows the animation of laser beam being fired in the view.
      * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
      * The robot can fire from any position as long as it is playing in the current round.
      * @param players active player list

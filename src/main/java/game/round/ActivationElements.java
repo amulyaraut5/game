@@ -26,11 +26,7 @@ public class ActivationElements {
     private Map map = game.getMap();
     private ActivationPhase activationPhase;
 
-    /**
-     * Player landing on pit needs to reboot.
-     * Player is suspended from the current round and must discard all programming cards.
-     * Reboot Protocol is sent to the player.
-     **/
+
 
     public ActivationElements(ActivationPhase activationPhase){
         this.activationPhase = activationPhase;
