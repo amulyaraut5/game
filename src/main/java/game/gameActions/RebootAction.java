@@ -13,7 +13,8 @@ public class RebootAction extends Action {
     /**
      * If the robot falls off the board or into a pit, or if a worm card is activated,
      * the robot must be rebooted.
-     * TODO: Note: If multiple robots reboot on the same board in the same round or if a robot sits on the reboot token when other robots are rebooting, robots will leave the reboot space in the order they rebooted, with the next robot pushing the robot before it in the direction indicated by the arrow on the reboot token.
+     * TODO: Note: If multiple robots reboot on the same board in the same round or if a robot sits on the reboot token when other robots are rebooting,
+     * robots will leave the reboot space in the order they rebooted, with the next robot pushing the robot before it in the direction indicated by the arrow on the reboot token.
      *
      * @param orientation
      * @param player      is the player who is affected by the game action.
