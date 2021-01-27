@@ -2,10 +2,7 @@ package game.round;
 
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.Spam;
-import game.gameObjects.cards.damage.Trojan;
-import game.gameObjects.cards.damage.Virus;
-import game.gameObjects.cards.damage.Worm;
+import game.gameObjects.cards.damage.*;
 import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

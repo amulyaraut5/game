@@ -33,6 +33,8 @@ public class Server extends Thread {
 
     private ServerState serverState = ServerState.LOBBY;
 
+    private boolean isMapSelected = false;
+
     /**
      * private Constructor for the ChatServer class
      */
@@ -142,6 +144,7 @@ public class Server extends Thread {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
+
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -161,8 +164,26 @@ public class Server extends Thread {
                 game.setStartingPoint(user, setStartingPoint.getPosition());
             }
             case PlayIt -> game.getActivationPhase().activateCards(user.getID());
+
+            /*case MapSelected -> {
+                if(!isMapSelected){
+                    MapSelected selectMap = (MapSelected) message.getBody();
+                    game.handleMapSelection(selectMap.getMap());
+                    this.isMapSelected = true;
+                }
+                else communicateAll(new Error("Map has already been selected"));
+            }
+
+             */
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
+    }
+
+    public void selectMap(){
+        ArrayList<String> maps = new ArrayList<>();
+        maps.add("DizzyHighway");
+        maps.add("ExtraCrispy");
+        communicateAll(new SelectMap(maps));
     }
 
     private void addPlayerValues(User user, PlayerValues pv) {

@@ -7,14 +7,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.Updateable;
+import utilities.JSONProtocol.body.Error;
+import utilities.Updatable;
 
 /**
  * The MenuController is the Controller for the main menu view.
  *
  * @author simon
  */
-public class MenuController extends Controller implements Updateable {
+public class MenuController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
@@ -60,10 +61,11 @@ public class MenuController extends Controller implements Updateable {
 
     @Override
     public void update(JSONMessage message) {
-
-    }
-
-    public void displayError(String error) {
-        infoLabel.setText(error);
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                infoLabel.setText(error.getError());
+            }
+        }
     }
 }

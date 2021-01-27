@@ -53,7 +53,7 @@ public class ActivationPhase extends Phase {
      * TODO
      */
     private ActivationElements activationElements = new ActivationElements(this);
-    private LaserAction laserAction = new LaserAction();
+    private LaserAction laserAction = new LaserAction(this);
 
     private ArrayList<Player> activePlayers = playerList;
 
@@ -138,8 +138,8 @@ public class ActivationPhase extends Phase {
         activationElements.activateGreenBelts();
         activationElements.activatePushPanel();
         activationElements.activateGear();
-        laserAction.activateBoardLaser();
-        laserAction.activateRobotLaser();
+        laserAction.activateBoardLaser(activePlayers);
+        laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
         activationElements.activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
@@ -327,6 +327,8 @@ public class ActivationPhase extends Phase {
     public void handleRecursion(Player player, Orientation orientation){
         if (this.currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
+        else if (this.currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
+            player.message(new Error("I am an Idiot."));
         else{
             if(player.getLastRegisterCard() == CardType.Again){
                 int currentRegister = this.getCurrentRegister();

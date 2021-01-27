@@ -30,7 +30,7 @@ public class ActivationController extends Controller {
     private AnchorPane selectDamageAnchorPane;
     @FXML
     private AnchorPane playCardAnchorPane;
-
+    public Label damageInfoLabel;
     private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
     private int drawDamage;
@@ -72,11 +72,12 @@ public class ActivationController extends Controller {
         infoLabel.setText(text);
     }
 
-    public void drawDamage(DrawDamage drawDamage){
+    public void pickDamage(PickDamage pickDamage){
         playCardAnchorPane.setVisible(false);
+
         selectDamageAnchorPane.setVisible(true);
-        setInfoLabel("You have to pick " + drawDamage.getCards().size() + " damage cards");
-        this.drawDamage = drawDamage.getCards().size();
+        damageInfoLabel.setText("You have to pick " + pickDamage.getCount() + " damage cards");
+        this.pickDamage = pickDamage.getCount();
     }
 
     @FXML
@@ -103,7 +104,7 @@ public class ActivationController extends Controller {
         pickedDamageCards.add(card);
         ImageView selectedDamageCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
         selectedDamageCard.setFitHeight(150);
-        selectedDamageCard.setFitWidth(70);
+        selectedDamageCard.setFitWidth(85);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if(pickedDamageCards.size()==pickDamage){
             client.sendMessage(new SelectDamage(pickedDamageCards));
@@ -114,3 +115,4 @@ public class ActivationController extends Controller {
         }
     }
 }
+

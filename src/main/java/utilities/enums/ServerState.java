@@ -7,7 +7,7 @@ public enum ServerState {
 
     static {
         LOBBY.allowedMessages = EnumSet.of(MessageType.HelloServer,
-                MessageType.PlayerValues, MessageType.SendChat, MessageType.SetStatus);
+                MessageType.PlayerValues, MessageType.SendChat, MessageType.SetStatus, MessageType.MapSelected);
         RUNNING_GAME.allowedMessages = EnumSet.of(MessageType.SendChat, MessageType.SetStartingPoint,
                 MessageType.SelectCard, MessageType.SelectDamage, MessageType.PlayIt);
     }

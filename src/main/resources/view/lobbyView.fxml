@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXCheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
+<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="485.0" prefWidth="626.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
     <children>
-        <ImageView fitHeight="400.0" fitWidth="626.0" opacity="0.66" pickOnBounds="true">
+        <ImageView fitHeight="485.0" fitWidth="626.0" opacity="0.66" pickOnBounds="true">
             <image>
                 <Image url="@loginBackground.png" />
             </image>
@@ -29,15 +26,18 @@
         </Label>
       <BorderPane fx:id="chatPane" layoutX="376.0" prefHeight="300.0" prefWidth="250.0" />
       <FlowPane fx:id="playerIconPane" layoutX="58.0" layoutY="115.0" prefHeight="240.0" prefWidth="280.0" />
-      <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="460.0" layoutY="329.0" onAction="#checkBoxAction" text="Ready!" textFill="#363636" unCheckedColor="#727272">
+      <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="44.0" layoutY="432.0" onAction="#checkBoxAction" text="Ready!" textFill="#363636" unCheckedColor="#727272">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </JFXCheckBox>
-      <Label fx:id="infoLabel" alignment="CENTER" layoutX="45.0" layoutY="355.0" prefHeight="27.0" prefWidth="367.0" textFill="#ff3600">
+      <Label fx:id="infoLabel" alignment="CENTER" layoutX="44.0" layoutY="360.0" prefHeight="27.0" prefWidth="367.0" textFill="#ff3600">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <Label fx:id="mapLabel" layoutX="167.0" layoutY="395.0" prefHeight="38.0" prefWidth="396.0" />
+      <CheckBox fx:id="dizzyHighway" layoutX="228.0" layoutY="425.0" mnemonicParsing="false" onAction="#choiceBoxActionForMap" prefHeight="38.0" prefWidth="122.0" text="DizzyHighway" />
+      <CheckBox fx:id="ExtraCrispy" layoutX="404.0" layoutY="425.0" mnemonicParsing="false" onAction="#choiceBoxActionForMap" prefHeight="38.0" prefWidth="132.0" text="ExtraCrispy" />
     </children>
 </AnchorPane>

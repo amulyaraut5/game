@@ -1,6 +1,7 @@
 package client.view;
 
 import game.Player;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -14,10 +15,13 @@ import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.MapSelected;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
-import utilities.Updateable;
+import utilities.Updatable;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -27,7 +31,7 @@ import java.util.HashMap;
  *
  * @author sarah, louis
  */
-public class LobbyController extends Controller implements Updateable {
+public class LobbyController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
     private final HashMap<Player, VBox> playerIcons = new HashMap<>();
 
@@ -39,6 +43,17 @@ public class LobbyController extends Controller implements Updateable {
     private FlowPane playerIconPane;
     @FXML
     private Label infoLabel;
+
+    @FXML
+    private Label mapLabel;
+    @FXML
+    private Label infoLabel2;
+
+
+    @FXML private CheckBox dizzyHighway;
+    @FXML private CheckBox ExtraCrispy;
+
+
 
     /**
      * this method gets called automatically by constructing view
@@ -84,7 +99,7 @@ public class LobbyController extends Controller implements Updateable {
      *
      * @param playerStatus
      */
-    public void displayStatus(PlayerStatus playerStatus) {
+    private void displayStatus(PlayerStatus playerStatus) {
         Player player = client.getPlayerFromID(playerStatus.getID());
         String path = "/lobby/" + robotNames[player.getFigure()];
         if (playerStatus.isReady()) path += "-ready.png";
@@ -109,12 +124,35 @@ public class LobbyController extends Controller implements Updateable {
         playerIconPane.getChildren().remove(tile);
     }
 
-    @Override
-    public void update(JSONMessage message) {
 
+    @FXML
+    private void choiceBoxActionForMap(ActionEvent event){
+
+        if(dizzyHighway.isSelected()){
+            /*JSONBody jsonBody = new MapSelected("DizzyHighway");
+            client.sendMessage(jsonBody);*/
+
+        }
+        else if(ExtraCrispy.isSelected()){
+            /*JSONBody jsonBody = new MapSelected("ExtraCrispy");
+            client.sendMessage(jsonBody);*/
+        }
     }
 
-    public void displayError(String error) {
-        infoLabel.setText(error);
+
+
+    @Override
+    public void update(JSONMessage message) {
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                infoLabel.setText(error.getError());
+            }
+            case PlayerStatus -> {
+                PlayerStatus playerStatus = (PlayerStatus) message.getBody();
+                displayStatus(playerStatus);
+                //mapLabel.setText("Choose any one of the map from below");
+            }
+        }
     }
 }
