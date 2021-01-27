@@ -135,10 +135,6 @@ public class Server extends Thread {
             case PlayerValues -> {
                 PlayerValues pv = (PlayerValues) message.getBody();
                 addPlayerValues(user, pv);
-                ///////////////////////////////////////////////////////
-                // Todo The map is sent multiple times to the first connected clients.
-                selectMap();
-                ///////////////////////////////////////////////////////
             }
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
@@ -148,6 +144,7 @@ public class Server extends Thread {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
+
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -168,7 +165,7 @@ public class Server extends Thread {
             }
             case PlayIt -> game.getActivationPhase().activateCards(user.getID());
 
-            case MapSelected -> {
+            /*case MapSelected -> {
                 if(!isMapSelected){
                     MapSelected selectMap = (MapSelected) message.getBody();
                     game.handleMapSelection(selectMap.getMap());
@@ -176,6 +173,8 @@ public class Server extends Thread {
                 }
                 else communicateAll(new Error("Map has already been selected"));
             }
+
+             */
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }

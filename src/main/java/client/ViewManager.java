@@ -35,8 +35,6 @@ public class ViewManager {
     private Scene loginScene;
     private Scene lobbyScene;
     private Scene gameScene;
-    /////////////////////////////////////////////
-    private Scene mapSelectionScene;
 
     private Pane chatPane;
 
@@ -44,8 +42,6 @@ public class ViewManager {
     private LoginController loginController;
     private LobbyController lobbyController;
     private GameController gameController;
-    /////////////////////////////////////////////
-    private MapSelectionController mapSelectionController;
 
     private Scene currentScene;
 
@@ -84,14 +80,7 @@ public class ViewManager {
         if (currentScene == gameScene) openMenuStage();
         currentScene = loginScene;
     }
-    /////////////////////////////////////////////
-    public void showMapSelection(){
-        Client.getInstance().setCurrentController(mapSelectionController);
-        menuStage.setScene(mapSelectionScene);
-        if(currentScene == gameScene) openMenuStage();
-        currentScene = mapSelectionScene;
-    }
-    /////////////////////////////////////////////////
+
 
     public void showLobby() {
         Client.getInstance().setCurrentController(lobbyController);
@@ -162,23 +151,17 @@ public class ViewManager {
         loginScene = new Scene(loginLoader.load());
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        mapSelectionScene = new Scene(mapLoader.load());
 
         menuController = menuLoader.getController();
         loginController = loginLoader.getController();
         lobbyController = lobbyLoader.getController();
         gameController = gameLoader.getController();
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        mapSelectionController = mapLoader.getController();
 
         ArrayList<Controller> controllerList = new ArrayList<>();
 
         controllerList.add(loginController);
         controllerList.add(lobbyController);
         controllerList.add(gameController);
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        controllerList.add(mapSelectionController);
 
         Client.getInstance().setController(controllerList);
     }

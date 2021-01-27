@@ -19,6 +19,7 @@ import utilities.enums.MessageType;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.Error;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -45,7 +46,6 @@ public class Client {
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private MapSelectionController mapSelectionController;
 
     private Updatable currentController;
 
@@ -247,10 +247,6 @@ public class Client {
                         gameController.setDrawDamage(drawDamage);
                     }
                 }
-                case SelectMap -> {
-                    SelectMap selectMap = (SelectMap) message.getBody();
-                    viewManager.showMapSelection();
-                }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
@@ -321,7 +317,6 @@ public class Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameController = (GameController) controllerList.get(2);
-        mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public ArrayList<Player> getPlayers() {
