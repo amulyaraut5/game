@@ -58,7 +58,7 @@ public class ProgrammingPhase extends Phase {
             for (Card card : player.getDrawnProgrammingCards()) {
                 cards.add(card.getName());
             }
-            player.message(new YourCards(cards));
+            player.message(new YourCards(cards, player.getID()));
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
 
