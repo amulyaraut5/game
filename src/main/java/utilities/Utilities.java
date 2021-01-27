@@ -5,7 +5,7 @@ import utilities.enums.Orientation;
 public abstract class Utilities {
 
     //Connection
-    public static final int PORT = 5569;
+    public static final int PORT = 5570;
     public static final double PROTOCOL = 1.0;
 
     public static final Orientation[] UP_LEFT = {Orientation.UP, Orientation.LEFT};
