@@ -63,6 +63,8 @@ public class LobbyController extends Controller implements Updatable {
      */
     @FXML
     public void initialize() {
+        dizzyHighway.setVisible(false);
+        ExtraCrispy.setVisible(false);
     }
 
     public void attachChatPane(Pane chat) {
@@ -129,17 +131,23 @@ public class LobbyController extends Controller implements Updatable {
     private void choiceBoxActionForMap(ActionEvent event){
 
         if(dizzyHighway.isSelected()){
-            /*JSONBody jsonBody = new MapSelected("DizzyHighway");
-            client.sendMessage(jsonBody);*/
-
+            JSONBody jsonBody = new MapSelected("DizzyHighway");
+            client.sendMessage(jsonBody);
+            dizzyHighway.setDisable(true);
+            ExtraCrispy.setDisable(true);
         }
         else if(ExtraCrispy.isSelected()){
-            /*JSONBody jsonBody = new MapSelected("ExtraCrispy");
-            client.sendMessage(jsonBody);*/
+            JSONBody jsonBody = new MapSelected("ExtraCrispy");
+            client.sendMessage(jsonBody);
+            dizzyHighway.setDisable(true);
+            ExtraCrispy.setDisable(true);
         }
     }
 
 
+    public void setInfoLabel2(String message) {
+        this.infoLabel2.setText(message);
+    }
 
     @Override
     public void update(JSONMessage message) {
@@ -151,7 +159,11 @@ public class LobbyController extends Controller implements Updatable {
             case PlayerStatus -> {
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                 displayStatus(playerStatus);
-                //mapLabel.setText("Choose any one of the map from below");
+            }
+            case SelectMap -> {
+                dizzyHighway.setVisible(true);
+                ExtraCrispy.setVisible(true);
+                mapLabel.setText("Choose any one of the map from below");
             }
         }
     }

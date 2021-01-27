@@ -139,12 +139,17 @@ public class Server extends Thread {
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
+
+                ArrayList<String> maps = new ArrayList<>();
+                maps.add("DizzyHighway");
+                maps.add("ExtraCrispy");
+                if(user.getID()==1) user.message(new SelectMap(maps));
+
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
-                if (allUsersReady) {
+                if (allUsersReady && this.isMapSelected) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
-
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -165,16 +170,15 @@ public class Server extends Thread {
             }
             case PlayIt -> game.getActivationPhase().activateCards(user.getID());
 
-            /*case MapSelected -> {
+            case MapSelected -> {
                 if(!isMapSelected){
                     MapSelected selectMap = (MapSelected) message.getBody();
                     game.handleMapSelection(selectMap.getMap());
                     this.isMapSelected = true;
                 }
                 else communicateAll(new Error("Map has already been selected"));
-            }
 
-             */
+            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }

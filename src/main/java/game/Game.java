@@ -101,12 +101,12 @@ public class Game {
             int figure = user.getFigure();
             players.add(new Player(user));
         }
-        map = MapBuilder.constructMap(new DizzyHighway());
+        //map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
 
     }
-    /*
+
     public void handleMapSelection(String selectedMap){
         if(selectedMap.equals("DizzyHighway")){
             map = MapBuilder.constructMap(new DizzyHighway());
@@ -115,7 +115,7 @@ public class Game {
         }
     }
 
-     */
+
 
     /**
      * This method gets called from the phases, it calls the next phase
