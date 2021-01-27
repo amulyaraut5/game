@@ -10,17 +10,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import utilities.JSONProtocol.body.CardsYouGotNow;
-import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
 /**
  * @author sarah
  */
-public class PlayerMatController extends Controller {
+public class PlayerMatController extends Controller{
 
     public HBox registerHBoxBackground;
 
@@ -34,7 +32,9 @@ public class PlayerMatController extends Controller {
     private HBox checkPointsHBox;
     @FXML
     private AnchorPane playerMapAnchorPane;
+    @FXML
     public Label discardDeckLabel; //TODO ?
+    private int discardDeckNr = 0;
     @FXML
     private HBox energyHBox;
     public HBox energyHBox2;
@@ -243,6 +243,16 @@ public class PlayerMatController extends Controller {
             count --;
         }
 
+    }
+
+
+    public void setDiscardDeckCounter(int amount){
+        if(amount == 0){
+            discardDeckLabel.setText(amount + "cards");
+        }else {
+            discardDeckNr = discardDeckNr + amount;
+            discardDeckLabel.setText(discardDeckNr + " cards");
+        }
     }
 }
 

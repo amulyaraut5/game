@@ -15,6 +15,7 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
 import utilities.Utilities;
+import utilities.enums.GameState;
 import utilities.enums.MessageType;
 
 import java.io.IOException;
@@ -51,6 +52,9 @@ public class Client {
     private boolean isAI = false;
 
     private AICoordinator aiCoordinator;
+
+    private int progPhaseCounter;
+
 
 
     /**
@@ -183,6 +187,13 @@ public class Client {
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
+
+                    if(activePhase.getPhase() == GameState.PROGRAMMING){
+                        progPhaseCounter++;
+                    }
+                    if(activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1){
+                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                    }
                 }
                 case YourCards -> {
                     YourCards yourCards = (YourCards) message.getBody();
@@ -190,13 +201,16 @@ public class Client {
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
-                    gameController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+                    gameController.getPlayerMatController().setNewCardsYouGotNow(cardsYouGotNow);
+
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().fixSelectedCards(true);
+                        gameController.getPlayerMatController().fixSelectedCards(true);
                         allRegistersAsFirst = true;
+
+                        gameController.getPlayerMatController().setDiscardDeckCounter(4);
                     } else {
                         //gameViewController.getPlayerMapController().fixSelectedCards();
                         gameController.getOthersController().playerWasFirst(selectionFinished);
@@ -254,7 +268,7 @@ public class Client {
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
                     if (energy.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().addEnergy(energy.getCount());
+                        gameController.getPlayerMatController().addEnergy(energy.getCount());
                     } else {
                         gameController.getOthersController().addEnergy(energy);
                     }
@@ -262,7 +276,7 @@ public class Client {
                 case CheckpointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     if (checkpointsReached.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
+                        gameController.getPlayerMatController().checkPointReached(checkpointsReached.getNumber());
                     } else {
                         gameController.getOthersController().checkPointReached(checkpointsReached);
                     }
@@ -293,9 +307,15 @@ public class Client {
                 } //TODO
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
+                    if(shuffleCoding.getPlayerID() == thisPlayersID){
+                        gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                    }
                 } //TODO
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
+                    if (discardHand.getPlayerID() == thisPlayersID) {
+                        gameController.getPlayerMatController().setDiscardDeckCounter(9);
+                    }
                 } //TODO
                 case PickDamage -> {
                     PickDamage pickDamage = (PickDamage) message.getBody();
@@ -326,7 +346,7 @@ public class Client {
         players.add(player);
 
         if (thisPlayersID == player.getID()) {
-            gameController.getPlayerMapController().loadPlayerMap(player);
+            gameController.getPlayerMatController().loadPlayerMap(player);
             viewManager.showLobby();
         }
         loginController.setFigureTaken(player.getFigure(), true);

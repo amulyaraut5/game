@@ -533,12 +533,12 @@ public class GameController extends Controller implements Updateable {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
-                getPlayerMapController().fixSelectedCards(false);
+                getPlayerMatController().fixSelectedCards(false);
                 roundPane.setVisible(true);
                 roundLabel.setText("Round " + currentRound);
                 currentRound++;
                 if (!first) {
-                    getPlayerMapController().reset();
+                    getPlayerMatController().reset();
                     othersController.reset();
                     getActivationController().reset();
                 }
@@ -547,7 +547,7 @@ public class GameController extends Controller implements Updateable {
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
-                getPlayerMapController().fixSelectedCards(true);
+                getPlayerMatController().fixSelectedCards(true);
                 getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
@@ -585,7 +585,7 @@ public class GameController extends Controller implements Updateable {
         this.soundHandler.musicOff();
     }
 
-    public PlayerMatController getPlayerMapController() {
+    public PlayerMatController getPlayerMatController() {
         return playerMatController;
     }
 
