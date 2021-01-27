@@ -155,7 +155,7 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case Error, PlayerStatus, StartingPointTaken, ActivePhase, YourCards, CardsYouGotNow,
+                case Error, PlayerStatus, StartingPointTaken, YourCards,
                         Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting -> {
                     currentController.update(message);
                 }
@@ -183,10 +183,17 @@ public class Client {
 
                     if(activePhase.getPhase() == GameState.PROGRAMMING){
                         progPhaseCounter++;
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                     }
                     if(activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1){
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
                     }
+                }
+                case CardsYouGotNow -> {
+                    CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
+                    gameController.getPlayerMatController().setNewCardsYouGotNow(cardsYouGotNow);
+
+                    gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -256,18 +263,25 @@ public class Client {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
                     if(shuffleCoding.getPlayerID() == thisPlayersID){
                         gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(20);
                     }
                 }
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(9);
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                     }
+                }
+                case SelectDamage -> {
+                    SelectDamage selectDamage = (SelectDamage) message.getBody();
+                    gameController.getPlayerMatController().setDiscardDeckCounter(selectDamage.getCards().size());
                 }
                 case DrawDamage -> {
                     DrawDamage drawDamage = (DrawDamage) message.getBody();
                     if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.setDrawDamage(drawDamage);
+                        gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
                     }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");

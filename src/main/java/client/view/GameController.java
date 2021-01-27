@@ -662,7 +662,7 @@ public class GameController extends Controller implements Updatable {
             }
             case CardsYouGotNow -> {
                 CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
-                getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+                getPlayerMatController().setNewCardsYouGotNow(cardsYouGotNow);
             }
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
