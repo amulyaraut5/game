@@ -142,47 +142,6 @@ public class ProgrammingController extends Controller {
         });
     }
 
-
-    private void addImage(Image i, StackPane pane) {
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(widthHBox - 20);
-        imageView.setFitHeight(heightHBox);
-        imageView.setImage(i);
-        imageView.setOnDragDetected(mouseEvent -> setOnDragDetected(mouseEvent, imageView));
-
-        pane.getChildren().add(imageView);
-
-
-    }
-
-    private void mouseDragDropped(DragEvent event, StackPane pane) {
-        Dragboard db = event.getDragboard();
-        boolean success = false;
-        if (db.hasImage()) {
-            success = true;
-            if (!pane.getChildren().isEmpty()) {
-                pane.getChildren().remove(0);
-            }
-
-            Image img = db.getImage();
-            addImage(img, pane);
-
-
-        }
-        event.setDropCompleted(success);
-        event.consume();
-    }
-
-    private void mouseDragOver(DragEvent event, StackPane pane) {
-
-        pane.setStyle("-fx-border-color: red;"
-                + "-fx-border-width: 5;"
-                + "-fx-background-color: #C6C6C6;"
-                + "-fx-border-style: solid;");
-        event.acceptTransferModes(TransferMode.ANY);
-        event.consume();
-    }
-
     /**
      * by getting protocol TimerStarted, the countdown in the label and the video will start
      * @param allRegistersAsFirst
