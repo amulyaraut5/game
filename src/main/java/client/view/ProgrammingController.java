@@ -106,16 +106,40 @@ public class ProgrammingController extends Controller {
     }
 
 
-    private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
+    protected void addDropHandling(Pane pane) {
+        pane.setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(cardFormat)
+                    && getProgrammingImageView() != null
+                    && getProgrammingImageView().getParent() != pane
+                    && pane.getChildren().isEmpty()) {
+                e.acceptTransferModes(TransferMode.MOVE);
+            }
+        });
 
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(imageView.getImage());
-        setImageDropped(imageView.getImage().getUrl());
-        db.setContent(content);
-        imageView.setImage(null);
-        mouseEvent.consume();
-
+        pane.setOnDragExited(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(cardFormat)
+                    && getProgrammingImageView()!= null
+                    && pane.getChildren().isEmpty()) {
+                ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
+                ImageView puffer = getProgrammingImageView();
+                puffer.setOnDragDetected(ev->{
+                    puffer.setOnDragDetected(event-> {
+                        Dragboard dragboard = puffer.startDragAndDrop(TransferMode.MOVE);
+                        dragboard.setDragView(puffer.snapshot(null, null));
+                        ClipboardContent cc2 = new ClipboardContent();
+                        cc2.put(cardFormat, "cardName");
+                        dragboard.setContent(cc2);
+                        setProgrammingImageView(puffer);
+                       });
+                });
+                pane.getChildren().add(puffer);
+            }
+        });
+        pane.setOnDragDone(e -> {
+            client.sendMessage(new SelectCard(CardType.valueOf("Null"), getPosition()));
+        });
     }
 
 
