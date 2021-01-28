@@ -18,6 +18,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static utilities.Utilities.PORT;
 
@@ -32,6 +34,8 @@ public class Server extends Thread {
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
 
     private ServerState serverState = ServerState.LOBBY;
+
+    private boolean isMapSelected = false;
 
     /**
      * private Constructor for the ChatServer class
@@ -137,17 +141,23 @@ public class Server extends Thread {
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
+
+                ArrayList<String> maps = new ArrayList<>();
+                maps.add("DizzyHighway");
+                maps.add("ExtraCrispy");
+                if(user.getID()==1) user.message(new SelectMap(maps));
+
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
-                if (allUsersReady) {
+                if (allUsersReady && this.isMapSelected) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
-                if (sc.getTo() < 0)
-                    communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
-                else {
+                if (sc.getTo() < 0) {
+                    cheat(sc, user);
+                } else {
                     communicateDirect(new ReceivedChat(sc.getMessage(), user.getID(), true), sc.getTo());
                 }
             }
@@ -161,8 +171,42 @@ public class Server extends Thread {
                 game.setStartingPoint(user, setStartingPoint.getPosition());
             }
             case PlayIt -> game.getActivationPhase().activateCards(user.getID());
+
+            case MapSelected -> {
+                if(!isMapSelected){
+                    MapSelected selectMap = (MapSelected) message.getBody();
+                    game.handleMapSelection(selectMap.getMap());
+                    this.isMapSelected = true;
+                }
+                else communicateAll(new Error("Map has already been selected"));
+
+            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
+    }
+
+    /**
+     * determines wether the message is a cheat or not
+     *
+     * @param sc the received Chat protocol
+     * @param user the user who sent the chat
+     */
+    private  void cheat (SendChat sc, User user) {
+        String message = sc.getMessage();
+        Pattern cheatPattern = Pattern.compile("^#+");
+        Matcher cheatMatcher = cheatPattern.matcher(message);
+        if (cheatMatcher.lookingAt()){
+            game.cheatCode(message, user);
+        } else {
+            communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
+        }
+    }
+
+    public void selectMap(){
+        ArrayList<String> maps = new ArrayList<>();
+        maps.add("DizzyHighway");
+        maps.add("ExtraCrispy");
+        communicateAll(new SelectMap(maps));
     }
 
     private void addPlayerValues(User user, PlayerValues pv) {

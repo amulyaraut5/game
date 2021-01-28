@@ -26,11 +26,7 @@ public class ActivationElements {
     private Map map = game.getMap();
     private ActivationPhase activationPhase;
 
-    /**
-     * Player landing on pit needs to reboot.
-     * Player is suspended from the current round and must discard all programming cards.
-     * Reboot Protocol is sent to the player.
-     **/
+
 
     public ActivationElements(ActivationPhase activationPhase){
         this.activationPhase = activationPhase;
@@ -72,33 +68,35 @@ public class ActivationElements {
 
     public void activateControlPoint(){
         outerLoop:
-        for(Coordinate coordinate: map.getControlPointCoordinates()){
+        for(Coordinate coordinate: map.readControlPointCoordinate()){
             for(Attribute a : map.getTile(coordinate).getAttributes()){
-                int checkPointID = ((game.gameObjects.tiles.ControlPoint) a).getCount();
-                for(Player player: playerList){
-                    if (player.getRobot().getCoordinate() == coordinate){
-                        if (player.getCheckPointCounter() == (checkPointID-1)) {
-                            if(checkPointID < game.getNoOfCheckPoints()){
-                               int checkPoint = player.getCheckPointCounter();
-                               checkPoint++;
-                               player.setCheckPointCounter(checkPoint);
-                               JSONBody jsonBody = new CheckpointReached(player.getID(),checkPointID);
-                               player.message(jsonBody);
+                if(a.getType() == AttributeType.ControlPoint){
+                    int checkPointID = ((game.gameObjects.tiles.ControlPoint) a).getCount();
+                    int totalCheckPoints = map.readControlPointCoordinate().size();
+                    for(Player player: playerList){
+                        if (player.getRobot().getCoordinate().equals(coordinate)){
+                            logger.info("Total CheckPoints:" + totalCheckPoints);
+                            if (player.getCheckPointCounter() == (checkPointID-1)) {
+                                if(checkPointID < totalCheckPoints){
+                                    int checkPoint = player.getCheckPointCounter();
+                                    checkPoint++;
+                                    player.setCheckPointCounter(checkPoint);
+                                    player.message(new CheckpointReached(player.getID(),checkPointID));
+                                }
+                                else if (checkPointID == totalCheckPoints){
+                                    server.communicateAll(new GameWon(player.getID()));
+                                    break outerLoop;
+                                }
                             }
-                            else if (checkPointID == game.getNoOfCheckPoints()){
-                               JSONBody jsonBody1 = new GameWon(player.getID());
-                               server.communicateAll(jsonBody1);
-                               // TODO End the Game
-                                break outerLoop;
+                            else if (player.getCheckPointCounter() > checkPointID) {
+                                logger.info("CheckPoint Already Reached");
+                            }else {
+                                logger.info("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first");
                             }
-                        }
-                        else if (player.getCheckPointCounter() > checkPointID) {
-                            logger.info("CheckPoint Already Reached");
-                        }else {
-                            logger.info("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first");
                         }
                     }
                 }
+
             }
         }
     }
@@ -142,7 +140,6 @@ public class ActivationElements {
                     player.setEnergyCubes(energy);
                     JSONBody jsonBody = new Energy(player.getID(), player.getEnergyCubes());
                     player.message(jsonBody);
-
                 }
             }
         }

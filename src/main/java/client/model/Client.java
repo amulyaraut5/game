@@ -7,19 +7,20 @@ import game.Player;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
-import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
+import utilities.Updatable;
 import utilities.Utilities;
+import utilities.enums.GameState;
 import utilities.enums.MessageType;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.Error;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -46,17 +47,24 @@ public class Client {
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
+
+    private Updatable currentController;
+
     private ChatController chatController;
 
     private boolean isAI = false;
 
     private AICoordinator aiCoordinator;
 
+    private int progPhaseCounter;
+
+
 
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
     private Socket socket;
+
     /**
      * The readerThread reads the input of the user from given socket.
      */
@@ -147,9 +155,12 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case Error -> {
-                    Error error = (Error) message.getBody(); //TODO
-                    viewManager.displayErrorMessage(error.getError());
+                case SelectMap -> {
+                    if(getThisPlayersID() == 1) currentController.update(message);
+                }
+                case Error, PlayerStatus, StartingPointTaken, YourCards,
+                        Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting -> {
+                    currentController.update(message);
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
@@ -159,73 +170,52 @@ public class Client {
                         lobbyController.removePlayer(player);
                         gameController.removePlayer(player);
                         players.remove(player);
-
                     }
-                }
-                case PlayerStatus -> {
-                    PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                    lobbyController.displayStatus(playerStatus);
                 }
                 case ReceivedChat -> {
                     ReceivedChat receivedChat = (ReceivedChat) message.getBody();
                     chatController.receivedChat(receivedChat);
                 }
                 case GameStarted -> {
-                    GameStarted gameStarted = (GameStarted) message.getBody();
-                    gameController.buildMap(gameStarted);
-                    gameController.getOthersController().createPlayerMats(players);
                     viewManager.showGame();
-                }
-                case StartingPointTaken -> {
-                    StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                    gameController.placeRobotInMap(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
-
+                    currentController.update(message);
                 }
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
-                }
-                case YourCards -> {
-                    YourCards yourCards = (YourCards) message.getBody();
-                    gameController.getProgrammingController().startProgrammingPhase(yourCards.getCards());
+
+                    if(activePhase.getPhase() == GameState.PROGRAMMING){
+                        progPhaseCounter++;
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                    }
+                    if(activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1){
+                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                    }
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
-                    gameController.getPlayerMapController().setNewCardsYouGotNow(cardsYouGotNow);
+                    gameController.getPlayerMatController().setNewCardsYouGotNow(cardsYouGotNow);
+
+                    gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().fixSelectedCards(true);
+                        gameController.getPlayerMatController().fixSelectedCards(true);
                         allRegistersAsFirst = true;
+
+                        gameController.getPlayerMatController().setDiscardDeckCounter(4);
                     } else {
                         //gameViewController.getPlayerMapController().fixSelectedCards();
                         gameController.getOthersController().playerWasFirst(selectionFinished);
                         allRegistersAsFirst = false;
                     }
-
                 }
                 case TimerStarted -> {
                     gameController.getProgrammingController().startTimer(allRegistersAsFirst);
-
-                    ///////////JUST FOR TESTING PURPOSE
-                    /*gameViewController.getPlayerMapController().checkPointReached(1); //TODO remove
-                    gameViewController.getPlayerMapController().checkPointReached(2);
-                    gameViewController.getPlayerMapController().checkPointReached(3);
-
-                    gameViewController.getPlayerMapController().addEnergy(7);//TODO remove
-                    for (Player player : players)
-                        if (player.getID() != thisPlayersID) {
-                            gameViewController.getOthersController().addEnergy(new Energy(player.getID(), 7));//TODO remove
-                            gameViewController.getOthersController().checkPointReached(new CheckpointReached(player.getID(), 3));//TODO remove
-                        }
-                    */
-                    ///////////JUST FOR TESTING PURPOSE!
-
                 }
                 case TimerEnded -> {
                     gameController.getProgrammingController().setTimerEnded(true);
-
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -255,7 +245,7 @@ public class Client {
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
                     if (energy.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().addEnergy(energy.getCount());
+                        gameController.getPlayerMatController().addEnergy(energy.getCount());
                     } else {
                         gameController.getOthersController().addEnergy(energy);
                     }
@@ -263,52 +253,39 @@ public class Client {
                 case CheckpointReached -> {
                     CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
                     if (checkpointsReached.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMapController().checkPointReached(checkpointsReached.getNumber());
+                        gameController.getPlayerMatController().checkPointReached(checkpointsReached.getNumber());
                     } else {
                         gameController.getOthersController().checkPointReached(checkpointsReached);
                     }
-
                 }
                 case GameWon -> {
                     GameWon gameWon = (GameWon) message.getBody();
                     //TODO display and end game
                 }
-                case Movement -> {
-                    Movement msg = (Movement) message.getBody();
-                    gameController.handleMovement(getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
-
-                }
-                case PlayerTurning -> {
-                    PlayerTurning pT = (PlayerTurning) message.getBody();
-                    gameController.handlePlayerTurning(getPlayerFromID(pT.getPlayerID()), pT.getDirection());
-
-                }
-                case CardSelected -> {
-                    CardSelected cardSelected = (CardSelected) message.getBody();
-                    gameController.getOthersController().getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
-
-                } //TODO
-                case NotYourCards -> {
-                    NotYourCards notYourCards = (NotYourCards) message.getBody();
-                    gameController.getOthersController().setNotYourCards(notYourCards);
-                } //TODO
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                } //TODO
+                    if(shuffleCoding.getPlayerID() == thisPlayersID){
+                        gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(20);
+                    }
+                }
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
-                } //TODO
-                case PickDamage -> {
-                    PickDamage pickDamage = (PickDamage) message.getBody();
-                    gameController.getActivationController().pickDamage(pickDamage);
+                    if (discardHand.getPlayerID() == thisPlayersID) {
+                        gameController.getPlayerMatController().setDiscardDeckCounter(9);
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                    }
                 }
-                case PlayerShooting -> {
-                    gameController.handleShooting(players);
-                    gameController.handleRobotShooting(players);
+                case SelectDamage -> {
+                    SelectDamage selectDamage = (SelectDamage) message.getBody();
+                    gameController.getPlayerMatController().setDiscardDeckCounter(selectDamage.getCards().size());
                 }
-                //TODO
                 case DrawDamage -> {
                     DrawDamage drawDamage = (DrawDamage) message.getBody();
+                    if (drawDamage.getPlayerID() == thisPlayersID) {
+                        gameController.setDrawDamage(drawDamage);
+                        gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
+                    }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
@@ -324,12 +301,14 @@ public class Client {
         players.add(player);
 
         if (thisPlayersID == player.getID()) {
-            gameController.getPlayerMapController().loadPlayerMap(player);
+            gameController.getPlayerMatController().loadPlayerMap(player);
             viewManager.showLobby();
         }
         loginController.setFigureTaken(player.getFigure(), true);
         lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
+
+        if(getThisPlayersID() == 1) lobbyController.setInfoLabel2("You are first to join. Click Ready to select a map.");
     }
 
     /**
@@ -405,5 +384,9 @@ public class Client {
     public void createAI() {
         isAI = true;
         aiCoordinator = new AICoordinator();
+    }
+
+    public void setCurrentController(Updatable currentController) {
+        this.currentController = currentController;
     }
 }

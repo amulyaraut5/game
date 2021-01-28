@@ -86,13 +86,12 @@ public class ChatController extends Controller {
                 } else {
                     ArrayList<Integer> names = new ArrayList<>();
                     for(Player player : client.getPlayers()) if(name[0].equals(player.getName())) names.add(player.getID());
-                    if(sendTo.length() ==1){
+                    if(sendTo.length() == 1){
                         jsonBody = new SendChat(message, names.get(0));
                     } else {
                         String idNr = sendTo.substring(sendTo.length()-1);
                         jsonBody = new SendChat(message, Integer.parseInt(idNr) );
                     }
-
                 }
                 chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
             }

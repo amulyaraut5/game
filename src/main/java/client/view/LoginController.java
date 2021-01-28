@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -14,9 +13,11 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerValues;
-import utilities.Updateable;
+import utilities.Updatable;
 
 
 /**
@@ -25,7 +26,7 @@ import utilities.Updateable;
  *
  * @author sarah,
  */
-public class LoginController extends Controller implements Updateable {
+public class LoginController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
     /**
      * it stores the imageViews of the different robots,
@@ -43,7 +44,7 @@ public class LoginController extends Controller implements Updateable {
      * a label to check if everything works //TODO delete or change purpose
      */
     @FXML
-    private Label responseLabel;
+    private Label infoLabel;
     /**
      * the button for checking whether input is valid
      */
@@ -94,9 +95,7 @@ public class LoginController extends Controller implements Updateable {
         double scaleSize = 50;
         for (int i = 0; i < robotNames.length; i++) {
             String path = "/lobby/" + robotNames[i] + ".png";
-            robot = new ImageView(new Image(getClass().getResource(path).toString()));
-            robot.setFitHeight(scaleSize);
-            robot.setFitWidth(scaleSize);
+            robot = ImageHandler.createImageView(path, 50, 50);
 
             RobotPrivate robotPrivate = new RobotPrivate(robotNames[i], i);
             robotList.add(robotPrivate);
@@ -112,12 +111,12 @@ public class LoginController extends Controller implements Updateable {
      */
     @FXML
     private void fxButtonClicked() {
-        responseLabel.setText("");
+        infoLabel.setText("");
         String userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
 
-        if (userName.isBlank()) responseLabel.setText("Please insert a Username!");
-        else if (chosenRobot < 0) responseLabel.setText("You have to choose a robot!");
+        if (userName.isBlank()) infoLabel.setText("Please insert a Username!");
+        else if (chosenRobot < 0) infoLabel.setText("You have to choose a robot!");
         else client.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
@@ -137,11 +136,12 @@ public class LoginController extends Controller implements Updateable {
 
     @Override
     public void update(JSONMessage message) {
-
-    }
-
-    public void displayError(String error) {
-        responseLabel.setText(error);
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                infoLabel.setText(error.getError());
+            }
+        }
     }
 
     private class Figure {

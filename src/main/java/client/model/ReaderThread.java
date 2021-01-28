@@ -57,19 +57,6 @@ public class ReaderThread extends Thread {
      */
     @Override
     public void run() {
-        if(client.isAI()) {
-            Timer t = new java.util.Timer();
-            t.schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            client.getAiCoordinator().choosePlayerValues();
-                            t.cancel();
-                        }
-                    },
-                    1000
-            );
-        }
         while (!isInterrupted()) {
             try {
                 String jsonText = reader.readLine();

@@ -10,10 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import utilities.JSONProtocol.body.CurrentCards;
-import utilities.JSONProtocol.body.PickDamage;
-import utilities.JSONProtocol.body.PlayIt;
-import utilities.JSONProtocol.body.SelectDamage;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -33,9 +30,10 @@ public class ActivationController extends Controller {
     private AnchorPane selectDamageAnchorPane;
     @FXML
     private AnchorPane playCardAnchorPane;
-
+    public Label damageInfoLabel;
     private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
+    private int drawDamage;
     private int registerNr = 1; //TODO reset after 5 registers
 
 
@@ -76,8 +74,9 @@ public class ActivationController extends Controller {
 
     public void pickDamage(PickDamage pickDamage){
         playCardAnchorPane.setVisible(false);
+
         selectDamageAnchorPane.setVisible(true);
-        setInfoLabel("You have to pick " + pickDamage.getCount() + " damage cards");
+        damageInfoLabel.setText("You have to pick " + pickDamage.getCount() + " damage cards");
         this.pickDamage = pickDamage.getCount();
     }
 
@@ -105,7 +104,7 @@ public class ActivationController extends Controller {
         pickedDamageCards.add(card);
         ImageView selectedDamageCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
         selectedDamageCard.setFitHeight(150);
-        selectedDamageCard.setFitWidth(70);
+        selectedDamageCard.setFitWidth(85);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if(pickedDamageCards.size()==pickDamage){
             client.sendMessage(new SelectDamage(pickedDamageCards));
@@ -116,3 +115,4 @@ public class ActivationController extends Controller {
         }
     }
 }
+

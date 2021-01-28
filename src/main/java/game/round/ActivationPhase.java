@@ -53,7 +53,7 @@ public class ActivationPhase extends Phase {
      * TODO
      */
     private ActivationElements activationElements = new ActivationElements(this);
-    private LaserAction laserAction = new LaserAction();
+    private LaserAction laserAction = new LaserAction(this);
 
     private ArrayList<Player> activePlayers = playerList;
 
@@ -138,15 +138,13 @@ public class ActivationPhase extends Phase {
         activationElements.activateGreenBelts();
         activationElements.activatePushPanel();
         activationElements.activateGear();
-        laserAction.activateBoardLaser();
-        laserAction.activateRobotLaser();
+        laserAction.activateBoardLaser(activePlayers);
+        laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
         activationElements.activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
-    //Supposed to handle a robot moving one tile.
-    //TODO Once the game can be started, it needs to check whether the robots really move in the right direction
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
 
@@ -204,15 +202,11 @@ public class ActivationPhase extends Phase {
             }
         }
         //move robot, activate board element if given
-        if (canMove) {
-            moveOne(player, o);
-            //handleTile(player);
-        }
+        if (canMove) moveOne(player, o);
     }
 
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(1, orientation);
-        //server.communicateAll(new Movement(player.getID(),player.getRobot().getCoordinate().toPosition()));
         handleTile(player);
     }
 
@@ -262,9 +256,8 @@ public class ActivationPhase extends Phase {
                 server.communicateAll(new Energy(player.getID(), 1));
                 logger.info(player.getName() + " got one EnergyCube.");
             }
-            case Again -> {
-                new AgainAction().doAction(orientation, player);
-            }
+            case Again -> handleRecursion(player, orientation);
+
             case Spam -> {
                 //Add spam card back into the spam deck
                 game.getSpamDeck().addCard(new Spam());
@@ -317,6 +310,23 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    public void handleRecursion(Player player, Orientation orientation){
+        if (this.currentRegister == 1)
+            player.message(new Error("No Previous Movement Recorded"));
+        else if (this.currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
+            player.message(new Error("I am an Idiot."));
+        else{
+            if(player.getLastRegisterCard() == CardType.Again){
+                int currentRegister = this.getCurrentRegister();
+                Card card = player.getRegisterCard(currentRegister-2);
+                handleCard(card.getName(), player);
+            }
+            else {
+                new AgainAction().doAction(orientation, player);
+            }
+        }
+    }
+
     public void handleTile(Player player) {
         if (player.getRobot().getCoordinate().isOutOfBound()) {
             new RebootAction().doAction(Orientation.LEFT, player);
@@ -326,7 +336,6 @@ public class ActivationPhase extends Phase {
                     case Pit:
                         new RebootAction().doAction(Orientation.LEFT, player);
                     default:
-                        logger.info("Hello");
                         server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 }
             }
