@@ -8,8 +8,8 @@ import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
+import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
-import game.round.LaserAction;
 import game.round.ProgrammingPhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +18,7 @@ import server.User;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.Movement;
 import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
 import utilities.Utilities;
@@ -25,6 +26,8 @@ import utilities.enums.AttributeType;
 import utilities.enums.GameState;
 
 import java.util.ArrayList;
+
+import static utilities.Coordinate.parse;
 
 /**
  * This class handles the game itself.
@@ -115,8 +118,6 @@ public class Game {
         }
     }
 
-
-
     /**
      * This method gets called from the phases, it calls the next phase
      */
@@ -131,7 +132,7 @@ public class Game {
     }
 
     public void setStartingPoint(User user, int position) {
-        Coordinate pos = Coordinate.parse(position);
+        Coordinate pos = parse(position);
         Player player = userToPlayer(user);
 
         if (position < 1 || position > 130) {
@@ -214,6 +215,34 @@ public class Game {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    /**
+     * Handles cheat messages received from the chat
+     *
+     * @param message including the # and the cheat
+     * @param user user who sent the cheat
+     */
+    public void cheatCode (String message, User user) {
+        String cheat = message;
+        String cheatInfo = message;
+        if (message.contains(" ")) {
+            cheat = message.substring(0, message.indexOf(" "));
+            cheatInfo = message.substring(message.indexOf(" ")+1);
+        }
+        switch (cheat) {
+            case "#endTimer":
+                programmingPhase.endProgrammingTimer();
+                break;
+            case "#teleport":
+                Robot robot = userToPlayer(user).getRobot();
+                int position = Integer.parseInt(cheatInfo);
+                robot.setCoordinate(parse(position));
+
+                server.communicateAll(new Movement(user.getID(), position));
+                break;
+            default: server.communicateDirect(new Error("your cheat is invalid"), user.getID() );
+        }
     }
 
 
