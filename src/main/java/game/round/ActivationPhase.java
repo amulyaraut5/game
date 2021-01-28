@@ -154,39 +154,14 @@ public class ActivationPhase extends Phase {
         boolean canMove = true;
 
         //look for a blocking wall on current Tile
-        for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-            switch (a.getType()) {
-                //handle different tile effects here
-                case Wall -> {
-                    Wall temp = (Wall) a;
-                    if (!(temp.getOrientations() == null)) {
-                        for (Orientation orientation : temp.getOrientations()) {
-                            if (orientation == o) canMove = false;
-                        }
-                    } else {
-                        if (temp.getOrientation() == o) canMove = false;
-                    }
-                }
-            }
+        if(!noWallAt(player.getRobot().getCoordinate(), o)){
+            canMove = false;
         }
 
         //look for a blocking wall on new tile
-        if (!newPosition.isOutOfBound()) {
-            for (Attribute a : gameMap.getTile(newPosition).getAttributes()) {
-                switch (a.getType()) {
-                    //handle different tile effects here
-                    case Wall -> {
-                        Wall temp = (Wall) a;
-                        if (!(temp.getOrientations() == null)) {
-                            for (Orientation orientation : temp.getOrientations()) {
-                                if (orientation == o.getOpposite()) canMove = false;
-                            }
-                        } else {
-                            if (temp.getOrientation() == o.getOpposite()) canMove = false;
-                        }
-                    }
-                    case Antenna -> canMove = false;
-                }
+        if(!newPosition.isOutOfBound()){
+            if(!noWallAt(newPosition, o.getOpposite())){
+                canMove = false;
             }
         }
 
@@ -340,6 +315,27 @@ public class ActivationPhase extends Phase {
                 }
             }
         }
+    }
+
+    public boolean noWallAt(Coordinate coordinate, Orientation o){
+        boolean canMove = true;
+        for (Attribute a : gameMap.getTile(coordinate).getAttributes()) {
+            switch (a.getType()) {
+                //handle different tile effects here
+                case Wall -> {
+                    Wall temp = (Wall) a;
+                    if (!(temp.getOrientations() == null)) {
+                        for (Orientation orientation : temp.getOrientations()) {
+                            if (orientation == o) canMove = false;
+                        }
+                    } else {
+                        if (temp.getOrientation() == o) canMove = false;
+                    }
+                }
+            }
+        }
+
+        return canMove;
     }
 
     /**
@@ -527,4 +523,5 @@ public class ActivationPhase extends Phase {
                     '}';
         }
     }
+
 }
