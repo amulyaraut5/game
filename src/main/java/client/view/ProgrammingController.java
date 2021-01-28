@@ -11,11 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
+import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
 import java.io.File;
@@ -76,13 +78,15 @@ public class ProgrammingController extends Controller {
     }
 
     public void startProgrammingPhase(ArrayList<CardType> cardList) {
-        for (int i = 0; i < 9; i++) {
-            StackPane pane = createNewPane();
-            addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) + "-card.png").toString()), pane);
+        for (int i = 0 ; i < cardList.size(); i++) {
+            StackPane pane = new StackPane();
+            pane.setPrefHeight(heightHBox);
+            pane.setPrefWidth(widthHBox-20);
+            addDropHandling(pane);
+            pane.getChildren().add(createImageView(cardList.get(i)));
             if (!(hBox1.getChildren().size() >= 5)) hBox1.getChildren().add(pane);
             else hBox2.getChildren().add(pane);
         }
-
     }
 
 
