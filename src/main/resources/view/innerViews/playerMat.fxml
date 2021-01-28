@@ -17,11 +17,10 @@
          </effect>
       </ImageView>
       <HBox fx:id="registerHBoxBackground" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0" />
-
       <HBox fx:id="registerHBox" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0" />
 
       <ImageView fx:id="playerIcon" fitHeight="56.0" fitWidth="57.0" layoutX="9.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="playerMapLabelName" layoutX="66.0" layoutY="6.0" prefHeight="17.0" prefWidth="71.0" textFill="#1b02fc" />
+      <Label fx:id="playerMapLabelName" layoutX="70.0" layoutY="-2.0" prefHeight="17.0" prefWidth="71.0" textFill="#1b02fc" />
 
       <Pane layoutX="458.0" layoutY="23.0" opacity="0.92" prefHeight="37.0" prefWidth="169.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
       <children>
@@ -73,5 +72,6 @@
             </Label>
          </children>
       </Pane>
+      <Label fx:id="playerMatInfoLabel" layoutX="133.0" layoutY="3.0" prefHeight="17.0" prefWidth="354.0" textFill="RED" />
    </children>
 </AnchorPane>
