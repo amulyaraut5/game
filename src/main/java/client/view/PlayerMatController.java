@@ -70,6 +70,60 @@ public class PlayerMatController extends Controller{
 
         //eventOn = true;
     }
+
+    private ImageView droppedImageView;
+    private int positionDroppedCard;
+    private boolean againNotFirst;
+    protected void addDropHandling(Pane pane) {
+        pane.setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(cardFormat)
+                    && getProgrammingImageView() != null
+                    && getProgrammingImageView().getParent() != pane) {
+                positionDroppedCard = registerHBox.getChildren().indexOf(pane);
+                positionDroppedCard += 1;
+                boolean isFirstRegisterAgain = generateCardType(getProgrammingImageView().getImage().getUrl()).toString().equals("Again");
+                boolean isFirstRegister = (positionDroppedCard == 1);
+                againNotFirst = !(isFirstRegister && isFirstRegisterAgain);
+                if (againNotFirst) e.acceptTransferModes(TransferMode.MOVE);
+            }
+        });
+
+        pane.setOnDragExited(e -> {
+            Dragboard db = e.getDragboard();
+            if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
+            else playerMatInfoLabel.setText(" ");
+
+            if (db.hasContent(cardFormat)
+                    && getProgrammingImageView()!= null
+                    && againNotFirst) {
+                ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
+                droppedImageView = createImageView(getProgrammingImageView(), positionDroppedCard);
+                    pane.getChildren().add(droppedImageView);
+            }
+        });
+        pane.setOnDragDone(e -> {
+            CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
+            client.sendMessage(new SelectCard(cardType, positionDroppedCard));
+        });
+    }
+
+
+
+    private ImageView createImageView(ImageView programmingCardImageView, int position) {
+            ImageView imageView = programmingCardImageView;
+            imageView.setOnDragDetected(event-> {
+                Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
+                dragboard.setDragView(imageView.snapshot(null, null));
+                ClipboardContent cc2 = new ClipboardContent();
+                cc2.put(cardFormat, "cardName");
+                dragboard.setContent(cc2);
+                setPosition(position);
+                setProgrammingImageView(imageView);
+            });
+        return imageView;
+    }
+
     public void reset(){
         registerHBox.getChildren().clear();
         eventOn = true;
@@ -89,6 +143,7 @@ public class PlayerMatController extends Controller{
         }
     }
 
+
     public void loadPlayerMap(Player player) {
         String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name + ".png").toString()));
@@ -101,60 +156,26 @@ public class PlayerMatController extends Controller{
         imageView.setFitWidth(widthRegisterCard - 20);
         imageView.setFitHeight(heightRegisterCard);
         imageView.setImage(i);
-        imageView.setOnDragDetected(mouseEvent -> setOnDragDetected(mouseEvent, imageView, pane));
         pane.getChildren().add(imageView);
 
 
     }
 
-    private void mouseDragDropped(DragEvent event, StackPane pane) {
-
-        Dragboard db = event.getDragboard();
-        boolean success = false;
-        if (db.hasImage()) {
-            success = true;
-            if (!pane.getChildren().isEmpty()) {
-                pane.getChildren().remove(0);
-            }
-            Image img = db.getImage();
-            addImage(img, pane);
-            String cardName = getImageDropped();
-            int registerNumber = registerHBox.getChildren().indexOf(pane) + 1;
-            client.sendMessage(new SelectCard(CardType.valueOf(cardName), registerNumber));
-
-        }
-        event.setDropCompleted(true);
-        event.consume();
-
-
-    }
 
     public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow) {
         registerHBox.getChildren().clear();
         for (CardType card : cardsYouGotNow.getCards()) {
-            StackPane pane = createNewPane(false);
+            StackPane pane = new StackPane();
+            pane.setPrefHeight(heightRegisterCard);
+            pane.setPrefWidth(widthRegisterCard-20);
             addImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()), pane);
             registerHBox.getChildren().add(pane);
         }
-
-
     }
 
     public void fixSelectedCards(boolean setOn) {
         if(setOn) eventOn = false;
         else eventOn = true;
-    }
-
-    private void mouseDragOver(DragEvent event, StackPane pane) {
-
-        pane.setStyle("-fx-border-color: #ff0000;"
-                + "-fx-border-width: 5;"
-                + "-fx-background-color: #C6C6C6;"
-                + "-fx-border-style: solid;");
-        event.acceptTransferModes(TransferMode.ANY);
-        event.consume();
-
-
     }
 
     private void createRegisterNumberImages() {
@@ -184,6 +205,7 @@ public class PlayerMatController extends Controller{
     }
 
     public void checkPointReached(int number){
+        int fitHeightWidth;
         String controlPoint = String.valueOf(number);
         ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/controlPoint/controlPoint_" + controlPoint + ".png").toString()));
         if(checkPointsHBox.getChildren().size()<4) fitHeightWidth = 35;
@@ -193,7 +215,6 @@ public class PlayerMatController extends Controller{
                     ImageView im = (ImageView) node;
                     im.setFitWidth(20);
                     im.setFitHeight(20);
-
                 }
             }
             fitHeightWidth = 20;
