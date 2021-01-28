@@ -145,7 +145,7 @@ public class Server extends Thread {
                 ArrayList<String> maps = new ArrayList<>();
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
-                if(user.getID()==1) user.message(new SelectMap(maps));
+                if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
 
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
                 if (allUsersReady && this.isMapSelected) {

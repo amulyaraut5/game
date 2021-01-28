@@ -26,7 +26,6 @@ public class Coordinate {
      * @return Coordinate of the given position.
      */
     public static Coordinate parse(int position) {
-        position -= 1;
         int x = position % Utilities.MAP_WIDTH;
         int y = position / Utilities.MAP_WIDTH;
         return new Coordinate(x, y);
@@ -38,7 +37,7 @@ public class Coordinate {
      * @return position on the map.
      */
     public int toPosition() {
-        return 1 + x + y * Utilities.MAP_WIDTH;
+        return x + y * Utilities.MAP_WIDTH;
     }
 
     public void add(Coordinate c) {
