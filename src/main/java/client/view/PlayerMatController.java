@@ -10,7 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import utilities.JSONProtocol.body.CardSelected;
 import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
@@ -20,8 +22,8 @@ import utilities.enums.CardType;
  */
 public class PlayerMatController extends Controller{
 
-    public HBox registerHBoxBackground;
-
+    @FXML
+    private HBox registerHBoxBackground;
     @FXML
     private HBox registerHBox;
     @FXML
@@ -33,10 +35,11 @@ public class PlayerMatController extends Controller{
     @FXML
     private AnchorPane playerMapAnchorPane;
     @FXML
-    public Label discardDeckLabel; //TODO ?
+    private Label discardDeckLabel; //TODO ?
     private int discardDeckNr = 0;
     @FXML
-    public Label programmingDeckLabel;
+    private Label programmingDeckLabel;
+    public Label playerMatInfoLabel;
     private int programmingDeckNr = 20;
     @FXML
     private HBox energyHBox;
@@ -46,8 +49,11 @@ public class PlayerMatController extends Controller{
     private double widthRegisterCard;
     private double heightRegisterCard;
 
+
+
     private Image energyCubeImage;
     public void initialize() {
+
         energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
         energyHBox.setSpacing(5);
         energyHBox2.setSpacing(5);
@@ -58,53 +64,29 @@ public class PlayerMatController extends Controller{
         registerHBoxBackground.setSpacing(20);
         createRegisterNumberImages();
         createRegisterBackground();
+        createRegisters();
 
-        int register = 5;
-        for (int i = 0; i < register; i++) {
-            StackPane pane = createNewPane(true);
-            registerHBox.getChildren().add(pane);
-        }
+        //addDropHandling(registerHBox);
+
         //eventOn = true;
     }
     public void reset(){
         registerHBox.getChildren().clear();
         eventOn = true;
-        for (int i = 0; i < 5; i++) {
-            StackPane pane = createNewPane(true);
+        createRegisters();
+    }
+
+
+    private void createRegisters(){
+        int register = 5;
+        for(int i = 0; i< register; i++) {
+            StackPane pane = new StackPane();
+            pane.setPrefHeight(heightRegisterCard);
+            pane.setPrefWidth(widthRegisterCard-20);
+            pane.setStyle("-fx-border-color: blue;");
+            addDropHandling(pane);
             registerHBox.getChildren().add(pane);
         }
-
-    }
-
-    private StackPane createNewPane(boolean event) {
-        StackPane pane = new StackPane();
-
-        pane.setPrefHeight(heightRegisterCard);
-        pane.setPrefWidth(widthRegisterCard);
-
-        if (event && eventOn) {
-            pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
-            pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
-            pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
-        }
-
-
-        return pane;
-    }
-
-
-    private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView, StackPane pane) {
-        if (eventOn) {
-            Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putImage(imageView.getImage());
-            //setImageDropped(imageView.getImage().getUrl());
-            db.setContent(content);
-            imageView.setImage(null);
-            client.sendMessage(new SelectCard(null, registerHBox.getChildren().indexOf(pane)));
-            mouseEvent.consume();
-        }
-
     }
 
     public void loadPlayerMap(Player player) {
