@@ -39,8 +39,6 @@ public class ProgrammingController extends Controller {
     private boolean timerEnded = false;
 
     @FXML
-    private AnchorPane programmingPhasePane;
-    @FXML
     private HBox hBox1Background;
     @FXML
     private HBox hBox2Background;
@@ -50,8 +48,8 @@ public class ProgrammingController extends Controller {
     private HBox hBox2;
     @FXML
     private AnchorPane timerAnchorPane;
-
-    public Label programInfoLabel;
+    @FXML
+    private Label programInfoLabel;
     @FXML
     private Label timerLabel;
 
@@ -64,18 +62,17 @@ public class ProgrammingController extends Controller {
         hBox1Background.setSpacing(20);
         hBox2Background.setSpacing(20);
 
-        for (int i = 0; i < 5; i++) {
-            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
-            background.setFitHeight(heightHBox);
-            background.setFitWidth(widthHBox - 20);
-            hBox1Background.getChildren().add(background);
-        }
-        for (int i = 0; i < 4; i++) {
-            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
-            background.setFitHeight(heightHBox);
-            background.setFitWidth(widthHBox - 20);
-            hBox2Background.getChildren().add(background);
-        }
+        for (int i = 0; i < 5; i++) createBackground(hBox1Background);
+        for (int i = 0; i < 4; i++) createBackground(hBox2Background);
+
+
+    }
+
+    private void createBackground(HBox hBox){
+        ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+        background.setFitHeight(heightHBox);
+        background.setFitWidth(widthHBox - 20);
+        hBox.getChildren().add(background);
     }
 
     public void startProgrammingPhase(ArrayList<CardType> cardList) {
