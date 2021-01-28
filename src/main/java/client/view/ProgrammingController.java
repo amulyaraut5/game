@@ -89,18 +89,20 @@ public class ProgrammingController extends Controller {
         }
     }
 
+    private ImageView createImageView(CardType cardName) {
+        ImageView programmingCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + cardName + "-card.png").toString()));
+        programmingCard.setFitHeight(heightHBox);
+        programmingCard.setFitWidth(widthHBox-20);
+        programmingCard.setOnDragDetected(e -> {
+            Dragboard db = programmingCard.startDragAndDrop(TransferMode.MOVE);
+            db.setDragView(programmingCard.snapshot(null, null));
+            ClipboardContent cc = new ClipboardContent();
+            cc.put(cardFormat, cardName);
+            db.setContent(cc);
+            setProgrammingImageView(programmingCard);
+        });
 
-    private StackPane createNewPane() {
-        StackPane pane = new StackPane();
-
-        pane.setPrefHeight(heightHBox);
-        pane.setPrefWidth(widthHBox - 20);
-
-        pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
-        pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
-        pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
-
-        return pane;
+        return programmingCard;
     }
 
 
