@@ -107,10 +107,10 @@ public class Game {
 
     }
 
-    public void handleMapSelection(String selectedMap){
-        if(selectedMap.equals("DizzyHighway")){
+    public void handleMapSelection(String selectedMap) {
+        if (selectedMap.equals("DizzyHighway")) {
             map = MapBuilder.constructMap(new DizzyHighway());
-        }else {
+        } else {
             map = MapBuilder.constructMap(new ExtraCrispy());
         }
     }
@@ -218,14 +218,14 @@ public class Game {
      * Handles cheat messages received from the chat
      *
      * @param message including the # and the cheat
-     * @param user user who sent the cheat
+     * @param user    user who sent the cheat
      */
     public void handleCheat(String message, User user) {
         String cheat = message;
         String cheatInfo = message;
         if (message.contains(" ")) {
             cheat = message.substring(0, message.indexOf(" "));
-            cheatInfo = message.substring(message.indexOf(" ")+1);
+            cheatInfo = message.substring(message.indexOf(" ") + 1);
         }
         switch (cheat) {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
