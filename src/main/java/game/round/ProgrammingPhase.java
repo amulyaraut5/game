@@ -89,24 +89,31 @@ public class ProgrammingPhase extends Phase {
             }
         }
 
-        //put the card in the register
-        player.setRegisterCards(selectCard.getRegister(), chosenCard);
+        if (chosenCard != null) {
+            //put the card in the register
+            player.setRegisterCards(selectCard.getRegister(), chosenCard);
 
-        //logger.info("drawn2" + player.getDrawnProgrammingCards());
-        //logger.info("register2" + player.getRegisterCards());
+            //logger.info("drawn2" + player.getDrawnProgrammingCards());
+            //logger.info("register2" + player.getRegisterCards());
 
-        //Here the card with the same cardType enum as the chosen card is removed from the hand cards
-        CardType chosenCardType = chosenCard.getName();
-        ArrayList<CardType> cardTypes = new ArrayList<>();
-        for (Card card : player.getDrawnProgrammingCards()) {
-            cardTypes.add(card.getName());
-        }
-
-        for (int i = 0; i < cardTypes.size(); i++) {
-            if (cardTypes.get(i) == chosenCardType) {
-                player.getDrawnProgrammingCards().remove(i);
-                break;
+            //Here the card with the same cardType enum as the chosen card is removed from the hand cards
+            CardType chosenCardType = chosenCard.getName();
+            ArrayList<CardType> cardTypes = new ArrayList<>();
+            for (Card card : player.getDrawnProgrammingCards()) {
+                cardTypes.add(card.getName());
             }
+
+            for (int i = 0; i < cardTypes.size(); i++) {
+                if (cardTypes.get(i) == chosenCardType) {
+                    player.getDrawnProgrammingCards().remove(i);
+                    break;
+                }
+            }
+        //if a card was removed, remove the card from the register and put it in the hand cards
+        } else {
+            Card removeCard = player.getRegisterCard(selectCard.getRegister());
+            player.getDrawnProgrammingCards().add(removeCard);
+            player.setRegisterCards(selectCard.getRegister(), null);
         }
 
         //logger.info("drawn3" + player.getDrawnProgrammingCards());
@@ -124,7 +131,7 @@ public class ProgrammingPhase extends Phase {
 
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == playerList.size() - 1) {
-                startProgrammingTimer(player);
+                startProgrammingTimer();
                 //If all players are ready the timer ends early
             } else if (notReadyPlayers.isEmpty()) {
                 endProgrammingTimer();
@@ -136,10 +143,8 @@ public class ProgrammingPhase extends Phase {
 
     /**
      * Starts a 30 second timer when the first player filled all 5 registers.
-     *
-     * @param player Player who starts the timer
      */
-    private void startProgrammingTimer(Player player) {
+    private void startProgrammingTimer() {
         GameTimer gameTimer = new GameTimer(this);
         gameTimer.start();
     }
@@ -237,7 +242,7 @@ public class ProgrammingPhase extends Phase {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeck.size()));
             player.reuseDiscardedDeck();
             player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeck.size()));
-            player.message(new ShuffleCoding(player.getID()));
+            server.communicateAll(new ShuffleCoding(player.getID()));
         }
     }
 }

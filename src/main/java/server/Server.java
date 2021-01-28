@@ -180,6 +180,11 @@ public class Server extends Thread {
                 }
                 else communicateAll(new Error("Map has already been selected"));
 
+                if (readyUsers.size() == users.size()) {
+                    game.play();
+                    serverState = ServerState.RUNNING_GAME;
+                }
+
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
@@ -196,7 +201,7 @@ public class Server extends Thread {
         Pattern cheatPattern = Pattern.compile("^#+");
         Matcher cheatMatcher = cheatPattern.matcher(message);
         if (cheatMatcher.lookingAt()){
-            game.cheatCode(message, user);
+            game.handleCheat(message, user);
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
         }

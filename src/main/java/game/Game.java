@@ -21,7 +21,6 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.Movement;
 import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
-import utilities.Utilities;
 import utilities.enums.AttributeType;
 import utilities.enums.GameState;
 
@@ -39,7 +38,6 @@ public class Game {
     private static Game instance;
 
     private final Server server = Server.getInstance();
-    private int energyBank;
     private ArrayList<Player> players;
 
     private SpamDeck spamDeck;
@@ -81,7 +79,6 @@ public class Game {
      * Initialises the game attributes at the beginning of each game
      */
     public void reset() {
-        energyBank = Utilities.ENERGY_BANK;
         gameState = GameState.CONSTRUCTION;
         players = new ArrayList<>(6);
         createdGame = false;
@@ -110,10 +107,10 @@ public class Game {
 
     }
 
-    public void handleMapSelection(String selectedMap){
-        if(selectedMap.equals("DizzyHighway")){
+    public void handleMapSelection(String selectedMap) {
+        if (selectedMap.equals("DizzyHighway")) {
             map = MapBuilder.constructMap(new DizzyHighway());
-        }else {
+        } else {
             map = MapBuilder.constructMap(new ExtraCrispy());
         }
     }
@@ -221,27 +218,27 @@ public class Game {
      * Handles cheat messages received from the chat
      *
      * @param message including the # and the cheat
-     * @param user user who sent the cheat
+     * @param user    user who sent the cheat
      */
-    public void cheatCode (String message, User user) {
+    public void handleCheat(String message, User user) {
         String cheat = message;
         String cheatInfo = message;
         if (message.contains(" ")) {
             cheat = message.substring(0, message.indexOf(" "));
-            cheatInfo = message.substring(message.indexOf(" ")+1);
+            cheatInfo = message.substring(message.indexOf(" ") + 1);
         }
         switch (cheat) {
-            case "#endTimer":
-                programmingPhase.endProgrammingTimer();
-                break;
-            case "#teleport":
+            case "#endTimer" -> programmingPhase.endProgrammingTimer();
+            //teleports the robot to given position
+            case "#teleport" -> {
                 Robot robot = userToPlayer(user).getRobot();
                 int position = Integer.parseInt(cheatInfo);
                 robot.setCoordinate(parse(position));
-
                 server.communicateAll(new Movement(user.getID(), position));
-                break;
-            default: server.communicateDirect(new Error("your cheat is invalid"), user.getID() );
+            }
+            //activates the board - only when activation phase was reached at least once
+            case "#activateBoard" -> activationPhase.activateBoard();
+            default -> server.communicateDirect(new Error("your cheat is invalid"), user.getID());
         }
     }
 

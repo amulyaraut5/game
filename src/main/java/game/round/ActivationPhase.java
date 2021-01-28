@@ -11,7 +11,6 @@ import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Gear;
 import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -133,7 +132,7 @@ public class ActivationPhase extends Phase {
     /**
      * Method that activates the board elements in their right order.
      */
-    private void activateBoard() {
+    public void activateBoard() {
         activationElements.activateBlueBelts();
         activationElements.activateGreenBelts();
         activationElements.activatePushPanel();
