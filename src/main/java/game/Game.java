@@ -16,10 +16,8 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.Movement;
-import utilities.JSONProtocol.body.StartingPointTaken;
+import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.enums.AttributeType;
 import utilities.enums.GameState;
@@ -222,23 +220,45 @@ public class Game {
      */
     public void handleCheat(String message, User user) {
         String cheat = message;
-        String cheatInfo = message;
+        String[] cheatInfo = new String[0];
         if (message.contains(" ")) {
             cheat = message.substring(0, message.indexOf(" "));
-            cheatInfo = message.substring(message.indexOf(" ") + 1);
+            cheatInfo = message.substring(message.indexOf(" ") + 1).split(" ");
         }
         switch (cheat) {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
-            //teleports the robot to given position
-            case "#teleport" -> {
-                Robot robot = userToPlayer(user).getRobot();
-                int position = Integer.parseInt(cheatInfo);
-                robot.setCoordinate(parse(position));
-                server.communicateAll(new Movement(user.getID(), position));
-            }
             //activates the board - only when activation phase was reached at least once
             case "#activateBoard" -> activationPhase.activateBoard();
-            default -> server.communicateDirect(new Error("your cheat is invalid"), user.getID());
+            case "#tp" -> {
+                Robot robot = userToPlayer(user).getRobot();
+                if (cheatInfo.length == 1) {
+                    int position = Integer.parseInt(cheatInfo[0]);
+                    robot.setCoordinate(parse(position));
+                    server.communicateAll(new Movement(user.getID(), position));
+                } else if (cheatInfo.length == 2) {
+                    int x = Integer.parseInt(cheatInfo[0]);
+                    int y = Integer.parseInt(cheatInfo[1]);
+                    Coordinate coordinate = new Coordinate(x, y);
+                    robot.setCoordinate(coordinate);
+                    server.communicateAll(new Movement(user.getID(), coordinate.toPosition()));
+                }
+            }
+            case "#cheats" -> {
+                String cheats = """
+                                                
+                        ----------------------------------------
+                        Cheats
+                        ----------------------------------------
+                        #cheats            | lists all cheats
+                        #activateBoard | activates the board
+                        #endTimer        | ends the timer
+                        #tp <position> | teleports the robot
+                        #tp <x> <y>     | teleports the robot
+                        ----------------------------------------
+                        """;
+                user.message(new ReceivedChat(cheats, user.getID(), false));
+            }
+            default -> server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
         }
     }
 
