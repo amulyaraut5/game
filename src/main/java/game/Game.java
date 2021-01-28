@@ -223,7 +223,7 @@ public class Game {
      * @param message including the # and the cheat
      * @param user user who sent the cheat
      */
-    public void cheatCode (String message, User user) {
+    public void handleCheat(String message, User user) {
         String cheat = message;
         String cheatInfo = message;
         if (message.contains(" ")) {

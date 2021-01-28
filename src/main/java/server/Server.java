@@ -196,7 +196,7 @@ public class Server extends Thread {
         Pattern cheatPattern = Pattern.compile("^#+");
         Matcher cheatMatcher = cheatPattern.matcher(message);
         if (cheatMatcher.lookingAt()){
-            game.cheatCode(message, user);
+            game.handleCheat(message, user);
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
         }
