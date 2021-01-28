@@ -149,23 +149,9 @@ public class ActivationPhase extends Phase {
     //TODO Once the game can be started, it needs to check whether the robots really move in the right direction
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
-        Coordinate newPosition = null;
-        if (o == Orientation.UP) {
-            newPosition = player.getRobot().getCoordinate().clone();
-            newPosition.addToY(-1);
-        }
-        if (o == Orientation.RIGHT) {
-            newPosition = player.getRobot().getCoordinate().clone();
-            newPosition.addToX(1);
-        }
-        if (o == Orientation.DOWN) {
-            newPosition = player.getRobot().getCoordinate().clone();
-            newPosition.addToY(1);
-        }
-        if (o == Orientation.LEFT) {
-            newPosition = player.getRobot().getCoordinate().clone();
-            newPosition.addToX(-1);
-        }
+
+        Coordinate newPosition = activationElements.calculateNew(player,o);
+
         //Handle board elements
         boolean canMove = true;
 
