@@ -241,6 +241,7 @@ public class Game {
 
                 server.communicateAll(new Movement(user.getID(), position));
                 break;
+            case "#activateBoard": activationPhase.activateBoard(); break;
             default: server.communicateDirect(new Error("your cheat is invalid"), user.getID() );
         }
     }
