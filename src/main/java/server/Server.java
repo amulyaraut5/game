@@ -186,11 +186,6 @@ public class Server extends Thread {
                 }
 
             }
-
-            case SelectDamage -> {
-                SelectDamage selectDamage = (SelectDamage) message.getBody();
-                game.selectDamage(selectDamage, user.getID());
-            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }

@@ -1,10 +1,9 @@
 package game;
 
-import game.gameObjects.cards.damage.Spam;
-import game.gameObjects.cards.damage.Trojan;
-import game.gameObjects.cards.damage.Virus;
-import game.gameObjects.cards.damage.Worm;
-import game.gameObjects.decks.*;
+import game.gameObjects.decks.SpamDeck;
+import game.gameObjects.decks.TrojanDeck;
+import game.gameObjects.decks.VirusDeck;
+import game.gameObjects.decks.WormDeck;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
@@ -17,11 +16,12 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Movement;
+import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.MapConverter;
 import utilities.enums.AttributeType;
-import utilities.enums.CardType;
 import utilities.enums.GameState;
 
 import java.util.ArrayList;
@@ -242,38 +242,5 @@ public class Game {
         }
     }
 
-    /**
-     * If a player can choose between damage Cards this method is used to put those cards from their decks to the players
-     * discard deck
-     *
-     * @param selectDamage Cards that have been selected
-     * @param playerID player who selected the cards
-     */
-    public void selectDamage(SelectDamage selectDamage, int playerID) {
-        ArrayList<CardType> selectedCards = selectDamage.getCards();
-        Player player = getPlayerFromID(playerID);
-        DiscardDeck discardDeck = player.getDiscardedProgrammingDeck();
-        for (CardType cardName : selectedCards) {
-            switch (cardName) {
-                case Trojan -> {
-                    trojanDeck.pop();
-                    discardDeck.addCard(new Trojan());
-                }
-                case Virus -> {
-                    virusDeck.pop();
-                    discardDeck.addCard(new Virus());
-                }
-                case Worm -> {
-                    wormDeck.pop();
-                    discardDeck.addCard(new Worm());
-                }
-                case Spam -> {
-                    spamDeck.pop();
-                    discardDeck.addCard(new Spam());
-                }
-                default -> server.communicateDirect(new Error("This is not a valid input"), playerID);
-            }
-        }
-    }
 
 }
