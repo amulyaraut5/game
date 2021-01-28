@@ -7,6 +7,7 @@ import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Error;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -91,7 +92,11 @@ public class ProgrammingPhase extends Phase {
 
         if (chosenCard != null) {
             //put the card in the register
-            player.setRegisterCards(selectCard.getRegister(), chosenCard);
+            if (player.getRegisterCards().contains(chosenCard)) {
+                player.setRegisterCards(selectCard.getRegister(), chosenCard);
+            } else {
+                server.communicateDirect(new Error("This is not a valid card."), player.getID());
+            }
 
             //logger.info("drawn2" + player.getDrawnProgrammingCards());
             //logger.info("register2" + player.getRegisterCards());
