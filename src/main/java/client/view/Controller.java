@@ -2,6 +2,15 @@ package client.view;
 
 import client.ViewManager;
 import client.model.Client;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
+import utilities.enums.CardType;
+
+import java.util.ArrayList;
 
 /**
  * Abstract super class of all view-controller
@@ -9,7 +18,11 @@ import client.model.Client;
  * @author simon, sarah
  */
 public abstract class Controller {
-    public static String imageDropped;
+
+    protected static DataFormat cardFormat = new DataFormat("com.example.myapp.formats.button");
+    private static int positionRegister;
+    private static ImageView programmingImageView ;
+
     /**
      * instance of the ViewManager to call the next or previous scene
      */
@@ -21,6 +34,7 @@ public abstract class Controller {
     /**
      * it stores a list of names of the robots
      */
+
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
@@ -37,12 +51,29 @@ public abstract class Controller {
         //}
     }
 
+
+    public ImageView getProgrammingImageView() {
+        return programmingImageView;
+    }
+
+    public void setProgrammingImageView(ImageView programmingImageView) {
+        this.programmingImageView = programmingImageView;
+    }
+
+    protected int getPosition(){
+        return positionRegister;
+    }
+    protected void setPosition(int position){
+        this.positionRegister = position;
+    }
+
+
     /**
      * This private class represents a robot with its name and id
      */
     protected class RobotPrivate {
-        private int id = 0;
-        private String name = "default";
+        private int id;
+        private String name;
 
         /**
          * constructor of RobotPrivate
@@ -63,4 +94,5 @@ public abstract class Controller {
             return this.id;
         }
     }
+
 }
