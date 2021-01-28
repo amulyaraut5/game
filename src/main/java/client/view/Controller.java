@@ -38,17 +38,14 @@ public abstract class Controller {
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
-    public String getImageDropped() {
-        return imageDropped;
-    }
 
-    public void setImageDropped(String imageDropped) {
-        //if(imageDropped!= null){
+
+    protected CardType generateCardType(String imageDropped) {
         String[] a = imageDropped.split("/");
         String imageName = a[a.length - 1];
         String cardName = imageName.substring(0, imageName.length() - 9);
-        this.imageDropped = cardName;
-        //}
+        CardType cardType = CardType.valueOf(cardName);
+        return cardType;
     }
 
 
