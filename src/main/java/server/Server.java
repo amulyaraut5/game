@@ -186,7 +186,7 @@ public class Server extends Thread {
                 }
 
             }
-            case PickDamage -> {}
+            case PickDamage -> { } //TODO
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
