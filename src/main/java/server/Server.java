@@ -180,6 +180,11 @@ public class Server extends Thread {
                 }
                 else communicateAll(new Error("Map has already been selected"));
 
+                if (readyUsers.size() == users.size()) {
+                    game.play();
+                    serverState = ServerState.RUNNING_GAME;
+                }
+
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
