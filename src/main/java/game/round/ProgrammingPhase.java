@@ -7,6 +7,7 @@ import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Error;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -91,14 +92,21 @@ public class ProgrammingPhase extends Phase {
 
         if (chosenCard != null) {
             //put the card in the register
-            player.setRegisterCards(selectCard.getRegister(), chosenCard);
+            ArrayList<CardType> cardTypes = new ArrayList<>();
+            for (Card card : player.getDrawnProgrammingCards()) {
+                cardTypes.add(card.getName());
+            }
+            if (cardTypes.contains(type)) {
+                player.setRegisterCards(selectCard.getRegister(), chosenCard);
+            } else {
+                server.communicateDirect(new Error("This is not a valid card."), player.getID());
+            }
 
             //logger.info("drawn2" + player.getDrawnProgrammingCards());
             //logger.info("register2" + player.getRegisterCards());
 
             //Here the card with the same cardType enum as the chosen card is removed from the hand cards
             CardType chosenCardType = chosenCard.getName();
-            ArrayList<CardType> cardTypes = new ArrayList<>();
             for (Card card : player.getDrawnProgrammingCards()) {
                 cardTypes.add(card.getName());
             }
@@ -109,7 +117,7 @@ public class ProgrammingPhase extends Phase {
                     break;
                 }
             }
-        //if a card was removed, remove the card from the register and put it in the hand cards
+            //if a card was removed, remove the card from the register and put it in the hand cards
         } else {
             Card removeCard = player.getRegisterCard(selectCard.getRegister());
             player.getDrawnProgrammingCards().add(removeCard);

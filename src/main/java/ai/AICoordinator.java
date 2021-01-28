@@ -26,7 +26,7 @@ import java.util.*;
 public class AICoordinator {
     private static final Logger logger = LogManager.getLogger();
     private final ArrayList<Player> players = new ArrayList<>();
-    private Client client = Client.getInstance();
+    private final Client client = Client.getInstance();
     private int thisPlayersID;
     private Map map;
     private GameState activePhase;

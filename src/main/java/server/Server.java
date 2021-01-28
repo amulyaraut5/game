@@ -145,7 +145,7 @@ public class Server extends Thread {
                 ArrayList<String> maps = new ArrayList<>();
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
-                if(user.getID()==1) user.message(new SelectMap(maps));
+                if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
 
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
                 if (allUsersReady && this.isMapSelected) {
@@ -180,12 +180,13 @@ public class Server extends Thread {
                 }
                 else communicateAll(new Error("Map has already been selected"));
 
-                if (readyUsers.size() == users.size()) {
+                if ((readyUsers.size() == users.size()) && readyUsers.size() > 1) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
 
             }
+            case PickDamage -> { } //TODO
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }

@@ -26,7 +26,7 @@ public class JSONMessage {
         return messageType;
     }
 
-    public Object getBody() {
+    public JSONBody getBody() {
         return messageBody;
     }
 }
