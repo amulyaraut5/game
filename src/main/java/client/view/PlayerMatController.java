@@ -186,26 +186,26 @@ public class PlayerMatController extends Controller{
     public void checkPointReached(int number){
         String controlPoint = String.valueOf(number);
         ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/controlPoint/controlPoint_" + controlPoint + ".png").toString()));
-        if(checkPointsHBox.getChildren().size()<4){
-            imageView.setFitHeight(35);
-            imageView.setFitWidth(35);
-        } else {
-            for (Node node : checkPointsHBox.getChildren()){
-                if(node.getClass().equals(imageView.getClass())){
+        if(checkPointsHBox.getChildren().size()<4) fitHeightWidth = 35;
+        else{
+            for (Node node : checkPointsHBox.getChildren()) {
+                if (node.getClass().equals(imageView.getClass())) {
                     ImageView im = (ImageView) node;
                     im.setFitWidth(20);
                     im.setFitHeight(20);
 
                 }
             }
-            imageView.setFitHeight(20);
-            imageView.setFitWidth(20);
+            fitHeightWidth = 20;
         }
+        imageView.setFitHeight(fitHeightWidth);
+        imageView.setFitWidth(fitHeightWidth);
 
         checkPointsHBox.getChildren().add(imageView);
     }
 
     public void addEnergy(int count){
+        int fitHeightWidth;
         while(count>0){
             ImageView energyCube = new ImageView(energyCubeImage);
             if(energyHBox.getChildren().size()>9){
@@ -216,20 +216,16 @@ public class PlayerMatController extends Controller{
                         im.setFitHeight(10);
                     }
                 }
-                energyCube.setFitHeight(10);
-                energyCube.setFitWidth(10);
-                energyHBox2.getChildren().add(energyCube);
+                fitHeightWidth = 10;
             } else {
-                energyCube.setFitHeight(15);
-                energyCube.setFitWidth(15);
-                energyHBox.getChildren().add(energyCube);
+                fitHeightWidth = 15;
             }
-
+            energyCube.setFitHeight(fitHeightWidth);
+            energyCube.setFitWidth(fitHeightWidth);
+            energyHBox.getChildren().add(energyCube);
             count --;
         }
-
     }
-
 
     public void setDiscardDeckCounter(int amount){
         if(amount == 0){
