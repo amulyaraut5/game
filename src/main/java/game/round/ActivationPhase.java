@@ -552,7 +552,6 @@ public class ActivationPhase extends Phase {
                 player.getDiscardedProgrammingDeck().drawCards(alreadyDrawn);
                 server.communicateDirect(new PickDamage(amount - (damageDeck.size())), player.getID());
             }
-            game.setEmptyDeck(damageDeck);
         }
     }
 
