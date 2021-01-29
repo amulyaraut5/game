@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
@@ -149,6 +151,7 @@ public class Server extends Thread {
                 userIsNotAI.put(user,status.isReady());
 
                 ArrayList<String> maps = new ArrayList<>();
+                Random r = new Random();
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
 
@@ -169,13 +172,20 @@ public class Server extends Thread {
                         }
                     }
                 }
-
-
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
+
                 if (allUsersReady && this.isMapSelected) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
+
+                // Random Map is selected if all users are AI
+                if(allUsersReady && (AIs.equals(readyUsers))){
+                    game.handleMapSelection(maps.get(r.nextInt(maps.size())));
+                    game.play();
+                    serverState = ServerState.RUNNING_GAME;
+                }
+
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
