@@ -50,6 +50,8 @@ public class GameController extends Controller implements Updatable {
     private ArrayList<Coordinate> path = new ArrayList<>();
     private HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
+    ArrayList<Player> players = client.getPlayers();
+    ArrayList<Player> rebootingPlayers = new ArrayList<>();
 
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -317,8 +319,8 @@ public class GameController extends Controller implements Updatable {
                         case LEFT, RIGHT -> imageView.setRotate(270);
                     }
 
-                    Coordinate newPos = calculateEndCoordinate(orientation, c, players);
 
+                    Coordinate newPos = calculateEndCoordinate(orientation, c, players);
                     imageView.setX(c.getX() * Utilities.FIELD_SIZE);
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
 
@@ -331,7 +333,7 @@ public class GameController extends Controller implements Updatable {
 
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
                     fadeTransition.setFromValue(1.0f);
-                    fadeTransition.setToValue(0.3f);
+                    fadeTransition.setToValue(0.0f);
                     fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
                     SequentialTransition sequentialTransition = new SequentialTransition();
@@ -340,6 +342,7 @@ public class GameController extends Controller implements Updatable {
                     path.clear();
                 }
             }
+
         }
     }
 
@@ -375,7 +378,7 @@ public class GameController extends Controller implements Updatable {
             transition.setNode(imageView);
             transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
             transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);
-            transition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+            //transition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
 
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
             fadeTransition.setFromValue(1.0f);
@@ -387,6 +390,8 @@ public class GameController extends Controller implements Updatable {
             sequentialTransition.play();
             path.clear();
         }
+
+
     }
 
     /**
@@ -587,6 +592,12 @@ public class GameController extends Controller implements Updatable {
                     othersController.reset();
                     getActivationController().reset();
                 }
+
+                if (rebootingPlayers != null) {
+                    players.addAll(rebootingPlayers);
+                    rebootingPlayers.clear();
+                }
+
                 client.setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
@@ -700,6 +711,7 @@ public class GameController extends Controller implements Updatable {
             case ActivePhase -> {
                 ActivePhase activePhase = (ActivePhase) message.getBody();
                 changePhaseView(activePhase.getPhase());
+
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -732,9 +744,14 @@ public class GameController extends Controller implements Updatable {
 
             }
             case PlayerShooting -> {
-                ArrayList<Player> players = client.getPlayers();
+                //ArrayList<Player> players = client.getPlayers();
                 handleShooting(players);
                 handleRobotShooting(players);
+            }
+            case Reboot->{
+                Reboot reboot = (Reboot) message.getBody();
+                rebootingPlayers.add(client.getPlayerFromID(reboot.getPlayerID()));
+                players.remove(client.getPlayerFromID(reboot.getPlayerID()));
             }
         }
     }

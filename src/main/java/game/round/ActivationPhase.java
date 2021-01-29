@@ -341,7 +341,6 @@ public class ActivationPhase extends Phase {
                 }
             }
         }
-
         return canMove;
     }
 

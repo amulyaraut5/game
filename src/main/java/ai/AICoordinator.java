@@ -235,6 +235,5 @@ public class AICoordinator {
             String name = b.get(0).toString() + "_AI";
             client.sendMessage(new PlayerValues(name, b.get(0)));
         }
-
     }
 }
