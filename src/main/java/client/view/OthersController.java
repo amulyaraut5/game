@@ -50,6 +50,12 @@ public class OthersController extends Controller {
     }
 
 
+    public void removePlayer(Player player){
+        OtherPlayer removedPlayer = getOtherPlayer(player.getID());
+        hBoxPlayer.getChildren().remove(removedPlayer.getPositionHBox());
+        otherPlayers.remove(getOtherPlayer(player.getID()));
+
+    }
     /**
      * extracts the OtherPlayer with its controller etc
      * @param id of searched player

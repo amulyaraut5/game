@@ -137,9 +137,8 @@ public class GameController extends Controller implements Updatable {
         this.soundHandler = new SoundHandler();
     }
 
-    public void drawDamage(DrawDamage drawDamage) {
 
-    }
+
 
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
@@ -632,7 +631,7 @@ public class GameController extends Controller implements Updatable {
     public void removePlayer(Player player) {
         ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
-        //TODO remove small player mat
+        othersController.removePlayer(player);
     }
 
     @Override
