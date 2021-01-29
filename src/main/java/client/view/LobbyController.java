@@ -65,6 +65,7 @@ public class LobbyController extends Controller implements Updatable {
     public void initialize() {
         dizzyHighway.setVisible(false);
         ExtraCrispy.setVisible(false);
+        infoLabel2.setText("If you're first to select Ready, you will get chance to select map.");
     }
 
     public void attachChatPane(Pane chat) {
@@ -119,6 +120,12 @@ public class LobbyController extends Controller implements Updatable {
     @FXML
     private void checkBoxAction() {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
+        if(!readyCheckbox.isSelected()){
+            infoLabel2.setText("You had your chance to select a map.");
+            mapLabel.setText("Please wait till somebody selects the map.");
+            dizzyHighway.setDisable(true);
+            ExtraCrispy.setDisable(true);
+        }
     }
 
     public void removePlayer(Player player) {
@@ -161,9 +168,12 @@ public class LobbyController extends Controller implements Updatable {
                 displayStatus(playerStatus);
             }
             case SelectMap -> {
+                mapLabel.setText("Choose any one of the map from below");
                 dizzyHighway.setVisible(true);
                 ExtraCrispy.setVisible(true);
-                mapLabel.setText("Choose any one of the map from below");
+                dizzyHighway.setDisable(false);
+                ExtraCrispy.setDisable(false);
+
             }
         }
     }
