@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
+
 import java.util.ArrayList;
 
 public class ActivationController extends Controller {
@@ -20,7 +21,6 @@ public class ActivationController extends Controller {
     @FXML
     private Label register;
     public Label infoLabel;
-
     @FXML
     private ImageView currentCardImageView;
     @FXML
@@ -30,7 +30,17 @@ public class ActivationController extends Controller {
     private AnchorPane selectDamageAnchorPane;
     @FXML
     private AnchorPane playCardAnchorPane;
-    public Label damageInfoLabel;
+    @FXML
+    private Button spamCardButton;
+    @FXML
+    private Button trojanCardButton;
+    @FXML
+    private Button virusCardButton;
+    @FXML
+    private Button wormCardButton;
+    @FXML
+    private Label damageInfoLabel;
+    private GameController gameController;
     private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
     private int drawDamage;
@@ -80,19 +90,13 @@ public class ActivationController extends Controller {
         this.pickDamage = pickDamage.getCount();
     }
 
-    @FXML
-    private void spamCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Spam);
-    }
-
-    @FXML
-    private void trojanCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Trojan);
-    }
-
-    @FXML
-    private void virusCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Virus);
+    public void damageButtonClicked(ActionEvent actionEvent){
+        CardType clickedButton = null;
+        if(actionEvent.getSource().equals(spamCardButton)) clickedButton = CardType.Spam;
+        if(actionEvent.getSource().equals(trojanCardButton)) clickedButton = CardType.Trojan;
+        if(actionEvent.getSource().equals(virusCardButton)) clickedButton = CardType.Virus;
+        if(actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
+        checkDamageReady(clickedButton);
     }
 
     @FXML
