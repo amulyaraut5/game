@@ -400,7 +400,7 @@ public class GameController extends Controller implements Updatable {
         while (true) {
             position.add(step);
             if (position.isOutOfBound()) {
-                logger.info("Laser Out of Bound");
+                //logger.info("Laser Out of Bound");
                 break outerLoop;
             } else {
                 for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
@@ -436,7 +436,7 @@ public class GameController extends Controller implements Updatable {
             }
         }
         if (path.size() == 0) {
-            logger.info("Nowhere to fire");
+            //logger.info("Nowhere to fire");
             return position;
         } else {
             for (Coordinate coordinate : path) {
@@ -466,7 +466,7 @@ public class GameController extends Controller implements Updatable {
         while (true) {
             position.add(step);
             if (position.isOutOfBound()) {
-                logger.info("Laser Out of Bound");
+                //logger.info("Laser Out of Bound");
                 break outerLoop;
             } else {
                 for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {

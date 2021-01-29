@@ -60,7 +60,7 @@ public class LaserAction {
             determineLaserPaths(coordinate);
             // TODO Check whether the lasers affect two players
             for (Coordinate coordinate1 : laserCoordinates) {
-                logger.info("BoardLaser: x:"+ coordinate1.getX() + "y:"+ coordinate1.getY());
+                //logger.info("BoardLaser: x:"+ coordinate1.getX() + "y:"+ coordinate1.getY());
                 for (Player player : activePlayers)
                     if (player.getRobot().getCoordinate().equals(coordinate1)) receiveDamage(player);
 
@@ -83,7 +83,7 @@ public class LaserAction {
             determineRobotLaserPath(player);
             outerLoop:
             for (Coordinate coordinate : robotCoordinates) {
-                logger.info("Robot :"+ coordinate.getX() + "y:"+ coordinate.getY());
+                //logger.info("Robot :"+ coordinate.getX() + "y:"+ coordinate.getY());
                 for (Player targetPlayer : activePlayers)
                     if (targetPlayer.getRobot().getCoordinate().equals(coordinate)){
                         receiveDamage(targetPlayer);
@@ -102,7 +102,7 @@ public class LaserAction {
      * @param player
      */
     private void receiveDamage(Player player){
-        logger.info("Got hit by Laser");
+        //logger.info("Got hit by Laser");
         ArrayList<Card> spamCard = game.getSpamDeck().drawCards(1);
         ArrayList<CardType> cardType = new ArrayList<>();
         for(Card card : spamCard){
@@ -119,7 +119,7 @@ public class LaserAction {
      */
 
     public void determineLaserPaths(Coordinate coordinate) {
-        logger.info("DetermineLaserPath: x:"+ coordinate.getX() + "y:"+ coordinate.getY());
+        //logger.info("DetermineLaserPath: x:"+ coordinate.getX() + "y:"+ coordinate.getY());
         int xC = coordinate.getX();
         int yC = coordinate.getY();
         for (Attribute a : map.getTile(xC, yC).getAttributes()) {
@@ -127,7 +127,7 @@ public class LaserAction {
                 Orientation orientation = ((Laser) a).getOrientation();
                 laserCoordinates = determinePath(orientation, coordinate);
                 for(Coordinate coordinate1: laserCoordinates){
-                    logger.info("laserCoordinates x:"+ coordinate1.getX() + "y:"+ coordinate1.getY());
+                    //logger.info("laserCoordinates x:"+ coordinate1.getX() + "y:"+ coordinate1.getY());
                 }
             }
         }
@@ -163,7 +163,8 @@ public class LaserAction {
         while (true) {
             position.add(step);
             if(position.isOutOfBound()){
-                logger.info("Laser Out of Bound"); break outerLoop;
+                //logger.info("Laser Out of Bound");
+                break outerLoop;
             }
             else{
                 for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {

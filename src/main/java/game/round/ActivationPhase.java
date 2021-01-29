@@ -193,45 +193,45 @@ public class ActivationPhase extends Phase {
         switch (cardType) {
             case MoveI -> {
                 handleMove(player, orientation);
-                logger.info(player.getName() + " moved one Tile.");
+                //logger.info(player.getName() + " moved one Tile.");
             }
             case MoveII -> {
                 handleMove(player, orientation);
                 handleMove(player, orientation);
-                logger.info(player.getName() + " moved two Tiles.");
+                //logger.info(player.getName() + " moved two Tiles.");
             }
             case MoveIII -> {
                 handleMove(player, orientation);
                 handleMove(player, orientation);
                 handleMove(player, orientation);
-                logger.info(player.getName() + " moved three Tiles.");
+                //logger.info(player.getName() + " moved three Tiles.");
             }
             case TurnLeft -> {
                 player.getRobot().rotate(Rotation.LEFT);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                logger.info(player.getName() + " turned left.");
+                //logger.info(player.getName() + " turned left.");
             }
             case TurnRight -> {
                 player.getRobot().rotate(Rotation.RIGHT);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                logger.info(player.getName() + " turned right.");
+                //logger.info(player.getName() + " turned right.");
             }
             case UTurn -> {
                 player.getRobot().rotate(Rotation.LEFT);
                 player.getRobot().rotate(Rotation.LEFT);
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
                 server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                logger.info(player.getName() + " performed U-Turn");
+                //logger.info(player.getName() + " performed U-Turn");
             }
             case BackUp -> {
                 handleMove(player, player.getRobot().getOrientation().getOpposite());
                 server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
-                logger.info(player.getName() + " moved back.");
+                //logger.info(player.getName() + " moved back.");
             }
             case PowerUp -> {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
                 server.communicateAll(new Energy(player.getID(), 1));
-                logger.info(player.getName() + " got one EnergyCube.");
+                //logger.info(player.getName() + " got one EnergyCube.");
             }
             case Again -> handleRecursion(player, orientation);
 
@@ -241,7 +241,7 @@ public class ActivationPhase extends Phase {
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
 
-                logger.info(player.getName() + " played a spam card.");
+                //logger.info(player.getName() + " played a spam card.");
                 //Play the top-card
                 handleCard(topCard.getName(), player);
             }
@@ -251,7 +251,7 @@ public class ActivationPhase extends Phase {
                 new RebootAction().doAction(orientation, player);
                 //Add worm card back into the worm deck
                 game.getWormDeck().getDeck().add(worm);
-                logger.info(player.getName() + " played a worm card.");
+                //logger.info(player.getName() + " played a worm card.");
             }
             case Virus -> {
                 int robotX = player.getRobot().getCoordinate().getX();
@@ -270,7 +270,7 @@ public class ActivationPhase extends Phase {
                 game.getVirusDeck().addCard(new Virus());
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
-                logger.info(player.getName() + " played a virus card.");
+                //logger.info(player.getName() + " played a virus card.");
                 //Play the top-card
                 handleCard(topCard.getName(), player);
             }
@@ -279,7 +279,7 @@ public class ActivationPhase extends Phase {
                 //Draw two spam cards
                 game.getSpamDeck().drawTwoSpam(player);
                 Card topCard = player.getDrawProgrammingDeck().pop();
-                logger.info(player.getName() + " played a trojan card.");
+                //logger.info(player.getName() + " played a trojan card.");
                 //Play the top-card
                 handleCard(topCard.getName(), player);
             }
@@ -361,7 +361,7 @@ public class ActivationPhase extends Phase {
      */
     public ArrayList<Player> calculatePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
-        logger.info("calculatePrio HIER - " + sortedDistance.toString());
+        //logger.info("calculatePrio HIER - " + sortedDistance.toString());
 
         ArrayList<Player> playerPriority = new ArrayList<>();
 
