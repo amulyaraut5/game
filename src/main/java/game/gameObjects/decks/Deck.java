@@ -72,17 +72,18 @@ public abstract class Deck {
      */
     public ArrayList<Card> drawCards(int amount) {
         //if(this.getDeck().size() >= amount) {
-            ArrayList<Card> tempDeck = new ArrayList<>();
+        ArrayList<Card> currentDeck = this.getDeck();
+
+        ArrayList<Card> tempDeck = new ArrayList<>();
+        //logger.info("drawCards PROG-DECK: " +this.getDeck());
             for (int i = 0; i < amount; i++) {
                 //logger.info("draw Cards - i: " + i);
-                //logger.info("drawCards PROG-DECK: " +this.getDeck());
-                tempDeck.add(this.getDeck().get(i));
+                tempDeck.add(currentDeck.get(i));
                 //logger.info("drawCards OUTPUT : " + tempDeck);
             }
-            for (int i = 0; i < amount; i++) {
-                //this.getDeck().remove(i);
-                //logger.info("drawCards REMOVE progdeck : " + this.getDeck());
-            }
+            this.getDeck().removeAll(tempDeck);
+            //logger.info("CurrentDeck: " +currentDeck);
+            //logger.info("drawCards REMOVE progdeck : " + this.getDeck());
             //logger.info("drawCards RETURN : " + tempDeck);
             return tempDeck;
             /*
