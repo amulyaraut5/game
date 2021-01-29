@@ -1,9 +1,6 @@
 package game;
 
-import game.gameObjects.decks.SpamDeck;
-import game.gameObjects.decks.TrojanDeck;
-import game.gameObjects.decks.VirusDeck;
-import game.gameObjects.decks.WormDeck;
+import game.gameObjects.decks.*;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
@@ -247,7 +244,7 @@ public class Game {
             }
             case "#damage" -> {
                 Robot robot = userToPlayer(user).getRobot();
-                spamDeck.drawTwoSpam(userToPlayer(user));
+                activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
             case "#autoPlay" -> {
                 for (int register = 1; register < 6; register++) {
@@ -256,6 +253,10 @@ public class Game {
                         activationPhase.activateCards(registerCard.getPlayerID());
                     }
                 }
+            }
+            case "#emptySpam" -> {
+                spamDeck.getDeck().clear();
+                logger.info("SpamDeckCheat: " + spamDeck.getDeck().size());
             }
             case "#cheats" -> {
                 String cheats = """
@@ -268,8 +269,9 @@ public class Game {
                         #endTimer       | ends the timer
                         #tp <position>  | teleports the robot
                         #tp <x> <y>     | teleports the robot
-                        #damage         | deals two spam cards
+                        #damage         | deals given number of spam cards
                         #autoPlay       | autoplay activation phase
+                        #emptySpam      | empties the Spam deck
                         ----------------------------------------
                         """;
                 user.message(new ReceivedChat(cheats, user.getID(), false));
