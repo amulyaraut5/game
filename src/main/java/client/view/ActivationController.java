@@ -82,10 +82,11 @@ public class ActivationController extends Controller {
         infoLabel.setText(text);
     }
 
-    public void pickDamage(PickDamage pickDamage){
+    public void pickDamage(PickDamage pickDamage, GameController game){
+        this.gameController = game;
         playCardAnchorPane.setVisible(false);
-
         selectDamageAnchorPane.setVisible(true);
+        updateDamageCountLabel();
         damageInfoLabel.setText("You have to pick " + pickDamage.getCount() + " damage cards");
         this.pickDamage = pickDamage.getCount();
     }
@@ -98,17 +99,29 @@ public class ActivationController extends Controller {
         if(actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
         checkDamageReady(clickedButton);
     }
+    private void updateDamageCountLabel(){
+        spamCardButton.setText(String.valueOf(gameController.getCountSpamCards()));
+        if(gameController.getCountSpamCards() == 0) spamCardButton.setDisable(true);
 
-    @FXML
-    private void wormCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Worm);
+        trojanCardButton.setText(String.valueOf(gameController.getCountTrojanCards()));
+        if(gameController.getCountTrojanCards() == 0) trojanCardButton.setDisable(true);
+
+        virusCardButton.setText(String.valueOf(gameController.getCountVirusCards()));
+        if(gameController.getCountVirusCards() == 0) virusCardButton.setDisable(true);
+
+        wormCardButton.setText(String.valueOf(gameController.getCountWormCards()));
+        if(gameController.getCountWormCards() == 0) wormCardButton.setDisable(true);
+
     }
 
+
     private void checkDamageReady(CardType card){
+        gameController.handleDamageCount(card);
+        updateDamageCountLabel();
         pickedDamageCards.add(card);
         ImageView selectedDamageCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
         selectedDamageCard.setFitHeight(150);
-        selectedDamageCard.setFitWidth(85);
+        selectedDamageCard.setFitWidth(95);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if(pickedDamageCards.size()==pickDamage){
             client.sendMessage(new SelectDamage(pickedDamageCards));
