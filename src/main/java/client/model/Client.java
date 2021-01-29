@@ -298,6 +298,7 @@ public class Client {
                     if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.setDrawDamage(drawDamage);
                         gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
+                        (gameController.getPlayerMatController().getPlayercards())++;
                     }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");

@@ -41,7 +41,8 @@ public class PlayerMatController extends Controller{
     @FXML
     public Label programmingDeckLabel;
     public Label playerMatInfoLabel;
-    public int programmingDeckNr = 20;
+    private int programmingDeckNr = 20;
+    private int playercards = 20;
     @FXML
     private HBox energyHBox;
     public HBox energyHBox2;
@@ -251,6 +252,7 @@ public class PlayerMatController extends Controller{
 
     public void setDiscardDeckCounter(int amount){
         if(amount == 0){
+            discardDeckNr = 0;
             discardDeckLabel.setText(amount + "cards");
         } else {
             discardDeckNr = discardDeckNr + amount;
@@ -259,13 +261,21 @@ public class PlayerMatController extends Controller{
     }
 
     public void setProgrammingDeckCounter(int amount){
-        if(amount == 20){
-            programmingDeckNr = 20;
+        if(amount == playercards){
+            programmingDeckNr = playercards;
             programmingDeckLabel.setText(amount + "cards");
         } else {
             programmingDeckNr = programmingDeckNr - amount;
             programmingDeckLabel.setText(programmingDeckNr + " cards");
         }
+    }
+
+    public void addPlayercards (int amount) {
+        playercards += amount;
+    }
+
+    public void substractPlayerCards (int amount) {
+        playercards -= amount;
     }
 
     public int getDiscardDeckNr() {
