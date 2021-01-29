@@ -99,6 +99,14 @@ public class GameController extends Controller implements Updatable {
     private int currentRound = 1;
     private boolean first = true;
 
+
+    private int countSpamCards = 38;
+    private int countTrojanCards = 12;
+    private int countWormCards = 6;
+    private int countVirusCards = 18;
+
+
+
     @FXML
     public void initialize() {
         drawDamageHBox.setAlignment(Pos.CENTER);
