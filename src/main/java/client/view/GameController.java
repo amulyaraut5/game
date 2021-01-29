@@ -29,10 +29,7 @@ import utilities.*;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.enums.AttributeType;
-import utilities.enums.GameState;
-import utilities.enums.Orientation;
-import utilities.enums.Rotation;
+import utilities.enums.*;
 
 import java.io.IOException;
 import java.util.*;

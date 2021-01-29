@@ -4,6 +4,7 @@ package client.view;
 import javafx.application.Platform;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -59,17 +60,19 @@ public class ProgrammingController extends Controller {
     public void initialize() { //TODO method that gets called when cards were dealt
         widthHBox = hBox1.getPrefWidth() / 5;
         heightHBox = hBox1.getPrefHeight();
-        hBox1.setSpacing(20);
-        hBox2.setSpacing(20);
-        hBox1Background.setSpacing(20);
-        hBox2Background.setSpacing(20);
-
+        settingsHBoxes(new HBox[]{hBox1, hBox2, hBox1Background, hBox2Background});
         for (int i = 0; i < 5; i++) createBackground(hBox1Background);
         for (int i = 0; i < 4; i++) createBackground(hBox2Background);
 
 
     }
 
+    private void settingsHBoxes(HBox [] hBoxes){
+        for (HBox hBox : hBoxes) {
+            hBox.setSpacing(20);
+            hBox.setAlignment(Pos.CENTER_LEFT);
+        }
+    }
     private void createBackground(HBox hBox){
         ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
         background.setFitHeight(heightHBox);
