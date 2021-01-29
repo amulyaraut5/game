@@ -38,9 +38,9 @@ public class PlayerMatController extends Controller{
     private Label discardDeckLabel; //TODO ?
     private int discardDeckNr = 0;
     @FXML
-    private Label programmingDeckLabel;
+    public Label programmingDeckLabel;
     public Label playerMatInfoLabel;
-    private int programmingDeckNr = 20;
+    public int programmingDeckNr = 20;
     @FXML
     private HBox energyHBox;
     public HBox energyHBox2;
@@ -264,6 +264,14 @@ public class PlayerMatController extends Controller{
             programmingDeckNr = programmingDeckNr - amount;
             programmingDeckLabel.setText(programmingDeckNr + " cards");
         }
+    }
+
+    public int getDiscardDeckNr() {
+        return discardDeckNr;
+    }
+
+    public int getProgrammingDeckNr() {
+        return programmingDeckNr;
     }
 }
 
