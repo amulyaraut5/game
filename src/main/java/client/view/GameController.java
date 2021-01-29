@@ -204,6 +204,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     public void setDrawDamage(DrawDamage drawDamage) {
+        drawDamageHBox.getChildren().clear();
         drawDamageAnchorPane.setVisible(true);
         drawDamageLabel.setText("You got damage! ");
         for (int i = 0; i < drawDamage.getCards().size(); i++) {
@@ -639,6 +640,46 @@ public class GameController extends Controller implements Updatable {
         othersController.removePlayer(player);
     }
 
+    public void handleDamageCount(ArrayList<CardType> cardList){
+        for(CardType cardType: cardList){
+           handleDamageCount(cardType);
+        }
+    }
+    public void handleDamageCount(CardType cardType){
+            switch (cardType) {
+                case Spam -> {
+                    countSpamCards--;
+                }
+                case Trojan -> {
+                    countTrojanCards--;
+                }
+                case Worm -> {
+                    countWormCards--;
+                }
+                case Virus -> {
+                    countVirusCards--;
+                }
+            }
+    }
+
+
+    public int getCountSpamCards() {
+        return countSpamCards;
+    }
+
+    public int getCountTrojanCards() {
+        return countTrojanCards;
+    }
+
+    public int getCountWormCards() {
+        return countWormCards;
+    }
+
+    public int getCountVirusCards() {
+        return countVirusCards;
+    }
+
+
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -686,7 +727,9 @@ public class GameController extends Controller implements Updatable {
             }
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
-                getActivationController().pickDamage(pickDamage);
+                getActivationController().pickDamage(pickDamage, this);
+
+
             }
             case PlayerShooting -> {
                 ArrayList<Player> players = client.getPlayers();
