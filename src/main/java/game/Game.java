@@ -247,6 +247,18 @@ public class Game {
                 Robot robot = userToPlayer(user).getRobot();
                 spamDeck.drawTwoSpam(userToPlayer(user));
             }
+            /*
+            case "#playAll" -> {
+                for (int i = 1; i<=5; i++){
+                    System.out.println(i + " i");
+                    getActivationPhase().turnCards(i);
+                    for (int j = 0; j<players.size(); j++){
+                        RegisterCard playerRegisterCard = getActivationPhase().getCurrentCards().get(j);
+                        getActivationPhase().activateCards(playerRegisterCard.getPlayerID());
+                    }
+                }
+                nextPhase();
+            }*/
             case "#cheats" -> {
                 String cheats = """
                                                 

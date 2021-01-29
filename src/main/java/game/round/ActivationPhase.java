@@ -47,6 +47,9 @@ public class ActivationPhase extends Phase {
      */
     private ArrayList<RegisterCard> currentCards = new ArrayList<>();
 
+    public ArrayList<RegisterCard> getCurrentCards() {
+        return currentCards;
+    }
 
     /**
      * TODO
@@ -80,7 +83,7 @@ public class ActivationPhase extends Phase {
      * At the beginning of each register the cards of each player in the current register is shown.
      * This is already in priority order.
      */
-    private void turnCards(int register) {
+    public void turnCards(int register) {
         for (Player player : calculatePriority(gameMap.getAntenna())) {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
