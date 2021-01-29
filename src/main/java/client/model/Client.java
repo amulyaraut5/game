@@ -187,22 +187,17 @@ public class Client {
                     gameController.changePhaseView(activePhase.getPhase());
                     logger.info("0ACTIVEPHASE ProgrammingDeck");
 
-                    for(Player player : players) {
-                        logger.info("1ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
-                        if (activePhase.getPhase() == GameState.PROGRAMMING) {
-                            logger.info("2ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
-                            progPhaseCounter++;
-
-                            if(player.getDrawProgrammingDeck().size() >= 9) {
-                                logger.info("3ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
-                                gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                                logger.info("4ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
-                            }
+                    if (activePhase.getPhase() == GameState.PROGRAMMING) {
+                        progPhaseCounter++;
+                        logger.info("1ACTIVEPHASE ProgrammingDeck");
+                        if(gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                            logger.info("2ACTIVEPHASE ProgrammingDeck");
                         }
-                        if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1 && player.getDrawProgrammingDeck().size() >= 9) {
-                            gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                            logger.info("5ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
-                        }
+                    }
+                    if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1 && gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
+                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                        logger.info("3ACTIVEPHASE ProgrammingDeck");
                     }
                 }
                 case CardsYouGotNow -> {
