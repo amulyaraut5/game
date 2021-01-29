@@ -19,6 +19,7 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
+import utilities.RegisterCard;
 import utilities.enums.AttributeType;
 import utilities.enums.GameState;
 
@@ -247,18 +248,15 @@ public class Game {
                 Robot robot = userToPlayer(user).getRobot();
                 spamDeck.drawTwoSpam(userToPlayer(user));
             }
-            /*
-            case "#playAll" -> {
-                for (int i = 1; i<=5; i++){
-                    System.out.println(i + " i");
-                    getActivationPhase().turnCards(i);
-                    for (int j = 0; j<players.size(); j++){
-                        RegisterCard playerRegisterCard = getActivationPhase().getCurrentCards().get(j);
-                        getActivationPhase().activateCards(playerRegisterCard.getPlayerID());
+            case "#autoPlay" -> {
+                for (int register = 1; register < 6; register++) {
+                    for (int i = 0; i < players.size(); i++) {
+                        RegisterCard registerCard = activationPhase.getCurrentCards().get(0);
+                        activationPhase.activateCards(registerCard.getPlayerID());
                     }
                 }
                 nextPhase();
-            }*/
+            }
             case "#cheats" -> {
                 String cheats = """
                                                 
