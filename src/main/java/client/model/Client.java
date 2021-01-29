@@ -57,7 +57,7 @@ public class Client {
 
     private AICoordinator aiCoordinator;
 
-    private int progPhaseCounter = 0;
+    private boolean first = true;
 
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
@@ -180,19 +180,16 @@ public class Client {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
 
-                    if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter >= 1) {
-                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                    }
-
                     if (activePhase.getPhase() == GameState.PROGRAMMING) {
-                        progPhaseCounter++;
-                        if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                        } else {
+                        if (!(first)) {
+                            gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                        }
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() < 9) {
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
                             gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                         }
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                        first = false;
                     }
                 }
                 case CardsYouGotNow -> {
@@ -285,15 +282,11 @@ public class Client {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 5) {
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(5);
-                            //logger.info("2ACTIVEPHASE ProgrammingDeck");
-                        } else {
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() < 5) {
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
                             gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                         }
-                        //logger.info("DiscardHand HIER");
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                     }
                 }
                 case SelectDamage -> {
