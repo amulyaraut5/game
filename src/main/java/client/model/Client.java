@@ -20,7 +20,6 @@ import utilities.enums.MessageType;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.lang.Error;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -57,7 +56,6 @@ public class Client {
     private AICoordinator aiCoordinator;
 
     private int progPhaseCounter;
-
 
 
     /**
@@ -190,12 +188,17 @@ public class Client {
                     if (activePhase.getPhase() == GameState.PROGRAMMING) {
                         progPhaseCounter++;
                         logger.info("1ACTIVEPHASE ProgrammingDeck");
-                        if(gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
                             gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                             logger.info("2ACTIVEPHASE ProgrammingDeck");
+                        } else {
+                            int amount = gameController.getPlayerMatController().getProgrammingDeckNr();
+                            gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(20);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(9 - amount);
                         }
                     }
-                    if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1 && gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
+                    if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
                         logger.info("3ACTIVEPHASE ProgrammingDeck");
                     }
@@ -272,17 +275,21 @@ public class Client {
                 }
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                    if(shuffleCoding.getPlayerID() == thisPlayersID){
-                        gameController.getPlayerMatController().setDiscardDeckCounter(0);
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(20);
-                    }
                 }
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                        logger.info("DiscardHand HIER");
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                            //logger.info("2ACTIVEPHASE ProgrammingDeck");
+                        } else {
+                            int amount = gameController.getPlayerMatController().getProgrammingDeckNr();
+                            gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(20);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(9 - amount);
+                        }
+                        //logger.info("DiscardHand HIER");
                     }
                 }
                 case SelectDamage -> {
@@ -308,7 +315,7 @@ public class Client {
     public void addNewPlayer(PlayerAdded playerAdded) {
         Player player = new Player(playerAdded);
         players.add(player);
-        logger.info("addNewPlayer : " +players.size());
+        logger.info("addNewPlayer : " + players.size());
 
         if (thisPlayersID == player.getID()) {
             gameController.getPlayerMatController().loadPlayerMap(player);

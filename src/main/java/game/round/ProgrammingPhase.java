@@ -244,14 +244,14 @@ public class ProgrammingPhase extends Phase {
      * @param player player that needs to draw cards
      */
     private void drawProgrammingCards(int amount, Player player) {
-        ArrayList<Card> currentDeck = player.getDrawProgrammingDeck().getDeck();
-        if (!(currentDeck.size() < amount)) {
+        int currentDeckSize = player.getDrawProgrammingDeck().getDeck().size();
+        if (!(currentDeckSize < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));
         } else {
-            player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeck.size()));
+            player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeckSize));
             player.reuseDiscardedDeck();
-            player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeck.size()));
             server.communicateAll(new ShuffleCoding(player.getID()));
+            player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeckSize));
         }
     }
 }
