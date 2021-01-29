@@ -184,19 +184,15 @@ public class Client {
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
-                    logger.info("0ACTIVEPHASE ProgrammingDeck");
 
                     if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter >= 1) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        logger.info("3ACTIVEPHASE ProgrammingDeck");
                     }
 
                     if (activePhase.getPhase() == GameState.PROGRAMMING) {
                         progPhaseCounter++;
-                        logger.info("1ACTIVEPHASE ProgrammingDeck");
                         if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
                             gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                            logger.info("2ACTIVEPHASE ProgrammingDeck");
                         } else {
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
                             gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
@@ -225,7 +221,6 @@ public class Client {
                 case TimerEnded -> {
                     gameController.getProgrammingController().setTimerEnded(true);
                     gameController.getPlayerMatController().setDiscardDeckCounter(4);
-                    logger.info("TimerEnded HIER: ");
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -330,7 +325,6 @@ public class Client {
     public void addNewPlayer(PlayerAdded playerAdded) {
         Player player = new Player(playerAdded);
         players.add(player);
-        logger.info("addNewPlayer : " + players.size());
 
         if (thisPlayersID == player.getID()) {
             gameController.getPlayerMatController().loadPlayerMap(player);
