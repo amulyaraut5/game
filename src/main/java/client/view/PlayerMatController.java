@@ -278,6 +278,10 @@ public class PlayerMatController extends Controller{
         playercards -= amount;
     }
 
+    public int getPlayercards() {
+        return playercards;
+    }
+
     public int getDiscardDeckNr() {
         return discardDeckNr;
     }

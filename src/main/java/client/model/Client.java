@@ -4,6 +4,7 @@ import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
+import utilities.enums.CardType;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static utilities.Utilities.PORT;
+import static utilities.enums.CardType.*;
 
 /**
  * This Singleton Class handles the connection and disconnection to the server.
@@ -56,7 +58,6 @@ public class Client {
     private AICoordinator aiCoordinator;
 
     private int progPhaseCounter = 0;
-
 
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
@@ -198,7 +199,7 @@ public class Client {
                             logger.info("2ACTIVEPHASE ProgrammingDeck");
                         } else {
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(20);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
                             gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                         }
                     }
@@ -235,6 +236,22 @@ public class Client {
                         else otherPlayer.add(registerCard);
                     }
                     gameController.getOthersController().currentCards(otherPlayer);
+
+                    ArrayList<CardType> damageCards = new ArrayList<>();
+                    damageCards.add(Spam);
+                    damageCards.add(Virus);
+                    damageCards.add(Trojan);
+                    damageCards.add(Worm);
+
+                    for(int i = 0; i < currentCards.getActiveCards().size(); i++) {
+                        if(currentCards.getActiveCards().get(i).getPlayerID() == thisPlayersID) {
+                            for (CardType damageCard : damageCards) {
+                                if (currentCards.getActiveCards().get(i).getCard() == damageCard) {
+                                    gameController.getPlayerMatController().substractPlayerCards(1);
+                                }
+                            }
+                        }
+                    }
 
                 }
                 case CurrentPlayer -> {
@@ -283,7 +300,7 @@ public class Client {
                             //logger.info("2ACTIVEPHASE ProgrammingDeck");
                         } else {
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(20);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
                             gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                         }
                         //logger.info("DiscardHand HIER");
@@ -298,7 +315,7 @@ public class Client {
                     if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.setDrawDamage(drawDamage);
                         gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
-                        (gameController.getPlayerMatController().getPlayercards())++;
+                        gameController.getPlayerMatController().addPlayercards(drawDamage.getCards().size());
                     }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
