@@ -55,7 +55,7 @@ public class Client {
 
     private AICoordinator aiCoordinator;
 
-    private int progPhaseCounter;
+    private int progPhaseCounter = 0;
 
 
     /**
@@ -185,6 +185,11 @@ public class Client {
                     gameController.changePhaseView(activePhase.getPhase());
                     logger.info("0ACTIVEPHASE ProgrammingDeck");
 
+                    if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter >= 1) {
+                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                        logger.info("3ACTIVEPHASE ProgrammingDeck");
+                    }
+
                     if (activePhase.getPhase() == GameState.PROGRAMMING) {
                         progPhaseCounter++;
                         logger.info("1ACTIVEPHASE ProgrammingDeck");
@@ -192,22 +197,15 @@ public class Client {
                             gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                             logger.info("2ACTIVEPHASE ProgrammingDeck");
                         } else {
-                            int amount = gameController.getPlayerMatController().getProgrammingDeckNr();
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
                             gameController.getPlayerMatController().setProgrammingDeckCounter(20);
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(9 - amount);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(9);
                         }
-                    }
-                    if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1) {
-                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        logger.info("3ACTIVEPHASE ProgrammingDeck");
                     }
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
                     gameController.getPlayerMatController().setNewCardsYouGotNow(cardsYouGotNow);
-
-                    gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -280,14 +278,13 @@ public class Client {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 9) {
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() >= 5) {
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                             //logger.info("2ACTIVEPHASE ProgrammingDeck");
                         } else {
-                            int amount = gameController.getPlayerMatController().getProgrammingDeckNr();
                             gameController.getPlayerMatController().setDiscardDeckCounter(0);
                             gameController.getPlayerMatController().setProgrammingDeckCounter(20);
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(9 - amount);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                         }
                         //logger.info("DiscardHand HIER");
                     }

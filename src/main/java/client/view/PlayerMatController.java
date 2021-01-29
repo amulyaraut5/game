@@ -7,12 +7,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import utilities.JSONProtocol.body.CardSelected;
 import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
@@ -259,6 +260,7 @@ public class PlayerMatController extends Controller{
 
     public void setProgrammingDeckCounter(int amount){
         if(amount == 20){
+            programmingDeckNr = 20;
             programmingDeckLabel.setText(amount + "cards");
         } else {
             programmingDeckNr = programmingDeckNr - amount;
