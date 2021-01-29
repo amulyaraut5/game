@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
@@ -220,7 +219,11 @@ public class Server extends Thread {
                 }
 
             }
-            case PickDamage -> { } //TODO
+            case SelectDamage -> {
+                logger.info("selectDamage empfangen");
+                SelectDamage selectDamage = (SelectDamage) message.getBody();
+                game.getActivationPhase().handleSelectedDamage(selectDamage, user);
+            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }

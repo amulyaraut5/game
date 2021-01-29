@@ -2,7 +2,6 @@ package game.gameObjects.cards.damage;
 
 import game.Game;
 import game.Player;
-import game.gameObjects.cards.Card;
 import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
@@ -37,8 +36,7 @@ public class Virus extends DamageCard {
             int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
 
             if (otherPlayer != player && (otherRobotX <= robotX + 6 || otherRobotY <= robotY + 6)) {
-                Card virusCard = game.getVirusDeck().pop();
-                otherPlayer.getDiscardedProgrammingDeck().getDeck().add(virusCard);
+                game.getActivationPhase().drawDamage(game.getVirusDeck(), otherPlayer, 1);
             }
         }
     }

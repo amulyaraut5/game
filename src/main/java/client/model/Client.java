@@ -4,6 +4,7 @@ import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
+import utilities.enums.CardType;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,12 +21,12 @@ import utilities.enums.MessageType;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.lang.Error;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static utilities.Utilities.PORT;
+import static utilities.enums.CardType.*;
 
 /**
  * This Singleton Class handles the connection and disconnection to the server.
@@ -56,9 +57,7 @@ public class Client {
 
     private AICoordinator aiCoordinator;
 
-    private int progPhaseCounter;
-
-
+    private boolean first = true;
 
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
@@ -181,27 +180,27 @@ public class Client {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
 
-                    if(activePhase.getPhase() == GameState.PROGRAMMING){
-                        progPhaseCounter++;
+                    if (activePhase.getPhase() == GameState.PROGRAMMING) {
+                        if (!(first)) {
+                            gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                        }
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() < 9) {
+                            gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
+                        }
                         gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                    }
-                    if(activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1){
-                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                        first = false;
                     }
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
                     gameController.getPlayerMatController().setNewCardsYouGotNow(cardsYouGotNow);
-
-                    gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                 }
                 case SelectionFinished -> {
                     SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().fixSelectedCards(true);
                         allRegistersAsFirst = true;
-
-                        gameController.getPlayerMatController().setDiscardDeckCounter(4);
                     } else {
                         //gameViewController.getPlayerMapController().fixSelectedCards();
                         gameController.getOthersController().playerWasFirst(selectionFinished);
@@ -213,6 +212,7 @@ public class Client {
                 }
                 case TimerEnded -> {
                     gameController.getProgrammingController().setTimerEnded(true);
+                    gameController.getPlayerMatController().setDiscardDeckCounter(4);
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -223,6 +223,22 @@ public class Client {
                         else otherPlayer.add(registerCard);
                     }
                     gameController.getOthersController().currentCards(otherPlayer);
+
+                    ArrayList<CardType> damageCards = new ArrayList<>();
+                    damageCards.add(Spam);
+                    damageCards.add(Virus);
+                    damageCards.add(Trojan);
+                    damageCards.add(Worm);
+
+                    for(int i = 0; i < currentCards.getActiveCards().size(); i++) {
+                        if(currentCards.getActiveCards().get(i).getPlayerID() == thisPlayersID) {
+                            for (CardType damageCard : damageCards) {
+                                if (currentCards.getActiveCards().get(i).getCard() == damageCard) {
+                                    gameController.getPlayerMatController().substractPlayerCards(1);
+                                }
+                            }
+                        }
+                    }
 
                 }
                 case CurrentPlayer -> {
@@ -261,16 +277,16 @@ public class Client {
                 }
                 case ShuffleCoding -> {
                     ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                    if(shuffleCoding.getPlayerID() == thisPlayersID){
-                        gameController.getPlayerMatController().setDiscardDeckCounter(0);
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(20);
-                    }
                 }
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMatController().setDiscardDeckCounter(9);
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                        if (gameController.getPlayerMatController().getProgrammingDeckNr() < 5) {
+                            gameController.getPlayerMatController().setDiscardDeckCounter(0);
+                            gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
+                        }
+                        gameController.getPlayerMatController().setProgrammingDeckCounter(5);
                     }
                 }
                 case SelectDamage -> {
@@ -283,6 +299,7 @@ public class Client {
                     if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.setDrawDamage(drawDamage);
                         gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
+                        gameController.getPlayerMatController().addPlayercards(drawDamage.getCards().size());
                     }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");

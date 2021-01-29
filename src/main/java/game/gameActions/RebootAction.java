@@ -23,7 +23,7 @@ public class RebootAction extends Action {
     public void doAction(Orientation orientation, Player player) {
         //Draw two spam cards
         //TODO handle empty Spam-Deck -> in handleEmptyDeck() ?
-        game.getSpamDeck().drawTwoSpam(player);
+        game.getActivationPhase().drawDamage(game.getSpamDeck(), player,2);
 
         //discard cards in registers on discard pile and create new empty register
         player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());

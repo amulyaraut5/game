@@ -8,12 +8,14 @@ import game.gameObjects.cards.damage.Spam;
 import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
+import game.gameObjects.decks.DamageCardDeck;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import server.User;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
@@ -50,6 +52,9 @@ public class ActivationPhase extends Phase {
     public ArrayList<RegisterCard> getCurrentCards() {
         return currentCards;
     }
+
+    private int alreadyDrawn = 0;
+    private ArrayList<CardType> cardTypes = new ArrayList<>();
 
     /**
      * TODO
@@ -277,7 +282,7 @@ public class ActivationPhase extends Phase {
             case Trojan -> {
                 game.getTrojanHorseDeck().addCard(new Trojan());
                 //Draw two spam cards
-                game.getSpamDeck().drawTwoSpam(player);
+                game.getActivationPhase().drawDamage(game.getSpamDeck(), player,2);
                 Card topCard = player.getDrawProgrammingDeck().pop();
                 //logger.info(player.getName() + " played a trojan card.");
                 //Play the top-card
@@ -523,6 +528,60 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
+    }
+
+    public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
+        logger.info("drawDamage reached");
+        if (!(game.getSpamDeck().size() < amount)) {
+            ArrayList<Card> damageCards = damageDeck.drawCards(amount);
+            player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
+            for (Card card : damageCards) {
+                cardTypes.add(card.getName());
+            }
+            server.communicateAll(new DrawDamage(player.getID(), cardTypes));
+        } else {
+            if (damageDeck.size() == 0) {
+                server.communicateDirect(new PickDamage(amount), player.getID());
+            } else {
+                alreadyDrawn = damageDeck.size();
+                ArrayList<Card> damageCards = damageDeck.drawCards(alreadyDrawn);
+                for (Card card : damageCards) {
+                    cardTypes.add(card.getName());
+                }
+                player.getDiscardedProgrammingDeck().drawCards(alreadyDrawn);
+                server.communicateDirect(new PickDamage(amount - (damageDeck.size())), player.getID());
+            }
+            game.setEmptyDeck(damageDeck);
+        }
+    }
+
+    public void handleSelectedDamage (SelectDamage selectDamage, User user) {
+        logger.info("handleSelectedDamage");
+        Player player = game.userToPlayer(user);
+        ArrayList<CardType> selectedCards = selectDamage.getCards();
+        for (CardType cardType : selectedCards) {
+            switch (cardType) {
+                case Spam -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Spam());
+                    game.getSpamDeck().pop();
+                }
+                case Virus -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Virus());
+                    game.getVirusDeck().pop();
+                }
+                case Worm -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Worm());
+                    game.getWormDeck().pop();
+                }
+                case Trojan -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Trojan());
+                    game.getTrojanHorseDeck().pop();
+                }
+                default -> server.communicateAll(new Error("This is not a valid damage card"));
+            }
+            cardTypes.add(cardType);
+        }
+        logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
 }
