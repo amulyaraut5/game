@@ -43,6 +43,7 @@ public class MenuController extends Controller implements Updatable {
     public void joinGameClicked() {
         logger.info("Join Game Clicked.");
         new Thread(this::connect).start();
+
     }
 
     @FXML
