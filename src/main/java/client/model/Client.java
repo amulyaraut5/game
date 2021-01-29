@@ -185,13 +185,24 @@ public class Client {
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
+                    logger.info("0ACTIVEPHASE ProgrammingDeck");
 
-                    if(activePhase.getPhase() == GameState.PROGRAMMING){
-                        progPhaseCounter++;
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                    }
-                    if(activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1){
-                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                    for(Player player : players) {
+                        logger.info("1ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
+                        if (activePhase.getPhase() == GameState.PROGRAMMING) {
+                            logger.info("2ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
+                            progPhaseCounter++;
+
+                            if(player.getDrawProgrammingDeck().size() >= 9) {
+                                logger.info("3ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
+                                gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                                logger.info("4ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
+                            }
+                        }
+                        if (activePhase.getPhase() == GameState.PROGRAMMING && progPhaseCounter > 1 && player.getDrawProgrammingDeck().size() >= 9) {
+                            gameController.getPlayerMatController().setDiscardDeckCounter(5);
+                            logger.info("5ACTIVEPHASE ProgrammingDeck : " +player.getDrawProgrammingDeck().size());
+                        }
                     }
                 }
                 case CardsYouGotNow -> {
@@ -205,8 +216,6 @@ public class Client {
                     if (selectionFinished.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().fixSelectedCards(true);
                         allRegistersAsFirst = true;
-
-                        gameController.getPlayerMatController().setDiscardDeckCounter(4);
                     } else {
                         //gameViewController.getPlayerMapController().fixSelectedCards();
                         gameController.getOthersController().playerWasFirst(selectionFinished);
@@ -218,6 +227,8 @@ public class Client {
                 }
                 case TimerEnded -> {
                     gameController.getProgrammingController().setTimerEnded(true);
+                    gameController.getPlayerMatController().setDiscardDeckCounter(4);
+                    logger.info("TimerEnded HIER: ");
                 }
                 case CurrentCards -> {
                     CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -274,8 +285,9 @@ public class Client {
                 case DiscardHand -> {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMatController().setDiscardDeckCounter(9);
+                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
                         gameController.getPlayerMatController().setProgrammingDeckCounter(9);
+                        logger.info("DiscardHand HIER");
                     }
                 }
                 case SelectDamage -> {
@@ -301,6 +313,7 @@ public class Client {
     public void addNewPlayer(PlayerAdded playerAdded) {
         Player player = new Player(playerAdded);
         players.add(player);
+        logger.info("addNewPlayer : " +players.size());
 
         if (thisPlayersID == player.getID()) {
             gameController.getPlayerMatController().loadPlayerMap(player);
