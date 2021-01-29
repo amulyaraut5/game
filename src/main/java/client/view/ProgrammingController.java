@@ -138,7 +138,7 @@ public class ProgrammingController extends Controller {
             }
         });
         pane.setOnDragDone(e -> {
-            client.sendMessage(new SelectCard(CardType.valueOf("Null"), getPosition()));
+            client.sendMessage(new SelectCard(null, getPosition()));
         });
     }
 
