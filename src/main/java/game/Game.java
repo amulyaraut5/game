@@ -49,6 +49,7 @@ public class Game {
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
     private GameState gameState;
+
     /**
      * Shows if a game has already been created or not (false = not created)
      **/
@@ -262,12 +263,13 @@ public class Game {
                         ----------------------------------------
                         Cheats
                         ----------------------------------------
-                        #cheats            | lists all cheats
-                        #activateBoard | activates the board
-                        #endTimer        | ends the timer
-                        #tp <position> | teleports the robot
+                        #cheats         | lists all cheats
+                        #activateBoard  | activates the board
+                        #endTimer       | ends the timer
+                        #tp <position>  | teleports the robot
                         #tp <x> <y>     | teleports the robot
                         #damage         | deals two spam cards
+                        #autoPlay       | autoplay activation phase
                         ----------------------------------------
                         """;
                 user.message(new ReceivedChat(cheats, user.getID(), false));
