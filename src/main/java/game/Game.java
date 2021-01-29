@@ -255,7 +255,6 @@ public class Game {
                         activationPhase.activateCards(registerCard.getPlayerID());
                     }
                 }
-                nextPhase();
             }
             case "#cheats" -> {
                 String cheats = """
