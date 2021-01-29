@@ -63,8 +63,7 @@ public class LobbyController extends Controller implements Updatable {
      */
     @FXML
     public void initialize() {
-        dizzyHighway.setVisible(false);
-        ExtraCrispy.setVisible(false);
+        setVisible(false);
         infoLabel2.setText("If you're first to select Ready, you will get chance to select map.");
     }
 
@@ -123,8 +122,7 @@ public class LobbyController extends Controller implements Updatable {
         if(!readyCheckbox.isSelected()){
             infoLabel2.setText("You had your chance to select a map.");
             mapLabel.setText("Please wait till somebody selects the map.");
-            dizzyHighway.setDisable(true);
-            ExtraCrispy.setDisable(true);
+            setDisable(true);
         }
     }
 
@@ -140,14 +138,12 @@ public class LobbyController extends Controller implements Updatable {
         if(dizzyHighway.isSelected()){
             JSONBody jsonBody = new MapSelected("DizzyHighway");
             client.sendMessage(jsonBody);
-            dizzyHighway.setDisable(true);
-            ExtraCrispy.setDisable(true);
+            setDisable(true);
         }
         else if(ExtraCrispy.isSelected()){
             JSONBody jsonBody = new MapSelected("ExtraCrispy");
             client.sendMessage(jsonBody);
-            dizzyHighway.setDisable(true);
-            ExtraCrispy.setDisable(true);
+            setDisable(true);
         }
     }
 
@@ -169,12 +165,19 @@ public class LobbyController extends Controller implements Updatable {
             }
             case SelectMap -> {
                 mapLabel.setText("Choose any one of the map from below");
-                dizzyHighway.setVisible(true);
-                ExtraCrispy.setVisible(true);
-                dizzyHighway.setDisable(false);
-                ExtraCrispy.setDisable(false);
-
+                setVisible(true);
+                setDisable(false);
             }
         }
+    }
+
+    private void setVisible(boolean b){
+        dizzyHighway.setVisible(b);
+        ExtraCrispy.setVisible(b);
+    }
+
+    private void setDisable(boolean b){
+        dizzyHighway.setDisable(b);
+        ExtraCrispy.setDisable(b);
     }
 }

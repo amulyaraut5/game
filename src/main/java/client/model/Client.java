@@ -155,12 +155,7 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                /*case SelectMap -> {
-                    if(getThisPlayersID() == 1) currentController.update(message);
-                }
-
-                 */
-                case SelectMap, Error, PlayerStatus, StartingPointTaken, YourCards,
+                case SelectMap,Reboot, Error, PlayerStatus, StartingPointTaken, YourCards,
                         Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting -> {
                     currentController.update(message);
                 }
@@ -240,10 +235,10 @@ public class Client {
                         gameController.getOthersController().setInfoLabel(currentPlayer, false);
                     }
                 }
-                case Reboot -> {
+                /*case Reboot -> {
                     Reboot reboot = (Reboot) message.getBody();
                     // TODO display the message
-                }
+                }*/
                 case Energy -> {
                     Energy energy = (Energy) message.getBody();
                     if (energy.getPlayerID() == thisPlayersID) {
@@ -309,8 +304,6 @@ public class Client {
         loginController.setFigureTaken(player.getFigure(), true);
         lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
-
-        //if(getThisPlayersID() == 1) lobbyController.setInfoLabel2("You are first to join. Click Ready to select a map.");
     }
 
     /**

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class LaserAction {
 
     private static final Logger logger = LogManager.getLogger();
-    private SoundHandler soundHandler = new SoundHandler();
+    private final SoundHandler soundHandler = new SoundHandler();
     protected Server server = Server.getInstance();
     private Game game = Game.getInstance();
     private ActivationPhase activationPhase;
