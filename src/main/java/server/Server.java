@@ -165,10 +165,11 @@ public class Server extends Thread {
                                 break outerLoop;
                             }
                         }catch (NullPointerException e){
-                            logger.info("Wait till next player click ready");
+                            communicateUsers(new Error("Please click Ready to select map."),user);
                         }
                     }
                 }
+
 
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
                 if (allUsersReady && this.isMapSelected) {
