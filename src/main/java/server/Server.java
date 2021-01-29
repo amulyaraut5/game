@@ -147,7 +147,6 @@ public class Server extends Thread {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
                 userIsNotAI.put(user,status.isReady());
-                System.out.println("hello");
 
                 ArrayList<String> maps = new ArrayList<>();
                 maps.add("DizzyHighway");
@@ -159,17 +158,14 @@ public class Server extends Thread {
                 if(!isMapSent){
                     outerLoop:
                     for(User user1: notAIs){
-                        System.out.println(user1.getID());
-                        System.out.println("hello again");
                         try {
                             if (userIsNotAI.get(user1) == true) {
-                                System.out.println("hello again agian");
                                 user1.message(new SelectMap(maps));
                                 isMapSent = true;
                                 break outerLoop;
                             }
                         }catch (NullPointerException e){
-                            System.out.println("Wait till next player click ready");
+                            logger.info("Wait till next player click ready");
                         }
                     }
                 }
@@ -233,13 +229,6 @@ public class Server extends Thread {
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
         }
-    }
-
-    public void selectMap(){
-        ArrayList<String> maps = new ArrayList<>();
-        maps.add("DizzyHighway");
-        maps.add("ExtraCrispy");
-        communicateAll(new SelectMap(maps));
     }
 
     private void addPlayerValues(User user, PlayerValues pv) {
