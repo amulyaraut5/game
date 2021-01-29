@@ -2,7 +2,6 @@ package game.round;
 
 import game.Game;
 import game.Player;
-import game.gameObjects.cards.Card;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Laser;
@@ -11,11 +10,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.DrawDamage;
 import utilities.JSONProtocol.body.PlayerShooting;
 import utilities.SoundHandler;
 import utilities.enums.AttributeType;
-import utilities.enums.CardType;
 import utilities.enums.Orientation;
 
 import java.util.ArrayList;
@@ -62,7 +59,9 @@ public class LaserAction {
             for (Coordinate coordinate1 : laserCoordinates) {
                 //logger.info("BoardLaser: x:"+ coordinate1.getX() + "y:"+ coordinate1.getY());
                 for (Player player : activePlayers)
-                    if (player.getRobot().getCoordinate().equals(coordinate1)) receiveDamage(player);
+                    if (player.getRobot().getCoordinate().equals(coordinate1)) {
+                        game.getActivationPhase().drawDamage(game.getSpamDeck(), player,2);
+                    }
 
             }
         }
@@ -86,30 +85,12 @@ public class LaserAction {
                 //logger.info("Robot :"+ coordinate.getX() + "y:"+ coordinate.getY());
                 for (Player targetPlayer : activePlayers)
                     if (targetPlayer.getRobot().getCoordinate().equals(coordinate)){
-                        receiveDamage(targetPlayer);
+                        game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 1);
                         break outerLoop;
                     }
             }
         }
         robotCoordinates.clear();
-    }
-
-    /**
-     * This method handles the afterEffect of being shot by Laser.
-     * Players receive spam card and adds to the discarded programming deck.
-     * The number of damage received depends on laser count.
-     * Draw Damage Protocol is sent to all players.
-     * @param player
-     */
-    private void receiveDamage(Player player){
-        //logger.info("Got hit by Laser");
-        ArrayList<Card> spamCard = game.getSpamDeck().drawCards(1);
-        ArrayList<CardType> cardType = new ArrayList<>();
-        for(Card card : spamCard){
-            player.getDiscardedProgrammingDeck().addCard(card);
-            cardType.add(CardType.Spam);
-        }
-        server.communicateAll(new DrawDamage(player.getID(), cardType));
     }
 
     /**

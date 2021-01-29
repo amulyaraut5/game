@@ -32,7 +32,7 @@ public class Worm extends DamageCard {
         new RebootAction().doAction(robotOrientation, player);
 
         //Add worm card back into the worm deck
-        game.getSpamDeck().getDeck().add(this);
+        game.getWormDeck().getDeck().add(this);
     }
 
     @Override

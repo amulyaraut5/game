@@ -32,10 +32,8 @@ public class Trojan extends DamageCard {
         player.getRegisterCards().set(spamIndex, topCard);
 
         //Draw two spam cards
-        for (int i = 0; i < 2; i++) {
-            Card spamCard = game.getSpamDeck().pop();
-            player.getDiscardedProgrammingDeck().getDeck().add(spamCard);
-        }
+        game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
+
         //Play the new register card
         topCard.handleCard(game, player);
     }
