@@ -7,12 +7,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import utilities.JSONProtocol.body.CardSelected;
 import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
@@ -38,9 +39,10 @@ public class PlayerMatController extends Controller{
     private Label discardDeckLabel; //TODO ?
     private int discardDeckNr = 0;
     @FXML
-    private Label programmingDeckLabel;
+    public Label programmingDeckLabel;
     public Label playerMatInfoLabel;
     private int programmingDeckNr = 20;
+    private int playercards = 20;
     @FXML
     private HBox energyHBox;
     public HBox energyHBox2;
@@ -250,6 +252,7 @@ public class PlayerMatController extends Controller{
 
     public void setDiscardDeckCounter(int amount){
         if(amount == 0){
+            discardDeckNr = 0;
             discardDeckLabel.setText(amount + "cards");
         } else {
             discardDeckNr = discardDeckNr + amount;
@@ -258,12 +261,33 @@ public class PlayerMatController extends Controller{
     }
 
     public void setProgrammingDeckCounter(int amount){
-        if(amount == 20){
+        if(amount == playercards){
+            programmingDeckNr = playercards;
             programmingDeckLabel.setText(amount + "cards");
         } else {
             programmingDeckNr = programmingDeckNr - amount;
             programmingDeckLabel.setText(programmingDeckNr + " cards");
         }
+    }
+
+    public void addPlayercards (int amount) {
+        playercards += amount;
+    }
+
+    public void substractPlayerCards (int amount) {
+        playercards -= amount;
+    }
+
+    public int getPlayercards() {
+        return playercards;
+    }
+
+    public int getDiscardDeckNr() {
+        return discardDeckNr;
+    }
+
+    public int getProgrammingDeckNr() {
+        return programmingDeckNr;
     }
 }
 
