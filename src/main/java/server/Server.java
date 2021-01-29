@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
@@ -37,6 +40,10 @@ public class Server extends Thread {
 
     private boolean isMapSelected = false;
 
+    private HashMap<User, Boolean> userIsNotAI = new HashMap<>();
+    private ArrayList<User> AIs = new ArrayList<>();
+    private ArrayList<User> notAIs = new ArrayList<>();
+    private boolean isMapSent = false;
     /**
      * private Constructor for the ChatServer class
      */
@@ -141,17 +148,44 @@ public class Server extends Thread {
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
+                userIsNotAI.put(user,status.isReady());
 
                 ArrayList<String> maps = new ArrayList<>();
+                Random r = new Random();
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
-                if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
 
+                if(status.isReady() == false) this.isMapSent = false;
+
+                //if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
+                if(!isMapSent){
+                    outerLoop:
+                    for(User user1: notAIs){
+                        try {
+                            if (userIsNotAI.get(user1) == true) {
+                                user1.message(new SelectMap(maps));
+                                isMapSent = true;
+                                break outerLoop;
+                            }
+                        }catch (NullPointerException e){
+                            communicateUsers(new Error("Please click Ready to select map."),user);
+                        }
+                    }
+                }
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
+
                 if (allUsersReady && this.isMapSelected) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
+
+                // Random Map is selected if all users are AI
+                if(allUsersReady && (AIs.equals(readyUsers))){
+                    game.handleMapSelection(maps.get(r.nextInt(maps.size())));
+                    game.play();
+                    serverState = ServerState.RUNNING_GAME;
+                }
+
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -208,13 +242,6 @@ public class Server extends Thread {
         }
     }
 
-    public void selectMap(){
-        ArrayList<String> maps = new ArrayList<>();
-        maps.add("DizzyHighway");
-        maps.add("ExtraCrispy");
-        communicateAll(new SelectMap(maps));
-    }
-
     private void addPlayerValues(User user, PlayerValues pv) {
         boolean figureTaken = false;
         for (User userLoop : getUsers()) {
@@ -241,17 +268,21 @@ public class Server extends Thread {
         if (hs.getProtocol() == Utilities.PROTOCOL) {
             user.setID(idCounter++);
             currentThread().setName("UserThread-" + user.getID());
+            if(hs.isAI() == true){
+                AIs.add(user);
+            }else notAIs.add(user);
 
             for (User u : users) {
                 if (u.getName() != null) {
                     user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
+
                 }
             }
             for (User readyUser : readyUsers) {
                 user.message(new PlayerStatus(readyUser.getID(), true));
             }
-
             user.message(new Welcome(user.getID()));
+
         } else {
             JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
                     "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);

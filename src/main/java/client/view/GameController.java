@@ -591,10 +591,10 @@ public class GameController extends Controller implements Updatable {
                 getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
-
+                first = false;
             }
         }
-        first = false;
+
     }
 
     private void constructPhaseViews() {

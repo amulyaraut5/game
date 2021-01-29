@@ -11,11 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
+import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
 import java.io.File;
@@ -39,8 +41,6 @@ public class ProgrammingController extends Controller {
     private boolean timerEnded = false;
 
     @FXML
-    private AnchorPane programmingPhasePane;
-    @FXML
     private HBox hBox1Background;
     @FXML
     private HBox hBox2Background;
@@ -50,8 +50,8 @@ public class ProgrammingController extends Controller {
     private HBox hBox2;
     @FXML
     private AnchorPane timerAnchorPane;
-
-    public Label programInfoLabel;
+    @FXML
+    private Label programInfoLabel;
     @FXML
     private Label timerLabel;
 
@@ -64,96 +64,82 @@ public class ProgrammingController extends Controller {
         hBox1Background.setSpacing(20);
         hBox2Background.setSpacing(20);
 
-        for (int i = 0; i < 5; i++) {
-            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
-            background.setFitHeight(heightHBox);
-            background.setFitWidth(widthHBox - 20);
-            hBox1Background.getChildren().add(background);
-        }
-        for (int i = 0; i < 4; i++) {
-            ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
-            background.setFitHeight(heightHBox);
-            background.setFitWidth(widthHBox - 20);
-            hBox2Background.getChildren().add(background);
-        }
+        for (int i = 0; i < 5; i++) createBackground(hBox1Background);
+        for (int i = 0; i < 4; i++) createBackground(hBox2Background);
+
+
+    }
+
+    private void createBackground(HBox hBox){
+        ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
+        background.setFitHeight(heightHBox);
+        background.setFitWidth(widthHBox - 20);
+        hBox.getChildren().add(background);
     }
 
     public void startProgrammingPhase(ArrayList<CardType> cardList) {
-        for (int i = 0; i < 9; i++) {
-            StackPane pane = createNewPane();
-            addImage(new Image(getClass().getResource("/cards/programming/" + cardList.get(i) + "-card.png").toString()), pane);
+        for (int i = 0 ; i < cardList.size(); i++) {
+            StackPane pane = new StackPane();
+            pane.setPrefHeight(heightHBox);
+            pane.setPrefWidth(widthHBox-20);
+            addDropHandling(pane);
+            pane.getChildren().add(createImageView(cardList.get(i)));
             if (!(hBox1.getChildren().size() >= 5)) hBox1.getChildren().add(pane);
             else hBox2.getChildren().add(pane);
         }
+    }
 
+    private ImageView createImageView(CardType cardName) {
+        ImageView programmingCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + cardName + "-card.png").toString()));
+        programmingCard.setFitHeight(heightHBox);
+        programmingCard.setFitWidth(widthHBox-20);
+        programmingCard.setOnDragDetected(e -> {
+            Dragboard db = programmingCard.startDragAndDrop(TransferMode.MOVE);
+            db.setDragView(programmingCard.snapshot(null, null));
+            ClipboardContent cc = new ClipboardContent();
+            cc.put(cardFormat, cardName);
+            db.setContent(cc);
+            setProgrammingImageView(programmingCard);
+        });
+
+        return programmingCard;
     }
 
 
-    private StackPane createNewPane() {
-        StackPane pane = new StackPane();
-
-        pane.setPrefHeight(heightHBox);
-        pane.setPrefWidth(widthHBox - 20);
-
-        pane.setOnDragOver(dragEvent -> mouseDragOver(dragEvent, pane));
-        pane.setOnDragDropped(dragEvent -> mouseDragDropped(dragEvent, pane));
-        pane.setOnDragExited(dragEvent -> pane.setStyle("-fx-border-color: #C6C6C6;"));
-
-        return pane;
-    }
-
-
-    private void setOnDragDetected(MouseEvent mouseEvent, ImageView imageView) {
-
-        Dragboard db = imageView.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(imageView.getImage());
-        setImageDropped(imageView.getImage().getUrl());
-        db.setContent(content);
-        imageView.setImage(null);
-        mouseEvent.consume();
-
-    }
-
-
-    private void addImage(Image i, StackPane pane) {
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(widthHBox - 20);
-        imageView.setFitHeight(heightHBox);
-        imageView.setImage(i);
-        imageView.setOnDragDetected(mouseEvent -> setOnDragDetected(mouseEvent, imageView));
-
-        pane.getChildren().add(imageView);
-
-
-    }
-
-    private void mouseDragDropped(DragEvent event, StackPane pane) {
-        Dragboard db = event.getDragboard();
-        boolean success = false;
-        if (db.hasImage()) {
-            success = true;
-            if (!pane.getChildren().isEmpty()) {
-                pane.getChildren().remove(0);
+    protected void addDropHandling(Pane pane) {
+        pane.setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(cardFormat)
+                    && getProgrammingImageView() != null
+                    && getProgrammingImageView().getParent() != pane
+                    && pane.getChildren().isEmpty()) {
+                e.acceptTransferModes(TransferMode.MOVE);
             }
+        });
 
-            Image img = db.getImage();
-            addImage(img, pane);
-
-
-        }
-        event.setDropCompleted(success);
-        event.consume();
-    }
-
-    private void mouseDragOver(DragEvent event, StackPane pane) {
-
-        pane.setStyle("-fx-border-color: red;"
-                + "-fx-border-width: 5;"
-                + "-fx-background-color: #C6C6C6;"
-                + "-fx-border-style: solid;");
-        event.acceptTransferModes(TransferMode.ANY);
-        event.consume();
+        pane.setOnDragExited(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasContent(cardFormat)
+                    && getProgrammingImageView()!= null
+                    && pane.getChildren().isEmpty()) {
+                ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
+                ImageView puffer = getProgrammingImageView();
+                puffer.setOnDragDetected(ev->{
+                    puffer.setOnDragDetected(event-> {
+                        Dragboard dragboard = puffer.startDragAndDrop(TransferMode.MOVE);
+                        dragboard.setDragView(puffer.snapshot(null, null));
+                        ClipboardContent cc2 = new ClipboardContent();
+                        cc2.put(cardFormat, "cardName");
+                        dragboard.setContent(cc2);
+                        setProgrammingImageView(puffer);
+                       });
+                });
+                pane.getChildren().add(puffer);
+            }
+        });
+        pane.setOnDragDone(e -> {
+            client.sendMessage(new SelectCard(null, getPosition()));
+        });
     }
 
     /**

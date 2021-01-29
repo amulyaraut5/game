@@ -87,6 +87,7 @@ public class ProgrammingPhase extends Phase {
                 case Trojan -> chosenCard = new Trojan();
                 case Virus -> chosenCard = new Virus();
                 case Worm -> chosenCard = new Worm();
+                //case Null -> chosenCard = null;
             }
         }
 

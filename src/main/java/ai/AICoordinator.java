@@ -167,6 +167,9 @@ public class AICoordinator {
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();
             } //TODO
+            case SelectMap ->{
+                // TODO Nothing Server sends a random Map
+            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             case CurrentPlayer -> {
                 CurrentPlayer msg = (CurrentPlayer) message.getBody();
@@ -179,7 +182,7 @@ public class AICoordinator {
 
     private void gameStarted(GameStarted gameStarted) {
         map = MapConverter.reconvert(gameStarted);
-        int[] startingPoints = {40, 79, 15, 54, 67, 106};
+        int[] startingPoints = {39, 78, 14, 53, 66, 105};
 
         for (int i : startingPoints) {
             client.sendMessage(new SetStartingPoint(i));

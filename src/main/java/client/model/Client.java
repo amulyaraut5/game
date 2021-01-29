@@ -155,10 +155,12 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case SelectMap -> {
+                /*case SelectMap -> {
                     if(getThisPlayersID() == 1) currentController.update(message);
                 }
-                case Error, PlayerStatus, StartingPointTaken, YourCards,
+
+                 */
+                case SelectMap, Error, PlayerStatus, StartingPointTaken, YourCards,
                         Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting -> {
                     currentController.update(message);
                 }
@@ -308,7 +310,7 @@ public class Client {
         lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
 
-        if(getThisPlayersID() == 1) lobbyController.setInfoLabel2("You are first to join. Click Ready to select a map.");
+        //if(getThisPlayersID() == 1) lobbyController.setInfoLabel2("You are first to join. Click Ready to select a map.");
     }
 
     /**
