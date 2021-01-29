@@ -243,6 +243,10 @@ public class Game {
                     server.communicateAll(new Movement(user.getID(), coordinate.toPosition()));
                 }
             }
+            case "#damage" -> {
+                Robot robot = userToPlayer(user).getRobot();
+                spamDeck.drawTwoSpam(userToPlayer(user));
+            }
             case "#cheats" -> {
                 String cheats = """
                                                 
@@ -254,6 +258,7 @@ public class Game {
                         #endTimer        | ends the timer
                         #tp <position> | teleports the robot
                         #tp <x> <y>     | teleports the robot
+                        #damage         | deals two spam cards
                         ----------------------------------------
                         """;
                 user.message(new ReceivedChat(cheats, user.getID(), false));
