@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
+
 import java.util.ArrayList;
 
 public class ActivationController extends Controller {
@@ -20,7 +21,6 @@ public class ActivationController extends Controller {
     @FXML
     private Label register;
     public Label infoLabel;
-
     @FXML
     private ImageView currentCardImageView;
     @FXML
@@ -30,7 +30,17 @@ public class ActivationController extends Controller {
     private AnchorPane selectDamageAnchorPane;
     @FXML
     private AnchorPane playCardAnchorPane;
-    public Label damageInfoLabel;
+    @FXML
+    private Button spamCardButton;
+    @FXML
+    private Button trojanCardButton;
+    @FXML
+    private Button virusCardButton;
+    @FXML
+    private Button wormCardButton;
+    @FXML
+    private Label damageInfoLabel;
+    private GameController gameController;
     private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
     private int drawDamage;
@@ -72,39 +82,46 @@ public class ActivationController extends Controller {
         infoLabel.setText(text);
     }
 
-    public void pickDamage(PickDamage pickDamage){
+    public void pickDamage(PickDamage pickDamage, GameController game){
+        this.gameController = game;
         playCardAnchorPane.setVisible(false);
-
         selectDamageAnchorPane.setVisible(true);
+        updateDamageCountLabel();
         damageInfoLabel.setText("You have to pick " + pickDamage.getCount() + " damage cards");
         this.pickDamage = pickDamage.getCount();
     }
 
-    @FXML
-    private void spamCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Spam);
+    public void damageButtonClicked(ActionEvent actionEvent){
+        CardType clickedButton = null;
+        if(actionEvent.getSource().equals(spamCardButton)) clickedButton = CardType.Spam;
+        if(actionEvent.getSource().equals(trojanCardButton)) clickedButton = CardType.Trojan;
+        if(actionEvent.getSource().equals(virusCardButton)) clickedButton = CardType.Virus;
+        if(actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
+        checkDamageReady(clickedButton);
+    }
+    private void updateDamageCountLabel(){
+        spamCardButton.setText(String.valueOf(gameController.getCountSpamCards()));
+        if(gameController.getCountSpamCards() == 0) spamCardButton.setDisable(true);
+
+        trojanCardButton.setText(String.valueOf(gameController.getCountTrojanCards()));
+        if(gameController.getCountTrojanCards() == 0) trojanCardButton.setDisable(true);
+
+        virusCardButton.setText(String.valueOf(gameController.getCountVirusCards()));
+        if(gameController.getCountVirusCards() == 0) virusCardButton.setDisable(true);
+
+        wormCardButton.setText(String.valueOf(gameController.getCountWormCards()));
+        if(gameController.getCountWormCards() == 0) wormCardButton.setDisable(true);
+
     }
 
-    @FXML
-    private void trojanCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Trojan);
-    }
-
-    @FXML
-    private void virusCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Virus);
-    }
-
-    @FXML
-    private void wormCard(ActionEvent actionEvent) {
-        checkDamageReady(CardType.Worm);
-    }
 
     private void checkDamageReady(CardType card){
+        gameController.handleDamageCount(card);
+        updateDamageCountLabel();
         pickedDamageCards.add(card);
         ImageView selectedDamageCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
         selectedDamageCard.setFitHeight(150);
-        selectedDamageCard.setFitWidth(85);
+        selectedDamageCard.setFitWidth(95);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if(pickedDamageCards.size()==pickDamage){
             client.sendMessage(new SelectDamage(pickedDamageCards));

@@ -279,6 +279,7 @@ public class Client {
                 }
                 case DrawDamage -> {
                     DrawDamage drawDamage = (DrawDamage) message.getBody();
+                    gameController.handleDamageCount(drawDamage.getCards());
                     if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.setDrawDamage(drawDamage);
                         gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
