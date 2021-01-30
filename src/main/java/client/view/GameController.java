@@ -311,7 +311,7 @@ public class GameController extends Controller implements Updatable {
                 imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
                 imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
                 imageView.setPreserveRatio(true);
-                robotPane.getChildren().add(imageView);
+
 
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
@@ -319,7 +319,7 @@ public class GameController extends Controller implements Updatable {
                         case LEFT, RIGHT -> imageView.setRotate(270);
                     }
 
-
+                    animationPane.getChildren().add(imageView);
                     Coordinate newPos = calculateEndCoordinate(orientation, c, players);
                     imageView.setX(c.getX() * Utilities.FIELD_SIZE);
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
@@ -329,12 +329,12 @@ public class GameController extends Controller implements Updatable {
                     transition.setNode(imageView);
                     transition.setToX((newPos.getX() - c.getX()) * Utilities.FIELD_SIZE);
                     transition.setToY((newPos.getY() - c.getY()) * Utilities.FIELD_SIZE);
-                    transition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+                    transition.setOnFinished(e -> animationPane.getChildren().remove(imageView));
 
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
                     fadeTransition.setFromValue(1.0f);
                     fadeTransition.setToValue(0.0f);
-                    fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+                    fadeTransition.setOnFinished(e -> animationPane.getChildren().remove(imageView));
 
                     SequentialTransition sequentialTransition = new SequentialTransition();
                     sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -363,7 +363,7 @@ public class GameController extends Controller implements Updatable {
             imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
             imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
             imageView.setPreserveRatio(true);
-            robotPane.getChildren().add(imageView);
+            animationPane.getChildren().add(imageView);
 
             switch (orientation) {
                 case LEFT, RIGHT -> imageView.setRotate(270);
@@ -378,12 +378,12 @@ public class GameController extends Controller implements Updatable {
             transition.setNode(imageView);
             transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
             transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);
-            //transition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+            transition.setOnFinished(e -> animationPane.getChildren().remove(imageView));
 
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
             fadeTransition.setFromValue(1.0f);
             fadeTransition.setToValue(0.3f);
-            fadeTransition.setOnFinished(e -> robotPane.getChildren().remove(imageView));
+            fadeTransition.setOnFinished(e -> animationPane.getChildren().remove(imageView));
 
             SequentialTransition sequentialTransition = new SequentialTransition();
             sequentialTransition.getChildren().addAll(transition, fadeTransition);
@@ -659,6 +659,7 @@ public class GameController extends Controller implements Updatable {
            handleDamageCount(cardType);
         }
     }
+
     public void handleDamageCount(CardType cardType){
             switch (cardType) {
                 case Spam -> {
@@ -675,7 +676,6 @@ public class GameController extends Controller implements Updatable {
                 }
             }
     }
-
 
     public int getCountSpamCards() {
         return countSpamCards;
@@ -743,11 +743,8 @@ public class GameController extends Controller implements Updatable {
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
                 getActivationController().pickDamage(pickDamage, this);
-
-
             }
             case PlayerShooting -> {
-                //ArrayList<Player> players = client.getPlayers();
                 handleShooting(players);
                 handleRobotShooting(players);
             }
