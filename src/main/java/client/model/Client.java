@@ -15,7 +15,6 @@ import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
 import utilities.Updatable;
 import utilities.Utilities;
-import utilities.enums.GameState;
 import utilities.enums.MessageType;
 
 import java.io.IOException;
@@ -222,7 +221,7 @@ public class Client {
                         if(currentCards.getActiveCards().get(i).getPlayerID() == thisPlayersID) {
                             for (CardType damageCard : damageCards) {
                                 if (currentCards.getActiveCards().get(i).getCard() == damageCard) {
-                                    gameController.getPlayerMatController().substractPlayerCards(1);
+                                    gameController.getPlayerMatController().subtractPlayerCards(1);
                                 }
                             }
                         }
@@ -270,11 +269,7 @@ public class Client {
                     DiscardHand discardHand = (DiscardHand) message.getBody();
                     if (discardHand.getPlayerID() == thisPlayersID) {
                         gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        if (gameController.getPlayerMatController().getProgrammingDeckNr() < 5) {
-                            gameController.getPlayerMatController().setDiscardDeckCounter(0);
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
-                        }
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(5);
+                        gameController.getPlayerMatController().resetDeckCounter(5);
                     }
                 }
                 case SelectDamage -> {
@@ -287,7 +282,7 @@ public class Client {
                     if (drawDamage.getPlayerID() == thisPlayersID) {
                         gameController.setDrawDamage(drawDamage);
                         gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
-                        gameController.getPlayerMatController().addPlayercards(drawDamage.getCards().size());
+                        gameController.getPlayerMatController().addPlayerCards(drawDamage.getCards().size());
                     }
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");

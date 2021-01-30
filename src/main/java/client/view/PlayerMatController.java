@@ -42,7 +42,7 @@ public class PlayerMatController extends Controller{
     public Label programmingDeckLabel;
     public Label playerMatInfoLabel;
     private int programmingDeckNr = 20;
-    private int playercards = 20;
+    private int playerCards = 20;
     @FXML
     private HBox energyHBox;
     public HBox energyHBox2;
@@ -250,6 +250,12 @@ public class PlayerMatController extends Controller{
         }
     }
 
+    /**
+     * Sets the number of the Discard Deck.
+     * If the amount is 0, the number is reset to 0.
+     * Otherwise, the amount is added to the current number.
+     * @param amount
+     */
     public void setDiscardDeckCounter(int amount){
         if(amount == 0){
             discardDeckNr = 0;
@@ -260,9 +266,15 @@ public class PlayerMatController extends Controller{
         }
     }
 
+    /**
+     * Sets the number of the Programming Deck.
+     * If the amount is equal to the playercards, the number is reset.
+     * Otherwise, the amount is subtracted from the current number.
+     * @param amount
+     */
     public void setProgrammingDeckCounter(int amount){
-        if(amount == playercards){
-            programmingDeckNr = playercards;
+        if(amount == playerCards){
+            programmingDeckNr = playerCards;
             programmingDeckLabel.setText(amount + "cards");
         } else {
             programmingDeckNr = programmingDeckNr - amount;
@@ -270,20 +282,38 @@ public class PlayerMatController extends Controller{
         }
     }
 
-    public void addPlayercards (int amount) {
-        playercards += amount;
+    /**
+     * Checks if the number of the programming deck is smaller than the amount to be subtracted,
+     * if so, the deck is reset and then the amount is subtracted.
+     * Otherwise, the amount is subtracted from the deck.
+     * @param amount the amount to be subtracted
+     */
+    public void resetDeckCounter(int amount){
+        if (getProgrammingDeckNr() < amount) {
+            setDiscardDeckCounter(0);
+            setProgrammingDeckCounter(getPlayerCards());
+        }
+        setProgrammingDeckCounter(amount);
     }
 
-    public void substractPlayerCards (int amount) {
-        playercards -= amount;
+    /**
+     * The playerCards are increased by the amount.
+     * @param amount
+     */
+    public void addPlayerCards(int amount) {
+        playerCards += amount;
     }
 
-    public int getPlayercards() {
-        return playercards;
+    /**
+     * The playerCards are decreased by the amount.
+     * @param amount
+     */
+    public void subtractPlayerCards(int amount) {
+        playerCards -= amount;
     }
 
-    public int getDiscardDeckNr() {
-        return discardDeckNr;
+    public int getPlayerCards() {
+        return playerCards;
     }
 
     public int getProgrammingDeckNr() {
