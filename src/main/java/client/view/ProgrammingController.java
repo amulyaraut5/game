@@ -97,6 +97,7 @@ public class ProgrammingController extends Controller {
         programmingCard.setFitHeight(heightHBox);
         programmingCard.setFitWidth(widthHBox-20);
         programmingCard.setOnDragDetected(e -> {
+            setWasFormerRegister(false);
             Dragboard db = programmingCard.startDragAndDrop(TransferMode.MOVE);
             db.setDragView(programmingCard.snapshot(null, null));
             ClipboardContent cc = new ClipboardContent();

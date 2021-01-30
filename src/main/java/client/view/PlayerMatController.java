@@ -96,9 +96,7 @@ public class PlayerMatController extends Controller{
             if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
             else playerMatInfoLabel.setText(" ");
 
-            if (db.hasContent(cardFormat)
-                    && getProgrammingImageView()!= null
-                    && againNotFirst) {
+            if (db.hasContent(cardFormat) && getProgrammingImageView()!= null && againNotFirst) {
                 ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
                 droppedImageView = createImageView(getProgrammingImageView(), positionDroppedCard);
                     pane.getChildren().add(droppedImageView);
@@ -106,15 +104,20 @@ public class PlayerMatController extends Controller{
         });
         pane.setOnDragDone(e -> {
             CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
+            if(getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
             client.sendMessage(new SelectCard(cardType, positionDroppedCard));
         });
     }
 
 
 
+
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
             ImageView imageView = programmingCardImageView;
+
             imageView.setOnDragDetected(event-> {
+                setWasFormerRegister(true);
+                System.out.println("setOnDrag playermat " + getWasFormerRegister());
                 Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
                 dragboard.setDragView(imageView.snapshot(null, null));
                 ClipboardContent cc2 = new ClipboardContent();
@@ -122,7 +125,9 @@ public class PlayerMatController extends Controller{
                 dragboard.setContent(cc2);
                 setPosition(position);
                 setProgrammingImageView(imageView);
+
             });
+
         return imageView;
     }
 
