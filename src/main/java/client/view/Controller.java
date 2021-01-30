@@ -40,11 +40,11 @@ public abstract class Controller {
 
     private static boolean wasFormerRegister = false;
 
-    public static boolean getWasFormerRegister() {
+    public  boolean getWasFormerRegister() {
         return wasFormerRegister;
     }
 
-    public static void setWasFormerRegister(boolean wasFormerRegister) {
+    public  void setWasFormerRegister(boolean wasFormerRegister) {
         Controller.wasFormerRegister = wasFormerRegister;
     }
 

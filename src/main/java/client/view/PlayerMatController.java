@@ -104,8 +104,8 @@ public class PlayerMatController extends Controller{
         });
         pane.setOnDragDone(e -> {
             CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
-            if(getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
-            client.sendMessage(new SelectCard(cardType, positionDroppedCard));
+                if (getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
+                client.sendMessage(new SelectCard(cardType, positionDroppedCard));
         });
     }
 
@@ -117,7 +117,6 @@ public class PlayerMatController extends Controller{
 
             imageView.setOnDragDetected(event-> {
                 setWasFormerRegister(true);
-                System.out.println("setOnDrag playermat " + getWasFormerRegister());
                 Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
                 dragboard.setDragView(imageView.snapshot(null, null));
                 ClipboardContent cc2 = new ClipboardContent();
