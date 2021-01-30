@@ -45,13 +45,14 @@ public class LobbyController extends Controller implements Updatable {
     private Label infoLabel;
 
     @FXML
-    private Label mapLabel;
-    @FXML
     private Label infoLabel2;
 
 
     @FXML private CheckBox dizzyHighway;
-    @FXML private CheckBox ExtraCrispy;
+    @FXML private CheckBox extraCrispy;
+
+    @FXML private ImageView dizzy;
+    @FXML private ImageView crispy;
 
 
 
@@ -64,7 +65,8 @@ public class LobbyController extends Controller implements Updatable {
     @FXML
     public void initialize() {
         setVisible(false);
-        infoLabel2.setText("If you're first to select Ready, you will get chance to select map.");
+        setImageViewVisible(true);
+        infoLabel2.setText("First Player to click Ready will get a chance to choose a map.");
     }
 
     public void attachChatPane(Pane chat) {
@@ -120,8 +122,7 @@ public class LobbyController extends Controller implements Updatable {
     private void checkBoxAction() {
         client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
         if(!readyCheckbox.isSelected()){
-            infoLabel2.setText("You had your chance to select a map.");
-            mapLabel.setText("Please wait till somebody selects the map.");
+            infoLabel2.setText("Please wait till somebody selects the map.");
             setDisable(true);
         }
     }
@@ -139,17 +140,14 @@ public class LobbyController extends Controller implements Updatable {
             JSONBody jsonBody = new MapSelected("DizzyHighway");
             client.sendMessage(jsonBody);
             setDisable(true);
+            readyCheckbox.setDisable(true);
         }
-        else if(ExtraCrispy.isSelected()){
+        else if(extraCrispy.isSelected()){
             JSONBody jsonBody = new MapSelected("ExtraCrispy");
             client.sendMessage(jsonBody);
             setDisable(true);
+            readyCheckbox.setDisable(true);
         }
-    }
-
-
-    public void setInfoLabel2(String message) {
-        this.infoLabel2.setText(message);
     }
 
     @Override
@@ -164,7 +162,6 @@ public class LobbyController extends Controller implements Updatable {
                 displayStatus(playerStatus);
             }
             case SelectMap -> {
-                mapLabel.setText("Choose any one of the map from below");
                 setVisible(true);
                 setDisable(false);
             }
@@ -173,11 +170,17 @@ public class LobbyController extends Controller implements Updatable {
 
     private void setVisible(boolean b){
         dizzyHighway.setVisible(b);
-        ExtraCrispy.setVisible(b);
+        extraCrispy.setVisible(b);
     }
 
     private void setDisable(boolean b){
         dizzyHighway.setDisable(b);
-        ExtraCrispy.setDisable(b);
+        extraCrispy.setDisable(b);
+
+    }
+
+    private void setImageViewVisible(boolean b){
+        dizzy.setVisible(b);
+        crispy.setVisible(b);
     }
 }
