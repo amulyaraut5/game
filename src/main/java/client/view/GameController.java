@@ -580,6 +580,7 @@ public class GameController extends Controller implements Updatable {
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
 
+
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
@@ -589,15 +590,21 @@ public class GameController extends Controller implements Updatable {
                 currentRound++;
                 if (!first) {
                     getPlayerMatController().reset();
+                    getPlayerMatController().setDiscardDeckCounter(5);
+
                     othersController.reset();
                     getActivationController().reset();
+                }
+                if (getPlayerMatController().getProgrammingDeckNr() < 9) {
+                    getPlayerMatController().setDiscardDeckCounter(0);
+                    getPlayerMatController().setProgrammingDeckCounter(getPlayerMatController().getPlayercards());
                 }
 
                 if (rebootingPlayers != null) {
                     players.addAll(rebootingPlayers);
                     rebootingPlayers.clear();
                 }
-
+                getPlayerMatController().setProgrammingDeckCounter(9);
                 client.setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);

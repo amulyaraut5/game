@@ -57,7 +57,6 @@ public class Client {
 
     private AICoordinator aiCoordinator;
 
-    private boolean first = true;
 
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
@@ -180,17 +179,6 @@ public class Client {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
 
-                    if (activePhase.getPhase() == GameState.PROGRAMMING) {
-                        if (!(first)) {
-                            gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        }
-                        if (gameController.getPlayerMatController().getProgrammingDeckNr() < 9) {
-                            gameController.getPlayerMatController().setDiscardDeckCounter(0);
-                            gameController.getPlayerMatController().setProgrammingDeckCounter(gameController.getPlayerMatController().getPlayercards());
-                        }
-                        gameController.getPlayerMatController().setProgrammingDeckCounter(9);
-                        first = false;
-                    }
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
