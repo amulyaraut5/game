@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.util.*;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
+import static utilities.enums.CardType.*;
+import static utilities.enums.CardType.Worm;
 
 /**
  * The GameViewController class controls the GameView and coordinates its inner views
@@ -58,7 +60,7 @@ public class GameController extends Controller implements Updatable {
     private ProgrammingController programmingController;
     private ActivationController activationController;
     private OthersController othersController;
-
+    private boolean allRegistersAsFirst = false;
     private Pane constructionPane;
     private Pane programmingPane;
     private Pane activationPane;
@@ -601,7 +603,7 @@ public class GameController extends Controller implements Updatable {
                     players.addAll(rebootingPlayers);
                     rebootingPlayers.clear();
                 }
-                client.setAllRegistersAsFirst(false); //TODO everything that is round related
+                setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
@@ -616,6 +618,9 @@ public class GameController extends Controller implements Updatable {
 
     }
 
+    private void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
+        this.allRegistersAsFirst = allRegistersAsFirst;
+    }
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
         FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingView.fxml"));
@@ -752,6 +757,103 @@ public class GameController extends Controller implements Updatable {
                 Reboot reboot = (Reboot) message.getBody();
                 rebootingPlayers.add(client.getPlayerFromID(reboot.getPlayerID()));
                 players.remove(client.getPlayerFromID(reboot.getPlayerID()));
+            }
+            case SelectionFinished -> {
+                SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
+                if (selectionFinished.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().fixSelectedCards(true);
+                    allRegistersAsFirst = true;
+                } else {
+                    //gameViewController.getPlayerMapController().fixSelectedCards();
+                    getOthersController().playerWasFirst(selectionFinished);
+                    allRegistersAsFirst = false;
+                }
+            }
+            case TimerStarted -> {
+                getProgrammingController().startTimer(allRegistersAsFirst);
+            }
+            case TimerEnded -> {
+                getProgrammingController().setTimerEnded(true);
+                getPlayerMatController().setDiscardDeckCounter(4);
+            }
+            case CurrentCards -> {
+                CurrentCards currentCards = (CurrentCards) message.getBody();
+                ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
+                for (RegisterCard registerCard : currentCards.getActiveCards()) {
+                    if (registerCard.getPlayerID() == client.getThisPlayersID())
+                        getActivationController().currentCards(registerCard.getCard());
+                    else otherPlayer.add(registerCard);
+                }
+                getOthersController().currentCards(otherPlayer);
+
+                ArrayList<CardType> damageCards = new ArrayList<>();
+                damageCards.add(Spam);
+                damageCards.add(Virus);
+                damageCards.add(Trojan);
+                damageCards.add(Worm);
+
+                for(int i = 0; i < currentCards.getActiveCards().size(); i++) {
+                    if(currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
+                        for (CardType damageCard : damageCards) {
+                            if (currentCards.getActiveCards().get(i).getCard() == damageCard)
+                                getPlayerMatController().subtractPlayerCards(1);
+                        }
+                    }
+                }
+
+            }
+            case CurrentPlayer -> {
+                CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
+                if (currentPlayer.getPlayerID() == client.getThisPlayersID()) {
+                    getActivationController().currentPlayer(true);
+                    getOthersController().setInfoLabel(currentPlayer, true);
+                } else {
+                    getActivationController().currentPlayer(false);
+                    getOthersController().setInfoLabel(currentPlayer, false);
+                }
+            }
+                /*case Reboot -> {
+                    Reboot reboot = (Reboot) message.getBody();
+                    // TODO display the message
+                }*/
+            case Energy -> {
+                Energy energy = (Energy) message.getBody();
+                if (energy.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().addEnergy(energy.getCount());
+                } else {
+                    getOthersController().addEnergy(energy);
+                }
+            }
+            case CheckpointReached -> {
+                CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
+                if (checkpointsReached.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().checkPointReached(checkpointsReached.getNumber());
+                } else {
+                    getOthersController().checkPointReached(checkpointsReached);
+                }
+            }
+            case ShuffleCoding -> {
+                ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
+            }
+            case DiscardHand -> {
+                DiscardHand discardHand = (DiscardHand) message.getBody();
+                if (discardHand.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().setDiscardDeckCounter(5);
+                    getPlayerMatController().resetDeckCounter(5);
+                }
+            }
+            case SelectDamage -> {
+                SelectDamage selectDamage = (SelectDamage) message.getBody();
+                getPlayerMatController().setDiscardDeckCounter(selectDamage.getCards().size());
+            }
+            case DrawDamage -> {
+                DrawDamage drawDamage = (DrawDamage) message.getBody();
+                handleDamageCount(drawDamage.getCards());
+                if (drawDamage.getPlayerID() == client.getThisPlayersID()) {
+                    setDrawDamage(drawDamage);
+                    getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
+                    getPlayerMatController().addPlayerCards(drawDamage.getCards().size());
+                }
             }
         }
     }
