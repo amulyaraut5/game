@@ -140,7 +140,7 @@ public class LaserAction {
                 //logger.info("Robot :"+ coordinate.getX() + "y:"+ coordinate.getY());
                 for (Player targetPlayer : activePlayers)
                     if (targetPlayer.getRobot().getCoordinate().equals(coordinate)) {
-                        game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 1);
+                        game.getActivationPhase().drawDamage(game.getSpamDeck(), targetPlayer, 1);
                         break outerLoop;
                     }
             }
