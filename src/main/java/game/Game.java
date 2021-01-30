@@ -244,7 +244,8 @@ public class Game {
             }
             case "#damage" -> {
                 Robot robot = userToPlayer(user).getRobot();
-                activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
+                if(cheatInfo.length==0) server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
+                else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
             case "#autoPlay" -> {
                 for (int register = 1; register < 6; register++) {
@@ -269,7 +270,7 @@ public class Game {
                         #endTimer       | ends the timer
                         #tp <position>  | teleports the robot
                         #tp <x> <y>     | teleports the robot
-                        #damage         | deals given number of spam cards
+                        #damage <x>     | deals given number of spam cards
                         #autoPlay       | autoplay activation phase
                         #emptySpam      | empties the Spam deck
                         ----------------------------------------
