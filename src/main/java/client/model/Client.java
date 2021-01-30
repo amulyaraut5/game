@@ -177,7 +177,6 @@ public class Client {
                 case ActivePhase -> {
                     ActivePhase activePhase = (ActivePhase) message.getBody();
                     gameController.changePhaseView(activePhase.getPhase());
-
                 }
                 case CardsYouGotNow -> {
                     CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
@@ -259,7 +258,7 @@ public class Client {
                     }
                 }
                 case GameWon -> {
-                    GameWon gameWon = (GameWon) message.getBody();
+                    currentController.update(message);
                     //TODO display and end game
                 }
                 case ShuffleCoding -> {

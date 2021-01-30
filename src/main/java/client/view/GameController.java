@@ -58,10 +58,12 @@ public class GameController extends Controller implements Updatable {
     private ProgrammingController programmingController;
     private ActivationController activationController;
     private OthersController othersController;
+    private GameWonController gameWonController;
 
     private Pane constructionPane;
     private Pane programmingPane;
     private Pane activationPane;
+    private Pane gameWonPane;
 
     private SoundHandler soundHandler;
     private EventHandler<MouseEvent> onMapClicked;
@@ -620,15 +622,18 @@ public class GameController extends Controller implements Updatable {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
         FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingView.fxml"));
         FXMLLoader activationLoader = new FXMLLoader(getClass().getResource("/view/innerViews/activationView.fxml"));
+        FXMLLoader gameWonLoader = new FXMLLoader(getClass().getResource("/view/innerViews/gameWonView.fxml"));
 
         try {
             constructionPane = constructionLoader.load();
             programmingPane = programmingLoader.load();
             activationPane = activationLoader.load();
+            gameWonPane = gameWonLoader.load();
 
             constructionController = constructionLoader.getController();
             programmingController = programmingLoader.getController();
             activationController = activationLoader.getController();
+            gameWonController = gameWonLoader.getController();
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
@@ -714,7 +719,6 @@ public class GameController extends Controller implements Updatable {
             case ActivePhase -> {
                 ActivePhase activePhase = (ActivePhase) message.getBody();
                 changePhaseView(activePhase.getPhase());
-
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -752,6 +756,9 @@ public class GameController extends Controller implements Updatable {
                 Reboot reboot = (Reboot) message.getBody();
                 rebootingPlayers.add(client.getPlayerFromID(reboot.getPlayerID()));
                 players.remove(client.getPlayerFromID(reboot.getPlayerID()));
+            }
+            case GameWon -> {
+                phasePane.setCenter(gameWonPane);
             }
         }
     }

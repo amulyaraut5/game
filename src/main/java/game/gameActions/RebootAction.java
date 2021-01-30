@@ -35,6 +35,7 @@ public class RebootAction extends Action {
 
         for (Player robotOnReboot : allPlayers) {
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot!=player) {
+                robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
                 game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
             }
         }
