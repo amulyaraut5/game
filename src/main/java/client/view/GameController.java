@@ -580,7 +580,6 @@ public class GameController extends Controller implements Updatable {
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
 
-
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
@@ -591,7 +590,6 @@ public class GameController extends Controller implements Updatable {
                 if (!first) {
                     getPlayerMatController().reset();
                     getPlayerMatController().setDiscardDeckCounter(5);
-
                     othersController.reset();
                     getActivationController().reset();
                 }
@@ -599,7 +597,6 @@ public class GameController extends Controller implements Updatable {
                     getPlayerMatController().setDiscardDeckCounter(0);
                     getPlayerMatController().setProgrammingDeckCounter(getPlayerMatController().getPlayercards());
                 }
-
                 if (rebootingPlayers != null) {
                     players.addAll(rebootingPlayers);
                     rebootingPlayers.clear();
