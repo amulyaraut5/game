@@ -38,7 +38,15 @@ public abstract class Controller {
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
+    private static boolean wasFormerRegister = false;
 
+    public static boolean getWasFormerRegister() {
+        return wasFormerRegister;
+    }
+
+    public static void setWasFormerRegister(boolean wasFormerRegister) {
+        Controller.wasFormerRegister = wasFormerRegister;
+    }
 
     protected CardType generateCardType(String imageDropped) {
         String[] a = imageDropped.split("/");
@@ -63,6 +71,8 @@ public abstract class Controller {
     protected void setPosition(int position){
         this.positionRegister = position;
     }
+
+
 
 
     /**
