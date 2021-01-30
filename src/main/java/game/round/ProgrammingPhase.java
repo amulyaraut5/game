@@ -155,6 +155,7 @@ public class ProgrammingPhase extends Phase {
      */
     private void startProgrammingTimer() {
         GameTimer gameTimer = new GameTimer(this);
+        gameTimer.setName("GameTimer");
         gameTimer.start();
     }
 

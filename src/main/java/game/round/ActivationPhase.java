@@ -20,6 +20,7 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
+import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -48,29 +49,19 @@ public class ActivationPhase extends Phase {
      * saves the Player ID and the card for the current register
      */
     private ArrayList<RegisterCard> currentCards = new ArrayList<>();
-
-    public ArrayList<RegisterCard> getCurrentCards() {
-        return currentCards;
-    }
-
     private int alreadyDrawn = 0;
     private ArrayList<CardType> cardTypes = new ArrayList<>();
-
     /**
      * TODO
      */
     private ActivationElements activationElements = new ActivationElements(this);
     private LaserAction laserAction = new LaserAction(this);
-
     private ArrayList<Player> activePlayers = playerList;
-
     private ArrayList<Player> rebootedPlayers = new ArrayList<>();
-
     /**
      * keeps track of the current register
      */
     private int currentRegister = 1;
-
 
     /**
      * starts the ActivationPhase.
@@ -83,6 +74,9 @@ public class ActivationPhase extends Phase {
         turnCards(currentRegister);
     }
 
+    public ArrayList<RegisterCard> getCurrentCards() {
+        return currentCards;
+    }
 
     /**
      * At the beginning of each register the cards of each player in the current register is shown.
@@ -145,6 +139,7 @@ public class ActivationPhase extends Phase {
         activationElements.activateGreenBelts();
         activationElements.activatePushPanel();
         activationElements.activateGear();
+        server.communicateAll(new PlayerShooting());
         laserAction.activateBoardLaser(activePlayers);
         laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
@@ -155,19 +150,19 @@ public class ActivationPhase extends Phase {
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
 
-        Coordinate newPosition = activationElements.calculateNew(player,o);
+        Coordinate newPosition = activationElements.calculateNew(player, o);
 
         //Handle board elements
         boolean canMove = true;
 
         //look for a blocking wall on current Tile
-        if(!noWallAt(player.getRobot().getCoordinate(), o)){
+        if (isWallAt(player.getRobot().getCoordinate(), o)) {
             canMove = false;
         }
 
         //look for a blocking wall on new tile
-        if(!newPosition.isOutOfBound()){
-            if(!noWallAt(newPosition, o.getOpposite())){
+        if (!newPosition.isOutsideMap()) {
+            if (isWallAt(newPosition, o.getOpposite())) {
                 canMove = false;
             }
         }
@@ -282,7 +277,7 @@ public class ActivationPhase extends Phase {
             case Trojan -> {
                 game.getTrojanHorseDeck().addCard(new Trojan());
                 //Draw two spam cards
-                game.getActivationPhase().drawDamage(game.getSpamDeck(), player,2);
+                game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
                 Card topCard = player.getDrawProgrammingDeck().pop();
                 //logger.info(player.getName() + " played a trojan card.");
                 //Play the top-card
@@ -292,25 +287,24 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void handleRecursion(Player player, Orientation orientation){
+    public void handleRecursion(Player player, Orientation orientation) {
         if (this.currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
         else if (this.currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
             player.message(new Error("I am an Idiot."));
-        else{
-            if(player.getLastRegisterCard() == CardType.Again){
+        else {
+            if (player.getLastRegisterCard() == CardType.Again) {
                 int currentRegister = this.getCurrentRegister();
-                Card card = player.getRegisterCard(currentRegister-2);
+                Card card = player.getRegisterCard(currentRegister - 2);
                 handleCard(card.getName(), player);
-            }
-            else {
+            } else {
                 new AgainAction().doAction(orientation, player);
             }
         }
     }
 
     public void handleTile(Player player) {
-        if (player.getRobot().getCoordinate().isOutOfBound()) {
+        if (player.getRobot().getCoordinate().isOutsideMap()) {
             new RebootAction().doAction(Orientation.LEFT, player);
         } else {
             for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
@@ -324,24 +318,19 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public boolean noWallAt(Coordinate coordinate, Orientation o){
+    public boolean isWallAt(Coordinate coordinate, Orientation o) {
         boolean canMove = true;
         for (Attribute a : gameMap.getTile(coordinate).getAttributes()) {
-            switch (a.getType()) {
-                //handle different tile effects here
-                case Wall -> {
-                    Wall temp = (Wall) a;
-                    if (!(temp.getOrientations() == null)) {
-                        for (Orientation orientation : temp.getOrientations()) {
-                            if (orientation == o) canMove = false;
-                        }
-                    } else {
-                        if (temp.getOrientation() == o) canMove = false;
+            if (a.getType() == AttributeType.Wall) {
+                Wall temp = (Wall) a;
+                if (!(temp.getOrientations() == null)) {
+                    for (Orientation orientation : temp.getOrientations()) {
+                        if (orientation == o) canMove = false;
                     }
                 }
             }
         }
-        return canMove;
+        return !canMove;
     }
 
     /**
@@ -486,6 +475,59 @@ public class ActivationPhase extends Phase {
         return rebootedPlayers;
     }
 
+    public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
+        logger.info("drawDamage reached");
+        if (!(game.getSpamDeck().size() < amount)) {
+            ArrayList<Card> damageCards = damageDeck.drawCards(amount);
+            player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
+            for (Card card : damageCards) {
+                cardTypes.add(card.getName());
+            }
+            server.communicateAll(new DrawDamage(player.getID(), cardTypes));
+        } else {
+            if (damageDeck.size() == 0) {
+                server.communicateDirect(new PickDamage(amount), player.getID());
+            } else {
+                alreadyDrawn = damageDeck.size();
+                ArrayList<Card> damageCards = damageDeck.drawCards(alreadyDrawn);
+                for (Card card : damageCards) {
+                    cardTypes.add(card.getName());
+                }
+                player.getDiscardedProgrammingDeck().drawCards(alreadyDrawn);
+                server.communicateDirect(new PickDamage(amount - (damageDeck.size())), player.getID());
+            }
+        }
+    }
+
+    public void handleSelectedDamage(SelectDamage selectDamage, User user) {
+        logger.info("handleSelectedDamage");
+        Player player = game.userToPlayer(user);
+        ArrayList<CardType> selectedCards = selectDamage.getCards();
+        for (CardType cardType : selectedCards) {
+            switch (cardType) {
+                case Spam -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Spam());
+                    game.getSpamDeck().pop();
+                }
+                case Virus -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Virus());
+                    game.getVirusDeck().pop();
+                }
+                case Worm -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Worm());
+                    game.getWormDeck().pop();
+                }
+                case Trojan -> {
+                    player.getDiscardedProgrammingDeck().addCard(new Trojan());
+                    game.getTrojanHorseDeck().pop();
+                }
+                default -> server.communicateAll(new Error("This is not a valid damage card"));
+            }
+            cardTypes.add(cardType);
+        }
+        logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
+    }
+
     /**
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
@@ -528,59 +570,6 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
-    }
-
-    public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
-        logger.info("drawDamage reached");
-        if (!(game.getSpamDeck().size() < amount)) {
-            ArrayList<Card> damageCards = damageDeck.drawCards(amount);
-            player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
-            for (Card card : damageCards) {
-                cardTypes.add(card.getName());
-            }
-            server.communicateAll(new DrawDamage(player.getID(), cardTypes));
-        } else {
-            if (damageDeck.size() == 0) {
-                server.communicateDirect(new PickDamage(amount), player.getID());
-            } else {
-                alreadyDrawn = damageDeck.size();
-                ArrayList<Card> damageCards = damageDeck.drawCards(alreadyDrawn);
-                for (Card card : damageCards) {
-                    cardTypes.add(card.getName());
-                }
-                player.getDiscardedProgrammingDeck().drawCards(alreadyDrawn);
-                server.communicateDirect(new PickDamage(amount - (damageDeck.size())), player.getID());
-            }
-        }
-    }
-
-    public void handleSelectedDamage (SelectDamage selectDamage, User user) {
-        logger.info("handleSelectedDamage");
-        Player player = game.userToPlayer(user);
-        ArrayList<CardType> selectedCards = selectDamage.getCards();
-        for (CardType cardType : selectedCards) {
-            switch (cardType) {
-                case Spam -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Spam());
-                    game.getSpamDeck().pop();
-                }
-                case Virus -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Virus());
-                    game.getVirusDeck().pop();
-                }
-                case Worm -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Worm());
-                    game.getWormDeck().pop();
-                }
-                case Trojan -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Trojan());
-                    game.getTrojanHorseDeck().pop();
-                }
-                default -> server.communicateAll(new Error("This is not a valid damage card"));
-            }
-            cardTypes.add(cardType);
-        }
-        logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
 }

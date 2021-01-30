@@ -112,7 +112,7 @@ public class Coordinate {
         this.y = this.y + y;
     }
 
-    public boolean isOutOfBound() {
+    public boolean isOutsideMap() {
         if ((this.getX() > Utilities.MAP_WIDTH - 1 || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT - 1 || this.getY() < 0)) {
             return true;
         } else {
