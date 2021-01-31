@@ -81,7 +81,6 @@ public class ViewManager {
         currentScene = loginScene;
     }
 
-
     public void showLobby() {
         Client.getInstance().setCurrentController(lobbyController);
         lobbyController.attachChatPane(chatPane);
@@ -91,11 +90,14 @@ public class ViewManager {
     }
 
 
-
     public void showGame() {
         Client.getInstance().setCurrentController(gameController);
         openGameStage();
         currentScene = gameScene;
+    }
+
+    public void closeGame(){
+        gameStage.close();
     }
 
     private void openGameStage() {

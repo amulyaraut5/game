@@ -4,7 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<?import com.jfoenix.controls.JFXButton?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameWonController">
    <children>
       <Pane layoutX="22.0" layoutY="69.0" prefHeight="67.0" prefWidth="365.0" style="-fx-background-color: orange; -fx-border-width: 3; -fx-border-color: white;">
          <children>
@@ -15,20 +17,21 @@
             </Label>
          </children>
       </Pane>
-      <Label fx:id="winnerLabel" alignment="CENTER" layoutX="51.0" layoutY="165.0" prefHeight="94.0" prefWidth="307.0">
+      <FlowPane fx:id="winnerIconPane" layoutX="105.0" layoutY="150.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="350.0" prefHeight="44.0" prefWidth="229.0" text="a">
          <font>
-            <Font size="54.0" />
+            <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="exitGameButton" layoutX="102.0" layoutY="471.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Exit the Game" textFill="WHITE">
+      <JFXButton id="exitGameButton" buttonType="RAISED" onAction="#exitGameClicked" layoutX="102.0" layoutY="471.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Exit the Game" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
-      </Button>
-      <Button fx:id="newGameButton" layoutX="102.0" layoutY="410.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Return to the Lobby" textFill="WHITE">
+      </JFXButton>
+      <JFXButton id="newGameButton" buttonType="RAISED" onAction="#returnClicked" layoutX="102.0" layoutY="410.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Return to the Lobby" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
-      </Button>
+      </JFXButton>
    </children>
 </AnchorPane>

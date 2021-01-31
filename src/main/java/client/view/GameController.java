@@ -713,8 +713,14 @@ public class GameController extends Controller implements Updatable {
                 }
             }
             case GameWon -> {
+                GameWon gameWon = (GameWon) message.getBody();
                 phasePane.setCenter(gameWonPane);
+                getGameWonController().setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
             }
         }
+    }
+
+    public GameWonController getGameWonController() {
+        return gameWonController;
     }
 }
