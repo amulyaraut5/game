@@ -7,9 +7,6 @@ import game.gameActions.Action;
 import java.util.ArrayList;
 
 
-/**
- * @author annika
- */
 public abstract class ProgrammingCard extends Card {
 
     private boolean isHidden;
@@ -20,10 +17,6 @@ public abstract class ProgrammingCard extends Card {
     public ProgrammingCard() {
         this.isHidden = false;
         this.isLocked = false;
-    }
-
-    @Override
-    public void handleCard(Game game, Player player) {
     }
 
     public void addAction(Action action) {
