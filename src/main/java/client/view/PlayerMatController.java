@@ -134,6 +134,7 @@ public class PlayerMatController extends Controller{
         registerHBox.getChildren().clear();
         eventOn = true;
         createRegisters();
+        createRegisterBackground();
     }
 
 
@@ -179,9 +180,14 @@ public class PlayerMatController extends Controller{
         }
     }
 
-    public void fixSelectedCards(boolean setOn) {
-        if(setOn) eventOn = false;
-        else eventOn = true;
+    public void fixSelectedCards() {
+        if(registerHBox.getChildren().size()>0){
+            for(int i = registerHBoxBackground.getChildren().size()-1; i >= 0; i--) {
+                registerHBoxBackground.getChildren().set(i, registerHBox.getChildren().get(i));
+            }
+            registerHBox.getChildren().clear();
+        }
+
     }
 
     private void createRegisterNumberImages() {
@@ -201,6 +207,7 @@ public class PlayerMatController extends Controller{
     }
 
     private void createRegisterBackground() {
+        registerHBoxBackground.getChildren().clear();
         for (int i = 0; i <= 4; i++) {
             ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
             background.setFitHeight(heightRegisterCard);

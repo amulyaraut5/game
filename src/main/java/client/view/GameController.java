@@ -11,6 +11,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -447,7 +448,7 @@ public class GameController extends Controller implements Updatable {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
-                getPlayerMatController().fixSelectedCards(false);
+                //getPlayerMatController().fixSelectedCards(false);
                 roundPane.setVisible(true);
                 roundLabel.setText("Round " + currentRound);
                 currentRound++;
@@ -464,12 +465,10 @@ public class GameController extends Controller implements Updatable {
                     players.addAll(rebootingPlayers);
                     rebootingPlayers.clear();
                 }
-                setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
-                getPlayerMatController().fixSelectedCards(true);
                 getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
@@ -479,9 +478,7 @@ public class GameController extends Controller implements Updatable {
 
     }
 
-    private void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
-        this.allRegistersAsFirst = allRegistersAsFirst;
-    }
+
 
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
@@ -561,7 +558,19 @@ public class GameController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                infoLabel.setText(error.getError());
+                Timer timer = new Timer();
+                interval = 15;
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        if(interval > 0 ){
+                            Platform.runLater(() -> infoLabel.setText(error.getError()));
+                            interval--;
+                        } else{
+                            timer.cancel();
+                            Platform.runLater(() -> infoLabel.setText(" "));
+                        }
+                    }
+                }, 1000,1000);
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
@@ -617,10 +626,9 @@ public class GameController extends Controller implements Updatable {
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                 if (selectionFinished.getPlayerID() == client.getThisPlayersID()) {
-                    getPlayerMatController().fixSelectedCards(true);
+                    getPlayerMatController().fixSelectedCards();
                     allRegistersAsFirst = true;
                 } else {
-                    //gameViewController.getPlayerMapController().fixSelectedCards();
                     getOthersController().playerWasFirst(selectionFinished);
                     allRegistersAsFirst = false;
                 }
@@ -631,6 +639,9 @@ public class GameController extends Controller implements Updatable {
             case TimerEnded -> {
                 getProgrammingController().setTimerEnded(true);
                 getPlayerMatController().setDiscardDeckCounter(4);
+                if(!allRegistersAsFirst) getPlayerMatController().fixSelectedCards();
+                allRegistersAsFirst  =false; //TODO everything that is round related
+
             }
             case CurrentCards -> {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
