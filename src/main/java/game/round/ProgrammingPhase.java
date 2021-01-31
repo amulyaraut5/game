@@ -41,7 +41,7 @@ public class ProgrammingPhase extends Phase {
             logger.info("draw1" + player.getDrawProgrammingDeck().getDeck());
         }*/
 
-        for (Player player : playerList) {
+        for (Player player : players) {
             notReadyPlayers.add(player);
 
             //discard all Programming cards left in the registers and put all played Damage Cards back to their decks. Then create an empty register
@@ -139,7 +139,7 @@ public class ProgrammingPhase extends Phase {
             //logger.info("draw4" + player.getDrawProgrammingDeck().getDeck());
 
             //If this player is the first to finish the timer starts
-            if (notReadyPlayers.size() == playerList.size() - 1) {
+            if (notReadyPlayers.size() == players.size() - 1) {
                 startProgrammingTimer();
                 //If all players are ready the timer ends early
             } else if (notReadyPlayers.isEmpty()) {
@@ -155,6 +155,7 @@ public class ProgrammingPhase extends Phase {
      */
     private void startProgrammingTimer() {
         GameTimer gameTimer = new GameTimer(this);
+        gameTimer.setName("GameTimer");
         gameTimer.start();
     }
 

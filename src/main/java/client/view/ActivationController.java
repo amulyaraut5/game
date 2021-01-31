@@ -1,7 +1,5 @@
 package client.view;
 
-import game.Player;
-import game.gameObjects.cards.DamageCard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,20 +10,25 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
-
-
 import java.util.ArrayList;
+
+/**
+ *
+ * @author sarah
+ */
 
 public class ActivationController extends Controller {
 
     @FXML
     private Label register;
-    public Label infoLabel;
+    @FXML
+    private Label infoLabel;
     @FXML
     private ImageView currentCardImageView;
     @FXML
     private HBox selectedDamageHBox;
-    public Button playItButton;
+    @FXML
+    private Button playItButton;
     @FXML
     private AnchorPane selectDamageAnchorPane;
     @FXML
@@ -43,26 +46,39 @@ public class ActivationController extends Controller {
     private GameController gameController;
     private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
-    private int drawDamage;
-    private int registerNr = 1; //TODO reset after 5 registers
+    private int registerNr = 1;
 
-
+    /**
+     * This method resets the class and gets called at the start of activationPhase
+     */
     public void reset(){
         registerNr = 1;
         playItButton.setDisable(true);
     }
+
+    /**
+     * This method initializes the ActivationController, sets important things visible
+     */
     public void initialize() {
         selectDamageAnchorPane.setVisible(false);
         playItButton.setDisable(true);
     }
 
-
+    /**
+     * This method gets called by getting protocol currentCards and displays current card of player
+     * it also increases register number for view
+     * @param cardType current card of the player
+     */
     public void currentCards(CardType cardType){
         currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + cardType + "-card.png").toString()));
         register.setText("Register " + registerNr);
         registerNr ++;
     }
 
+    /**
+     * This method displays if player is current player and sets play It button disable (or not)
+     * @param turn
+     */
     public void currentPlayer(boolean turn){
         if(turn){
             setInfoLabel("It's your turn! Click on the button to validate your card!");
@@ -78,10 +94,17 @@ public class ActivationController extends Controller {
         client.sendMessage(new PlayIt());
     }
 
-    public  void setInfoLabel(String text){
+
+    private void setInfoLabel(String text){
         infoLabel.setText(text);
     }
 
+    /**
+     * by getting protocol PickDamage the damageAnchorPane gets visible and it updates the
+     * count numbers on the different damageButtons
+     * @param pickDamage
+     * @param game gameController that called this method
+     */
     public void pickDamage(PickDamage pickDamage, GameController game){
         this.gameController = game;
         playCardAnchorPane.setVisible(false);
@@ -91,7 +114,9 @@ public class ActivationController extends Controller {
         this.pickDamage = pickDamage.getCount();
     }
 
-    public void damageButtonClicked(ActionEvent actionEvent){
+
+    @FXML
+    private void damageButtonClicked(ActionEvent actionEvent){
         CardType clickedButton = null;
         if(actionEvent.getSource().equals(spamCardButton)) clickedButton = CardType.Spam;
         if(actionEvent.getSource().equals(trojanCardButton)) clickedButton = CardType.Trojan;
@@ -99,6 +124,7 @@ public class ActivationController extends Controller {
         if(actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
         checkDamageReady(clickedButton);
     }
+
     private void updateDamageCountLabel(){
         spamCardButton.setText(String.valueOf(gameController.getCountSpamCards()));
         if(gameController.getCountSpamCards() == 0) spamCardButton.setDisable(true);
@@ -113,7 +139,6 @@ public class ActivationController extends Controller {
         if(gameController.getCountWormCards() == 0) wormCardButton.setDisable(true);
 
     }
-
 
     private void checkDamageReady(CardType card){
         gameController.handleDamageCount(card);

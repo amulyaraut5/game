@@ -5,8 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
-import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 /**
  * @author Amulya
@@ -15,7 +15,6 @@ import utilities.enums.AttributeType;
 public class Wall extends Attribute {
 
     private Orientation[] orientations;
-    private Orientation orientation;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
@@ -23,12 +22,12 @@ public class Wall extends Attribute {
      * @param orientation
      */
     public Wall(Orientation orientation) {
-        this.orientation = orientation;
+        orientations = new Orientation[]{orientation};
         this.type = AttributeType.Wall;
     }
 
     /**
-     * Constructor for Wall for those tiles which have  two walls in two different direction.
+     * Constructor for Wall for those tiles which have two walls in two different direction.
      *
      * @param orientations saves the x and y orientations of the wall
      */
@@ -46,10 +45,10 @@ public class Wall extends Attribute {
         String pathOneWall = "/tiles/wall_up.png";
         String pathTwoWalls = "/tiles/wall_up_right.png";
 
-        if (orientation != null) {
-            return ImageHandler.createImageView(pathOneWall, orientation);
-        } else {
-            if (orientations != null) {
+        if (orientations != null) {
+            if (orientations.length == 1) {
+                return ImageHandler.createImageView(pathOneWall, orientations[0]);
+            } else if (orientations.length >= 2) {
                 Node imageView = ImageHandler.createImageView(pathTwoWalls);
                 assert imageView != null;
 
@@ -103,11 +102,7 @@ public class Wall extends Attribute {
         return new Group(imageView1, imageView2);
     }
 
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    public Orientation[] getOrientations(){
+    public Orientation[] getOrientations() {
         return this.orientations;
     }
 }

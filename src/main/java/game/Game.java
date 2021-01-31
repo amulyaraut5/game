@@ -1,23 +1,28 @@
 package game;
 
-import game.gameObjects.decks.*;
+import game.gameObjects.decks.SpamDeck;
+import game.gameObjects.decks.TrojanDeck;
+import game.gameObjects.decks.VirusDeck;
+import game.gameObjects.decks.WormDeck;
 import game.gameObjects.maps.DizzyHighway;
 import game.gameObjects.maps.ExtraCrispy;
 import game.gameObjects.maps.Map;
 import game.gameObjects.maps.MapBuilder;
 import game.gameObjects.robot.Robot;
 import game.round.ActivationPhase;
+import game.round.ConstructionPhase;
 import game.round.ProgrammingPhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Movement;
+import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
-import utilities.enums.AttributeType;
 import utilities.enums.GameState;
 
 import java.util.ArrayList;
@@ -43,6 +48,7 @@ public class Game {
 
     private Map map;
 
+    private ConstructionPhase constructionPhase;
     private ProgrammingPhase programmingPhase;
     private ActivationPhase activationPhase;
     private GameState gameState;
@@ -62,14 +68,6 @@ public class Game {
     public static Game getInstance() {
         if (instance == null) instance = new Game();
         return instance;
-    }
-
-    public ActivationPhase getActivationPhase() {
-        return activationPhase;
-    }
-
-    public ProgrammingPhase getProgrammingPhase() {
-        return programmingPhase;
     }
 
     /**
@@ -101,16 +99,17 @@ public class Game {
         //map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
-
+        constructionPhase = new ConstructionPhase();
     }
 
     public void handleMapSelection(String selectedMap) {
         if (selectedMap.equals("DizzyHighway")) {
             map = MapBuilder.constructMap(new DizzyHighway());
-        } else {
+        } else if (selectedMap.equals("ExtraCrispy")) {
             map = MapBuilder.constructMap(new ExtraCrispy());
         }
     }
+
 
     /**
      * This method gets called from the phases, it calls the next phase
@@ -125,42 +124,6 @@ public class Game {
         }
     }
 
-    public void setStartingPoint(User user, int position) {
-        Coordinate pos = parse(position);
-        Player player = userToPlayer(user);
-
-        if (position < 1 || position > 130) {
-            player.message(new Error("This is no viable point on the map!"));
-            return;
-        }
-
-        //check if playes has already set their starting point
-        if (player.getRobot().getCoordinate() == null) {
-            //check if chosen tile is StartingPoint
-            System.out.println(pos);
-            boolean isOnStartPoint = map.getTile(pos).hasAttribute(AttributeType.StartPoint);//TODO Index -1 out of bounds for length 13
-            if (isOnStartPoint) {
-                //check if no other player is on the chosen tile
-                for (Player other : players) {
-                    if (!other.equals(player)) {
-                        Coordinate otherPos = other.getRobot().getCoordinate();
-                        if (!pos.equals(otherPos)) {
-                            //chosen StartingPoint is valid
-                            player.getRobot().setCoordinate(pos);
-                            server.communicateAll(new StartingPointTaken(player.getID(), position));
-                        } else player.message(new Error("Your chosen position is already taken!"));
-                    }
-                }
-            } else player.message(new Error("This is no valid StartPoint!"));
-        } else player.message(new Error("You have already set your starting point!"));
-
-        //check if all players have set their StartingPoint
-        for (Player p : players) {
-            if (p.getRobot().getCoordinate() == null) return;
-        }
-        nextPhase();
-    }
-
     public Player userToPlayer(User user) {
         for (Player player : players) {
             if (user.equals(player)) {
@@ -168,30 +131,6 @@ public class Game {
             }
         }
         return null;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public SpamDeck getSpamDeck() {
-        return spamDeck;
-    }
-
-    public VirusDeck getVirusDeck() {
-        return virusDeck;
-    }
-
-    public WormDeck getWormDeck() {
-        return wormDeck;
-    }
-
-    public TrojanDeck getTrojanHorseDeck() {
-        return trojanDeck;
     }
 
     /**
@@ -205,10 +144,6 @@ public class Game {
             if (player.getID() == id) return player;
         }
         return null;
-    }
-
-    public GameState getGameState() {
-        return gameState;
     }
 
     /**
@@ -244,7 +179,8 @@ public class Game {
             }
             case "#damage" -> {
                 Robot robot = userToPlayer(user).getRobot();
-                if(cheatInfo.length==0) server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
+                if (cheatInfo.length == 0)
+                    server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
                 else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
             case "#autoPlay" -> {
@@ -281,5 +217,43 @@ public class Game {
         }
     }
 
+    public ConstructionPhase getConstructionPhase() {
+        return constructionPhase;
+    }
 
+    public ActivationPhase getActivationPhase() {
+        return activationPhase;
+    }
+
+    public ProgrammingPhase getProgrammingPhase() {
+        return programmingPhase;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public SpamDeck getSpamDeck() {
+        return spamDeck;
+    }
+
+    public VirusDeck getVirusDeck() {
+        return virusDeck;
+    }
+
+    public WormDeck getWormDeck() {
+        return wormDeck;
+    }
+
+    public TrojanDeck getTrojanHorseDeck() {
+        return trojanDeck;
+    }
 }

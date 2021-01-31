@@ -9,8 +9,7 @@ import java.util.ArrayList;
 public abstract class Phase {
     protected Server server = Server.getInstance();
     protected Game game = Game.getInstance();
-
-    protected ArrayList<Player> playerList = game.getPlayers();
+    protected ArrayList<Player> players = game.getPlayers();
 
     public Phase() {
     }

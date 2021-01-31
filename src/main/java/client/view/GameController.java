@@ -6,7 +6,7 @@ import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import game.gameObjects.tiles.Laser;
-import game.gameObjects.tiles.Wall;
+import game.round.LaserAction;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
+import static utilities.enums.CardType.*;
 
 /**
  * The GameViewController class controls the GameView and coordinates its inner views
@@ -47,12 +48,11 @@ public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+    private ArrayList<Player> players = client.getPlayers();
+    private ArrayList<Player> rebootingPlayers = new ArrayList<>();
     private ArrayList<Coordinate> path = new ArrayList<>();
     private HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
-    ArrayList<Player> players = client.getPlayers();
-    ArrayList<Player> rebootingPlayers = new ArrayList<>();
-
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
     private ProgrammingController programmingController;
@@ -60,6 +60,7 @@ public class GameController extends Controller implements Updatable {
     private OthersController othersController;
     private GameWonController gameWonController;
 
+    private boolean allRegistersAsFirst = false;
     private Pane constructionPane;
     private Pane programmingPane;
     private Pane activationPane;
@@ -103,13 +104,10 @@ public class GameController extends Controller implements Updatable {
     private int currentRound = 1;
     private boolean first = true;
 
-
     private int countSpamCards = 38;
     private int countTrojanCards = 12;
     private int countWormCards = 6;
     private int countVirusCards = 18;
-
-
 
     @FXML
     public void initialize() {
@@ -145,9 +143,6 @@ public class GameController extends Controller implements Updatable {
 
         this.soundHandler = new SoundHandler();
     }
-
-
-
 
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
@@ -322,7 +317,7 @@ public class GameController extends Controller implements Updatable {
                     }
 
                     animationPane.getChildren().add(imageView);
-                    Coordinate newPos = calculateEndCoordinate(orientation, c, players);
+                    Coordinate newPos = LaserAction.calculateLaserEnd(c, orientation, map, players);
                     imageView.setX(c.getX() * Utilities.FIELD_SIZE);
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
 
@@ -371,7 +366,7 @@ public class GameController extends Controller implements Updatable {
                 case LEFT, RIGHT -> imageView.setRotate(270);
             }
 
-            Coordinate newPos = calculateRobotEndCoordinate(orientation, robotPosition, players);
+            Coordinate newPos = LaserAction.calculateLaserEnd(robotPosition, orientation, map, players);
             imageView.setX(robotPosition.getX() * Utilities.FIELD_SIZE);
             imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
 
@@ -396,131 +391,6 @@ public class GameController extends Controller implements Updatable {
 
     }
 
-    /**
-     * It calculates the last possible coordinate where laser terminates for the robot.
-     *
-     * @param orientation Direction at which robot is facing
-     * @param position    Position of robot in board.
-     * @param players     active players list from the game
-     * @return Coordinate
-     */
-
-    private Coordinate calculateRobotEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
-        position = position.clone();
-        Coordinate step = orientation.toVector();
-
-        outerLoop:
-        while (true) {
-            position.add(step);
-            if (position.isOutOfBound()) {
-                //logger.info("Laser Out of Bound");
-                break outerLoop;
-            } else {
-                for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
-                    if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
-                            && b.getType() != AttributeType.ControlPoint) {
-                        path.add(position.clone());
-                        break;
-                    } else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
-                        path.add(position.clone());
-                        break outerLoop;
-                    } else if (b.getType() == AttributeType.Laser) {
-                        if (((Laser) b).getOrientation() == orientation) {
-                            break outerLoop;
-                        } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
-                            path.add(position.clone());
-                            break outerLoop;
-                        } else if (((Laser) b).getOrientation() != orientation) {
-                            path.add(position.clone());
-                            break;
-                        }
-                    } else if (b.getType() == AttributeType.Wall) {
-                        if (((Wall) b).getOrientation() == orientation) {
-                            path.add(position.clone());
-                            break outerLoop;
-                        } else if (((Wall) b).getOrientation() == orientation.getOpposite()) {
-                            break outerLoop;
-                        } else if (((Wall) b).getOrientation() != orientation) {
-                            path.add(position.clone());
-                            break;
-                        }
-                    } else if (b.getType() == AttributeType.Antenna) break outerLoop;
-                }
-            }
-        }
-        if (path.size() == 0) {
-            //logger.info("Nowhere to fire");
-            return position;
-        } else {
-            for (Coordinate coordinate : path) {
-                for (Player player : players) {
-                    if (coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
-                }
-            }
-            return path.get(path.size() - 1);
-        }
-    }
-
-    /**
-     * It calculates the last possible coordinate where laser terminates for the board lasers.
-     *
-     * @param orientation Direction at which laser is facing
-     * @param position    Position of laser in board
-     * @param players     Possible player who could be affected
-     * @return Coordinate
-     */
-    private Coordinate calculateEndCoordinate(Orientation orientation, Coordinate position, ArrayList<Player> players) {
-
-        path.add(position);
-        position = position.clone();
-        Coordinate step = orientation.toVector();
-
-        outerLoop:
-        while (true) {
-            position.add(step);
-            if (position.isOutOfBound()) {
-                //logger.info("Laser Out of Bound");
-                break outerLoop;
-            } else {
-                for (Attribute b : map.getTile(position.getX(), position.getY()).getAttributes()) {
-                    if (b.getType() != AttributeType.Wall && b.getType() != AttributeType.Antenna && b.getType() != AttributeType.Laser
-                            && b.getType() != AttributeType.ControlPoint) {
-                        path.add(position.clone());
-                        break;
-                    } else if (b.getType() == AttributeType.ControlPoint && b.getType() == AttributeType.Laser) {
-                        path.add(position.clone());
-                        break outerLoop;
-                    } else if (b.getType() == AttributeType.Laser) {
-                        if (((Laser) b).getOrientation() == orientation) {
-                            break outerLoop;
-                        } else if (((Laser) b).getOrientation() == orientation.getOpposite()) {
-                            path.add(position.clone());
-                            break outerLoop;
-                        } else if (((Laser) b).getOrientation() != orientation) {
-                            path.add(position.clone());
-                            break;
-                        }
-                    } else if (b.getType() == AttributeType.Wall) {
-                        if (((Wall) b).getOrientation() == orientation) {
-                            path.add(position.clone());
-                            break outerLoop;
-                        } else if (((Wall) b).getOrientation() == orientation.getOpposite()) {
-                            break outerLoop;
-                        } else if (((Wall) b).getOrientation() != orientation) {
-                            path.add(position.clone());
-                            break;
-                        }
-                    } else if (b.getType() == AttributeType.Antenna) break outerLoop;
-                }
-            }
-        }
-        for (Coordinate coordinate : path) {
-            for (Player player : players) {
-                if (coordinate.equals(player.getRobot().getCoordinate())) return coordinate;
-            }
-        }
-        return path.get(path.size() - 1);
-    }
 
     public ProgrammingController getProgrammingController() {
         return programmingController;
@@ -571,17 +441,8 @@ public class GameController extends Controller implements Updatable {
         return sortedField;
     }
 
-    /**
-     * Button press to test the change of inner phase panes.
-     */
-    @FXML
-    private void setNextPhaseView() {
-        changePhaseView(currentPhase.getNext());
-    }
-
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
-
 
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
@@ -603,7 +464,7 @@ public class GameController extends Controller implements Updatable {
                     players.addAll(rebootingPlayers);
                     rebootingPlayers.clear();
                 }
-                client.setAllRegistersAsFirst(false); //TODO everything that is round related
+                setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
@@ -616,6 +477,10 @@ public class GameController extends Controller implements Updatable {
             }
         }
 
+    }
+
+    private void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
+        this.allRegistersAsFirst = allRegistersAsFirst;
     }
 
     private void constructPhaseViews() {
@@ -659,27 +524,19 @@ public class GameController extends Controller implements Updatable {
         othersController.removePlayer(player);
     }
 
-    public void handleDamageCount(ArrayList<CardType> cardList){
-        for(CardType cardType: cardList){
-           handleDamageCount(cardType);
+    public void handleDamageCount(ArrayList<CardType> cardList) {
+        for (CardType cardType : cardList) {
+            handleDamageCount(cardType);
         }
     }
 
-    public void handleDamageCount(CardType cardType){
-            switch (cardType) {
-                case Spam -> {
-                    countSpamCards--;
-                }
-                case Trojan -> {
-                    countTrojanCards--;
-                }
-                case Worm -> {
-                    countWormCards--;
-                }
-                case Virus -> {
-                    countVirusCards--;
-                }
-            }
+    public void handleDamageCount(CardType cardType) {
+        switch (cardType) {
+            case Spam -> countSpamCards--;
+            case Trojan -> countTrojanCards--;
+            case Worm -> countWormCards--;
+            case Virus -> countVirusCards--;
+        }
     }
 
     public int getCountSpamCards() {
@@ -752,10 +609,108 @@ public class GameController extends Controller implements Updatable {
                 handleShooting(players);
                 handleRobotShooting(players);
             }
-            case Reboot->{
+            case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
                 rebootingPlayers.add(client.getPlayerFromID(reboot.getPlayerID()));
                 players.remove(client.getPlayerFromID(reboot.getPlayerID()));
+            }
+            case SelectionFinished -> {
+                SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
+                if (selectionFinished.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().fixSelectedCards(true);
+                    allRegistersAsFirst = true;
+                } else {
+                    //gameViewController.getPlayerMapController().fixSelectedCards();
+                    getOthersController().playerWasFirst(selectionFinished);
+                    allRegistersAsFirst = false;
+                }
+            }
+            case TimerStarted -> {
+                getProgrammingController().startTimer(allRegistersAsFirst);
+            }
+            case TimerEnded -> {
+                getProgrammingController().setTimerEnded(true);
+                getPlayerMatController().setDiscardDeckCounter(4);
+            }
+            case CurrentCards -> {
+                CurrentCards currentCards = (CurrentCards) message.getBody();
+                ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
+                for (RegisterCard registerCard : currentCards.getActiveCards()) {
+                    if (registerCard.getPlayerID() == client.getThisPlayersID())
+                        getActivationController().currentCards(registerCard.getCard());
+                    else otherPlayer.add(registerCard);
+                }
+                getOthersController().currentCards(otherPlayer);
+
+                ArrayList<CardType> damageCards = new ArrayList<>();
+                damageCards.add(Spam);
+                damageCards.add(Virus);
+                damageCards.add(Trojan);
+                damageCards.add(Worm);
+
+                for (int i = 0; i < currentCards.getActiveCards().size(); i++) {
+                    if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
+                        for (CardType damageCard : damageCards) {
+                            if (currentCards.getActiveCards().get(i).getCard() == damageCard)
+                                getPlayerMatController().subtractPlayerCards(1);
+                        }
+                    }
+                }
+
+            }
+            case CurrentPlayer -> {
+                CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
+                boolean isThisPlayer = currentPlayer.getPlayerID() == client.getThisPlayersID();
+
+                if (currentPhase == GameState.CONSTRUCTION) {
+                    constructionController.currentPlayer(isThisPlayer);
+                } else if (currentPhase == GameState.ACTIVATION) {
+                    getActivationController().currentPlayer(isThisPlayer);
+                    getOthersController().setInfoLabel(currentPlayer, isThisPlayer);
+                }
+            }
+                /*case Reboot -> {
+                    Reboot reboot = (Reboot) message.getBody();
+                    // TODO display the message
+                }*/
+            case Energy -> {
+                Energy energy = (Energy) message.getBody();
+                if (energy.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().addEnergy(energy.getCount());
+                } else {
+                    getOthersController().addEnergy(energy);
+                }
+            }
+            case CheckpointReached -> {
+                CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
+                if (checkpointsReached.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().checkPointReached(checkpointsReached.getNumber());
+                } else {
+                    getOthersController().checkPointReached(checkpointsReached);
+                }
+            }
+            case ShuffleCoding -> {
+                ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
+            }
+            case DiscardHand -> {
+                DiscardHand discardHand = (DiscardHand) message.getBody();
+                if (discardHand.getPlayerID() == client.getThisPlayersID()) {
+                    getPlayerMatController().setDiscardDeckCounter(5);
+                    getPlayerMatController().resetDeckCounter(5);
+                }
+            }
+            case SelectDamage -> {
+                SelectDamage selectDamage = (SelectDamage) message.getBody();
+                getPlayerMatController().setDiscardDeckCounter(selectDamage.getCards().size());
+            }
+            case DrawDamage -> {
+                DrawDamage drawDamage = (DrawDamage) message.getBody();
+                handleDamageCount(drawDamage.getCards());
+                if (drawDamage.getPlayerID() == client.getThisPlayersID()) {
+                    setDrawDamage(drawDamage);
+                    getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
+                    getPlayerMatController().addPlayerCards(drawDamage.getCards().size());
+                }
             }
             case GameWon -> {
                 phasePane.setCenter(gameWonPane);

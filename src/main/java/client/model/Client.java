@@ -42,8 +42,6 @@ public class Client {
     private final ArrayList<Player> players = new ArrayList<>();
     private int thisPlayersID;
     private PrintWriter writer;
-    private boolean allRegistersAsFirst = false;
-
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
@@ -152,8 +150,10 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case SelectMap,Reboot, Error, PlayerStatus, StartingPointTaken, YourCards,
-                        Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting -> {
+                case SelectMap, Reboot, Error, PlayerStatus, StartingPointTaken, YourCards, Movement,
+                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
+                        CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
+                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage -> {
                     currentController.update(message);
                 }
                 case ConnectionUpdate -> {
@@ -261,36 +261,9 @@ public class Client {
                     currentController.update(message);
                     //TODO display and end game
                 }
-                case ShuffleCoding -> {
-                    ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                }
-                case DiscardHand -> {
-                    DiscardHand discardHand = (DiscardHand) message.getBody();
-                    if (discardHand.getPlayerID() == thisPlayersID) {
-                        gameController.getPlayerMatController().setDiscardDeckCounter(5);
-                        gameController.getPlayerMatController().resetDeckCounter(5);
-                    }
-                }
-                case SelectDamage -> {
-                    SelectDamage selectDamage = (SelectDamage) message.getBody();
-                    gameController.getPlayerMatController().setDiscardDeckCounter(selectDamage.getCards().size());
-                }
-                case DrawDamage -> {
-                    DrawDamage drawDamage = (DrawDamage) message.getBody();
-                    gameController.handleDamageCount(drawDamage.getCards());
-                    if (drawDamage.getPlayerID() == thisPlayersID) {
-                        gameController.setDrawDamage(drawDamage);
-                        gameController.getPlayerMatController().setDiscardDeckCounter(drawDamage.getCards().size());
-                        gameController.getPlayerMatController().addPlayerCards(drawDamage.getCards().size());
-                    }
-                }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
         });
-    }
-
-    public void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
-        this.allRegistersAsFirst = allRegistersAsFirst;
     }
 
     public void addNewPlayer(PlayerAdded playerAdded) {
