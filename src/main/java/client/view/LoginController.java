@@ -19,7 +19,6 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerValues;
 import utilities.Updatable;
 
-
 /**
  * This class controls the loginView.fxml view, it takes the name and the chosen robot, sends it to
  * client and switches to the game view
@@ -101,7 +100,6 @@ public class LoginController extends Controller implements Updatable {
             robotList.add(robotPrivate);
             figures.add(new Figure(robot));
         }
-
     }
 
     /**
@@ -145,8 +143,8 @@ public class LoginController extends Controller implements Updatable {
     }
 
     private class Figure {
+        private final ImageView imageView;
         private boolean taken = false;
-        private ImageView imageView;
 
         public Figure(ImageView imageView) {
             this.imageView = imageView;

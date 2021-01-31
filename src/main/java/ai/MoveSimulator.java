@@ -2,7 +2,6 @@ package ai;
 
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.*;
-import game.round.ActivationPhase;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -11,12 +10,11 @@ import utilities.enums.Orientation;
 import java.util.ArrayList;
 
 public class MoveSimulator {
-    private AIClient aiClient;
-
+    private final AIClient aiClient;
+    private final Map map;
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
-    private Map map;
 
     public MoveSimulator(AIClient aiClient, Map map) {
         this.aiClient = aiClient;
@@ -96,13 +94,13 @@ public class MoveSimulator {
             boolean canMove = true;
 
             //look for a blocking wall on current Tile
-            if (ActivationPhase.isWallBlocking(resPosition, orientation, map)) {
+            if (map.isWallBlocking(resPosition, orientation)) {
                 canMove = false;
             }
 
             //look for a blocking wall on new tile
             if (!newPos.isOutsideMap()) {
-                if (ActivationPhase.isWallBlocking(newPos, orientation.getOpposite(), map)) {
+                if (map.isWallBlocking(newPos, orientation.getOpposite())) {
                     canMove = false;
                 }
             }
@@ -136,7 +134,6 @@ public class MoveSimulator {
         handleBeltMovement(map.getBlueBelts());
     }
 
-
     private void handleBeltMovement(ArrayList<Coordinate> belts) {
         Orientation orientation = null;
         for (Coordinate coordinate : belts) {
@@ -154,6 +151,4 @@ public class MoveSimulator {
             }
         }
     }
-
-
 }

@@ -3,7 +3,7 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class SetStartingPoint extends JSONBody {
-    private int position;
+    private final int position;
 
     public SetStartingPoint(int position) {
         this.position = position;

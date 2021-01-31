@@ -2,8 +2,8 @@ package game.gameObjects.tiles;
 
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 /**
  * @author Amulya
@@ -11,15 +11,14 @@ import utilities.enums.AttributeType;
 
 public class PushPanel extends Attribute {
 
-    private int[] registers; //active registers
-    private Orientation orientation;
+    private final int[] registers; //active registers
+    private final Orientation orientation;
 
     public PushPanel(Orientation orientation, int[] registers) {
         this.orientation = orientation;
         this.registers = registers;
-        this.type = AttributeType.PushPanel;
+        type = AttributeType.PushPanel;
     }
-
 
     @Override
     public Node createImage() {

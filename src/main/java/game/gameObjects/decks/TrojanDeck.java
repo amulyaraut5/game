@@ -15,7 +15,7 @@ public class TrojanDeck extends DamageCardDeck {
 
     private ArrayList<Card> trojanDeck;
 
-    public TrojanDeck(){
+    public TrojanDeck() {
         createDeck();
     }
 
@@ -24,12 +24,11 @@ public class TrojanDeck extends DamageCardDeck {
      */
     @Override
     public void createDeck() {
-        this.trojanDeck = new ArrayList<>();
+        trojanDeck = new ArrayList<>();
 
         for (int i = 0; i < TROJANHORSE_CARDCOUNT; i++) {
             trojanDeck.add(new Trojan());
         }
-
     }
 
     @Override
