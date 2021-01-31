@@ -4,8 +4,8 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.enums.CardType;
 
 public class SelectCard extends JSONBody {
-    private CardType card;
-    private int register;
+    private final CardType card;
+    private final int register;
 
     public SelectCard(CardType card, int register) {
         this.card = card;

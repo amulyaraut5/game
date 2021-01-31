@@ -12,7 +12,6 @@ import game.gameObjects.decks.DamageCardDeck;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Wall;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.User;
@@ -41,22 +40,15 @@ public class ActivationPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private Map map = game.getMap();
+    private final Map map = game.getMap();
 
-    // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
+    private final ArrayList<RegisterCard> currentCards = new ArrayList<>();
+    private final ArrayList<CardType> cardTypes = new ArrayList<>();
 
-    /**
-     * saves the Player ID and the card for the current register
-     */
-    private ArrayList<RegisterCard> currentCards = new ArrayList<>();
-    private ArrayList<CardType> cardTypes = new ArrayList<>();
-    /**
-     * TODO
-     */
-    private ActivationElements activationElements = new ActivationElements(this);
-    private LaserAction laserAction = new LaserAction(this);
-    private ArrayList<Player> activePlayers = players;
-    private ArrayList<Player> rebootedPlayers = new ArrayList<>();
+    private final ActivationElements activationElements = new ActivationElements(this);
+    private final LaserAction laserAction = new LaserAction(this);
+    private final ArrayList<Player> activePlayers = players;
+    private final ArrayList<Player> rebootedPlayers = new ArrayList<>();
     /**
      * keeps track of the current register
      */
@@ -155,13 +147,13 @@ public class ActivationPhase extends Phase {
         boolean canMove = true;
 
         //look for a blocking wall on current Tile
-        if (isWallBlocking(player.getRobot().getCoordinate(), o, map)) {
+        if (map.isWallBlocking(player.getRobot().getCoordinate(), o)) {
             canMove = false;
         }
 
         //look for a blocking wall on new tile
         if (!newPosition.isOutsideMap()) {
-            if (isWallBlocking(newPosition, o.getOpposite(), map)) {
+            if (map.isWallBlocking(newPosition, o.getOpposite())) {
                 canMove = false;
             }
         }
@@ -174,7 +166,6 @@ public class ActivationPhase extends Phase {
                 if ((old.equals(collisionPlayer.getRobot().getCoordinate()))) {
                     canMove = false;
                 }
-
             }
         }
         //move robot, activate board element if given
@@ -283,13 +274,13 @@ public class ActivationPhase extends Phase {
     }
 
     public void handleRecursion(Player player, Orientation orientation) {
-        if (this.currentRegister == 1)
+        if (currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
-        else if (this.currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
+        else if (currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
             player.message(new Error("I am an Idiot."));
         else {
             if (player.getLastRegisterCard() == CardType.Again) {
-                int currentRegister = this.getCurrentRegister();
+                int currentRegister = getCurrentRegister();
                 Card card = player.getRegisterCard(currentRegister - 2);
                 handleCard(card.getName(), player);
             } else {
@@ -310,21 +301,6 @@ public class ActivationPhase extends Phase {
                 }
             }
         }
-    }
-
-    public static boolean isWallBlocking(Coordinate coordinate, Orientation o, Map map) {
-        boolean canMove = true;
-        for (Attribute a : map.getTile(coordinate).getAttributes()) {
-            if (a.getType() == AttributeType.Wall) {
-                Wall temp = (Wall) a;
-                if (!(temp.getOrientations() == null)) {
-                    for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o) canMove = false;
-                    }
-                }
-            }
-        }
-        return !canMove;
     }
 
     /**
@@ -462,7 +438,7 @@ public class ActivationPhase extends Phase {
     }
 
     public int getCurrentRegister() {
-        return this.currentRegister;
+        return currentRegister;
     }
 
     public ArrayList<Player> getRebootedPlayers() {
@@ -527,10 +503,10 @@ public class ActivationPhase extends Phase {
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
     public class RobotDistance {
-        private Player player;
-        private Robot robot;
-        private double distance;
-        private int yCoordinate;
+        private final Player player;
+        private final Robot robot;
+        private final double distance;
+        private final int yCoordinate;
 
         public RobotDistance(Player player, Robot robot, double distance, int yCoordinate) {
             this.player = player;
@@ -566,5 +542,4 @@ public class ActivationPhase extends Phase {
                     '}';
         }
     }
-
 }

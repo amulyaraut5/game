@@ -3,9 +3,9 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class SetStatus extends JSONBody {
-    private boolean ready;
+    private final boolean ready;
 
-    public SetStatus(boolean ready){
+    public SetStatus(boolean ready) {
         this.ready = ready;
     }
 

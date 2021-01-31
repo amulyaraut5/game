@@ -3,12 +3,12 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class ConnectionUpdate extends JSONBody {
-    private int playerID;
-    private boolean connected;
-    private String action;
+    private final int playerID;
+    private final boolean connected;
+    private final String action;
 
     public ConnectionUpdate(int id, boolean connected, String action) {
-        this.playerID = id;
+        playerID = id;
         this.connected = connected;
         this.action = action;
     }

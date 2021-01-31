@@ -76,7 +76,7 @@ public class WriterThread extends Thread {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("type", "usermessage");
                 jsonObject.addProperty("messagebody", userInput);
-                writer.println(jsonObject.toString());
+                writer.println(jsonObject);
             }
         }
 

@@ -15,7 +15,7 @@ public class VirusDeck extends DamageCardDeck {
 
     private ArrayList<Card> virusDeck;
 
-    public VirusDeck(){
+    public VirusDeck() {
         createDeck();
     }
 
@@ -24,7 +24,7 @@ public class VirusDeck extends DamageCardDeck {
      */
     @Override
     public void createDeck() {
-        this.virusDeck = new ArrayList<>();
+        virusDeck = new ArrayList<>();
 
         for (int i = 0; i < VIRUS_CARDCOUNT; i++) {
             virusDeck.add(new Virus());
