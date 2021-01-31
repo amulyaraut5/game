@@ -519,7 +519,8 @@ public class GameController extends Controller implements Updatable {
     public void removePlayer(Player player) {
         ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
-        othersController.removePlayer(player);
+        if (client.getCurrentController().equals(this)) othersController.removePlayer(player);
+
     }
 
     public void handleDamageCount(ArrayList<CardType> cardList) {
@@ -739,6 +740,7 @@ public class GameController extends Controller implements Updatable {
                 phasePane.setCenter(gameWonPane);
                 getGameWonController().setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
             }
+
         }
     }
 
