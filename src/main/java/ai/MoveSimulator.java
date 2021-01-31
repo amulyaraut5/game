@@ -1,11 +1,16 @@
 package ai;
 
+import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.RotatingBelt;
 import game.round.ActivationPhase;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
+
+import java.util.ArrayList;
 
 public class MoveSimulator {
     private AIClient aiClient;
@@ -13,6 +18,7 @@ public class MoveSimulator {
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
+    private Map map = aiClient.getMap();
 
     public MoveSimulator(AIClient aiClient) {
         this.aiClient = aiClient;
@@ -26,8 +32,8 @@ public class MoveSimulator {
             if (!reboot) {
                 playCard(cards[i]);
             } else return actualPos;
-//            activationElements.activateBlueBelts();
-//            activationElements.activateGreenBelts();
+            activateBlueBelts();
+            activateGreenBelts();
 //            activationElements.activatePushPanel();
 //            activationElements.activateGear();
 //            laserAction.activateBoardLaser(activePlayers);
@@ -97,4 +103,35 @@ public class MoveSimulator {
             }
         }
     }
+
+    private void activateGreenBelts(){
+        handleBeltMovement(map.getGreenBelts());
+    }
+
+    private void activateBlueBelts(){
+        handleBeltMovement(map.getBlueBelts());
+        handleBeltMovement(map.getBlueBelts());
+        }
+
+
+
+    private void handleBeltMovement(ArrayList<Coordinate> belts){
+        Orientation  orientation = null;
+        for (Coordinate coordinate : belts) {
+            if(coordinate.equals(resPosition)){
+                for (Attribute a : map.getTile(coordinate).getAttributes()) {
+                    if(a.getType() == AttributeType.Belt){
+                        orientation = ((Belt)  a).getOrientation();
+                    }
+                    if(a.getType() == AttributeType.RotatingBelt){
+                        orientation =  ((RotatingBelt) a).getOrientations()[0];
+                    }
+
+                    handleMove(orientation);
+                }
+            }
+        }
+    }
+
+
 }
