@@ -36,7 +36,6 @@ import java.util.*;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
 import static utilities.enums.CardType.*;
-import static utilities.enums.CardType.Worm;
 
 /**
  * The GameViewController class controls the GameView and coordinates its inner views
@@ -63,6 +62,7 @@ public class GameController extends Controller implements Updatable {
     private Pane constructionPane;
     private Pane programmingPane;
     private Pane activationPane;
+
 
     private SoundHandler soundHandler;
     private EventHandler<MouseEvent> onMapClicked;
@@ -439,17 +439,8 @@ public class GameController extends Controller implements Updatable {
         return sortedField;
     }
 
-    /**
-     * Button press to test the change of inner phase panes.
-     */
-    @FXML
-    private void setNextPhaseView() {
-        changePhaseView(currentPhase.getNext());
-    }
-
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
-
 
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
@@ -489,6 +480,7 @@ public class GameController extends Controller implements Updatable {
     private void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
         this.allRegistersAsFirst = allRegistersAsFirst;
     }
+
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
         FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingView.fxml"));
@@ -579,7 +571,6 @@ public class GameController extends Controller implements Updatable {
             case ActivePhase -> {
                 ActivePhase activePhase = (ActivePhase) message.getBody();
                 changePhaseView(activePhase.getPhase());
-
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -652,8 +643,8 @@ public class GameController extends Controller implements Updatable {
                 damageCards.add(Trojan);
                 damageCards.add(Worm);
 
-                for(int i = 0; i < currentCards.getActiveCards().size(); i++) {
-                    if(currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
+                for (int i = 0; i < currentCards.getActiveCards().size(); i++) {
+                    if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
                         for (CardType damageCard : damageCards) {
                             if (currentCards.getActiveCards().get(i).getCard() == damageCard)
                                 getPlayerMatController().subtractPlayerCards(1);
@@ -664,12 +655,13 @@ public class GameController extends Controller implements Updatable {
             }
             case CurrentPlayer -> {
                 CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
-                if (currentPlayer.getPlayerID() == client.getThisPlayersID()) {
-                    getActivationController().currentPlayer(true);
-                    getOthersController().setInfoLabel(currentPlayer, true);
-                } else {
-                    getActivationController().currentPlayer(false);
-                    getOthersController().setInfoLabel(currentPlayer, false);
+                boolean isThisPlayer = currentPlayer.getPlayerID() == client.getThisPlayersID();
+
+                if (currentPhase == GameState.CONSTRUCTION) {
+                    constructionController.currentPlayer(isThisPlayer);
+                } else if (currentPhase == GameState.ACTIVATION) {
+                    getActivationController().currentPlayer(isThisPlayer);
+                    getOthersController().setInfoLabel(currentPlayer, isThisPlayer);
                 }
             }
                 /*case Reboot -> {
