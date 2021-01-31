@@ -157,7 +157,7 @@ public class Server extends Thread {
 
                 if (!status.isReady()) this.isMapSent = false;
 
-                //if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
+                //TODO instead of user with first id: use first user who is ready
                 if (!isMapSent) {
                     outerLoop:
                     for (User user1 : notAIs) {

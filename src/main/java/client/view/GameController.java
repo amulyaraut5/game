@@ -50,7 +50,7 @@ public class GameController extends Controller implements Updatable {
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
     private ArrayList<Player> players = client.getPlayers();
-    private ArrayList<Player> rebootingPlayers = new ArrayList<>();
+    private ArrayList<Player> activePlayers = new ArrayList<>();
     private ArrayList<Coordinate> path = new ArrayList<>();
     private HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
@@ -461,10 +461,11 @@ public class GameController extends Controller implements Updatable {
                 }
                 getPlayerMatController().resetDeckCounter(9);
 
-                if (rebootingPlayers != null) {
-                    players.addAll(rebootingPlayers);
-                    rebootingPlayers.clear();
+                activePlayers.addAll(players);
+                for(Player player: activePlayers){
+                    logger.info("Inside GameState:" + player.getID());
                 }
+
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
@@ -615,13 +616,27 @@ public class GameController extends Controller implements Updatable {
                 getActivationController().pickDamage(pickDamage, this);
             }
             case PlayerShooting -> {
-                handleShooting(players);
-                handleRobotShooting(players);
+                if(activePlayers.isEmpty()){
+                    logger.info("No active players");
+                }else{
+                    handleShooting(activePlayers);
+                    handleRobotShooting(activePlayers);
+                }
+
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-                rebootingPlayers.add(client.getPlayerFromID(reboot.getPlayerID()));
-                players.remove(client.getPlayerFromID(reboot.getPlayerID()));
+                Player player = client.getPlayerFromID(reboot.getPlayerID());
+                //rebootingPlayers.add(player);
+                activePlayers.remove(player);
+                for(Player player1: activePlayers){
+                    logger.info("Inside Reboot:" + player1.getID());
+                }
+                if(activePlayers.isEmpty()){
+                    logger.info("empty");
+                }
+
+
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -680,10 +695,6 @@ public class GameController extends Controller implements Updatable {
                     getOthersController().setInfoLabel(currentPlayer, isThisPlayer);
                 }
             }
-                /*case Reboot -> {
-                    Reboot reboot = (Reboot) message.getBody();
-                    // TODO display the message
-                }*/
             case Energy -> {
                 Energy energy = (Energy) message.getBody();
                 if (energy.getPlayerID() == client.getThisPlayersID()) {

@@ -35,14 +35,7 @@ public class RebootAction extends Action {
         allPlayers.addAll(activePlayers);
         allPlayers.addAll(rebootedPlayers);
 
-        for (Player robotOnReboot : allPlayers) {
-            if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot!=player) {
-                robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
-                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
-                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
-                game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
-            }
-        }
+        rebootedPlayers.add(player);
         //Draw two spam cards
         game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
 
@@ -63,11 +56,20 @@ public class RebootAction extends Action {
         int restartPos = map.getRestartPoint().toPosition();
 
         //Out of the round, must wait until the next round to program the robot again.
-        rebootedPlayers.add(player);
-        activePlayers.remove(player);
 
         server.communicateAll(new Movement(player.getID(), restartPos));
         server.communicateAll(new Reboot(player.getID()));
+
+        for (Player robotOnReboot : rebootedPlayers) {
+            if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot!=player) {
+                robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
+                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
+                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
+                game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
+            }
+        }
+
+        activePlayers.remove(player);
 
         if (activePlayers.isEmpty()) {
             activePlayers.addAll(rebootedPlayers);
