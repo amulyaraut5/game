@@ -4,7 +4,6 @@ import ai.AICoordinator;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
-import utilities.enums.CardType;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +11,6 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.*;
-import utilities.RegisterCard;
 import utilities.Updatable;
 import utilities.Utilities;
 import utilities.enums.MessageType;
@@ -25,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static utilities.Utilities.PORT;
-import static utilities.enums.CardType.*;
 
 /**
  * This Singleton Class handles the connection and disconnection to the server.
@@ -150,11 +147,11 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case SelectMap,Reboot, Error, PlayerStatus, StartingPointTaken, YourCards,
-                        Movement, PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting,
-                        ActivePhase, CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer, Energy,
-                        CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage
-                        -> { currentController.update(message);
+                case SelectMap, Reboot, Error, PlayerStatus, StartingPointTaken, YourCards, Movement,
+                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
+                        CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
+                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage -> {
+                    currentController.update(message);
                 }
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
@@ -176,6 +173,7 @@ public class Client {
                 }
                 case GameWon -> {
                     GameWon gameWon = (GameWon) message.getBody();
+                    viewManager.showLobby();
                     //TODO display and end game
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");

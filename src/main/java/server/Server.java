@@ -43,6 +43,7 @@ public class Server extends Thread {
     private ArrayList<User> AIs = new ArrayList<>();
     private ArrayList<User> notAIs = new ArrayList<>();
     private boolean isMapSent = false;
+
     /**
      * private Constructor for the ChatServer class
      */
@@ -147,27 +148,27 @@ public class Server extends Thread {
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
-                userIsNotAI.put(user,status.isReady());
+                userIsNotAI.put(user, status.isReady());
 
                 ArrayList<String> maps = new ArrayList<>();
                 Random r = new Random();
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
 
-                if(status.isReady() == false) this.isMapSent = false;
+                if (!status.isReady()) this.isMapSent = false;
 
                 //if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
-                if(!isMapSent){
+                if (!isMapSent) {
                     outerLoop:
-                    for(User user1: notAIs){
+                    for (User user1 : notAIs) {
                         try {
-                            if (userIsNotAI.get(user1) == true) {
+                            if (userIsNotAI.get(user1)) {
                                 user1.message(new SelectMap(maps));
                                 isMapSent = true;
                                 break outerLoop;
                             }
-                        }catch (NullPointerException e){
-                            communicateUsers(new Error("Please click Ready to select map."),user);
+                        } catch (NullPointerException e) {
+                            communicateUsers(new Error("Please click Ready to select map."), user);
                         }
                     }
                 }
@@ -179,7 +180,7 @@ public class Server extends Thread {
                 }
 
                 // Random Map is selected if all users are AI
-                if(allUsersReady && (AIs.equals(readyUsers))){
+                if (allUsersReady && (AIs.equals(readyUsers))) {
                     game.handleMapSelection(maps.get(r.nextInt(maps.size())));
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
@@ -201,17 +202,16 @@ public class Server extends Thread {
             }
             case SetStartingPoint -> {
                 SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
-                game.setStartingPoint(user, setStartingPoint.getPosition());
+                game.getConstructionPhase().setStartingPoint(user, setStartingPoint.getPosition());
             }
             case PlayIt -> game.getActivationPhase().activateCards(user.getID());
 
             case MapSelected -> {
-                if(!isMapSelected){
+                if (!isMapSelected) {
                     MapSelected selectMap = (MapSelected) message.getBody();
                     game.handleMapSelection(selectMap.getMap());
                     this.isMapSelected = true;
-                }
-                else communicateAll(new Error("Map has already been selected"));
+                } else communicateAll(new Error("Map has already been selected"));
 
                 if ((readyUsers.size() == users.size()) && readyUsers.size() > 1) {
                     game.play();
@@ -231,14 +231,14 @@ public class Server extends Thread {
     /**
      * determines wether the message is a cheat or not
      *
-     * @param sc the received Chat protocol
+     * @param sc   the received Chat protocol
      * @param user the user who sent the chat
      */
-    private  void cheat (SendChat sc, User user) {
+    private void cheat(SendChat sc, User user) {
         String message = sc.getMessage();
         Pattern cheatPattern = Pattern.compile("^#+");
         Matcher cheatMatcher = cheatPattern.matcher(message);
-        if (cheatMatcher.lookingAt()){
+        if (cheatMatcher.lookingAt()) {
             game.handleCheat(message, user);
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
@@ -271,9 +271,9 @@ public class Server extends Thread {
         if (hs.getProtocol() == Utilities.PROTOCOL) {
             user.setID(idCounter++);
             currentThread().setName("UserThread-" + user.getID());
-            if(hs.isAI() == true){
+            if (hs.isAI() == true) {
                 AIs.add(user);
-            }else notAIs.add(user);
+            } else notAIs.add(user);
 
             for (User u : users) {
                 if (u.getName() != null) {

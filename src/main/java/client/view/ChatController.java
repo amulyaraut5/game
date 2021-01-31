@@ -1,15 +1,14 @@
 package client.view;
 
+import com.jfoenix.controls.JFXComboBox;
 import game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.JSONProtocol.body.SendChat;
 
@@ -26,7 +25,7 @@ public class ChatController extends Controller {
      * the receiver of the message
      */
     @FXML
-    private ChoiceBox<String> directChoiceBox;
+    private JFXComboBox<String> directChoiceBox;
     @FXML
     private TextField lobbyTextFieldChat;
 

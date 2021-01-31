@@ -56,7 +56,7 @@ public class ActivationPhase extends Phase {
      */
     private ActivationElements activationElements = new ActivationElements(this);
     private LaserAction laserAction = new LaserAction(this);
-    private ArrayList<Player> activePlayers = playerList;
+    private ArrayList<Player> activePlayers = players;
     private ArrayList<Player> rebootedPlayers = new ArrayList<>();
     /**
      * keeps track of the current register
@@ -168,7 +168,7 @@ public class ActivationPhase extends Phase {
         }
 
         //Handle collisions
-        for (Player collisionPlayer : playerList) {
+        for (Player collisionPlayer : players) {
             if (newPosition.equals(collisionPlayer.getRobot().getCoordinate())) {
                 Coordinate old = collisionPlayer.getRobot().getCoordinate().clone();
                 handleMove(collisionPlayer, o);
