@@ -51,15 +51,6 @@ public class Game {
     private ActivationPhase activationPhase;
     private GameState gameState;
 
-    /**
-     * Shows if a game has already been created or not (false = not created)
-     **/
-    private boolean createdGame = false;
-    /**
-     * Shows if a game has already been started or not (false = not running)
-     **/
-    private boolean runningGame = false;
-
     private Game() {
     }
 
@@ -74,8 +65,6 @@ public class Game {
     public void reset() {
         gameState = GameState.CONSTRUCTION;
         players = new ArrayList<>(6);
-        createdGame = false;
-        runningGame = false;
 
         spamDeck = new SpamDeck();
         virusDeck = new VirusDeck();
@@ -91,7 +80,6 @@ public class Game {
 
         ArrayList<User> users = server.getUsers();
         for (User user : users) {
-            int figure = user.getFigure();
             players.add(new Player(user));
         }
         //map = MapBuilder.constructMap(new DizzyHighway());
@@ -176,7 +164,6 @@ public class Game {
                 }
             }
             case "#damage" -> {
-                Robot robot = userToPlayer(user).getRobot();
                 if (cheatInfo.length == 0)
                     server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
                 else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
@@ -189,9 +176,7 @@ public class Game {
                     }
                 }
             }
-            case "#win" -> {
-                server.communicateAll(new GameWon(user.getID()));
-            }
+            case "#win" -> server.communicateAll(new GameWon(user.getID()));
             case "#emptySpam" -> {
                 spamDeck.getDeck().clear();
                 logger.info("SpamDeckCheat: " + spamDeck.getDeck().size());
