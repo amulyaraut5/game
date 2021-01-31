@@ -17,14 +17,6 @@ public class Trojan extends DamageCard {
         card = CardType.Trojan;
     }
 
-    /**
-     * Handels the action of trojan horse card.
-     * The Player has to play the top card of the programming deck and draws two spam cards.
-     */
-    @Override
-    public void handleCard(Game game, Player player) {
-    }
-
     @Override
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/trojanhorse-card.png");

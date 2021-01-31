@@ -17,14 +17,6 @@ public class Spam extends DamageCard {
         card = CardType.Spam;
     }
 
-    /**
-     * Handels the action of spam card.
-     * The Player has to play the top card of the programming deck in the current register.
-     */
-    @Override
-    public void handleCard(Game game, Player player) {
-    }
-
     @Override
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/Spam-card.png");

@@ -18,16 +18,6 @@ public class Virus extends DamageCard {
         card = CardType.Virus;
     }
 
-    /**
-     * Any robot on the board within a six-space radius must immediately draw a virus card.
-     *
-     * @param game
-     * @param player
-     */
-    @Override
-    public void handleCard(Game game, Player player) {
-    }
-
     @Override
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/Virus-card.png");
