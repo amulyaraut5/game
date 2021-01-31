@@ -35,8 +35,8 @@ public class GameWonController extends Controller{
 
     @FXML
     public void returnClicked() {
-        viewManager.closeGame(); //reset Game and Lobby
-        viewManager.showLobby();
+        //viewManager.closeGame(); //reset Game and Lobby
+        //viewManager.showLobby();
     }
 
     @FXML
