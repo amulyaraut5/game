@@ -14,12 +14,12 @@ public abstract class ProgrammingCard extends Card {
 
 
     public ProgrammingCard() {
-        this.isHidden = false;
-        this.isLocked = false;
+        isHidden = false;
+        isLocked = false;
     }
 
     public void addAction(Action action) {
-        this.actions.add(action);
+        actions.add(action);
     }
 
     /**
