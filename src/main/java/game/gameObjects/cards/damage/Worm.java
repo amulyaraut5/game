@@ -28,11 +28,6 @@ public class Worm extends DamageCard {
      */
     @Override
     public void handleCard(Game game, Player player) {
-        Orientation robotOrientation = player.getRobot().getOrientation();
-        new RebootAction().doAction(robotOrientation, player);
-
-        //Add worm card back into the worm deck
-        game.getWormDeck().getDeck().add(this);
     }
 
     @Override

@@ -243,11 +243,10 @@ public class ActivationPhase extends Phase {
                 handleCard(topCard.getName(), player);
             }
             case Worm -> {
-                Worm worm = new Worm();
                 //Reboot the robot.
                 new RebootAction().doAction(orientation, player);
                 //Add worm card back into the worm deck
-                game.getWormDeck().getDeck().add(worm);
+                game.getWormDeck().getDeck().add(new Worm());
                 //logger.info(player.getName() + " played a worm card.");
             }
             case Virus -> {
@@ -260,8 +259,7 @@ public class ActivationPhase extends Phase {
                     int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
 
                     if (otherPlayer != player && (otherRobotX <= robotX + 6 || otherRobotY <= robotY + 6)) {
-                        Card virusCard = game.getVirusDeck().pop();
-                        otherPlayer.getDiscardedProgrammingDeck().addCard(virusCard);
+                        game.getActivationPhase().drawDamage(game.getVirusDeck(), otherPlayer, 1);
                     }
                 }
                 game.getVirusDeck().addCard(new Virus());
