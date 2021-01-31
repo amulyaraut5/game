@@ -447,7 +447,7 @@ public class GameController extends Controller implements Updatable {
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
-                getPlayerMatController().fixSelectedCards(false);
+                //getPlayerMatController().fixSelectedCards(false);
                 roundPane.setVisible(true);
                 roundLabel.setText("Round " + currentRound);
                 currentRound++;
@@ -464,12 +464,10 @@ public class GameController extends Controller implements Updatable {
                     players.addAll(rebootingPlayers);
                     rebootingPlayers.clear();
                 }
-                setAllRegistersAsFirst(false); //TODO everything that is round related
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
-                getPlayerMatController().fixSelectedCards(true);
                 getProgrammingController().reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
@@ -479,9 +477,7 @@ public class GameController extends Controller implements Updatable {
 
     }
 
-    private void setAllRegistersAsFirst(boolean allRegistersAsFirst) {
-        this.allRegistersAsFirst = allRegistersAsFirst;
-    }
+
 
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
@@ -617,10 +613,9 @@ public class GameController extends Controller implements Updatable {
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
                 if (selectionFinished.getPlayerID() == client.getThisPlayersID()) {
-                    getPlayerMatController().fixSelectedCards(true);
+                    getPlayerMatController().fixSelectedCards();
                     allRegistersAsFirst = true;
                 } else {
-                    //gameViewController.getPlayerMapController().fixSelectedCards();
                     getOthersController().playerWasFirst(selectionFinished);
                     allRegistersAsFirst = false;
                 }
@@ -631,6 +626,9 @@ public class GameController extends Controller implements Updatable {
             case TimerEnded -> {
                 getProgrammingController().setTimerEnded(true);
                 getPlayerMatController().setDiscardDeckCounter(4);
+                if(!allRegistersAsFirst) getPlayerMatController().fixSelectedCards();
+                allRegistersAsFirst  =false; //TODO everything that is round related
+
             }
             case CurrentCards -> {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
