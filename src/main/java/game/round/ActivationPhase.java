@@ -49,7 +49,6 @@ public class ActivationPhase extends Phase {
      * saves the Player ID and the card for the current register
      */
     private ArrayList<RegisterCard> currentCards = new ArrayList<>();
-    private int alreadyDrawn = 0;
     private ArrayList<CardType> cardTypes = new ArrayList<>();
     /**
      * TODO
@@ -191,10 +190,8 @@ public class ActivationPhase extends Phase {
         Orientation orientation = player.getRobot().getOrientation();
 
         switch (cardType) {
-            case MoveI -> {
-                handleMove(player, orientation);
-                //logger.info(player.getName() + " moved one Tile.");
-            }
+            case MoveI -> //logger.info(player.getName() + " moved one Tile.");
+                    handleMove(player, orientation);
             case MoveII -> {
                 handleMove(player, orientation);
                 handleMove(player, orientation);
@@ -308,11 +305,10 @@ public class ActivationPhase extends Phase {
             new RebootAction().doAction(Orientation.LEFT, player);
         } else {
             for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-                switch (a.getType()) {
-                    case Pit:
-                        new RebootAction().doAction(Orientation.LEFT, player);
-                    default:
-                        server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
+                if (a.getType() == AttributeType.Pit) {
+                    new RebootAction().doAction(Orientation.LEFT, player);
+                } else {
+                    server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
                 }
             }
         }
@@ -337,8 +333,8 @@ public class ActivationPhase extends Phase {
      * calculates the distance between antenna and robot on the map
      * and returns the distance by the number of tiles between them
      *
-     * @param antenna
-     * @param robot
+     * @param antenna game antenna
+     * @param robot the robot for whom priority is calculated
      * @return the tiles between antenna and robot
      */
     public double calculateDistance(Coordinate antenna, Coordinate robot) {
@@ -349,8 +345,8 @@ public class ActivationPhase extends Phase {
     /**
      * calculates the priority and returns a list of players in the order of priority
      *
-     * @param antenna
-     * @return
+     * @param antenna game antenna
+     * @return A List of players in priority order
      */
     public ArrayList<Player> calculatePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
@@ -488,7 +484,7 @@ public class ActivationPhase extends Phase {
             if (damageDeck.size() == 0) {
                 server.communicateDirect(new PickDamage(amount), player.getID());
             } else {
-                alreadyDrawn = damageDeck.size();
+                int alreadyDrawn = damageDeck.size();
                 ArrayList<Card> damageCards = damageDeck.drawCards(alreadyDrawn);
                 for (Card card : damageCards) {
                     cardTypes.add(card.getName());
