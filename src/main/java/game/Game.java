@@ -17,10 +17,8 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.ActivePhase;
+import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.Movement;
-import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
@@ -185,11 +183,14 @@ public class Game {
             }
             case "#autoPlay" -> {
                 for (int register = 1; register < 6; register++) {
-                    for (int i = 0; i < players.size(); i++) {
+                    for (int i = 0; i < activationPhase.getCurrentCards().size(); i++) {
                         RegisterCard registerCard = activationPhase.getCurrentCards().get(0);
                         activationPhase.activateCards(registerCard.getPlayerID());
                     }
                 }
+            }
+            case "#win" -> {
+                server.communicateAll(new GameWon(user.getID()));
             }
             case "#emptySpam" -> {
                 spamDeck.getDeck().clear();
@@ -209,6 +210,7 @@ public class Game {
                         #damage <x>     | deals given number of spam cards
                         #autoPlay       | autoplay activation phase
                         #emptySpam      | empties the Spam deck
+                        #win            | player wins the game
                         ----------------------------------------
                         """;
                 user.message(new ReceivedChat(cheats, user.getID(), false));
