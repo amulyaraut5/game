@@ -4,8 +4,10 @@ import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.Movement;
+import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.JSONProtocol.body.Reboot;
 import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,8 @@ public class RebootAction extends Action {
         for (Player robotOnReboot : allPlayers) {
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot!=player) {
                 robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
+                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
+                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
                 game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
             }
         }
@@ -46,6 +50,14 @@ public class RebootAction extends Action {
         player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
 
         //Robot is placed on reboot token
+        if (player.getRobot().getOrientation() == Orientation.DOWN){
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+        } else if (player.getRobot().getOrientation() == Orientation.LEFT){
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+        } else if (player.getRobot().getOrientation() == Orientation.RIGHT){
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+        }
         player.getRobot().setOrientation(Orientation.UP); //TODO robots must face north
         player.getRobot().setCoordinate(map.getRestartPoint());
         int restartPos = map.getRestartPoint().toPosition();
