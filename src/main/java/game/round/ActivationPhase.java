@@ -57,6 +57,7 @@ public class ActivationPhase extends Phase {
     private LaserAction laserAction = new LaserAction(this);
     private ArrayList<Player> activePlayers = players;
     private ArrayList<Player> rebootedPlayers = new ArrayList<>();
+    private ArrayList<Player> priorityList = calculatePriority(map.getAntenna());
     /**
      * keeps track of the current register
      */
@@ -127,6 +128,14 @@ public class ActivationPhase extends Phase {
             }
         } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
             server.communicateDirect(new Error("It is not your turn!"), playerID);
+        }
+    }
+
+    public void removeCurrentCards(int playerID){
+        for(RegisterCard rc: currentCards){
+            if(rc.getPlayerID() == playerID){
+                currentCards.remove(rc);
+            }
         }
     }
 
@@ -569,4 +578,7 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    public ArrayList<Player> getPriorityList() {
+        return priorityList;
+    }
 }

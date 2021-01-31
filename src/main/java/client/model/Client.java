@@ -150,7 +150,7 @@ public class Client {
                 case SelectMap, Reboot, Error, PlayerStatus, StartingPointTaken, YourCards, Movement,
                         PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
                         CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
-                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage -> {
+                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage, GameWon -> {
                     currentController.update(message);
                 }
                 case ConnectionUpdate -> {
@@ -161,6 +161,10 @@ public class Client {
                         lobbyController.removePlayer(player);
                         gameController.removePlayer(player);
                         players.remove(player);
+                        if (players.size() <= 1){
+                            viewManager.closeGame();
+                            viewManager.showLobby();
+                        }
                     }
                 }
                 case ReceivedChat -> {
@@ -170,10 +174,6 @@ public class Client {
                 case GameStarted -> {
                     viewManager.showGame();
                     currentController.update(message);
-                }
-                case GameWon -> {
-                    currentController.update(message);
-                    //TODO display and end game
                 }
                 default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             }
