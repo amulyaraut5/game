@@ -559,19 +559,17 @@ public class GameController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                Timer timer = new Timer();
-                interval = 15;
-                timer.schedule(new TimerTask() {
+                Platform.runLater(() -> infoLabel.setText(error.getError()));
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    @Override
                     public void run() {
-                        if(interval > 0 ){
-                            Platform.runLater(() -> infoLabel.setText(error.getError()));
-                            interval--;
-                        } else{
-                            timer.cancel();
+                        if (infoLabel.getText().equals(error.getError())) {
                             Platform.runLater(() -> infoLabel.setText(" "));
                         }
+                        t.cancel();
                     }
-                }, 1000,1000);
+                }, 2000);
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
