@@ -3,8 +3,7 @@ package ai;
 import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Wall;
+import game.gameObjects.robot.Robot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -13,7 +12,10 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.Utilities;
-import utilities.enums.*;
+import utilities.enums.CardType;
+import utilities.enums.GameState;
+import utilities.enums.MessageType;
+import utilities.enums.Orientation;
 
 import java.util.*;
 
@@ -22,17 +24,13 @@ import java.util.*;
  *
  * @author simon
  */
-public class AICoordinator {
+public class AIClient {
     private static final Logger logger = LogManager.getLogger();
     private final ArrayList<Player> players = new ArrayList<>();
     private final Client client = Client.getInstance();
     private int thisPlayersID;
     private Map map;
     private GameState activePhase;
-    private Coordinate currentPosition;
-    private Orientation currentOrientation;
-    private Coordinate restartPoint;
-    private CardType lastMove;
 
     /**
      * creates a set containing all combinations and their permutations
@@ -170,7 +168,7 @@ public class AICoordinator {
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();
             } //TODO
-            case SelectMap ->{
+            case SelectMap -> {
                 // TODO Nothing Server sends a random Map
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
@@ -194,136 +192,54 @@ public class AICoordinator {
 
     private void chooseCards(YourCards yourCards) {
         ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
-        CardType[] combination;
 
-        //for (int i = 0; i < 5; i++) {
-        //    int rdm = new Random().nextInt(availableCards.size());
-        //    client.sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
-        //    availableCards.remove(rdm);
-        //}
+//        for (int i = 0; i < 5; i++) {
+//            int rdm = new Random().nextInt(availableCards.size());
+//            client.sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
+//            availableCards.remove(rdm);
+//        }
 
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
-        HashMap<CardType[], Coordinate> resultingPositions = new HashMap<>();
-        HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
-        combination = findMove(combinations);
+        HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
+        MoveSimulator moveSimulator = new MoveSimulator(this);
+        Robot robot = getPlayerFromID(thisPlayersID).getRobot();
 
-        for (CardType cardType  : combination){
-            int i=0;
-            client.sendMessage(new SelectCard(cardType, i + 1));
-            i++;
+        for (CardType[] cards : combinations) {
+            Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
+            possiblePositions.put(cards, resPos);
         }
+
+        CardType[] bestCombination = getBestCombination(possiblePositions);
+
+        for (int i = 0; i < 5; i++) {
+            client.sendMessage(new SelectCard(bestCombination[i], i + 1));
+        }
+        //HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
     }
 
-    private CardType[] findMove(Set<CardType[]> combinations){
-        int highestValue = getPriority(currentPosition);
-        CardType[] BestCombination = null;
-        for(CardType[] combination : combinations){
-            int temp = calculateValue(combination);
-            if(temp > highestValue){
-                highestValue = temp;
-                BestCombination = combination;
+    private CardType[] getBestCombination(HashMap<CardType[], Coordinate> possiblePositions) {
+        int shortestDistance = 100;
+        CardType[] bestCombination = null;
+
+        Set<CardType[]> keySet = possiblePositions.keySet();
+
+        for (CardType[] cards : keySet) {
+            int distance = distance(possiblePositions.get(cards));
+            //System.out.println("distance: " + distance);
+            if (distance < shortestDistance) {
+                bestCombination = cards;
             }
         }
-
-        return BestCombination;
-
+        //System.out.println("best distance: " + bestCombination.toString());
+        return bestCombination;
     }
 
-    private int getPriority(Coordinate coordinate){
-        return Utilities.STANDARD_PRIORITY_MAP[coordinate.getX()][coordinate.getY()];
-    }
-
-    private int calculateValue(CardType[] combination){
-        Coordinate newPos = this.currentPosition;
-
-        for (CardType cardType : combination) {
-            newPos  = calculateMove(newPos, cardType);
-        }
-
-        return getPriority(newPos);
-    }
-
-    private Coordinate calculateMove(Coordinate position, CardType cardType){
-        Coordinate newPos = position.clone();
-            switch (cardType){
-                case MoveI:
-                    newPos = moveOne(newPos, currentOrientation);
-                    lastMove = CardType.MoveI;
-
-                case MoveII:
-                    newPos = moveOne(newPos, currentOrientation);
-                    newPos = moveOne(newPos, currentOrientation);
-                    lastMove = CardType.MoveII;
-
-                case MoveIII:
-                    newPos = moveOne(newPos, currentOrientation);
-                    newPos = moveOne(newPos, currentOrientation);
-                    newPos = moveOne(newPos, currentOrientation);
-                    lastMove = CardType.MoveIII;
-
-                case TurnLeft:
-                    currentOrientation = currentOrientation.getPrevious();
-                    lastMove  = CardType.TurnLeft;
-
-                case TurnRight:
-                    currentOrientation = currentOrientation.getNext();
-                    lastMove = CardType.TurnRight;
-
-                case UTurn:
-                    currentOrientation = currentOrientation.getOpposite();
-                    lastMove = CardType.UTurn;
-
-                case PowerUp:
-                    //nothing
-                    lastMove = CardType.PowerUp;
-
-                case Again:
-                    newPos = calculateMove(newPos, lastMove);
-
-            }
-
-            return newPos;
-    }
-
-    private Coordinate moveOne(Coordinate coordinate, Orientation orientation){
-        Coordinate oldPosition =coordinate.clone();
-        Coordinate newPosition = coordinate.clone();
-        if (orientation == Orientation.UP) {
-            newPosition.addToY(-1);
-        }
-        if (orientation == Orientation.RIGHT) {
-            newPosition.addToX(1);
-        }
-        if (orientation == Orientation.DOWN) {
-            newPosition.addToY(1);
-        }
-        if (orientation == Orientation.LEFT) {
-            newPosition.addToX(-1);
-        }
-
-        if(isWallAt(oldPosition, orientation) || isWallAt(newPosition, orientation.getOpposite())){
-            newPosition = oldPosition;
-        }
-        if(coordinate.isOutsideMap()){
-            newPosition = restartPoint;
-        }
-
-        return newPosition;
-    }
-
-    public boolean isWallAt(Coordinate coordinate, Orientation o) {
-        boolean canMove = true;
-        for (Attribute a : map.getTile(coordinate).getAttributes()) {
-            if (a.getType() == AttributeType.Wall) {
-                Wall temp = (Wall) a;
-                if (!(temp.getOrientations() == null)) {
-                    for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o) canMove = false;
-                    }
-                }
-            }
-        }
-        return !canMove;
+    private int distance(Coordinate coordinate) {
+        map.readControlPointCoordinate();
+        Coordinate controlPoint = new Coordinate(12, 3);//map.getControlPointCoordinates().get(0); //TODO multiple controlpoints
+        int x = Math.abs(controlPoint.getX() - coordinate.getX());
+        int y = Math.abs(controlPoint.getY() - coordinate.getY());
+        return x + y;
     }
 
     /**
@@ -358,5 +274,9 @@ public class AICoordinator {
             String name = b.get(0).toString() + "_AI";
             client.sendMessage(new PlayerValues(name, b.get(0)));
         }
+    }
+
+    public Map getMap() {
+        return map;
     }
 }

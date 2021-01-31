@@ -41,7 +41,7 @@ public class ActivationPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private Map gameMap = game.getMap();
+    private Map map = game.getMap();
 
     // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
 
@@ -82,7 +82,7 @@ public class ActivationPhase extends Phase {
      * This is already in priority order.
      */
     public void turnCards(int register) {
-        for (Player player : calculatePriority(gameMap.getAntenna())) {
+        for (Player player : calculatePriority(map.getAntenna())) {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
@@ -155,13 +155,13 @@ public class ActivationPhase extends Phase {
         boolean canMove = true;
 
         //look for a blocking wall on current Tile
-        if (isWallAt(player.getRobot().getCoordinate(), o)) {
+        if (isWallBlocking(player.getRobot().getCoordinate(), o, map)) {
             canMove = false;
         }
 
         //look for a blocking wall on new tile
         if (!newPosition.isOutsideMap()) {
-            if (isWallAt(newPosition, o.getOpposite())) {
+            if (isWallBlocking(newPosition, o.getOpposite(), map)) {
                 canMove = false;
             }
         }
@@ -304,7 +304,7 @@ public class ActivationPhase extends Phase {
         if (player.getRobot().getCoordinate().isOutsideMap()) {
             new RebootAction().doAction(Orientation.LEFT, player);
         } else {
-            for (Attribute a : gameMap.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 if (a.getType() == AttributeType.Pit) {
                     new RebootAction().doAction(Orientation.LEFT, player);
                 } else {
@@ -314,9 +314,9 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public boolean isWallAt(Coordinate coordinate, Orientation o) {
+    public static boolean isWallBlocking(Coordinate coordinate, Orientation o, Map map) {
         boolean canMove = true;
-        for (Attribute a : gameMap.getTile(coordinate).getAttributes()) {
+        for (Attribute a : map.getTile(coordinate).getAttributes()) {
             if (a.getType() == AttributeType.Wall) {
                 Wall temp = (Wall) a;
                 if (!(temp.getOrientations() == null)) {
@@ -334,7 +334,7 @@ public class ActivationPhase extends Phase {
      * and returns the distance by the number of tiles between them
      *
      * @param antenna game antenna
-     * @param robot the robot for whom priority is calculated
+     * @param robot   the robot for whom priority is calculated
      * @return the tiles between antenna and robot
      */
     public double calculateDistance(Coordinate antenna, Coordinate robot) {
