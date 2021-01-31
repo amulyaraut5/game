@@ -11,6 +11,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -557,7 +558,19 @@ public class GameController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                infoLabel.setText(error.getError());
+                Timer timer = new Timer();
+                interval = 15;
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        if(interval > 0 ){
+                            Platform.runLater(() -> infoLabel.setText(error.getError()));
+                            interval--;
+                        } else{
+                            timer.cancel();
+                            Platform.runLater(() -> infoLabel.setText(" "));
+                        }
+                    }
+                }, 1000,1000);
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
