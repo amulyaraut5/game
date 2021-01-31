@@ -3,6 +3,7 @@ package ai;
 import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
+import game.gameObjects.robot.Robot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -23,7 +24,7 @@ import java.util.*;
  *
  * @author simon
  */
-public class AICoordinator {
+public class AIClient {
     private static final Logger logger = LogManager.getLogger();
     private final ArrayList<Player> players = new ArrayList<>();
     private final Client client = Client.getInstance();
@@ -167,7 +168,7 @@ public class AICoordinator {
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();
             } //TODO
-            case SelectMap ->{
+            case SelectMap -> {
                 // TODO Nothing Server sends a random Map
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
@@ -192,15 +193,53 @@ public class AICoordinator {
     private void chooseCards(YourCards yourCards) {
         ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
 
-        for (int i = 0; i < 5; i++) {
-            int rdm = new Random().nextInt(availableCards.size());
-            client.sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
-            availableCards.remove(rdm);
-        }
+//        for (int i = 0; i < 5; i++) {
+//            int rdm = new Random().nextInt(availableCards.size());
+//            client.sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
+//            availableCards.remove(rdm);
+//        }
 
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
-        HashMap<CardType[], Coordinate> resultingPositions = new HashMap<>();
-        HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
+        HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
+        MoveSimulator moveSimulator = new MoveSimulator(this);
+        Robot robot = getPlayerFromID(thisPlayersID).getRobot();
+
+        for (CardType[] cards : combinations) {
+            Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
+            possiblePositions.put(cards, resPos);
+        }
+
+        CardType[] bestCombination = getBestCombination(possiblePositions);
+
+        for (int i = 0; i < 5; i++) {
+            client.sendMessage(new SelectCard(bestCombination[i], i + 1));
+        }
+        //HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
+    }
+
+    private CardType[] getBestCombination(HashMap<CardType[], Coordinate> possiblePositions) {
+        int shortestDistance = 100;
+        CardType[] bestCombination = null;
+
+        Set<CardType[]> keySet = possiblePositions.keySet();
+
+        for (CardType[] cards : keySet) {
+            int distance = distance(possiblePositions.get(cards));
+            //System.out.println("distance: " + distance);
+            if (distance < shortestDistance) {
+                bestCombination = cards;
+            }
+        }
+        //System.out.println("best distance: " + bestCombination.toString());
+        return bestCombination;
+    }
+
+    private int distance(Coordinate coordinate) {
+        map.readControlPointCoordinate();
+        Coordinate controlPoint = new Coordinate(12, 3);//map.getControlPointCoordinates().get(0); //TODO multiple controlpoints
+        int x = Math.abs(controlPoint.getX() - coordinate.getX());
+        int y = Math.abs(controlPoint.getY() - coordinate.getY());
+        return x + y;
     }
 
     /**
@@ -235,5 +274,9 @@ public class AICoordinator {
             String name = b.get(0).toString() + "_AI";
             client.sendMessage(new PlayerValues(name, b.get(0)));
         }
+    }
+
+    public Map getMap() {
+        return map;
     }
 }

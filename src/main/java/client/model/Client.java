@@ -1,10 +1,9 @@
 package client.model;
 
-import ai.AICoordinator;
+import ai.AIClient;
 import client.ViewManager;
 import client.view.*;
 import game.Player;
-import utilities.enums.CardType;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +11,6 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.*;
-import utilities.RegisterCard;
 import utilities.Updatable;
 import utilities.Utilities;
 import utilities.enums.MessageType;
@@ -25,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static utilities.Utilities.PORT;
-import static utilities.enums.CardType.*;
 
 /**
  * This Singleton Class handles the connection and disconnection to the server.
@@ -52,7 +49,7 @@ public class Client {
 
     private boolean isAI = false;
 
-    private AICoordinator aiCoordinator;
+    private AIClient aiClient;
 
 
     /**
@@ -262,13 +259,13 @@ public class Client {
         isAI = AI;
     }
 
-    public AICoordinator getAiCoordinator() {
-        return aiCoordinator;
+    public AIClient getAiCoordinator() {
+        return aiClient;
     }
 
     public void createAI() {
         isAI = true;
-        aiCoordinator = new AICoordinator();
+        aiClient = new AIClient();
     }
 
     public void setCurrentController(Updatable currentController) {
