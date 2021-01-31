@@ -12,7 +12,6 @@ public abstract class ProgrammingCard extends Card {
     private boolean isHidden;
     private boolean isLocked;
 
-    private ArrayList<Action> actions = new ArrayList<>();
 
     public ProgrammingCard() {
         this.isHidden = false;
