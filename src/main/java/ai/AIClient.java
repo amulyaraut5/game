@@ -201,7 +201,7 @@ public class AIClient {
 
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
         HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
-        MoveSimulator moveSimulator = new MoveSimulator(this);
+        MoveSimulator moveSimulator = new MoveSimulator(this, map);
         Robot robot = getPlayerFromID(thisPlayersID).getRobot();
 
         for (CardType[] cards : combinations) {

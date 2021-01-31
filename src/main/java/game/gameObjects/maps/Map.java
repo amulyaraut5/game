@@ -39,10 +39,12 @@ public class Map {
     }
 
     public Attribute getAttributeOn(AttributeType type, Coordinate pos) {
-        Tile tile = tiles[pos.getX()][pos.getY()];
-        for (Attribute attribute : tile.getAttributes()) {
-            if (attribute.getType() == type) {
-                return attribute;
+        if (!pos.isOutsideMap()) {
+            Tile tile = tiles[pos.getX()][pos.getY()];
+            for (Attribute attribute : tile.getAttributes()) {
+                if (attribute.getType() == type) {
+                    return attribute;
+                }
             }
         }
         return null;

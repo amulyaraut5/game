@@ -16,10 +16,11 @@ public class MoveSimulator {
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
-    private Map map = aiClient.getMap();
+    private Map map;
 
-    public MoveSimulator(AIClient aiClient) {
+    public MoveSimulator(AIClient aiClient, Map map) {
         this.aiClient = aiClient;
+        this.map = map;
     }
 
     public Coordinate simulateCombination(CardType[] cards, Coordinate actualPos, Orientation orientation) {
@@ -29,16 +30,14 @@ public class MoveSimulator {
         for (int i = 0; i < 5; i++) {
             if (!reboot) {
                 playCard(cards[i]);
+                activateBlueBelts();
+                activateGreenBelts();
+                //activatePushPanel();
+                activateGear();
             } else {
                 reboot = false;
                 return actualPos;
             }
-            activateBlueBelts();
-            activateGreenBelts();
-            activatePushPanel();
-            activateGear();
-//            laserAction.activateBoardLaser(activePlayers);
-//            laserAction.activateRobotLaser(activePlayers);
         }
         return resPosition;
     }
@@ -107,19 +106,25 @@ public class MoveSimulator {
                     canMove = false;
                 }
             }
-            if (canMove) resPosition = newPos;
-            checkReboot();
+            if (!isRebooting(newPos)) {
+                resPosition = newPos;
+            }
         }
     }
 
-    private void checkReboot() {
-        if (resPosition.isOutsideMap()) {
+    private boolean isRebooting(Coordinate newPos) {
+        boolean isRebooting = false;
+
+        if (newPos.isOutsideMap()) {
             reboot = true;
-        } else for (Attribute a : map.getTile(resPosition).getAttributes()) {
+            isRebooting = true;
+        } else for (Attribute a : map.getTile(newPos).getAttributes()) {
             if (a.getType() == AttributeType.Pit) {
                 reboot = true;
+                isRebooting = true;
             }
         }
+        return isRebooting;
     }
 
     private void activateGreenBelts() {
