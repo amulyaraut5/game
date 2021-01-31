@@ -3,10 +3,10 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class PlayerValues extends JSONBody {
-    private String name;
-    private int figure;
+    private final String name;
+    private final int figure;
 
-    public PlayerValues(String name, int figure){
+    public PlayerValues(String name, int figure) {
         this.name = name;
         this.figure = figure;
     }

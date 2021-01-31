@@ -8,18 +8,17 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.enums.AttributeType;
 
-import static utilities.Coordinate.parse;
-
 public class ConstructionPhase extends Phase {
 
-    Player currentPlayer = game.getPlayers().get(0);
+    Player currentPlayer;
 
     public ConstructionPhase() {
+        currentPlayer = game.getPlayers().get(0);
         server.communicateAll(new CurrentPlayer(currentPlayer.getID()));
     }
 
     public void setStartingPoint(User user, int position) {
-        Coordinate pos = parse(position);
+        Coordinate pos = Coordinate.parse(position);
         Player player = game.userToPlayer(user);
 
         if (!player.equals(currentPlayer)) {
@@ -53,7 +52,6 @@ public class ConstructionPhase extends Phase {
         } else player.message(new Error("You have already set your starting point!"));
 
         //check if all players have set their StartingPoint
-
 
         for (Player p : players) {
             if (p.getRobot().getCoordinate() == null) return;

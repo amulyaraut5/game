@@ -3,7 +3,7 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class HelloClient extends JSONBody {
-    private double protocol;
+    private final double protocol;
 
     public HelloClient(double protocol) {
         this.protocol = protocol;

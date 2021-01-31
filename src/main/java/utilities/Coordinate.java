@@ -45,8 +45,8 @@ public class Coordinate {
         y += c.getY();
     }
 
-    public Coordinate subtract(Coordinate another) {
-        return new Coordinate(this.x - another.x, this.y - another.y);
+    public Coordinate subtract(Coordinate other) {
+        return new Coordinate(x - other.x, y - other.y);
     }
 
     public int getX() {
@@ -80,7 +80,7 @@ public class Coordinate {
         if (obj == null) return false;
         if (obj instanceof Coordinate) {
             Coordinate c = (Coordinate) obj;
-            return (this.getX() == c.getX()) && (this.getY() == c.getY());
+            return (getX() == c.getX()) && (getY() == c.getY());
         } else return false;
     }
 
@@ -113,10 +113,9 @@ public class Coordinate {
     }
 
     public boolean isOutsideMap() {
-        if ((this.getX() > Utilities.MAP_WIDTH - 1 || this.getX() < 0) || (this.getY() > Utilities.MAP_HEIGHT - 1 || this.getY() < 0)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (getX() > Utilities.MAP_WIDTH - 1 ||
+                getX() < 0) ||
+                (getY() > Utilities.MAP_HEIGHT - 1 ||
+                        getY() < 0);
     }
 }

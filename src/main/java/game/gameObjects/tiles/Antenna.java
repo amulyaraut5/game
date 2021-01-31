@@ -2,8 +2,8 @@ package game.gameObjects.tiles;
 
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 /**
  * @author Amulya
@@ -11,7 +11,7 @@ import utilities.enums.AttributeType;
 
 public class Antenna extends Attribute {
 
-    private Orientation orientation;
+    private final Orientation orientation;
 
     /**
      * Constructor for Antenna that basically sets the antenna facing north
@@ -20,7 +20,6 @@ public class Antenna extends Attribute {
         orientation = Orientation.RIGHT;
         type = AttributeType.Antenna;
     }
-
 
     @Override
     public Node createImage() {

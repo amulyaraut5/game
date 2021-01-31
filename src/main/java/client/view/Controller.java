@@ -2,15 +2,9 @@ package client.view;
 
 import client.ViewManager;
 import client.model.Client;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Pane;
 import utilities.enums.CardType;
-
-import java.util.ArrayList;
 
 /**
  * Abstract super class of all view-controller
@@ -21,8 +15,8 @@ public abstract class Controller {
 
     protected static DataFormat cardFormat = new DataFormat("com.example.myapp.formats.button");
     private static int positionRegister;
-    private static ImageView programmingImageView ;
-
+    private static ImageView programmingImageView;
+    private static boolean wasFormerRegister = false;
     /**
      * instance of the ViewManager to call the next or previous scene
      */
@@ -38,13 +32,11 @@ public abstract class Controller {
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
-    private static boolean wasFormerRegister = false;
-
-    public  boolean getWasFormerRegister() {
+    public boolean getWasFormerRegister() {
         return wasFormerRegister;
     }
 
-    public  void setWasFormerRegister(boolean wasFormerRegister) {
+    public void setWasFormerRegister(boolean wasFormerRegister) {
         Controller.wasFormerRegister = wasFormerRegister;
     }
 
@@ -52,35 +44,31 @@ public abstract class Controller {
         String[] a = imageDropped.split("/");
         String imageName = a[a.length - 1];
         String cardName = imageName.substring(0, imageName.length() - 9);
-        CardType cardType = CardType.valueOf(cardName);
-        return cardType;
+        return CardType.valueOf(cardName);
     }
-
 
     public ImageView getProgrammingImageView() {
         return programmingImageView;
     }
 
     public void setProgrammingImageView(ImageView programmingImageView) {
-        this.programmingImageView = programmingImageView;
+        Controller.programmingImageView = programmingImageView;
     }
 
-    protected int getPosition(){
+    protected int getPosition() {
         return positionRegister;
     }
-    protected void setPosition(int position){
-        this.positionRegister = position;
+
+    protected void setPosition(int position) {
+        positionRegister = position;
     }
-
-
-
 
     /**
      * This private class represents a robot with its name and id
      */
     protected class RobotPrivate {
-        private int id;
-        private String name;
+        private final int id;
+        private final String name;
 
         /**
          * constructor of RobotPrivate
@@ -89,17 +77,16 @@ public abstract class Controller {
          * @param robotId   of the robot
          */
         public RobotPrivate(String robotName, int robotId) {
-            this.id = robotId;
-            this.name = robotName;
+            id = robotId;
+            name = robotName;
         }
 
         protected String getRobotName() {
-            return this.name;
+            return name;
         }
 
         protected int getRobotID() {
-            return this.id;
+            return id;
         }
     }
-
 }

@@ -11,13 +11,12 @@ import utilities.enums.Rotation;
 
 public class Gear extends Attribute {
 
-    private Rotation rotation; //gear rotation: RIGHT = clockwise, LEFT = Anti-clockwise
+    private final Rotation rotation; //gear rotation: RIGHT = clockwise, LEFT = Anti-clockwise
 
     public Gear(Rotation rotation) {
         this.rotation = rotation;
         type = AttributeType.Gear;
     }
-
 
     @Override
     public Node createImage() {
@@ -30,6 +29,7 @@ public class Gear extends Attribute {
 
         return ImageHandler.createImageView(path);
     }
+
     public Rotation getOrientation() {
         return rotation;
     }

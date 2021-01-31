@@ -49,10 +49,10 @@ public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
-    private ArrayList<Player> players = client.getPlayers();
-    private ArrayList<Player> activePlayers = new ArrayList<>();
-    private ArrayList<Coordinate> path = new ArrayList<>();
-    private HashMap<Player, ImageView> robotTokens = new HashMap<>();
+    private final ArrayList<Player> players = client.getPlayers();
+    private final ArrayList<Player> activePlayers = new ArrayList<>();
+    private final ArrayList<Coordinate> path = new ArrayList<>();
+    private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -142,7 +142,7 @@ public class GameController extends Controller implements Updatable {
             client.sendMessage(new SetStartingPoint(position));
         });
 
-        this.soundHandler = new SoundHandler();
+        soundHandler = new SoundHandler();
     }
 
     public void attachChatPane(Pane chat) {
@@ -504,12 +504,12 @@ public class GameController extends Controller implements Updatable {
 
     @FXML
     private void soundsOnAction() {
-        this.soundHandler.musicOn();
+        soundHandler.musicOn();
     }
 
     @FXML
     private void soundsOffAction() {
-        this.soundHandler.musicOff();
+        soundHandler.musicOff();
     }
 
     public PlayerMatController getPlayerMatController() {

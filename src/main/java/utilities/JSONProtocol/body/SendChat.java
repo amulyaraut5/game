@@ -3,8 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class SendChat extends JSONBody {
-    private String message;
-    private int to;
+    private final String message;
+    private final int to;
 
     public SendChat(String message, int to) {
         this.message = message;
@@ -12,10 +12,10 @@ public class SendChat extends JSONBody {
     }
 
     public String getMessage() {
-        return this.message;
+        return message;
     }
 
     public int getTo() {
-        return this.to;
+        return to;
     }
 }

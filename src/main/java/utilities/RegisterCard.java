@@ -13,12 +13,12 @@ import utilities.enums.CardType;
 
 public class RegisterCard {
 
-    private int playerID;
-    private CardType cardName;
+    private final int playerID;
+    private final CardType cardName;
 
-    public RegisterCard (int playerID, Card card) {
+    public RegisterCard(int playerID, Card card) {
         this.playerID = playerID;
-        this.cardName = card.getName();
+        cardName = card.getName();
     }
 
     public CardType getCard() {

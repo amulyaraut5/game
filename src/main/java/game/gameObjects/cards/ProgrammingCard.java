@@ -6,9 +6,9 @@ import game.gameActions.Action;
 
 import java.util.ArrayList;
 
-
 public abstract class ProgrammingCard extends Card {
 
+    private final ArrayList<Action> actions = new ArrayList<>();
     private boolean isHidden;
     private boolean isLocked;
 
@@ -66,6 +66,4 @@ public abstract class ProgrammingCard extends Card {
     public void setLocked(boolean locked) {
         isLocked = locked;
     }
-
-
 }

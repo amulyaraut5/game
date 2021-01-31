@@ -1,11 +1,9 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
-import game.gameObjects.tiles.Tile;
+import game.gameObjects.tiles.*;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
@@ -15,20 +13,18 @@ import java.util.ArrayList;
  */
 public class Map {
 
-    private Tile[][] tiles;
-    private ArrayList<Coordinate> GreenBelts = new ArrayList<>();
-    private ArrayList<Coordinate> BlueBelts = new ArrayList<>();
-    private ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
-    private ArrayList<Coordinate> pushPanel = new ArrayList<>();
-    private ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
-    private ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
-    private ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
-    private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
+    private final Tile[][] tiles;
+    private final ArrayList<Coordinate> GreenBelts = new ArrayList<>();
+    private final ArrayList<Coordinate> BlueBelts = new ArrayList<>();
+    private final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
+    private final ArrayList<Coordinate> pushPanel = new ArrayList<>();
+    private final ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
+    private final ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
+    private final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
+    private final ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
 
     private Coordinate RestartPoint;
-
     private Coordinate antenna;
-
 
     /**
      * Constructor that initializes the Tile[][]
@@ -36,6 +32,24 @@ public class Map {
     public Map(Tile[][] tiles) {
         this.tiles = tiles;
         readAll();
+    }
+
+    public boolean isWallBlocking(Coordinate coordinate, Orientation orientation) {
+        boolean canMove = true;
+        for (Attribute a : getTile(coordinate).getAttributes()) {
+            if (a.getType() == AttributeType.Wall) {
+                Wall temp = (Wall) a;
+                if (!(temp.getOrientations() == null)) {
+                    for (Orientation o : temp.getOrientations()) {
+                        if (o == orientation) {
+                            canMove = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return !canMove;
     }
 
     public Attribute getAttributeOn(AttributeType type, Coordinate pos) {
@@ -107,7 +121,7 @@ public class Map {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == AttributeType.Antenna) {
-                        this.antenna = new Coordinate(i, j);
+                        antenna = new Coordinate(i, j);
                         break;
                     }
                 }
@@ -125,7 +139,7 @@ public class Map {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == AttributeType.RestartPoint) {
-                        this.RestartPoint = new Coordinate(i, j);
+                        RestartPoint = new Coordinate(i, j);
                         break;
                     }
                 }
@@ -237,7 +251,6 @@ public class Map {
                     }
                 }
             }
-
         }
     }
 
@@ -247,7 +260,7 @@ public class Map {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
                     if (a.getType() == AttributeType.EnergySpace) {
-                        this.EnergySpaces.add(new Coordinate(i, j));
+                        EnergySpaces.add(new Coordinate(i, j));
                     }
                 }
             }
@@ -283,7 +296,7 @@ public class Map {
     }
 
     public Coordinate getRestartPoint() {
-        return this.RestartPoint;
+        return RestartPoint;
     }
 
     public ArrayList<Coordinate> getEnergySpaces() {

@@ -206,7 +206,7 @@ public class AIClient {
 
         for (CardType[] cards : combinations) {
             Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-            //System.out.println(cards[0] + " " + cards[1] + " " + cards[2] + " " + cards[3] + " " + cards[4] + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
+            //logger.trace(cards[0] + " " + cards[1] + " " + cards[2] + " " + cards[3] + " " + cards[4] + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
             possiblePositions.put(cards, resPos);
         }
 
@@ -226,13 +226,13 @@ public class AIClient {
 
         for (CardType[] cards : keySet) {
             int distance = distance(possiblePositions.get(cards));
-            System.out.println("distance: " + distance + " " + Arrays.toString(cards));
+            //logger.trace("distance: " + distance + " " + Arrays.toString(cards));
             if (distance < shortestDistance) {
                 shortestDistance = distance;
                 bestCombination = cards;
             }
         }
-        System.out.println("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
+        //logger.trace("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
         return bestCombination;
     }
 
@@ -272,7 +272,7 @@ public class AIClient {
         b.removeAll(a);
 
         if (b.size() > 0) {
-            String name = b.get(0).toString() + "_AI";
+            String name = b.get(0) + "_AI";
             client.sendMessage(new PlayerValues(name, b.get(0)));
         }
     }
