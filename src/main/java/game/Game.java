@@ -164,8 +164,10 @@ public class Game {
                 }
             }
             case "#damage" -> {
-                if (cheatInfo.length == 0)
+                if (cheatInfo.length == 0 )
                     server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
+                else if(getActivationPhase()== null)
+                    server.communicateDirect(new Error("your cheat is invalid in this phase"), user.getID());
                 else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
             case "#autoPlay" -> {

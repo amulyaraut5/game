@@ -473,6 +473,7 @@ public class ActivationPhase extends Phase {
 
     public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
         logger.info("drawDamage reached");
+        cardTypes.clear();
         if (!(game.getSpamDeck().size() < amount)) {
             ArrayList<Card> damageCards = damageDeck.drawCards(amount);
             player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
