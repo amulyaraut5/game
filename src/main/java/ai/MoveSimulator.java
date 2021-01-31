@@ -30,7 +30,7 @@ public class MoveSimulator {
                 playCard(cards[i]);
                 activateBlueBelts();
                 activateGreenBelts();
-                //activatePushPanel();
+                activatePushPanel(i + 1);
                 activateGear();
             } else {
                 reboot = false;
@@ -38,23 +38,6 @@ public class MoveSimulator {
             }
         }
         return resPosition;
-    }
-
-    private void activatePushPanel() {
-        PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
-        if (pushPanel != null) {
-            //TODO implement
-        }
-    }
-
-    private void activateGear() {
-        Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
-        if (gear != null) {
-            switch (gear.getOrientation()) {
-                case LEFT -> resOrientation = resOrientation.getPrevious();
-                case RIGHT -> resOrientation = resOrientation.getNext();
-            }
-        }
     }
 
     private void playCard(CardType card) {
@@ -104,7 +87,8 @@ public class MoveSimulator {
                     canMove = false;
                 }
             }
-            if (!isRebooting(newPos)) {
+
+            if (canMove && !isRebooting(newPos)) {
                 resPosition = newPos;
             }
         }
@@ -145,8 +129,28 @@ public class MoveSimulator {
                     if (a.getType() == AttributeType.RotatingBelt) {
                         orientation = ((RotatingBelt) a).getOrientations()[0];
                     }
-
                     handleMove(orientation);
+                }
+            }
+        }
+    }
+
+    private void activateGear() {
+        Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
+        if (gear != null) {
+            switch (gear.getOrientation()) {
+                case LEFT -> resOrientation = resOrientation.getPrevious();
+                case RIGHT -> resOrientation = resOrientation.getNext();
+            }
+        }
+    }
+
+    private void activatePushPanel(int i) {
+        PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
+        if (pushPanel != null) {
+            for (int register : pushPanel.getRegisters()) {
+                if (i == register) {
+                    handleMove(pushPanel.getOrientation());
                 }
             }
         }
