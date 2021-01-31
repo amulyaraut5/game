@@ -8,7 +8,7 @@ public enum MessageType {
     ActivePhase, CardSelected,
     CardsYouGotNow, CurrentCards, CurrentPlayer,
     DiscardHand, DrawDamage, Movement, NotYourCards,
-    PickDamage, PlayCard, SelectCard, SelectDamage,
+    PickDamage, SelectCard, SelectDamage,
     SelectionFinished, SetStartingPoint, ShuffleCoding,
     StartingPointTaken, TimerEnded, TimerStarted,
     YourCards, PlayerTurning, PlayIt, Reboot, Energy,

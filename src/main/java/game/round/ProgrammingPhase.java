@@ -2,12 +2,15 @@ package game.round;
 
 import game.Player;
 import game.gameObjects.cards.Card;
-import game.gameObjects.cards.damage.*;
+import game.gameObjects.cards.damage.Spam;
+import game.gameObjects.cards.damage.Trojan;
+import game.gameObjects.cards.damage.Virus;
+import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -208,20 +211,10 @@ public class ProgrammingPhase extends Phase {
 
             //Discard all hand cards
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
-            // TODO: still needed? player.getDrawnProgrammingCards().clear();
             player.message(new DiscardHand(player.getID()));
 
             //Take 5 cards from the draw Deck and put them down in random order
-            drawProgrammingCards(5, player);
-            Random random = new Random();
-            for (int register = 1; register < 6; register++) {
-                ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
-
-                //choose a card depending on a randomly generated index
-                Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
-                player.setRegisterCards(register, randomElement);
-                player.getDrawnProgrammingCards().remove(randomElement);
-            }
+            fillRegisters(player);
 
             //save the CardNames of cards to send them in CardsYouGotNow
             ArrayList<CardType> cardNames = new ArrayList<>();
@@ -235,6 +228,29 @@ public class ProgrammingPhase extends Phase {
             logger.info("discard7" + player.getDiscardedProgrammingDeck().getDeck());
             logger.info("draw7" + player.getDrawProgrammingDeck().getDeck());
         }*/
+    }
+
+    /**
+     * This methods fills the players register with 5 cards in random order
+     * Also it makes sure that there is no Again card in the first register
+     *
+     * @param player who needs to fill his registers
+     */
+
+    private void fillRegisters(Player player) {
+        drawProgrammingCards(5, player);
+        Random random = new Random();
+        for (int register = 1; register < 6; register++) {
+            ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
+
+            //choose a card depending on a randomly generated index
+            Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
+            if (register == 1 && randomElement.getName() == CardType.Again) {
+                fillRegisters(player);
+            }
+            player.setRegisterCards(register, randomElement);
+            player.getDrawnProgrammingCards().remove(randomElement);
+        }
     }
 
     /**

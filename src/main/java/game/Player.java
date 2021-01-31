@@ -33,9 +33,6 @@ public class Player extends User {
      */
     private ArrayList<Card> drawnProgrammingCards;
 
-    private Card currentAction;
-    private Card lastAction;
-
     private int checkPointCounter;
     private int energyCubes;
     /**
@@ -61,7 +58,7 @@ public class Player extends User {
         energyCubes = 5;
         drawProgrammingDeck = new ProgrammingDeck();
         discardedProgrammingDeck = new DiscardDeck();
-        registerCards = new ArrayList<Card>();
+        registerCards = new ArrayList<>();
         createRegister();
     }
 
@@ -109,8 +106,8 @@ public class Player extends User {
     /**
      * returns the card that is saved to the given register (1-5)
      *
-     * @param register
-     * @return
+     * @param register that includes the card
+     * @return the card in the register
      */
     public Card getRegisterCard(int register) {
         int index = register - 1;
@@ -119,22 +116,6 @@ public class Player extends User {
 
     public CardType getLastRegisterCard(){
         return getRegisterCard(game.getActivationPhase().getCurrentRegister()-1).getName();
-    }
-
-    public Card getCurrentAction() {
-        return currentAction;
-    }
-
-    public void setCurrentAction(Card currentAction) {
-        this.currentAction = currentAction;
-    }
-
-    public Card getLastAction() {
-        return lastAction;
-    }
-
-    public void setLastAction(Card lastAction) {
-        this.lastAction = lastAction;
     }
 
     public Robot getRobot() {
@@ -147,18 +128,6 @@ public class Player extends User {
 
     public void setCheckPointCounter(int checkPointCounter) {
         this.checkPointCounter = checkPointCounter;
-    }
-
-    public void addEnergyCubes(int n) {
-        this.energyCubes = this.energyCubes + n;
-    }
-
-    public void takeEnergyCubes(int n) {
-        this.energyCubes = this.energyCubes - n;
-    }
-
-    public void checkPointReached() {
-        this.checkPointCounter++;
     }
 
     public int getEnergyCubes() {
@@ -181,10 +150,6 @@ public class Player extends User {
         return drawProgrammingDeck;
     }
 
-    public void setDrawProgrammingDeck(ProgrammingDeck drawProgrammingDeck) {
-        this.drawProgrammingDeck = drawProgrammingDeck;
-    }
-
     public DiscardDeck getDiscardedProgrammingDeck() {
         return discardedProgrammingDeck;
     }
@@ -192,21 +157,14 @@ public class Player extends User {
     /**
      * Lets you discard an Array of cards to a specified deck
      *
-     * @param cards
-     * @param discardDeck
+     * @param cards that should be discarded
+     * @param discardDeck deck the cards should be discarded to
      */
     public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
         for (Card card : cards) {
             discardDeck.addCard(card);
         }
         cards.clear();
-    }
-
-    /**
-     * It freezes the player from the current round.
-     * Effect of Pit or falling off from  the map
-     */
-    public void freeze() {
     }
 
     /**
