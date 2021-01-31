@@ -206,6 +206,7 @@ public class AIClient {
 
         for (CardType[] cards : combinations) {
             Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
+            //System.out.println(cards[0] + " " + cards[1] + " " + cards[2] + " " + cards[3] + " " + cards[4] + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
             possiblePositions.put(cards, resPos);
         }
 
@@ -225,17 +226,17 @@ public class AIClient {
 
         for (CardType[] cards : keySet) {
             int distance = distance(possiblePositions.get(cards));
-            //System.out.println("distance: " + distance);
+            System.out.println("distance: " + distance + " " + Arrays.toString(cards));
             if (distance < shortestDistance) {
+                shortestDistance = distance;
                 bestCombination = cards;
             }
         }
-        //System.out.println("best distance: " + bestCombination.toString());
+        System.out.println("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
         return bestCombination;
     }
 
     private int distance(Coordinate coordinate) {
-        map.readControlPointCoordinate();
         Coordinate controlPoint = new Coordinate(12, 3);//map.getControlPointCoordinates().get(0); //TODO multiple controlpoints
         int x = Math.abs(controlPoint.getX() - coordinate.getX());
         int y = Math.abs(controlPoint.getY() - coordinate.getY());

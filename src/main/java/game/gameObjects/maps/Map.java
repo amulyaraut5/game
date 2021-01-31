@@ -1,6 +1,9 @@
 package game.gameObjects.maps;
 
-import game.gameObjects.tiles.*;
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.Belt;
+import game.gameObjects.tiles.RotatingBelt;
+import game.gameObjects.tiles.Tile;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 
@@ -35,8 +38,19 @@ public class Map {
         readAll();
     }
 
+    public Attribute getAttributeOn(AttributeType type, Coordinate pos) {
+        Tile tile = tiles[pos.getX()][pos.getY()];
+        for (Attribute attribute : tile.getAttributes()) {
+            if (attribute.getType() == type) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
     /**
      * Getter for tiles
+     *
      * @return returns the 2 dimensional array of tiles
      */
     public Tile[][] getTiles() {
@@ -83,7 +97,7 @@ public class Map {
                 }
             }
         }
-        return  laser;
+        return laser;
     }
 
     public void readAntennaCoordinate() {
@@ -104,7 +118,6 @@ public class Map {
      * version of map and returns it.
      */
     // TODO Case for multiple restart coordinates is not handled
-
     public void readRestartPointCoordinate() {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
@@ -117,7 +130,6 @@ public class Map {
             }
         }
     }
-
 
     /**
      * This method stores all the laser coordinates from the actual
@@ -190,10 +202,6 @@ public class Map {
         }
     }
 
-
-
-
-
     public void readBeltCoordinates() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
@@ -236,7 +244,7 @@ public class Map {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if(a.getType() == AttributeType.EnergySpace){
+                    if (a.getType() == AttributeType.EnergySpace) {
                         this.EnergySpaces.add(new Coordinate(i, j));
                     }
                 }
@@ -255,7 +263,6 @@ public class Map {
         readControlPointCoordinate();
         readAntennaCoordinate();
     }
-
 
     private void addGreenBelt(Coordinate c) {
         GreenBelts.add(c);
@@ -281,15 +288,25 @@ public class Map {
         return EnergySpaces;
     }
 
-    public ArrayList<Coordinate> getPushPanel() { return pushPanel; }
+    public ArrayList<Coordinate> getPushPanel() {
+        return pushPanel;
+    }
 
-    public ArrayList<Coordinate> getControlPointCoordinates() { return controlPointCoordinates; }
+    public ArrayList<Coordinate> getControlPointCoordinates() {
+        return controlPointCoordinates;
+    }
 
-    public ArrayList<Coordinate> getPitCoordinates() { return pitCoordinates; }
+    public ArrayList<Coordinate> getPitCoordinates() {
+        return pitCoordinates;
+    }
 
-    public ArrayList<Coordinate> getGearCoordinates() { return gearCoordinates; }
+    public ArrayList<Coordinate> getGearCoordinates() {
+        return gearCoordinates;
+    }
 
-    public ArrayList<Coordinate> getLaserCoordinates(){ return laserCoordinates; }
+    public ArrayList<Coordinate> getLaserCoordinates() {
+        return laserCoordinates;
+    }
 
     public Coordinate getAntenna() {
         return antenna;

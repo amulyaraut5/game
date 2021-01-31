@@ -1,9 +1,7 @@
 package ai;
 
 import game.gameObjects.maps.Map;
-import game.gameObjects.tiles.Attribute;
-import game.gameObjects.tiles.Belt;
-import game.gameObjects.tiles.RotatingBelt;
+import game.gameObjects.tiles.*;
 import game.round.ActivationPhase;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
@@ -31,15 +29,35 @@ public class MoveSimulator {
         for (int i = 0; i < 5; i++) {
             if (!reboot) {
                 playCard(cards[i]);
-            } else return actualPos;
+            } else {
+                reboot = false;
+                return actualPos;
+            }
             activateBlueBelts();
             activateGreenBelts();
-//            activationElements.activatePushPanel();
-//            activationElements.activateGear();
+            activatePushPanel();
+            activateGear();
 //            laserAction.activateBoardLaser(activePlayers);
 //            laserAction.activateRobotLaser(activePlayers);
         }
         return resPosition;
+    }
+
+    private void activatePushPanel() {
+        PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
+        if (pushPanel != null) {
+            //TODO implement
+        }
+    }
+
+    private void activateGear() {
+        Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
+        if (gear != null) {
+            switch (gear.getOrientation()) {
+                case LEFT -> resOrientation = resOrientation.getPrevious();
+                case RIGHT -> resOrientation = resOrientation.getNext();
+            }
+        }
     }
 
     private void playCard(CardType card) {
@@ -79,13 +97,13 @@ public class MoveSimulator {
             boolean canMove = true;
 
             //look for a blocking wall on current Tile
-            if (ActivationPhase.isWallBlocking(resPosition, orientation, aiClient.getMap())) {
+            if (ActivationPhase.isWallBlocking(resPosition, orientation, map)) {
                 canMove = false;
             }
 
             //look for a blocking wall on new tile
             if (!newPos.isOutsideMap()) {
-                if (ActivationPhase.isWallBlocking(newPos, orientation.getOpposite(), aiClient.getMap())) {
+                if (ActivationPhase.isWallBlocking(newPos, orientation.getOpposite(), map)) {
                     canMove = false;
                 }
             }
@@ -97,34 +115,33 @@ public class MoveSimulator {
     private void checkReboot() {
         if (resPosition.isOutsideMap()) {
             reboot = true;
-        } else for (Attribute a : aiClient.getMap().getTile(resPosition).getAttributes()) {
+        } else for (Attribute a : map.getTile(resPosition).getAttributes()) {
             if (a.getType() == AttributeType.Pit) {
                 reboot = true;
             }
         }
     }
 
-    private void activateGreenBelts(){
+    private void activateGreenBelts() {
         handleBeltMovement(map.getGreenBelts());
     }
 
-    private void activateBlueBelts(){
+    private void activateBlueBelts() {
         handleBeltMovement(map.getBlueBelts());
         handleBeltMovement(map.getBlueBelts());
-        }
+    }
 
 
-
-    private void handleBeltMovement(ArrayList<Coordinate> belts){
-        Orientation  orientation = null;
+    private void handleBeltMovement(ArrayList<Coordinate> belts) {
+        Orientation orientation = null;
         for (Coordinate coordinate : belts) {
-            if(coordinate.equals(resPosition)){
+            if (coordinate.equals(resPosition)) {
                 for (Attribute a : map.getTile(coordinate).getAttributes()) {
-                    if(a.getType() == AttributeType.Belt){
-                        orientation = ((Belt)  a).getOrientation();
+                    if (a.getType() == AttributeType.Belt) {
+                        orientation = ((Belt) a).getOrientation();
                     }
-                    if(a.getType() == AttributeType.RotatingBelt){
-                        orientation =  ((RotatingBelt) a).getOrientations()[0];
+                    if (a.getType() == AttributeType.RotatingBelt) {
+                        orientation = ((RotatingBelt) a).getOrientations()[0];
                     }
 
                     handleMove(orientation);
