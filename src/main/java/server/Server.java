@@ -1,6 +1,8 @@
 package server;
 
 import game.Game;
+import game.Player;
+import game.round.ConstructionPhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -384,6 +386,43 @@ public class Server extends Thread {
      * @param user User to be removed
      */
     public void removeUser(User user) {
+        logger.info("removeUser reached");
+        game.getPlayers().remove(game.userToPlayer(user));
+        //TODO
+        /*
+        if(game.getGameState() == GameState.CONSTRUCTION){
+            communicateAll(new ActivePhase(GameState.CONSTRUCTION));
+            new ConstructionPhase();
+            if(game.getConstructionPhase().getCurrentPlayer() == game.userToPlayer(user)){
+                logger.info("Construction IF");
+                communicateAll(new CurrentPlayer(currentPlayer.getID()));
+            }
+        }
+
+         */
+        if(game.getGameState() == GameState.PROGRAMMING) {
+            logger.info("removeuser IF");
+            Player temp = null;
+            for(Player player : game.getProgrammingPhase().getNotReadyPlayers()){
+                if(player.getID() == user.getID()){
+                    temp = player;
+                }
+            }
+            game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+            communicateAll(new SelectionFinished(user.getID()));
+            logger.info("removeuser IF" +  game.getProgrammingPhase().getNotReadyPlayers());
+            if(game.getProgrammingPhase().getNotReadyPlayers().isEmpty()){
+                game.getProgrammingPhase().endProgrammingTimer();
+
+            }
+        }
+        if(game.getGameState() == GameState.ACTIVATION) {
+            logger.info("if statement reached");
+            int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
+            Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);
+            game.getActivationPhase().removeCurrentCards(user.getID());
+        }
+
         readyUsers.remove(user);
         users.remove(user);
 

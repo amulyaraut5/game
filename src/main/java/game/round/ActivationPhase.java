@@ -53,6 +53,19 @@ public class ActivationPhase extends Phase {
     private final WormDeck wormDeck = game.getWormDeck();
 
     /**
+     * saves the Player ID and the card for the current register
+     */
+    private ArrayList<RegisterCard> currentCards = new ArrayList<>();
+    private ArrayList<CardType> cardTypes = new ArrayList<>();
+    /**
+     * TODO
+     */
+    private ActivationElements activationElements = new ActivationElements(this);
+    private LaserAction laserAction = new LaserAction(this);
+    private ArrayList<Player> activePlayers = players;
+    private ArrayList<Player> rebootedPlayers = new ArrayList<>();
+    private ArrayList<Player> priorityList = calculatePriority(map.getAntenna());
+    /**
      * keeps track of the current register
      */
     private int currentRegister = 1;
@@ -104,24 +117,55 @@ public class ActivationPhase extends Phase {
 
             //if he was the last player to send the PlayIt() protocol for this register the board is activated
             if (currentCards.isEmpty()) {
-                activateBoard();
-                //throw new UnsupportedOperationException();
-                if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
-                    currentRegister++;
-                    turnCards(currentRegister);
-                } else { //if it is already the 5th register the next phase is called
-
-                    if (rebootedPlayers != null) { //FIXME
-                        activePlayers.addAll(rebootedPlayers);
-                        rebootedPlayers.clear();
-                    }
-                    game.nextPhase();
-                }
+                endOfRound();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
             }
         } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
             server.communicateDirect(new Error("It is not your turn!"), playerID);
+        }
+    }
+
+    public void endOfRound () {
+        activateBoard();
+        //throw new UnsupportedOperationException();
+        if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+            currentRegister++;
+            turnCards(currentRegister);
+        } else { //if it is already the 5th register the next phase is called
+
+            if (rebootedPlayers != null) {
+                activePlayers.addAll(rebootedPlayers);
+                rebootedPlayers.clear();
+            }
+            game.nextPhase();
+        }
+    }
+
+    public void removeCurrentCards(int playerID){
+        logger.info("removeCC reached");
+        RegisterCard temp = null;
+        for(RegisterCard rc: currentCards){
+            logger.info(rc.getPlayerID());
+            logger.info(rc.getCard());
+            if(rc.getPlayerID() == playerID){
+                logger.info("if reached");
+                temp= rc;
+                logger.info(rc.getPlayerID() +" und" + rc.getCard());
+            }
+        }
+        currentCards.remove(temp);
+        Player player = game.getPlayerFromID(playerID);
+        activePlayers.remove(player);
+        rebootedPlayers.remove(player);
+        for (RegisterCard rc : currentCards) {
+            logger.info(rc.getPlayerID());
+            logger.info(rc.getCard());
+        }
+        if (currentCards.isEmpty() && currentRegister < 5) {
+            endOfRound();
+        } else {
+            server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
         }
     }
 
@@ -544,5 +588,9 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
+    }
+
+    public ArrayList<Player> getPriorityList() {
+        return priorityList;
     }
 }
