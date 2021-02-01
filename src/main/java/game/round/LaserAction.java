@@ -52,6 +52,8 @@ public class LaserAction {
         position = position.clone();
         Coordinate step = orientation.toVector();
 
+        if (isWallOnFirstTile(position, orientation, map)) return position;
+
         position.add(step);
         while (!position.isOutsideMap()) {
             for (Attribute a : map.getTile(position).getAttributes()) {
@@ -75,6 +77,21 @@ public class LaserAction {
             position.add(step);
         }
         return position.subtract(step);
+    }
+
+    private static boolean isWallOnFirstTile(Coordinate position, Orientation orientation, Map map) {
+        for (Attribute a : map.getTile(position).getAttributes()) {
+            if (a.getType() == AttributeType.Wall) {
+                Wall wall = (Wall) a;
+                for (Orientation wallOrientation : wall.getOrientations()) {
+                    if (wallOrientation == orientation) {
+                        System.out.println("WALL ON FIRST TILE");
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
