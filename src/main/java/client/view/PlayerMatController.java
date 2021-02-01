@@ -40,26 +40,25 @@ public class PlayerMatController extends Controller{
     private AnchorPane playerMapAnchorPane;
     @FXML
     private Label discardDeckLabel; //TODO ?
-    @FXML
-    private Label programmingDeckLabel;
-    @FXML
-    private Label playerMatInfoLabel;
-    @FXML
-    private HBox energyHBox;
-    @FXML
-    private HBox energyHBox2;
-
     private int discardDeckNr = 0;
+    @FXML
+    public Label programmingDeckLabel;
+    public Label playerMatInfoLabel;
     private int programmingDeckNr = 20;
     private int playerCards = 20;
+    @FXML
+    private HBox energyHBox;
+    public HBox energyHBox2;
+
+    private boolean eventOn = true;
     private double widthRegisterCard;
     private double heightRegisterCard;
-    private Image energyCubeImage;
-    private ImageView droppedImageView;
-    private int positionDroppedCard;
-    private boolean againNotFirst;
 
+
+
+    private Image energyCubeImage;
     public void initialize() {
+
         energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
         energyHBox.setSpacing(5);
         energyHBox2.setSpacing(5);
@@ -72,8 +71,14 @@ public class PlayerMatController extends Controller{
         createRegisterBackground();
         createRegisters();
 
+        //addDropHandling(registerHBox);
+
+        //eventOn = true;
     }
 
+    private ImageView droppedImageView;
+    private int positionDroppedCard;
+    private boolean againNotFirst;
     protected void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> { setOnDragOver(e, pane); });
         pane.setOnDragExited(e -> { setOnDragExited(e, pane); });
@@ -85,14 +90,14 @@ public class PlayerMatController extends Controller{
         if (db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
                 && getProgrammingImageView().getParent() != pane) {
-            positionDroppedCard = positionDroppedCard + registerHBox.getChildren().indexOf(pane) + 1;
+            positionDroppedCard = registerHBox.getChildren().indexOf(pane);
+            positionDroppedCard += 1;
             boolean isFirstRegisterAgain = generateCardType(getProgrammingImageView().getImage().getUrl()).toString().equals("Again");
             boolean isFirstRegister = (positionDroppedCard == 1);
             againNotFirst = !(isFirstRegister && isFirstRegisterAgain);
             if (againNotFirst) e.acceptTransferModes(TransferMode.MOVE);
         }
     }
-
     private void setOnDragExited(DragEvent e, Pane pane){
         Dragboard db = e.getDragboard();
         if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
@@ -103,7 +108,6 @@ public class PlayerMatController extends Controller{
             pane.getChildren().add(droppedImageView);
         }
     }
-
     private void setOnDragDone(){
         CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
         if (getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
@@ -112,6 +116,7 @@ public class PlayerMatController extends Controller{
 
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
             ImageView imageView = programmingCardImageView;
+
             imageView.setOnDragDetected(event-> {
                 setWasFormerRegister(true);
                 Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
@@ -129,6 +134,7 @@ public class PlayerMatController extends Controller{
 
     public void reset(){
         registerHBox.getChildren().clear();
+        eventOn = true;
         createRegisters();
         createRegisterBackground();
     }
@@ -146,11 +152,13 @@ public class PlayerMatController extends Controller{
         }
     }
 
+
     public void loadPlayerMap(Player player) {
         String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name + ".png").toString()));
         playerMapLabelName.setText(player.getName() + " " + player.getID());
     }
+
 
     private void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
@@ -158,7 +166,10 @@ public class PlayerMatController extends Controller{
         imageView.setFitHeight(heightRegisterCard);
         imageView.setImage(i);
         pane.getChildren().add(imageView);
+
+
     }
+
 
     public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow) {
         registerHBox.getChildren().clear();
@@ -209,11 +220,12 @@ public class PlayerMatController extends Controller{
 
     public void checkPointReached(int number){
         int fitHeightWidth;
-        String path = "/tiles/controlPoint/controlPoint_" + number + ".png";
+        String controlPoint = String.valueOf(number);
+        ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/controlPoint/controlPoint_" + controlPoint + ".png").toString()));
         if(checkPointsHBox.getChildren().size()<4) fitHeightWidth = 35;
         else{
             for (Node node : checkPointsHBox.getChildren()) {
-                if (node.getClass().equals(ImageView.class)) {
+                if (node.getClass().equals(imageView.getClass())) {
                     ImageView im = (ImageView) node;
                     im.setFitWidth(20);
                     im.setFitHeight(20);
@@ -221,7 +233,8 @@ public class PlayerMatController extends Controller{
             }
             fitHeightWidth = 20;
         }
-        ImageView imageView = ImageHandler.createImageView(path, fitHeightWidth, fitHeightWidth);
+        imageView.setFitHeight(fitHeightWidth);
+        imageView.setFitWidth(fitHeightWidth);
         checkPointsHBox.getChildren().add(imageView);
     }
 
@@ -270,7 +283,7 @@ public class PlayerMatController extends Controller{
      * Otherwise, the amount is subtracted from the current number.
      * @param amount
      */
-    private void setProgrammingDeckCounter(int amount){
+    public void setProgrammingDeckCounter(int amount){
         if(amount == playerCards){
             programmingDeckNr = playerCards;
             programmingDeckLabel.setText(amount + "cards");
