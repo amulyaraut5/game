@@ -212,6 +212,7 @@ public class ProgrammingPhase extends Phase {
             player.message(new DiscardHand(player.getID()));
 
             //Take 5 cards from the draw Deck and put them down in random order
+            drawProgrammingCards(5, player);
             fillRegisters(player);
 
             //save the CardNames of cards to send them in CardsYouGotNow
@@ -236,7 +237,6 @@ public class ProgrammingPhase extends Phase {
      */
 
     private void fillRegisters(Player player) {
-        drawProgrammingCards(5, player);
         Random random = new Random();
         for (int register = 1; register < 6; register++) {
             ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
@@ -244,6 +244,7 @@ public class ProgrammingPhase extends Phase {
             //choose a card depending on a randomly generated index
             Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
             if (register == 1 && randomElement.getName() == CardType.Again) {
+                register--;
                 fillRegisters(player);
             }
             player.setRegisterCards(register, randomElement);
