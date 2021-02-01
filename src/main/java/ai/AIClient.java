@@ -30,7 +30,7 @@ public class AIClient {
     private final Client client = Client.getInstance();
     private int thisPlayersID;
     private Map map;
-    private GameState activePhase;
+    private GameState currentPhase = GameState.CONSTRUCTION;
 
     /**
      * creates a set containing all combinations and their permutations
@@ -108,7 +108,7 @@ public class AIClient {
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
-                gameStarted(gameStarted);
+                map = MapConverter.reconvert(gameStarted);
             }
             case StartingPointTaken -> {
                 StartingPointTaken msg = (StartingPointTaken) message.getBody();
@@ -118,7 +118,7 @@ public class AIClient {
             }
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
-                activePhase = msg.getPhase();
+                currentPhase = msg.getPhase();
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -174,19 +174,18 @@ public class AIClient {
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             case CurrentPlayer -> {
                 CurrentPlayer msg = (CurrentPlayer) message.getBody();
+
                 if (msg.getPlayerID() == thisPlayersID) {
-                    client.sendMessage(new PlayIt());
+                    if (currentPhase == GameState.CONSTRUCTION) {
+                        int[] startingPoints = {39, 78, 14, 53, 66, 105};
+                        for (int point : startingPoints) {
+                            client.sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
+                        }
+                    } else if (currentPhase == GameState.ACTIVATION) {
+                        client.sendMessage(new PlayIt());
+                    }
                 }
             }
-        }
-    }
-
-    private void gameStarted(GameStarted gameStarted) {
-        map = MapConverter.reconvert(gameStarted);
-        int[] startingPoints = {39, 78, 14, 53, 66, 105};
-
-        for (int i : startingPoints) {
-            client.sendMessage(new SetStartingPoint(i));
         }
     }
 
@@ -206,7 +205,7 @@ public class AIClient {
 
         for (CardType[] cards : combinations) {
             Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-            //logger.trace(cards[0] + " " + cards[1] + " " + cards[2] + " " + cards[3] + " " + cards[4] + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
+            //logger.trace(Arrays.toString(cards) + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
             possiblePositions.put(cards, resPos);
         }
 
