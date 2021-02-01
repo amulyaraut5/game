@@ -41,7 +41,7 @@ public class ActivationPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private Map map = game.getMap();
+    private final Map map = game.getMap();
 
     // TODO when we transfer StartBoard: private ArrayList<Player> priorityList;
 
@@ -321,9 +321,15 @@ public class ActivationPhase extends Phase {
                 Wall temp = (Wall) a;
                 if (!(temp.getOrientations() == null)) {
                     for (Orientation orientation : temp.getOrientations()) {
-                        if (orientation == o) canMove = false;
+                        if (orientation == o) {
+                            canMove = false;
+                            break;
+                        }
                     }
                 }
+            }
+            if(a.getType() == AttributeType.Antenna){
+                canMove = false;
             }
         }
         return !canMove;
