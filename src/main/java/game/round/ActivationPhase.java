@@ -98,12 +98,19 @@ public class ActivationPhase extends Phase {
         RegisterCard playerRegisterCard = currentCards.get(0);
 
         //if its this players turn his card is activated
+        outerLoop:
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
             handleCard(currentCard, game.getPlayerFromID(playerID));
             currentCards.remove(0);
 
             //if he was the last player to send the PlayIt() protocol for this register the board is activated
+            if(activePlayers.isEmpty()){
+                activePlayers.addAll(rebootedPlayers);
+                rebootedPlayers.clear();
+                game.nextPhase();
+                break outerLoop;
+            }
             if (currentCards.isEmpty()) {
                 endOfRound();
             } else {
@@ -116,17 +123,16 @@ public class ActivationPhase extends Phase {
 
     public void endOfRound() {
         activateBoard();
-        //throw new UnsupportedOperationException();
-        if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+
+       if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
             currentRegister++;
             turnCards(currentRegister);
-        } else { //if it is already the 5th register the next phase is called
-
-            if (rebootedPlayers != null) {
-                activePlayers.addAll(rebootedPlayers);
-                rebootedPlayers.clear();
-            }
-            game.nextPhase();
+       }else { //if it is already the 5th register the next phase is called
+           if (rebootedPlayers != null) {
+               activePlayers.addAll(rebootedPlayers);
+               rebootedPlayers.clear();
+           }
+           game.nextPhase();
         }
     }
 
@@ -332,10 +338,14 @@ public class ActivationPhase extends Phase {
 
     public void handleTile(Player player) {
         if (player.getRobot().getCoordinate().isOutsideMap()) {
+            rebootedPlayers.add(player);
+            activePlayers.remove(player);
             new RebootAction().doAction(Orientation.LEFT, player);
         } else {
             for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 if (a.getType() == AttributeType.Pit) {
+                    rebootedPlayers.add(player);
+                    activePlayers.remove(player);
                     new RebootAction().doAction(Orientation.LEFT, player);
                 } else {
                     server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));

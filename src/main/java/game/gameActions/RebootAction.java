@@ -28,14 +28,14 @@ public class RebootAction extends Action {
      */
     @Override
     public void doAction(Orientation orientation, Player player) {
-        ArrayList<Player> activePlayers = game.getActivationPhase().getActivePlayers();
+        //ArrayList<Player> activePlayers = game.getActivationPhase().getActivePlayers();
         ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 
-        ArrayList<Player> allPlayers = new ArrayList<>();
-        allPlayers.addAll(activePlayers);
-        allPlayers.addAll(rebootedPlayers);
+        //ArrayList<Player> allPlayers = new ArrayList<>();
+       // allPlayers.addAll(activePlayers);
+       // allPlayers.addAll(rebootedPlayers);
 
-        rebootedPlayers.add(player);
+        //rebootedPlayers.add(player);
         //Draw two spam cards
         game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
 
@@ -51,7 +51,7 @@ public class RebootAction extends Action {
         } else if (player.getRobot().getOrientation() == Orientation.RIGHT){
             server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
         }
-        player.getRobot().setOrientation(Orientation.UP); //TODO robots must face north
+        player.getRobot().setOrientation(Orientation.LEFT); //TODO robots must face north
         player.getRobot().setCoordinate(map.getRestartPoint());
         int restartPos = map.getRestartPoint().toPosition();
 
@@ -65,16 +65,16 @@ public class RebootAction extends Action {
                 robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
                 server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
                 server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
-                game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
+                game.getActivationPhase().handleMove(robotOnReboot, orientation);
             }
         }
 
-        activePlayers.remove(player);
+        /*activePlayers.remove(player);
 
         if (activePlayers.isEmpty()) {
             activePlayers.addAll(rebootedPlayers);
             rebootedPlayers.clear();
             game.nextPhase();
-        }
+        }*/
     }
 }
