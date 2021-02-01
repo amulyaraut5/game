@@ -114,7 +114,9 @@ public class ActivationElements {
                     for (Attribute a : tile.getAttributes()) {
                         for (int i : ((PushPanel) a).getRegisters()) {
                             if (i == activationPhase.getCurrentRegister()) {
-                                new MoveRobot().doAction(((PushPanel) a).getOrientation(), player);//FIXME I think we should use the handleMove method instead because MoveRobot is deprecated? -simon
+                                //new MoveRobot().doAction(((PushPanel) a).getOrientation(), player);
+                                activationPhase.handleMove(player, ((PushPanel) a).getOrientation());
+                                //FIXME I think we should use the handleMove method instead because MoveRobot is deprecated? -simon
                             }
                         }
                     }
@@ -263,15 +265,11 @@ public class ActivationElements {
             oldPositions.add(player.getRobot().getCoordinate().clone());
         }
 
-
-
-
-
-
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
         for (int j = 0; j < actionFinished.size(); j++) {
             actionFinished.set(j, false);
         }
+
         for(Player player : playersOnBelt){
             boolean stillOnBelt = false;
             for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
@@ -290,9 +288,8 @@ public class ActivationElements {
                     }
                 }
             }
+
             handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
-
 
         for (Player p : playersOnBelt) {
             if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {

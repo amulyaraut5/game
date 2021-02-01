@@ -220,13 +220,19 @@ public class ActivationPhase extends Phase {
                     handleMove(player, orientation);
             case MoveII -> {
                 handleMove(player, orientation);
-                handleMove(player, orientation);
+                if(!isRebooting(player)){
+                    handleMove(player, orientation);
+                }
                 //logger.info(player.getName() + " moved two Tiles.");
             }
             case MoveIII -> {
                 handleMove(player, orientation);
-                handleMove(player, orientation);
-                handleMove(player, orientation);
+                if(!isRebooting(player)){
+                    handleMove(player, orientation);
+                }
+                if(!isRebooting(player)){
+                    handleMove(player, orientation);
+                }
                 //logger.info(player.getName() + " moved three Tiles.");
             }
             case TurnLeft -> {
@@ -333,6 +339,7 @@ public class ActivationPhase extends Phase {
                     new RebootAction().doAction(Orientation.LEFT, player);
                 } else {
                     server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
+
                 }
             }
         }
@@ -532,6 +539,16 @@ public class ActivationPhase extends Phase {
             cardTypes.add(cardType);
         }
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
+    }
+
+    public boolean isRebooting(Player player){
+        boolean isRebooting = false;
+        for (Player player1 : rebootedPlayers) {
+            if(player1  ==  player1){
+                isRebooting = true;
+            }
+        }
+        return isRebooting;
     }
 
     public ArrayList<Player> getPriorityList() {
