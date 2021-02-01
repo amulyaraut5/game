@@ -148,6 +148,9 @@ public class ActivationPhase extends Phase {
             }
         }
         currentCards.remove(temp);
+        Player player = game.getPlayerFromID(playerID);
+        activePlayers.remove(player);
+        rebootedPlayers.remove(player);
         for (RegisterCard rc : currentCards) {
             logger.info(rc.getPlayerID());
             logger.info(rc.getCard());
