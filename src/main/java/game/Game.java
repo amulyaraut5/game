@@ -22,6 +22,8 @@ import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
+import utilities.enums.Orientation;
+import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 
@@ -96,7 +98,6 @@ public class Game {
         }
     }
 
-
     /**
      * This method gets called from the phases, it calls the next phase
      */
@@ -163,10 +164,32 @@ public class Game {
                     server.communicateAll(new Movement(user.getID(), coordinate.toPosition()));
                 }
             }
+            case "#r" -> {
+                Robot robot = userToPlayer(user).getRobot();
+                if (cheatInfo.length == 1) {
+                    Orientation orientation = robot.getOrientation();
+                    switch (cheatInfo[0]) {
+                        case "u" -> orientation = Orientation.UP;
+                        case "r" -> orientation = Orientation.RIGHT;
+                        case "d" -> orientation = Orientation.DOWN;
+                        case "l" -> orientation = Orientation.LEFT;
+                    }
+                    Orientation robotO = robot.getOrientation();
+                    if (orientation == robotO.getOpposite()) {
+                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.RIGHT));
+                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.RIGHT));
+                    } else if (orientation == robotO.getNext()) {
+                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.RIGHT));
+                    } else if (orientation == robotO.getPrevious()) {
+                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.LEFT));
+                    }
+                    robot.setOrientation(orientation);
+                }
+            }
             case "#damage" -> {
-                if (cheatInfo.length == 0 )
+                if (cheatInfo.length == 0)
                     server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
-                else if(getActivationPhase()== null)
+                else if (getActivationPhase() == null)
                     server.communicateDirect(new Error("your cheat is invalid in this phase"), user.getID());
                 else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
@@ -189,15 +212,16 @@ public class Game {
                         ----------------------------------------
                         Cheats
                         ----------------------------------------
-                        #cheats         | lists all cheats
-                        #activateBoard  | activates the board
-                        #endTimer       | ends the timer
-                        #tp <position>  | teleports the robot
-                        #tp <x> <y>     | teleports the robot
-                        #damage <x>     | deals given number of spam cards
-                        #autoPlay       | autoplay activation phase
-                        #emptySpam      | empties the Spam deck
-                        #win            | player wins the game
+                        #cheats            |  lists all cheats
+                        #tp <pos>       |  teleports the robot
+                        #tp <x> <y>    |  teleports the robot
+                        #r <u,r,d,l>       |  rotates up, right...
+                        #endTimer        |  ends the timer
+                        #autoPlay         |  autoplays all PlayIt
+                        #activateBoard |  activates the board
+                        #damage <n>  |  deals spam cards
+                        #emptySpam    |  empties the Spam deck
+                        #win                  |  player wins the game
                         ----------------------------------------
                         """;
                 user.message(new ReceivedChat(cheats, user.getID(), false));

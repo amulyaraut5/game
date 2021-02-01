@@ -85,9 +85,8 @@ public class LaserAction {
                 Wall wall = (Wall) a;
                 for (Orientation wallOrientation : wall.getOrientations()) {
                     if (wallOrientation == orientation) {
-                        System.out.println("WALL ON FIRST TILE");
+                        return true;
                     }
-                    return true;
                 }
             }
         }
