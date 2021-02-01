@@ -40,25 +40,26 @@ public class PlayerMatController extends Controller{
     private AnchorPane playerMapAnchorPane;
     @FXML
     private Label discardDeckLabel; //TODO ?
-    private int discardDeckNr = 0;
     @FXML
-    public Label programmingDeckLabel;
-    public Label playerMatInfoLabel;
-    private int programmingDeckNr = 20;
-    private int playerCards = 20;
+    private Label programmingDeckLabel;
+    @FXML
+    private Label playerMatInfoLabel;
     @FXML
     private HBox energyHBox;
-    public HBox energyHBox2;
+    @FXML
+    private HBox energyHBox2;
 
-    private boolean eventOn = true;
+    private int discardDeckNr = 0;
+    private int programmingDeckNr = 20;
+    private int playerCards = 20;
     private double widthRegisterCard;
     private double heightRegisterCard;
-
-
-
     private Image energyCubeImage;
-    public void initialize() {
+    private ImageView droppedImageView;
+    private int positionDroppedCard;
+    private boolean againNotFirst;
 
+    public void initialize() {
         energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
         energyHBox.setSpacing(5);
         energyHBox2.setSpacing(5);
@@ -71,14 +72,9 @@ public class PlayerMatController extends Controller{
         createRegisterBackground();
         createRegisters();
 
-        //addDropHandling(registerHBox);
-
-        //eventOn = true;
     }
 
-    private ImageView droppedImageView;
-    private int positionDroppedCard;
-    private boolean againNotFirst;
+
     protected void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> { setOnDragOver(e, pane); });
         pane.setOnDragExited(e -> { setOnDragExited(e, pane); });
@@ -116,7 +112,6 @@ public class PlayerMatController extends Controller{
 
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
             ImageView imageView = programmingCardImageView;
-
             imageView.setOnDragDetected(event-> {
                 setWasFormerRegister(true);
                 Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
@@ -134,7 +129,6 @@ public class PlayerMatController extends Controller{
 
     public void reset(){
         registerHBox.getChildren().clear();
-        eventOn = true;
         createRegisters();
         createRegisterBackground();
     }
@@ -146,7 +140,6 @@ public class PlayerMatController extends Controller{
             StackPane pane = new StackPane();
             pane.setPrefHeight(heightRegisterCard);
             pane.setPrefWidth(widthRegisterCard-20);
-            pane.setStyle("-fx-border-color: blue;");
             addDropHandling(pane);
             registerHBox.getChildren().add(pane);
         }
@@ -220,12 +213,11 @@ public class PlayerMatController extends Controller{
 
     public void checkPointReached(int number){
         int fitHeightWidth;
-        String controlPoint = String.valueOf(number);
-        ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/controlPoint/controlPoint_" + controlPoint + ".png").toString()));
+        String path = "/tiles/controlPoint/controlPoint_" + number + ".png";
         if(checkPointsHBox.getChildren().size()<4) fitHeightWidth = 35;
         else{
             for (Node node : checkPointsHBox.getChildren()) {
-                if (node.getClass().equals(imageView.getClass())) {
+                if (node.getClass().equals(ImageView.class)) {
                     ImageView im = (ImageView) node;
                     im.setFitWidth(20);
                     im.setFitHeight(20);
@@ -233,8 +225,7 @@ public class PlayerMatController extends Controller{
             }
             fitHeightWidth = 20;
         }
-        imageView.setFitHeight(fitHeightWidth);
-        imageView.setFitWidth(fitHeightWidth);
+        ImageView imageView = ImageHandler.createImageView(path, fitHeightWidth, fitHeightWidth);
         checkPointsHBox.getChildren().add(imageView);
     }
 
@@ -272,7 +263,7 @@ public class PlayerMatController extends Controller{
             discardDeckNr = 0;
             discardDeckLabel.setText(amount + "cards");
         } else {
-            discardDeckNr = discardDeckNr + amount;
+            discardDeckNr += amount;
             discardDeckLabel.setText(discardDeckNr + " cards");
         }
     }
