@@ -205,7 +205,7 @@ public class GameController extends Controller implements Updatable {
 
     public void setDrawDamage(DrawDamage drawDamage) {
         drawDamageHBox.getChildren().clear();
-        drawDamageAnchorPane.setVisible(true);
+
         drawDamageLabel.setText("You got damage! ");
         for (int i = 0; i < drawDamage.getCards().size(); i++) {
             String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
@@ -214,6 +214,19 @@ public class GameController extends Controller implements Updatable {
             damage.setFitHeight(50);
             drawDamageHBox.getChildren().add(damage);
         }
+
+        Platform.runLater(() -> drawDamageAnchorPane.setVisible(true));
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (drawDamageAnchorPane.isVisible()) {
+                    Platform.runLater(() -> drawDamageAnchorPane.setVisible(false));
+                }
+                t.cancel();
+            }
+        }, 2000);
+        /*
         Timer timer = new Timer();
         interval = 5;
         timer.schedule(new TimerTask() {
@@ -221,10 +234,11 @@ public class GameController extends Controller implements Updatable {
                 if (interval > 0) interval--;
                 else {
                     timer.cancel();
+
                     drawDamageAnchorPane.setVisible(false);
                 }
             }
-        }, 1000, 1000);
+        }, 1000, 1000);*/
     }
 
     /**
