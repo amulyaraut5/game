@@ -48,6 +48,10 @@ public class Map {
                     }
                 }
             }
+            if(a.getType()  == AttributeType.Antenna){
+                canMove = false;
+                break;
+            }
         }
         return !canMove;
     }
