@@ -20,7 +20,6 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerValues;
 import utilities.Updatable;
 
-
 /**
  * This class controls the loginView.fxml view, it takes the name and the chosen robot, sends it to
  * client and switches to the game view
@@ -35,10 +34,7 @@ public class LoginController extends Controller implements Updatable {
      * can be recognized
      */
     private final ObservableList<Figure> figures = FXCollections.observableArrayList();
-    /**
-     * this list stores the different robots (with name and id)
-     */
-    private final ObservableList<RobotPrivate> robotList = FXCollections.observableArrayList();
+
     @FXML
     private TextField textUserName;
     /**
@@ -98,11 +94,8 @@ public class LoginController extends Controller implements Updatable {
             String path = "/lobby/" + robotNames[i] + ".png";
             robot = ImageHandler.createImageView(path, 50, 50);
 
-            RobotPrivate robotPrivate = new RobotPrivate(robotNames[i], i);
-            robotList.add(robotPrivate);
             figures.add(new Figure(robot));
         }
-
     }
 
     /**
@@ -130,8 +123,8 @@ public class LoginController extends Controller implements Updatable {
 
     public void removePlayer(Player player) {
         int i = 0;
-        for(Figure figure : figures){
-            if(figure.getPlayerID() == player.getID()) {
+        for (Figure figure : figures) {
+            if (figure.getPlayerID() == player.getID()) {
                 figure.setTaken(false);
                 i = figures.indexOf(figure);
                 figures.set(i, figure);
@@ -139,11 +132,13 @@ public class LoginController extends Controller implements Updatable {
         }
     }
 
-    public void ignorePlayer(Player player){
-        for(Figure figure : figures){
-            if(figure.getPlayerID() == player.getID()) figure.getImageView().setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+    public void ignorePlayer(Player player) {
+        for (Figure figure : figures) {
+            if (figure.getPlayerID() == player.getID())
+                figure.getImageView().setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
         }
     }
+
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -175,12 +170,12 @@ public class LoginController extends Controller implements Updatable {
             return imageView;
         }
 
-        public void setPlayerID(int playerID) {
-            this.playerID = playerID;
-        }
-
         public int getPlayerID() {
             return playerID;
+        }
+
+        public void setPlayerID(int playerID) {
+            this.playerID = playerID;
         }
     }
 }

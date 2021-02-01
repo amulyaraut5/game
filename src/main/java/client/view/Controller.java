@@ -17,17 +17,9 @@ public abstract class Controller {
     private static int positionRegister;
     private static ImageView programmingImageView;
     private static boolean wasFormerRegister = false;
-    /**
-     * instance of the ViewManager to call the next or previous scene
-     */
+
     protected ViewManager viewManager = ViewManager.getInstance();
-    /**
-     * instance of the client to transfer inputs
-     */
     protected Client client = Client.getInstance();
-    /**
-     * it stores a list of names of the robots
-     */
 
     protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
@@ -61,32 +53,5 @@ public abstract class Controller {
 
     protected void setPosition(int position) {
         positionRegister = position;
-    }
-
-    /**
-     * This private class represents a robot with its name and id
-     */
-    protected class RobotPrivate {
-        private final int id;
-        private final String name;
-
-        /**
-         * constructor of RobotPrivate
-         *
-         * @param robotName of the robot
-         * @param robotId   of the robot
-         */
-        public RobotPrivate(String robotName, int robotId) {
-            id = robotId;
-            name = robotName;
-        }
-
-        protected String getRobotName() {
-            return name;
-        }
-
-        protected int getRobotID() {
-            return id;
-        }
     }
 }
