@@ -28,7 +28,7 @@ public class ProgrammingPhase extends Phase {
     /**
      * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
      */
-    private ArrayList<Player> notReadyPlayers = new ArrayList<>();
+    private final ArrayList<Player> notReadyPlayers = new ArrayList<>();
     private boolean timerFinished = false;
 
     /**
@@ -62,7 +62,6 @@ public class ProgrammingPhase extends Phase {
             player.message(new YourCards(cards, player.getID()));
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
-
     }
 
     /**
@@ -151,7 +150,6 @@ public class ProgrammingPhase extends Phase {
         }
         //TODO if a player doesn't play this round use isFinished?
     }
-
 
     /**
      * Starts a 30 second timer when the first player filled all 5 registers.
@@ -270,5 +268,9 @@ public class ProgrammingPhase extends Phase {
             server.communicateAll(new ShuffleCoding(player.getID()));
             player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeckSize));
         }
+    }
+
+    public ArrayList<Player> getNotReadyPlayers() {
+        return notReadyPlayers;
     }
 }

@@ -3,8 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class CardPlayed extends JSONBody {
-    private int playerID;
-    private String card;
+    private final int playerID;
+    private final String card;
 
     public CardPlayed(int playerID, String card) {
         this.playerID = playerID;
@@ -18,5 +18,4 @@ public class CardPlayed extends JSONBody {
     public String getCard() {
         return card;
     }
-
 }

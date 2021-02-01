@@ -39,7 +39,7 @@ public class User {
      * @return true if they are the same user, otherwise false
      */
     public boolean equals(User a) {
-        return this.thread == a.thread;
+        return thread == a.thread;
     }
 
     /**

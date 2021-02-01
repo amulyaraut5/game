@@ -49,10 +49,10 @@ public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
-    private ArrayList<Player> players = client.getPlayers();
-    private ArrayList<Player> rebootingPlayers = new ArrayList<>();
-    private ArrayList<Coordinate> path = new ArrayList<>();
-    private HashMap<Player, ImageView> robotTokens = new HashMap<>();
+    private final ArrayList<Player> players = client.getPlayers();
+    private final ArrayList<Player> activePlayers = new ArrayList<>();
+    private final ArrayList<Coordinate> path = new ArrayList<>();
+    private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
@@ -142,7 +142,7 @@ public class GameController extends Controller implements Updatable {
             client.sendMessage(new SetStartingPoint(position));
         });
 
-        this.soundHandler = new SoundHandler();
+        soundHandler = new SoundHandler();
     }
 
     public void attachChatPane(Pane chat) {
@@ -205,7 +205,7 @@ public class GameController extends Controller implements Updatable {
 
     public void setDrawDamage(DrawDamage drawDamage) {
         drawDamageHBox.getChildren().clear();
-        drawDamageAnchorPane.setVisible(true);
+
         drawDamageLabel.setText("You got damage! ");
         for (int i = 0; i < drawDamage.getCards().size(); i++) {
             String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
@@ -214,6 +214,19 @@ public class GameController extends Controller implements Updatable {
             damage.setFitHeight(50);
             drawDamageHBox.getChildren().add(damage);
         }
+
+        Platform.runLater(() -> drawDamageAnchorPane.setVisible(true));
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (drawDamageAnchorPane.isVisible()) {
+                    Platform.runLater(() -> drawDamageAnchorPane.setVisible(false));
+                }
+                t.cancel();
+            }
+        }, 2000);
+        /*
         Timer timer = new Timer();
         interval = 5;
         timer.schedule(new TimerTask() {
@@ -221,10 +234,11 @@ public class GameController extends Controller implements Updatable {
                 if (interval > 0) interval--;
                 else {
                     timer.cancel();
+
                     drawDamageAnchorPane.setVisible(false);
                 }
             }
-        }, 1000, 1000);
+        }, 1000, 1000);*/
     }
 
     /**
@@ -310,7 +324,6 @@ public class GameController extends Controller implements Updatable {
                 imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
                 imageView.setPreserveRatio(true);
 
-
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
                     switch (orientation) {
@@ -340,7 +353,6 @@ public class GameController extends Controller implements Updatable {
                     path.clear();
                 }
             }
-
         }
     }
 
@@ -388,10 +400,7 @@ public class GameController extends Controller implements Updatable {
             sequentialTransition.play();
             path.clear();
         }
-
-
     }
-
 
     public ProgrammingController getProgrammingController() {
         return programmingController;
@@ -461,10 +470,11 @@ public class GameController extends Controller implements Updatable {
                 }
                 getPlayerMatController().resetDeckCounter(9);
 
-                if (rebootingPlayers != null) {
-                    players.addAll(rebootingPlayers);
-                    rebootingPlayers.clear();
+                activePlayers.addAll(players);
+                for (Player player : activePlayers) {
+                    //logger.info("Inside GameState:" + player.getID());
                 }
+
                 phasePane.setCenter(programmingPane);
                 othersController.visibleHBoxRegister(true);
             }
@@ -475,10 +485,7 @@ public class GameController extends Controller implements Updatable {
                 first = false;
             }
         }
-
     }
-
-
 
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
@@ -503,12 +510,12 @@ public class GameController extends Controller implements Updatable {
 
     @FXML
     private void soundsOnAction() {
-        this.soundHandler.musicOn();
+        soundHandler.musicOn();
     }
 
     @FXML
     private void soundsOffAction() {
-        this.soundHandler.musicOff();
+        soundHandler.musicOff();
     }
 
     public PlayerMatController getPlayerMatController() {
@@ -518,7 +525,8 @@ public class GameController extends Controller implements Updatable {
     public void removePlayer(Player player) {
         ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
-        othersController.removePlayer(player);
+        if (client.getCurrentController().equals(this)) othersController.removePlayer(player);
+
     }
 
     public void handleDamageCount(ArrayList<CardType> cardList) {
@@ -552,25 +560,22 @@ public class GameController extends Controller implements Updatable {
         return countVirusCards;
     }
 
-
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                Timer timer = new Timer();
-                interval = 15;
-                timer.schedule(new TimerTask() {
+                Platform.runLater(() -> infoLabel.setText(error.getError()));
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+                    @Override
                     public void run() {
-                        if(interval > 0 ){
-                            Platform.runLater(() -> infoLabel.setText(error.getError()));
-                            interval--;
-                        } else{
-                            timer.cancel();
+                        if (infoLabel.getText().equals(error.getError())) {
                             Platform.runLater(() -> infoLabel.setText(" "));
                         }
+                        t.cancel();
                     }
-                }, 1000,1000);
+                }, 2000);
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
@@ -615,13 +620,24 @@ public class GameController extends Controller implements Updatable {
                 getActivationController().pickDamage(pickDamage, this);
             }
             case PlayerShooting -> {
-                handleShooting(players);
-                handleRobotShooting(players);
+                if (activePlayers.isEmpty()) {
+                    logger.info("No active players");
+                } else {
+                    handleShooting(activePlayers);
+                    handleRobotShooting(activePlayers);
+                }
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-                rebootingPlayers.add(client.getPlayerFromID(reboot.getPlayerID()));
-                players.remove(client.getPlayerFromID(reboot.getPlayerID()));
+                Player player = client.getPlayerFromID(reboot.getPlayerID());
+                //rebootingPlayers.add(player);
+                activePlayers.remove(player);
+                for (Player player1 : activePlayers) {
+                    logger.info("Inside Reboot:" + player1.getID());
+                }
+                if (activePlayers.isEmpty()) {
+                    logger.info("empty");
+                }
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -639,9 +655,8 @@ public class GameController extends Controller implements Updatable {
             case TimerEnded -> {
                 getProgrammingController().setTimerEnded(true);
                 getPlayerMatController().setDiscardDeckCounter(4);
-                if(!allRegistersAsFirst) getPlayerMatController().fixSelectedCards();
-                allRegistersAsFirst  =false; //TODO everything that is round related
-
+                if (!allRegistersAsFirst) getPlayerMatController().fixSelectedCards();
+                allRegistersAsFirst = false; //TODO everything that is round related
             }
             case CurrentCards -> {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -667,7 +682,6 @@ public class GameController extends Controller implements Updatable {
                         }
                     }
                 }
-
             }
             case CurrentPlayer -> {
                 CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
@@ -680,10 +694,6 @@ public class GameController extends Controller implements Updatable {
                     getOthersController().setInfoLabel(currentPlayer, isThisPlayer);
                 }
             }
-                /*case Reboot -> {
-                    Reboot reboot = (Reboot) message.getBody();
-                    // TODO display the message
-                }*/
             case Energy -> {
                 Energy energy = (Energy) message.getBody();
                 if (energy.getPlayerID() == client.getThisPlayersID()) {
@@ -728,6 +738,7 @@ public class GameController extends Controller implements Updatable {
                 phasePane.setCenter(gameWonPane);
                 getGameWonController().setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
             }
+
         }
     }
 

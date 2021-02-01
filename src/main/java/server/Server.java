@@ -1,6 +1,8 @@
 package server;
 
 import game.Game;
+import game.Player;
+import game.round.ConstructionPhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -32,16 +34,13 @@ public class Server extends Thread {
     private final ArrayList<User> users = new ArrayList<>(10); //all Users
     private final ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
+    private final HashMap<User, Boolean> userIsNotAI = new HashMap<>();
+    private final ArrayList<User> AIs = new ArrayList<>();
+    private final ArrayList<User> notAIs = new ArrayList<>();
     private Game game;
     private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
-
     private ServerState serverState = ServerState.LOBBY;
-
     private boolean isMapSelected = false;
-
-    private HashMap<User, Boolean> userIsNotAI = new HashMap<>();
-    private ArrayList<User> AIs = new ArrayList<>();
-    private ArrayList<User> notAIs = new ArrayList<>();
     private boolean isMapSent = false;
 
     /**
@@ -86,7 +85,7 @@ public class Server extends Thread {
             while (!isInterrupted()) {
                 synchronized (this) {
                     try {
-                        this.wait();
+                        wait();
                     } catch (InterruptedException e) {
                         logger.warn(e.getMessage());
                     }
@@ -117,7 +116,7 @@ public class Server extends Thread {
                 isValid = gameState.getAllowedMessages().contains(type);
                 if (!isValid) {
                     queueMessage.getUser().message(new Error("The game has already started, you can't join anymore!"));
-                    state += " " + gameState.toString();
+                    state += " " + gameState;
                 }
             }
         }
@@ -155,9 +154,9 @@ public class Server extends Thread {
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
 
-                if (!status.isReady()) this.isMapSent = false;
+                if (!status.isReady()) isMapSent = false;
 
-                //if(user.getID()==1) user.message(new SelectMap(maps)); //TODO instead of user with first id: use first user who is ready
+                //TODO instead of user with first id: use first user who is ready
                 if (!isMapSent) {
                     outerLoop:
                     for (User user1 : notAIs) {
@@ -174,7 +173,7 @@ public class Server extends Thread {
                 }
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
 
-                if (allUsersReady && this.isMapSelected) {
+                if (allUsersReady && isMapSelected) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
@@ -185,7 +184,6 @@ public class Server extends Thread {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
-
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -210,14 +208,13 @@ public class Server extends Thread {
                 if (!isMapSelected) {
                     MapSelected selectMap = (MapSelected) message.getBody();
                     game.handleMapSelection(selectMap.getMap());
-                    this.isMapSelected = true;
+                    isMapSelected = true;
                 } else communicateAll(new Error("Map has already been selected"));
 
                 if ((readyUsers.size() == users.size()) && readyUsers.size() > 1) {
                     game.play();
                     serverState = ServerState.RUNNING_GAME;
                 }
-
             }
             case SelectDamage -> {
                 logger.info("selectDamage empfangen");
@@ -271,21 +268,19 @@ public class Server extends Thread {
         if (hs.getProtocol() == Utilities.PROTOCOL) {
             user.setID(idCounter++);
             currentThread().setName("UserThread-" + user.getID());
-            if (hs.isAI() == true) {
+            if (hs.isAI()) {
                 AIs.add(user);
             } else notAIs.add(user);
 
             for (User u : users) {
                 if (u.getName() != null) {
                     user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
-
                 }
             }
             for (User readyUser : readyUsers) {
                 user.message(new PlayerStatus(readyUser.getID(), true));
             }
             user.message(new Welcome(user.getID()));
-
         } else {
             JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
                     "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
@@ -330,7 +325,6 @@ public class Server extends Thread {
     public ArrayList<User> getUsers() {
         return users;
     }
-
 
     /**
      * Adds a user to the list of ready users if they are ready, or removes them if not.
@@ -392,6 +386,43 @@ public class Server extends Thread {
      * @param user User to be removed
      */
     public void removeUser(User user) {
+        logger.info("removeUser reached");
+        game.getPlayers().remove(game.userToPlayer(user));
+        //TODO
+        /*
+        if(game.getGameState() == GameState.CONSTRUCTION){
+            communicateAll(new ActivePhase(GameState.CONSTRUCTION));
+            new ConstructionPhase();
+            if(game.getConstructionPhase().getCurrentPlayer() == game.userToPlayer(user)){
+                logger.info("Construction IF");
+                communicateAll(new CurrentPlayer(currentPlayer.getID()));
+            }
+        }
+
+         */
+        if(game.getGameState() == GameState.PROGRAMMING) {
+            logger.info("removeuser IF");
+            Player temp = null;
+            for(Player player : game.getProgrammingPhase().getNotReadyPlayers()){
+                if(player.getID() == user.getID()){
+                    temp = player;
+                }
+            }
+            game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+            communicateAll(new SelectionFinished(user.getID()));
+            logger.info("removeuser IF" +  game.getProgrammingPhase().getNotReadyPlayers());
+            if(game.getProgrammingPhase().getNotReadyPlayers().isEmpty()){
+                game.getProgrammingPhase().endProgrammingTimer();
+
+            }
+        }
+        if(game.getGameState() == GameState.ACTIVATION) {
+            logger.info("if statement reached");
+            int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
+            Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);
+            game.getActivationPhase().removeCurrentCards(user.getID());
+        }
+
         readyUsers.remove(user);
         users.remove(user);
 
@@ -400,7 +431,7 @@ public class Server extends Thread {
         if (users.size() == 0) {
             interrupt();
             synchronized (this) {
-                this.notify();
+                notify();
             }
         }
     }

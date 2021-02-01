@@ -21,7 +21,7 @@ public class DiscardDeck extends Deck {
      */
     @Override
     public void createDeck() {
-        this.discardDeck = new ArrayList<>();
+        discardDeck = new ArrayList<>();
     }
 
     @Override

@@ -2,7 +2,6 @@ package ai;
 
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.*;
-import game.round.ActivationPhase;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -11,12 +10,11 @@ import utilities.enums.Orientation;
 import java.util.ArrayList;
 
 public class MoveSimulator {
-    private AIClient aiClient;
-
+    private final AIClient aiClient;
+    private final Map map;
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
-    private Map map;
 
     public MoveSimulator(AIClient aiClient, Map map) {
         this.aiClient = aiClient;
@@ -32,7 +30,7 @@ public class MoveSimulator {
                 playCard(cards[i]);
                 activateBlueBelts();
                 activateGreenBelts();
-                //activatePushPanel();
+                activatePushPanel(i + 1);
                 activateGear();
             } else {
                 reboot = false;
@@ -40,23 +38,6 @@ public class MoveSimulator {
             }
         }
         return resPosition;
-    }
-
-    private void activatePushPanel() {
-        PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
-        if (pushPanel != null) {
-            //TODO implement
-        }
-    }
-
-    private void activateGear() {
-        Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
-        if (gear != null) {
-            switch (gear.getOrientation()) {
-                case LEFT -> resOrientation = resOrientation.getPrevious();
-                case RIGHT -> resOrientation = resOrientation.getNext();
-            }
-        }
     }
 
     private void playCard(CardType card) {
@@ -96,17 +77,18 @@ public class MoveSimulator {
             boolean canMove = true;
 
             //look for a blocking wall on current Tile
-            if (ActivationPhase.isWallBlocking(resPosition, orientation, map)) {
+            if (map.isWallBlocking(resPosition, orientation)) {
                 canMove = false;
             }
 
             //look for a blocking wall on new tile
             if (!newPos.isOutsideMap()) {
-                if (ActivationPhase.isWallBlocking(newPos, orientation.getOpposite(), map)) {
+                if (map.isWallBlocking(newPos, orientation.getOpposite())) {
                     canMove = false;
                 }
             }
-            if (!isRebooting(newPos)) {
+
+            if (canMove && !isRebooting(newPos)) {
                 resPosition = newPos;
             }
         }
@@ -136,7 +118,6 @@ public class MoveSimulator {
         handleBeltMovement(map.getBlueBelts());
     }
 
-
     private void handleBeltMovement(ArrayList<Coordinate> belts) {
         Orientation orientation = null;
         for (Coordinate coordinate : belts) {
@@ -148,12 +129,30 @@ public class MoveSimulator {
                     if (a.getType() == AttributeType.RotatingBelt) {
                         orientation = ((RotatingBelt) a).getOrientations()[0];
                     }
-
                     handleMove(orientation);
                 }
             }
         }
     }
 
+    private void activateGear() {
+        Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
+        if (gear != null) {
+            switch (gear.getOrientation()) {
+                case LEFT -> resOrientation = resOrientation.getPrevious();
+                case RIGHT -> resOrientation = resOrientation.getNext();
+            }
+        }
+    }
 
+    private void activatePushPanel(int i) {
+        PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
+        if (pushPanel != null) {
+            for (int register : pushPanel.getRegisters()) {
+                if (i == register) {
+                    handleMove(pushPanel.getOrientation());
+                }
+            }
+        }
+    }
 }

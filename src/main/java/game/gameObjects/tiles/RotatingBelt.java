@@ -2,8 +2,8 @@ package game.gameObjects.tiles;
 
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 /**
  * @author Amulya
@@ -11,19 +11,16 @@ import utilities.enums.AttributeType;
 
 public class RotatingBelt extends Attribute {
 
-
-    private Orientation[] orientations; // [0] = running direction, [1] = rotation direction
-    private boolean isCrossing; // true = crossing, false = curve
-    private int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
+    private final Orientation[] orientations; // [0] = running direction, [1] = rotation direction
+    private final boolean isCrossing; // true = crossing, false = curve
+    private final int speed; // 1 = Blue Conveyor, 2 = Green Conveyor
 
     public RotatingBelt(Orientation[] orientations, boolean isCrossing, int speed) {
         this.orientations = orientations;
         this.isCrossing = isCrossing;
         this.speed = speed;
-        this.type = AttributeType.RotatingBelt;
-
+        type = AttributeType.RotatingBelt;
     }
-
 
     @Override
     public Node createImage() {

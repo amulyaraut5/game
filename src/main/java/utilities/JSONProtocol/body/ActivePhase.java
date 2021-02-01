@@ -4,7 +4,7 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.enums.GameState;
 
 public class ActivePhase extends JSONBody {
-    private GameState phase; //0 => Aufbauphase, 1 => Upgradephase, 2 => Programmierphase, 3 => Aktivierungsphase
+    private final GameState phase; //0 => Aufbauphase, 1 => Upgradephase, 2 => Programmierphase, 3 => Aktivierungsphase
 
     public ActivePhase(GameState phase) {
         this.phase = phase;

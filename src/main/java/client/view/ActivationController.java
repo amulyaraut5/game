@@ -8,16 +8,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.PickDamage;
+import utilities.JSONProtocol.body.PlayIt;
+import utilities.JSONProtocol.body.SelectDamage;
 import utilities.enums.CardType;
+
 import java.util.ArrayList;
 
 /**
- *
  * @author sarah
  */
 
 public class ActivationController extends Controller {
+    private final ArrayList<CardType> pickedDamageCards = new ArrayList<>();
+    private GameController gameController;
+    private int pickDamage;
+    private int registerNr = 1;
 
     @FXML
     private Label register;
@@ -43,15 +49,11 @@ public class ActivationController extends Controller {
     private Button wormCardButton;
     @FXML
     private Label damageInfoLabel;
-    private GameController gameController;
-    private ArrayList<CardType> pickedDamageCards = new ArrayList<>();
-    private int pickDamage;
-    private int registerNr = 1;
 
     /**
      * This method resets the class and gets called at the start of activationPhase
      */
-    public void reset(){
+    public void reset() {
         registerNr = 1;
         playItButton.setDisable(true);
     }
@@ -67,46 +69,48 @@ public class ActivationController extends Controller {
     /**
      * This method gets called by getting protocol currentCards and displays current card of player
      * it also increases register number for view
+     *
      * @param cardType current card of the player
      */
-    public void currentCards(CardType cardType){
+    public void currentCards(CardType cardType) {
         currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + cardType + "-card.png").toString()));
         register.setText("Register " + registerNr);
-        registerNr ++;
+        registerNr++;
     }
 
     /**
      * This method displays if player is current player and sets play It button disable (or not)
+     *
      * @param turn
      */
-    public void currentPlayer(boolean turn){
-        if(turn){
+    public void currentPlayer(boolean turn) {
+        if (turn) {
             setInfoLabel("It's your turn! Click on the button to validate your card!");
             playItButton.setDisable(false);
         } else {
             setInfoLabel("It's not your turn");
             playItButton.setDisable(true);
         }
-
     }
+
     @FXML
-    private void playItButton(){
+    private void playItButton() {
         client.sendMessage(new PlayIt());
     }
 
-
-    private void setInfoLabel(String text){
+    private void setInfoLabel(String text) {
         infoLabel.setText(text);
     }
 
     /**
      * by getting protocol PickDamage the damageAnchorPane gets visible and it updates the
      * count numbers on the different damageButtons
+     *
      * @param pickDamage
-     * @param game gameController that called this method
+     * @param game       gameController that called this method
      */
-    public void pickDamage(PickDamage pickDamage, GameController game){
-        this.gameController = game;
+    public void pickDamage(PickDamage pickDamage, GameController game) {
+        gameController = game;
         playCardAnchorPane.setVisible(false);
         selectDamageAnchorPane.setVisible(true);
         updateDamageCountLabel();
@@ -114,33 +118,31 @@ public class ActivationController extends Controller {
         this.pickDamage = pickDamage.getCount();
     }
 
-
     @FXML
-    private void damageButtonClicked(ActionEvent actionEvent){
+    private void damageButtonClicked(ActionEvent actionEvent) {
         CardType clickedButton = null;
-        if(actionEvent.getSource().equals(spamCardButton)) clickedButton = CardType.Spam;
-        if(actionEvent.getSource().equals(trojanCardButton)) clickedButton = CardType.Trojan;
-        if(actionEvent.getSource().equals(virusCardButton)) clickedButton = CardType.Virus;
-        if(actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
+        if (actionEvent.getSource().equals(spamCardButton)) clickedButton = CardType.Spam;
+        if (actionEvent.getSource().equals(trojanCardButton)) clickedButton = CardType.Trojan;
+        if (actionEvent.getSource().equals(virusCardButton)) clickedButton = CardType.Virus;
+        if (actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
         checkDamageReady(clickedButton);
     }
 
-    private void updateDamageCountLabel(){
+    private void updateDamageCountLabel() {
         spamCardButton.setText(String.valueOf(gameController.getCountSpamCards()));
-        if(gameController.getCountSpamCards() == 0) spamCardButton.setDisable(true);
+        if (gameController.getCountSpamCards() == 0) spamCardButton.setDisable(true);
 
         trojanCardButton.setText(String.valueOf(gameController.getCountTrojanCards()));
-        if(gameController.getCountTrojanCards() == 0) trojanCardButton.setDisable(true);
+        if (gameController.getCountTrojanCards() == 0) trojanCardButton.setDisable(true);
 
         virusCardButton.setText(String.valueOf(gameController.getCountVirusCards()));
-        if(gameController.getCountVirusCards() == 0) virusCardButton.setDisable(true);
+        if (gameController.getCountVirusCards() == 0) virusCardButton.setDisable(true);
 
         wormCardButton.setText(String.valueOf(gameController.getCountWormCards()));
-        if(gameController.getCountWormCards() == 0) wormCardButton.setDisable(true);
-
+        if (gameController.getCountWormCards() == 0) wormCardButton.setDisable(true);
     }
 
-    private void checkDamageReady(CardType card){
+    private void checkDamageReady(CardType card) {
         gameController.handleDamageCount(card);
         updateDamageCountLabel();
         pickedDamageCards.add(card);
@@ -148,7 +150,7 @@ public class ActivationController extends Controller {
         selectedDamageCard.setFitHeight(150);
         selectedDamageCard.setFitWidth(95);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
-        if(pickedDamageCards.size()==pickDamage){
+        if (pickedDamageCards.size() == pickDamage) {
             client.sendMessage(new SelectDamage(pickedDamageCards));
             pickDamage = 0;
             pickedDamageCards.clear();

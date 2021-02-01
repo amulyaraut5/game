@@ -17,8 +17,8 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
@@ -242,7 +242,7 @@ public class Game {
         return wormDeck;
     }
 
-    public TrojanDeck getTrojanHorseDeck() {
+    public TrojanDeck getTrojanDeck() {
         return trojanDeck;
     }
 }

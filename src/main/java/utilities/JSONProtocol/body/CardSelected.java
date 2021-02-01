@@ -3,8 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class CardSelected extends JSONBody {
-    private int playerID;
-    private int register;
+    private final int playerID;
+    private final int register;
 
     public CardSelected(int playerID, int register) {
         this.playerID = playerID;

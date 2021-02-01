@@ -54,6 +54,8 @@ public class LobbyController extends Controller implements Updatable {
     @FXML private ImageView dizzy;
     @FXML private ImageView crispy;
 
+    private boolean state = false;
+
 
 
     /**
@@ -73,6 +75,12 @@ public class LobbyController extends Controller implements Updatable {
         chat.setPrefWidth(chatPane.getPrefWidth());
         chat.setPrefHeight(chatPane.getPrefHeight());
         chatPane.setCenter(chat);
+    }
+
+    public void reset(){
+        readyCheckbox.setSelected(state);
+        dizzyHighway.setSelected(state);
+        extraCrispy.setSelected(state);
     }
 
     /**

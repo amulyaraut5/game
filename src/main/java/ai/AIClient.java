@@ -30,7 +30,7 @@ public class AIClient {
     private final Client client = Client.getInstance();
     private int thisPlayersID;
     private Map map;
-    private GameState activePhase;
+    private GameState currentPhase = GameState.CONSTRUCTION;
 
     /**
      * creates a set containing all combinations and their permutations
@@ -80,9 +80,9 @@ public class AIClient {
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
-                Timer t = new java.util.Timer();
+                Timer t = new Timer();
                 t.schedule(
-                        new java.util.TimerTask() {
+                        new TimerTask() {
                             @Override
                             public void run() {
                                 choosePlayerValues();
@@ -108,7 +108,7 @@ public class AIClient {
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
-                gameStarted(gameStarted);
+                map = MapConverter.reconvert(gameStarted);
             }
             case StartingPointTaken -> {
                 StartingPointTaken msg = (StartingPointTaken) message.getBody();
@@ -118,7 +118,7 @@ public class AIClient {
             }
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
-                activePhase = msg.getPhase();
+                currentPhase = msg.getPhase();
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -174,19 +174,18 @@ public class AIClient {
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
             case CurrentPlayer -> {
                 CurrentPlayer msg = (CurrentPlayer) message.getBody();
+
                 if (msg.getPlayerID() == thisPlayersID) {
-                    client.sendMessage(new PlayIt());
+                    if (currentPhase == GameState.CONSTRUCTION) {
+                        int[] startingPoints = {39, 78, 14, 53, 66, 105};
+                        for (int point : startingPoints) {
+                            client.sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
+                        }
+                    } else if (currentPhase == GameState.ACTIVATION) {
+                        client.sendMessage(new PlayIt());
+                    }
                 }
             }
-        }
-    }
-
-    private void gameStarted(GameStarted gameStarted) {
-        map = MapConverter.reconvert(gameStarted);
-        int[] startingPoints = {39, 78, 14, 53, 66, 105};
-
-        for (int i : startingPoints) {
-            client.sendMessage(new SetStartingPoint(i));
         }
     }
 
@@ -206,7 +205,7 @@ public class AIClient {
 
         for (CardType[] cards : combinations) {
             Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-            //System.out.println(cards[0] + " " + cards[1] + " " + cards[2] + " " + cards[3] + " " + cards[4] + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
+            //logger.trace(Arrays.toString(cards) + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
             possiblePositions.put(cards, resPos);
         }
 
@@ -226,13 +225,13 @@ public class AIClient {
 
         for (CardType[] cards : keySet) {
             int distance = distance(possiblePositions.get(cards));
-            System.out.println("distance: " + distance + " " + Arrays.toString(cards));
+            //logger.trace("distance: " + distance + " " + Arrays.toString(cards));
             if (distance < shortestDistance) {
                 shortestDistance = distance;
                 bestCombination = cards;
             }
         }
-        System.out.println("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
+        //logger.trace("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
         return bestCombination;
     }
 
@@ -272,7 +271,7 @@ public class AIClient {
         b.removeAll(a);
 
         if (b.size() > 0) {
-            String name = b.get(0).toString() + "_AI";
+            String name = b.get(0) + "_AI";
             client.sendMessage(new PlayerValues(name, b.get(0)));
         }
     }

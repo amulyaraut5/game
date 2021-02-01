@@ -14,7 +14,7 @@ import utilities.enums.Orientation;
 
 public class Wall extends Attribute {
 
-    private Orientation[] orientations;
+    private final Orientation[] orientations;
 
     /**
      * Constructor for wall for those tiles having only one wall facing in one direction.
@@ -23,7 +23,7 @@ public class Wall extends Attribute {
      */
     public Wall(Orientation orientation) {
         orientations = new Orientation[]{orientation};
-        this.type = AttributeType.Wall;
+        type = AttributeType.Wall;
     }
 
     /**
@@ -33,9 +33,8 @@ public class Wall extends Attribute {
      */
     public Wall(Orientation[] orientations) {
         this.orientations = orientations;
-        this.type = AttributeType.Wall;
+        type = AttributeType.Wall;
     }
-
 
     /**
      * @return
@@ -103,7 +102,7 @@ public class Wall extends Attribute {
     }
 
     public Orientation[] getOrientations() {
-        return this.orientations;
+        return orientations;
     }
 }
 

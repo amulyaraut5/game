@@ -15,7 +15,7 @@ public class WormDeck extends DamageCardDeck {
 
     private ArrayList<Card> wormDeck;
 
-    public WormDeck(){
+    public WormDeck() {
         createDeck();
     }
 
@@ -24,7 +24,7 @@ public class WormDeck extends DamageCardDeck {
      */
     @Override
     public void createDeck() {
-        this.wormDeck = new ArrayList<>();
+        wormDeck = new ArrayList<>();
 
         for (int i = 0; i < WORM_CARDCOUNT; i++) {
             wormDeck.add(new Worm());

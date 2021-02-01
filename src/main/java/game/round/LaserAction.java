@@ -26,16 +26,13 @@ public class LaserAction {
 
     private static final Logger logger = LogManager.getLogger();
     private final SoundHandler soundHandler = new SoundHandler();
+    private final Game game = Game.getInstance();
+    private final ActivationPhase activationPhase;
+    private final ArrayList<Player> playerList = game.getPlayers();
+    private final Map map = game.getMap();
     protected Server server = Server.getInstance();
-    private Game game = Game.getInstance();
-    private ActivationPhase activationPhase;
-
     private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
     private ArrayList<Coordinate> robotCoordinates = new ArrayList<>();
-
-    private ArrayList<Player> playerList = game.getPlayers();
-    private Map map = game.getMap();
-
 
     /**
      * Constructor for laser
@@ -118,7 +115,6 @@ public class LaserAction {
                     if (player.getRobot().getCoordinate().equals(coordinate1)) {
                         game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
                     }
-
             }
         }
         laserCoordinates.clear();

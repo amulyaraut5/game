@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -120,20 +121,29 @@ public class LoginController extends Controller implements Updatable {
         else client.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
-    public void setFigureTaken(int id, boolean taken) {
+    public void setFigureTaken(int playerID, int id, boolean taken) {
         Figure figure = figures.get(id);
         figure.setTaken(taken);
+        figure.setPlayerID(playerID);
         figures.set(id, figure);
     }
 
     public void removePlayer(Player player) {
-        System.out.println(player.getFigure());
-        int id = player.getFigure();
-        Figure figure = figures.get(id);
-        figure.setTaken(false);
-        figures.set(id, figure);
+        int i = 0;
+        for(Figure figure : figures){
+            if(figure.getPlayerID() == player.getID()) {
+                figure.setTaken(false);
+                i = figures.indexOf(figure);
+                figures.set(i, figure);
+            }
+        }
     }
 
+    public void ignorePlayer(Player player){
+        for(Figure figure : figures){
+            if(figure.getPlayerID() == player.getID()) figure.getImageView().setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
+        }
+    }
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -147,6 +157,7 @@ public class LoginController extends Controller implements Updatable {
     private class Figure {
         private boolean taken = false;
         private ImageView imageView;
+        private int playerID;
 
         public Figure(ImageView imageView) {
             this.imageView = imageView;
@@ -162,6 +173,14 @@ public class LoginController extends Controller implements Updatable {
 
         public ImageView getImageView() {
             return imageView;
+        }
+
+        public void setPlayerID(int playerID) {
+            this.playerID = playerID;
+        }
+
+        public int getPlayerID() {
+            return playerID;
         }
     }
 }

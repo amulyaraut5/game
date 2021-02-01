@@ -4,7 +4,7 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.enums.CardType;
 
 public class PlayCard extends JSONBody {
-    private CardType card;
+    private final CardType card;
 
     public PlayCard(CardType card) {
         this.card = card;
@@ -13,5 +13,4 @@ public class PlayCard extends JSONBody {
     public CardType getCard() {
         return card;
     }
-
 }

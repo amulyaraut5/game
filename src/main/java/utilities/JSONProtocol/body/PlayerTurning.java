@@ -9,7 +9,7 @@ public class PlayerTurning extends JSONBody {
 
     public PlayerTurning(int playerID, Rotation rotation) {
         this.playerID = playerID;
-        this.direction = rotation;
+        direction = rotation;
     }
 
     public int getPlayerID() {
