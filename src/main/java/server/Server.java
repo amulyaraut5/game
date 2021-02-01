@@ -2,6 +2,7 @@ package server;
 
 import game.Game;
 import game.Player;
+import game.round.ConstructionPhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -395,6 +396,18 @@ public class Server extends Thread {
     public void removeUser(User user) {
         logger.info("removeUser reached");
         game.getPlayers().remove(game.userToPlayer(user));
+        //TODO
+        /*
+        if(game.getGameState() == GameState.CONSTRUCTION){
+            communicateAll(new ActivePhase(GameState.CONSTRUCTION));
+            new ConstructionPhase();
+            if(game.getConstructionPhase().getCurrentPlayer() == game.userToPlayer(user)){
+                logger.info("Construction IF");
+                communicateAll(new CurrentPlayer(currentPlayer.getID()));
+            }
+        }
+
+         */
         if(game.getGameState() == GameState.PROGRAMMING) {
             logger.info("removeuser IF");
             Player temp = null;

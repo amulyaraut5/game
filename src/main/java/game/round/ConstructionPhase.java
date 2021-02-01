@@ -49,7 +49,7 @@ public class ConstructionPhase extends Phase {
         return false;
     }
 
-    private void nextPlayer() {
+    public void nextPlayer() {
         int currentIndex = players.indexOf(currentPlayer);
 
         if (currentIndex < players.size() - 1) {
@@ -58,5 +58,13 @@ public class ConstructionPhase extends Phase {
         } else {
             game.nextPhase();
         }
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 }
