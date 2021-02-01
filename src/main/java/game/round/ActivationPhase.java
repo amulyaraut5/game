@@ -110,19 +110,7 @@ public class ActivationPhase extends Phase {
 
             //if he was the last player to send the PlayIt() protocol for this register the board is activated
             if (currentCards.isEmpty()) {
-                activateBoard();
-                //throw new UnsupportedOperationException();
-                if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
-                    currentRegister++;
-                    turnCards(currentRegister);
-                } else { //if it is already the 5th register the next phase is called
-
-                    if (rebootedPlayers != null) {
-                        activePlayers.addAll(rebootedPlayers);
-                        rebootedPlayers.clear();
-                    }
-                    game.nextPhase();
-                }
+                endOfRound();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
             }
@@ -131,11 +119,43 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void removeCurrentCards(int playerID){
-        for(RegisterCard rc: currentCards){
-            if(rc.getPlayerID() == playerID){
-                currentCards.remove(rc);
+    public void endOfRound () {
+        activateBoard();
+        //throw new UnsupportedOperationException();
+        if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+            currentRegister++;
+            turnCards(currentRegister);
+        } else { //if it is already the 5th register the next phase is called
+
+            if (rebootedPlayers != null) {
+                activePlayers.addAll(rebootedPlayers);
+                rebootedPlayers.clear();
             }
+            game.nextPhase();
+        }
+    }
+
+    public void removeCurrentCards(int playerID){
+        logger.info("removeCC reached");
+        RegisterCard temp = null;
+        for(RegisterCard rc: currentCards){
+            logger.info(rc.getPlayerID());
+            logger.info(rc.getCard());
+            if(rc.getPlayerID() == playerID){
+                logger.info("if reached");
+                temp= rc;
+                logger.info(rc.getPlayerID() +" und" + rc.getCard());
+            }
+        }
+        currentCards.remove(temp);
+        for (RegisterCard rc : currentCards) {
+            logger.info(rc.getPlayerID());
+            logger.info(rc.getCard());
+        }
+        if (currentCards.isEmpty() && currentRegister < 5) {
+            endOfRound();
+        } else {
+            server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
         }
     }
 

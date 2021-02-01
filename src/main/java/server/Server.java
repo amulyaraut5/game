@@ -8,7 +8,6 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.RegisterCard;
 import utilities.Utilities;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
@@ -394,10 +393,12 @@ public class Server extends Thread {
      * @param user User to be removed
      */
     public void removeUser(User user) {
+        logger.info("removeUser reached");
         if(game.getGameState() == GameState.ACTIVATION) {
+            logger.info("if statement reached");
             int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
             Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);
-            communicateAll(new CurrentPlayer(nextPlayer.getID()));
+            game.getActivationPhase().removeCurrentCards(user.getID());
         }
 
         readyUsers.remove(user);
