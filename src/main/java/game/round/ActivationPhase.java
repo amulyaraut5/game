@@ -52,18 +52,6 @@ public class ActivationPhase extends Phase {
     private final VirusDeck virusDeck = game.getVirusDeck();
     private final WormDeck wormDeck = game.getWormDeck();
 
-    /**
-     * saves the Player ID and the card for the current register
-     */
-    private ArrayList<RegisterCard> currentCards = new ArrayList<>();
-    private ArrayList<CardType> cardTypes = new ArrayList<>();
-    /**
-     * TODO
-     */
-    private ActivationElements activationElements = new ActivationElements(this);
-    private LaserAction laserAction = new LaserAction(this);
-    private ArrayList<Player> activePlayers = players;
-    private ArrayList<Player> rebootedPlayers = new ArrayList<>();
     private ArrayList<Player> priorityList = calculatePriority(map.getAntenna());
     /**
      * keeps track of the current register
@@ -126,7 +114,7 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void endOfRound () {
+    public void endOfRound() {
         activateBoard();
         //throw new UnsupportedOperationException();
         if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
@@ -142,16 +130,16 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void removeCurrentCards(int playerID){
+    public void removeCurrentCards(int playerID) {
         logger.info("removeCC reached");
         RegisterCard temp = null;
-        for(RegisterCard rc: currentCards){
+        for (RegisterCard rc : currentCards) {
             logger.info(rc.getPlayerID());
             logger.info(rc.getCard());
-            if(rc.getPlayerID() == playerID){
+            if (rc.getPlayerID() == playerID) {
                 logger.info("if reached");
-                temp= rc;
-                logger.info(rc.getPlayerID() +" und" + rc.getCard());
+                temp = rc;
+                logger.info(rc.getPlayerID() + " und" + rc.getCard());
             }
         }
         currentCards.remove(temp);
@@ -546,6 +534,10 @@ public class ActivationPhase extends Phase {
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
+    public ArrayList<Player> getPriorityList() {
+        return priorityList;
+    }
+
     /**
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
@@ -588,9 +580,5 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
-    }
-
-    public ArrayList<Player> getPriorityList() {
-        return priorityList;
     }
 }

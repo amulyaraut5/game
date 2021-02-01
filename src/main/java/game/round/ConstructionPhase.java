@@ -43,7 +43,7 @@ public class ConstructionPhase extends Phase {
         for (Player other : players) {
             if (!other.equals(player)) {
                 Coordinate otherPos = other.getRobot().getCoordinate();
-                return pos.equals(otherPos);
+                if (pos.equals(otherPos)) return true;
             }
         }
         return false;
