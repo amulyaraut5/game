@@ -1,7 +1,9 @@
 package utilities;
 
 import game.gameObjects.maps.Map;
+import game.gameObjects.maps.MapBuilder;
 import game.gameObjects.maps.StartZone;
+import game.gameObjects.tiles.RestartPoint;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.GameStarted;
@@ -40,7 +42,6 @@ public abstract class MapConverter {
                 tiles[x][y] = TileFactory.createTile(startzone.getMapBlueprint()[y][x]);
             }
         }
-
         for (BoardElement e : JsonMap) {
             int pos = e.getPosition();
             int x = pos % xMax;
@@ -48,6 +49,9 @@ public abstract class MapConverter {
             Tile temp = new Tile();
             temp.setAttributes(e.getField());
             tiles[x][y] = temp;
+        }
+        if (!MapBuilder.isRebootOnTiles(tiles)) {
+            tiles[0][0].getAttributes().add(new RestartPoint());
         }
         return new Map(tiles);
     }

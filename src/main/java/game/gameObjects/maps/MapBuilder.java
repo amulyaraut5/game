@@ -1,7 +1,10 @@
 package game.gameObjects.maps;
 
+import game.gameObjects.tiles.Attribute;
+import game.gameObjects.tiles.RestartPoint;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
+import utilities.enums.AttributeType;
 
 import java.util.ArrayList;
 
@@ -34,13 +37,28 @@ public class MapBuilder {
                 tiles[x][y] = TileFactory.createTile(startzone.getMapBlueprint()[y][x]);
             }
         }
-
         for (int x = 0; x < max; x++) {
             for (int y = 0; y < max; y++) {
                 tiles[x + 3][y] = TileFactory.createTile(blueprint.mapBlueprint[y][x]);
             }
         }
+        if (!isRebootOnTiles(tiles)) {
+            tiles[0][0].getAttributes().add(new RestartPoint());
+        }
         return new Map(tiles);
+    }
+
+    public static boolean isRebootOnTiles(Tile[][] tiles) {
+        for (int x = 0; x < (tiles.length); x++) {
+            for (int y = 0; y < (tiles[0].length); y++) {
+                for (Attribute a : tiles[x][y].getAttributes()) {
+                    if (a.getType() == AttributeType.RestartPoint) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
