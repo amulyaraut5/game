@@ -80,9 +80,9 @@ public class AIClient {
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
-                Timer t = new java.util.Timer();
+                Timer t = new Timer();
                 t.schedule(
-                        new java.util.TimerTask() {
+                        new TimerTask() {
                             @Override
                             public void run() {
                                 choosePlayerValues();

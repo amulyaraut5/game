@@ -310,7 +310,6 @@ public class GameController extends Controller implements Updatable {
                 imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
                 imageView.setPreserveRatio(true);
 
-
                 if (a.getType() == AttributeType.Laser) {
                     Orientation orientation = ((Laser) a).getOrientation();
                     switch (orientation) {
@@ -340,7 +339,6 @@ public class GameController extends Controller implements Updatable {
                     path.clear();
                 }
             }
-
         }
     }
 
@@ -388,10 +386,7 @@ public class GameController extends Controller implements Updatable {
             sequentialTransition.play();
             path.clear();
         }
-
-
     }
-
 
     public ProgrammingController getProgrammingController() {
         return programmingController;
@@ -462,8 +457,8 @@ public class GameController extends Controller implements Updatable {
                 getPlayerMatController().resetDeckCounter(9);
 
                 activePlayers.addAll(players);
-                for(Player player: activePlayers){
-                    logger.info("Inside GameState:" + player.getID());
+                for (Player player : activePlayers) {
+                    //logger.info("Inside GameState:" + player.getID());
                 }
 
                 phasePane.setCenter(programmingPane);
@@ -476,10 +471,7 @@ public class GameController extends Controller implements Updatable {
                 first = false;
             }
         }
-
     }
-
-
 
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
@@ -553,7 +545,6 @@ public class GameController extends Controller implements Updatable {
         return countVirusCards;
     }
 
-
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -614,27 +605,24 @@ public class GameController extends Controller implements Updatable {
                 getActivationController().pickDamage(pickDamage, this);
             }
             case PlayerShooting -> {
-                if(activePlayers.isEmpty()){
+                if (activePlayers.isEmpty()) {
                     logger.info("No active players");
-                }else{
+                } else {
                     handleShooting(activePlayers);
                     handleRobotShooting(activePlayers);
                 }
-
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
                 Player player = client.getPlayerFromID(reboot.getPlayerID());
                 //rebootingPlayers.add(player);
                 activePlayers.remove(player);
-                for(Player player1: activePlayers){
+                for (Player player1 : activePlayers) {
                     logger.info("Inside Reboot:" + player1.getID());
                 }
-                if(activePlayers.isEmpty()){
+                if (activePlayers.isEmpty()) {
                     logger.info("empty");
                 }
-
-
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -652,9 +640,8 @@ public class GameController extends Controller implements Updatable {
             case TimerEnded -> {
                 getProgrammingController().setTimerEnded(true);
                 getPlayerMatController().setDiscardDeckCounter(4);
-                if(!allRegistersAsFirst) getPlayerMatController().fixSelectedCards();
-                allRegistersAsFirst  =false; //TODO everything that is round related
-
+                if (!allRegistersAsFirst) getPlayerMatController().fixSelectedCards();
+                allRegistersAsFirst = false; //TODO everything that is round related
             }
             case CurrentCards -> {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -680,7 +667,6 @@ public class GameController extends Controller implements Updatable {
                         }
                     }
                 }
-
             }
             case CurrentPlayer -> {
                 CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
