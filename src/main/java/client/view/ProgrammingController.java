@@ -96,51 +96,46 @@ public class ProgrammingController extends Controller {
         ImageView programmingCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + cardName + "-card.png").toString()));
         programmingCard.setFitHeight(heightHBox);
         programmingCard.setFitWidth(widthHBox-20);
-        programmingCard.setOnDragDetected(e -> {
+        programmingCard.setOnDragDetected(event -> {
             setWasFormerRegister(false);
-            Dragboard db = programmingCard.startDragAndDrop(TransferMode.MOVE);
-            db.setDragView(programmingCard.snapshot(null, null));
-            ClipboardContent cc = new ClipboardContent();
-            cc.put(cardFormat, cardName);
-            db.setContent(cc);
-            setProgrammingImageView(programmingCard);
+            setOnDragDetected(event, programmingCard);
         });
 
         return programmingCard;
     }
+    private void setOnDragOver(DragEvent e, Pane pane){
+        Dragboard db = e.getDragboard();
+        if (db.hasContent(cardFormat)
+                && getProgrammingImageView() != null
+                && getProgrammingImageView().getParent() != pane
+                && pane.getChildren().isEmpty()) {
+            e.acceptTransferModes(TransferMode.MOVE);
+        }
+    }
+    private void setOnDragExited(DragEvent e, Pane pane){
+        Dragboard db = e.getDragboard();
+        if (db.hasContent(cardFormat)
+                && getProgrammingImageView()!= null
+                && pane.getChildren().isEmpty()) {
+            ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
+            ImageView puffer = getProgrammingImageView();
+            puffer.setOnDragDetected(event->{ setOnDragDetected(event, puffer); });
+            pane.getChildren().add(puffer);
+        }
+    }
 
+    private void setOnDragDetected(MouseEvent dragDetected, ImageView imageView){
+        Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
+        dragboard.setDragView(imageView.snapshot(null, null));
+        ClipboardContent cc2 = new ClipboardContent();
+        cc2.put(cardFormat, "cardName");
+        dragboard.setContent(cc2);
+        setProgrammingImageView(imageView);
+    }
 
     protected void addDropHandling(Pane pane) {
-        pane.setOnDragOver(e -> {
-            Dragboard db = e.getDragboard();
-            if (db.hasContent(cardFormat)
-                    && getProgrammingImageView() != null
-                    && getProgrammingImageView().getParent() != pane
-                    && pane.getChildren().isEmpty()) {
-                e.acceptTransferModes(TransferMode.MOVE);
-            }
-        });
-
-        pane.setOnDragExited(e -> {
-            Dragboard db = e.getDragboard();
-            if (db.hasContent(cardFormat)
-                    && getProgrammingImageView()!= null
-                    && pane.getChildren().isEmpty()) {
-                ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
-                ImageView puffer = getProgrammingImageView();
-                puffer.setOnDragDetected(ev->{
-                    puffer.setOnDragDetected(event-> {
-                        Dragboard dragboard = puffer.startDragAndDrop(TransferMode.MOVE);
-                        dragboard.setDragView(puffer.snapshot(null, null));
-                        ClipboardContent cc2 = new ClipboardContent();
-                        cc2.put(cardFormat, "cardName");
-                        dragboard.setContent(cc2);
-                        setProgrammingImageView(puffer);
-                       });
-                });
-                pane.getChildren().add(puffer);
-            }
-        });
+        pane.setOnDragOver(e -> { setOnDragOver(e, pane); });
+        pane.setOnDragExited(e -> { setOnDragExited(e, pane); });
         pane.setOnDragDone(e -> {
             if(getPosition()!=0)
             client.sendMessage(new SelectCard(null, getPosition()));

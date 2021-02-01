@@ -13,7 +13,7 @@ import utilities.enums.CardType;
  */
 public abstract class Controller {
 
-    protected static DataFormat cardFormat = new DataFormat("com.example.myapp.formats.button");
+    protected static DataFormat cardFormat = new DataFormat("programmingCard");
     private static int positionRegister;
     private static ImageView programmingImageView;
     private static boolean wasFormerRegister = false;
