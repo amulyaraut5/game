@@ -11,8 +11,5 @@ public abstract class Phase {
     protected Server server = Server.getInstance();
     protected Game game = Game.getInstance();
     protected ArrayList<Player> players = game.getPlayers();
-    protected Map map  = game.getMap();
-
-    public Phase() {
-    }
+    protected Map map = game.getMap();
 }

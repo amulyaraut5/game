@@ -10,17 +10,12 @@ import utilities.enums.AttributeType;
 
 public class ControlPoint extends Attribute {
 
-    private int count; //number of the ControlPoint
+    private final int count; //number of the ControlPoint
 
     public ControlPoint(int count) {
         this.count = count;
         type = AttributeType.ControlPoint;
     }
-
-    public int getCheckPointID() {
-        return count;
-    }
-
 
     @Override
     public Node createImage() {

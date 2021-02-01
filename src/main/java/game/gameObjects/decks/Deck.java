@@ -16,7 +16,6 @@ public abstract class Deck {
     private static final Logger logger = LogManager.getLogger();
     protected Server server = Server.getInstance();
 
-
     /**
      * Creates a suitable deck with the respective cards,
      * has to be implemented in each deck class.
@@ -27,7 +26,7 @@ public abstract class Deck {
      * Shuffles the deck.
      */
     public void shuffle() {
-        Collections.shuffle(this.getDeck());
+        Collections.shuffle(getDeck());
     }
 
     /**
@@ -36,7 +35,7 @@ public abstract class Deck {
      * @param card card to be added back to the deck.
      */
     public void addCard(Card card) {
-        this.getDeck().add(card);
+        getDeck().add(card);
     }
 
     /**
@@ -45,7 +44,7 @@ public abstract class Deck {
      * @return
      */
     public boolean isEmpty() {
-        return this.getDeck().isEmpty();
+        return getDeck().isEmpty();
     }
 
     /**
@@ -53,7 +52,7 @@ public abstract class Deck {
      * Depending on the size, e.g., it needs to be reshuffled.
      */
     public int size() {
-        return this.getDeck().size();
+        return getDeck().size();
     }
 
     /**
@@ -62,8 +61,8 @@ public abstract class Deck {
      * @return the removed card
      */
     public Card pop() {
-        Card popped = this.getDeck().get(0);
-        this.getDeck().remove(popped);
+        Card popped = getDeck().get(0);
+        getDeck().remove(popped);
         return popped;
     }
 
@@ -72,20 +71,20 @@ public abstract class Deck {
      */
     public ArrayList<Card> drawCards(int amount) {
         //if(this.getDeck().size() >= amount) {
-        ArrayList<Card> currentDeck = this.getDeck();
+        ArrayList<Card> currentDeck = getDeck();
 
         ArrayList<Card> tempDeck = new ArrayList<>();
         //logger.info("drawCards PROG-DECK: " +this.getDeck());
-            for (int i = 0; i < amount; i++) {
-                //logger.info("draw Cards - i: " + i);
-                tempDeck.add(currentDeck.get(i));
-                //logger.info("drawCards OUTPUT : " + tempDeck);
-            }
-            this.getDeck().removeAll(tempDeck);
-            //logger.info("CurrentDeck: " +currentDeck);
-            //logger.info("drawCards REMOVE progdeck : " + this.getDeck());
-            //logger.info("drawCards RETURN : " + tempDeck);
-            return tempDeck;
+        for (int i = 0; i < amount; i++) {
+            //logger.info("draw Cards - i: " + i);
+            tempDeck.add(currentDeck.get(i));
+            //logger.info("drawCards OUTPUT : " + tempDeck);
+        }
+        getDeck().removeAll(tempDeck);
+        //logger.info("CurrentDeck: " +currentDeck);
+        //logger.info("drawCards REMOVE progdeck : " + this.getDeck());
+        //logger.info("drawCards RETURN : " + tempDeck);
+        return tempDeck;
             /*
         } else {
             ArrayList<Card> tempDeck = new ArrayList<>();

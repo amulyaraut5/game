@@ -5,7 +5,7 @@ import utilities.JSONProtocol.JSONBody;
 import java.util.ArrayList;
 
 public class SelectMap extends JSONBody {
-    private ArrayList<String> map;
+    private final ArrayList<String> map;
 
     public SelectMap(ArrayList<String> map) {
         this.map = map;

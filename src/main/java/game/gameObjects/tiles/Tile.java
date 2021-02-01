@@ -18,9 +18,8 @@ public class Tile {
     public Tile() {
     }
 
-
     public ArrayList<Attribute> getAttributes() {
-        return this.attributes;
+        return attributes;
     }
 
     public void setAttributes(ArrayList<Attribute> attributes) {

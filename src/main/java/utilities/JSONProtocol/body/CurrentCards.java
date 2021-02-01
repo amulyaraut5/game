@@ -6,7 +6,7 @@ import utilities.RegisterCard;
 import java.util.ArrayList;
 
 public class CurrentCards extends JSONBody {
-   private ArrayList<RegisterCard> activeCards;
+    private final ArrayList<RegisterCard> activeCards;
 
     public CurrentCards(ArrayList<RegisterCard> activeCards) {
         this.activeCards = activeCards;

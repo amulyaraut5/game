@@ -16,13 +16,15 @@ import java.util.ArrayList;
 
 public class Player extends User {
 
-    protected Game game = Game.getInstance();
-
+    /**
+     * the players robot
+     */
+    private final Robot robot;
+    private Game game = Game.getInstance();
     /**
      * contains the chosen Cards for each register
      */
     private ArrayList<Card> registerCards;
-
     /**
      * Programming deck that cards can be drawn from
      */
@@ -32,14 +34,8 @@ public class Player extends User {
      * The cards that the player draws during the Programming Phase
      */
     private ArrayList<Card> drawnProgrammingCards;
-
     private int checkPointCounter;
     private int energyCubes;
-    /**
-     * the players robot
-     */
-    private Robot robot;
-
 
     /**
      * Constructor for a player object on the serverside which is connected with an user.
@@ -81,7 +77,7 @@ public class Player extends User {
      * @author annika
      */
     public void createRegister() {
-        this.registerCards = new ArrayList<>();
+        registerCards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             registerCards.add(i, null);
         }
@@ -96,7 +92,6 @@ public class Player extends User {
     public void setRegisterCards(int register, Card card) {
         int index = register - 1;
         registerCards.set(index, card);
-
     }
 
     public ArrayList<Card> getRegisterCards() {
@@ -114,12 +109,12 @@ public class Player extends User {
         return registerCards.get(index);
     }
 
-    public CardType getLastRegisterCard(){
-        return getRegisterCard(game.getActivationPhase().getCurrentRegister()-1).getName();
+    public CardType getLastRegisterCard() {
+        return getRegisterCard(game.getActivationPhase().getCurrentRegister() - 1).getName();
     }
 
     public Robot getRobot() {
-        return this.robot;
+        return robot;
     }
 
     public int getCheckPointCounter() {
@@ -157,7 +152,7 @@ public class Player extends User {
     /**
      * Lets you discard an Array of cards to a specified deck
      *
-     * @param cards that should be discarded
+     * @param cards       that should be discarded
      * @param discardDeck deck the cards should be discarded to
      */
     public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
@@ -174,5 +169,4 @@ public class Player extends User {
     public void reuseDiscardedDeck() {
         discardedProgrammingDeck.refillProgrammingDeck(drawProgrammingDeck);
     }
-
 }

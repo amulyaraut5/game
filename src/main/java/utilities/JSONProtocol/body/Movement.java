@@ -3,8 +3,8 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class Movement extends JSONBody {
-    private int playerID;
-    private int to;
+    private final int playerID;
+    private final int to;
 
     public Movement(int playerID, int to) {
         this.playerID = playerID;

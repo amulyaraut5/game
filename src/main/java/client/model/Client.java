@@ -75,6 +75,10 @@ public class Client {
         return thisPlayersID;
     }
 
+    public Updatable getCurrentController() {
+        return currentController;
+    }
+
     /**
      * This method establishes the connection between the server and the client using the assigned hostname and port.
      * If this was successful it creates a ReaderThread and a WriterThread which handle the communication onwards.
@@ -161,10 +165,19 @@ public class Client {
                         lobbyController.removePlayer(player);
                         gameController.removePlayer(player);
                         players.remove(player);
+
                         if (players.size() <= 1){
                             viewManager.closeGame();
                             viewManager.showLobby();
                         }
+
+                    } else if(msg.getAction().equals("Ignore") && !msg.isConnected()){
+                        Player player = getPlayerFromID(msg.getID());
+                        loginController.ignorePlayer(player);
+                        //lobbyController.ignorePlayer(player); //TODO
+                        //gameController.ignorePlayer(player);
+                        //players.remove(player);
+
                     }
                 }
                 case ReceivedChat -> {
@@ -188,7 +201,7 @@ public class Client {
             gameController.getPlayerMatController().loadPlayerMap(player);
             viewManager.showLobby();
         }
-        loginController.setFigureTaken(player.getFigure(), true);
+        loginController.setFigureTaken(player.getID(), player.getFigure(), true);
         lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
     }

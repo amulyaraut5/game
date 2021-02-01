@@ -14,25 +14,9 @@ import utilities.enums.CardType;
  * @author annika
  */
 public class Worm extends DamageCard {
-    private RestartPoint restartPoint;
 
     public Worm() {
         card = CardType.Worm;
-    }
-
-    /**
-     * When programming a worm damage card, the player must immediately reboot the robot.
-     *
-     * @param game
-     * @param player
-     */
-    @Override
-    public void handleCard(Game game, Player player) {
-        Orientation robotOrientation = player.getRobot().getOrientation();
-        new RebootAction().doAction(robotOrientation, player);
-
-        //Add worm card back into the worm deck
-        game.getWormDeck().getDeck().add(this);
     }
 
     @Override

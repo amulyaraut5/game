@@ -2,9 +2,8 @@ package game.gameObjects.tiles;
 
 import javafx.scene.Node;
 import utilities.ImageHandler;
-import utilities.enums.Orientation;
 import utilities.enums.AttributeType;
-
+import utilities.enums.Orientation;
 
 /**
  * @author Amulya
@@ -12,15 +11,14 @@ import utilities.enums.AttributeType;
 
 public class Laser extends Attribute {
 
-    private Orientation orientation;
-    private int count; // number of lasers
+    private final Orientation orientation;
+    private final int count; // number of lasers
 
     public Laser(Orientation orientation, int count) {
         this.orientation = orientation;
         this.count = count;
-        this.type = AttributeType.Laser;
+        type = AttributeType.Laser;
     }
-
 
     @Override
     public Node createImage() {
@@ -31,8 +29,6 @@ public class Laser extends Attribute {
     public Orientation getOrientation() {
         return orientation;
     }
-
-
 
     public int getCount() {
         return count;

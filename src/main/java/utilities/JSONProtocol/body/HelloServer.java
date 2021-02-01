@@ -4,11 +4,11 @@ import utilities.JSONProtocol.JSONBody;
 
 public class HelloServer extends JSONBody {
 
-    private double protocol;
+    private final double protocol;
 
-    private String group;
+    private final String group;
 
-    private Boolean isAI;
+    private final Boolean isAI;
 
     public HelloServer(double protocol, String group, Boolean isAI) {
         this.protocol = protocol;

@@ -8,27 +8,24 @@ import utilities.JSONProtocol.body.TimerStarted;
  */
 
 public class GameTimer extends Thread {
-	private ProgrammingPhase programmingPhase;
+    private final ProgrammingPhase programmingPhase;
 
-	public GameTimer( ProgrammingPhase programmingPhase){
+    public GameTimer(ProgrammingPhase programmingPhase) {
 
-		this.programmingPhase = programmingPhase;
+        this.programmingPhase = programmingPhase;
+    }
 
-	}
-
-	/**
-	 * a method that starts a 30 sec timer
-	 */
-	@Override
-	public void run(){
-		Server.getInstance().communicateAll(new TimerStarted());
-		try {
-			Thread.sleep(30000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		programmingPhase.endProgrammingTimer();
-	}
-
-
+    /**
+     * a method that starts a 30 sec timer
+     */
+    @Override
+    public void run() {
+        Server.getInstance().communicateAll(new TimerStarted());
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        programmingPhase.endProgrammingTimer();
+    }
 }

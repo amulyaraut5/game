@@ -17,7 +17,7 @@ public class BoardElement {
     }
 
     public int getPosition() {
-        return this.position;
+        return position;
     }
 
     public void setPosition(int position) {
@@ -25,7 +25,7 @@ public class BoardElement {
     }
 
     public ArrayList<Attribute> getField() {
-        return this.field;
+        return field;
     }
 
     public void setField(ArrayList<Attribute> field) {

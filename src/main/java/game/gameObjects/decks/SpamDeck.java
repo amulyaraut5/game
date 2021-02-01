@@ -15,7 +15,7 @@ public class SpamDeck extends DamageCardDeck {
 
     private ArrayList<Card> spamDeck;
 
-    public SpamDeck(){
+    public SpamDeck() {
         createDeck();
     }
 
@@ -24,13 +24,12 @@ public class SpamDeck extends DamageCardDeck {
      */
     @Override
     public void createDeck() {
-        this.spamDeck = new ArrayList<>();
+        spamDeck = new ArrayList<>();
 
         for (int i = 0; i < SPAM_CARDCOUNT; i++) {
             spamDeck.add(new Spam());
         }
     }
-
 
     @Override
     public void handleEmptyDeck(Player player) {
