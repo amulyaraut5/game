@@ -271,4 +271,8 @@ public class ProgrammingPhase extends Phase {
             player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeckSize));
         }
     }
+
+    public ArrayList<Player> getNotReadyPlayers() {
+        return notReadyPlayers;
+    }
 }
