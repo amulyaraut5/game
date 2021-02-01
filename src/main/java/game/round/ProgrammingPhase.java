@@ -244,7 +244,6 @@ public class ProgrammingPhase extends Phase {
             //choose a card depending on a randomly generated index
             Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
             if (register == 1 && randomElement.getName() == CardType.Again) {
-                register--;
                 fillRegisters(player);
             }
             player.setRegisterCards(register, randomElement);
