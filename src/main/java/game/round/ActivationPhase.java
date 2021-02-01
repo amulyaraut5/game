@@ -8,8 +8,7 @@ import game.gameObjects.cards.damage.Spam;
 import game.gameObjects.cards.damage.Trojan;
 import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
-import game.gameObjects.decks.DamageCardDeck;
-import game.gameObjects.maps.Map;
+import game.gameObjects.decks.*;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
@@ -40,8 +39,6 @@ public class ActivationPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private final Map map = game.getMap();
-
     private final ArrayList<RegisterCard> currentCards = new ArrayList<>();
     private final ArrayList<CardType> cardTypes = new ArrayList<>();
 
@@ -49,6 +46,12 @@ public class ActivationPhase extends Phase {
     private final LaserAction laserAction = new LaserAction(this);
     private final ArrayList<Player> activePlayers = players;
     private final ArrayList<Player> rebootedPlayers = new ArrayList<>();
+
+    private final SpamDeck spamDeck = game.getSpamDeck();
+    private final TrojanDeck trojanDeck = game.getTrojanDeck();
+    private final VirusDeck virusDeck = game.getVirusDeck();
+    private final WormDeck wormDeck = game.getWormDeck();
+
     /**
      * keeps track of the current register
      */
@@ -108,7 +111,7 @@ public class ActivationPhase extends Phase {
                     turnCards(currentRegister);
                 } else { //if it is already the 5th register the next phase is called
 
-                    if (rebootedPlayers != null) {
+                    if (rebootedPlayers != null) { //FIXME
                         activePlayers.addAll(rebootedPlayers);
                         rebootedPlayers.clear();
                     }
@@ -225,7 +228,7 @@ public class ActivationPhase extends Phase {
 
             case Spam -> {
                 //Add spam card back into the spam deck
-                game.getSpamDeck().addCard(new Spam());
+                spamDeck.addCard(new Spam());
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
 
@@ -237,23 +240,23 @@ public class ActivationPhase extends Phase {
                 //Reboot the robot.
                 new RebootAction().doAction(orientation, player);
                 //Add worm card back into the worm deck
-                game.getWormDeck().getDeck().add(new Worm());
+                wormDeck.getDeck().add(new Worm());
                 //logger.info(player.getName() + " played a worm card.");
             }
             case Virus -> {
                 int robotX = player.getRobot().getCoordinate().getX();
                 int robotY = player.getRobot().getCoordinate().getY();
-                ArrayList<Player> allPlayers = game.getPlayers();
+                ArrayList<Player> allPlayers = players;
 
                 for (Player otherPlayer : allPlayers) {
                     int otherRobotX = otherPlayer.getRobot().getCoordinate().getX();
                     int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
 
                     if (otherPlayer != player && (otherRobotX <= robotX + 6 || otherRobotY <= robotY + 6)) {
-                        game.getActivationPhase().drawDamage(game.getVirusDeck(), otherPlayer, 1);
+                        drawDamage(virusDeck, otherPlayer, 1);
                     }
                 }
-                game.getVirusDeck().addCard(new Virus());
+                virusDeck.addCard(new Virus());
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
                 //logger.info(player.getName() + " played a virus card.");
@@ -261,9 +264,9 @@ public class ActivationPhase extends Phase {
                 handleCard(topCard.getName(), player);
             }
             case Trojan -> {
-                game.getTrojanHorseDeck().addCard(new Trojan());
+                trojanDeck.addCard(new Trojan());
                 //Draw two spam cards
-                game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
+                drawDamage(spamDeck, player, 2);
                 Card topCard = player.getDrawProgrammingDeck().pop();
                 //logger.info(player.getName() + " played a trojan card.");
                 //Play the top-card
@@ -448,7 +451,7 @@ public class ActivationPhase extends Phase {
     public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
         logger.info("drawDamage reached");
         cardTypes.clear();
-        if (!(game.getSpamDeck().size() < amount)) {
+        if (!(spamDeck.size() < amount)) {
             ArrayList<Card> damageCards = damageDeck.drawCards(amount);
             player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
             for (Card card : damageCards) {
@@ -478,19 +481,19 @@ public class ActivationPhase extends Phase {
             switch (cardType) {
                 case Spam -> {
                     player.getDiscardedProgrammingDeck().addCard(new Spam());
-                    game.getSpamDeck().pop();
+                    spamDeck.pop();
                 }
                 case Virus -> {
                     player.getDiscardedProgrammingDeck().addCard(new Virus());
-                    game.getVirusDeck().pop();
+                    virusDeck.pop();
                 }
                 case Worm -> {
                     player.getDiscardedProgrammingDeck().addCard(new Worm());
-                    game.getWormDeck().pop();
+                    wormDeck.pop();
                 }
                 case Trojan -> {
                     player.getDiscardedProgrammingDeck().addCard(new Trojan());
-                    game.getTrojanHorseDeck().pop();
+                    trojanDeck.pop();
                 }
                 default -> server.communicateAll(new Error("This is not a valid damage card"));
             }
@@ -502,7 +505,7 @@ public class ActivationPhase extends Phase {
     /**
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
-    public class RobotDistance {
+    public static class RobotDistance {
         private final Player player;
         private final Robot robot;
         private final double distance;

@@ -114,7 +114,7 @@ public class ActivationElements {
                     for (Attribute a : tile.getAttributes()) {
                         for (int i : ((PushPanel) a).getRegisters()) {
                             if (i == activationPhase.getCurrentRegister()) {
-                                new MoveRobot().doAction(((PushPanel) a).getOrientation(), player);
+                                new MoveRobot().doAction(((PushPanel) a).getOrientation(), player);//FIXME I think we should use the handleMove method instead because MoveRobot is deprecated? -simon
                             }
                         }
                     }

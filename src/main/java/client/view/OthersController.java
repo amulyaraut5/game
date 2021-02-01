@@ -68,6 +68,7 @@ public class OthersController extends Controller {
      */
     public void removePlayer(Player player) {
         OtherPlayer removedPlayer = getOtherPlayer(player.getID());
+        assert removedPlayer != null;
         hBoxPlayer.getChildren().remove(removedPlayer.getPositionHBox());
         otherPlayers.remove(getOtherPlayer(player.getID()));
     }

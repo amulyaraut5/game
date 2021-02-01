@@ -6,22 +6,16 @@ import game.gameActions.Action;
 
 import java.util.ArrayList;
 
-/**
- * @author annika
- */
 public abstract class ProgrammingCard extends Card {
 
     private final ArrayList<Action> actions = new ArrayList<>();
     private boolean isHidden;
     private boolean isLocked;
 
+
     public ProgrammingCard() {
         isHidden = false;
         isLocked = false;
-    }
-
-    @Override
-    public void handleCard(Game game, Player player) {
     }
 
     public void addAction(Action action) {
