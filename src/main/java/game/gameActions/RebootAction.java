@@ -26,12 +26,12 @@ public class RebootAction extends Action {
      */
     @Override
     public void doAction(Orientation orientation, Player player) {
-        //ArrayList<Player> activePlayers = game.getActivationPhase().getActivePlayers();
+        ArrayList<Player> activePlayers = game.getActivationPhase().getActivePlayers();
         ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 
-        //ArrayList<Player> allPlayers = new ArrayList<>();
-        // allPlayers.addAll(activePlayers);
-        // allPlayers.addAll(rebootedPlayers);
+        ArrayList<Player> allPlayers = new ArrayList<>();
+        allPlayers.addAll(activePlayers);
+        allPlayers.addAll(rebootedPlayers);
 
         //rebootedPlayers.add(player);
         //Draw two spam cards
@@ -50,10 +50,10 @@ public class RebootAction extends Action {
         server.communicateAll(new Movement(player.getID(), restartPos));
         server.communicateAll(new Reboot(player.getID()));
 
-        for (Player robotOnReboot : rebootedPlayers) {//TODO is the list always empty?
+        for (Player robotOnReboot : allPlayers) {//TODO is the list always empty?
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 robotOnReboot.getRobot().rotateTo(Orientation.DOWN);
-                game.getActivationPhase().handleMove(robotOnReboot, orientation);
+                game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
             }
         }
 

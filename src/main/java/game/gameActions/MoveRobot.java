@@ -18,12 +18,15 @@ public class MoveRobot extends Action{
         int xCoordinate = player.getRobot().getCoordinate().getX();
         int yCoordinate = player.getRobot().getCoordinate().getY();
 
+        /*
         switch (orientation) {
             case UP -> player.getRobot().setPosition(xCoordinate, yCoordinate - 1);
             case DOWN -> player.getRobot().setPosition(xCoordinate, yCoordinate + 1);
             case LEFT ->  player.getRobot().setPosition(xCoordinate + 1, yCoordinate);
             case RIGHT -> player.getRobot().setPosition(xCoordinate - 1, yCoordinate);
         }
+
+         */
     }
 }
 

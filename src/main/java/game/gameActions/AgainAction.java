@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Repeats the programming in the players previous register.
- * This card cannot be played in the first register. TODO
+ * This card cannot be played in the first register.
  */
 public class AgainAction extends Action{
 
@@ -29,7 +29,6 @@ public class AgainAction extends Action{
         damageCards.add(CardType.Virus);
         damageCards.add(CardType.Worm);
 
-        //TODO Rule: This card cannot be played in the first register. - prohibit discarding in the first register?
         for (CardType damageCard : damageCards) {
             if (player.getLastRegisterCard() == damageCard) {
                 //draw top card from programming deck and play it
