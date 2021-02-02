@@ -24,6 +24,7 @@ public abstract class Robot {
 
     protected Orientation orientation = Orientation.RIGHT;
     protected Coordinate coordinate;
+    private Coordinate startingPoint;
 
     protected Robot(Player player, String imagePath, String name, Color color) {
         this.player = player;
@@ -125,5 +126,13 @@ public abstract class Robot {
 
     public void setCoordinate(Coordinate p) {
         coordinate = p;
+    }
+
+    public Coordinate getStartingPoint(){
+        return this.startingPoint;
+    }
+
+    public void setStartingPoint(Coordinate coordinate){
+        this.startingPoint = coordinate;
     }
 }

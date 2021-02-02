@@ -5,6 +5,7 @@ import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.enums.CardType;
 
@@ -169,4 +170,5 @@ public class Player extends User {
     public void reuseDiscardedDeck() {
         discardedProgrammingDeck.refillProgrammingDeck(drawProgrammingDeck);
     }
+
 }

@@ -41,9 +41,17 @@ public class RebootAction extends Action {
         player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
 
         //Robot is placed on reboot token
-        player.getRobot().rotateTo(Orientation.UP);
-        player.getRobot().moveTo(map.getRestartPoint());
-        int restartPos = map.getRestartPoint().toPosition();
+        int restartPos;
+        if(player.getRobot().getCoordinate().getX() > 2) {
+            player.getRobot().rotateTo(Orientation.UP);
+            player.getRobot().moveTo(map.getRestartPoint());
+            restartPos = map.getRestartPoint().toPosition();
+        }
+        else{
+            player.getRobot().rotateTo(Orientation.UP);
+            player.getRobot().moveTo(player.getRobot().getStartingPoint());
+            restartPos = player.getRobot().getStartingPoint().toPosition();
+        }
 
         //Out of the round, must wait until the next round to program the robot again.
 

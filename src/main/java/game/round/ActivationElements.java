@@ -154,6 +154,7 @@ public class ActivationElements {
                 if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
                     playersOnBelt.add(currentPlayer);
                     actionFinished.add(false);
+                    oldPositions.add(currentPlayer.getRobot().getCoordinate().clone());
 
                     for (Attribute a : map.getTile(tileCoordinate).getAttributes()) {
                         if (a.getType() == AttributeType.Belt) {

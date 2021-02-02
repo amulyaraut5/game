@@ -33,7 +33,8 @@ public class ConstructionPhase extends Phase {
             player.message(new Error("Your chosen position is already taken!"));
         } else {
             //chosen StartingPoint is valid
-            player.getRobot().setCoordinate(pos);
+            player.getRobot().setCoordinate(pos.clone());
+            player.getRobot().setStartingPoint(pos.clone());
             server.communicateAll(new StartingPointTaken(player.getID(), position));
             nextPlayer();
         }
