@@ -134,8 +134,8 @@ public class ActivationElements {
                     int energy = player.getEnergyCubes();
                     energy += energy;
                     player.setEnergyCubes(energy);
-                    JSONBody jsonBody = new Energy(player.getID(), player.getEnergyCubes());
-                    player.message(jsonBody);
+                    JSONBody jsonBody = new Energy(player.getID(), 1);
+                    server.communicateAll(jsonBody);
                 }
             }
         }
