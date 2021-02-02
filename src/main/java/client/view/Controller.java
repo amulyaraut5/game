@@ -75,10 +75,10 @@ public abstract class Controller {
 
     public void handleDamageCount(CardType cardType) {
         switch (cardType) {
-            case Spam -> countSpamCards--;
-            case Trojan -> countTrojanCards--;
-            case Worm -> countWormCards--;
-            case Virus -> countVirusCards--;
+            case Spam -> setCountSpamCards(getCountSpamCards()-1);
+            case Trojan -> setCountTrojanCards(getCountTrojanCards()-1);
+            case Worm -> setCountWormCards(getCountWormCards()-1);
+            case Virus -> setCountVirusCards(getCountVirusCards()-1);
         }
     }
 
