@@ -21,6 +21,7 @@ import utilities.SoundHandler;
 import utilities.Updatable;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
+import utilities.enums.MessageType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,11 +63,6 @@ public class GameController extends Controller implements Updatable {
     private int interval;
     private int currentRound = 1;
     private boolean first = true;
-
-    private int countSpamCards = 38;
-    private int countTrojanCards = 12;
-    private int countWormCards = 6;
-    private int countVirusCards = 18;
 
     @FXML
     private HBox otherPlayerSpace;
@@ -273,7 +269,7 @@ public class GameController extends Controller implements Updatable {
             }
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
-                activationController.pickDamage(pickDamage, this);
+                activationController.pickDamage(pickDamage);
             }
             case PlayerShooting -> {
                 if (activePlayers.isEmpty()) {
@@ -340,7 +336,8 @@ public class GameController extends Controller implements Updatable {
             case CurrentPlayer -> {
                 CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
                 boolean isThisPlayer = currentPlayer.getPlayerID() == client.getThisPlayersID();
-
+                ArrayList<MessageType> currentActions = null;
+                if(isThisPlayer) currentActions.clear();
                 if (currentPhase == GameState.CONSTRUCTION) {
                     constructionController.currentPlayer(isThisPlayer);
                 } else if (currentPhase == GameState.ACTIVATION) {
@@ -406,20 +403,6 @@ public class GameController extends Controller implements Updatable {
         client.sendMessage(new SendChat("#r " + orientation, -1));
     }
 
-    public void handleDamageCount(CardType cardType) {
-        switch (cardType) {
-            case Spam -> countSpamCards--;
-            case Trojan -> countTrojanCards--;
-            case Worm -> countWormCards--;
-            case Virus -> countVirusCards--;
-        }
-    }
-
-    public void handleDamageCount(ArrayList<CardType> cardList) {
-        for (CardType cardType : cardList) {
-            handleDamageCount(cardType);
-        }
-    }
 
     public void removePlayer(Player player) {
         gameBoardController.removePlayer(player);
@@ -440,19 +423,5 @@ public class GameController extends Controller implements Updatable {
         return playerMatController;
     }
 
-    public int getCountSpamCards() {
-        return countSpamCards;
-    }
 
-    public int getCountTrojanCards() {
-        return countTrojanCards;
-    }
-
-    public int getCountWormCards() {
-        return countWormCards;
-    }
-
-    public int getCountVirusCards() {
-        return countVirusCards;
-    }
 }

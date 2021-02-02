@@ -218,6 +218,7 @@ public class Game {
                         #autoPlay         |  autoplays all PlayIt
                         #activateBoard |  activates the board
                         #damage <n>  |  deals spam cards
+                        #countDamage  | lists the number of damage cards in their decks
                         #emptySpam    |  empties spam deck
                         #win                  |  player wins
                         - - - - - - - - - - - - - - - - - - - - - - - - -
