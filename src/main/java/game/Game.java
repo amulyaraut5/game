@@ -181,6 +181,13 @@ public class Game {
                     server.communicateDirect(new Error("your cheat is invalid in this phase"), user.getID());
                 else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
+            case "#countDamage" -> {
+                String cardDeck =   "\n  | Spam Deck   " + spamDeck.size() +
+                                    "\n  | Trojan Deck  " + trojanDeck.size() +
+                                    "\n  | Worm Deck   " + wormDeck.size() +
+                                    "\n  | Virus Deck   " + virusDeck.size();
+                user.message(new ReceivedChat(cardDeck, user.getID(), false));
+            }
             case "#autoPlay" -> {
                 for (int register = 1; register < 6; register++) {
                     for (int i = 0; i < activationPhase.getCurrentCards().size(); i++) {
