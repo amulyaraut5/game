@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -8,6 +9,10 @@
    <children>
       <FlowPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
       <Pane fx:id="animationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
-      <Pane fx:id="robotPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+      <Pane fx:id="robotPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0">
+         <children>
+            <Label fx:id="labelCoordinate" alignment="CENTER_RIGHT" layoutX="748.0" layoutY="578.0" prefHeight="17.0" prefWidth="32.0" />
+            <Label fx:id="labelPosition" alignment="CENTER_RIGHT" layoutX="716.0" layoutY="578.0" prefHeight="17.0" prefWidth="32.0" textAlignment="RIGHT" />
+         </children></Pane>
    </children>
 </StackPane>

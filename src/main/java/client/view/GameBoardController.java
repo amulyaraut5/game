@@ -11,10 +11,10 @@ import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.GameStarted;
+import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.MapConverter;
 import utilities.Utilities;
@@ -37,13 +38,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
+import static javafx.scene.input.MouseEvent.MOUSE_MOVED;
 
 public class GameBoardController extends Controller {
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
     private final ArrayList<Coordinate> path = new ArrayList<>();
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
-    private EventHandler<MouseEvent> onMapClicked;
+    private boolean isStartPosSet = false;
+
     @FXML
     private StackPane boardPane; //stacks the map-, animation-, and playerPane
     @FXML
@@ -52,15 +55,33 @@ public class GameBoardController extends Controller {
     private Pane animationPane;
     @FXML
     private Pane robotPane;
+    @FXML
+    private Label labelPosition;
+    @FXML
+    private Label labelCoordinate;
 
     @FXML
     private void initialize() {
-        boardPane.addEventHandler(MOUSE_CLICKED, onMapClicked = mouseEvent -> {
+        boardPane.addEventHandler(MOUSE_CLICKED, this::onMapClicked);
+        boardPane.addEventHandler(MOUSE_MOVED, mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
             int position = new Coordinate(x, y).toPosition();
-            client.sendMessage(new SetStartingPoint(position));
+            labelPosition.setText(position + ":");
+            labelCoordinate.setText(new Coordinate(x, y).toString());
         });
+    }
+
+    private void onMapClicked(MouseEvent mouseEvent) {
+        int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
+        int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
+        int position = new Coordinate(x, y).toPosition();
+
+        if (!isStartPosSet) {
+            client.sendMessage(new SetStartingPoint(position));
+        } else {
+            client.sendMessage(new SendChat("#tp " + position, -1));
+        }
     }
 
     public void buildMap(GameStarted gameStarted) {
@@ -134,7 +155,7 @@ public class GameBoardController extends Controller {
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == client.getThisPlayersID()) {
-            boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
+            isStartPosSet = true;//boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
         }
         player.getRobot().setCoordinate(coordinate);
         ImageView imageView = player.getRobot().drawRobotImage();

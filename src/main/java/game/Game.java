@@ -209,9 +209,9 @@ public class Game {
             case "#cheats" -> {
                 String cheats = """
                                                 
-                        ----------------------------------------
+                        ------------------------------------------
                         Cheats
-                        ----------------------------------------
+                        ------------------------------------------
                         #cheats            |  lists all cheats
                         #tp <pos>       |  teleports the robot
                         #tp <x> <y>    |  teleports the robot
@@ -221,8 +221,11 @@ public class Game {
                         #activateBoard |  activates the board
                         #damage <n>  |  deals spam cards
                         #emptySpam    |  empties spam deck
-                        #win                  |  player wins the game
-                        ----------------------------------------
+                        #win                  |  player wins
+                        - - - - - - - - - - - - - - - - - - - - - - - - -
+                        click on map      |  teleports the robot
+                        WASD keys        |  rotates the robot
+                        ------------------------------------------
                         """;
                 user.message(new ReceivedChat(cheats, user.getID(), false));
             }

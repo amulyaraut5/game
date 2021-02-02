@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -394,6 +395,17 @@ public class GameController extends Controller implements Updatable {
                 gameWonController.setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
             }
         }
+    }
+
+    public void keyPressed(KeyEvent event) {
+        String orientation = "";
+        switch (event.getCode()) {
+            case W -> orientation = "u";
+            case D -> orientation = "r";
+            case S -> orientation = "d";
+            case A -> orientation = "l";
+        }
+        client.sendMessage(new SendChat("#r " + orientation, -1));
     }
 
     public void handleDamageCount(CardType cardType) {

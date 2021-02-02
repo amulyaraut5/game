@@ -89,14 +89,13 @@ public class ViewManager {
         currentScene = lobbyScene;
     }
 
-
     public void showGame() {
         Client.getInstance().setCurrentController(gameController);
         openGameStage();
         currentScene = gameScene;
     }
 
-    public void closeGame(){
+    public void closeGame() {
         gameStage.close();
     }
 
@@ -134,6 +133,8 @@ public class ViewManager {
         gameStage.setResizable(false);
         gameStage.setScene(gameScene);
 
+        gameScene.setOnKeyPressed(event -> gameController.keyPressed(event));
+
         gameStage.setOnCloseRequest(event -> {
             Client.getInstance().disconnect();
             showMenu();
@@ -147,7 +148,6 @@ public class ViewManager {
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
         ///////////////////////////////////////////////////////////////////////////////////////////
         FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("/view/mapSelection.fxml"));
-
 
         menuScene = new Scene(menuLoader.load());
         loginScene = new Scene(loginLoader.load());
