@@ -27,7 +27,6 @@ public class LaserAction {
     private static final Logger logger = LogManager.getLogger();
     private final SoundHandler soundHandler = new SoundHandler();
     private final Game game = Game.getInstance();
-    private final ActivationPhase activationPhase;
     private final ArrayList<Player> playerList = game.getPlayers();
     private final Map map = game.getMap();
     protected Server server = Server.getInstance();
@@ -37,8 +36,7 @@ public class LaserAction {
     /**
      * Constructor for laser
      */
-    public LaserAction(ActivationPhase activationPhase) {
-        this.activationPhase = activationPhase;
+    public LaserAction() {
     }
 
     /**
@@ -56,12 +54,12 @@ public class LaserAction {
 
         position.add(step);
         while (!position.isOutsideMap()) {
-            for (Attribute a : map.getTile(position).getAttributes()) {
-                for (Player p : players) {
-                    if (p.getRobot().getCoordinate() == position) {
-                        return position; //ends if player is on position
-                    }
+            for (Player p : players) {
+                if (position.equals(p.getRobot().getCoordinate())) {
+                    return position; //ends if player is on position
                 }
+            }
+            for (Attribute a : map.getTile(position).getAttributes()) {
                 if (a.getType() == AttributeType.Antenna) return position.subtract(step);
                 else if (a.getType() == AttributeType.Wall) {
                     Wall wall = (Wall) a;
@@ -166,17 +164,17 @@ public class LaserAction {
      * penetrate more than one robot.
      */
 
-    public void determineLaserPaths(Coordinate coordinate) {
-        for (Attribute a : map.getTile(coordinate).getAttributes()) {
+    public void determineLaserPaths(Coordinate laserPos) {
+        for (Attribute a : map.getTile(laserPos).getAttributes()) {
             if (a.getType() == AttributeType.Laser) {
                 Orientation orientation = ((Laser) a).getOrientation();
 
-                Coordinate to = calculateLaserEnd(coordinate, orientation, map, game.getPlayers());
-                //logger.debug("BoardLaser: from x:" + coordinate.getX() + " y:" + coordinate.getY() + " to x:" + to.getX() + " y:" + to.getY());
-                laserCoordinates = determinePath(coordinate, to, orientation);
-                for (Coordinate coordinate1 : laserCoordinates) {
-                    //logger.debug("Coordinates x:" + coordinate1.getX() + " y:" + coordinate1.getY());
-                }
+                Coordinate to = calculateLaserEnd(laserPos, orientation, map, game.getPlayers());
+                laserCoordinates = determinePath(laserPos, to, orientation);
+                /*logger.debug("BoardLaser: from " + laserPos + " to " + to);
+                for (Coordinate coordinate : laserCoordinates) {
+                    logger.debug("Coordinates " + coordinate);
+                }*/
             }
         }
     }
@@ -192,11 +190,11 @@ public class LaserAction {
         Orientation orientation = player.getRobot().getOrientation();
 
         Coordinate to = calculateLaserEnd(robotPosition, orientation, map, game.getPlayers());
-        logger.debug("Laser: from x:" + robotPosition.getX() + " y:" + robotPosition.getY() + " to x:" + to.getX() + " y:" + to.getY());
         robotCoordinates = determinePath(robotPosition, to, orientation);
         robotCoordinates.remove(0);
-        for (Coordinate coordinate1 : robotCoordinates) {
-            logger.debug("Coordinates x:" + coordinate1.getX() + " y:" + coordinate1.getY());
-        }
+        /*logger.debug("RobotLaser: from " + robotPosition + " to " + to);
+        for (Coordinate coordinate : robotCoordinates) {
+            logger.debug("Coordinates " + coordinate);
+        }*/
     }
 }

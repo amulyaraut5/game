@@ -43,7 +43,7 @@ public class ActivationPhase extends Phase {
     private final ArrayList<CardType> cardTypes = new ArrayList<>();
 
     private final ActivationElements activationElements = new ActivationElements(this);
-    private final LaserAction laserAction = new LaserAction(this);
+    private final LaserAction laserAction = new LaserAction();
     private final ArrayList<Player> activePlayers = players;
     private final ArrayList<Player> rebootedPlayers = new ArrayList<>();
 
