@@ -1,12 +1,11 @@
 package game.gameObjects.robot;
 
+import game.Player;
 import javafx.scene.paint.Color;
 
 public class SmashBot extends Robot {
 
-    public SmashBot() {
-        name = "Smash Bot";
-        color = Color.YELLOW;
-        imagePath = "/robots/SmashBot.png";
+    public SmashBot(Player player) {
+        super(player, "/robots/SmashBot.png", "Smash Bot", Color.YELLOW);
     }
 }

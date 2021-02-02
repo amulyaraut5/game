@@ -1,9 +1,12 @@
 package game.gameObjects.robot;
 
+import game.Player;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import server.Server;
 import utilities.Coordinate;
 import utilities.ImageHandler;
+import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
@@ -11,13 +14,22 @@ import utilities.enums.Rotation;
  * @author simon
  */
 public abstract class Robot {
-    protected String imagePath;
+    private final Server server = Server.getInstance();
+    private final Player player;
 
+    protected String imagePath;
     protected String name;
     protected Color color;
 
     protected Orientation orientation = Orientation.RIGHT;
     protected Coordinate coordinate;
+
+    protected Robot(Player player, String imagePath, String name, Color color) {
+        this.player = player;
+        this.imagePath = imagePath;
+        this.name = name;
+        this.color = color;
+    }
 
     /**
      * method creates a robot from given figure ID.
@@ -25,16 +37,16 @@ public abstract class Robot {
      * @param figure figure ID of the wanted robot, from 0 to 5.
      * @return Robot associated with given ID.
      */
-    public static Robot create(int figure) {
+    public static Robot create(int figure, Player player) {
         Robot robot;
 
         switch (figure) {
-            case 0 -> robot = new Hulk();
-            case 1 -> robot = new HammerBot();
-            case 2 -> robot = new SmashBot();
-            case 3 -> robot = new Twonky();
-            case 4 -> robot = new SpinBot();
-            case 5 -> robot = new ZoomBot();
+            case 0 -> robot = new Hulk(player);
+            case 1 -> robot = new HammerBot(player);
+            case 2 -> robot = new SmashBot(player);
+            case 3 -> robot = new Twonky(player);
+            case 4 -> robot = new SpinBot(player);
+            case 5 -> robot = new ZoomBot(player);
             default -> throw new UnsupportedOperationException("Robot ID has to be in between 0 and 5.");
         }
         return robot;
@@ -67,6 +79,7 @@ public abstract class Robot {
         for (int i = 0; i < moveCount; i++) {
             coordinate.add(direction.toVector());
         }
+        System.out.println("Robot " + name + " moved to " + coordinate);
     }
 
     /**
@@ -81,9 +94,20 @@ public abstract class Robot {
         }
     }
 
+    public void rotate(Orientation rotateTo) {
+        if (rotateTo == orientation.getOpposite()) {
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+        } else if (rotateTo == orientation.getNext()) {
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+        } else if (rotateTo == orientation.getPrevious()) {
+            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+        }
+        orientation = rotateTo;
+    }
+
     public ImageView drawRobotImage() {
         return ImageHandler.createImageView(imagePath, orientation);
-
     }
 
     public String getName() {

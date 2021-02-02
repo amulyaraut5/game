@@ -23,7 +23,6 @@ import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
 import utilities.enums.Orientation;
-import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 
@@ -174,16 +173,7 @@ public class Game {
                         case "d" -> orientation = Orientation.DOWN;
                         case "l" -> orientation = Orientation.LEFT;
                     }
-                    Orientation robotO = robot.getOrientation();
-                    if (orientation == robotO.getOpposite()) {
-                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.RIGHT));
-                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.RIGHT));
-                    } else if (orientation == robotO.getNext()) {
-                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.RIGHT));
-                    } else if (orientation == robotO.getPrevious()) {
-                        server.communicateAll(new PlayerTurning(user.getID(), Rotation.LEFT));
-                    }
-                    robot.setOrientation(orientation);
+                    robot.rotate(orientation);
                 }
             }
             case "#damage" -> {

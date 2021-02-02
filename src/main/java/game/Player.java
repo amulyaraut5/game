@@ -49,7 +49,7 @@ public class Player extends User {
         figure = user.getFigure();
         thread = user.getThread();
 
-        robot = Robot.create(figure);
+        robot = Robot.create(figure, this);
 
         energyCubes = 5;
         drawProgrammingDeck = new ProgrammingDeck();
@@ -68,7 +68,7 @@ public class Player extends User {
         id = message.getID();
         name = message.getName();
         figure = message.getFigure();
-        robot = Robot.create(figure);
+        robot = Robot.create(figure, this);
     }
 
     /**

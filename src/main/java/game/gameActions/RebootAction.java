@@ -32,8 +32,8 @@ public class RebootAction extends Action {
         ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 
         //ArrayList<Player> allPlayers = new ArrayList<>();
-       // allPlayers.addAll(activePlayers);
-       // allPlayers.addAll(rebootedPlayers);
+        // allPlayers.addAll(activePlayers);
+        // allPlayers.addAll(rebootedPlayers);
 
         //rebootedPlayers.add(player);
         //Draw two spam cards
@@ -43,16 +43,8 @@ public class RebootAction extends Action {
         player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
 
         //Robot is placed on reboot token
-        if (player.getRobot().getOrientation() == Orientation.DOWN){
-            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-        } else if (player.getRobot().getOrientation() == Orientation.LEFT){
-            server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-        } else if (player.getRobot().getOrientation() == Orientation.RIGHT){
-            server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-        }
-        player.getRobot().setOrientation(Orientation.LEFT); //TODO robots must face north
-        player.getRobot().setCoordinate(map.getRestartPoint());
+        player.getRobot().rotate(Orientation.UP);
+        player.getRobot().setCoordinate(map.getRestartPoint().clone());
         int restartPos = map.getRestartPoint().toPosition();
 
         //Out of the round, must wait until the next round to program the robot again.
@@ -61,7 +53,7 @@ public class RebootAction extends Action {
         server.communicateAll(new Reboot(player.getID()));
 
         for (Player robotOnReboot : rebootedPlayers) {
-            if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot!=player) {
+            if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
                 server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
                 server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));

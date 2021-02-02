@@ -1,12 +1,11 @@
 package game.gameObjects.robot;
 
+import game.Player;
 import javafx.scene.paint.Color;
 
 public class ZoomBot extends Robot {
 
-    public ZoomBot() {
-        name = "Zoom Bot";
-        color = Color.GREEN;
-        imagePath = "/robots/ZoomBot.png";
+    public ZoomBot(Player player) {
+        super(player, "/robots/ZoomBot.png", "Zoom Bot", Color.GREEN);
     }
 }
