@@ -4,10 +4,8 @@ import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.Movement;
-import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.JSONProtocol.body.Reboot;
 import utilities.enums.Orientation;
-import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 
@@ -43,8 +41,8 @@ public class RebootAction extends Action {
         player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
 
         //Robot is placed on reboot token
-        player.getRobot().rotate(Orientation.UP);
-        player.getRobot().setCoordinate(map.getRestartPoint().clone());
+        player.getRobot().rotateTo(Orientation.UP);
+        player.getRobot().moveTo(map.getRestartPoint());
         int restartPos = map.getRestartPoint().toPosition();
 
         //Out of the round, must wait until the next round to program the robot again.
@@ -52,11 +50,9 @@ public class RebootAction extends Action {
         server.communicateAll(new Movement(player.getID(), restartPos));
         server.communicateAll(new Reboot(player.getID()));
 
-        for (Player robotOnReboot : rebootedPlayers) {
+        for (Player robotOnReboot : rebootedPlayers) {//TODO is the list always empty?
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
-                robotOnReboot.getRobot().setOrientation(Orientation.DOWN);
-                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
-                server.communicateAll(new PlayerTurning(robotOnReboot.getID(), Rotation.LEFT));
+                robotOnReboot.getRobot().rotateTo(Orientation.DOWN);
                 game.getActivationPhase().handleMove(robotOnReboot, orientation);
             }
         }

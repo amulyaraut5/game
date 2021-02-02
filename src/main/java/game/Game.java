@@ -17,16 +17,16 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
 import utilities.Coordinate;
+import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.GameWon;
+import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
 import utilities.enums.Orientation;
 
 import java.util.ArrayList;
-
-import static utilities.Coordinate.parse;
 
 /**
  * This class handles the game itself.
@@ -153,14 +153,12 @@ public class Game {
                 Robot robot = userToPlayer(user).getRobot();
                 if (cheatInfo.length == 1) {
                     int position = Integer.parseInt(cheatInfo[0]);
-                    robot.setCoordinate(parse(position));
-                    server.communicateAll(new Movement(user.getID(), position));
+                    robot.moveTo(Coordinate.parse(position));
                 } else if (cheatInfo.length == 2) {
                     int x = Integer.parseInt(cheatInfo[0]);
                     int y = Integer.parseInt(cheatInfo[1]);
                     Coordinate coordinate = new Coordinate(x, y);
-                    robot.setCoordinate(coordinate);
-                    server.communicateAll(new Movement(user.getID(), coordinate.toPosition()));
+                    robot.moveTo(coordinate);
                 }
             }
             case "#r" -> {
@@ -173,7 +171,7 @@ public class Game {
                         case "d" -> orientation = Orientation.DOWN;
                         case "l" -> orientation = Orientation.LEFT;
                     }
-                    robot.rotate(orientation);
+                    robot.rotateTo(orientation);
                 }
             }
             case "#damage" -> {

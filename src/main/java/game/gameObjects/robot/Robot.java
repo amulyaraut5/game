@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import server.Server;
 import utilities.Coordinate;
 import utilities.ImageHandler;
+import utilities.JSONProtocol.body.Movement;
 import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -53,19 +54,6 @@ public abstract class Robot {
     }
 
     /**
-     * Moves the robot regarding its orientation. It is not checked if the move is allowed.
-     * <pre>
-     * {@code move(3)} moves the robot 3 fields forward.
-     * {@code move(-1)} moves the robot 1 field backwards.
-     * </pre>
-     *
-     * @param moveCount Number of fields which the robot moves.
-     */
-    public void move(int moveCount) {
-        move(moveCount, orientation);
-    }
-
-    /**
      * Moves the robot in given direction. It is not checked if the move is allowed.
      * <pre>
      * {@code move(3, UP)} moves the robot 3 fields up (i.e. y-3 ).
@@ -79,7 +67,12 @@ public abstract class Robot {
         for (int i = 0; i < moveCount; i++) {
             coordinate.add(direction.toVector());
         }
-        System.out.println("Robot " + name + " moved to " + coordinate);
+        server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
+    }
+
+    public void moveTo(Coordinate pos) {
+        coordinate = pos.clone();
+        server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
     }
 
     /**
@@ -94,7 +87,7 @@ public abstract class Robot {
         }
     }
 
-    public void rotate(Orientation rotateTo) {
+    public void rotateTo(Orientation rotateTo) {
         if (rotateTo == orientation.getOpposite()) {
             server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
             server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
@@ -132,13 +125,5 @@ public abstract class Robot {
 
     public void setCoordinate(Coordinate p) {
         coordinate = p;
-    }
-
-    public void setPosition(int x, int y) {
-        coordinate = new Coordinate(x, y);
-    }
-
-    //TODO
-    public void reboot() {
     }
 }
