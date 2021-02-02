@@ -548,6 +548,7 @@ public class ActivationPhase extends Phase {
             }
             cardTypes.add(cardType);
         }
+        server.communicateAll(new DrawDamage(user.getID(), selectedCards));
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
