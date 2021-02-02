@@ -196,10 +196,13 @@ public class Game {
                     }
                 }
             }
+
             case "#win" -> server.communicateAll(new GameWon(user.getID()));
             case "#emptySpam" -> {
                 spamDeck.getDeck().clear();
                 logger.info("SpamDeckCheat: " + spamDeck.getDeck().size());
+                activationPhase.drawDamage(spamDeck, userToPlayer(user), spamDeck.size());
+
             }
             case "#cheats" -> {
                 String cheats = """
