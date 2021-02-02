@@ -106,6 +106,12 @@ public class PlayerMatController extends Controller{
     private void setOnDragDone(){
         CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
         if (getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
+        switch(cardType){
+            case Spam -> {setCountSpamCards(getCountSpamCards()+1);}
+            case Virus -> { setCountVirusCards(getCountVirusCards()+1);}
+            case Trojan -> { setCountTrojanCards(getCountTrojanCards()+1);}
+            case Worm -> { setCountWormCards(getCountWormCards()+1); }
+        }
         client.sendMessage(new SelectCard(cardType, positionDroppedCard));
     }
 
