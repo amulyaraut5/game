@@ -20,7 +20,7 @@ public class Map {
 
     private final ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
     private final ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
-    private final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
+
     private final ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
 
     private Coordinate RestartPoint;
@@ -192,34 +192,19 @@ public class Map {
      * This method stores all the pit coordinates from the actual
      * version of map and returns it.
      */
-    public void readPitCoordinate() {
+    public ArrayList<Coordinate> readGearCoordinate() {
+        final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.ControlPoint) {
-                        Coordinate temp = new Coordinate(i, j);
-                        pitCoordinates.add(temp);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This method stores all the pit coordinates from the actual
-     * version of map and returns it.
-     */
-    public void readGearCoordinate() {
-        for (int i = 0; i < (tiles.length); i++) {
-            for (int j = 0; j < (tiles[0].length); j++) {
-                for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.ControlPoint) {
+                    if (a.getType() == AttributeType.Gear) {
                         Coordinate temp = new Coordinate(i, j);
                         gearCoordinates.add(temp);
                     }
                 }
             }
         }
+        return gearCoordinates;
     }
 
     public void readBeltCoordinates() {
@@ -276,7 +261,6 @@ public class Map {
         readBeltCoordinates();
         readRestartPointCoordinate();
         readEnergySpaceCoordinates();
-        readPitCoordinate();
         readGearCoordinate();
         readPushPanelCoordinate();
         readLaserCoordinates();
@@ -316,13 +300,6 @@ public class Map {
         return controlPointCoordinates;
     }
 
-    public ArrayList<Coordinate> getPitCoordinates() {
-        return pitCoordinates;
-    }
-
-    public ArrayList<Coordinate> getGearCoordinates() {
-        return gearCoordinates;
-    }
 
     public ArrayList<Coordinate> getLaserCoordinates() {
         return laserCoordinates;

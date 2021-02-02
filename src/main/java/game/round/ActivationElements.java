@@ -19,6 +19,9 @@ import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class ActivationElements {
     private static final Logger logger = LogManager.getLogger();
     private final Game game = Game.getInstance();
@@ -31,32 +34,6 @@ public class ActivationElements {
         this.activationPhase = activationPhase;
     }
 
-    /**
-     * Gears rotate robots resting on them 90 degrees in the direction of the arrows.
-     * Red gears rotate left, and green gears rotate right.
-     * PlayerTurning Protocol is sent to all players.
-     */
-    public void activateGear() {
-        for (Coordinate coordinate : map.getGearCoordinates()) {
-            for (Player player : playerList) {
-                if (player.getRobot().getCoordinate() == coordinate) {
-                    for (Attribute a : map.getTile(coordinate.getX(), coordinate.getY()).getAttributes()) {
-                        Rotation rotation = ((Gear) a).getOrientation();
-                        switch (rotation) {
-                            case LEFT -> {
-                                player.getRobot().rotate(Rotation.LEFT);
-                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                            }
-                            case RIGHT -> {
-                                player.getRobot().rotate(Rotation.RIGHT);
-                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Checkpoint is the final destination of the game and player wins the game as
@@ -97,6 +74,36 @@ public class ActivationElements {
         }
     }
 
+
+    /**
+     * Gears rotate robots resting on them 90 degrees in the direction of the arrows.
+     * Red gears rotate left, and green gears rotate right.
+     * PlayerTurning Protocol is sent to all players.
+     */
+    public void activateGear() {
+        for (Coordinate coordinate : map.readGearCoordinate()) {
+            for (Player player : playerList) {
+                if (player.getRobot().getCoordinate().equals(coordinate)) {
+                    for (Attribute a : map.getTile(coordinate.getX(), coordinate.getY()).getAttributes()) {
+                        Rotation rotation = ((Gear) a).getOrientation();
+                        switch (rotation) {
+                            case LEFT -> {
+                                player.getRobot().rotate(Rotation.LEFT);
+                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                            }
+                            case RIGHT -> {
+                                player.getRobot().rotate(Rotation.RIGHT);
+                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
     /**
      * Push panels push any robots resting on them into the next space in the direction the push
      * panel faces. They activate only in the register that corresponds to the number on them. For
@@ -109,7 +116,7 @@ public class ActivationElements {
         for (Coordinate coordinate : map.readPushPanelCoordinate()) {
             Tile tile = map.getTile(coordinate);
             for (Player player : playerList) {
-                if (player.getRobot().getCoordinate() == coordinate) {
+                if (player.getRobot().getCoordinate().equals(coordinate)){
                     for (Attribute a : tile.getAttributes()) {
                         for (int i : ((PushPanel) a).getRegisters()) {
                             if (i == activationPhase.getCurrentRegister()) {
