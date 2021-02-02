@@ -28,7 +28,7 @@ public abstract class Utilities {
     public static final int FIELD_SIZE = 60;
 
     //Cards
-    public static final int SPAM_CARDCOUNT = 36;
+    public static final int SPAM_CARDCOUNT = 38;
     public static final int TROJANHORSE_CARDCOUNT = 12;
     public static final int VIRUS_CARDCOUNT = 18;
     public static final int WORM_CARDCOUNT = 6;
