@@ -181,8 +181,7 @@ public class ActivationController extends Controller {
         updateDamageCountLabel(card);
         pickedDamageCards.add(card);
         String path = "/cards/programming/" + card + "-card.png";
-        ImageHandler.createImageView(path, 100, 150);
-        ImageView selectedDamageCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
+        ImageView selectedDamageCard = ImageHandler.createImageView(path, 70, 100);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if (pickedDamageCards.size() == pickDamage) {
             client.sendMessage(new SelectDamage(pickedDamageCards));
