@@ -18,7 +18,6 @@ import javafx.scene.layout.StackPane;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
-import utilities.Utilities;
 import utilities.enums.CardType;
 
 /**
@@ -76,9 +75,9 @@ public class PlayerMatController extends Controller{
 
 
     protected void addDropHandling(Pane pane) {
-        pane.setOnDragOver(e -> { setOnDragOver(e, pane); });
-        pane.setOnDragExited(e -> { setOnDragExited(e, pane); });
-        pane.setOnDragDone(e -> { setOnDragDone(); });
+        pane.setOnDragOver(e -> setOnDragOver(e, pane));
+        pane.setOnDragExited(e -> setOnDragExited(e, pane));
+        pane.setOnDragDone(e -> setOnDragDone());
     }
 
     private void  setOnDragOver(DragEvent e, Pane pane){
@@ -111,20 +110,19 @@ public class PlayerMatController extends Controller{
     }
 
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
-            ImageView imageView = programmingCardImageView;
-            imageView.setOnDragDetected(event-> {
+        programmingCardImageView.setOnDragDetected(event-> {
                 setWasFormerRegister(true);
-                Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
-                dragboard.setDragView(imageView.snapshot(null, null));
+                Dragboard dragboard = programmingCardImageView.startDragAndDrop(TransferMode.MOVE);
+                dragboard.setDragView(programmingCardImageView.snapshot(null, null));
                 ClipboardContent cc2 = new ClipboardContent();
                 cc2.put(cardFormat, "cardName");
                 dragboard.setContent(cc2);
                 setPosition(position);
-                setProgrammingImageView(imageView);
+                setProgrammingImageView(programmingCardImageView);
 
             });
 
-        return imageView;
+        return programmingCardImageView;
     }
 
     public void reset(){

@@ -54,7 +54,7 @@ public class LobbyController extends Controller implements Updatable {
     @FXML private ImageView dizzy;
     @FXML private ImageView crispy;
 
-    private boolean state = false;
+    private final boolean state = false;
 
 
 

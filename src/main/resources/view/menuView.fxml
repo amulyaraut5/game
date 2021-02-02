@@ -8,41 +8,45 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgray; -fx-background-radius: 20; -fx-background-image: null;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.MenuController">
-   <children>
-       <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.66" pickOnBounds="true">
-           <image>
-               <Image url="@loginBackground.png" />
-           </image>
-       </ImageView>
-      <JFXButton buttonType="RAISED" layoutX="210.0" layoutY="200.0" onAction="#hostGameClicked" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: orange;" text="Host" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="210.0" layoutY="265.0" onAction="#joinGameClicked" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: orange;" text="Join" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </JFXButton>
-      <Pane layoutX="81.0" layoutY="52.0" prefHeight="109.0" prefWidth="438.0" style="-fx-background-color: gray; -fx-background-radius: 10; -fx-border-radius: 5; -fx-border-color: orange; -fx-border-width: 5;">
-         <children>
-            <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="28.0" text="Welcome to Roborally" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="37.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Label fx:id="infoLabel" alignment="CENTER" layoutX="117.0" layoutY="326.0" prefHeight="27.0" prefWidth="367.0" textFill="#ff3600">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <JFXButton buttonType="RAISED" layoutX="409.0" layoutY="265.0" onAction="#aiJoinClicked" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: green;" text="Test AI Join" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </JFXButton>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0"
+            style="-fx-background-color: lightgray; -fx-background-radius: 20; -fx-background-image: null;"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.view.MenuController">
+    <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.66" pickOnBounds="true">
+        <Image url="@loginBackground.png"/>
+    </ImageView>
+    <JFXButton buttonType="RAISED" layoutX="210.0" layoutY="200.0" onAction="#hostGameClicked" prefHeight="40.0"
+               prefWidth="180.0" style="-fx-background-color: orange;" text="Host" textFill="WHITE">
+        <font>
+          <Font name="System Bold" size="16.0"/>
+        </font>
+    </JFXButton>
+    <JFXButton buttonType="RAISED" layoutX="210.0" layoutY="265.0" onAction="#joinGameClicked" prefHeight="40.0"
+               prefWidth="180.0" style="-fx-background-color: orange;" text="Join" textFill="WHITE">
+        <font>
+          <Font name="System Bold" size="16.0"/>
+        </font>
+    </JFXButton>
+    <Pane layoutX="81.0" layoutY="52.0" prefHeight="109.0" prefWidth="438.0"
+          style="-fx-background-color: gray; -fx-background-radius: 10; -fx-border-radius: 5; -fx-border-color: orange; -fx-border-width: 5;">
+        <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="28.0"
+               text="Welcome to Roborally" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="37.0"/>
+            </font>
+        </Label>
+    </Pane>
+    <Label fx:id="infoLabel" alignment="CENTER" layoutX="117.0" layoutY="326.0" prefHeight="27.0" prefWidth="367.0"
+           textFill="#ff3600">
+        <font>
+          <Font name="System Bold" size="18.0"/>
+        </font>
+    </Label>
+    <JFXButton buttonType="RAISED" layoutX="409.0" layoutY="265.0" onAction="#aiJoinClicked" prefHeight="40.0"
+               prefWidth="128.0" style="-fx-background-color: green;" text="Test AI Join" textFill="WHITE">
+        <font>
+          <Font name="System Bold" size="16.0"/>
+        </font>
+    </JFXButton>
 </AnchorPane>

@@ -164,7 +164,7 @@ public class OthersController extends Controller {
         getOtherPlayerController(notYourCards.getPlayerID()).setInfoLabel(notYourCards.getCards() + " programming cards");
     }
 
-    private class OtherPlayer {
+    private static class OtherPlayer {
         private final Player otherPlayer;
         private final OnePlayerController onePlayerController;
         private final int positionHBox;

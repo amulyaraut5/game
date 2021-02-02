@@ -37,8 +37,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
-import static javafx.scene.input.MouseEvent.MOUSE_MOVED;
+import static javafx.scene.input.MouseEvent.*;
 
 public class GameBoardController extends Controller {
     private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
@@ -63,6 +62,10 @@ public class GameBoardController extends Controller {
     @FXML
     private void initialize() {
         boardPane.addEventHandler(MOUSE_CLICKED, this::onMapClicked);
+        boardPane.addEventHandler(MOUSE_EXITED, mouseEvent -> {
+            labelPosition.setText("");
+            labelCoordinate.setText("");
+        });
         boardPane.addEventHandler(MOUSE_MOVED, mouseEvent -> {
             int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
             int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;

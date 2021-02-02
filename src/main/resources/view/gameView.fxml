@@ -16,73 +16,70 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0" style="-fx-background-color: lightgray;" stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameController">
-    <children>
-
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0">
+<AnchorPane id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0" style="-fx-background-color: lightgray;"
+            stylesheets="@login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.view.GameController">
+    <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              prefHeight="900.0" prefWidth="1500.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="780.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="780.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="395.0" minHeight="10.0" prefHeight="206.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="395.0" minHeight="10.0" prefHeight="206.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-         <children>
-            <GridPane GridPane.columnIndex="1">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <BorderPane fx:id="phasePane">
-                     <bottom>
-                        <Label fx:id="infoLabel" alignment="CENTER" prefHeight="27.0" prefWidth="367.0" textFill="#ff3600" BorderPane.alignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </bottom></BorderPane>
-                  <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1" />
-               </children>
-            </GridPane>
-            <VBox prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-               <children>
-                  <HBox fx:id="otherPlayerSpace" prefHeight="270.0" prefWidth="780.0" />
-                  <MenuButton layoutX="21.0" layoutY="14.0" mnemonicParsing="false" text="Sounds">
-                    <items>
-                      <MenuItem fx:id="soundsOn" mnemonicParsing="false" onAction="#soundsOnAction" text="On" />
-                      <MenuItem fx:id="soundsOff" mnemonicParsing="false" onAction="#soundsOffAction" text="Off" />
-                    </items>
-                  </MenuButton>
-               </children>
-            </VBox>
-            <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0" stylesheets="@login.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Pane fx:id="boardPane" prefHeight="200.0" prefWidth="200.0" />
-         </children>
-      </GridPane>
-        <Pane fx:id="roundPane" layoutX="805.0" layoutY="13.0" prefHeight="41.0" prefWidth="379.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">
-            <children>
-                <Label fx:id="roundLabel" alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="41.0" prefWidth="379.0" text="!" textFill="WHITE" wrapText="true">
-                    <font>
-                        <Font name="System Bold" size="20.0" />
-                    </font>
-                </Label>
-            </children>
-        </Pane>
-        <AnchorPane fx:id="drawDamageAnchorPane" layoutX="785.0" layoutY="382.0" opacity="0.9" prefHeight="262.0" prefWidth="322.0">
-            <children>
-                <ImageView fitHeight="143.0" fitWidth="210.0" layoutX="94.0" layoutY="93.0" pickOnBounds="true">
-                    <image>
-                        <Image url="@../otherElements/speech-bubble.png" />
-                    </image>
-                </ImageView>
-                <HBox fx:id="drawDamageHBox" layoutX="156.0" layoutY="162.0" prefHeight="61.0" prefWidth="127.0" />
-                <Label fx:id="drawDamageLabel" layoutX="146.0" layoutY="124.0" prefHeight="27.0" prefWidth="135.0" textFill="WHITE" />
+        <GridPane GridPane.columnIndex="1">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <BorderPane fx:id="phasePane">
+                <bottom>
+                    <Label fx:id="infoLabel" alignment="CENTER" prefHeight="27.0" prefWidth="367.0"
+                           textFill="#ff3600" BorderPane.alignment="CENTER">
+                        <font>
+                            <Font name="System Bold" size="18.0"/>
+                        </font>
+                    </Label>
+                </bottom>
+            </BorderPane>
+            <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1"/>
+        </GridPane>
+        <VBox prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <HBox fx:id="otherPlayerSpace" prefHeight="270.0" prefWidth="780.0"/>
+            <MenuButton layoutX="21.0" layoutY="14.0" mnemonicParsing="false" text="Sounds">
+                <items>
+                    <MenuItem fx:id="soundsOn" mnemonicParsing="false" onAction="#soundsOnAction" text="On"/>
+                    <MenuItem fx:id="soundsOff" mnemonicParsing="false" onAction="#soundsOffAction" text="Off"/>
+                </items>
+            </MenuButton>
+        </VBox>
+        <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0"
+                   stylesheets="@login.css" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Pane fx:id="boardPane" prefHeight="200.0" prefWidth="200.0"/>
+    </GridPane>
+    <Pane fx:id="roundPane" layoutX="805.0" layoutY="13.0" prefHeight="41.0" prefWidth="379.0"
+          style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">
+        <Label fx:id="roundLabel" alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="41.0"
+               prefWidth="379.0" text="!" textFill="WHITE" wrapText="true">
+            <font>
+                <Font name="System Bold" size="20.0"/>
+            </font>
+        </Label>
+    </Pane>
+    <AnchorPane fx:id="drawDamageAnchorPane" layoutX="785.0" layoutY="382.0" opacity="0.9" prefHeight="262.0"
+                prefWidth="322.0">
+        <ImageView fitHeight="143.0" fitWidth="210.0" layoutX="94.0" layoutY="93.0" pickOnBounds="true">
+            <Image url="@../otherElements/speech-bubble.png"/>
+        </ImageView>
+        <HBox fx:id="drawDamageHBox" layoutX="156.0" layoutY="162.0" prefHeight="61.0" prefWidth="127.0"/>
+        <Label fx:id="drawDamageLabel" layoutX="146.0" layoutY="124.0" prefHeight="27.0" prefWidth="135.0"
+               textFill="WHITE"/>
 
-            </children></AnchorPane>
-    </children>
+    </AnchorPane>
 </AnchorPane>

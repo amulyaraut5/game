@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Timer;
 
 /**
  * It reads (for the client) the servers input constantly and prints it out on the console.

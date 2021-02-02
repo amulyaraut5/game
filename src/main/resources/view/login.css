@@ -1,6 +1,6 @@
 
 #loginPane {
-    -fx-width: 10;
+    -fx-width: 10px;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {

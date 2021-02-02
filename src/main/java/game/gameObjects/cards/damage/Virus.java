@@ -1,13 +1,9 @@
 package game.gameObjects.cards.damage;
 
-import game.Game;
-import game.Player;
 import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 import utilities.enums.CardType;
-
-import java.util.ArrayList;
 
 /**
  * @author annika

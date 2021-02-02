@@ -52,7 +52,7 @@ public class ActivationPhase extends Phase {
     private final VirusDeck virusDeck = game.getVirusDeck();
     private final WormDeck wormDeck = game.getWormDeck();
 
-    private ArrayList<Player> priorityList = calculatePriority(map.getAntenna());
+    private final ArrayList<Player> priorityList = calculatePriority(map.getAntenna());
     /**
      * keeps track of the current register
      */
@@ -553,9 +553,10 @@ public class ActivationPhase extends Phase {
 
     public boolean isRebooting(Player player){
         boolean isRebooting = false;
-        for (Player player1 : rebootedPlayers) {
-            if(player1  ==  player1){
+        for (Player p : rebootedPlayers) {
+            if (player == p) {
                 isRebooting = true;
+                break;
             }
         }
         return isRebooting;

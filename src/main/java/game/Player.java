@@ -20,7 +20,7 @@ public class Player extends User {
      * the players robot
      */
     private final Robot robot;
-    private Game game = Game.getInstance();
+    private final Game game = Game.getInstance();
     /**
      * contains the chosen Cards for each register
      */

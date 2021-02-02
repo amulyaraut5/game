@@ -305,9 +305,7 @@ public class GameController extends Controller implements Updatable {
                     allRegistersAsFirst = false;
                 }
             }
-            case TimerStarted -> {
-                programmingController.startTimer(allRegistersAsFirst);
-            }
+            case TimerStarted -> programmingController.startTimer(allRegistersAsFirst);
             case TimerEnded -> {
                 programmingController.setTimerEnded(true);
                 playerMatController.setDiscardDeckCounter(4);

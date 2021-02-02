@@ -1,8 +1,5 @@
 package game.gameObjects.cards.damage;
 
-import game.Game;
-import game.Player;
-import game.gameObjects.cards.Card;
 import game.gameObjects.cards.DamageCard;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;

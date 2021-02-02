@@ -53,18 +53,10 @@ public class MoveSimulator {
                 handleMove(resOrientation);
                 handleMove(resOrientation);
             }
-            case UTurn -> {
-                resOrientation = resOrientation.getOpposite();
-            }
-            case TurnLeft -> {
-                resOrientation = resOrientation.getPrevious();
-            }
-            case TurnRight -> {
-                resOrientation = resOrientation.getNext();
-            }
-            case BackUp -> {
-                handleMove(resOrientation.getOpposite());
-            }
+            case UTurn -> resOrientation = resOrientation.getOpposite();
+            case TurnLeft -> resOrientation = resOrientation.getPrevious();
+            case TurnRight -> resOrientation = resOrientation.getNext();
+            case BackUp -> handleMove(resOrientation.getOpposite());
             //TODO case Again -> handleRecursion(player, orientation);
         }
     }
@@ -95,18 +87,16 @@ public class MoveSimulator {
     }
 
     private boolean isRebooting(Coordinate newPos) {
-        boolean isRebooting = false;
-
         if (newPos.isOutsideMap()) {
             reboot = true;
-            isRebooting = true;
+            return true;
         } else for (Attribute a : map.getTile(newPos).getAttributes()) {
             if (a.getType() == AttributeType.Pit) {
                 reboot = true;
-                isRebooting = true;
+                return true;
             }
         }
-        return isRebooting;
+        return false;
     }
 
     private void activateGreenBelts() {

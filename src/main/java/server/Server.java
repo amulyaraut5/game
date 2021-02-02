@@ -2,7 +2,6 @@ package server;
 
 import game.Game;
 import game.Player;
-import game.round.ConstructionPhase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.JSONBody;
@@ -158,13 +157,12 @@ public class Server extends Thread {
 
                 //TODO instead of user with first id: use first user who is ready
                 if (!isMapSent) {
-                    outerLoop:
                     for (User user1 : notAIs) {
                         try {
                             if (userIsNotAI.get(user1)) {
                                 user1.message(new SelectMap(maps));
                                 isMapSent = true;
-                                break outerLoop;
+                                break;
                             }
                         } catch (NullPointerException e) {
                             communicateUsers(new Error("Please click Ready to select map."), user);
@@ -400,23 +398,22 @@ public class Server extends Thread {
         }
 
          */
-        if(game.getGameState() == GameState.PROGRAMMING) {
+        if (game.getGameState() == GameState.PROGRAMMING) {
             logger.info("removeuser IF");
             Player temp = null;
-            for(Player player : game.getProgrammingPhase().getNotReadyPlayers()){
-                if(player.getID() == user.getID()){
+            for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
+                if (player.getID() == user.getID()) {
                     temp = player;
                 }
             }
             game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
             communicateAll(new SelectionFinished(user.getID()));
-            logger.info("removeuser IF" +  game.getProgrammingPhase().getNotReadyPlayers());
-            if(game.getProgrammingPhase().getNotReadyPlayers().isEmpty()){
+            logger.info("removeuser IF" + game.getProgrammingPhase().getNotReadyPlayers());
+            if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
                 game.getProgrammingPhase().endProgrammingTimer();
-
             }
         }
-        if(game.getGameState() == GameState.ACTIVATION) {
+        if (game.getGameState() == GameState.ACTIVATION) {
             logger.info("if statement reached");
             int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
             Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);

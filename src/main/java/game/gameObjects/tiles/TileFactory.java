@@ -32,8 +32,8 @@ public class TileFactory {
         if (tileID instanceof int[]) {
             int[] idList = (int[]) tileID;
 
-            for (int i = 0; i < idList.length; i++) {
-                tile.addAttribute(convertIdToAttribute(idList[i]));
+            for (int j : idList) {
+                tile.addAttribute(convertIdToAttribute(j));
             }
 
         } else if (tileID instanceof Integer) {

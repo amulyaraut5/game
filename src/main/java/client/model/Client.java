@@ -51,7 +51,6 @@ public class Client {
 
     private AIClient aiClient;
 
-
     /**
      * Stream socket which get connected to the specified port number on the named host of the server.
      */
@@ -151,12 +150,13 @@ public class Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case SelectMap, Reboot, Error, PlayerStatus, StartingPointTaken, YourCards, Movement,
+                case SelectMap, Reboot, Error, StartingPointTaken, YourCards, Movement,
                         PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
                         CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
                         Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage, GameWon -> {
                     currentController.update(message);
                 }
+                case PlayerStatus -> lobbyController.update(message);
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
                     if (msg.getAction().equals("Remove") && !msg.isConnected()) {
@@ -166,12 +166,11 @@ public class Client {
                         gameController.removePlayer(player);
                         players.remove(player);
 
-                        if (players.size() <= 1){
+                        if (players.size() <= 1) {
                             viewManager.closeGame();
                             viewManager.showLobby();
                         }
-
-                    } else if(msg.getAction().equals("Ignore") && !msg.isConnected()){
+                    } else if (msg.getAction().equals("Ignore") && !msg.isConnected()) {
                         Player player = getPlayerFromID(msg.getID());
                         loginController.ignorePlayer(player);
                         //lobbyController.ignorePlayer(player); //TODO

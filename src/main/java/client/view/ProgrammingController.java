@@ -5,7 +5,6 @@ import javafx.application.Platform;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,11 +16,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.util.Duration;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -81,12 +78,12 @@ public class ProgrammingController extends Controller {
     }
 
     public void startProgrammingPhase(ArrayList<CardType> cardList) {
-        for (int i = 0 ; i < cardList.size(); i++) {
+        for (CardType cardType : cardList) {
             StackPane pane = new StackPane();
             pane.setPrefHeight(heightHBox);
-            pane.setPrefWidth(widthHBox-20);
+            pane.setPrefWidth(widthHBox - 20);
             addDropHandling(pane);
-            pane.getChildren().add(createImageView(cardList.get(i)));
+            pane.getChildren().add(createImageView(cardType));
             if (!(hBox1.getChildren().size() >= 5)) hBox1.getChildren().add(pane);
             else hBox2.getChildren().add(pane);
         }
@@ -119,7 +116,7 @@ public class ProgrammingController extends Controller {
                 && pane.getChildren().isEmpty()) {
             ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
             ImageView puffer = getProgrammingImageView();
-            puffer.setOnDragDetected(event->{ setOnDragDetected(event, puffer); });
+            puffer.setOnDragDetected(event-> setOnDragDetected(event, puffer));
             pane.getChildren().add(puffer);
         }
     }
@@ -134,8 +131,8 @@ public class ProgrammingController extends Controller {
     }
 
     protected void addDropHandling(Pane pane) {
-        pane.setOnDragOver(e -> { setOnDragOver(e, pane); });
-        pane.setOnDragExited(e -> { setOnDragExited(e, pane); });
+        pane.setOnDragOver(e -> setOnDragOver(e, pane));
+        pane.setOnDragExited(e -> setOnDragExited(e, pane));
         pane.setOnDragDone(e -> {
             if(getPosition()!=0)
             client.sendMessage(new SelectCard(null, getPosition()));

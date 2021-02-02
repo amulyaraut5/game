@@ -6,72 +6,75 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="playerMapAnchorPane" prefHeight="200.0" prefWidth="650.0" stylesheets="@../login.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMatController">
-   <children>
-      <ImageView id="playerMap" fitHeight="157.0" fitWidth="592.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true">
-         <image>
-            <Image url="@../../backgrounds/playerMapBackground.png" />
-         </image>
-         <effect>
-            <InnerShadow choke="0.09" />
-         </effect>
-      </ImageView>
-      <HBox fx:id="registerHBoxBackground" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0" />
-      <HBox fx:id="registerHBox" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0" />
+<AnchorPane fx:id="playerMapAnchorPane" prefHeight="200.0" prefWidth="650.0" stylesheets="@../login.css"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.view.PlayerMatController">
+    <ImageView id="playerMap" fitHeight="157.0" fitWidth="592.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true">
+        <effect>
+            <InnerShadow choke="0.09"/>
+        </effect>
+        <Image url="@../../backgrounds/playerMapBackground.png"/>
+    </ImageView>
+    <HBox fx:id="registerHBoxBackground" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0"
+          prefWidth="386.0"/>
+    <HBox fx:id="registerHBox" alignment="CENTER" layoutX="145.0" layoutY="84.0" prefHeight="84.0" prefWidth="386.0"/>
 
-      <ImageView fx:id="playerIcon" fitHeight="56.0" fitWidth="57.0" layoutX="9.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="playerMapLabelName" layoutX="70.0" layoutY="-2.0" prefHeight="17.0" prefWidth="71.0" textFill="#1b02fc" />
+    <ImageView fx:id="playerIcon" fitHeight="56.0" fitWidth="57.0" layoutX="9.0" layoutY="2.0" pickOnBounds="true"
+               preserveRatio="true"/>
+    <Label fx:id="playerMapLabelName" layoutX="70.0" layoutY="-2.0" prefHeight="17.0" prefWidth="71.0"
+           textFill="#1b02fc"/>
 
-      <Pane layoutX="458.0" layoutY="23.0" opacity="0.92" prefHeight="37.0" prefWidth="169.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
-      <children>
-         <Label alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="17.0" prefWidth="107.0" text="Your checkpoints:" textFill="WHITE" wrapText="true">
+    <Pane layoutX="458.0" layoutY="23.0" opacity="0.92" prefHeight="37.0" prefWidth="169.0"
+          style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
+        <Label alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="17.0" prefWidth="107.0"
+               text="Your checkpoints:" textFill="WHITE" wrapText="true">
             <font>
-               <Font name="System Bold" size="8.0" />
+                <Font name="System Bold" size="8.0"/>
             </font>
-         </Label>
-            <HBox fx:id="checkPointsHBox" layoutY="11.0" prefHeight="29.0" prefWidth="167.0" />
-         </children>
-      </Pane>
-      <Pane layoutX="160.0" layoutY="23.0" opacity="0.85" prefHeight="37.0" prefWidth="169.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
-         <children>
-            <Label alignment="CENTER" layoutX="2.0" layoutY="-14.0" prefHeight="44.0" prefWidth="167.0" text="Energy bank" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="System Bold" size="8.0" />
-               </font>
-            </Label>
-            <HBox fx:id="energyHBox" layoutX="2.0" layoutY="14.0" prefHeight="10.0" prefWidth="167.0" />
-            <HBox fx:id="energyHBox2" layoutX="2.0" layoutY="25.0" prefHeight="10.0" prefWidth="167.0" />
+        </Label>
+        <HBox fx:id="checkPointsHBox" layoutY="11.0" prefHeight="29.0" prefWidth="167.0"/>
+    </Pane>
+    <Pane layoutX="160.0" layoutY="23.0" opacity="0.85" prefHeight="37.0" prefWidth="169.0"
+          style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
+        <Label alignment="CENTER" layoutX="2.0" layoutY="-14.0" prefHeight="44.0" prefWidth="167.0"
+               text="Energy bank" textFill="WHITE" wrapText="true">
+            <font>
+                <Font name="System Bold" size="8.0"/>
+            </font>
+        </Label>
+        <HBox fx:id="energyHBox" layoutX="2.0" layoutY="14.0" prefHeight="10.0" prefWidth="167.0"/>
+        <HBox fx:id="energyHBox2" layoutX="2.0" layoutY="25.0" prefHeight="10.0" prefWidth="167.0"/>
 
-         </children>
-      </Pane>
-      <Pane layoutX="40.0" layoutY="70.0" prefHeight="102.0" prefWidth="65.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">
-         <children>
-            <Label alignment="CENTER" layoutY="-7.0" prefHeight="84.0" prefWidth="65.0" text="Discard Deck" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="discardDeckLabel" alignment="CENTER" layoutY="42.0" prefHeight="56.0" prefWidth="65.0" text="0 cards" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Pane layoutX="550.0" layoutY="70.0" prefHeight="102.0" prefWidth="65.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">
-         <children>
-            <Label alignment="CENTER" layoutY="-7.0" prefHeight="84.0" prefWidth="65.0" text="Programming Deck" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="System Bold" size="10.0" />
-               </font>
-            </Label>
-            <Label fx:id="programmingDeckLabel" alignment="CENTER" layoutY="42.0" prefHeight="56.0" prefWidth="65.0" text="20  cards" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Label fx:id="playerMatInfoLabel" layoutX="133.0" layoutY="3.0" prefHeight="17.0" prefWidth="354.0" textFill="RED" />
-   </children>
+    </Pane>
+    <Pane layoutX="40.0" layoutY="70.0" prefHeight="102.0" prefWidth="65.0"
+          style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">
+        <Label alignment="CENTER" layoutY="-7.0" prefHeight="84.0" prefWidth="65.0" text="Discard Deck"
+               textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Label>
+        <Label fx:id="discardDeckLabel" alignment="CENTER" layoutY="42.0" prefHeight="56.0" prefWidth="65.0"
+               text="0 cards" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Label>
+    </Pane>
+    <Pane layoutX="550.0" layoutY="70.0" prefHeight="102.0" prefWidth="65.0"
+          style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #00CED1;">
+        <Label alignment="CENTER" layoutY="-7.0" prefHeight="84.0" prefWidth="65.0" text="Programming Deck"
+               textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <font>
+                <Font name="System Bold" size="10.0"/>
+            </font>
+        </Label>
+        <Label fx:id="programmingDeckLabel" alignment="CENTER" layoutY="42.0" prefHeight="56.0" prefWidth="65.0"
+               text="20  cards" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Label>
+    </Pane>
+    <Label fx:id="playerMatInfoLabel" layoutX="133.0" layoutY="3.0" prefHeight="17.0" prefWidth="354.0" textFill="RED"/>
 </AnchorPane>

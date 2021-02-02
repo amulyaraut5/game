@@ -2,7 +2,6 @@ package game.round;
 
 import game.Game;
 import game.Player;
-import game.gameActions.MoveRobot;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +25,7 @@ public class ActivationElements {
     private final ArrayList<Player> playerList = game.getPlayers();
     private final Map map = game.getMap();
     private final ActivationPhase activationPhase;
-    private Server server = Server.getInstance();
+    private final Server server = Server.getInstance();
 
     public ActivationElements(ActivationPhase activationPhase) {
         this.activationPhase = activationPhase;
@@ -170,8 +169,6 @@ public class ActivationElements {
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
 
-
-
         for (Player p : playersOnBelt) {
             if (!(p.getRobot().getCoordinate() == oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
@@ -179,8 +176,7 @@ public class ActivationElements {
         }
     }
 
-
-    public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished, ArrayList<Orientation> orientations, ArrayList<Coordinate> oldPositions){
+    public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished, ArrayList<Orientation> orientations, ArrayList<Coordinate> oldPositions) {
         boolean finished = false;
         while (!finished) {
 
@@ -270,7 +266,7 @@ public class ActivationElements {
             actionFinished.set(j, false);
         }
 
-        for(Player player : playersOnBelt){
+        for (Player player : playersOnBelt) {
             boolean stillOnBelt = false;
             for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 if (a.getType() == AttributeType.Belt) {
@@ -282,14 +278,14 @@ public class ActivationElements {
                 }
                 if (!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
             }
-                for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-                    if (a.getType() == AttributeType.RotatingBelt) {
-                        orientations.set(playersOnBelt.indexOf(player), ((RotatingBelt) a).getOrientations()[0]);
-                    }
+            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+                if (a.getType() == AttributeType.RotatingBelt) {
+                    orientations.set(playersOnBelt.indexOf(player), ((RotatingBelt) a).getOrientations()[0]);
                 }
             }
+        }
 
-            handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
+        handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
 
         for (Player p : playersOnBelt) {
             if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {

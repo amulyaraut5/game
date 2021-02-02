@@ -119,24 +119,4 @@ public class UserThread extends Thread {
             }
         }
     }
-
-    private void logIn(String userName) {
-        if (!server.isAvailable(userName)) {
-
-            //TODO sendMessage(new JSONMessage("userNameTaken", "true"));
-            //else {
-            //sendMessage(new JSONMessage("userNameTaken", "false"));
-            user.setName(userName);
-            user.setID(user.getID());
-            welcome();
-        }
-
-    }
-
-    /**
-     * Sends welcome message to the user and notifies all other users.
-     */
-    private void welcome() {
-        //server.communicate(user + " joined the room.", user);
-    }
 }

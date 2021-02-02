@@ -6,8 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import utilities.JSONProtocol.body.CardSelected;
-import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.enums.CardType;
 
 

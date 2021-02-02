@@ -90,8 +90,8 @@ public class LoginController extends Controller implements Updatable {
     private void createRobotList() {
         ImageView robot;
         double scaleSize = 50;
-        for (int i = 0; i < robotNames.length; i++) {
-            String path = "/lobby/" + robotNames[i] + ".png";
+        for (String robotName : robotNames) {
+            String path = "/lobby/" + robotName + ".png";
             robot = ImageHandler.createImageView(path, 50, 50);
 
             figures.add(new Figure(robot));
@@ -149,9 +149,9 @@ public class LoginController extends Controller implements Updatable {
         }
     }
 
-    private class Figure {
+    private static class Figure {
         private boolean taken = false;
-        private ImageView imageView;
+        private final ImageView imageView;
         private int playerID;
 
         public Figure(ImageView imageView) {

@@ -1,7 +1,5 @@
 package game.gameObjects.cards;
 
-import game.Game;
-import game.Player;
 import javafx.scene.image.ImageView;
 import utilities.enums.CardType;
 
