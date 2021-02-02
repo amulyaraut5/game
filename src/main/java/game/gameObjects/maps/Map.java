@@ -17,7 +17,7 @@ public class Map {
     private final ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private final ArrayList<Coordinate> BlueBelts = new ArrayList<>();
     private final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
-    private final ArrayList<Coordinate> pushPanel = new ArrayList<>();
+
     private final ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
     private final ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
     private final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
@@ -137,7 +137,6 @@ public class Map {
      * This method initializes the restartPoint coordinates from the actual
      * version of map and returns it.
      */
-    // TODO Case for multiple restart coordinates is not handled
     public void readRestartPointCoordinate() {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
@@ -155,8 +154,8 @@ public class Map {
      * This method stores all the laser coordinates from the actual
      * version of map and returns it.
      */
-    public void readPushPanelCoordinate() {
-
+    public ArrayList<Coordinate> readPushPanelCoordinate() {
+        final ArrayList<Coordinate> pushPanel = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
@@ -167,6 +166,7 @@ public class Map {
                 }
             }
         }
+        return pushPanel;
     }
 
     /**
@@ -258,8 +258,8 @@ public class Map {
         }
     }
 
-    // TODO Delete Later NO Uasage
-    public void readEnergySpaceCoordinates() {
+    public ArrayList<Coordinate> readEnergySpaceCoordinates() {
+        final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
@@ -269,6 +269,7 @@ public class Map {
                 }
             }
         }
+        return EnergySpaces;
     }
 
     public void readAll() {
@@ -307,9 +308,9 @@ public class Map {
         return EnergySpaces;
     }
 
-    public ArrayList<Coordinate> getPushPanel() {
+    /*public ArrayList<Coordinate> getPushPanel() {
         return pushPanel;
-    }
+    }*/
 
     public ArrayList<Coordinate> getControlPointCoordinates() {
         return controlPointCoordinates;

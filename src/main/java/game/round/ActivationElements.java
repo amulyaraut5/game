@@ -106,16 +106,14 @@ public class ActivationElements {
      */
 
     public void activatePushPanel() {
-        for (Coordinate coordinate : map.getPushPanel()) {
+        for (Coordinate coordinate : map.readPushPanelCoordinate()) {
             Tile tile = map.getTile(coordinate);
             for (Player player : playerList) {
                 if (player.getRobot().getCoordinate() == coordinate) {
                     for (Attribute a : tile.getAttributes()) {
                         for (int i : ((PushPanel) a).getRegisters()) {
                             if (i == activationPhase.getCurrentRegister()) {
-                                //new MoveRobot().doAction(((PushPanel) a).getOrientation(), player);
                                 activationPhase.handleMove(player, ((PushPanel) a).getOrientation());
-                                //FIXME I think we should use the handleMove method instead because MoveRobot is deprecated? -simon
                             }
                         }
                     }
@@ -130,9 +128,9 @@ public class ActivationElements {
      */
 
     public void activateEnergySpace() {
-        for (Coordinate coordinate : map.getEnergySpaces()) {
+        for (Coordinate coordinate : map.readEnergySpaceCoordinates()) {
             for (Player player : playerList) {
-                if (player.getRobot().getCoordinate() == coordinate) {
+                if (player.getRobot().getCoordinate().equals(coordinate)) {
                     int energy = player.getEnergyCubes();
                     energy += energy;
                     player.setEnergyCubes(energy);
