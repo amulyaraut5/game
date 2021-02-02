@@ -336,8 +336,7 @@ public class GameController extends Controller implements Updatable {
             case CurrentPlayer -> {
                 CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
                 boolean isThisPlayer = currentPlayer.getPlayerID() == client.getThisPlayersID();
-                ArrayList<MessageType> currentActions = null;
-                if(isThisPlayer) currentActions.clear();
+
                 if (currentPhase == GameState.CONSTRUCTION) {
                     constructionController.currentPlayer(isThisPlayer);
                 } else if (currentPhase == GameState.ACTIVATION) {
