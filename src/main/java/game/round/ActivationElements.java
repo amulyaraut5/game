@@ -294,4 +294,8 @@ public class ActivationElements {
             }
         }
     }
+
+    public void rotateOnBelt(Player player, Orientation o1, Orientation o2){
+        
+    }
 }
