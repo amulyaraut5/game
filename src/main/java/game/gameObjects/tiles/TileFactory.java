@@ -6,6 +6,10 @@ import utilities.Utilities;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
+/**
+ * This  class creates the different tiles.
+ * @author Amulya
+ */
 public class TileFactory {
     private static final Logger logger = LogManager.getLogger();
     private static TileFactory instance;
@@ -19,9 +23,8 @@ public class TileFactory {
 
     /**
      * This method creates the tile with specific attribute.
-     * Every tile has then it's own specific id which can be called while laying out the map structure.
-     * Depending upon the needs of map, we can create our own tile with multiple attributes with different orientations.
-     *
+     * Depending upon the needs of map, we can create our own tile with
+     * multiple attributes with different orientations.
      * @param
      * @return tile
      */
@@ -44,6 +47,12 @@ public class TileFactory {
         return tile;
     }
 
+    /**
+     * Every integer represents a certain attribute.
+     * Every Attribute has it's own specific id which can be used to create the tile.
+     * @param attributeID
+     * @return
+     */
     private static Attribute convertIdToAttribute(int attributeID) {
         Attribute attribute = null;
 

@@ -26,7 +26,6 @@ public class LaserAction {
     private static final Logger logger = LogManager.getLogger();
     private final SoundHandler soundHandler = new SoundHandler();
     private final Game game = Game.getInstance();
-    private final ArrayList<Player> playerList = game.getPlayers();
     private final Map map = game.getMap();
     protected Server server = Server.getInstance();
     private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();

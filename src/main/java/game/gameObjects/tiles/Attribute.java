@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.enums.AttributeType;
 
 /**
- * @author Amulya
+ * @author Simon
  */
 
 public abstract class Attribute {

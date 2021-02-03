@@ -5,7 +5,7 @@ import utilities.ImageHandler;
 import utilities.enums.AttributeType;
 
 /**
- * @author Amulya
+ * @author Simon
  */
 public class Pit extends Attribute {
 

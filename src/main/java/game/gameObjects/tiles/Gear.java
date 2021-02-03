@@ -6,7 +6,7 @@ import utilities.enums.AttributeType;
 import utilities.enums.Rotation;
 
 /**
- * @author Amulya
+ * @author Simon
  */
 
 public class Gear extends Attribute {

@@ -4,6 +4,11 @@ import utilities.enums.AttributeType;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the tile. Based on added attribute the different kinds of tiles are generated.
+ * Attribute of a tile can be anything from wall, antenna, etc.
+ * @author Amulya
+ */
 public class Tile {
 
     /**
@@ -14,9 +19,7 @@ public class Tile {
     /**
      * Constructor for tiles.
      */
-
-    public Tile() {
-    }
+    public Tile() { }
 
     public ArrayList<Attribute> getAttributes() {
         return attributes;
