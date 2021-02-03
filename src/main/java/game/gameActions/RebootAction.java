@@ -60,8 +60,13 @@ public class RebootAction extends Action {
 
         for (Player robotOnReboot : allPlayers) {
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
-                robotOnReboot.getRobot().rotateTo(Orientation.DOWN);
-                game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
+                if(map.getRestartPoint().toPosition() == 0){
+                    robotOnReboot.getRobot().rotateTo(Orientation.RIGHT);
+                    game.getActivationPhase().handleMove(robotOnReboot, Orientation.RIGHT);
+                } else {
+                    robotOnReboot.getRobot().rotateTo(Orientation.DOWN);
+                    game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
+                }
             }
         }
 
