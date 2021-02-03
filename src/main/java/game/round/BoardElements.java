@@ -11,6 +11,7 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.Energy;
+import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.GameWon;
 import utilities.JSONProtocol.body.PlayerTurning;
 import utilities.enums.AttributeType;
@@ -53,21 +54,21 @@ public class BoardElements {
                     int totalCheckPoints = map.readControlPointCoordinate().size();
                     for (Player player : playerList) {
                         if (player.getRobot().getCoordinate().equals(coordinate)) {
-                            logger.info("Total CheckPoints:" + totalCheckPoints);
                             if (player.getCheckPointCounter() == (checkPointID - 1)) {
                                 if (checkPointID < totalCheckPoints) {
                                     int checkPoint = player.getCheckPointCounter();
                                     checkPoint++;
                                     player.setCheckPointCounter(checkPoint);
                                     player.message(new CheckpointReached(player.getID(), checkPointID));
+                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint" ));
                                 } else if (checkPointID == totalCheckPoints) {
                                     server.communicateAll(new GameWon(player.getID()));
                                     break outerLoop;
                                 }
                             } else if (player.getCheckPointCounter() > checkPointID) {
-                                logger.info("CheckPoint Already Reached");
+                                player.message(new Error("CheckPoint Already Reached"));
                             } else {
-                                logger.info("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first");
+                               player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
                             }
                         }
                     }
