@@ -30,6 +30,7 @@ public class LaserAction {
     protected Server server = Server.getInstance();
     private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
     private ArrayList<Coordinate> robotCoordinates = new ArrayList<>();
+
     public LaserAction() { }
 
     /**

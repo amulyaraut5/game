@@ -83,7 +83,6 @@ public class Game {
         for (User user : users) {
             players.add(new Player(user));
         }
-        //map = MapBuilder.constructMap(new DizzyHighway());
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
         constructionPhase = new ConstructionPhase();
@@ -118,6 +117,7 @@ public class Game {
         }
         return null;
     }
+
 
     /**
      * Gets a player based on their ID from the list of players saved in {@link Game}.

@@ -132,6 +132,7 @@ public class LobbyController extends Controller implements Updatable {
         if(!readyCheckbox.isSelected()){
             infoLabel2.setText("Please wait till somebody selects the map.");
             setDisable(true);
+            setSelected(false);
         }
     }
 
@@ -148,13 +149,11 @@ public class LobbyController extends Controller implements Updatable {
             JSONBody jsonBody = new MapSelected("DizzyHighway");
             client.sendMessage(jsonBody);
             setDisable(true);
-            readyCheckbox.setDisable(true);
         }
         else if(extraCrispy.isSelected()){
             JSONBody jsonBody = new MapSelected("ExtraCrispy");
             client.sendMessage(jsonBody);
             setDisable(true);
-            readyCheckbox.setDisable(true);
         }
     }
 
@@ -185,6 +184,11 @@ public class LobbyController extends Controller implements Updatable {
         dizzyHighway.setDisable(b);
         extraCrispy.setDisable(b);
 
+    }
+
+    private void setSelected(boolean b){
+        dizzyHighway.setSelected(b);
+        extraCrispy.setSelected(b);
     }
 
     private void setImageViewVisible(boolean b){

@@ -244,7 +244,8 @@ public class BoardElements {
         }
     }
 
-    public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished, ArrayList<Orientation> orientations, ArrayList<Coordinate> oldPositions) {
+    public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished,
+                                   ArrayList<Orientation> orientations, ArrayList<Coordinate> oldPositions) {
         boolean finished = false;
         while (!finished) {
 

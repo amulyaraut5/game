@@ -153,9 +153,11 @@ public class Server extends Thread {
                 maps.add("DizzyHighway");
                 maps.add("ExtraCrispy");
 
-                if (!status.isReady()) isMapSent = false;
+                if (!status.isReady()){
+                    isMapSent = false;
+                    isMapSelected = false;
+                }
 
-                //TODO instead of user with first id: use first user who is ready
                 if (!isMapSent) {
                     for (User user1 : notAIs) {
                         try {
@@ -169,6 +171,7 @@ public class Server extends Thread {
                         }
                     }
                 }
+
                 boolean allUsersReady = setReadyStatus(user, status.isReady());
 
                 if (allUsersReady && isMapSelected) {
@@ -201,7 +204,6 @@ public class Server extends Thread {
                 game.getConstructionPhase().setStartingPoint(user, setStartingPoint.getPosition());
             }
             case PlayIt -> game.getActivationPhase().activateCards(user.getID());
-
             case MapSelected -> {
                 if (!isMapSelected) {
                     MapSelected selectMap = (MapSelected) message.getBody();
