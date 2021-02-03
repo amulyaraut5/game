@@ -8,6 +8,7 @@ import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.gameStarted.BoardElement;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public abstract class MapConverter {
             tiles[x][y] = temp;
         }
         if (!MapBuilder.isRebootOnTiles(tiles)) {
-            tiles[0][0].getAttributes().add(new RestartPoint());
+            tiles[0][0].getAttributes().add(new RestartPoint(Orientation.RIGHT));
         }
         return new Map(tiles);
     }

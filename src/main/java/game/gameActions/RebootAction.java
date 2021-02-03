@@ -58,7 +58,7 @@ public class RebootAction extends Action {
         server.communicateAll(new Movement(player.getID(), restartPos));
         server.communicateAll(new Reboot(player.getID()));
 
-        for (Player robotOnReboot : allPlayers) {//TODO is the list always empty?
+        for (Player robotOnReboot : allPlayers) {
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 robotOnReboot.getRobot().rotateTo(Orientation.DOWN);
                 game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
