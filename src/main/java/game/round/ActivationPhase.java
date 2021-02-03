@@ -282,7 +282,7 @@ public class ActivationPhase extends Phase {
             }
             case Worm -> {
                 //Reboot the robot.
-                new RebootAction().doAction(orientation, player);
+                new RebootAction().doAction(player);
                 //Add worm card back into the worm deck
                 wormDeck.getDeck().add(new Worm());
                 //logger.info(player.getName() + " played a worm card.");
@@ -331,7 +331,7 @@ public class ActivationPhase extends Phase {
                 Card card = player.getRegisterCard(currentRegister - 2);
                 handleCard(card.getName(), player);
             } else {
-                new AgainAction().doAction(orientation, player);
+                new AgainAction().doAction(player);
             }
         }
     }
@@ -340,13 +340,13 @@ public class ActivationPhase extends Phase {
         if (player.getRobot().getCoordinate().isOutsideMap()) {
             rebootedPlayers.add(player);
             activePlayers.remove(player);
-            new RebootAction().doAction(Orientation.LEFT, player);
+            new RebootAction().doAction(player);
         } else {
             for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 if (a.getType() == AttributeType.Pit) {
                     rebootedPlayers.add(player);
                     activePlayers.remove(player);
-                    new RebootAction().doAction(Orientation.LEFT, player);
+                    new RebootAction().doAction(player);
                 } else {
                     server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
 

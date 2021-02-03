@@ -20,12 +20,11 @@ public class RebootAction extends Action {
      * the robot must be rebooted.
      * Note: If multiple robots reboot on the same board in the same round or if a robot sits on the reboot token when other robots are rebooting,
      * robots will leave the reboot space in the order they rebooted, with the next robot pushing the robot before it in the direction indicated by the arrow on the reboot token.
-     *
-     * @param orientation
+     * 
      * @param player      is the player who is affected by the game action.
      */
     @Override
-    public void doAction(Orientation orientation, Player player) {
+    public void doAction(Player player) {
         ArrayList<Player> activePlayers = game.getActivationPhase().getActivePlayers();
         ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 

@@ -9,7 +9,7 @@ import utilities.enums.Orientation;
  */
 public class PowerUpRobot extends Action{
     @Override
-    public void doAction(Orientation orientation, Player player) {
+    public void doAction(Player player) {
     player.setEnergyCubes(player.getEnergyCubes() + 1);
     }
 }

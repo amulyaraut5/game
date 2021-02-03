@@ -18,7 +18,7 @@ public abstract class Action {
     /**
      * This method is called when a action should be executed.
      *
-     * @param player is the player who is affected by the gameaction.
+     * @param player is the player who is affected by the game action.
      */
-    public abstract void doAction(Orientation orientation, Player player);
+    public abstract void doAction(Player player);
 }
