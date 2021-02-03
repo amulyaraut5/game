@@ -5,6 +5,7 @@ import game.gameObjects.tiles.RestartPoint;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
 import utilities.enums.AttributeType;
+import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ public class MapBuilder {
             }
         }
         if (!isRebootOnTiles(tiles)) {
-            tiles[0][0].getAttributes().add(new RestartPoint());
+            tiles[0][0].getAttributes().add(new RestartPoint(Orientation.RIGHT));
         }
         return new Map(tiles);
     }

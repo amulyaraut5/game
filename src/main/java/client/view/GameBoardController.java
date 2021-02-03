@@ -270,7 +270,7 @@ public class GameBoardController extends Controller {
                     imageView.setY(c.getY() * Utilities.FIELD_SIZE);
 
                     TranslateTransition transition = new TranslateTransition();
-                    transition.setDuration(Duration.seconds(4));
+                    transition.setDuration(Duration.seconds(2));
                     transition.setNode(imageView);
                     transition.setToX((newPos.getX() - c.getX()) * Utilities.FIELD_SIZE);
                     transition.setToY((newPos.getY() - c.getY()) * Utilities.FIELD_SIZE);
@@ -318,7 +318,7 @@ public class GameBoardController extends Controller {
             imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
 
             TranslateTransition transition = new TranslateTransition();
-            transition.setDuration(Duration.seconds(4));
+            transition.setDuration(Duration.seconds(2));
             transition.setNode(imageView);
             transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
             transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);

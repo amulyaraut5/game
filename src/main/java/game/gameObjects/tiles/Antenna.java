@@ -6,7 +6,7 @@ import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 
 /**
- * @author Amulya
+ * @author Simon
  */
 
 public class Antenna extends Attribute {

@@ -1,6 +1,6 @@
 package game.gameObjects.cards.damage;
 
-import game.gameObjects.cards.DamageCard;
+import game.gameObjects.cards.Card;
 import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 import utilities.enums.CardType;
@@ -8,7 +8,7 @@ import utilities.enums.CardType;
 /**
  * @author annika
  */
-public class Worm extends DamageCard {
+public class Worm extends Card {
 
     public Worm() {
         card = CardType.Worm;

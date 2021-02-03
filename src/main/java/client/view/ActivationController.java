@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.body.PickDamage;
 import utilities.JSONProtocol.body.PlayIt;
 import utilities.JSONProtocol.body.SelectDamage;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 
 public class ActivationController extends Controller {
     private final ArrayList<CardType> pickedDamageCards = new ArrayList<>();
-    private GameController gameController;
     private int pickDamage;
     private int registerNr = 1;
 
@@ -107,48 +107,81 @@ public class ActivationController extends Controller {
      * count numbers on the different damageButtons
      *
      * @param pickDamage
-     * @param game       gameController that called this method
      */
-    public void pickDamage(PickDamage pickDamage, GameController game) {
-        gameController = game;
+    public void pickDamage(PickDamage pickDamage) {
+        countSpam = getCountSpamCards();
+        countTrojan = getCountTrojanCards();
+        countVirus = getCountVirusCards();
+        countWorm = getCountWormCards();
+        updateDamageCountLabel(CardType.Spam);
+        updateDamageCountLabel(CardType.Worm);
+        updateDamageCountLabel(CardType.Trojan);
+        updateDamageCountLabel(CardType.Virus);
+
+        selectedDamageHBox.getChildren().clear();
         playCardAnchorPane.setVisible(false);
         selectDamageAnchorPane.setVisible(true);
-        updateDamageCountLabel();
         damageInfoLabel.setText("You have to pick " + pickDamage.getCount() + " damage cards");
         this.pickDamage = pickDamage.getCount();
     }
 
+    private int countSpam;
+    private int countTrojan;
+    private int countVirus;
+    private int countWorm;
+
+
+    private void updateDamageCountLabel(CardType cardType){
+        switch (cardType){
+            case Spam->{
+                spamCardButton.setText(String.valueOf(countSpam));
+                if ((countSpam == 0)) spamCardButton.setDisable(true);
+                else spamCardButton.setDisable(false);
+            }
+            case Trojan -> {
+                trojanCardButton.setText(String.valueOf(countTrojan));
+                if (countTrojan == 0) trojanCardButton.setDisable(true);
+                else trojanCardButton.setDisable(false);
+            }
+            case Virus -> {
+                virusCardButton.setText(String.valueOf(countVirus));
+                if (countVirus == 0) virusCardButton.setDisable(true);
+                else  virusCardButton.setDisable(false);
+            }
+            case Worm -> {
+                wormCardButton.setText(String.valueOf(countWorm));
+                if (countWorm == 0) wormCardButton.setDisable(true);
+                else wormCardButton.setDisable(false);
+            }
+        }
+    }
     @FXML
     private void damageButtonClicked(ActionEvent actionEvent) {
         CardType clickedButton = null;
-        if (actionEvent.getSource().equals(spamCardButton)) clickedButton = CardType.Spam;
-        if (actionEvent.getSource().equals(trojanCardButton)) clickedButton = CardType.Trojan;
-        if (actionEvent.getSource().equals(virusCardButton)) clickedButton = CardType.Virus;
-        if (actionEvent.getSource().equals(wormCardButton)) clickedButton = CardType.Worm;
+        if (actionEvent.getSource().equals(spamCardButton)) {
+            clickedButton = CardType.Spam;
+            countSpam--;
+        }
+        else if (actionEvent.getSource().equals(trojanCardButton))  {
+            clickedButton = CardType.Trojan;
+            countTrojan--;
+        }
+        else if (actionEvent.getSource().equals(virusCardButton)) {
+            clickedButton = CardType.Virus;
+            countVirus--;
+        }
+        else if (actionEvent.getSource().equals(wormCardButton)) {
+            clickedButton = CardType.Worm;
+            countWorm--;
+        }
         checkDamageReady(clickedButton);
     }
 
-    private void updateDamageCountLabel() {
-        spamCardButton.setText(String.valueOf(gameController.getCountSpamCards()));
-        if (gameController.getCountSpamCards() == 0) spamCardButton.setDisable(true);
-
-        trojanCardButton.setText(String.valueOf(gameController.getCountTrojanCards()));
-        if (gameController.getCountTrojanCards() == 0) trojanCardButton.setDisable(true);
-
-        virusCardButton.setText(String.valueOf(gameController.getCountVirusCards()));
-        if (gameController.getCountVirusCards() == 0) virusCardButton.setDisable(true);
-
-        wormCardButton.setText(String.valueOf(gameController.getCountWormCards()));
-        if (gameController.getCountWormCards() == 0) wormCardButton.setDisable(true);
-    }
-
     private void checkDamageReady(CardType card) {
-        gameController.handleDamageCount(card);
-        updateDamageCountLabel();
+        updateDamageCountLabel(card);
         pickedDamageCards.add(card);
-        ImageView selectedDamageCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
-        selectedDamageCard.setFitHeight(150);
-        selectedDamageCard.setFitWidth(95);
+        String path = "/cards/programming/" + card + "-card.png";
+        ImageView selectedDamageCard = ImageHandler.createImageView(path, 70, 100);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if (pickedDamageCards.size() == pickDamage) {
             client.sendMessage(new SelectDamage(pickedDamageCards));

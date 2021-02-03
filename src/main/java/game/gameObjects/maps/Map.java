@@ -10,6 +10,8 @@ import java.util.ArrayList;
 /**
  * The map class helps in retrieving all the important aspects of the map either tiles from coordinate
  * or coordinates from tiles.
+ * @author Louis
+ * @author Amulya
  */
 public class Map {
 
@@ -17,10 +19,7 @@ public class Map {
     private final ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private final ArrayList<Coordinate> BlueBelts = new ArrayList<>();
     private final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
-    private final ArrayList<Coordinate> pushPanel = new ArrayList<>();
     private final ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
-    private final ArrayList<Coordinate> pitCoordinates = new ArrayList<>();
-    private final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
     private final ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
 
     private Coordinate RestartPoint;
@@ -32,6 +31,17 @@ public class Map {
     public Map(Tile[][] tiles) {
         this.tiles = tiles;
         readAll();
+    }
+
+    public void readAll() {
+        readBeltCoordinates();
+        readRestartPointCoordinate();
+        readEnergySpaceCoordinates();
+        readGearCoordinate();
+        readPushPanelCoordinate();
+        readLaserCoordinates();
+        readControlPointCoordinate();
+        readAntennaCoordinate();
     }
 
     public boolean isWallBlocking(Coordinate coordinate, Orientation orientation) {
@@ -70,7 +80,6 @@ public class Map {
 
     /**
      * Getter for tiles
-     *
      * @return returns the 2 dimensional array of tiles
      */
     public Tile[][] getTiles() {
@@ -79,7 +88,6 @@ public class Map {
 
     /**
      * Retrieves the tile from the map.
-     *
      * @param x x coordinate of the tile
      * @param y y coordinate of the tile
      * @return
@@ -91,33 +99,12 @@ public class Map {
 
     /**
      * Retrieves the tile of the given position from the map
-     *
      * @param pos position of tile
      * @return
      * @throws ArrayIndexOutOfBoundsException when the position is not on the map
      */
     public Tile getTile(Coordinate pos) throws ArrayIndexOutOfBoundsException {
         return tiles[pos.getX()][pos.getY()];
-    }
-
-    /**
-     * This method stores all the laser coordinates from the actual
-     * version of map.
-     */
-
-    public ArrayList<Coordinate> readLaserCoordinates() {
-        ArrayList<Coordinate> laser = new ArrayList<>();
-        for (int i = 0; i < (tiles.length); i++) {
-            for (int j = 0; j < (tiles[0].length); j++) {
-                for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.Laser) {
-                        Coordinate temp = new Coordinate(i, j);
-                        laser.add(temp);
-                    }
-                }
-            }
-        }
-        return laser;
     }
 
     public void readAntennaCoordinate() {
@@ -137,7 +124,6 @@ public class Map {
      * This method initializes the restartPoint coordinates from the actual
      * version of map and returns it.
      */
-    // TODO Case for multiple restart coordinates is not handled
     public void readRestartPointCoordinate() {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
@@ -153,10 +139,29 @@ public class Map {
 
     /**
      * This method stores all the laser coordinates from the actual
+     * version of map.
+     */
+    public ArrayList<Coordinate> readLaserCoordinates() {
+        ArrayList<Coordinate> laser = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == AttributeType.Laser) {
+                        Coordinate temp = new Coordinate(i, j);
+                        laser.add(temp);
+                    }
+                }
+            }
+        }
+        return laser;
+    }
+
+    /**
+     * This method stores all the push panel coordinates from the actual
      * version of map and returns it.
      */
-    public void readPushPanelCoordinate() {
-
+    public ArrayList<Coordinate> readPushPanelCoordinate() {
+        final ArrayList<Coordinate> pushPanel = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
@@ -167,6 +172,7 @@ public class Map {
                 }
             }
         }
+        return pushPanel;
     }
 
     /**
@@ -189,37 +195,22 @@ public class Map {
     }
 
     /**
-     * This method stores all the pit coordinates from the actual
+     * This method stores all the gear coordinates from the actual
      * version of map and returns it.
      */
-    public void readPitCoordinate() {
+    public ArrayList<Coordinate> readGearCoordinate() {
+        final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.ControlPoint) {
-                        Coordinate temp = new Coordinate(i, j);
-                        pitCoordinates.add(temp);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This method stores all the pit coordinates from the actual
-     * version of map and returns it.
-     */
-    public void readGearCoordinate() {
-        for (int i = 0; i < (tiles.length); i++) {
-            for (int j = 0; j < (tiles[0].length); j++) {
-                for (Attribute a : tiles[i][j].getAttributes()) {
-                    if (a.getType() == AttributeType.ControlPoint) {
+                    if (a.getType() == AttributeType.Gear) {
                         Coordinate temp = new Coordinate(i, j);
                         gearCoordinates.add(temp);
                     }
                 }
             }
         }
+        return gearCoordinates;
     }
 
     public void readBeltCoordinates() {
@@ -258,8 +249,8 @@ public class Map {
         }
     }
 
-    // TODO Delete Later NO Uasage
-    public void readEnergySpaceCoordinates() {
+    public ArrayList<Coordinate> readEnergySpaceCoordinates() {
+        final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
                 for (Attribute a : tiles[i][j].getAttributes()) {
@@ -269,18 +260,7 @@ public class Map {
                 }
             }
         }
-    }
-
-    public void readAll() {
-        readBeltCoordinates();
-        readRestartPointCoordinate();
-        readEnergySpaceCoordinates();
-        readPitCoordinate();
-        readGearCoordinate();
-        readPushPanelCoordinate();
-        readLaserCoordinates();
-        readControlPointCoordinate();
-        readAntennaCoordinate();
+        return EnergySpaces;
     }
 
     private void addGreenBelt(Coordinate c) {
@@ -303,24 +283,8 @@ public class Map {
         return RestartPoint;
     }
 
-    public ArrayList<Coordinate> getEnergySpaces() {
-        return EnergySpaces;
-    }
-
-    public ArrayList<Coordinate> getPushPanel() {
-        return pushPanel;
-    }
-
     public ArrayList<Coordinate> getControlPointCoordinates() {
         return controlPointCoordinates;
-    }
-
-    public ArrayList<Coordinate> getPitCoordinates() {
-        return pitCoordinates;
-    }
-
-    public ArrayList<Coordinate> getGearCoordinates() {
-        return gearCoordinates;
     }
 
     public ArrayList<Coordinate> getLaserCoordinates() {

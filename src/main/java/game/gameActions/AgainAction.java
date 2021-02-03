@@ -17,11 +17,11 @@ public class AgainAction extends Action{
      * Repeats the programming in the players previous register.
      * If the previous register was a damage card,
      * it draws a card from the top of the programming deck, and plays that card this register.
-     * @param orientation
-     * @param player is the player who is affected by the gameaction.
+     *
+     * @param player is the player who is affected by the game action.
      */
     @Override
-    public void doAction(Orientation orientation, Player player) {
+    public void doAction(Player player) {
 
         ArrayList<CardType> damageCards = new ArrayList<>();
         damageCards.add(CardType.Spam);
