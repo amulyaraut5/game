@@ -18,9 +18,9 @@ public abstract class Robot {
     private final Server server = Server.getInstance();
     private final Player player;
 
-    protected String imagePath;
-    protected String name;
-    protected Color color;
+    protected final String imagePath;
+    protected final String name;
+    protected final Color color;
 
     protected Orientation orientation = Orientation.RIGHT;
     protected Coordinate coordinate;
@@ -68,7 +68,7 @@ public abstract class Robot {
         for (int i = 0; i < moveCount; i++) {
             coordinate.add(direction.toVector());
         }
-        server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
+        //server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
     }
 
     public void moveTo(Coordinate pos) {

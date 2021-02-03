@@ -11,9 +11,9 @@ import utilities.enums.Orientation;
  * based on different type of action to be performed.
  */
 public abstract class Action {
-    protected Server server = Server.getInstance();
-    protected Game game = Game.getInstance();
-    protected Map map = game.getMap();
+    protected final Server server = Server.getInstance();
+    protected final Game game = Game.getInstance();
+    protected final Map map = game.getMap();
 
     /**
      * This method is called when a action should be executed.
