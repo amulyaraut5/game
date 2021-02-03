@@ -146,45 +146,7 @@ public class Server extends Thread {
             case SetStatus -> {
                 SetStatus status = (SetStatus) message.getBody();
                 communicateAll(new PlayerStatus(user.getID(), status.isReady()));
-                userIsNotAI.put(user, status.isReady());
-
-                ArrayList<String> maps = new ArrayList<>();
-                Random r = new Random();
-                maps.add("DizzyHighway");
-                maps.add("ExtraCrispy");
-
-                if (!status.isReady()){
-                    isMapSent = false;
-                    isMapSelected = false;
-                }
-
-                if (!isMapSent) {
-                    for (User user1 : notAIs) {
-                        try {
-                            if (userIsNotAI.get(user1)) {
-                                user1.message(new SelectMap(maps));
-                                isMapSent = true;
-                                break;
-                            }
-                        } catch (NullPointerException e) {
-                            communicateUsers(new Error("Please click Ready to select map."), user);
-                        }
-                    }
-                }
-
-                boolean allUsersReady = setReadyStatus(user, status.isReady());
-
-                if (allUsersReady && isMapSelected) {
-                    game.play();
-                    serverState = ServerState.RUNNING_GAME;
-                }
-
-                // Random Map is selected if all users are AI
-                if (allUsersReady && (AIs.equals(readyUsers))) {
-                    game.handleMapSelection(maps.get(r.nextInt(maps.size())));
-                    game.play();
-                    serverState = ServerState.RUNNING_GAME;
-                }
+                dealWithMap(user, status);
             }
             case SendChat -> {
                 SendChat sc = (SendChat) message.getBody();
@@ -224,6 +186,8 @@ public class Server extends Thread {
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
+
+
 
     /**
      * determines wether the message is a cheat or not
@@ -286,6 +250,48 @@ public class Server extends Thread {
                     "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
             user.message(error);
             user.getThread().disconnect();
+        }
+    }
+
+    private void  dealWithMap(User user, SetStatus status){
+        userIsNotAI.put(user, status.isReady());
+
+        ArrayList<String> maps = new ArrayList<>();
+        Random r = new Random();
+        maps.add("DizzyHighway");
+        maps.add("ExtraCrispy");
+
+        if (!status.isReady()){
+            isMapSent = false;
+            isMapSelected = false;
+        }
+
+        if (!isMapSent) {
+            for (User user1 : notAIs) {
+                try {
+                    if (userIsNotAI.get(user1)) {
+                        user1.message(new SelectMap(maps));
+                        isMapSent = true;
+                        break;
+                    }
+                } catch (NullPointerException e) {
+                    communicateUsers(new Error("Please click Ready to select map."), user);
+                }
+            }
+        }
+
+        boolean allUsersReady = setReadyStatus(user, status.isReady());
+
+        if (allUsersReady && isMapSelected) {
+            game.play();
+            serverState = ServerState.RUNNING_GAME;
+        }
+
+        // Random Map is selected if all users are AI
+        if (allUsersReady && (AIs.equals(readyUsers))) {
+            game.handleMapSelection(maps.get(r.nextInt(maps.size())));
+            game.play();
+            serverState = ServerState.RUNNING_GAME;
         }
     }
 
