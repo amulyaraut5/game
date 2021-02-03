@@ -20,10 +20,6 @@ public class GameWonController extends Controller{
     @FXML
     private Label winnerLabel;
 
-    public void initialize() {
-
-    }
-
     public void setWinnerLabel(Player winner){
         String path = "/lobby/" + robotNames[winner.getFigure()] + ".png";
         String name = client.getUniqueName(winner.getID());
