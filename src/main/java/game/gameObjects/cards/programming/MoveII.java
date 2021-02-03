@@ -1,6 +1,6 @@
 package game.gameObjects.cards.programming;
 
-import game.gameObjects.cards.ProgrammingCard;
+import game.gameObjects.cards.Card;
 import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +10,7 @@ import utilities.enums.CardType;
 /**
  * @author annika
  */
-public class MoveII extends ProgrammingCard {
+public class MoveII extends Card {
     private static final Logger logger = LogManager.getLogger();
 
     public MoveII() {
