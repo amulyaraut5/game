@@ -8,8 +8,8 @@ import server.Server;
 import java.util.ArrayList;
 
 public abstract class Phase {
-    protected Server server = Server.getInstance();
-    protected Game game = Game.getInstance();
-    protected ArrayList<Player> players = game.getPlayers();
-    protected Map map = game.getMap();
+    protected final Server server = Server.getInstance();
+    protected final Game game = Game.getInstance();
+    protected final ArrayList<Player> players = game.getPlayers();
+    protected final Map map = game.getMap();
 }

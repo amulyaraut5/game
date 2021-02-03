@@ -16,17 +16,21 @@ import java.util.ArrayList;
  * @author simon, sarah
  */
 public abstract class Controller {
+    protected static final DataFormat cardFormat = new DataFormat("programmingCard");
     private static final Logger logger = LogManager.getLogger();
 
-    protected static DataFormat cardFormat = new DataFormat("programmingCard");
     private static int positionRegister;
     private static ImageView programmingImageView;
     private static boolean wasFormerRegister = false;
 
-    protected ViewManager viewManager = ViewManager.getInstance();
-    protected Client client = Client.getInstance();
+    private static int countSpamCards = 38;
+    private static int countTrojanCards = 12;
+    private static int countWormCards = 6;
+    private static int countVirusCards = 18;
 
-    protected String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
+    protected final ViewManager viewManager = ViewManager.getInstance();
+    protected final Client client = Client.getInstance();
+    protected final String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
     public boolean getWasFormerRegister() {
@@ -37,60 +41,60 @@ public abstract class Controller {
         Controller.wasFormerRegister = wasFormerRegister;
     }
 
-    private static int countSpamCards = 38;
-    private static int countTrojanCards = 12;
-    private static int countWormCards = 6;
-    private static int countVirusCards = 18;
     protected int getCountSpamCards() {
         return countSpamCards;
     }
 
     public void setCountSpamCards(int countSpamCards) {
-        if((countSpamCards<0)) this.countSpamCards = 0;
+        if ((countSpamCards < 0)) this.countSpamCards = 0;
         else this.countSpamCards = countSpamCards;
     }
 
     public int getCountTrojanCards() {
         return countTrojanCards;
     }
+
     public void setCountTrojanCards(int countTrojanCards) {
-        if((countTrojanCards<0)) this.countTrojanCards = 0;
+        if ((countTrojanCards < 0)) this.countTrojanCards = 0;
         else this.countTrojanCards = countTrojanCards;
     }
+
     public int getCountWormCards() {
         return countWormCards;
     }
+
     public void setCountWormCards(int countWormCards) {
-        if((countWormCards<0)) this.countWormCards = 0;
+        if ((countWormCards < 0)) this.countWormCards = 0;
         else this.countWormCards = countWormCards;
     }
+
     public int getCountVirusCards() {
         return countVirusCards;
     }
 
     public void setCountVirusCards(int countVirusCards) {
-        if((countVirusCards<0)) this.countVirusCards = 0;
+        if ((countVirusCards < 0)) this.countVirusCards = 0;
         else this.countVirusCards = countVirusCards;
     }
 
     public void handleDamageCount(CardType cardType) {
         switch (cardType) {
-            case Spam -> setCountSpamCards(getCountSpamCards()-1);
-            case Trojan -> setCountTrojanCards(getCountTrojanCards()-1);
-            case Worm -> setCountWormCards(getCountWormCards()-1);
-            case Virus -> setCountVirusCards(getCountVirusCards()-1);
+            case Spam -> setCountSpamCards(getCountSpamCards() - 1);
+            case Trojan -> setCountTrojanCards(getCountTrojanCards() - 1);
+            case Worm -> setCountWormCards(getCountWormCards() - 1);
+            case Virus -> setCountVirusCards(getCountVirusCards() - 1);
         }
     }
 
     public void handleDamageCount(ArrayList<CardType> cardList) {
-        if(cardList.size() == 0) setCountSpamCards(0); //TODO correct?
+        if (cardList.size() == 0) setCountSpamCards(0); //TODO correct?
         else {
             for (CardType cardType : cardList) {
                 handleDamageCount(cardType);
             }
         }
-
     }
+
     protected CardType generateCardType(String imageDropped) {
         String[] a = imageDropped.split("/");
         String imageName = a[a.length - 1];
