@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 /**
  * This class handles the functionality of boardLasers as well as RobotLasers.
- *
  * @author Amulya
  */
 
@@ -32,14 +31,12 @@ public class LaserAction {
     protected Server server = Server.getInstance();
     private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
     private ArrayList<Coordinate> robotCoordinates = new ArrayList<>();
+    public LaserAction() { }
 
     /**
-     * Constructor for laser
-     */
-    public LaserAction() {
-    }
-
-    /**
+     * This method calculates the end position of laser beam where it needs to be terminated.
+     * The method takes consideration whether there is wall or any robot on the path and could
+     * be abruptly interrupted.
      * @param position    Either robot position or position of a Laser tile.
      * @param orientation Either robot orientation or orientation of a Laser tile.
      * @param map
@@ -62,21 +59,30 @@ public class LaserAction {
             for (Attribute a : map.getTile(position).getAttributes()) {
                 if (a.getType() == AttributeType.Antenna) return position.subtract(step);
                 else if (a.getType() == AttributeType.Wall) {
-                    Wall wall = (Wall) a;
-                    for (Orientation wallOrientation : wall.getOrientations()) {
-                        if (wallOrientation == orientation.getOpposite()) { //ends if wall is crossing laser path
-                            return position.subtract(step);
-                        } else if (wallOrientation == orientation) {
-                            return position;
+                        Wall wall = (Wall) a;
+                        for (Orientation wallOrientation : wall.getOrientations()) {
+                            if (wallOrientation == orientation.getOpposite()) { //ends if wall is crossing laser path
+                                return position.subtract(step);
+                            } else if (wallOrientation == orientation) {
+                                return position;
+                            }
                         }
                     }
                 }
+                position.add(step);
             }
-            position.add(step);
-        }
-        return position.subtract(step);
+            return position.subtract(step);
     }
 
+    /**
+     * This methods checks whether there is wall or not on current tile.
+     * Wall orientation is compared with the orientation of player or laser tile in order to decide
+     * whether further traversing of laser beam is allowed or not.
+     * @param position
+     * @param orientation
+     * @param map
+     * @return
+     */
     private static boolean isWallOnFirstTile(Coordinate position, Orientation orientation, Map map) {
         for (Attribute a : map.getTile(position).getAttributes()) {
             if (a.getType() == AttributeType.Wall) {
@@ -117,10 +123,9 @@ public class LaserAction {
      * This method gets triggered in activation phase.All the Board Lasers are activated at once.
      * Only the first player standing in it's way gets affected.
      */
-    // TODO Delete unnecessary Logger
     public void activateBoardLaser(ArrayList<Player> activePlayers) {
+        //soundHandler.pitSound();
         for (Coordinate coordinate : map.readLaserCoordinates()) {
-            //soundHandler.pitSound();
             determineLaserPaths(coordinate);
             // TODO Check whether the lasers affect two players
             for (Coordinate coordinate1 : laserCoordinates) {
@@ -135,15 +140,14 @@ public class LaserAction {
     }
 
     /**
-     * This method gets triggered after every register.
+     * The method gets triggered in activationPhase.
      * The player on the receiving end gets one spam card as a damage.
      * The Robot can only fire in one direction.
-     * PlayerShooting Protocol is sent.
      */
 
     public void activateRobotLaser(ArrayList<Player> activePlayers) {
+        //soundHandler.pitSound();
         for (Player player : activePlayers) {
-            //soundHandler.pitSound();
             determineRobotLaserPath(player);
             outerLoop:
             for (Coordinate coordinate : robotCoordinates) {

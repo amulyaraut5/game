@@ -20,9 +20,12 @@ import utilities.enums.Rotation;
 import java.util.ArrayList;
 
 /**
- *
+ * This class contains the all the board elements and their functionality.
+ * The execution of board elements are handled in activation phase.
+ * @author Amulya
+ * @author Louis
  */
-public class ActivationElements {
+public class BoardElements {
     private static final Logger logger = LogManager.getLogger();
     private final Game game = Game.getInstance();
     private final ArrayList<Player> playerList = game.getPlayers();
@@ -30,10 +33,9 @@ public class ActivationElements {
     private final ActivationPhase activationPhase;
     private final Server server = Server.getInstance();
 
-    public ActivationElements(ActivationPhase activationPhase) {
+    public BoardElements(ActivationPhase activationPhase) {
         this.activationPhase = activationPhase;
     }
-
 
     /**
      * Checkpoint is the final destination of the game and player wins the game as
@@ -74,7 +76,6 @@ public class ActivationElements {
         }
     }
 
-
     /**
      * Gears rotate robots resting on them 90 degrees in the direction of the arrows.
      * Red gears rotate left, and green gears rotate right.
@@ -102,12 +103,10 @@ public class ActivationElements {
         }
     }
 
-
-
     /**
      * Push panels push any robots resting on them into the next space in the direction the push
      * panel faces. They activate only in the register that corresponds to the number on them. For
-     * example, if you end register two on a push panel labeled “2, 4” you will be pushed. If you end
+     * example, if the robot end register two on a push panel labeled “2, 4” you will be pushed. If the robot end
      * register three on the same push panel, you won’t be pushed.
      * Movement Protocol is sent to the players.
      */
@@ -144,6 +143,68 @@ public class ActivationElements {
                     JSONBody jsonBody = new Energy(player.getID(), 1);
                     server.communicateAll(jsonBody);
                 }
+            }
+        }
+    }
+
+    public void activateBlueBelts() {
+        ArrayList<Player> playersOnBelt = new ArrayList<>();
+        ArrayList<Boolean> actionFinished = new ArrayList<>();
+        ArrayList<Orientation> orientations = new ArrayList<>();
+        ArrayList<Coordinate> oldPositions = new ArrayList<>();
+
+        for (Coordinate tileCoordinate : map.getBlueBelts()) {
+            for (Player currentPlayer : playerList) {
+                if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
+                    playersOnBelt.add(currentPlayer);
+                    actionFinished.add(false);
+                    oldPositions.add(currentPlayer.getRobot().getCoordinate().clone());
+
+                    for (Attribute a : map.getTile(tileCoordinate).getAttributes()) {
+                        if (a.getType() == AttributeType.Belt) {
+                            orientations.add(((Belt) a).getOrientation());
+                        }
+                        if (a.getType() == AttributeType.RotatingBelt) {
+                            orientations.add(((RotatingBelt) a).getOrientations()[0]);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Player player : playersOnBelt) {
+            oldPositions.add(player.getRobot().getCoordinate().clone());
+        }
+
+        handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
+        for (int j = 0; j < actionFinished.size(); j++) {
+            actionFinished.set(j, false);
+        }
+
+        for (Player player : playersOnBelt) {
+            boolean stillOnBelt = false;
+            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+                if (a.getType() == AttributeType.Belt) {
+                    stillOnBelt = true;
+                } else {
+                    if (a.getType() == AttributeType.RotatingBelt) {
+                        stillOnBelt = true;
+                    }
+                }
+                if (!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
+            }
+            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
+                if (a.getType() == AttributeType.RotatingBelt) {
+                    orientations.set(playersOnBelt.indexOf(player), ((RotatingBelt) a).getOrientations()[0]);
+                }
+            }
+        }
+
+        handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
+
+        for (Player p : playersOnBelt) {
+            if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
+                activationPhase.handleTile(p);
             }
         }
     }
@@ -209,10 +270,7 @@ public class ActivationElements {
                     }
                 }
             }
-
-            if (!actionFinished.contains(false)) {
-                finished = true;
-            }
+            if (!actionFinished.contains(false))  finished = true;
         }
     }
 
@@ -236,67 +294,5 @@ public class ActivationElements {
         }
 
         return newPosition;
-    }
-
-    public void activateBlueBelts() {
-        ArrayList<Player> playersOnBelt = new ArrayList<>();
-        ArrayList<Boolean> actionFinished = new ArrayList<>();
-        ArrayList<Orientation> orientations = new ArrayList<>();
-        ArrayList<Coordinate> oldPositions = new ArrayList<>();
-
-        for (Coordinate tileCoordinate : map.getBlueBelts()) {
-            for (Player currentPlayer : playerList) {
-                if (tileCoordinate.equals(currentPlayer.getRobot().getCoordinate())) {
-                    playersOnBelt.add(currentPlayer);
-                    actionFinished.add(false);
-                    oldPositions.add(currentPlayer.getRobot().getCoordinate().clone());
-
-                    for (Attribute a : map.getTile(tileCoordinate).getAttributes()) {
-                        if (a.getType() == AttributeType.Belt) {
-                            orientations.add(((Belt) a).getOrientation());
-                        }
-                        if (a.getType() == AttributeType.RotatingBelt) {
-                            orientations.add(((RotatingBelt) a).getOrientations()[0]);
-                        }
-                    }
-                }
-            }
-        }
-
-        for (Player player : playersOnBelt) {
-            oldPositions.add(player.getRobot().getCoordinate().clone());
-        }
-
-        handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-        for (int j = 0; j < actionFinished.size(); j++) {
-            actionFinished.set(j, false);
-        }
-
-        for (Player player : playersOnBelt) {
-            boolean stillOnBelt = false;
-            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-                if (a.getType() == AttributeType.Belt) {
-                    stillOnBelt = true;
-                } else {
-                    if (a.getType() == AttributeType.RotatingBelt) {
-                        stillOnBelt = true;
-                    }
-                }
-                if (!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
-            }
-            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-                if (a.getType() == AttributeType.RotatingBelt) {
-                    orientations.set(playersOnBelt.indexOf(player), ((RotatingBelt) a).getOrientations()[0]);
-                }
-            }
-        }
-
-        handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
-        for (Player p : playersOnBelt) {
-            if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
-                activationPhase.handleTile(p);
-            }
-        }
     }
 }
