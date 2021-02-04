@@ -23,6 +23,7 @@ import java.util.ArrayList;
 /**
  * This class contains the all the board elements and their functionality.
  * The execution of board elements are handled in activation phase.
+ *
  * @author Amulya
  * @author Louis
  */
@@ -60,7 +61,7 @@ public class BoardElements {
                                     checkPoint++;
                                     player.setCheckPointCounter(checkPoint);
                                     player.message(new CheckpointReached(player.getID(), checkPointID));
-                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint" ));
+                                    player.message(new Error("Congratulations: You have reached CheckPoint " + checkPointID));
                                 } else if (checkPointID == totalCheckPoints) {
                                     server.communicateAll(new GameWon(player.getID()));
                                     break outerLoop;
@@ -68,7 +69,7 @@ public class BoardElements {
                             } else if (player.getCheckPointCounter() > checkPointID) {
                                 player.message(new Error("CheckPoint Already Reached"));
                             } else {
-                               player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
+                                player.message(new Error("You need to go to CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
                             }
                         }
                     }
@@ -88,16 +89,7 @@ public class BoardElements {
                 if (player.getRobot().getCoordinate().equals(coordinate)) {
                     for (Attribute a : map.getTile(coordinate.getX(), coordinate.getY()).getAttributes()) {
                         Rotation rotation = ((Gear) a).getOrientation();
-                        switch (rotation) {
-                            case LEFT -> {
-                                player.getRobot().rotate(Rotation.LEFT);
-                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                            }
-                            case RIGHT -> {
-                                player.getRobot().rotate(Rotation.RIGHT);
-                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                            }
-                        }
+                        player.getRobot().rotate(rotation);
                     }
                 }
             }
@@ -116,7 +108,7 @@ public class BoardElements {
         for (Coordinate coordinate : map.readPushPanelCoordinate()) {
             Tile tile = map.getTile(coordinate);
             for (Player player : playerList) {
-                if (player.getRobot().getCoordinate().equals(coordinate)){
+                if (player.getRobot().getCoordinate().equals(coordinate)) {
                     for (Attribute a : tile.getAttributes()) {
                         for (int i : ((PushPanel) a).getRegisters()) {
                             if (i == activationPhase.getCurrentRegister()) {
@@ -274,7 +266,7 @@ public class BoardElements {
                     }
                 }
             }
-            if (!actionFinished.contains(false))  finished = true;
+            if (!actionFinished.contains(false)) finished = true;
         }
         for (Player p : playersOnBelt) {
             if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
