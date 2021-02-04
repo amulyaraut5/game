@@ -9,11 +9,8 @@ import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.body.CheckpointReached;
-import utilities.JSONProtocol.body.Energy;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.GameWon;
-import utilities.JSONProtocol.body.PlayerTurning;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -23,6 +20,7 @@ import java.util.ArrayList;
 /**
  * This class contains the all the board elements and their functionality.
  * The execution of board elements are handled in activation phase.
+ *
  * @author Amulya
  * @author Louis
  */
@@ -60,7 +58,7 @@ public class BoardElements {
                                     checkPoint++;
                                     player.setCheckPointCounter(checkPoint);
                                     player.message(new CheckpointReached(player.getID(), checkPointID));
-                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint" ));
+                                    player.message(new Error("Congratulations: You have reached CheckPoint " + checkPointID));
                                 } else if (checkPointID == totalCheckPoints) {
                                     server.communicateAll(new GameWon(player.getID()));
                                     break outerLoop;
@@ -68,7 +66,7 @@ public class BoardElements {
                             } else if (player.getCheckPointCounter() > checkPointID) {
                                 player.message(new Error("CheckPoint Already Reached"));
                             } else {
-                               player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
+                                player.message(new Error("You need to go to CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
                             }
                         }
                     }
@@ -88,16 +86,7 @@ public class BoardElements {
                 if (player.getRobot().getCoordinate().equals(coordinate)) {
                     for (Attribute a : map.getTile(coordinate.getX(), coordinate.getY()).getAttributes()) {
                         Rotation rotation = ((Gear) a).getOrientation();
-                        switch (rotation) {
-                            case LEFT -> {
-                                player.getRobot().rotate(Rotation.LEFT);
-                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                            }
-                            case RIGHT -> {
-                                player.getRobot().rotate(Rotation.RIGHT);
-                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                            }
-                        }
+                        player.getRobot().rotate(rotation);
                     }
                 }
             }
@@ -116,7 +105,7 @@ public class BoardElements {
         for (Coordinate coordinate : map.readPushPanelCoordinate()) {
             Tile tile = map.getTile(coordinate);
             for (Player player : playerList) {
-                if (player.getRobot().getCoordinate().equals(coordinate)){
+                if (player.getRobot().getCoordinate().equals(coordinate)) {
                     for (Attribute a : tile.getAttributes()) {
                         for (int i : ((PushPanel) a).getRegisters()) {
                             if (i == activationPhase.getCurrentRegister()) {
@@ -202,12 +191,13 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
+        /*
         for (Player p : playersOnBelt) {
             if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
             }
         }
+         */
     }
 
     public void activateGreenBelts() {
@@ -236,12 +226,13 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
+        /*
         for (Player p : playersOnBelt) {
             if (!(p.getRobot().getCoordinate() == oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
             }
         }
+         */
     }
 
     public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished,
@@ -272,7 +263,26 @@ public class BoardElements {
                     }
                 }
             }
-            if (!actionFinished.contains(false))  finished = true;
+            if (!actionFinished.contains(false)) finished = true;
+        }
+        for (Player p : playersOnBelt) {
+            if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
+
+                //Eventually rotate player if he was moved onto a rotating belt.
+                if (!p.getRobot().getCoordinate().isOutsideMap()) {
+                    for (Attribute a : map.getTile(p.getRobot().getCoordinate()).getAttributes()) {
+                        if (a.getType() == AttributeType.RotatingBelt) {
+                            RotatingBelt temp = ((RotatingBelt) a);
+
+                            if (temp.getOrientations()[0] != orientations.get(playersOnBelt.indexOf(p))) {
+                                rotateOnBelt(p, temp.getOrientations());
+                            }
+                        }
+                    }
+                }
+
+                activationPhase.handleTile(p);
+            }
         }
     }
 
@@ -296,5 +306,62 @@ public class BoardElements {
         }
 
         return newPosition;
+    }
+
+    public void rotateOnBelt(Player player, Orientation[] orientations) {
+        switch (orientations[0]) {
+            case UP -> {
+                switch (orientations[1]) {
+                    case RIGHT -> {
+                        player.getRobot().rotate(Rotation.RIGHT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                    }
+
+                    case LEFT -> {
+                        player.getRobot().rotate(Rotation.LEFT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                    }
+                }
+            }
+            case RIGHT -> {
+                switch (orientations[1]) {
+                    case UP -> {
+                        player.getRobot().rotate(Rotation.LEFT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                    }
+
+                    case DOWN -> {
+                        player.getRobot().rotate(Rotation.RIGHT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                    }
+                }
+            }
+            case DOWN -> {
+                switch (orientations[1]) {
+                    case RIGHT -> {
+                        player.getRobot().rotate(Rotation.LEFT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                    }
+
+                    case LEFT -> {
+                        player.getRobot().rotate(Rotation.RIGHT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                    }
+                }
+            }
+            case LEFT -> {
+                switch (orientations[1]) {
+                    case UP -> {
+                        player.getRobot().rotate(Rotation.RIGHT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
+                    }
+
+                    case DOWN -> {
+                        player.getRobot().rotate(Rotation.LEFT);
+                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
+                    }
+                }
+            }
+        }
     }
 }

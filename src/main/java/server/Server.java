@@ -4,11 +4,11 @@ import game.Game;
 import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Utilities;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.Utilities;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
 import utilities.enums.ServerState;
@@ -187,8 +187,6 @@ public class Server extends Thread {
         }
     }
 
-
-
     /**
      * determines wether the message is a cheat or not
      *
@@ -200,7 +198,9 @@ public class Server extends Thread {
         Pattern cheatPattern = Pattern.compile("^#+");
         Matcher cheatMatcher = cheatPattern.matcher(message);
         if (cheatMatcher.lookingAt()) {
-            game.handleCheat(message, user);
+            if (serverState == ServerState.RUNNING_GAME) {
+                game.handleCheat(message, user);
+            }else user.message(new Error("Cheats are deactivated at the lobby."));
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
         }
@@ -253,7 +253,7 @@ public class Server extends Thread {
         }
     }
 
-    private void  dealWithMap(User user, SetStatus status){
+    private void dealWithMap(User user, SetStatus status) {
         userIsNotAI.put(user, status.isReady());
 
         ArrayList<String> maps = new ArrayList<>();
@@ -261,7 +261,7 @@ public class Server extends Thread {
         maps.add("DizzyHighway");
         maps.add("ExtraCrispy");
 
-        if (!status.isReady()){
+        if (!status.isReady()) {
             isMapSent = false;
             isMapSelected = false;
         }
@@ -271,11 +271,12 @@ public class Server extends Thread {
                 try {
                     if (userIsNotAI.get(user1)) {
                         user1.message(new SelectMap(maps));
+                        communicateAll(new Error(""));
                         isMapSent = true;
                         break;
                     }
                 } catch (NullPointerException e) {
-                    communicateUsers(new Error("Please click Ready to select map."), user);
+                    communicateAll(new Error("Click Ready to select a map"));
                 }
             }
         }
@@ -393,8 +394,10 @@ public class Server extends Thread {
      */
     public void removeUser(User user) {
         logger.info("removeUser reached");
-        game.getPlayers().remove(game.userToPlayer(user));
-        //TODO
+        if (!(game.getPlayers() == null)) {
+            game.getPlayers().remove(game.userToPlayer(user));
+            //TODO
+            if (!(game.getPlayers() == null)) {
         /*
         if(game.getGameState() == GameState.CONSTRUCTION){
             communicateAll(new ActivePhase(GameState.CONSTRUCTION));
@@ -406,26 +409,28 @@ public class Server extends Thread {
         }
 
          */
-        if (game.getGameState() == GameState.PROGRAMMING) {
-            logger.info("removeuser IF");
-            Player temp = null;
-            for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
-                if (player.getID() == user.getID()) {
-                    temp = player;
+                if (game.getGameState() == GameState.PROGRAMMING) {
+                    logger.info("removeuser IF");
+                    Player temp = null;
+                    for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
+                        if (player.getID() == user.getID()) {
+                            temp = player;
+                        }
+                    }
+                    game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+                    communicateAll(new SelectionFinished(user.getID()));
+                    logger.info("removeuser IF" + game.getProgrammingPhase().getNotReadyPlayers());
+                    if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
+                        game.getProgrammingPhase().endProgrammingTimer();
+                    }
+                }
+                if (game.getGameState() == GameState.ACTIVATION) {
+                    logger.info("if statement reached");
+                    int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
+                    Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);
+                    game.getActivationPhase().removeCurrentCards(user.getID());
                 }
             }
-            game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
-            communicateAll(new SelectionFinished(user.getID()));
-            logger.info("removeuser IF" + game.getProgrammingPhase().getNotReadyPlayers());
-            if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
-                game.getProgrammingPhase().endProgrammingTimer();
-            }
-        }
-        if (game.getGameState() == GameState.ACTIVATION) {
-            logger.info("if statement reached");
-            int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
-            Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);
-            game.getActivationPhase().removeCurrentCards(user.getID());
         }
 
         readyUsers.remove(user);

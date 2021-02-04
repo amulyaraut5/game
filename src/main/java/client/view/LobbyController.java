@@ -48,16 +48,6 @@ public class LobbyController extends Controller implements Updatable {
     private Label infoLabel2;
 
 
-    @FXML private CheckBox dizzyHighway;
-    @FXML private CheckBox extraCrispy;
-
-    @FXML private ImageView dizzy;
-    @FXML private ImageView crispy;
-
-    private final boolean state = false;
-
-
-
     /**
      * this method gets called automatically by constructing view
      * it adds the different ImageViews and Labels to lists and also
@@ -66,8 +56,6 @@ public class LobbyController extends Controller implements Updatable {
      */
     @FXML
     public void initialize() {
-        setVisible(false);
-        setImageViewVisible(true);
         infoLabel2.setText("First Player to click Ready will get a chance to choose a map.");
     }
 
@@ -75,12 +63,6 @@ public class LobbyController extends Controller implements Updatable {
         chat.setPrefWidth(chatPane.getPrefWidth());
         chat.setPrefHeight(chatPane.getPrefHeight());
         chatPane.setCenter(chat);
-    }
-
-    public void reset(){
-        readyCheckbox.setSelected(state);
-        dizzyHighway.setSelected(state);
-        extraCrispy.setSelected(state);
     }
 
     /**
@@ -128,11 +110,13 @@ public class LobbyController extends Controller implements Updatable {
      */
     @FXML
     private void checkBoxAction() {
-        client.sendMessage(new SetStatus(readyCheckbox.isSelected()));
+        client.sendMessage(new SetStatus((readyCheckbox.isSelected())));
+
         if(!readyCheckbox.isSelected()){
+            client.sendMessage(new SetStatus(false));
             infoLabel2.setText("Please wait till somebody selects the map.");
-            setDisable(true);
-            setSelected(false);
+            MapSelectionController.getMapSelectionController().setSelected(false);
+            MapSelectionController.getMapSelectionController().setDisable(true);
         }
     }
 
@@ -141,19 +125,11 @@ public class LobbyController extends Controller implements Updatable {
         playerIconPane.getChildren().remove(tile);
     }
 
-
     @FXML
-    private void choiceBoxActionForMap(ActionEvent event){
-
-        if(dizzyHighway.isSelected()){
-            JSONBody jsonBody = new MapSelected("DizzyHighway");
-            client.sendMessage(jsonBody);
-            setDisable(true);
-        }
-        else if(extraCrispy.isSelected()){
-            JSONBody jsonBody = new MapSelected("ExtraCrispy");
-            client.sendMessage(jsonBody);
-            setDisable(true);
+    private void goToMapSelection(ActionEvent event){
+        viewManager.showMap();
+        if(!readyCheckbox.isSelected()){
+            MapSelectionController.getMapSelectionController().setInfoLabel("Click ready and wait for your turn to select map");
         }
     }
 
@@ -169,30 +145,10 @@ public class LobbyController extends Controller implements Updatable {
                 displayStatus(playerStatus);
             }
             case SelectMap -> {
-                setVisible(true);
-                setDisable(false);
+                infoLabel2.setText("You can select a map. Go to MapSelectionView.");
+                MapSelectionController.getMapSelectionController().setVisible(true);
+                MapSelectionController.getMapSelectionController().setDisable(false);
             }
         }
-    }
-
-    private void setVisible(boolean b){
-        dizzyHighway.setVisible(b);
-        extraCrispy.setVisible(b);
-    }
-
-    private void setDisable(boolean b){
-        dizzyHighway.setDisable(b);
-        extraCrispy.setDisable(b);
-
-    }
-
-    private void setSelected(boolean b){
-        dizzyHighway.setSelected(b);
-        extraCrispy.setSelected(b);
-    }
-
-    private void setImageViewVisible(boolean b){
-        dizzy.setVisible(b);
-        crispy.setVisible(b);
     }
 }

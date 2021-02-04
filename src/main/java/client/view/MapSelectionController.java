@@ -3,34 +3,89 @@ package client.view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import utilities.JSONProtocol.JSONBody;
+import javafx.scene.control.Label;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.MapSelected;
 import utilities.Updatable;
 
 
 public class MapSelectionController extends Controller implements Updatable {
     @FXML private CheckBox dizzyHighway;
-    @FXML private CheckBox riskyCrossing;
+    @FXML private CheckBox extraCrispy;
+    @FXML
+    private Label infoLabel;
+
+
+    private static MapSelectionController mapSelectionController;
+
+    @FXML
+    public void initialize() {
+        setVisible(false);
+        infoLabel.setText("");
+    }
+
+    public MapSelectionController(){
+        mapSelectionController = this;
+    }
 
     @FXML
     private void choiceBoxActionForMap(ActionEvent event){
 
         if(dizzyHighway.isSelected()){
-            JSONBody jsonBody = new MapSelected("DizzyHighway");
-            client.sendMessage(jsonBody);
+            client.sendMessage(new MapSelected("DizzyHighway"));
+            setDisable(true);
             viewManager.showLobby();
-
         }
-        else if(riskyCrossing.isSelected()){
-            JSONBody jsonBody = new MapSelected("ExtraCrispy");
-            client.sendMessage(jsonBody);
+        else if(extraCrispy.isSelected()){
+            client.sendMessage(new MapSelected("ExtraCrispy"));
+            setDisable(true);
             viewManager.showLobby();
         }
     }
 
+
+    @FXML
+    private void switchBackToLobby(ActionEvent event){
+        viewManager.showLobby();
+        infoLabel.setText("");
+    }
+
     @Override
     public void update(JSONMessage message) {
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                infoLabel.setText(error.getError());
+            }
+            case SelectMap -> {
+                setVisible(true);
+                setDisable(false);
+            }
+        }
+    }
 
+    public void setVisible(boolean b){
+        dizzyHighway.setVisible(b);
+        extraCrispy.setVisible(b);
+    }
+
+    public void setDisable(boolean b){
+        dizzyHighway.setDisable(b);
+        extraCrispy.setDisable(b);
+
+    }
+
+    public void setSelected(boolean b){
+        dizzyHighway.setSelected(b);
+        extraCrispy.setSelected(b);
+    }
+
+    public void setInfoLabel(String string) {
+        infoLabel.setText(string);
+    }
+
+    public static MapSelectionController getMapSelectionController(){
+        return mapSelectionController;
     }
 }
