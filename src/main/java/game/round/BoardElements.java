@@ -202,12 +202,13 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
+        /*
         for (Player p : playersOnBelt) {
             if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
             }
         }
+         */
     }
 
     public void activateGreenBelts() {
@@ -236,12 +237,13 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
+        /*
         for (Player p : playersOnBelt) {
             if (!(p.getRobot().getCoordinate() == oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
             }
         }
+         */
     }
 
     public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished,
@@ -273,6 +275,27 @@ public class BoardElements {
                 }
             }
             if (!actionFinished.contains(false))  finished = true;
+        }
+        for (Player p : playersOnBelt) {
+            if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
+
+                //Eventually rotate player if he was moved onto a rotating belt.
+                if(!p.getRobot().getCoordinate().isOutsideMap()){
+                    for (Attribute a : map.getTile(p.getRobot().getCoordinate()).getAttributes()) {
+                        if(a.getType() == AttributeType.RotatingBelt){
+                            RotatingBelt temp = ((RotatingBelt) a);
+
+
+                            if(temp.getOrientations()[0] != orientations.get(playersOnBelt.indexOf(p))){
+                                rotateOnBelt(p, temp.getOrientations());
+                            }
+
+                        }
+                    }
+                }
+
+                activationPhase.handleTile(p);
+            }
         }
     }
 
