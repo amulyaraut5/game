@@ -183,6 +183,7 @@ public class GameController extends Controller implements Updatable {
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
+                activationController.changePhaseView("PlayIt");
                 currentAction.clear();
                 programmingController.reset();
                 phasePane.setCenter(activationPane);
@@ -208,6 +209,8 @@ public class GameController extends Controller implements Updatable {
             programmingController = programmingLoader.getController();
             activationController = activationLoader.getController();
             gameWonController = gameWonLoader.getController();
+
+            activationController.changePhaseView("PlayIt");
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
@@ -256,14 +259,12 @@ public class GameController extends Controller implements Updatable {
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
                 currentAction.add(message.getType());
-                System.out.println("add " + message.getType());
 
                 gameBoardController.handleMovement(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
             }
             case PlayerTurning -> {
                 PlayerTurning pT = (PlayerTurning) message.getBody();
                 currentAction.add(message.getType());
-                System.out.println("add " + message.getType());
 
                 gameBoardController.handlePlayerTurning(client.getPlayerFromID(pT.getPlayerID()), pT.getDirection());
             }
@@ -277,7 +278,8 @@ public class GameController extends Controller implements Updatable {
             }
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
-                activationController.pickDamage(pickDamage);
+                activationController.changePhaseView("Damage");
+                activationController.getPickDamageController().pickDamage(pickDamage);
             }
             case PlayerShooting -> {
                 if (activePlayers.isEmpty()) {
@@ -350,11 +352,10 @@ public class GameController extends Controller implements Updatable {
                     constructionController.currentPlayer(isThisPlayer);
                 } else if (currentPhase == GameState.ACTIVATION) {
                     if(!isThisPlayer) {
-                        System.out.println(currentAction);
-                        activationController.setDisplayAction(currentAction);
+                        activationController.getPlayCardController().setDisplayAction(currentAction);
                     }
-                    else currentAction.clear();
-                    activationController.currentPlayer(isThisPlayer);
+                    currentAction.clear();
+                    activationController.getPlayCardController().currentPlayer(isThisPlayer);
                     othersController.setInfoLabel(currentPlayer, isThisPlayer);
                 }
             }
@@ -363,7 +364,6 @@ public class GameController extends Controller implements Updatable {
                 if (energy.getPlayerID() == client.getThisPlayersID()) {
                     playerMatController.addEnergy(energy.getCount());
                     currentAction.add(message.getType());
-                    System.out.println("add " + message.getType());
                 } else {
                     othersController.addEnergy(energy);
                 }
