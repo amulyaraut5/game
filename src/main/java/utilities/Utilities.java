@@ -47,18 +47,26 @@ public abstract class Utilities {
     public static final int MAX_PLAYERS = 6;
     public static final int ENERGY_BANK = 48;
 
-    //
-    public static final int[][] STANDARD_PRIORITY_MAP = new int[][]{
-            {25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85},
-            {30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90},
-            {35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95},
-            {40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100},
-            {35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95},
-            {30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90},
-            {25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85},
-            {20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80},
-            {15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75},
-            {10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70},
-    };
-
+    public static final String CHEAT_LIST = """
+                                    
+            ------------------------------------------
+            Cheats
+            ------------------------------------------
+            #cheats             |  lists all cheats
+            #cheats on/off  |  turns cheats on/off
+            #tp <pos>        |  teleports the robot
+            #tp <x> <y>     |  teleports the robot
+            #r <u,r,d,l>        |  rotates up, right...
+            #endTimer         |  ends the timer
+            #autoPlay          |  autoplays all PlayIt
+            #activateBoard  |  activates the board
+            #damage <n>   |  deals spam cards
+            #damageDecks  |  shows damage decks
+            #emptySpam     |  empties spam deck
+            #win                   |  player wins
+            - - - - - - - - - - - - - - - - - - - - - - - - -
+            click on map       |  teleports the robot
+            WASD keys         |  rotates the robot
+            ------------------------------------------
+            """;
 }

@@ -4,11 +4,11 @@ import game.Game;
 import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Utilities;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
-import utilities.Utilities;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
 import utilities.enums.ServerState;
@@ -187,7 +187,6 @@ public class Server extends Thread {
         }
     }
 
-
     /**
      * determines wether the message is a cheat or not
      *
@@ -199,7 +198,9 @@ public class Server extends Thread {
         Pattern cheatPattern = Pattern.compile("^#+");
         Matcher cheatMatcher = cheatPattern.matcher(message);
         if (cheatMatcher.lookingAt()) {
-            game.handleCheat(message, user);
+            if (serverState == ServerState.RUNNING_GAME) {
+                game.handleCheat(message, user);
+            }else user.message(new Error("Cheats are deactivated at the lobby."));
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
         }

@@ -23,6 +23,7 @@ import utilities.JSONProtocol.body.GameWon;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
+import utilities.Utilities;
 import utilities.enums.GameState;
 import utilities.enums.Orientation;
 
@@ -118,7 +119,6 @@ public class Game {
         return null;
     }
 
-
     /**
      * Gets a player based on their ID from the list of players saved in {@link Game}.
      *
@@ -139,12 +139,32 @@ public class Game {
      * @param user    user who sent the cheat
      */
     public void handleCheat(String message, User user) {
+        Player player = userToPlayer(user);
         String cheat = message;
         String[] cheatInfo = new String[0];
         if (message.contains(" ")) {
             cheat = message.substring(0, message.indexOf(" "));
             cheatInfo = message.substring(message.indexOf(" ") + 1).split(" ");
         }
+
+        if (cheat.equals("#cheats")) {
+            if (cheatInfo.length == 0) {
+                user.message(new ReceivedChat(Utilities.CHEAT_LIST, user.getID(), false));
+            } else {
+                if (cheatInfo[0].equals("on") && !player.isUsingCheats()) {
+                    player.setUsingCheats(true);
+                    server.communicateAll(new Error(user + " turned on cheats!"));
+                } else if (cheatInfo[0].equals("off") && player.isUsingCheats()) {
+                    player.setUsingCheats(false);
+                    server.communicateAll(new Error(user + " turned off cheats!"));
+                }
+            }
+        } else if (player.isUsingCheats()) {
+            activateCheat(user, cheat, cheatInfo);
+        } else server.communicateDirect(new Error("Please activate cheats first"), user.getID());
+    }
+
+    private void activateCheat(User user, String cheat, String[] cheatInfo) {
         switch (cheat) {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
             //activates the board - only when activation phase was reached at least once
@@ -181,11 +201,11 @@ public class Game {
                     server.communicateDirect(new Error("your cheat is invalid in this phase"), user.getID());
                 else activationPhase.drawDamage(spamDeck, userToPlayer(user), Integer.parseInt(cheatInfo[0]));
             }
-            case "#countDamage" -> {
-                String cardDeck =   "\n  | Spam Deck   " + spamDeck.size() +
-                                    "\n  | Trojan Deck  " + trojanDeck.size() +
-                                    "\n  | Worm Deck   " + wormDeck.size() +
-                                    "\n  | Virus Deck   " + virusDeck.size();
+            case "#damageDecks" -> {
+                String cardDeck = "\n  | Spam Deck   " + spamDeck.size() +
+                        "\n  | Trojan Deck  " + trojanDeck.size() +
+                        "\n  | Worm Deck   " + wormDeck.size() +
+                        "\n  | Virus Deck   " + virusDeck.size();
                 user.message(new ReceivedChat(cardDeck, user.getID(), false));
             }
             case "#autoPlay" -> {
@@ -202,31 +222,6 @@ public class Game {
                 spamDeck.getDeck().clear();
                 logger.info("SpamDeckCheat: " + spamDeck.getDeck().size());
                 activationPhase.drawDamage(spamDeck, userToPlayer(user), spamDeck.size());
-
-            }
-            case "#cheats" -> {
-                String cheats = """
-                                                
-                        ------------------------------------------
-                        Cheats
-                        ------------------------------------------
-                        #cheats            |  lists all cheats
-                        #tp <pos>       |  teleports the robot
-                        #tp <x> <y>    |  teleports the robot
-                        #r <u,r,d,l>       |  rotates up, right...
-                        #endTimer        |  ends the timer
-                        #autoPlay         |  autoplays all PlayIt
-                        #activateBoard |  activates the board
-                        #damage <n>  |  deals spam cards
-                        #countDamage  | lists the number of damage cards in their decks
-                        #emptySpam    |  empties spam deck
-                        #win                  |  player wins
-                        - - - - - - - - - - - - - - - - - - - - - - - - -
-                        click on map      |  teleports the robot
-                        WASD keys        |  rotates the robot
-                        ------------------------------------------
-                        """;
-                user.message(new ReceivedChat(cheats, user.getID(), false));
             }
             default -> server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
         }

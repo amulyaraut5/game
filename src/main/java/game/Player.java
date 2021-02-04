@@ -5,7 +5,6 @@ import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
 import server.User;
-import utilities.Coordinate;
 import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.enums.CardType;
 
@@ -22,6 +21,7 @@ public class Player extends User {
      */
     private final Robot robot;
     private final Game game = Game.getInstance();
+    private boolean usingCheats = false;
     /**
      * contains the chosen Cards for each register
      */
@@ -82,6 +82,27 @@ public class Player extends User {
         for (int i = 0; i < 5; i++) {
             registerCards.add(i, null);
         }
+    }
+
+    /**
+     * used in ProgrammingPhase. If the DrawProgrammingDeck is empty the discarded pile gets flipped and shuffled
+     * and can be used to draw cards again.
+     */
+    public void reuseDiscardedDeck() {
+        discardedProgrammingDeck.refillProgrammingDeck(drawProgrammingDeck);
+    }
+
+    /**
+     * Lets you discard an Array of cards to a specified deck
+     *
+     * @param cards       that should be discarded
+     * @param discardDeck deck the cards should be discarded to
+     */
+    public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
+        for (Card card : cards) {
+            discardDeck.addCard(card);
+        }
+        cards.clear();
     }
 
     /**
@@ -150,25 +171,11 @@ public class Player extends User {
         return discardedProgrammingDeck;
     }
 
-    /**
-     * Lets you discard an Array of cards to a specified deck
-     *
-     * @param cards       that should be discarded
-     * @param discardDeck deck the cards should be discarded to
-     */
-    public void discardCards(ArrayList<Card> cards, DiscardDeck discardDeck) {
-        for (Card card : cards) {
-            discardDeck.addCard(card);
-        }
-        cards.clear();
+    public boolean isUsingCheats() {
+        return usingCheats;
     }
 
-    /**
-     * used in ProgrammingPhase. If the DrawProgrammingDeck is empty the discarded pile gets flipped and shuffled
-     * and can be used to draw cards again.
-     */
-    public void reuseDiscardedDeck() {
-        discardedProgrammingDeck.refillProgrammingDeck(drawProgrammingDeck);
+    public void setUsingCheats(boolean usingCheats) {
+        this.usingCheats = usingCheats;
     }
-
 }
