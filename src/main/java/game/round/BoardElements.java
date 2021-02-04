@@ -297,4 +297,45 @@ public class BoardElements {
 
         return newPosition;
     }
+
+    public void rotateOnBelt(Player player, Orientation[] orientations){
+        switch (orientations[0]){
+            case UP -> {
+                switch (orientations[1]){
+                    case RIGHT -> {player.getRobot().rotate(Rotation.RIGHT);
+                                   server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+
+                    case LEFT -> {player.getRobot().rotate(Rotation.LEFT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));}
+                }
+            }
+            case RIGHT -> {
+                switch (orientations[1]){
+                    case UP -> {player.getRobot().rotate(Rotation.LEFT);
+                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT)); }
+
+                    case DOWN -> {player.getRobot().rotate(Rotation.RIGHT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+                }
+            }
+            case DOWN -> {
+                switch (orientations[1]){
+                    case RIGHT -> {player.getRobot().rotate(Rotation.LEFT);
+                                   server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));}
+
+                    case LEFT -> {player.getRobot().rotate(Rotation.RIGHT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+                }
+            }
+            case LEFT -> {
+                switch (orientations[1]){
+                    case UP -> {player.getRobot().rotate(Rotation.RIGHT);
+                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+
+                    case DOWN -> {player.getRobot().rotate(Rotation.LEFT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));}
+                }
+            }
+        }
+    }
 }
