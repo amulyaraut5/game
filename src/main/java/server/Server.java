@@ -271,11 +271,12 @@ public class Server extends Thread {
                 try {
                     if (userIsNotAI.get(user1)) {
                         user1.message(new SelectMap(maps));
+                        communicateAll(new Error(""));
                         isMapSent = true;
                         break;
                     }
                 } catch (NullPointerException e) {
-                    communicateUsers(new Error("Please click Ready to select map."), user);
+                    communicateAll(new Error("Click Ready to select a map"));
                 }
             }
         }

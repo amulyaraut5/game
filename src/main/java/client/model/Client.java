@@ -42,6 +42,7 @@ public class Client {
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
+    private MapSelectionController mapSelectionController;
 
     private Updatable currentController;
 
@@ -253,6 +254,7 @@ public class Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameController = (GameController) controllerList.get(2);
+        mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public ArrayList<Player> getPlayers() {
