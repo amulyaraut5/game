@@ -6,7 +6,7 @@ import game.gameObjects.cards.programming.*;
 
 import java.util.ArrayList;
 
-import static utilities.Utilities.*;
+import static utilities.Constants.*;
 
 /**
  * @author annika

@@ -6,7 +6,7 @@ import game.gameObjects.cards.damage.Worm;
 
 import java.util.ArrayList;
 
-import static utilities.Utilities.WORM_CARDCOUNT;
+import static utilities.Constants.WORM_CARDCOUNT;
 
 /**
  * @author annika

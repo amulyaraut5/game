@@ -4,7 +4,7 @@ import game.Game;
 import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Utilities;
+import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
@@ -24,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static utilities.Utilities.PORT;
+import static utilities.Constants.PORT;
 
 public class Server extends Thread {
 
@@ -229,7 +229,7 @@ public class Server extends Thread {
     }
 
     private void addNewUser(User user, HelloServer hs) {
-        if (hs.getProtocol() == Utilities.PROTOCOL) {
+        if (hs.getProtocol() == Constants.PROTOCOL) {
             user.setID(idCounter++);
             currentThread().setName("UserThread-" + user.getID());
             if (hs.isAI()) {
@@ -247,7 +247,7 @@ public class Server extends Thread {
             user.message(new Welcome(user.getID()));
         } else {
             JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
-                    "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Utilities.PROTOCOL);
+                    "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Constants.PROTOCOL);
             user.message(error);
             user.getThread().disconnect();
         }

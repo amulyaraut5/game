@@ -6,7 +6,7 @@ import game.gameObjects.cards.damage.Virus;
 
 import java.util.ArrayList;
 
-import static utilities.Utilities.VIRUS_CARDCOUNT;
+import static utilities.Constants.VIRUS_CARDCOUNT;
 
 /**
  * @author annika

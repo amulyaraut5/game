@@ -134,6 +134,6 @@ public abstract class Robot {
     }
 
     public void setStartingPoint(Coordinate coordinate) {
-        this.startingPoint = coordinate;
+        startingPoint = coordinate;
     }
 }

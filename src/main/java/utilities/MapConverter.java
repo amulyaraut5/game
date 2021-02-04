@@ -17,8 +17,8 @@ public abstract class MapConverter {
     public static GameStarted convert(Map map) {
         Tile[][] tiles = map.getTiles();
         ArrayList<BoardElement> mapList = new ArrayList<>();
-        int xMax = Utilities.MAP_WIDTH;
-        int yMax = Utilities.MAP_HEIGHT;
+        int xMax = Constants.MAP_WIDTH;
+        int yMax = Constants.MAP_HEIGHT;
 
         for (int y = 0; y < yMax; y++) {
             for (int x = 3; x < xMax; x++) {
@@ -33,8 +33,8 @@ public abstract class MapConverter {
 
     public static Map reconvert(GameStarted body) {
         ArrayList<BoardElement> JsonMap = body.getMap();
-        int xMax = Utilities.MAP_WIDTH;
-        int yMax = Utilities.MAP_HEIGHT;
+        int xMax = Constants.MAP_WIDTH;
+        int yMax = Constants.MAP_HEIGHT;
         Tile[][] tiles = new Tile[xMax][yMax];
 
         for (int x = 0; x < 3; x++) {

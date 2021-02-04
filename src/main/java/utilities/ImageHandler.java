@@ -21,7 +21,7 @@ public abstract class ImageHandler {
      * @return A ImageView containing the image; null if no resource with this name is found.
      */
     public static ImageView createImageView(String path) {
-        int size = Utilities.FIELD_SIZE;
+        int size = Constants.FIELD_SIZE;
         return createImageView(path, size, size);
     }
 
@@ -52,7 +52,7 @@ public abstract class ImageHandler {
     public static ImageView createImageView(String path, Orientation orientation) {
         InputStream stream = ImageHandler.class.getResourceAsStream(path);
         if (stream != null) {
-            int size = Utilities.FIELD_SIZE;
+            int size = Constants.FIELD_SIZE;
             var image = new Image(stream, size, size, true, true);
             var imageView = new ImageView(image);
 

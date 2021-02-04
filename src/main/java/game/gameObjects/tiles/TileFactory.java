@@ -2,7 +2,7 @@ package game.gameObjects.tiles;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Utilities;
+import utilities.Constants;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
 
@@ -76,41 +76,41 @@ public class TileFactory {
             case 23 -> attribute = new Belt(Orientation.LEFT, 2);
 
             //RotatingBelt
-            case 101 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, false, 1);
-            case 103 -> attribute = new RotatingBelt(Utilities.UP_LEFT, false, 1);
-            case 110 -> attribute = new RotatingBelt(Utilities.RIGHT_UP, false, 1);
-            case 112 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, false, 1);
-            case 121 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, false, 1);
-            case 123 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, false, 1);
-            case 132 -> attribute = new RotatingBelt(Utilities.LEFT_DOWN, false, 1);
-            case 130 -> attribute = new RotatingBelt(Utilities.LEFT_UP, false, 1);
+            case 101 -> attribute = new RotatingBelt(Constants.UP_RIGHT, false, 1);
+            case 103 -> attribute = new RotatingBelt(Constants.UP_LEFT, false, 1);
+            case 110 -> attribute = new RotatingBelt(Constants.RIGHT_UP, false, 1);
+            case 112 -> attribute = new RotatingBelt(Constants.RIGHT_DOWN, false, 1);
+            case 121 -> attribute = new RotatingBelt(Constants.DOWN_RIGHT, false, 1);
+            case 123 -> attribute = new RotatingBelt(Constants.DOWN_LEFT, false, 1);
+            case 132 -> attribute = new RotatingBelt(Constants.LEFT_DOWN, false, 1);
+            case 130 -> attribute = new RotatingBelt(Constants.LEFT_UP, false, 1);
 
-            case 105 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, true, 1);
-            case 107 -> attribute = new RotatingBelt(Utilities.UP_LEFT, true, 1);
-            case 114 -> attribute = new RotatingBelt(Utilities.RIGHT_UP, true, 1);
-            case 116 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, true, 1);
-            case 125 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, true, 1);
-            case 127 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, true, 1);
-            case 136 -> attribute = new RotatingBelt(Utilities.LEFT_DOWN, true, 1);
-            case 134 -> attribute = new RotatingBelt(Utilities.LEFT_UP, true, 1);
+            case 105 -> attribute = new RotatingBelt(Constants.UP_RIGHT, true, 1);
+            case 107 -> attribute = new RotatingBelt(Constants.UP_LEFT, true, 1);
+            case 114 -> attribute = new RotatingBelt(Constants.RIGHT_UP, true, 1);
+            case 116 -> attribute = new RotatingBelt(Constants.RIGHT_DOWN, true, 1);
+            case 125 -> attribute = new RotatingBelt(Constants.DOWN_RIGHT, true, 1);
+            case 127 -> attribute = new RotatingBelt(Constants.DOWN_LEFT, true, 1);
+            case 136 -> attribute = new RotatingBelt(Constants.LEFT_DOWN, true, 1);
+            case 134 -> attribute = new RotatingBelt(Constants.LEFT_UP, true, 1);
 
-            case 201 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, false, 2);
-            case 203 -> attribute = new RotatingBelt(Utilities.UP_LEFT, false, 2);
-            case 210 -> attribute = new RotatingBelt(Utilities.RIGHT_UP, false, 2);
-            case 212 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, false, 2);
-            case 221 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, false, 2);
-            case 223 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, false, 2);
-            case 232 -> attribute = new RotatingBelt(Utilities.LEFT_DOWN, false, 2);
-            case 230 -> attribute = new RotatingBelt(Utilities.LEFT_UP, false, 2);
+            case 201 -> attribute = new RotatingBelt(Constants.UP_RIGHT, false, 2);
+            case 203 -> attribute = new RotatingBelt(Constants.UP_LEFT, false, 2);
+            case 210 -> attribute = new RotatingBelt(Constants.RIGHT_UP, false, 2);
+            case 212 -> attribute = new RotatingBelt(Constants.RIGHT_DOWN, false, 2);
+            case 221 -> attribute = new RotatingBelt(Constants.DOWN_RIGHT, false, 2);
+            case 223 -> attribute = new RotatingBelt(Constants.DOWN_LEFT, false, 2);
+            case 232 -> attribute = new RotatingBelt(Constants.LEFT_DOWN, false, 2);
+            case 230 -> attribute = new RotatingBelt(Constants.LEFT_UP, false, 2);
 
-            case 205 -> attribute = new RotatingBelt(Utilities.UP_RIGHT, true, 2);
-            case 207 -> attribute = new RotatingBelt(Utilities.UP_LEFT, true, 2);
-            case 214 -> attribute = new RotatingBelt(Utilities.RIGHT_UP, true, 2);
-            case 216 -> attribute = new RotatingBelt(Utilities.RIGHT_DOWN, true, 2);
-            case 225 -> attribute = new RotatingBelt(Utilities.DOWN_RIGHT, true, 2);
-            case 227 -> attribute = new RotatingBelt(Utilities.DOWN_LEFT, true, 2);
-            case 236 -> attribute = new RotatingBelt(Utilities.LEFT_DOWN, true, 2);
-            case 234 -> attribute = new RotatingBelt(Utilities.LEFT_UP, true, 2);
+            case 205 -> attribute = new RotatingBelt(Constants.UP_RIGHT, true, 2);
+            case 207 -> attribute = new RotatingBelt(Constants.UP_LEFT, true, 2);
+            case 214 -> attribute = new RotatingBelt(Constants.RIGHT_UP, true, 2);
+            case 216 -> attribute = new RotatingBelt(Constants.RIGHT_DOWN, true, 2);
+            case 225 -> attribute = new RotatingBelt(Constants.DOWN_RIGHT, true, 2);
+            case 227 -> attribute = new RotatingBelt(Constants.DOWN_LEFT, true, 2);
+            case 236 -> attribute = new RotatingBelt(Constants.LEFT_DOWN, true, 2);
+            case 234 -> attribute = new RotatingBelt(Constants.LEFT_UP, true, 2);
 
             //ControlPoint
             case 31 -> attribute = new ControlPoint(1);
@@ -196,15 +196,15 @@ public class TileFactory {
             case 92 -> attribute = new Wall(Orientation.DOWN);
             case 93 -> attribute = new Wall(Orientation.LEFT);
 
-            case 901 -> attribute = new Wall(Utilities.UP_RIGHT);
-            case 910 -> attribute = new Wall(Utilities.RIGHT_DOWN);
-            case 923 -> attribute = new Wall(Utilities.DOWN_LEFT);
-            case 930 -> attribute = new Wall(Utilities.LEFT_UP);
+            case 901 -> attribute = new Wall(Constants.UP_RIGHT);
+            case 910 -> attribute = new Wall(Constants.RIGHT_DOWN);
+            case 923 -> attribute = new Wall(Constants.DOWN_LEFT);
+            case 930 -> attribute = new Wall(Constants.LEFT_UP);
 
-            case 902 -> attribute = new Wall(Utilities.UP_DOWN);
-            case 920 -> attribute = new Wall(Utilities.DOWN_UP);
-            case 913 -> attribute = new Wall(Utilities.RIGHT_LEFT);
-            case 931 -> attribute = new Wall(Utilities.LEFT_RIGHT);
+            case 902 -> attribute = new Wall(Constants.UP_DOWN);
+            case 920 -> attribute = new Wall(Constants.DOWN_UP);
+            case 913 -> attribute = new Wall(Constants.RIGHT_LEFT);
+            case 931 -> attribute = new Wall(Constants.LEFT_RIGHT);
 
             default -> {
                 logger.error("ID " + attributeID + " could not be converted! " + attributeID + " is no known Tile.");

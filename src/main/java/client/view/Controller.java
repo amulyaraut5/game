@@ -46,8 +46,8 @@ public abstract class Controller {
     }
 
     public void setCountSpamCards(int countSpamCards) {
-        if ((countSpamCards < 0)) this.countSpamCards = 0;
-        else this.countSpamCards = countSpamCards;
+        if ((countSpamCards < 0)) Controller.countSpamCards = 0;
+        else Controller.countSpamCards = countSpamCards;
     }
 
     public int getCountTrojanCards() {
@@ -55,8 +55,8 @@ public abstract class Controller {
     }
 
     public void setCountTrojanCards(int countTrojanCards) {
-        if ((countTrojanCards < 0)) this.countTrojanCards = 0;
-        else this.countTrojanCards = countTrojanCards;
+        if ((countTrojanCards < 0)) Controller.countTrojanCards = 0;
+        else Controller.countTrojanCards = countTrojanCards;
     }
 
     public int getCountWormCards() {
@@ -64,8 +64,8 @@ public abstract class Controller {
     }
 
     public void setCountWormCards(int countWormCards) {
-        if ((countWormCards < 0)) this.countWormCards = 0;
-        else this.countWormCards = countWormCards;
+        if ((countWormCards < 0)) Controller.countWormCards = 0;
+        else Controller.countWormCards = countWormCards;
     }
 
     public int getCountVirusCards() {
@@ -73,8 +73,8 @@ public abstract class Controller {
     }
 
     public void setCountVirusCards(int countVirusCards) {
-        if ((countVirusCards < 0)) this.countVirusCards = 0;
-        else this.countVirusCards = countVirusCards;
+        if ((countVirusCards < 0)) Controller.countVirusCards = 0;
+        else Controller.countVirusCards = countVirusCards;
     }
 
     public void handleDamageCount(CardType cardType) {

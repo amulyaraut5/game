@@ -26,8 +26,8 @@ public class Coordinate {
      * @return Coordinate of the given position.
      */
     public static Coordinate parse(int position) {
-        int x = position % Utilities.MAP_WIDTH;
-        int y = position / Utilities.MAP_WIDTH;
+        int x = position % Constants.MAP_WIDTH;
+        int y = position / Constants.MAP_WIDTH;
         return new Coordinate(x, y);
     }
 
@@ -37,7 +37,7 @@ public class Coordinate {
      * @return position on the map.
      */
     public int toPosition() {
-        return x + y * Utilities.MAP_WIDTH;
+        return x + y * Constants.MAP_WIDTH;
     }
 
     public void add(Coordinate c) {
@@ -113,9 +113,9 @@ public class Coordinate {
     }
 
     public boolean isOutsideMap() {
-        return (getX() > Utilities.MAP_WIDTH - 1 ||
+        return (getX() > Constants.MAP_WIDTH - 1 ||
                 getX() < 0) ||
-                (getY() > Utilities.MAP_HEIGHT - 1 ||
+                (getY() > Constants.MAP_HEIGHT - 1 ||
                         getY() < 0);
     }
 }

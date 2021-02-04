@@ -6,7 +6,7 @@ import game.gameObjects.cards.damage.Spam;
 
 import java.util.ArrayList;
 
-import static utilities.Utilities.SPAM_CARDCOUNT;
+import static utilities.Constants.SPAM_CARDCOUNT;
 
 /**
  * @author annika

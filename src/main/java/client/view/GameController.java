@@ -62,7 +62,7 @@ public class GameController extends Controller implements Updatable {
     private int interval;
     private int currentRound = 1;
     private boolean first = true;
-    private ArrayList<MessageType> currentAction = new ArrayList<>();
+    private final ArrayList<MessageType> currentAction = new ArrayList<>();
     private boolean isMuted = true;
 
     @FXML

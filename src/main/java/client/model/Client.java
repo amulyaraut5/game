@@ -14,13 +14,13 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import static utilities.Utilities.PORT;
+import static utilities.Constants.PORT;
 
 public abstract class Client {
     protected static final Logger logger = LogManager.getLogger();
     protected final ArrayList<Player> players = new ArrayList<>();
     protected int thisPlayersID;
-    private boolean isAI = false;
+    private final boolean isAI = false;
     private Socket socket;
     private ReaderThread readerThread;
 

@@ -9,7 +9,7 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
-import utilities.Utilities;
+import utilities.Constants;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
@@ -70,7 +70,7 @@ public class AIClient extends Client {
             case TimerStarted, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
                 //TODO nothing
             }
-            case HelloClient -> sendMessage(new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", true));
+            case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();

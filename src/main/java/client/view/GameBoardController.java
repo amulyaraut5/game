@@ -27,7 +27,7 @@ import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.MapConverter;
-import utilities.Utilities;
+import utilities.Constants;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -40,7 +40,7 @@ import java.util.List;
 import static javafx.scene.input.MouseEvent.*;
 
 public class GameBoardController extends Controller {
-    private final Group[][] fields = new Group[Utilities.MAP_WIDTH][Utilities.MAP_HEIGHT];
+    private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
     private final ArrayList<Coordinate> path = new ArrayList<>();
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
@@ -67,8 +67,8 @@ public class GameBoardController extends Controller {
             labelCoordinate.setText("");
         });
         boardPane.addEventHandler(MOUSE_MOVED, mouseEvent -> {
-            int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
-            int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
+            int x = (int) mouseEvent.getX() / Constants.FIELD_SIZE;
+            int y = (int) mouseEvent.getY() / Constants.FIELD_SIZE;
             int position = new Coordinate(x, y).toPosition();
             labelPosition.setText(position + ":");
             labelCoordinate.setText(new Coordinate(x, y).toString());
@@ -76,8 +76,8 @@ public class GameBoardController extends Controller {
     }
 
     private void onMapClicked(MouseEvent mouseEvent) {
-        int x = (int) mouseEvent.getX() / Utilities.FIELD_SIZE;
-        int y = (int) mouseEvent.getY() / Utilities.FIELD_SIZE;
+        int x = (int) mouseEvent.getX() / Constants.FIELD_SIZE;
+        int y = (int) mouseEvent.getY() / Constants.FIELD_SIZE;
         int position = new Coordinate(x, y).toPosition();
 
         if (!isStartPosSet) {
@@ -89,8 +89,8 @@ public class GameBoardController extends Controller {
 
     public void buildMap(GameStarted gameStarted) {
         map = MapConverter.reconvert(gameStarted);
-        int xMax = Utilities.MAP_WIDTH;
-        int yMax = Utilities.MAP_HEIGHT;
+        int xMax = Constants.MAP_WIDTH;
+        int yMax = Constants.MAP_HEIGHT;
 
         for (int y = 0; y < yMax; y++) {
             for (int x = 0; x < xMax; x++) {
@@ -163,13 +163,13 @@ public class GameBoardController extends Controller {
         player.getRobot().setCoordinate(coordinate);
         ImageView imageView = player.getRobot().drawRobotImage();
 
-        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+        imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Constants.MAP_WIDTH));
+        imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Constants.MAP_HEIGHT));
         imageView.setPreserveRatio(true);
 
         robotPane.getChildren().add(imageView);
-        imageView.setX(coordinate.getX() * Utilities.FIELD_SIZE);
-        imageView.setY(coordinate.getY() * Utilities.FIELD_SIZE);
+        imageView.setX(coordinate.getX() * Constants.FIELD_SIZE);
+        imageView.setY(coordinate.getY() * Constants.FIELD_SIZE);
 
         // Stores the imageView of to change its coordinates later.
         robotTokens.put(player, imageView);
@@ -188,17 +188,17 @@ public class GameBoardController extends Controller {
         Coordinate oldPos = player.getRobot().getCoordinate();
         player.getRobot().setCoordinate(newPos);
 
-        imageView.setX(oldPos.getX() * Utilities.FIELD_SIZE);
-        imageView.setY(oldPos.getY() * Utilities.FIELD_SIZE);
+        imageView.setX(oldPos.getX() * Constants.FIELD_SIZE);
+        imageView.setY(oldPos.getY() * Constants.FIELD_SIZE);
 
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(1));
         transition.setNode(imageView);
-        transition.setToX((newPos.getX() - oldPos.getX()) * Utilities.FIELD_SIZE);
-        transition.setToY((newPos.getY() - oldPos.getY()) * Utilities.FIELD_SIZE);
+        transition.setToX((newPos.getX() - oldPos.getX()) * Constants.FIELD_SIZE);
+        transition.setToY((newPos.getY() - oldPos.getY()) * Constants.FIELD_SIZE);
         transition.setOnFinished(event -> {
-            imageView.setX((oldPos.getX() * Utilities.FIELD_SIZE) + imageView.getTranslateX());
-            imageView.setY((oldPos.getY() * Utilities.FIELD_SIZE) + imageView.getTranslateY());
+            imageView.setX((oldPos.getX() * Constants.FIELD_SIZE) + imageView.getTranslateX());
+            imageView.setY((oldPos.getY() * Constants.FIELD_SIZE) + imageView.getTranslateY());
             imageView.setTranslateX(0);
             imageView.setTranslateY(0);
         });
@@ -254,8 +254,8 @@ public class GameBoardController extends Controller {
         for (Coordinate c : map.readLaserCoordinates()) {
             for (Attribute a : map.getTile(c).getAttributes()) {
                 ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/laser/animation/laserBeam_1.png").toExternalForm()));
-                imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-                imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+                imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Constants.MAP_WIDTH));
+                imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Constants.MAP_HEIGHT));
                 imageView.setPreserveRatio(true);
 
                 if (a.getType() == AttributeType.Laser) {
@@ -266,14 +266,14 @@ public class GameBoardController extends Controller {
 
                     animationPane.getChildren().add(imageView);
                     Coordinate newPos = LaserAction.calculateLaserEnd(c, orientation, map, players);
-                    imageView.setX(c.getX() * Utilities.FIELD_SIZE);
-                    imageView.setY(c.getY() * Utilities.FIELD_SIZE);
+                    imageView.setX(c.getX() * Constants.FIELD_SIZE);
+                    imageView.setY(c.getY() * Constants.FIELD_SIZE);
 
                     TranslateTransition transition = new TranslateTransition();
                     transition.setDuration(Duration.seconds(2));
                     transition.setNode(imageView);
-                    transition.setToX((newPos.getX() - c.getX()) * Utilities.FIELD_SIZE);
-                    transition.setToY((newPos.getY() - c.getY()) * Utilities.FIELD_SIZE);
+                    transition.setToX((newPos.getX() - c.getX()) * Constants.FIELD_SIZE);
+                    transition.setToY((newPos.getY() - c.getY()) * Constants.FIELD_SIZE);
                     transition.setOnFinished(e -> animationPane.getChildren().remove(imageView));
 
                     FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);
@@ -304,8 +304,8 @@ public class GameBoardController extends Controller {
             Coordinate robotPosition = player.getRobot().getCoordinate();
 
             ImageView imageView = new ImageView(new Image(getClass().getResource("/tiles/laser/animation/laserBeam_1.png").toExternalForm()));
-            imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Utilities.MAP_WIDTH));
-            imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Utilities.MAP_HEIGHT));
+            imageView.fitWidthProperty().bind(boardPane.widthProperty().divide(Constants.MAP_WIDTH));
+            imageView.fitHeightProperty().bind(boardPane.heightProperty().divide(Constants.MAP_HEIGHT));
             imageView.setPreserveRatio(true);
             animationPane.getChildren().add(imageView);
 
@@ -314,14 +314,14 @@ public class GameBoardController extends Controller {
             }
 
             Coordinate newPos = LaserAction.calculateLaserEnd(robotPosition, orientation, map, players);
-            imageView.setX(robotPosition.getX() * Utilities.FIELD_SIZE);
-            imageView.setY(robotPosition.getY() * Utilities.FIELD_SIZE);
+            imageView.setX(robotPosition.getX() * Constants.FIELD_SIZE);
+            imageView.setY(robotPosition.getY() * Constants.FIELD_SIZE);
 
             TranslateTransition transition = new TranslateTransition();
             transition.setDuration(Duration.seconds(2));
             transition.setNode(imageView);
-            transition.setToX((newPos.getX() - robotPosition.getX()) * Utilities.FIELD_SIZE);
-            transition.setToY((newPos.getY() - robotPosition.getY()) * Utilities.FIELD_SIZE);
+            transition.setToX((newPos.getX() - robotPosition.getX()) * Constants.FIELD_SIZE);
+            transition.setToY((newPos.getY() - robotPosition.getY()) * Constants.FIELD_SIZE);
             transition.setOnFinished(e -> animationPane.getChildren().remove(imageView));
 
             FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), imageView);

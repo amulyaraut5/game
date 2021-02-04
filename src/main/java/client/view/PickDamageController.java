@@ -73,23 +73,19 @@ public class PickDamageController extends Controller{
         switch (cardType){
             case Spam->{
                 spamCardButton.setText(String.valueOf(countSpam));
-                if ((countSpam == 0)) spamCardButton.setDisable(true);
-                else spamCardButton.setDisable(false);
+                spamCardButton.setDisable(countSpam == 0);
             }
             case Trojan -> {
                 trojanCardButton.setText(String.valueOf(countTrojan));
-                if (countTrojan == 0) trojanCardButton.setDisable(true);
-                else trojanCardButton.setDisable(false);
+                trojanCardButton.setDisable(countTrojan == 0);
             }
             case Virus -> {
                 virusCardButton.setText(String.valueOf(countVirus));
-                if (countVirus == 0) virusCardButton.setDisable(true);
-                else  virusCardButton.setDisable(false);
+                virusCardButton.setDisable(countVirus == 0);
             }
             case Worm -> {
                 wormCardButton.setText(String.valueOf(countWorm));
-                if (countWorm == 0) wormCardButton.setDisable(true);
-                else wormCardButton.setDisable(false);
+                wormCardButton.setDisable(countWorm == 0);
             }
         }
     }

@@ -6,7 +6,7 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.HelloClient;
-import utilities.Utilities;
+import utilities.Constants;
 
 import java.io.*;
 import java.net.Socket;
@@ -50,7 +50,7 @@ public class UserThread extends Thread {
     @Override
     public void run() {
         try {
-            sendMessage(new HelloClient(Utilities.PROTOCOL));
+            sendMessage(new HelloClient(Constants.PROTOCOL));
 
             while (!exit) {
                 String jsonText = reader.readLine();

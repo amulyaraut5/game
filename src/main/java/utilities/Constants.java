@@ -2,7 +2,7 @@ package utilities;
 
 import utilities.enums.Orientation;
 
-public abstract class Utilities {
+public abstract class Constants {
 
     //Connection
     public static final int PORT = 5570;

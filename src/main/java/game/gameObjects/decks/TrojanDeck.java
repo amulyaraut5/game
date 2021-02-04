@@ -6,7 +6,7 @@ import game.gameObjects.cards.damage.Trojan;
 
 import java.util.ArrayList;
 
-import static utilities.Utilities.TROJANHORSE_CARDCOUNT;
+import static utilities.Constants.TROJANHORSE_CARDCOUNT;
 
 /**
  * @author annika

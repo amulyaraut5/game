@@ -23,7 +23,7 @@ import utilities.JSONProtocol.body.GameWon;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
-import utilities.Utilities;
+import utilities.Constants;
 import utilities.enums.GameState;
 import utilities.enums.Orientation;
 
@@ -149,7 +149,7 @@ public class Game {
 
         if (cheat.equals("#cheats")) {
             if (cheatInfo.length == 0) {
-                user.message(new ReceivedChat(Utilities.CHEAT_LIST, user.getID(), false));
+                user.message(new ReceivedChat(Constants.CHEAT_LIST, user.getID(), false));
             } else {
                 if (cheatInfo[0].equals("on") && !player.isUsingCheats()) {
                     player.setUsingCheats(true);

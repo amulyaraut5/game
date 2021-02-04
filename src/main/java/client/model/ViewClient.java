@@ -7,7 +7,7 @@ import javafx.application.Platform;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 import utilities.Updatable;
-import utilities.Utilities;
+import utilities.Constants;
 import utilities.enums.MessageType;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class ViewClient extends Client {
 
         Platform.runLater(() -> {
             switch (type) {
-                case HelloClient -> sendMessage(new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", false));
+                case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", false));
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
                     thisPlayersID = wc.getPlayerID();
