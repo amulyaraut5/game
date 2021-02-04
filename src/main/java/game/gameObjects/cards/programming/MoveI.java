@@ -14,6 +14,5 @@ public class MoveI extends Card {
     @Override
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/MoveI-card.png");
-
     }
 }

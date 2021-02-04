@@ -33,7 +33,7 @@ public class OthersController extends Controller {
     }
 
     /**
-     * This method creates for every player except player itseelf a little playermat
+     * This method creates for every player except player itself a little playermat
      *
      * @param players
      */
@@ -139,6 +139,18 @@ public class OthersController extends Controller {
         getOtherPlayerController(checkpointReached.getPlayerID()).addCheckPoint(checkpointReached.getNumber());
     }
 
+
+    public void setRebootLabel(Reboot reboot, boolean thisPlayer) {
+        getOtherPlayerController(reboot.getPlayerID()).setInfoLabel2("rebooted and got spam!");
+    }
+
+    public void setTooSlowLabel(TimerEnded timerEnded) {
+        for(int playerID : timerEnded.getPlayerIDs()){
+            getOtherPlayerController(playerID).setInfoLabel2("programmed too slowly!");
+        }
+    }
+
+
     /**
      * @param currentPlayer
      * @param thisPlayer
@@ -149,7 +161,7 @@ public class OthersController extends Controller {
         else {
             for (OtherPlayer otherPlayer : otherPlayers) {
                 if (otherPlayer.getPlayer().getID() == currentPlayer.getPlayerID()) {
-                    getOtherPlayerController(otherPlayer.getPlayer().getID()).setInfoLabel("It's this players turn");
+                    getOtherPlayerController(otherPlayer.getPlayer().getID()).setInfoLabel("It's this players turn:");
                 } else {
                     getOtherPlayerController(otherPlayer.getPlayer().getID()).setInfoLabel(" ");
                 }
@@ -161,7 +173,7 @@ public class OthersController extends Controller {
      * @param notYourCards
      */
     public void setNotYourCards(NotYourCards notYourCards) {
-        getOtherPlayerController(notYourCards.getPlayerID()).setInfoLabel(notYourCards.getCards() + " programming cards");
+        getOtherPlayerController(notYourCards.getPlayerID()).setInfoLabel(notYourCards.getCards() + " programming cards.");
     }
 
     private static class OtherPlayer {
