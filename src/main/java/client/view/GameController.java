@@ -63,6 +63,8 @@ public class GameController extends Controller implements Updatable {
     private int interval;
     private int currentRound = 1;
     private boolean first = true;
+    private ArrayList<MessageType> currentAction = new ArrayList<>();
+    private boolean isMuted = true;
 
     @FXML
     private HBox otherPlayerSpace;
@@ -215,7 +217,6 @@ public class GameController extends Controller implements Updatable {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
     }
-    private ArrayList<MessageType> currentAction = new ArrayList<>();
 
     @Override
     public void update(JSONMessage message) {
@@ -351,7 +352,7 @@ public class GameController extends Controller implements Updatable {
 
                     constructionController.currentPlayer(isThisPlayer);
                 } else if (currentPhase == GameState.ACTIVATION) {
-                    if(!isThisPlayer) {
+                    if (!isThisPlayer) {
                         activationController.getPlayCardController().setDisplayAction(currentAction);
                     }
                     currentAction.clear();
@@ -414,10 +415,20 @@ public class GameController extends Controller implements Updatable {
             case D -> orientation = "r";
             case S -> orientation = "d";
             case A -> orientation = "l";
+            case M -> {
+                if (isMuted) {
+                    isMuted = false;
+                    soundHandler.musicOn();
+                } else {
+                    isMuted = true;
+                    soundHandler.musicOff();
+                }
+            }
         }
-        client.sendMessage(new SendChat("#r " + orientation, -1));
+        if (!orientation.equals("")) {
+            client.sendMessage(new SendChat("#r " + orientation, -1));
+        }
     }
-
 
     public void removePlayer(Player player) {
         gameBoardController.removePlayer(player);
@@ -437,6 +448,4 @@ public class GameController extends Controller implements Updatable {
     public PlayerMatController getPlayerMatController() {
         return playerMatController;
     }
-
-
 }

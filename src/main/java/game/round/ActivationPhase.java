@@ -253,7 +253,6 @@ public class ActivationPhase extends Phase {
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
 
-                //logger.info(player.getName() + " played a spam card.");
                 //Play the top-card
                 handleCard(topCard.getName(), player);
             }
@@ -262,7 +261,6 @@ public class ActivationPhase extends Phase {
                 new RebootAction().doAction(player);
                 //Add worm card back into the worm deck
                 wormDeck.getDeck().add(new Worm());
-                //logger.info(player.getName() + " played a worm card.");
             }
             case Virus -> {
                 int robotX = robot.getCoordinate().getX();
@@ -280,7 +278,6 @@ public class ActivationPhase extends Phase {
                 virusDeck.addCard(new Virus());
                 //remove top card from programming deck
                 Card topCard = player.getDrawProgrammingDeck().pop();
-                //logger.info(player.getName() + " played a virus card.");
                 //Play the top-card
                 handleCard(topCard.getName(), player);
             }
@@ -289,7 +286,6 @@ public class ActivationPhase extends Phase {
                 //Draw two spam cards
                 drawDamage(spamDeck, player, 2);
                 Card topCard = player.getDrawProgrammingDeck().pop();
-                //logger.info(player.getName() + " played a trojan card.");
                 //Play the top-card
                 handleCard(topCard.getName(), player);
             }
