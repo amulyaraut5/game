@@ -10,7 +10,6 @@ import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.decks.*;
 import game.gameObjects.robot.Robot;
-import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.User;
@@ -214,7 +213,7 @@ public class ActivationPhase extends Phase {
     }
 
     public void moveOne(Player player, Orientation orientation) {
-        player.getRobot().move(1, orientation);
+        player.getRobot().move(orientation);
         handleTile(player);
     }
 
@@ -310,18 +309,11 @@ public class ActivationPhase extends Phase {
     }
 
     public void handleTile(Player player) {
-        if (player.getRobot().getCoordinate().isOutsideMap()) {
+        Coordinate robotPos = player.getRobot().getCoordinate();
+        if (robotPos.isOutsideMap() || map.getAttributeOn(AttributeType.Pit, robotPos) != null) {
             rebootedPlayers.add(player);
             activePlayers.remove(player);
             new RebootAction().doAction(player);
-        } else {
-            for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-                if (a.getType() == AttributeType.Pit) {
-                    rebootedPlayers.add(player);
-                    activePlayers.remove(player);
-                    new RebootAction().doAction(player);
-                }
-            }
         }
     }
 

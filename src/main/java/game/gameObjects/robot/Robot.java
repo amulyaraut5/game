@@ -57,17 +57,14 @@ public abstract class Robot {
     /**
      * Moves the robot in given direction. It is not checked if the move is allowed.
      * <pre>
-     * {@code move(3, UP)} moves the robot 3 fields up (i.e. y-3 ).
-     * {@code move(-1, LEFT)} moves the robot 1 field to the right (i.e. x+1 ).
+     * {@code move(UP)} moves the robot 1 field up (i.e. y-1 ).
+     * {@code move(LEFT)} moves the robot 1 field to the Left (i.e. x-1 ).
      * </pre>
      *
-     * @param moveCount Number of fields which the robot moves.
      * @param direction Direction of the movement
      */
-    public void move(int moveCount, Orientation direction) {
-        for (int i = 0; i < moveCount; i++) {
-            coordinate.add(direction.toVector());
-        }
+    public void move(Orientation direction) {
+        coordinate.add(direction.toVector());
         server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
     }
 

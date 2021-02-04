@@ -64,16 +64,6 @@ public class RotatingBelt extends Attribute {
         return imageView;
     }
 
-    /**
-     * This method checks if two robots converge at the same point or not.
-     *
-     * @return
-     */
-    private boolean collisionPointExist() {
-        //TODO
-        return false;
-    }
-
     public int getSpeed() {
         return speed;
     }

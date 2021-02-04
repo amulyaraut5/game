@@ -3,14 +3,17 @@ package game.round;
 import game.Game;
 import game.Player;
 import game.gameObjects.maps.Map;
+import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
+import utilities.JSONProtocol.body.CheckpointReached;
+import utilities.JSONProtocol.body.Energy;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.GameWon;
 import utilities.SoundHandler;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
@@ -277,7 +280,7 @@ public class BoardElements {
                             RotatingBelt temp = ((RotatingBelt) a);
 
                             if (temp.getOrientations()[0] != orientations.get(playersOnBelt.indexOf(p))) {
-                                rotateOnBelt(p, temp.getOrientations());
+                                rotateOnBelt(p.getRobot(), temp.getOrientations());
                             }
                         }
                     }
@@ -310,60 +313,8 @@ public class BoardElements {
         return newPosition;
     }
 
-    public void rotateOnBelt(Player player, Orientation[] orientations) {
-        switch (orientations[0]) {
-            case UP -> {
-                switch (orientations[1]) {
-                    case RIGHT -> {
-                        player.getRobot().rotate(Rotation.RIGHT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                    }
-
-                    case LEFT -> {
-                        player.getRobot().rotate(Rotation.LEFT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                    }
-                }
-            }
-            case RIGHT -> {
-                switch (orientations[1]) {
-                    case UP -> {
-                        player.getRobot().rotate(Rotation.LEFT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                    }
-
-                    case DOWN -> {
-                        player.getRobot().rotate(Rotation.RIGHT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                    }
-                }
-            }
-            case DOWN -> {
-                switch (orientations[1]) {
-                    case RIGHT -> {
-                        player.getRobot().rotate(Rotation.LEFT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                    }
-
-                    case LEFT -> {
-                        player.getRobot().rotate(Rotation.RIGHT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                    }
-                }
-            }
-            case LEFT -> {
-                switch (orientations[1]) {
-                    case UP -> {
-                        player.getRobot().rotate(Rotation.RIGHT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                    }
-
-                    case DOWN -> {
-                        player.getRobot().rotate(Rotation.LEFT);
-                        server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                    }
-                }
-            }
-        }
+    public void rotateOnBelt(Robot robot, Orientation[] o) {
+        if (o[0].getNext() == o[1]) robot.rotate(Rotation.RIGHT);
+        else if (o[0].getPrevious() == o[1]) robot.rotate(Rotation.LEFT);
     }
 }
