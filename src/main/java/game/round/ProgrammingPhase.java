@@ -25,10 +25,12 @@ import java.util.Random;
 public class ProgrammingPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
+
     /**
      * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
      */
     private final ArrayList<Player> notReadyPlayers = new ArrayList<>();
+
     private boolean timerFinished = false;
 
     /**
@@ -39,10 +41,7 @@ public class ProgrammingPhase extends Phase {
      */
     public ProgrammingPhase() {
         super();
-        /*for (Player player : playerList) {
-            logger.info("discard1" + player.getDiscardedProgrammingDeck().getDeck());
-            logger.info("draw1" + player.getDrawProgrammingDeck().getDeck());
-        }*/
+        logger.info("Programming Phase started");
 
         for (Player player : players) {
             notReadyPlayers.add(player);
@@ -95,6 +94,7 @@ public class ProgrammingPhase extends Phase {
 
         if (chosenCard != null) {
             //put the card in the register
+            logger.info(player.getID() + " has moved a card in his register");
             ArrayList<CardType> cardTypes = new ArrayList<>();
             for (Card card : player.getDrawnProgrammingCards()) {
                 cardTypes.add(card.getName());
@@ -104,9 +104,6 @@ public class ProgrammingPhase extends Phase {
             } else {
                 server.communicateDirect(new Error("This is not a valid card."), player.getID());
             }
-
-            //logger.info("drawn2" + player.getDrawnProgrammingCards());
-            //logger.info("register2" + player.getRegisterCards());
 
             //Here the card with the same cardType enum as the chosen card is removed from the hand cards
             CardType chosenCardType = chosenCard.getName();
@@ -120,25 +117,21 @@ public class ProgrammingPhase extends Phase {
                     break;
                 }
             }
-            //if a card was removed, remove the card from the register and put it in the hand cards
+
+        //if a card was removed, remove the card from the register and put it in the hand cards
         } else {
+            logger.info(player.getID() + " has moved a card out of his register");
             Card removeCard = player.getRegisterCard(selectCard.getRegister());
             player.getDrawnProgrammingCards().add(removeCard);
             player.setRegisterCards(selectCard.getRegister(), null);
         }
 
-        //logger.info("drawn3" + player.getDrawnProgrammingCards());
-        //logger.info("register3" + player.getRegisterCards());
-        //logger.info("discard3" + player.getDiscardedProgrammingDeck().getDeck());
-
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
         if (!player.getRegisterCards().contains(null)) {
+            logger.info(player.getID() + " has filled all of his registers");
             notReadyPlayers.remove(player);
             server.communicateAll(new SelectionFinished(player.getID()));
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
-
-            //logger.info("discard4" + player.getDiscardedProgrammingDeck().getDeck());
-            //logger.info("draw4" + player.getDrawProgrammingDeck().getDeck());
 
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == players.size() - 1) {
@@ -148,7 +141,6 @@ public class ProgrammingPhase extends Phase {
                 endProgrammingTimer();
             }
         }
-        //TODO if a player doesn't play this round use isFinished?
     }
 
     /**
@@ -165,10 +157,7 @@ public class ProgrammingPhase extends Phase {
      * If some players still haven't filled their registers the dealRandomCard() method is called.
      */
     public void endProgrammingTimer() {
-        /*for (Player player : playerList) {
-            logger.info("discard5" + player.getDiscardedProgrammingDeck().getDeck());
-            logger.info("draw5" + player.getDrawProgrammingDeck().getDeck());
-        }*/
+        logger.info("The timer has stopped");
         if (!(timerFinished)) {
             timerFinished = true;
             ArrayList<Integer> playerIDs = new ArrayList<>();
@@ -189,13 +178,9 @@ public class ProgrammingPhase extends Phase {
      */
     private void dealRandomCards() {
 
-       /*for (Player player : playerList) {
-            logger.info("discard6" + player.getDiscardedProgrammingDeck().getDeck());
-            logger.info("draw6" + player.getDrawProgrammingDeck().getDeck());
-        }*/
-
         //this method is only handled for players who didn't manage to put their cards down in time
         for (Player player : notReadyPlayers) {
+            logger.info(player.getID() + " didn't finish in time");
 
             //Take all cards from the register and discard them to have an empty register
             ArrayList<Card> tempCards = new ArrayList<>();
@@ -222,11 +207,6 @@ public class ProgrammingPhase extends Phase {
             }
             player.message(new CardsYouGotNow(cardNames));
         }
-
-        /*for (Player player : playerList) {
-            logger.info("discard7" + player.getDiscardedProgrammingDeck().getDeck());
-            logger.info("draw7" + player.getDrawProgrammingDeck().getDeck());
-        }*/
     }
 
     /**
@@ -237,6 +217,7 @@ public class ProgrammingPhase extends Phase {
      */
 
     private void fillRegisters(Player player) {
+        logger.info(player.getID() + " has to fill his register randomly");
         Random random = new Random();
         for (int register = 1; register < 6; register++) {
             ArrayList<Card> availableCards = player.getDrawnProgrammingCards();

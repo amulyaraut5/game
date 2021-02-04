@@ -202,12 +202,13 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
+        /*
         for (Player p : playersOnBelt) {
             if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
             }
         }
+         */
     }
 
     public void activateGreenBelts() {
@@ -236,12 +237,13 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-
+        /*
         for (Player p : playersOnBelt) {
             if (!(p.getRobot().getCoordinate() == oldPositions.get(playersOnBelt.indexOf(p)))) {
                 activationPhase.handleTile(p);
             }
         }
+         */
     }
 
     public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished,
@@ -274,6 +276,27 @@ public class BoardElements {
             }
             if (!actionFinished.contains(false))  finished = true;
         }
+        for (Player p : playersOnBelt) {
+            if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
+
+                //Eventually rotate player if he was moved onto a rotating belt.
+                if(!p.getRobot().getCoordinate().isOutsideMap()){
+                    for (Attribute a : map.getTile(p.getRobot().getCoordinate()).getAttributes()) {
+                        if(a.getType() == AttributeType.RotatingBelt){
+                            RotatingBelt temp = ((RotatingBelt) a);
+
+
+                            if(temp.getOrientations()[0] != orientations.get(playersOnBelt.indexOf(p))){
+                                rotateOnBelt(p, temp.getOrientations());
+                            }
+
+                        }
+                    }
+                }
+
+                activationPhase.handleTile(p);
+            }
+        }
     }
 
     public Coordinate calculateNew(Player player, Orientation o) {
@@ -296,5 +319,46 @@ public class BoardElements {
         }
 
         return newPosition;
+    }
+
+    public void rotateOnBelt(Player player, Orientation[] orientations){
+        switch (orientations[0]){
+            case UP -> {
+                switch (orientations[1]){
+                    case RIGHT -> {player.getRobot().rotate(Rotation.RIGHT);
+                                   server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+
+                    case LEFT -> {player.getRobot().rotate(Rotation.LEFT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));}
+                }
+            }
+            case RIGHT -> {
+                switch (orientations[1]){
+                    case UP -> {player.getRobot().rotate(Rotation.LEFT);
+                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT)); }
+
+                    case DOWN -> {player.getRobot().rotate(Rotation.RIGHT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+                }
+            }
+            case DOWN -> {
+                switch (orientations[1]){
+                    case RIGHT -> {player.getRobot().rotate(Rotation.LEFT);
+                                   server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));}
+
+                    case LEFT -> {player.getRobot().rotate(Rotation.RIGHT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+                }
+            }
+            case LEFT -> {
+                switch (orientations[1]){
+                    case UP -> {player.getRobot().rotate(Rotation.RIGHT);
+                                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));}
+
+                    case DOWN -> {player.getRobot().rotate(Rotation.LEFT);
+                                  server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));}
+                }
+            }
+        }
     }
 }
