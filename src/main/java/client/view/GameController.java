@@ -183,6 +183,7 @@ public class GameController extends Controller implements Updatable {
                 othersController.visibleHBoxRegister(true);
             }
             case ACTIVATION -> {
+                currentAction.clear();
                 programmingController.reset();
                 phasePane.setCenter(activationPane);
                 othersController.visibleHBoxRegister(false);
@@ -211,6 +212,7 @@ public class GameController extends Controller implements Updatable {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
     }
+    private ArrayList<MessageType> currentAction = new ArrayList<>();
 
     @Override
     public void update(JSONMessage message) {
@@ -253,10 +255,16 @@ public class GameController extends Controller implements Updatable {
             }
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
+                currentAction.add(message.getType());
+                System.out.println("add " + message.getType());
+
                 gameBoardController.handleMovement(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
             }
             case PlayerTurning -> {
                 PlayerTurning pT = (PlayerTurning) message.getBody();
+                currentAction.add(message.getType());
+                System.out.println("add " + message.getType());
+
                 gameBoardController.handlePlayerTurning(client.getPlayerFromID(pT.getPlayerID()), pT.getDirection());
             }
             case CardSelected -> {
@@ -338,8 +346,14 @@ public class GameController extends Controller implements Updatable {
                 boolean isThisPlayer = currentPlayer.getPlayerID() == client.getThisPlayersID();
 
                 if (currentPhase == GameState.CONSTRUCTION) {
+
                     constructionController.currentPlayer(isThisPlayer);
                 } else if (currentPhase == GameState.ACTIVATION) {
+                    if(!isThisPlayer) {
+                        System.out.println(currentAction);
+                        activationController.setDisplayAction(currentAction);
+                    }
+                    else currentAction.clear();
                     activationController.currentPlayer(isThisPlayer);
                     othersController.setInfoLabel(currentPlayer, isThisPlayer);
                 }
@@ -348,6 +362,8 @@ public class GameController extends Controller implements Updatable {
                 Energy energy = (Energy) message.getBody();
                 if (energy.getPlayerID() == client.getThisPlayersID()) {
                     playerMatController.addEnergy(energy.getCount());
+                    currentAction.add(message.getType());
+                    System.out.println("add " + message.getType());
                 } else {
                     othersController.addEnergy(energy);
                 }
