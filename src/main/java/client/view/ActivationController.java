@@ -13,6 +13,7 @@ import utilities.JSONProtocol.body.PickDamage;
 import utilities.JSONProtocol.body.PlayIt;
 import utilities.JSONProtocol.body.SelectDamage;
 import utilities.enums.CardType;
+import utilities.enums.MessageType;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public class ActivationController extends Controller {
     private Button wormCardButton;
     @FXML
     private Label damageInfoLabel;
+    public Label displayAction;
 
     /**
      * This method resets the class and gets called at the start of activationPhase
@@ -66,6 +68,15 @@ public class ActivationController extends Controller {
         playItButton.setDisable(true);
     }
 
+
+    public void setDisplayAction(ArrayList<MessageType> currentAction){
+        String text = " ";
+        for (MessageType message : currentAction){
+            text += message;
+            text += " ";
+        }
+        displayAction.setText(text);
+    }
     /**
      * This method gets called by getting protocol currentCards and displays current card of player
      * it also increases register number for view
