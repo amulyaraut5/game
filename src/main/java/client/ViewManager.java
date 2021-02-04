@@ -1,6 +1,6 @@
 package client;
 
-import client.model.Client;
+import client.model.ViewClient;
 import client.view.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -60,6 +60,7 @@ public class ViewManager {
                 openMenuStage();
             } catch (IOException e) {
                 logger.error("Constructing Scenes failed: " + e.getMessage());
+                e.printStackTrace();
             }
         });
     }
@@ -70,41 +71,39 @@ public class ViewManager {
     }
 
     public void showMenu() {
-        Client.getInstance().setCurrentController(menuController);
+        ViewClient.getInstance().setCurrentController(menuController);
         menuStage.setScene(menuScene);
         if (currentScene == gameScene) openMenuStage();
         currentScene = menuScene;
     }
 
     public void showLogin() {
-        Client.getInstance().setCurrentController(loginController);
+        ViewClient.getInstance().setCurrentController(loginController);
         menuStage.setScene(loginScene);
         if (currentScene == gameScene) openMenuStage();
         currentScene = loginScene;
     }
 
     public void showLobby() {
-        Client.getInstance().setCurrentController(lobbyController);
+        ViewClient.getInstance().setCurrentController(lobbyController);
         lobbyController.attachChatPane(chatPane);
         menuStage.setScene(lobbyScene);
         if (currentScene == gameScene) openMenuStage();
         currentScene = lobbyScene;
     }
 
-    public void showMap(){
-        Client.getInstance().setCurrentController(mapSelectionController);
+    public void showMap() {
+        ViewClient.getInstance().setCurrentController(mapSelectionController);
         menuStage.setScene(mapScene);
         if (currentScene == gameScene) openMenuStage();
         currentScene = mapScene;
     }
 
     public void showGame() {
-        Client.getInstance().setCurrentController(gameController);
+        ViewClient.getInstance().setCurrentController(gameController);
         openGameStage();
         currentScene = gameScene;
     }
-
-
 
     public void closeGame() {
         gameStage.close();
@@ -135,7 +134,7 @@ public class ViewManager {
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
-            if (currentScene != menuScene) Client.getInstance().disconnect();
+            if (currentScene != menuScene) ViewClient.getInstance().disconnect();
         });
     }
 
@@ -147,7 +146,7 @@ public class ViewManager {
         gameScene.setOnKeyPressed(event -> gameController.keyPressed(event));
 
         gameStage.setOnCloseRequest(event -> {
-            Client.getInstance().disconnect();
+            ViewClient.getInstance().disconnect();
             showMenu();
         });
     }
@@ -178,6 +177,6 @@ public class ViewManager {
         controllerList.add(gameController);
         controllerList.add(mapSelectionController);
 
-        Client.getInstance().setController(controllerList);
+        ViewClient.getInstance().setController(controllerList);
     }
 }

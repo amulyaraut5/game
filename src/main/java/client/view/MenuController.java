@@ -1,5 +1,7 @@
 package client.view;
 
+import ai.AIClient;
+import client.model.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -32,7 +34,7 @@ public class MenuController extends Controller implements Updatable {
             Server server = Server.getInstance();
             if (!server.isAlive()) server.start();
             else logger.warn("The server is already running.");
-            connect();
+            connect(client);
         }).start();
     }
 
@@ -42,17 +44,15 @@ public class MenuController extends Controller implements Updatable {
     @FXML
     public void joinGameClicked() {
         logger.info("Join Game Clicked.");
-        new Thread(this::connect).start();
-
+        new Thread(() -> connect(client)).start();
     }
 
     @FXML
     public void aiJoinClicked() {
-        client.createAI();
-        connect();
+        connect(new AIClient());
     }
 
-    private void connect() {
+    private void connect(Client client) {
         boolean connected = client.establishConnection();
         Platform.runLater(() -> {
             if (!connected) infoLabel.setText("The server is not reachable!");

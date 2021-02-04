@@ -4,8 +4,6 @@ import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
@@ -24,11 +22,7 @@ import java.util.*;
  *
  * @author simon
  */
-public class AIClient {
-    private static final Logger logger = LogManager.getLogger();
-    private final ArrayList<Player> players = new ArrayList<>();
-    private final Client client = Client.getInstance();
-    private int thisPlayersID;
+public class AIClient extends Client {
     private Map map;
     private GameState currentPhase = GameState.CONSTRUCTION;
 
@@ -76,7 +70,7 @@ public class AIClient {
             case TimerStarted, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
                 //TODO nothing
             }
-            case HelloClient -> client.sendMessage(new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", true));
+            case HelloClient -> sendMessage(new HelloServer(Utilities.PROTOCOL, "Astreine Akazien", true));
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
@@ -96,7 +90,7 @@ public class AIClient {
                 Player player = new Player(playerAdded);
                 players.add(player);
                 if (player.getID() == thisPlayersID) {
-                    client.sendMessage(new SetStatus(true));
+                    sendMessage(new SetStatus(true));
                 }
             }
             case Error -> {
@@ -179,10 +173,10 @@ public class AIClient {
                     if (currentPhase == GameState.CONSTRUCTION) {
                         int[] startingPoints = {39, 78, 14, 53, 66, 105};
                         for (int point : startingPoints) {
-                            client.sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
+                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
                         }
                     } else if (currentPhase == GameState.ACTIVATION) {
-                        client.sendMessage(new PlayIt());
+                        sendMessage(new PlayIt());
                     }
                 }
             }
@@ -212,7 +206,7 @@ public class AIClient {
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
         for (int i = 0; i < 5; i++) {
-            client.sendMessage(new SelectCard(bestCombination[i], i + 1));
+            sendMessage(new SelectCard(bestCombination[i], i + 1));
         }
         //HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
     }
@@ -242,19 +236,6 @@ public class AIClient {
         return x + y;
     }
 
-    /**
-     * Gets a player based on their ID from the list of players saved in {@link Client}.
-     *
-     * @param id ID of the wanted player.
-     * @return Unique player with the ID, {@code null} if no player with the ID exists.
-     */
-    public Player getPlayerFromID(int id) {
-        for (Player player : players) {
-            if (player.getID() == id) return player;
-        }
-        return null;
-    }
-
     public void choosePlayerValues() {
 
         List<Integer> a = new ArrayList<>();
@@ -272,7 +253,7 @@ public class AIClient {
 
         if (b.size() > 0) {
             String name = b.get(0) + "_AI";
-            client.sendMessage(new PlayerValues(name, b.get(0)));
+            sendMessage(new PlayerValues(name, b.get(0)));
         }
     }
 

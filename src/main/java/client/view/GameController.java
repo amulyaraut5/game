@@ -40,7 +40,6 @@ import static utilities.enums.CardType.*;
 public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
-    private final ArrayList<Player> players = client.getPlayers();
     private final ArrayList<Player> activePlayers = new ArrayList<>();
 
     private PlayerMatController playerMatController;
@@ -176,7 +175,7 @@ public class GameController extends Controller implements Updatable {
                 }
                 playerMatController.resetDeckCounter(9);
 
-                activePlayers.addAll(players);
+                activePlayers.addAll(client.getPlayers());
                 for (Player player : activePlayers) {
                     //logger.info("Inside GameState:" + player.getID());
                 }

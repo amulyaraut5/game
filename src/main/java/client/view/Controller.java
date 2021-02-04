@@ -1,7 +1,7 @@
 package client.view;
 
 import client.ViewManager;
-import client.model.Client;
+import client.model.ViewClient;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +29,7 @@ public abstract class Controller {
     private static int countVirusCards = 18;
 
     protected final ViewManager viewManager = ViewManager.getInstance();
-    protected final Client client = Client.getInstance();
+    protected final ViewClient client = ViewClient.getInstance();
     protected final String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
