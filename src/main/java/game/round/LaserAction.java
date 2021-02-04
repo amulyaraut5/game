@@ -124,7 +124,6 @@ public class LaserAction {
      * Only the first player standing in it's way gets affected.
      */
     public void activateBoardLaser(ArrayList<Player> activePlayers) {
-        //soundHandler.pitSound();
         for (Coordinate coordinate : map.readLaserCoordinates()) {
             determineLaserPaths(coordinate);
             // TODO Check whether the lasers affect two players
@@ -146,7 +145,6 @@ public class LaserAction {
      */
 
     public void activateRobotLaser(ArrayList<Player> activePlayers) {
-        //soundHandler.pitSound();
         for (Player player : activePlayers) {
             determineRobotLaserPath(player);
             outerLoop:
@@ -172,7 +170,6 @@ public class LaserAction {
         for (Attribute a : map.getTile(laserPos).getAttributes()) {
             if (a.getType() == AttributeType.Laser) {
                 Orientation orientation = ((Laser) a).getOrientation();
-
                 Coordinate to = calculateLaserEnd(laserPos, orientation, map, game.getPlayers());
                 laserCoordinates = determinePath(laserPos, to, orientation);
                 /*logger.debug("BoardLaser: from " + laserPos + " to " + to);
@@ -192,7 +189,6 @@ public class LaserAction {
     public void determineRobotLaserPath(Player player) {
         Coordinate robotPosition = player.getRobot().getCoordinate();
         Orientation orientation = player.getRobot().getOrientation();
-
         Coordinate to = calculateLaserEnd(robotPosition, orientation, map, game.getPlayers());
         robotCoordinates = determinePath(robotPosition, to, orientation);
         robotCoordinates.remove(0);

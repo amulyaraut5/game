@@ -12,9 +12,10 @@ import javafx.scene.media.MediaPlayer;
 public class SoundHandler{
 
     private MediaPlayer mediaPlayer;
+    private AudioClip audioClip;
 
-    public SoundHandler() {
-    }
+
+    public SoundHandler() { }
 
     /**
      * musicOn() plays  general soundtrack throughout the game
@@ -33,34 +34,23 @@ public class SoundHandler{
         mediaPlayer.stop();
     }
 
-    /**
-     * This method gets triggered during laserAction.
-     */
-    public void laserSound(){
 
-    }
-
-    /**
-     * This method gets triggered if the player falls in the pit.
-     */
-    public void pitSound(){
-        AudioClip audioClip = new AudioClip(getClass().getResource("/sounds/pitSound.wav").toExternalForm());
-        audioClip.play();
-    }
-
-    /**
-     * This method gets triggered if the player reaches any one of checkpoint..
-     */
-    public void checkPoint(){
-        AudioClip audioClip = new AudioClip(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
-        audioClip.play();
-    }
-
-    /**
-     * This method gets triggered if the player reaches final checkpoint..
-     */
-    public void victorySound(){
-        AudioClip audioClip = new AudioClip(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
-        audioClip.play();
+    public void playSoundEffects(String s, boolean play){
+        if(play){
+            switch(s){
+                case "PitSound" ->{
+                    audioClip = new AudioClip(getClass().getResource("/sounds/pit-scream.mp3").toExternalForm());
+                    audioClip.play();
+                }
+                case "CheckPoint" -> {
+                    audioClip = new AudioClip(getClass().getResource("/sounds/checkPoint.wav").toExternalForm());
+                    audioClip.play();
+                }
+                case "Laser" -> {
+                    audioClip = new AudioClip(getClass().getResource("/sounds/laser.mp3").toExternalForm());
+                    audioClip.play();
+                }
+            }
+        }
     }
 }

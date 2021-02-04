@@ -64,6 +64,7 @@ public class GameController extends Controller implements Updatable {
     private boolean first = true;
     private final ArrayList<MessageType> currentAction = new ArrayList<>();
     private boolean isMuted = true;
+    private boolean play = false;
 
     @FXML
     private HBox otherPlayerSpace;
@@ -285,6 +286,7 @@ public class GameController extends Controller implements Updatable {
                 if (activePlayers.isEmpty()) {
                     logger.info("No active players");
                 } else {
+                    soundHandler.playSoundEffects("Laser", play);
                     gameBoardController.handleShooting(activePlayers);
                     gameBoardController.handleRobotShooting(activePlayers);
                 }
@@ -292,14 +294,9 @@ public class GameController extends Controller implements Updatable {
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
                 Player player = client.getPlayerFromID(reboot.getPlayerID());
-                //rebootingPlayers.add(player);
                 activePlayers.remove(player);
-                for (Player player1 : activePlayers) {
-                    logger.info("Inside Reboot:" + player1.getID());
-                }
-                if (activePlayers.isEmpty()) {
-                    logger.info("empty");
-                }
+                soundHandler.playSoundEffects("PitSound", play);
+
                 boolean isThisPlayer = reboot.getPlayerID() == client.getThisPlayersID();
                 othersController.setRebootLabel(reboot, isThisPlayer);
             }
@@ -380,6 +377,7 @@ public class GameController extends Controller implements Updatable {
                 } else {
                     othersController.checkPointReached(checkpointsReached);
                 }
+                soundHandler.playSoundEffects("CheckPoint", play);
             }
             case ShuffleCoding -> {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
@@ -411,6 +409,7 @@ public class GameController extends Controller implements Updatable {
                 GameWon gameWon = (GameWon) message.getBody();
                 phasePane.setCenter(gameWonPane);
                 gameWonController.setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
+                soundHandler.playSoundEffects("CheckPoint", play);
             }
         }
     }
@@ -430,6 +429,10 @@ public class GameController extends Controller implements Updatable {
                     isMuted = true;
                     soundHandler.musicOff();
                 }
+            }
+            case P -> {
+                if (play) play = false;
+                else play = true;
             }
         }
         if (!orientation.equals("")) {

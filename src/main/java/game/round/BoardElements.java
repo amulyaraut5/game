@@ -11,6 +11,7 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.SoundHandler;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
  */
 public class BoardElements {
     private static final Logger logger = LogManager.getLogger();
+    private final SoundHandler soundHandler = new SoundHandler();
     private final Game game = Game.getInstance();
     private final ArrayList<Player> playerList = game.getPlayers();
     private final Map map = game.getMap();
