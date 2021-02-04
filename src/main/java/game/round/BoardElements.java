@@ -63,7 +63,7 @@ public class BoardElements {
                                     checkPoint++;
                                     player.setCheckPointCounter(checkPoint);
                                     player.message(new CheckpointReached(player.getID(), checkPointID));
-                                    player.message(new Error("Congratulations: You have reached CheckPoint " + checkPointID));
+                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint"));
                                 } else if (checkPointID == totalCheckPoints) {
                                     server.communicateAll(new GameWon(player.getID()));
                                     break outerLoop;
@@ -71,7 +71,7 @@ public class BoardElements {
                             } else if (player.getCheckPointCounter() > checkPointID) {
                                 player.message(new Error("CheckPoint Already Reached"));
                             } else {
-                                player.message(new Error("You need to go to CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
+                                player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
                             }
                         }
                     }
@@ -256,14 +256,14 @@ public class BoardElements {
                                 actionFinished.set(playersOnBelt.indexOf(player), true);
                             } else {
                                 if (actionFinished.get(playersOnBelt.indexOf(collisionPlayer))) {
-                                    collisionPlayer.getRobot().setCoordinate(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
+                                    collisionPlayer.getRobot().moveTo(oldPositions.get(playersOnBelt.indexOf(collisionPlayer)));
                                     actionFinished.set(playersOnBelt.indexOf(player), true);
                                 }
                             }
                         }
                     }
                     if (move) {
-                        player.getRobot().setCoordinate(newPos);
+                        player.getRobot().moveTo(newPos);
                         actionFinished.set(playersOnBelt.indexOf(player), true);
                     }
                 }
