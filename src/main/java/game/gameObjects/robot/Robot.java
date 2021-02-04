@@ -15,12 +15,12 @@ import utilities.enums.Rotation;
  * @author simon
  */
 public abstract class Robot {
-    private final Server server = Server.getInstance();
-    private final Player player;
-
     protected final String imagePath;
     protected final String name;
     protected final Color color;
+
+    private final Server server = Server.getInstance();
+    private final Player player;
 
     protected Orientation orientation = Orientation.RIGHT;
     protected Coordinate coordinate;
@@ -68,7 +68,7 @@ public abstract class Robot {
         for (int i = 0; i < moveCount; i++) {
             coordinate.add(direction.toVector());
         }
-        //server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
+        server.communicateAll(new Movement(player.getID(), coordinate.toPosition()));
     }
 
     public void moveTo(Coordinate pos) {
@@ -86,6 +86,7 @@ public abstract class Robot {
             case RIGHT -> orientation = orientation.getNext();
             case LEFT -> orientation = orientation.getPrevious();
         }
+        server.communicateAll(new PlayerTurning(player.getID(), rotation));
     }
 
     public void rotateTo(Orientation rotateTo) {
@@ -128,11 +129,11 @@ public abstract class Robot {
         coordinate = p;
     }
 
-    public Coordinate getStartingPoint(){
-        return this.startingPoint;
+    public Coordinate getStartingPoint() {
+        return startingPoint;
     }
 
-    public void setStartingPoint(Coordinate coordinate){
+    public void setStartingPoint(Coordinate coordinate) {
         this.startingPoint = coordinate;
     }
 }

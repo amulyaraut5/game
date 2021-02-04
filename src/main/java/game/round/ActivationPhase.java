@@ -105,7 +105,7 @@ public class ActivationPhase extends Phase {
             currentCards.remove(0);
 
             //if he was the last player to send the PlayIt() protocol for this register the board is activated
-            if(activePlayers.isEmpty()){
+            if (activePlayers.isEmpty()) {
                 activePlayers.addAll(rebootedPlayers);
                 rebootedPlayers.clear();
                 game.nextPhase();
@@ -124,15 +124,15 @@ public class ActivationPhase extends Phase {
     public void endOfRound() {
         activateBoard();
 
-       if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+        if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
             currentRegister++;
             turnCards(currentRegister);
-       }else { //if it is already the 5th register the next phase is called
-           if (rebootedPlayers != null) {
-               activePlayers.addAll(rebootedPlayers);
-               rebootedPlayers.clear();
-           }
-           game.nextPhase();
+        } else { //if it is already the 5th register the next phase is called
+            if (rebootedPlayers != null) {
+                activePlayers.addAll(rebootedPlayers);
+                rebootedPlayers.clear();
+            }
+            game.nextPhase();
         }
     }
 
@@ -219,54 +219,31 @@ public class ActivationPhase extends Phase {
     }
 
     public void handleCard(CardType cardType, Player player) {
-        Orientation orientation = player.getRobot().getOrientation();
+        Robot robot = player.getRobot();
+        Orientation orientation = robot.getOrientation();
 
         switch (cardType) {
-            case MoveI -> //logger.info(player.getName() + " moved one Tile.");
-                    handleMove(player, orientation);
+            case MoveI -> handleMove(player, orientation);
             case MoveII -> {
                 handleMove(player, orientation);
-                if(!isRebooting(player)){
-                    handleMove(player, orientation);
-                }
-                //logger.info(player.getName() + " moved two Tiles.");
+                if (!isRebooting(player)) handleMove(player, orientation);
             }
             case MoveIII -> {
                 handleMove(player, orientation);
-                if(!isRebooting(player)){
-                    handleMove(player, orientation);
-                }
-                if(!isRebooting(player)){
-                    handleMove(player, orientation);
-                }
-                //logger.info(player.getName() + " moved three Tiles.");
+                if (!isRebooting(player)) handleMove(player, orientation);
+                if (!isRebooting(player)) handleMove(player, orientation);
             }
-            case TurnLeft -> {
-                player.getRobot().rotate(Rotation.LEFT);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                //logger.info(player.getName() + " turned left.");
-            }
-            case TurnRight -> {
-                player.getRobot().rotate(Rotation.RIGHT);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.RIGHT));
-                //logger.info(player.getName() + " turned right.");
-            }
-            case UTurn -> {
-                player.getRobot().rotate(Rotation.LEFT);
-                player.getRobot().rotate(Rotation.LEFT);
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                server.communicateAll(new PlayerTurning(player.getID(), Rotation.LEFT));
-                //logger.info(player.getName() + " performed U-Turn");
-            }
-            case BackUp -> {
-                handleMove(player, player.getRobot().getOrientation().getOpposite());
-                server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
-                //logger.info(player.getName() + " moved back.");
-            }
+            case TurnLeft -> robot.rotate(Rotation.LEFT);
+
+            case TurnRight -> robot.rotate(Rotation.RIGHT);
+
+            case UTurn -> robot.rotateTo(orientation.getOpposite());
+
+            case BackUp -> handleMove(player, orientation.getOpposite());
+
             case PowerUp -> {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
                 server.communicateAll(new Energy(player.getID(), 1));
-                //logger.info(player.getName() + " got one EnergyCube.");
             }
             case Again -> handleRecursion(player, orientation);
 
@@ -288,8 +265,8 @@ public class ActivationPhase extends Phase {
                 //logger.info(player.getName() + " played a worm card.");
             }
             case Virus -> {
-                int robotX = player.getRobot().getCoordinate().getX();
-                int robotY = player.getRobot().getCoordinate().getY();
+                int robotX = robot.getCoordinate().getX();
+                int robotY = robot.getCoordinate().getY();
                 ArrayList<Player> allPlayers = players;
 
                 for (Player otherPlayer : allPlayers) {
@@ -347,9 +324,6 @@ public class ActivationPhase extends Phase {
                     rebootedPlayers.add(player);
                     activePlayers.remove(player);
                     new RebootAction().doAction(player);
-                } else {
-                    server.communicateAll(new Movement(player.getID(), player.getRobot().getCoordinate().toPosition()));
-
                 }
             }
         }
@@ -552,7 +526,7 @@ public class ActivationPhase extends Phase {
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
-    public boolean isRebooting(Player player){
+    public boolean isRebooting(Player player) {
         boolean isRebooting = false;
         for (Player p : rebootedPlayers) {
             if (player == p) {
