@@ -1,21 +1,30 @@
 package client.view;
 
 import game.Player;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import utilities.JSONProtocol.body.DrawDamage;
 import utilities.enums.CardType;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class OnePlayerController extends Controller{
+
+public class OnePlayerController extends Controller {
     @FXML
     private Label nameLabel;
     @FXML
     private ImageView robotIcon;
     @FXML
     private Label infoLabel;
+    @FXML
+    private Label infoLabel2;
+    @FXML
+    private HBox drawDamageHBox;
 
     public ImageView currentCardImageView;
     public HBox registerHBox;
@@ -29,42 +38,52 @@ public class OnePlayerController extends Controller{
         String robot = robotNames[otherPlayer.getFigure()];
         robotIcon.setImage(new Image(getClass().getResource("/lobby/" + robot + ".png").toString()));
         addEnergy(0);
+        drawDamageHBox.setVisible(false);
     }
-    public void initialize(){
+
+    public void initialize() {
         currentCardImageView.setVisible(false);
         fillRegister();
         setHBoxRegisterVisible(false);
 
     }
 
-    private void fillRegister(){
-        for(int i = 0; i<5; i++){
+    private void fillRegister() {
+        for (int i = 0; i < 5; i++) {
             ImageView imageView = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
             imageView.setFitWidth(20);
             imageView.setFitHeight(30);
             registerHBox.getChildren().add(imageView);
         }
     }
-    public void setInfoLabel(String text){
+
+    public void setInfoLabel(String text) {
         infoLabel.setText(text);
     }
-    public void currentCard(CardType card){
+
+    public void currentCard(CardType card) {
         infoLabel.setText("Current card ");
         currentCardImageView.setVisible(true);
 
-        currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/"+ card +"-card.png").toString()));
+        currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
     }
 
-    public void addCheckPoint(int number){
-        checkBoxLabel.setText( String.valueOf(number));
+    public void setInfoLabel2(String text) {
+        infoLabel2.setText(text);
+        displayingTime(infoLabel2);
     }
 
-    public void cardSelected(int registerSelected){
-       ImageView imageView = (ImageView) registerHBox.getChildren().get(registerSelected-1);
-       imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card-orange.png").toString()));
+    public void addCheckPoint(int number) {
+        checkBoxLabel.setText(String.valueOf(number));
+    }
+
+    public void cardSelected(int registerSelected) {
+        ImageView imageView = (ImageView) registerHBox.getChildren().get(registerSelected - 1);
+        imageView.setImage(new Image(getClass().getResource("/cards/programming/backside-card-orange.png").toString()));
 
     }
-    public void addEnergy(int energyCount){
+
+    public void addEnergy(int energyCount) {
         energy += energyCount;
         energyLabel.setText(String.valueOf(energy));
     }
@@ -73,9 +92,45 @@ public class OnePlayerController extends Controller{
         registerHBox.setVisible(visible);
     }
 
-    public void reset(){ //AFTER ONE ROUND
+    public void reset() { //AFTER ONE ROUND
         currentCardImageView.setVisible(false);
         registerHBox.getChildren().clear();
         fillRegister();
+    }
+
+    public void displayingTime(Label label) {
+        Platform.runLater(() -> label.setVisible(true));
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (label.isVisible()) {
+                    Platform.runLater(() -> label.setVisible(false));
+                }
+                t.cancel();
+            }
+        }, 15000);
+    }
+
+    public void displayDamageCards(DrawDamage drawDamage) {
+        drawDamageHBox.getChildren().clear();
+        for (int i = 0; i < drawDamage.getCards().size(); i++) {
+            String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
+            ImageView damage = new ImageView(new Image(getClass().getResource(path).toString()));
+            damage.setFitWidth(30);
+            damage.setFitHeight(50);
+            drawDamageHBox.getChildren().add(damage);
+        }
+        Platform.runLater(() -> drawDamageHBox.setVisible(true));
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (drawDamageHBox.isVisible()) {
+                    Platform.runLater(() -> drawDamageHBox.setVisible(false));
+                }
+                t.cancel();
+            }
+        }, 15000);
     }
 }

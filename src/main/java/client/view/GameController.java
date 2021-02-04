@@ -301,6 +301,8 @@ public class GameController extends Controller implements Updatable {
                 if (activePlayers.isEmpty()) {
                     logger.info("empty");
                 }
+                boolean isThisPlayer = reboot.getPlayerID() == client.getThisPlayersID();
+                othersController.setRebootLabel(reboot, isThisPlayer);
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -314,10 +316,13 @@ public class GameController extends Controller implements Updatable {
             }
             case TimerStarted -> programmingController.startTimer(allRegistersAsFirst);
             case TimerEnded -> {
+                TimerEnded timerEnded = (TimerEnded) message.getBody();
                 programmingController.setTimerEnded(true);
                 playerMatController.setDiscardDeckCounter(4);
                 if (!allRegistersAsFirst) playerMatController.fixSelectedCards();
                 allRegistersAsFirst = false; //TODO everything that is round related
+
+                othersController.setTooSlowLabel(timerEnded);
             }
             case CurrentCards -> {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
@@ -379,6 +384,7 @@ public class GameController extends Controller implements Updatable {
             }
             case ShuffleCoding -> {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
+                othersController.setShuffleCodingLable(shuffleCoding);
             }
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();
@@ -393,12 +399,14 @@ public class GameController extends Controller implements Updatable {
             }
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
+                boolean isThisPlayer = drawDamage.getPlayerID() == client.getThisPlayersID();
                 handleDamageCount(drawDamage.getCards());
-                if (drawDamage.getPlayerID() == client.getThisPlayersID()) {
+                if (isThisPlayer) {
                     setDrawDamage(drawDamage);
                     playerMatController.setDiscardDeckCounter(drawDamage.getCards().size());
                     playerMatController.addPlayerCards(drawDamage.getCards().size());
                 }
+                othersController.setDrewDamageLabel(drawDamage, isThisPlayer);
             }
             case GameWon -> {
                 GameWon gameWon = (GameWon) message.getBody();

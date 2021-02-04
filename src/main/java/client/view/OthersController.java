@@ -150,6 +150,24 @@ public class OthersController extends Controller {
         }
     }
 
+    public void setDrewDamageLabel(DrawDamage drawDamage, boolean thisPlayer) {
+        if (thisPlayer)
+            for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().setInfoLabel(" ");
+        else {
+            for (OtherPlayer otherPlayer : otherPlayers) {
+                if (otherPlayer.getPlayer().getID() == drawDamage.getPlayerID()) {
+                    getOtherPlayerController(otherPlayer.getPlayer().getID()).setInfoLabel2("got damage.");
+                    getOtherPlayerController(otherPlayer.getPlayer().getID()).displayDamageCards(drawDamage);
+                } else {
+                    getOtherPlayerController(otherPlayer.getPlayer().getID()).setInfoLabel(" ");
+                }
+            }
+        }
+    }
+
+    public void setShuffleCodingLable(ShuffleCoding shuffleCoding){
+        getOtherPlayerController(shuffleCoding.getPlayerID()).setInfoLabel2("refilled the deck.");
+    }
 
     /**
      * @param currentPlayer
