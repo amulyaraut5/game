@@ -40,6 +40,7 @@ public class Game {
 
     private final Server server = Server.getInstance();
     private ArrayList<Player> players;
+    private  ArrayList<Player> activePlayers;
 
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
@@ -249,6 +250,10 @@ public class Game {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public ArrayList<Player> getActivePlayers() {
+        return activePlayers;
     }
 
     public SpamDeck getSpamDeck() {

@@ -24,7 +24,7 @@ public class RebootAction extends Action {
      */
     @Override
     public void doAction(Player player) {
-        ArrayList<Player> activePlayers = game.getActivationPhase().getActivePlayers();
+        ArrayList<Player> activePlayers = game.getActivePlayers();
         ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 
         ArrayList<Player> allPlayers = new ArrayList<>();

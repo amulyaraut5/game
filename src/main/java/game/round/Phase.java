@@ -11,5 +11,6 @@ public abstract class Phase {
     protected final Server server = Server.getInstance();
     protected final Game game = Game.getInstance();
     protected final ArrayList<Player> players = game.getPlayers();
+    protected final ArrayList<Player> activePlayers = game.getActivePlayers();
     protected final Map map = game.getMap();
 }

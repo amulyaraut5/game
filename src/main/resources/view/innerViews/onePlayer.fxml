@@ -15,9 +15,9 @@
         <ImageView fx:id="robotIcon" fitHeight="55.0" fitWidth="54.0" layoutX="-25.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../tiles/startPoint.png" />
         </ImageView>
-        <Label fx:id="infoLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="6.0" layoutY="34.0" prefHeight="37.0" prefWidth="79.0" textFill="WHITE" wrapText="true">
+        <Label fx:id="infoLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="34.0" prefHeight="37.0" prefWidth="79.0" textFill="WHITE" wrapText="true">
             <font>
-                <Font name="System Bold" size="11.0" />
+                <Font name="System Bold" size="13.0" />
             </font>
         </Label>
         <HBox fx:id="registerHBox" layoutY="93.0" prefHeight="30.0" prefWidth="101.0" />

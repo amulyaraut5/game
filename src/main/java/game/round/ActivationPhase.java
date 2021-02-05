@@ -43,7 +43,6 @@ public class ActivationPhase extends Phase {
 
     private final BoardElements activationElements = new BoardElements(this);
     private final LaserAction laserAction = new LaserAction();
-    private final ArrayList<Player> activePlayers = players;
     private final ArrayList<Player> rebootedPlayers = new ArrayList<>();
 
     private final SpamDeck spamDeck = game.getSpamDeck();
@@ -427,11 +426,7 @@ public class ActivationPhase extends Phase {
 
         //Fill List sortedDistance with matching objects
         int i = 0;
-        ArrayList<Player> players = activePlayers;
         while (i < players.size()) {
-            //logger.info("sortDistance HIER");
-            //logger.info(activePlayers);
-
             //Point is generated with robot x and y position
             Coordinate robotPosition = new Coordinate(
                     players.get(i).getRobot().getCoordinate().getX(),
@@ -453,10 +448,6 @@ public class ActivationPhase extends Phase {
         sortedDistance.sort(Comparator.comparingDouble(RobotDistance::getDistance));
 
         return sortedDistance;
-    }
-
-    public ArrayList<Player> getActivePlayers() {
-        return activePlayers;
     }
 
     public int getCurrentRegister() {
