@@ -128,7 +128,7 @@ public class ActivationPhase extends Phase {
             currentRegister++;
             turnCards(currentRegister);
         } else { //if it is already the 5th register the next phase is called
-            if (rebootedPlayers != null) {
+            if (!rebootedPlayers.isEmpty()) {
                 activePlayers.addAll(rebootedPlayers);
                 rebootedPlayers.clear();
             }
