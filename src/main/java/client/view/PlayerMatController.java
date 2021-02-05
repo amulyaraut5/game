@@ -1,6 +1,7 @@
 package client.view;
 
 import game.Player;
+import game.gameObjects.cards.Card;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -247,6 +248,9 @@ public class PlayerMatController extends Controller {
         }
     }
 
+    public void currentCards(CardType card){
+        //TODO austauschen
+    }
     /**
      * Sets the number of the Discard Deck.
      * If the amount is 0, the number is reset to 0.
