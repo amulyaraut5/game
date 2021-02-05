@@ -18,5 +18,4 @@ public class Virus extends Card {
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/Virus-card.png");
     }
-
 }

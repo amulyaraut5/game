@@ -3,5 +3,5 @@ package game.gameObjects.decks;
 /**
  * @author annika
  */
-public abstract class DamageCardDeck extends Deck{
+public abstract class DamageCardDeck extends Deck {
 }

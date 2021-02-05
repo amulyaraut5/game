@@ -10,7 +10,6 @@ public class Empty extends Attribute {
         type = AttributeType.Empty;
     }
 
-
     @Override
     public Node createImage() {
         return ImageHandler.createImageView("/tiles/empty.png");

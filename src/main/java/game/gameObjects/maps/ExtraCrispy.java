@@ -15,7 +15,6 @@ public class ExtraCrispy extends Blueprint {
         int[] f = {631, 91}; //laser, wall
         int[] g = {71, 90}; //energy, wall
 
-
         mapBlueprint = new Object[][]{
                 { 0, 22,  0,  0,  0, 71,  e,  0,  f,  0},
                 { 0, 22,  0,112, 13,  0,  0,  0, 22,  0},

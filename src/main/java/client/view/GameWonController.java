@@ -2,14 +2,14 @@ package client.view;
 
 import game.Player;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import utilities.ImageHandler;
-import javafx.scene.control.Label;
 
 import java.awt.*;
 
-public class GameWonController extends Controller{
+public class GameWonController extends Controller {
 
     @FXML
     private Button exitGameButton;
@@ -20,7 +20,7 @@ public class GameWonController extends Controller{
     @FXML
     private Label winnerLabel;
 
-    public void setWinnerLabel(Player winner){
+    public void setWinnerLabel(Player winner) {
         String path = "/lobby/" + robotNames[winner.getFigure()] + ".png";
         String name = client.getUniqueName(winner.getID());
         ImageView imageView = ImageHandler.createImageView(path, 200, 200);

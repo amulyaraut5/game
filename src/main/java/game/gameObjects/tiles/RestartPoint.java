@@ -14,7 +14,6 @@ public class RestartPoint extends Attribute {
         type = AttributeType.RestartPoint;
     }
 
-
     @Override
     public Node createImage() {
         return ImageHandler.createImageView("/tiles/restart.png", orientation);

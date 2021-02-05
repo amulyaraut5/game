@@ -12,6 +12,6 @@ public enum MessageType {
     SelectionFinished, SetStartingPoint, ShuffleCoding,
     StartingPointTaken, TimerEnded, TimerStarted,
     YourCards, PlayerTurning, PlayIt, Reboot, Energy,
-    GameWon, CheckpointReached,PlayerShooting, SelectMap,
+    GameWon, CheckpointReached, PlayerShooting, SelectMap,
     MapSelected
 }

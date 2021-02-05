@@ -283,8 +283,8 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void checkForAgainCard(Player player){
-        if(currentRegister == 1) {
+    public void checkForAgainCard(Player player) {
+        if (currentRegister == 1) {
             for (Card card : player.getDrawProgrammingDeck().getDeck()) {
                 if (!(card.getName() == CardType.Again)) {
                     Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
@@ -377,7 +377,7 @@ public class ActivationPhase extends Phase {
         return playerPriority;
     }
 
-    public void sortByYCoordinate(ArrayList<RobotDistance> sameDistance, Coordinate antenna, ArrayList<Player> playerPriority){
+    public void sortByYCoordinate(ArrayList<RobotDistance> sameDistance, Coordinate antenna, ArrayList<Player> playerPriority) {
         //sort sameDistance by yCoordinate -> smallest y coordinate first
         sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
         ArrayList<Player> greaterThanAntenna = new ArrayList<>();
@@ -491,6 +491,14 @@ public class ActivationPhase extends Phase {
         return isRebooting;
     }
 
+    public int getCurrentRegister() {
+        return currentRegister;
+    }
+
+    public ArrayList<Player> getRebootedPlayers() {
+        return rebootedPlayers;
+    }
+
     /**
      * Class to handle the players robots by y-coordinate and distance from antenna
      */
@@ -533,13 +541,5 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
-    }
-
-    public int getCurrentRegister() {
-        return currentRegister;
-    }
-
-    public ArrayList<Player> getRebootedPlayers() {
-        return rebootedPlayers;
     }
 }

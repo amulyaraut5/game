@@ -19,8 +19,8 @@ import static utilities.Constants.PORT;
 public abstract class Client {
     protected static final Logger logger = LogManager.getLogger();
     protected final ArrayList<Player> players = new ArrayList<>();
-    protected int thisPlayersID;
     private final boolean isAI = false;
+    protected int thisPlayersID;
     private Socket socket;
     private ReaderThread readerThread;
 

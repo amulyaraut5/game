@@ -10,7 +10,6 @@ public class StartPoint extends Attribute {
         type = AttributeType.StartPoint;
     }
 
-
     @Override
     public Node createImage() {
         return ImageHandler.createImageView("/tiles/startPoint.png");

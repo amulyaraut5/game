@@ -13,8 +13,6 @@ public class Pit extends Attribute {
         type = AttributeType.Pit;
     }
 
-
-
     @Override
     public Node createImage() {
         return ImageHandler.createImageView("/tiles/pit.png");

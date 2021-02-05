@@ -4,10 +4,10 @@ import client.ViewManager;
 import client.view.*;
 import game.Player;
 import javafx.application.Platform;
+import utilities.Constants;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 import utilities.Updatable;
-import utilities.Constants;
 import utilities.enums.MessageType;
 
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ public class ViewClient extends Client {
 
     private ViewClient() {
     }
-
 
     public static ViewClient getInstance() {
         if (instance == null) instance = new ViewClient();

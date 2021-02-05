@@ -22,6 +22,7 @@ import utilities.SoundHandler;
 import utilities.Updatable;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -67,7 +68,7 @@ public class GameController extends Controller implements Updatable {
     @FXML
     private Pane infoPane;
     @FXML
-    private  Label moveInfo;
+    private Label moveInfo;
     @FXML
     private HBox otherPlayerSpace;
     @FXML
@@ -132,7 +133,6 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @param chat
      */
     public void attachChatPane(Pane chat) {
@@ -142,7 +142,6 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @param drawDamage
      */
     public void setDrawDamage(DrawDamage drawDamage) {
@@ -173,7 +172,7 @@ public class GameController extends Controller implements Updatable {
     /**
      *
      */
-    private void resetIfNotFirst(){
+    private void resetIfNotFirst() {
         if (!first) {
             playerMatController.reset();
             playerMatController.setDiscardDeckCounter(5);
@@ -186,7 +185,7 @@ public class GameController extends Controller implements Updatable {
     /**
      *
      */
-    private void resetInProgrammingPhase(){
+    private void resetInProgrammingPhase() {
         //playerMatController.fixSelectedCards(false);
         roundPane.setVisible(true);
         infoPane.setVisible(false);
@@ -201,7 +200,6 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @param phase
      */
     public void changePhaseView(GameState phase) {
@@ -248,7 +246,6 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @param currentAction
      */
     private void setDisplayAction(ArrayList<JSONBody> currentAction) {
@@ -276,7 +273,6 @@ public class GameController extends Controller implements Updatable {
         }
 
         moveInfo.setText(String.valueOf(text));
-
     }
 
     @Override
@@ -385,10 +381,9 @@ public class GameController extends Controller implements Updatable {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
                 ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
                 for (RegisterCard registerCard : currentCards.getActiveCards()) {
-                    if (registerCard.getPlayerID() == client.getThisPlayersID()){
+                    if (registerCard.getPlayerID() == client.getThisPlayersID()) {
                         activationController.currentCards(registerCard.getCard());
-                    }
-                    else otherPlayer.add(registerCard);
+                    } else otherPlayer.add(registerCard);
                 }
                 othersController.currentCards(otherPlayer);
 
@@ -400,15 +395,13 @@ public class GameController extends Controller implements Updatable {
 
                 for (int i = 0; i < currentCards.getActiveCards().size(); i++) {
                     if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
-                        if(damageCards.contains(currentCards.getActiveCards().get(i).getCard())){
+                        if (damageCards.contains(currentCards.getActiveCards().get(i).getCard())) {
                             playerMatController.subtractPlayerCards(1);
                             currentCardIsDamage = true;
                             System.out.println("currentCardIsDamage = true;");
                         } else {
                             currentCardIsDamage = false;
                             System.out.println("currentCardIsDamage = false;");
-
-
                         }
                     }
                 }
@@ -437,7 +430,6 @@ public class GameController extends Controller implements Updatable {
                 if (energy.getPlayerID() == client.getThisPlayersID()) {
                     playerMatController.addEnergy(energy.getCount());
                     currentAction.add(energy);
-
                 } else {
                     othersController.addEnergy(energy);
                 }
@@ -453,7 +445,7 @@ public class GameController extends Controller implements Updatable {
             }
             case ShuffleCoding -> {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                if(shuffleCoding.getPlayerID() == client.getThisPlayersID()){
+                if (shuffleCoding.getPlayerID() == client.getThisPlayersID()) {
                     infoPane.setVisible(true);
                     Platform.runLater(() -> infoLabel.setText("You're cards are shuffled"));
                     Timer t = new Timer();
@@ -502,7 +494,6 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @param event
      */
     public void keyPressed(KeyEvent event) {
@@ -529,7 +520,6 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @param player
      */
     public void removePlayer(Player player) {
@@ -538,12 +528,12 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
      * @return
      */
     public PlayerMatController getPlayerMatController() {
         return playerMatController;
     }
+
     /**
      *
      */

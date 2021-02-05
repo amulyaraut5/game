@@ -18,5 +18,4 @@ public class Trojan extends Card {
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/trojanhorse-card.png");
     }
-
 }

@@ -18,5 +18,4 @@ public class Spam extends Card {
     public ImageView drawCardImage() {
         return ImageHandler.createImageView("/cards/programming/Spam-card.png");
     }
-
 }

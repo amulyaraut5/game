@@ -3,7 +3,7 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class Error extends JSONBody {
-    private String error;
+    private final String error;
 
     public Error(String error) {
         this.error = error;

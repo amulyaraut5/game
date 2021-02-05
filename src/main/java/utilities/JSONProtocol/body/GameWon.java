@@ -3,7 +3,7 @@ package utilities.JSONProtocol.body;
 import utilities.JSONProtocol.JSONBody;
 
 public class GameWon extends JSONBody {
-    private int playerID;
+    private final int playerID;
 
     public GameWon(int playerID) {
         this.playerID = playerID;

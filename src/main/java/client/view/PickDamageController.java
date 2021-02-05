@@ -14,11 +14,11 @@ import utilities.enums.CardType;
 
 import java.util.ArrayList;
 
-public class PickDamageController extends Controller{
+public class PickDamageController extends Controller {
 
+    private final ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     @FXML
     private HBox selectedDamageHBox;
-
     @FXML
     private AnchorPane selectDamageAnchorPane;
     @FXML
@@ -31,11 +31,13 @@ public class PickDamageController extends Controller{
     private Button wormCardButton;
     @FXML
     private Label damageInfoLabel;
-
-    private final ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     private int pickDamage;
 
     private ActivationController activationController;
+    private int countSpam;
+    private int countTrojan;
+    private int countVirus;
+    private int countWorm;
 
     public void setActivationController(ActivationController activationController) {
         this.activationController = activationController;
@@ -62,16 +64,9 @@ public class PickDamageController extends Controller{
         this.pickDamage = pickDamage.getCount();
     }
 
-    private int countSpam;
-    private int countTrojan;
-    private int countVirus;
-    private int countWorm;
-
-
-
-    private void updateDamageCountLabel(CardType cardType){
-        switch (cardType){
-            case Spam->{
+    private void updateDamageCountLabel(CardType cardType) {
+        switch (cardType) {
+            case Spam -> {
                 spamCardButton.setText(String.valueOf(countSpam));
                 spamCardButton.setDisable(countSpam == 0);
             }
@@ -89,22 +84,20 @@ public class PickDamageController extends Controller{
             }
         }
     }
+
     @FXML
     private void damageButtonClicked(ActionEvent actionEvent) {
         CardType clickedButton = null;
         if (actionEvent.getSource().equals(spamCardButton)) {
             clickedButton = CardType.Spam;
             countSpam--;
-        }
-        else if (actionEvent.getSource().equals(trojanCardButton))  {
+        } else if (actionEvent.getSource().equals(trojanCardButton)) {
             clickedButton = CardType.Trojan;
             countTrojan--;
-        }
-        else if (actionEvent.getSource().equals(virusCardButton)) {
+        } else if (actionEvent.getSource().equals(virusCardButton)) {
             clickedButton = CardType.Virus;
             countVirus--;
-        }
-        else if (actionEvent.getSource().equals(wormCardButton)) {
+        } else if (actionEvent.getSource().equals(wormCardButton)) {
             clickedButton = CardType.Worm;
             countWorm--;
         }

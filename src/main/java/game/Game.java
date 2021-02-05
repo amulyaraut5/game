@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
 import server.User;
+import utilities.Constants;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
@@ -23,7 +24,6 @@ import utilities.JSONProtocol.body.GameWon;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
-import utilities.Constants;
 import utilities.enums.GameState;
 import utilities.enums.Orientation;
 
@@ -40,7 +40,7 @@ public class Game {
 
     private final Server server = Server.getInstance();
     private ArrayList<Player> players;
-    private  ArrayList<Player> activePlayers;
+    private ArrayList<Player> activePlayers;
 
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;

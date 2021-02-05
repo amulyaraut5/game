@@ -10,7 +10,7 @@ import utilities.enums.AttributeType;
 
 public class EnergySpace extends Attribute {
 
-    private int count; //number of energy cubes
+    private final int count; //number of energy cubes
 
     public EnergySpace(int count) {
         this.count = count;

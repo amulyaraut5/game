@@ -1,7 +1,7 @@
 package game.gameObjects.maps;
 
 public class RiskyCrossing extends Blueprint {
-    public RiskyCrossing(){
+    public RiskyCrossing() {
         name = "Risky Crossing";
 
         mapBlueprint = new Object[][]{

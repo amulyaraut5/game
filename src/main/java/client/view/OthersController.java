@@ -13,7 +13,6 @@ import utilities.RegisterCard;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 /**
  * OthersController handles the HBox underneath the gamemat and creates as much little playermats (onePlayer.fxml)
  * as other player that joined and handles incoming protocol messages.
@@ -32,7 +31,6 @@ public class OthersController extends Controller {
     public void reset() {
         for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().reset();
     }
-
 
     /**
      * This method extracts the OtherPlayer with its controller etc
@@ -74,7 +72,6 @@ public class OthersController extends Controller {
     }
 
     /**
-     *
      * @param player
      */
     private void playerAdded(Player player) {
@@ -103,8 +100,6 @@ public class OthersController extends Controller {
         hBoxPlayer.getChildren().remove(removedPlayer.getPositionHBox());
         otherPlayers.remove(getOtherPlayer(player.getID()));
     }
-
-
 
     /**
      * This method determines the visibility of the registers of each one player mat
@@ -148,45 +143,42 @@ public class OthersController extends Controller {
     }
 
     /**
-     *
      * @param reboot
      * @param thisPlayer
      */
     public void setRebootLabel(Reboot reboot, boolean thisPlayer) {
-        if(!thisPlayer){
+        if (!thisPlayer) {
             getOtherPlayerController(reboot.getPlayerID()).setInfoLabel2("rebooted and got spam!");
         }
     }
 
     /**
-     *
      * @param timerEnded
      */
     public void setTooSlowLabel(TimerEnded timerEnded) {
-        for(int playerID : timerEnded.getPlayerIDs()){
-            if(playerID != client.getThisPlayersID()) getOtherPlayerController(playerID).setInfoLabel2("programmed too slowly!");
+        for (int playerID : timerEnded.getPlayerIDs()) {
+            if (playerID != client.getThisPlayersID())
+                getOtherPlayerController(playerID).setInfoLabel2("programmed too slowly!");
         }
     }
 
     /**
-     *
      * @param drawDamage
      * @param thisPlayer
      */
     public void setDrewDamageLabel(DrawDamage drawDamage, boolean thisPlayer) {
         for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().setInfoLabel(" ");
-        if(!thisPlayer) {
+        if (!thisPlayer) {
             getOtherPlayerController(drawDamage.getPlayerID()).setInfoLabel2("got damage");
             getOtherPlayerController(drawDamage.getPlayerID()).displayDamageCards(drawDamage.getCards());
         }
     }
 
     /**
-     *
      * @param shuffleCoding
      */
-    public void setShuffleCodingLabel(ShuffleCoding shuffleCoding){
-         getOtherPlayerController(shuffleCoding.getPlayerID()).setInfoLabel2("refilled the deck");
+    public void setShuffleCodingLabel(ShuffleCoding shuffleCoding) {
+        getOtherPlayerController(shuffleCoding.getPlayerID()).setInfoLabel2("refilled the deck");
     }
 
     /**

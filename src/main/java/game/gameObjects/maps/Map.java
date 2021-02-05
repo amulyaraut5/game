@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  * The map class helps in retrieving all the important aspects of the map either tiles from coordinate
  * or coordinates from tiles.
+ *
  * @author Louis
  * @author Amulya
  */
@@ -58,7 +59,7 @@ public class Map {
                     }
                 }
             }
-            if(a.getType()  == AttributeType.Antenna){
+            if (a.getType() == AttributeType.Antenna) {
                 canMove = false;
                 break;
             }
@@ -80,6 +81,7 @@ public class Map {
 
     /**
      * Getter for tiles
+     *
      * @return returns the 2 dimensional array of tiles
      */
     public Tile[][] getTiles() {
@@ -88,6 +90,7 @@ public class Map {
 
     /**
      * Retrieves the tile from the map.
+     *
      * @param x x coordinate of the tile
      * @param y y coordinate of the tile
      * @return
@@ -99,6 +102,7 @@ public class Map {
 
     /**
      * Retrieves the tile of the given position from the map
+     *
      * @param pos position of tile
      * @return
      * @throws ArrayIndexOutOfBoundsException when the position is not on the map

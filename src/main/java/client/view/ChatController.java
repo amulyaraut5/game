@@ -75,34 +75,35 @@ public class ChatController extends Controller {
                 chatWindow.appendText("[You] " + message + "\n");
             } else {
                 int count = 0;
-                String [] name = sendTo.split(" ", 2);
-                for( Player player : client.getPlayers()){
-                    if(player.getName().equals(name[0])) count ++;
+                String[] name = sendTo.split(" ", 2);
+                for (Player player : client.getPlayers()) {
+                    if (player.getName().equals(name[0])) count++;
                 }
-                if(count==1){
-                    for(Player player : client.getPlayers())
-                        if(sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
+                if (count == 1) {
+                    for (Player player : client.getPlayers())
+                        if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
                 } else {
                     ArrayList<Integer> names = new ArrayList<>();
-                    for(Player player : client.getPlayers()) if(name[0].equals(player.getName())) names.add(player.getID());
-                    if(sendTo.length() == 1){
+                    for (Player player : client.getPlayers())
+                        if (name[0].equals(player.getName())) names.add(player.getID());
+                    if (sendTo.length() == 1) {
                         jsonBody = new SendChat(message, names.get(0));
                     } else {
-                        String idNr = sendTo.substring(sendTo.length()-1);
-                        jsonBody = new SendChat(message, Integer.parseInt(idNr) );
+                        String idNr = sendTo.substring(sendTo.length() - 1);
+                        jsonBody = new SendChat(message, Integer.parseInt(idNr));
                     }
                 }
                 chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
             }
-            String [] messageSplit = message.split(" ");
+            String[] messageSplit = message.split(" ");
 
-            if(message.equals("#emptySpam")) {
+            if (message.equals("#emptySpam")) {
                 setCountSpamCards(0);
-            } else if(message.equals("#countDamage")){
+            } else if (message.equals("#countDamage")) {
                 logger.info("count of damage cards on client side: Spam: " + getCountSpamCards() + ", Trojan: " + getCountTrojanCards() + ", Virus: " + getCountVirusCards() + ", Worm: " + getCountWormCards());
-            } else if(messageSplit.length > 1 && messageSplit[0].equals("#damage")){
+            } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
                 int damageCount = Integer.parseInt(messageSplit[1]);
-                setCountSpamCards(getCountSpamCards()-damageCount);
+                setCountSpamCards(getCountSpamCards() - damageCount);
             }
             client.sendMessage(jsonBody);
         }

@@ -1,6 +1,6 @@
 package game.gameObjects.maps;
 
-public class TestBlueprint extends Blueprint{
+public class TestBlueprint extends Blueprint {
 
     public TestBlueprint() {
         name = "Attributes Test";

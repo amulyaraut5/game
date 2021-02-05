@@ -5,7 +5,6 @@ import javafx.scene.image.ImageView;
 import utilities.ImageHandler;
 import utilities.enums.CardType;
 
-
 public class UTurn extends Card {
 
     public UTurn() {

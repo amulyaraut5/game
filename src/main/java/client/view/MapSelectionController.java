@@ -9,15 +9,22 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.MapSelected;
 import utilities.Updatable;
 
-
 public class MapSelectionController extends Controller implements Updatable {
-    @FXML private CheckBox dizzyHighway;
-    @FXML private CheckBox extraCrispy;
+    private static MapSelectionController mapSelectionController;
+    @FXML
+    private CheckBox dizzyHighway;
+    @FXML
+    private CheckBox extraCrispy;
     @FXML
     private Label infoLabel;
 
+    public MapSelectionController() {
+        mapSelectionController = this;
+    }
 
-    private static MapSelectionController mapSelectionController;
+    public static MapSelectionController getMapSelectionController() {
+        return mapSelectionController;
+    }
 
     @FXML
     public void initialize() {
@@ -25,28 +32,22 @@ public class MapSelectionController extends Controller implements Updatable {
         infoLabel.setText("");
     }
 
-    public MapSelectionController(){
-        mapSelectionController = this;
-    }
-
     @FXML
-    private void choiceBoxActionForMap(ActionEvent event){
+    private void choiceBoxActionForMap(ActionEvent event) {
 
-        if(dizzyHighway.isSelected()){
+        if (dizzyHighway.isSelected()) {
             client.sendMessage(new MapSelected("DizzyHighway"));
             setDisable(true);
             viewManager.showLobby();
-        }
-        else if(extraCrispy.isSelected()){
+        } else if (extraCrispy.isSelected()) {
             client.sendMessage(new MapSelected("ExtraCrispy"));
             setDisable(true);
             viewManager.showLobby();
         }
     }
 
-
     @FXML
-    private void switchBackToLobby(ActionEvent event){
+    private void switchBackToLobby(ActionEvent event) {
         viewManager.showLobby();
         infoLabel.setText("");
     }
@@ -65,27 +66,22 @@ public class MapSelectionController extends Controller implements Updatable {
         }
     }
 
-    public void setVisible(boolean b){
+    public void setVisible(boolean b) {
         dizzyHighway.setVisible(b);
         extraCrispy.setVisible(b);
     }
 
-    public void setDisable(boolean b){
+    public void setDisable(boolean b) {
         dizzyHighway.setDisable(b);
         extraCrispy.setDisable(b);
-
     }
 
-    public void setSelected(boolean b){
+    public void setSelected(boolean b) {
         dizzyHighway.setSelected(b);
         extraCrispy.setSelected(b);
     }
 
     public void setInfoLabel(String string) {
         infoLabel.setText(string);
-    }
-
-    public static MapSelectionController getMapSelectionController(){
-        return mapSelectionController;
     }
 }
