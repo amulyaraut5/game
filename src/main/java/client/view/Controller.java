@@ -2,6 +2,7 @@ package client.view;
 
 import client.ViewManager;
 import client.model.ViewClient;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
@@ -93,6 +94,13 @@ public abstract class Controller {
                 handleDamageCount(cardType);
             }
         }
+    }
+
+    protected ImageView generateImageView(String path, int width, int height){
+        ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        return imageView;
     }
 
     protected CardType generateCardType(String imageDropped) {
