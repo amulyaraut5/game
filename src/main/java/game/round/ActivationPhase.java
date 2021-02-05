@@ -250,6 +250,9 @@ public class ActivationPhase extends Phase {
                 //Add spam card back into the spam deck
                 spamDeck.addCard(new Spam());
                 //remove top card from programming deck
+                if (player.getDrawProgrammingDeck().isEmpty()) {
+                    player.reuseDiscardedDeck();
+                }
                 Card topCard = player.getDrawProgrammingDeck().pop();
 
                 //Play the top-card
@@ -275,6 +278,9 @@ public class ActivationPhase extends Phase {
                 }
                 virusDeck.addCard(new Virus());
                 //remove top card from programming deck
+                if (player.getDrawProgrammingDeck().isEmpty()) {
+                    player.reuseDiscardedDeck();
+                }
                 Card topCard = player.getDrawProgrammingDeck().pop();
                 //Play the top-card
                 handleCard(topCard.getName(), player);
@@ -283,6 +289,9 @@ public class ActivationPhase extends Phase {
                 trojanDeck.addCard(new Trojan());
                 //Draw two spam cards
                 drawDamage(spamDeck, player, 2);
+                if (player.getDrawProgrammingDeck().isEmpty()) {
+                    player.reuseDiscardedDeck();
+                }
                 Card topCard = player.getDrawProgrammingDeck().pop();
                 //Play the top-card
                 handleCard(topCard.getName(), player);
