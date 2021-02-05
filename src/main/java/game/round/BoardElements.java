@@ -62,7 +62,7 @@ public class BoardElements {
                                     int checkPoint = player.getCheckPointCounter();
                                     checkPoint++;
                                     player.setCheckPointCounter(checkPoint);
-                                    player.message(new CheckpointReached(player.getID(), checkPointID));
+                                    server.communicateAll(new CheckpointReached(player.getID(), checkPointID));
                                     player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint"));
                                 } else if (checkPointID == totalCheckPoints) {
                                     server.communicateAll(new GameWon(player.getID()));
