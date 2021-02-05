@@ -1,7 +1,6 @@
 package client.view;
 
 import game.Player;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -13,8 +12,7 @@ import utilities.RegisterCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 /**
  * OthersController handles the HBox underneath the gamemat and creates as much little playermats (onePlayer.fxml)
@@ -29,10 +27,36 @@ public class OthersController extends Controller {
     private HBox hBoxPlayer;
 
     /**
-     * This method resets every one player mat that was created
+     * This method resets every one player mat that was created after one round
      */
     public void reset() {
         for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().reset();
+    }
+
+
+    /**
+     * This method extracts the OtherPlayer with its controller etc
+     *
+     * @param id of searched player
+     * @return the player who is desired
+     */
+    private OtherPlayer getOtherPlayer(int id) {
+        for (OtherPlayer otherPlayer : otherPlayers) {
+            if (id == otherPlayer.getPlayer().getID()) {
+                return otherPlayer;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * returns the OnePlayerController of the given id
+     *
+     * @param id of wanted player
+     * @return OnePlayerController of player
+     */
+    public OnePlayerController getOtherPlayerController(int id) {
+        return getOtherPlayer(id).getOnePlayerController();
     }
 
     /**
@@ -49,6 +73,10 @@ public class OthersController extends Controller {
         }
     }
 
+    /**
+     *
+     * @param player
+     */
     private void playerAdded(Player player) {
         hBoxPlayer.setSpacing(20);
         try {
@@ -76,30 +104,7 @@ public class OthersController extends Controller {
         otherPlayers.remove(getOtherPlayer(player.getID()));
     }
 
-    /**
-     * This method extracts the OtherPlayer with its controller etc
-     *
-     * @param id of searched player
-     * @return the player who is desired
-     */
-    private OtherPlayer getOtherPlayer(int id) {
-        for (OtherPlayer otherPlayer : otherPlayers) {
-            if (id == otherPlayer.getPlayer().getID()) {
-                return otherPlayer;
-            }
-        }
-        return null;
-    }
 
-    /**
-     * returns the OnePlayerController of the given id
-     *
-     * @param id of wanted player
-     * @return OnePlayerController of player
-     */
-    public OnePlayerController getOtherPlayerController(int id) {
-        return getOtherPlayer(id).getOnePlayerController();
-    }
 
     /**
      * This method determines the visibility of the registers of each one player mat
@@ -142,27 +147,44 @@ public class OthersController extends Controller {
         getOtherPlayerController(checkpointReached.getPlayerID()).addCheckPoint(checkpointReached.getNumber());
     }
 
-
+    /**
+     *
+     * @param reboot
+     * @param thisPlayer
+     */
     public void setRebootLabel(Reboot reboot, boolean thisPlayer) {
         if(!thisPlayer){
             getOtherPlayerController(reboot.getPlayerID()).setInfoLabel2("rebooted and got spam!");
         }
     }
 
+    /**
+     *
+     * @param timerEnded
+     */
     public void setTooSlowLabel(TimerEnded timerEnded) {
         for(int playerID : timerEnded.getPlayerIDs()){
             if(playerID != client.getThisPlayersID()) getOtherPlayerController(playerID).setInfoLabel2("programmed too slowly!");
         }
     }
 
+    /**
+     *
+     * @param drawDamage
+     * @param thisPlayer
+     */
     public void setDrewDamageLabel(DrawDamage drawDamage, boolean thisPlayer) {
         for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().setInfoLabel(" ");
         if(!thisPlayer) {
             getOtherPlayerController(drawDamage.getPlayerID()).setInfoLabel2("got damage");
-            getOtherPlayerController(drawDamage.getPlayerID()).displayDamageCards(drawDamage);
+            getOtherPlayerController(drawDamage.getPlayerID()).displayDamageCards(drawDamage.getCards());
         }
     }
 
+    /**
+     *
+     * @param shuffleCoding
+     */
     public void setShuffleCodingLabel(ShuffleCoding shuffleCoding){
          getOtherPlayerController(shuffleCoding.getPlayerID()).setInfoLabel2("refilled the deck");
     }
