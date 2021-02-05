@@ -27,10 +27,6 @@ public class RebootAction extends Action {
         ArrayList<Player> activePlayers = game.getActivePlayers();
         ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 
-        ArrayList<Player> allPlayers = new ArrayList<>();
-        allPlayers.addAll(activePlayers);
-        allPlayers.addAll(rebootedPlayers);
-
         //rebootedPlayers.add(player);
         //Draw two spam cards
         game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
@@ -49,7 +45,7 @@ public class RebootAction extends Action {
         server.communicateAll(new Reboot(player.getID()));
 
         //Out of the round, must wait until the next round to program the robot again.
-        for (Player robotOnReboot : allPlayers) {
+        for (Player robotOnReboot : game.getPlayers()) {
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 if (map.getRestartPoint().toPosition() == 0) {
                     robotOnReboot.getRobot().rotateTo(Orientation.RIGHT);
