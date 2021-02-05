@@ -252,10 +252,7 @@ public class ActivationPhase extends Phase {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                Card topCard = player.getDrawProgrammingDeck().pop();
-
-                //Play the top-card
-                handleCard(topCard.getName(), player);
+                checkForAgainCard(player);
             }
             case Worm -> {
                 //Reboot the robot.
@@ -266,7 +263,6 @@ public class ActivationPhase extends Phase {
             case Virus -> {
                 int robotX = robot.getCoordinate().getX();
                 int robotY = robot.getCoordinate().getY();
-
                 for (Player otherPlayer : players) {
                     int otherRobotX = otherPlayer.getRobot().getCoordinate().getX();
                     int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
@@ -280,9 +276,7 @@ public class ActivationPhase extends Phase {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                Card topCard = player.getDrawProgrammingDeck().pop();
-                //Play the top-card
-                handleCard(topCard.getName(), player);
+                checkForAgainCard(player);
             }
             case Trojan -> {
                 trojanDeck.addCard(new Trojan());
@@ -291,11 +285,24 @@ public class ActivationPhase extends Phase {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                Card topCard = player.getDrawProgrammingDeck().pop();
-                //Play the top-card
-                handleCard(topCard.getName(), player);
+                checkForAgainCard(player);
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
+        }
+    }
+
+    public void checkForAgainCard(Player player){
+        if(currentRegister == 1) {
+            for (Card card : player.getDrawProgrammingDeck().getDeck()) {
+                if (!(card.getName() == CardType.Again)) {
+                    Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
+                    handleCard(topCard.getName(), player);
+                    break;
+                }
+            }
+        } else {
+            Card topCard = player.getDrawProgrammingDeck().pop();
+            handleCard(topCard.getName(), player);
         }
     }
 
@@ -345,85 +352,58 @@ public class ActivationPhase extends Phase {
      */
     public ArrayList<Player> calculatePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
-        //logger.info("calculatePrio HIER - " + sortedDistance.toString());
-
         ArrayList<Player> playerPriority = new ArrayList<>();
-
         int sortedDistanceSize = sortedDistance.size();
 
         for (int i = 0; i < sortedDistanceSize; i++) {
             if (sortedDistance.size() == 0) {
                 return playerPriority;
             } else if (sortedDistance.size() == 1) {
-                //logger.info("calculatePrio 1.if - HIER - " + sortedDistance.toString());
                 playerPriority.add(sortedDistance.get(0).getPlayer());
-                //logger.info("hier1");
                 sortedDistance.remove(0);
-
                 //objects have the same distance values -> selection by clockwise antenna beam
             } else if (sortedDistance.get(0).getDistance() == sortedDistance.get(1).getDistance()) {
-                //logger.info("hier");
                 //add the robots with same distance into a list
                 ArrayList<RobotDistance> sameDistance = new ArrayList<>();
-
                 RobotDistance firstSameDistance = sortedDistance.get(0);
-
                 int tempSortedDistanceSize = sortedDistance.size();
-                //logger.info("00: " +tempSortedDistanceSize);
-
                 //compare first element with same distance with all following elements and add matching ones to list sameDistance
                 for (int k = 0; k < tempSortedDistanceSize; k++) {
-                    //logger.info("0for: " +sortedDistance.size());
                     if (firstSameDistance.getDistance() == sortedDistance.get(0).getDistance()) {
                         sameDistance.add(sortedDistance.get(0));
-                        //logger.info("1for: " + sameDistance);
                         sortedDistance.remove(sortedDistance.get(0));
-                        //logger.info("2for: " + sortedDistance);
                     }
                 }
                 //sort sameDistance by yCoordinate -> smallest y coordinate first
                 sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
-                //logger.info("3- sameDistance.sort: " + sameDistance);
-
                 ArrayList<Player> greaterThanAntenna = new ArrayList<>();
                 ArrayList<Player> smallerThanAntenna = new ArrayList<>();
 
                 for (RobotDistance rd : sameDistance) {
                     int antennaY = antenna.getY();
                     int robotY = rd.getRobot().getCoordinate().getY();
-
                     if (robotY < antennaY) {
                         smallerThanAntenna.add(rd.getPlayer());
-                        //logger.info("5- smaller: " +smallerThanAntenna);
                     } else if (robotY > antennaY) {
                         greaterThanAntenna.add(rd.getPlayer());
-                        //logger.info("6- greater: " +greaterThanAntenna);
                     } else {
                         playerPriority.add(rd.getPlayer());
-                        //logger.info("7- equal: " +playerPriority);
                     }
                 }
                 playerPriority.addAll(greaterThanAntenna);
                 playerPriority.addAll(smallerThanAntenna);
-                //logger.info("8- end of else if :" +playerPriority);
-
                 //first and second object have different distance values -> first player in list is currentPlayer
             } else {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
-                //logger.info("calculatePrio - ELSE:" + playerPriority);
                 sortedDistance.remove(0);
-                //logger.info("calculatePrio 3.else - HIER - " + sortedDistance.toString());
             }
         }
-
-        //logger.info("calculatePrio -RETURN: " + playerPriority);
         return playerPriority;
     }
 
     public ArrayList<RobotDistance> sortDistance(Coordinate antenna) {
         //List containing information for determining the next player in line (next robot with priority)
         ArrayList<RobotDistance> sortedDistance = new ArrayList<>();
-
         //Fill List sortedDistance with matching objects
         int i = 0;
         while (i < players.size()) {
@@ -441,21 +421,11 @@ public class ActivationPhase extends Phase {
             int yRobot = robot.getCoordinate().getY();
             //safe object in sortedDistance
             sortedDistance.add(new RobotDistance(player, robot, distance, yRobot));
-
             i++;
         }
         // sort RobotDistance by distance
         sortedDistance.sort(Comparator.comparingDouble(RobotDistance::getDistance));
-
         return sortedDistance;
-    }
-
-    public int getCurrentRegister() {
-        return currentRegister;
-    }
-
-    public ArrayList<Player> getRebootedPlayers() {
-        return rebootedPlayers;
     }
 
     public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
@@ -570,5 +540,13 @@ public class ActivationPhase extends Phase {
                     ", yCoordinate=" + yCoordinate +
                     '}';
         }
+    }
+
+    public int getCurrentRegister() {
+        return currentRegister;
+    }
+
+    public ArrayList<Player> getRebootedPlayers() {
+        return rebootedPlayers;
     }
 }

@@ -66,6 +66,13 @@ public abstract class Deck {
         return popped;
     }
 
+    public Card popThisCard(Card card){
+        int cardIndex = getDeck().indexOf(card);
+        Card popped = getDeck().get(cardIndex);
+        getDeck().remove(popped);
+        return popped;
+    }
+
     /**
      * Return the desired amount of cards and then removes them from the deck.
      */
