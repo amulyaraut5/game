@@ -157,32 +157,40 @@ public class GameController extends Controller implements Updatable {
         }, 2000);
     }
 
+    private void resetIfNotFirst(){
+        if (!first) {
+            playerMatController.reset();
+            playerMatController.setDiscardDeckCounter(5);
+
+            othersController.reset();
+            activationController.reset();
+        }
+    }
+
+    private void resetInProgrammingPhase(){
+        //playerMatController.fixSelectedCards(false);
+        roundPane.setVisible(true);
+        infoPane.setVisible(false);
+        roundLabel.setText("Round " + currentRound);
+        currentRound++;
+        resetIfNotFirst();
+        playerMatController.resetDeckCounter(9);
+
+        activePlayers.addAll(client.getPlayers());
+        for (Player player : activePlayers) {
+            //logger.info("Inside GameState:" + player.getID());
+        }
+        phasePane.setCenter(programmingPane);
+        othersController.visibleHBoxRegister(true);
+    }
+
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
 
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> {
-                //playerMatController.fixSelectedCards(false);
-                roundPane.setVisible(true);
-                roundLabel.setText("Round " + currentRound);
-                currentRound++;
-                if (!first) {
-                    playerMatController.reset();
-                    playerMatController.setDiscardDeckCounter(5);
-
-                    othersController.reset();
-                    activationController.reset();
-                }
-                playerMatController.resetDeckCounter(9);
-
-                activePlayers.addAll(client.getPlayers());
-                for (Player player : activePlayers) {
-                    //logger.info("Inside GameState:" + player.getID());
-                }
-
-                phasePane.setCenter(programmingPane);
-                othersController.visibleHBoxRegister(true);
+                resetInProgrammingPhase();
             }
             case ACTIVATION -> {
                 activationController.changePhaseView("PlayIt");
