@@ -50,6 +50,7 @@ public class GameController extends Controller implements Updatable {
     private GameBoardController gameBoardController;
 
     private boolean allRegistersAsFirst = false;
+    private boolean currentCardIsDamage = false;
     private Pane constructionPane;
     private Pane programmingPane;
     private Pane activationPane;
@@ -63,7 +64,8 @@ public class GameController extends Controller implements Updatable {
     private boolean isMuted = true;
     private boolean play = false;
 
-    public Pane infoPane;
+    @FXML
+    private Pane infoPane;
     @FXML
     private  Label moveInfo;
     @FXML
@@ -89,6 +91,9 @@ public class GameController extends Controller implements Updatable {
     @FXML
     private HBox drawDamageHBox;
 
+    /**
+     *
+     */
     @FXML
     public void initialize() {
         drawDamageHBox.setAlignment(Pos.CENTER);
@@ -126,12 +131,20 @@ public class GameController extends Controller implements Updatable {
         soundHandler = new SoundHandler();
     }
 
+    /**
+     *
+     * @param chat
+     */
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
         chat.setPrefHeight(chatPane.getPrefHeight());
         chatPane.setCenter(chat);
     }
 
+    /**
+     *
+     * @param drawDamage
+     */
     public void setDrawDamage(DrawDamage drawDamage) {
         drawDamageHBox.getChildren().clear();
 
@@ -157,6 +170,9 @@ public class GameController extends Controller implements Updatable {
         }, 2000);
     }
 
+    /**
+     *
+     */
     private void resetIfNotFirst(){
         if (!first) {
             playerMatController.reset();
@@ -167,6 +183,9 @@ public class GameController extends Controller implements Updatable {
         }
     }
 
+    /**
+     *
+     */
     private void resetInProgrammingPhase(){
         //playerMatController.fixSelectedCards(false);
         roundPane.setVisible(true);
@@ -184,6 +203,10 @@ public class GameController extends Controller implements Updatable {
         othersController.visibleHBoxRegister(true);
     }
 
+    /**
+     *
+     * @param phase
+     */
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
 
@@ -203,6 +226,9 @@ public class GameController extends Controller implements Updatable {
         }
     }
 
+    /**
+     *
+     */
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
         FXMLLoader programmingLoader = new FXMLLoader(getClass().getResource("/view/innerViews/programmingView.fxml"));
@@ -226,6 +252,10 @@ public class GameController extends Controller implements Updatable {
         }
     }
 
+    /**
+     *
+     * @param currentAction
+     */
     private void setDisplayAction(ArrayList<JSONBody> currentAction) {
         StringBuilder text = new StringBuilder(" ");
         if (currentAction.size() == 1) {
@@ -254,7 +284,6 @@ public class GameController extends Controller implements Updatable {
 
     }
 
-    private boolean currentCardIsDamage = false;
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -477,6 +506,10 @@ public class GameController extends Controller implements Updatable {
         }
     }
 
+    /**
+     *
+     * @param event
+     */
     public void keyPressed(KeyEvent event) {
         String orientation = "";
         switch (event.getCode()) {
@@ -500,22 +533,35 @@ public class GameController extends Controller implements Updatable {
         }
     }
 
+    /**
+     *
+     * @param player
+     */
     public void removePlayer(Player player) {
         gameBoardController.removePlayer(player);
         if (client.getCurrentController().equals(this)) othersController.removePlayer(player);
     }
 
+    /**
+     *
+     * @return
+     */
+    public PlayerMatController getPlayerMatController() {
+        return playerMatController;
+    }
+    /**
+     *
+     */
     @FXML
     private void soundsOnAction() {
         soundHandler.musicOn();
     }
 
+    /**
+     *
+     */
     @FXML
     private void soundsOffAction() {
         soundHandler.musicOff();
-    }
-
-    public PlayerMatController getPlayerMatController() {
-        return playerMatController;
     }
 }
