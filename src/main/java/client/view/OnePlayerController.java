@@ -109,7 +109,7 @@ public class OnePlayerController extends Controller {
                 }
                 t.cancel();
             }
-        }, 15000);
+        }, 5000);
     }
 
     public void displayDamageCards(DrawDamage drawDamage) {
@@ -131,6 +131,6 @@ public class OnePlayerController extends Controller {
                 }
                 t.cancel();
             }
-        }, 15000);
+        }, 5000);
     }
 }
