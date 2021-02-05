@@ -11,9 +11,10 @@ import utilities.enums.AttributeType;
 public class ConstructionPhase extends Phase {
 
     Player currentPlayer;
+    private int currentIndex = 0;
 
     public ConstructionPhase() {
-        currentPlayer = players.get(0);
+        currentPlayer = players.get(currentIndex);
         server.communicateAll(new CurrentPlayer(currentPlayer.getID()));
     }
 
@@ -51,7 +52,7 @@ public class ConstructionPhase extends Phase {
     }
 
     public void nextPlayer() {
-        int currentIndex = players.indexOf(currentPlayer);
+        currentIndex = players.indexOf(currentPlayer);
 
         if (currentIndex < players.size() - 1) {
             currentPlayer = players.get(++currentIndex);
@@ -67,5 +68,9 @@ public class ConstructionPhase extends Phase {
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
     }
 }

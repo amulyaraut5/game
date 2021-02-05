@@ -396,20 +396,21 @@ public class Server extends Thread {
     public void removeUser(User user) {
         logger.info("removeUser reached");
         if (!(game.getPlayers() == null)) {
+            int userID = user.getID();
             game.getPlayers().remove(game.userToPlayer(user));
-            //TODO
-            if (!(game.getPlayers() == null)) {
-        /*
-        if(game.getGameState() == GameState.CONSTRUCTION){
-            communicateAll(new ActivePhase(GameState.CONSTRUCTION));
-            new ConstructionPhase();
-            if(game.getConstructionPhase().getCurrentPlayer() == game.userToPlayer(user)){
-                logger.info("Construction IF");
-                communicateAll(new CurrentPlayer(currentPlayer.getID()));
-            }
-        }
 
-         */
+            if (!(game.getPlayers() == null)) {
+
+                if (game.getGameState() == GameState.CONSTRUCTION) {
+                    logger.info("Construction phase player: " + game.getConstructionPhase().getCurrentPlayer().getName());
+                    if (userID == game.getConstructionPhase().getCurrentIndex() + 1) {
+                        Player currentPlayer = game.getPlayers().get(game.getConstructionPhase().getCurrentIndex());
+                        logger.info("new current player: " + currentPlayer.getName());
+                        communicateAll(new CurrentPlayer(currentPlayer.getID()));
+                    }
+                }
+
+
                 if (game.getGameState() == GameState.PROGRAMMING) {
                     logger.info("removeuser IF");
                     Player temp = null;
@@ -438,6 +439,7 @@ public class Server extends Thread {
         users.remove(user);
 
         communicateAll(new ConnectionUpdate(user.getID(), false, "Remove"));
+        communicateAll(new Error(user.getName() + " left the game."));
 
         if (users.size() == 0) {
             interrupt();
