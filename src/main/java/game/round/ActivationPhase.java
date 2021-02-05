@@ -368,23 +368,7 @@ public class ActivationPhase extends Phase {
                     }
                 }
                 //sort sameDistance by yCoordinate -> smallest y coordinate first
-                sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
-                ArrayList<Player> greaterThanAntenna = new ArrayList<>();
-                ArrayList<Player> smallerThanAntenna = new ArrayList<>();
-
-                for (RobotDistance rd : sameDistance) {
-                    int antennaY = antenna.getY();
-                    int robotY = rd.getRobot().getCoordinate().getY();
-                    if (robotY < antennaY) {
-                        smallerThanAntenna.add(rd.getPlayer());
-                    } else if (robotY > antennaY) {
-                        greaterThanAntenna.add(rd.getPlayer());
-                    } else {
-                        playerPriority.add(rd.getPlayer());
-                    }
-                }
-                playerPriority.addAll(greaterThanAntenna);
-                playerPriority.addAll(smallerThanAntenna);
+                sortByYCoordinate(sameDistance, antenna, playerPriority);
                 //first and second object have different distance values -> first player in list is currentPlayer
             } else {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
@@ -392,6 +376,27 @@ public class ActivationPhase extends Phase {
             }
         }
         return playerPriority;
+    }
+
+    public void sortByYCoordinate(ArrayList<RobotDistance> sameDistance, Coordinate antenna, ArrayList<Player> playerPriority){
+        //sort sameDistance by yCoordinate -> smallest y coordinate first
+        sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
+        ArrayList<Player> greaterThanAntenna = new ArrayList<>();
+        ArrayList<Player> smallerThanAntenna = new ArrayList<>();
+
+        for (RobotDistance rd : sameDistance) {
+            int antennaY = antenna.getY();
+            int robotY = rd.getRobot().getCoordinate().getY();
+            if (robotY < antennaY) {
+                smallerThanAntenna.add(rd.getPlayer());
+            } else if (robotY > antennaY) {
+                greaterThanAntenna.add(rd.getPlayer());
+            } else {
+                playerPriority.add(rd.getPlayer());
+            }
+        }
+        playerPriority.addAll(greaterThanAntenna);
+        playerPriority.addAll(smallerThanAntenna);
     }
 
     public ArrayList<RobotDistance> sortDistance(Coordinate antenna) {
