@@ -430,7 +430,18 @@ public class GameController extends Controller implements Updatable {
             case ShuffleCoding -> {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
                 if(shuffleCoding.getPlayerID() == client.getThisPlayersID()){
-                    //TODO programmingController.setShuffleC
+                    infoPane.setVisible(true);
+                    Platform.runLater(() -> infoLabel.setText("You're cards are shuffled"));
+                    Timer t = new Timer();
+                    t.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            if (infoLabel.getText().equals("You're cards are shuffled")) {
+                                Platform.runLater(() -> infoPane.setVisible(false));
+                            }
+                            t.cancel();
+                        }
+                    }, 2000);
                 } else {
                     othersController.setShuffleCodingLabel(shuffleCoding);
                 }
