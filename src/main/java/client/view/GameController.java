@@ -380,7 +380,11 @@ public class GameController extends Controller implements Updatable {
             }
             case ShuffleCoding -> {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                othersController.setShuffleCodingLable(shuffleCoding);
+                if(shuffleCoding.getPlayerID() == client.getThisPlayersID()){
+                    //TODO programmingController.setShuffleC
+                } else {
+                    othersController.setShuffleCodingLabel(shuffleCoding);
+                }
             }
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();

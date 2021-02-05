@@ -17,7 +17,7 @@
         </ImageView>
         <Label fx:id="infoLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="6.0" layoutY="34.0" prefHeight="37.0" prefWidth="79.0" textFill="WHITE" wrapText="true">
             <font>
-                <Font name="System Bold" size="14.0" />
+                <Font name="System Bold" size="11.0" />
             </font>
         </Label>
         <HBox fx:id="registerHBox" layoutY="93.0" prefHeight="30.0" prefWidth="101.0" />
