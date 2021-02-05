@@ -14,7 +14,7 @@ import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
 
 /**
  * In this class the players put down their programming cards for the five registers.
@@ -218,17 +218,16 @@ public class ProgrammingPhase extends Phase {
 
     private void fillRegisters(Player player) {
         logger.info(player.getID() + " has to fill his register randomly");
-        Random random = new Random();
-        for (int register = 1; register < 6; register++) {
-            ArrayList<Card> availableCards = player.getDrawnProgrammingCards();
-
-            //choose a card depending on a randomly generated index
-            Card randomElement = availableCards.get(random.nextInt(availableCards.size()));
-            if (register == 1 && randomElement.getName() == CardType.Again) {
-                fillRegisters(player);
+        logger.info(player.getID() + " has drawn 5 cards: " + player.getDrawnProgrammingCards());
+        Collections.shuffle(player.getDrawnProgrammingCards());
+        logger.info(player.getID() + " shuffled his cards: " + player.getDrawnProgrammingCards());
+        if (player.getDrawnProgrammingCards().get(0).getName() == CardType.Again ) {
+            logger.info(player.getID() + " had to shuffle his cards again because first card was 'Again'");
+            fillRegisters(player);
+        } else {
+            for (int register = 1; register < 6; register++) {
+                player.setRegisterCards(register, player.getDrawnProgrammingCards().get(register-1));
             }
-            player.setRegisterCards(register, randomElement);
-            player.getDrawnProgrammingCards().remove(randomElement);
         }
     }
 
