@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
+import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
@@ -21,8 +22,6 @@ import utilities.SoundHandler;
 import utilities.Updatable;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
-import utilities.enums.MessageType;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -41,7 +40,7 @@ public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     private final ArrayList<Player> activePlayers = new ArrayList<>();
-    private final ArrayList<MessageType> currentAction = new ArrayList<>();
+    private final ArrayList<JSONBody> currentAction = new ArrayList<>();
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
     private ProgrammingController programmingController;
@@ -59,12 +58,14 @@ public class GameController extends Controller implements Updatable {
     private SoundHandler soundHandler;
 
     private GameState currentPhase = GameState.CONSTRUCTION;
-    private int interval;
     private int currentRound = 1;
     private boolean first = true;
     private boolean isMuted = true;
     private boolean play = false;
 
+    public Pane infoPane;
+    @FXML
+    private  Label moveInfo;
     @FXML
     private HBox otherPlayerSpace;
     @FXML
@@ -217,6 +218,35 @@ public class GameController extends Controller implements Updatable {
         }
     }
 
+    private void setDisplayAction(ArrayList<JSONBody> currentAction) {
+        StringBuilder text = new StringBuilder(" ");
+        if (currentAction.size() == 1) {
+            if (Energy.class.equals(currentAction.get(0).getClass())) {
+                text.append("You got energy");
+            } else if (Movement.class.equals(currentAction.get(0).getClass())) {
+                text.append("You moved 1");
+            } else if (PlayerTurning.class.equals(currentAction.get(0).getClass())) {
+                text.append("You turned");
+            } else text.append("You performed the card on top of your deck");
+        } else if (currentAction.size() == 2) {
+            if (Movement.class.equals(currentAction.get(0).getClass()) && Movement.class.equals(currentAction.get(1).getClass())) {
+                text.append("You moved 2");
+            } else if (PlayerTurning.class.equals(currentAction.get(0).getClass()) && PlayerTurning.class.equals(currentAction.get(1).getClass())) {
+                text.append("You performed an UTurn");
+            } else text.append("You performed the card on top of your deck");
+        } else if (currentAction.size() == 3) {
+            if (Movement.class.equals(currentAction.get(0).getClass()) && Movement.class.equals(currentAction.get(1).getClass()) && Movement.class.equals(currentAction.get(2).getClass())) {
+                text.append("You moved 3");
+            } else {
+                text.append("You performed the card on top of your deck");
+            }
+        }
+
+        moveInfo.setText(String.valueOf(text));
+
+    }
+
+    private boolean currentCardIsDamage = false;
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -258,13 +288,13 @@ public class GameController extends Controller implements Updatable {
             }
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
-                currentAction.add(message.getType());
+                currentAction.add(msg);
 
                 gameBoardController.handleMovement(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
             }
             case PlayerTurning -> {
                 PlayerTurning pT = (PlayerTurning) message.getBody();
-                currentAction.add(message.getType());
+                currentAction.add(pT);
 
                 gameBoardController.handlePlayerTurning(client.getPlayerFromID(pT.getPlayerID()), pT.getDirection());
             }
@@ -323,8 +353,9 @@ public class GameController extends Controller implements Updatable {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
                 ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
                 for (RegisterCard registerCard : currentCards.getActiveCards()) {
-                    if (registerCard.getPlayerID() == client.getThisPlayersID())
+                    if (registerCard.getPlayerID() == client.getThisPlayersID()){
                         activationController.currentCards(registerCard.getCard());
+                    }
                     else otherPlayer.add(registerCard);
                 }
                 othersController.currentCards(otherPlayer);
@@ -337,9 +368,15 @@ public class GameController extends Controller implements Updatable {
 
                 for (int i = 0; i < currentCards.getActiveCards().size(); i++) {
                     if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
-                        for (CardType damageCard : damageCards) {
-                            if (currentCards.getActiveCards().get(i).getCard() == damageCard)
-                                playerMatController.subtractPlayerCards(1);
+                        if(damageCards.contains(currentCards.getActiveCards().get(i).getCard())){
+                            playerMatController.subtractPlayerCards(1);
+                            currentCardIsDamage = true;
+                            System.out.println("currentCardIsDamage = true;");
+                        } else {
+                            currentCardIsDamage = false;
+                            System.out.println("currentCardIsDamage = false;");
+
+
                         }
                     }
                 }
@@ -352,8 +389,11 @@ public class GameController extends Controller implements Updatable {
 
                     constructionController.currentPlayer(isThisPlayer);
                 } else if (currentPhase == GameState.ACTIVATION) {
-                    if (!isThisPlayer) {
-                        activationController.getPlayCardController().setDisplayAction(currentAction);
+                    if (currentCardIsDamage) {
+                        setDisplayAction(currentAction);
+                        infoPane.setVisible(true);
+                    } else {
+                        infoPane.setVisible(false);
                     }
                     currentAction.clear();
                     activationController.getPlayCardController().currentPlayer(isThisPlayer);
@@ -364,7 +404,8 @@ public class GameController extends Controller implements Updatable {
                 Energy energy = (Energy) message.getBody();
                 if (energy.getPlayerID() == client.getThisPlayersID()) {
                     playerMatController.addEnergy(energy.getCount());
-                    currentAction.add(message.getType());
+                    currentAction.add(energy);
+
                 } else {
                     othersController.addEnergy(energy);
                 }
