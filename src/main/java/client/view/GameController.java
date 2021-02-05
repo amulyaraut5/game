@@ -41,7 +41,7 @@ public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
     private final ArrayList<Player> activePlayers = new ArrayList<>();
-
+    private final ArrayList<MessageType> currentAction = new ArrayList<>();
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
     private ProgrammingController programmingController;
@@ -62,7 +62,6 @@ public class GameController extends Controller implements Updatable {
     private int interval;
     private int currentRound = 1;
     private boolean first = true;
-    private final ArrayList<MessageType> currentAction = new ArrayList<>();
     private boolean isMuted = true;
     private boolean play = false;
 
@@ -430,10 +429,7 @@ public class GameController extends Controller implements Updatable {
                     soundHandler.musicOff();
                 }
             }
-            case P -> {
-                if (play) play = false;
-                else play = true;
-            }
+            case P -> play = !play;
         }
         if (!orientation.equals("")) {
             client.sendMessage(new SendChat("#r " + orientation, -1));

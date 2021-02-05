@@ -184,11 +184,10 @@ public class AIClient extends Client {
     }
 
     private void chooseCards(YourCards yourCards) {
-        ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
-
+//        ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
 //        for (int i = 0; i < 5; i++) {
 //            int rdm = new Random().nextInt(availableCards.size());
-//            client.sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
+//            sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
 //            availableCards.remove(rdm);
 //        }
 

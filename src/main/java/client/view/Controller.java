@@ -46,7 +46,7 @@ public abstract class Controller {
     }
 
     public void setCountSpamCards(int countSpamCards) {
-        if ((countSpamCards < 0)) Controller.countSpamCards = 0;
+        if (countSpamCards < 0) Controller.countSpamCards = 0;
         else Controller.countSpamCards = countSpamCards;
     }
 
@@ -55,7 +55,7 @@ public abstract class Controller {
     }
 
     public void setCountTrojanCards(int countTrojanCards) {
-        if ((countTrojanCards < 0)) Controller.countTrojanCards = 0;
+        if (countTrojanCards < 0) Controller.countTrojanCards = 0;
         else Controller.countTrojanCards = countTrojanCards;
     }
 
@@ -64,7 +64,7 @@ public abstract class Controller {
     }
 
     public void setCountWormCards(int countWormCards) {
-        if ((countWormCards < 0)) Controller.countWormCards = 0;
+        if (countWormCards < 0) Controller.countWormCards = 0;
         else Controller.countWormCards = countWormCards;
     }
 
@@ -73,7 +73,7 @@ public abstract class Controller {
     }
 
     public void setCountVirusCards(int countVirusCards) {
-        if ((countVirusCards < 0)) Controller.countVirusCards = 0;
+        if (countVirusCards < 0) Controller.countVirusCards = 0;
         else Controller.countVirusCards = countVirusCards;
     }
 
@@ -98,8 +98,7 @@ public abstract class Controller {
     protected CardType generateCardType(String imageDropped) {
         String[] a = imageDropped.split("/");
         String imageName = a[a.length - 1];
-        CardType cardName = CardType.valueOf(imageName.substring(0, imageName.length() - 9));
-        return cardName;
+        return CardType.valueOf(imageName.substring(0, imageName.length() - 9));
     }
 
     public ImageView getProgrammingImageView() {

@@ -264,9 +264,8 @@ public class ActivationPhase extends Phase {
             case Virus -> {
                 int robotX = robot.getCoordinate().getX();
                 int robotY = robot.getCoordinate().getY();
-                ArrayList<Player> allPlayers = players;
 
-                for (Player otherPlayer : allPlayers) {
+                for (Player otherPlayer : players) {
                     int otherRobotX = otherPlayer.getRobot().getCoordinate().getX();
                     int otherRobotY = otherPlayer.getRobot().getCoordinate().getY();
 

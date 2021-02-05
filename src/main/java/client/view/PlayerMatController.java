@@ -1,6 +1,5 @@
 package client.view;
 
-
 import game.Player;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,7 +22,7 @@ import utilities.enums.CardType;
 /**
  * @author sarah
  */
-public class PlayerMatController extends Controller{
+public class PlayerMatController extends Controller {
 
     @FXML
     private HBox registerHBoxBackground;
@@ -70,9 +69,7 @@ public class PlayerMatController extends Controller{
         createRegisterNumberImages();
         createRegisterBackground();
         createRegisters();
-
     }
-
 
     protected void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> setOnDragOver(e, pane));
@@ -80,7 +77,7 @@ public class PlayerMatController extends Controller{
         pane.setOnDragDone(e -> setOnDragDone());
     }
 
-    private void  setOnDragOver(DragEvent e, Pane pane){
+    private void setOnDragOver(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
         if (db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
@@ -93,62 +90,61 @@ public class PlayerMatController extends Controller{
             if (againNotFirst) e.acceptTransferModes(TransferMode.MOVE);
         }
     }
-    private void setOnDragExited(DragEvent e, Pane pane){
+
+    private void setOnDragExited(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
         if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
         else playerMatInfoLabel.setText(" ");
-        if (db.hasContent(cardFormat) && getProgrammingImageView()!= null && againNotFirst) {
-            ((Pane)getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
+        if (db.hasContent(cardFormat) && getProgrammingImageView() != null && againNotFirst) {
+            ((Pane) getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
             droppedImageView = createImageView(getProgrammingImageView(), positionDroppedCard);
             pane.getChildren().add(droppedImageView);
         }
     }
-    private void setOnDragDone(){
+
+    private void setOnDragDone() {
         CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
         if (getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
-        switch(cardType){
-            case Spam -> {setCountSpamCards(getCountSpamCards()+1);}
-            case Virus -> { setCountVirusCards(getCountVirusCards()+1);}
-            case Trojan -> { setCountTrojanCards(getCountTrojanCards()+1);}
-            case Worm -> { setCountWormCards(getCountWormCards()+1); }
+        switch (cardType) {
+            case Spam -> setCountSpamCards(getCountSpamCards() + 1);
+            case Virus -> setCountVirusCards(getCountVirusCards() + 1);
+            case Trojan -> setCountTrojanCards(getCountTrojanCards() + 1);
+            case Worm -> setCountWormCards(getCountWormCards() + 1);
         }
         client.sendMessage(new SelectCard(cardType, positionDroppedCard));
     }
 
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
-        programmingCardImageView.setOnDragDetected(event-> {
-                setWasFormerRegister(true);
-                Dragboard dragboard = programmingCardImageView.startDragAndDrop(TransferMode.MOVE);
-                dragboard.setDragView(programmingCardImageView.snapshot(null, null));
-                ClipboardContent cc2 = new ClipboardContent();
-                cc2.put(cardFormat, "cardName");
-                dragboard.setContent(cc2);
-                setPosition(position);
-                setProgrammingImageView(programmingCardImageView);
-
-            });
+        programmingCardImageView.setOnDragDetected(event -> {
+            setWasFormerRegister(true);
+            Dragboard dragboard = programmingCardImageView.startDragAndDrop(TransferMode.MOVE);
+            dragboard.setDragView(programmingCardImageView.snapshot(null, null));
+            ClipboardContent cc2 = new ClipboardContent();
+            cc2.put(cardFormat, "cardName");
+            dragboard.setContent(cc2);
+            setPosition(position);
+            setProgrammingImageView(programmingCardImageView);
+        });
 
         return programmingCardImageView;
     }
 
-    public void reset(){
+    public void reset() {
         registerHBox.getChildren().clear();
         createRegisters();
         createRegisterBackground();
     }
 
-
-    private void createRegisters(){
+    private void createRegisters() {
         int register = 5;
-        for(int i = 0; i< register; i++) {
+        for (int i = 0; i < register; i++) {
             StackPane pane = new StackPane();
             pane.setPrefHeight(heightRegisterCard);
-            pane.setPrefWidth(widthRegisterCard-20);
+            pane.setPrefWidth(widthRegisterCard - 20);
             addDropHandling(pane);
             registerHBox.getChildren().add(pane);
         }
     }
-
 
     public void loadPlayerMap(Player player) {
         String name = robotNames[player.getFigure()];
@@ -156,37 +152,32 @@ public class PlayerMatController extends Controller{
         playerMapLabelName.setText(player.getName() + " " + player.getID());
     }
 
-
     private void addImage(Image i, StackPane pane) {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(widthRegisterCard - 20);
         imageView.setFitHeight(heightRegisterCard);
         imageView.setImage(i);
         pane.getChildren().add(imageView);
-
-
     }
-
 
     public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow) {
         registerHBox.getChildren().clear();
         for (CardType card : cardsYouGotNow.getCards()) {
             StackPane pane = new StackPane();
             pane.setPrefHeight(heightRegisterCard);
-            pane.setPrefWidth(widthRegisterCard-20);
+            pane.setPrefWidth(widthRegisterCard - 20);
             addImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()), pane);
             registerHBox.getChildren().add(pane);
         }
     }
 
     public void fixSelectedCards() {
-        if(registerHBox.getChildren().size()>0){
-            for(int i = registerHBoxBackground.getChildren().size()-1; i >= 0; i--) {
+        if (registerHBox.getChildren().size() > 0) {
+            for (int i = registerHBoxBackground.getChildren().size() - 1; i >= 0; i--) {
                 registerHBoxBackground.getChildren().set(i, registerHBox.getChildren().get(i));
             }
             registerHBox.getChildren().clear();
         }
-
     }
 
     private void createRegisterNumberImages() {
@@ -200,7 +191,7 @@ public class PlayerMatController extends Controller{
             ImageView imageView = ImageHandler.createImageView(path, width, height);
             imageView.setTranslateX(positionX);
             imageView.setTranslateY(positionY);
-            positionX = positionX + widthRegisterCard +  3;
+            positionX = positionX + widthRegisterCard + 3;
             playerMapAnchorPane.getChildren().add(imageView);
         }
     }
@@ -208,18 +199,18 @@ public class PlayerMatController extends Controller{
     private void createRegisterBackground() {
         registerHBoxBackground.getChildren().clear();
         String path = "/cards/programming/backside-card.png";
-        int width = (int) (widthRegisterCard-20);
+        int width = (int) (widthRegisterCard - 20);
         int height = (int) heightRegisterCard;
         for (int i = 0; i <= 4; i++) {
             registerHBoxBackground.getChildren().add(ImageHandler.createImageView(path, width, height));
         }
     }
 
-    public void checkPointReached(int number){
+    public void checkPointReached(int number) {
         int fitHeightWidth;
         String path = "/tiles/controlPoint/controlPoint_" + number + ".png";
-        if(checkPointsHBox.getChildren().size()<4) fitHeightWidth = 35;
-        else{
+        if (checkPointsHBox.getChildren().size() < 4) fitHeightWidth = 35;
+        else {
             for (Node node : checkPointsHBox.getChildren()) {
                 if (node.getClass().equals(ImageView.class)) {
                     ImageView im = (ImageView) node;
@@ -233,13 +224,13 @@ public class PlayerMatController extends Controller{
         checkPointsHBox.getChildren().add(imageView);
     }
 
-    public void addEnergy(int count){
+    public void addEnergy(int count) {
         int fitHeightWidth;
-        while(count>0){
+        while (count > 0) {
             ImageView energyCube = new ImageView(energyCubeImage);
-            if(energyHBox.getChildren().size()>9){
-                for (Node node : energyHBox.getChildren()){
-                    if(node.getClass().equals(energyCube.getClass())){
+            if (energyHBox.getChildren().size() > 9) {
+                for (Node node : energyHBox.getChildren()) {
+                    if (node.getClass().equals(energyCube.getClass())) {
                         ImageView im = (ImageView) node;
                         im.setFitWidth(10);
                         im.setFitHeight(10);
@@ -252,7 +243,7 @@ public class PlayerMatController extends Controller{
             energyCube.setFitHeight(fitHeightWidth);
             energyCube.setFitWidth(fitHeightWidth);
             energyHBox.getChildren().add(energyCube);
-            count --;
+            count--;
         }
     }
 
@@ -260,10 +251,11 @@ public class PlayerMatController extends Controller{
      * Sets the number of the Discard Deck.
      * If the amount is 0, the number is reset to 0.
      * Otherwise, the amount is added to the current number.
+     *
      * @param amount
      */
-    public void setDiscardDeckCounter(int amount){
-        if(amount == 0){
+    public void setDiscardDeckCounter(int amount) {
+        if (amount == 0) {
             discardDeckNr = 0;
             discardDeckLabel.setText(amount + "cards");
         } else {
@@ -276,10 +268,11 @@ public class PlayerMatController extends Controller{
      * Sets the number of the Programming Deck.
      * If the amount is equal to the playercards, the number is reset.
      * Otherwise, the amount is subtracted from the current number.
+     *
      * @param amount
      */
-    public void setProgrammingDeckCounter(int amount){
-        if(amount == playerCards){
+    public void setProgrammingDeckCounter(int amount) {
+        if (amount == playerCards) {
             programmingDeckNr = playerCards;
             programmingDeckLabel.setText(amount + "cards");
         } else {
@@ -292,9 +285,10 @@ public class PlayerMatController extends Controller{
      * Checks if the number of the programming deck is smaller than the amount to be subtracted,
      * if so, the deck is reset and then the amount is subtracted.
      * Otherwise, the amount is subtracted from the deck.
+     *
      * @param amount the amount to be subtracted
      */
-    public void resetDeckCounter(int amount){
+    public void resetDeckCounter(int amount) {
         if (getProgrammingDeckNr() < amount) {
             setDiscardDeckCounter(0);
             setProgrammingDeckCounter(getPlayerCards());
@@ -304,6 +298,7 @@ public class PlayerMatController extends Controller{
 
     /**
      * The playerCards are increased by the amount.
+     *
      * @param amount
      */
     public void addPlayerCards(int amount) {
@@ -312,6 +307,7 @@ public class PlayerMatController extends Controller{
 
     /**
      * The playerCards are decreased by the amount.
+     *
      * @param amount
      */
     public void subtractPlayerCards(int amount) {

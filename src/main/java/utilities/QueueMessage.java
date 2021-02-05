@@ -1,11 +1,11 @@
-package server;
+package utilities;
 
+import server.User;
 import utilities.JSONProtocol.JSONMessage;
 
 public class QueueMessage {
     private final JSONMessage jsonMessage;
     private final User user;
-
 
     public QueueMessage(JSONMessage jsonMessage, User user) {
         this.jsonMessage = jsonMessage;

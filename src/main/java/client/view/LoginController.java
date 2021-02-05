@@ -19,6 +19,7 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerValues;
 import utilities.Updatable;
+import utilities.enums.MessageType;
 
 /**
  * This class controls the loginView.fxml view, it takes the name and the chosen robot, sends it to
@@ -141,11 +142,9 @@ public class LoginController extends Controller implements Updatable {
 
     @Override
     public void update(JSONMessage message) {
-        switch (message.getType()) {
-            case Error -> {
-                Error error = (Error) message.getBody();
-                infoLabel.setText(error.getError());
-            }
+        if (message.getType() == MessageType.Error) {
+            Error error = (Error) message.getBody();
+            infoLabel.setText(error.getError());
         }
     }
 

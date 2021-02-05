@@ -12,7 +12,9 @@ import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
-public abstract class MapConverter {
+public final class MapConverter {
+    private MapConverter() {
+    }
 
     public static GameStarted convert(Map map) {
         Tile[][] tiles = map.getTiles();

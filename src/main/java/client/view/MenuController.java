@@ -11,6 +11,7 @@ import server.Server;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.Updatable;
+import utilities.enums.MessageType;
 
 /**
  * The MenuController is the Controller for the main menu view.
@@ -62,11 +63,9 @@ public class MenuController extends Controller implements Updatable {
 
     @Override
     public void update(JSONMessage message) {
-        switch (message.getType()) {
-            case Error -> {
-                Error error = (Error) message.getBody();
-                infoLabel.setText(error.getError());
-            }
+        if (message.getType() == MessageType.Error) {
+            Error error = (Error) message.getBody();
+            infoLabel.setText(error.getError());
         }
     }
 }

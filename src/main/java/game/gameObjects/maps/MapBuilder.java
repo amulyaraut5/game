@@ -7,25 +7,11 @@ import game.gameObjects.tiles.TileFactory;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 
-import java.util.ArrayList;
-
 /**
  *
  */
-public class MapBuilder {
-
-    private static MapBuilder instance;
-    private ArrayList<Blueprint> blueprints;
-
+public final class MapBuilder {
     private MapBuilder() {
-        generateMaps();
-    }
-
-    public static MapBuilder getInstance() {
-        if (instance == null) {
-            instance = new MapBuilder();
-        }
-        return instance;
     }
 
     public static Map constructMap(Blueprint blueprint) {
@@ -49,6 +35,7 @@ public class MapBuilder {
         return new Map(tiles);
     }
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     public static boolean isRebootOnTiles(Tile[][] tiles) {
         for (int x = 0; x < (tiles.length); x++) {
             for (int y = 0; y < (tiles[0].length); y++) {
@@ -60,33 +47,5 @@ public class MapBuilder {
             }
         }
         return false;
-    }
-
-    /**
-     * returns every map in the game
-     *
-     * @return maps list containing every map in the game
-     */
-    public ArrayList<Blueprint> getBlueprints() {
-        return blueprints;
-    }
-
-    /**
-     * returns the map with the matching id
-     *
-     * @param id the id of the map to request
-     * @return the requested map
-     */
-    public Blueprint getBlueprint(int id) {
-        return blueprints.get(id);
-    }
-
-    /**
-     * Adds the maps of the game to a ArrayList
-     */
-    private void generateMaps() {
-        blueprints = new ArrayList<>();
-        blueprints.add(new DizzyHighway());
-        blueprints.add(new RiskyCrossing());
     }
 }

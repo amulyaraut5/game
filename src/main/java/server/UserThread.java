@@ -2,11 +2,12 @@ package server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.HelloClient;
-import utilities.Constants;
+import utilities.QueueMessage;
 
 import java.io.*;
 import java.net.Socket;
@@ -65,7 +66,6 @@ public class UserThread extends Thread {
                     server.notify();
                 }
             }
-
         } catch (IOException ex) {
             disconnect(ex);
         }

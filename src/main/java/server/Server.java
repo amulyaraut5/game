@@ -9,6 +9,7 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.QueueMessage;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
 import utilities.enums.ServerState;
@@ -200,7 +201,7 @@ public class Server extends Thread {
         if (cheatMatcher.lookingAt()) {
             if (serverState == ServerState.RUNNING_GAME) {
                 game.handleCheat(message, user);
-            }else user.message(new Error("Cheats are deactivated at the lobby."));
+            } else user.message(new Error("Cheats are deactivated at the lobby."));
         } else {
             communicateUsers(new ReceivedChat(sc.getMessage(), user.getID(), false), user);
         }

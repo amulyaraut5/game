@@ -7,21 +7,21 @@ import javafx.scene.media.MediaPlayer;
 /**
  * This class loads different soundtracks from the resources and plays the music
  * based on different situations.
+ *
  * @author Amulya
  */
-public class SoundHandler{
+public class SoundHandler {
 
     private MediaPlayer mediaPlayer;
-    private AudioClip audioClip;
 
-
-    public SoundHandler() { }
+    public SoundHandler() {
+    }
 
     /**
      * musicOn() plays  general soundtrack throughout the game
      * if the player wishes to play.
      */
-    public void musicOn(){
+    public void musicOn() {
         Media m = new Media(getClass().getResource("/sounds/background_music.mp3").toExternalForm());
         mediaPlayer = new MediaPlayer(m);
         mediaPlayer.play();
@@ -30,15 +30,15 @@ public class SoundHandler{
     /**
      * musicOff() stops the music upon called.
      */
-    public void musicOff(){
+    public void musicOff() {
         mediaPlayer.stop();
     }
 
-
-    public void playSoundEffects(String s, boolean play){
-        if(play){
-            switch(s){
-                case "PitSound" ->{
+    public void playSoundEffects(String s, boolean play) {
+        if (play) {
+            AudioClip audioClip;
+            switch (s) {
+                case "PitSound" -> {
                     audioClip = new AudioClip(getClass().getResource("/sounds/pit-scream.mp3").toExternalForm());
                     audioClip.play();
                 }

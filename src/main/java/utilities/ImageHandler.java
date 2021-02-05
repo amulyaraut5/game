@@ -11,7 +11,9 @@ import java.io.InputStream;
  *
  * @author simon
  */
-public abstract class ImageHandler {
+public final class ImageHandler {
+    private ImageHandler() {
+    }
 
     /**
      * Creates an ImageView from the image at given path.

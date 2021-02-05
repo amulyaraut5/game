@@ -8,6 +8,15 @@ module roborally {
     requires com.jfoenix;
 
     exports client;
+    exports game;
+    exports server;
+    exports game.round;
+    exports game.gameObjects.decks;
+    exports game.gameObjects.cards;
+    exports utilities.enums;
+    exports utilities.JSONProtocol;
+    exports utilities.JSONProtocol.body;
+    exports game.gameObjects.robot;
     exports client.view to javafx.graphics;
     exports game.gameObjects.tiles to com.google.gson;
     exports game.gameObjects.maps to com.google.gson;

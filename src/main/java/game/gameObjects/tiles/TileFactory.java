@@ -8,23 +8,20 @@ import utilities.enums.Rotation;
 
 /**
  * This  class creates the different tiles.
- * @author Amulya
+ *
+ * @author Amulya, Simon
  */
-public class TileFactory {
+public final class TileFactory {
     private static final Logger logger = LogManager.getLogger();
-    private static TileFactory instance;
 
-    public static TileFactory getInstance() {
-        if (instance == null) {
-            instance = new TileFactory();
-        }
-        return instance;
+    private TileFactory() {
     }
 
     /**
      * This method creates the tile with specific attribute.
      * Depending upon the needs of map, we can create our own tile with
      * multiple attributes with different orientations.
+     *
      * @param
      * @return tile
      */
@@ -38,7 +35,6 @@ public class TileFactory {
             for (int j : idList) {
                 tile.addAttribute(convertIdToAttribute(j));
             }
-
         } else if (tileID instanceof Integer) {
             int attributeID = (int) tileID;
             tile.addAttribute(convertIdToAttribute(attributeID));
@@ -50,6 +46,7 @@ public class TileFactory {
     /**
      * Every integer represents a certain attribute.
      * Every Attribute has it's own specific id which can be used to create the tile.
+     *
      * @param attributeID
      * @return
      */
@@ -159,7 +156,6 @@ public class TileFactory {
             case 535 -> attribute = new PushPanel(Orientation.LEFT, new int[]{5});
             case 536 -> attribute = new PushPanel(Orientation.LEFT, new int[]{2, 4});
             case 537 -> attribute = new PushPanel(Orientation.LEFT, new int[]{1, 3, 5});
-
 
             //Laser
             case 601 -> attribute = new Laser(Orientation.UP, 1);

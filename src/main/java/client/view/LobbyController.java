@@ -15,10 +15,8 @@ import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
-import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.MapSelected;
 import utilities.JSONProtocol.body.PlayerStatus;
 import utilities.JSONProtocol.body.SetStatus;
 import utilities.Updatable;
@@ -46,7 +44,6 @@ public class LobbyController extends Controller implements Updatable {
 
     @FXML
     private Label infoLabel2;
-
 
     /**
      * this method gets called automatically by constructing view
@@ -86,7 +83,6 @@ public class LobbyController extends Controller implements Updatable {
         playerIcons.put(player, group);
     }
 
-
     /**
      * The robot image of the user who clicked the ready button gets changed. Now the icon has a pink
      * background to signal the ready status.
@@ -112,7 +108,7 @@ public class LobbyController extends Controller implements Updatable {
     private void checkBoxAction() {
         client.sendMessage(new SetStatus((readyCheckbox.isSelected())));
 
-        if(!readyCheckbox.isSelected()){
+        if (!readyCheckbox.isSelected()) {
             client.sendMessage(new SetStatus(false));
             infoLabel2.setText("Please wait till somebody selects the map.");
             MapSelectionController.getMapSelectionController().setSelected(false);
@@ -126,9 +122,9 @@ public class LobbyController extends Controller implements Updatable {
     }
 
     @FXML
-    private void goToMapSelection(ActionEvent event){
+    private void goToMapSelection(ActionEvent event) {
         viewManager.showMap();
-        if(!readyCheckbox.isSelected()){
+        if (!readyCheckbox.isSelected()) {
             MapSelectionController.getMapSelectionController().setInfoLabel("Click ready and wait for your turn to select map");
         }
     }

@@ -2,8 +2,7 @@ package utilities;
 
 import utilities.enums.Orientation;
 
-public abstract class Constants {
-
+public final class Constants {
     //Connection
     public static final int PORT = 5570;
     public static final double PROTOCOL = 1.0;
@@ -69,4 +68,7 @@ public abstract class Constants {
             WASD keys         |  rotates the robot
             ------------------------------------------
             """;
+
+    private Constants() {
+    }
 }
