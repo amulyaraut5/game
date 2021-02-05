@@ -68,6 +68,7 @@ public class Game {
     public void reset() {
         gameState = GameState.CONSTRUCTION;
         players = new ArrayList<>(6);
+        activePlayers = new ArrayList<>(6);
 
         spamDeck = new SpamDeck();
         virusDeck = new VirusDeck();
@@ -84,6 +85,7 @@ public class Game {
         ArrayList<User> users = server.getUsers();
         for (User user : users) {
             players.add(new Player(user));
+            activePlayers.add(userToPlayer(user));
         }
         server.communicateAll(MapConverter.convert(map));
         server.communicateAll(new ActivePhase(gameState));
