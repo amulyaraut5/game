@@ -1,4 +1,4 @@
-package utilities.JSONProtocol.body.gameStarted;
+package utilities;
 
 import game.gameObjects.tiles.Attribute;
 
@@ -7,9 +7,6 @@ import java.util.ArrayList;
 public class BoardElement {
     private int position;
     private ArrayList<Attribute> field = new ArrayList<>();
-
-    public BoardElement() {
-    }
 
     public BoardElement(int position, ArrayList<Attribute> field) {
         this.position = position;

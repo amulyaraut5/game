@@ -1,6 +1,5 @@
 package game.gameObjects.decks;
 
-import game.Player;
 import game.gameObjects.cards.Card;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,7 +65,7 @@ public abstract class Deck {
         return popped;
     }
 
-    public Card popThisCard(Card card){
+    public Card popThisCard(Card card) {
         int cardIndex = getDeck().indexOf(card);
         Card popped = getDeck().get(cardIndex);
         getDeck().remove(popped);
@@ -109,8 +108,6 @@ public abstract class Deck {
 
              */
     }
-
-    public abstract void handleEmptyDeck(Player player);
 
     /**
      * Returns the deck.

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 /**
  * This class handles the functionality of boardLasers as well as RobotLasers.
+ *
  * @author Amulya
  */
 
@@ -31,12 +32,14 @@ public class LaserAction {
     private ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
     private ArrayList<Coordinate> robotCoordinates = new ArrayList<>();
 
-    public LaserAction() { }
+    public LaserAction() {
+    }
 
     /**
      * This method calculates the end position of laser beam where it needs to be terminated.
      * The method takes consideration whether there is wall or any robot on the path and could
      * be abruptly interrupted.
+     *
      * @param position    Either robot position or position of a Laser tile.
      * @param orientation Either robot orientation or orientation of a Laser tile.
      * @param map
@@ -59,25 +62,26 @@ public class LaserAction {
             for (Attribute a : map.getTile(position).getAttributes()) {
                 if (a.getType() == AttributeType.Antenna) return position.subtract(step);
                 else if (a.getType() == AttributeType.Wall) {
-                        Wall wall = (Wall) a;
-                        for (Orientation wallOrientation : wall.getOrientations()) {
-                            if (wallOrientation == orientation.getOpposite()) { //ends if wall is crossing laser path
-                                return position.subtract(step);
-                            } else if (wallOrientation == orientation) {
-                                return position;
-                            }
+                    Wall wall = (Wall) a;
+                    for (Orientation wallOrientation : wall.getOrientations()) {
+                        if (wallOrientation == orientation.getOpposite()) { //ends if wall is crossing laser path
+                            return position.subtract(step);
+                        } else if (wallOrientation == orientation) {
+                            return position;
                         }
                     }
                 }
-                position.add(step);
             }
-            return position.subtract(step);
+            position.add(step);
+        }
+        return position.subtract(step);
     }
 
     /**
      * This methods checks whether there is wall or not on current tile.
      * Wall orientation is compared with the orientation of player or laser tile in order to decide
      * whether further traversing of laser beam is allowed or not.
+     *
      * @param position
      * @param orientation
      * @param map
@@ -172,10 +176,6 @@ public class LaserAction {
                 Orientation orientation = ((Laser) a).getOrientation();
                 Coordinate to = calculateLaserEnd(laserPos, orientation, map, game.getPlayers());
                 laserCoordinates = determinePath(laserPos, to, orientation);
-                /*logger.debug("BoardLaser: from " + laserPos + " to " + to);
-                for (Coordinate coordinate : laserCoordinates) {
-                    logger.debug("Coordinates " + coordinate);
-                }*/
             }
         }
     }
@@ -192,9 +192,5 @@ public class LaserAction {
         Coordinate to = calculateLaserEnd(robotPosition, orientation, map, game.getPlayers());
         robotCoordinates = determinePath(robotPosition, to, orientation);
         robotCoordinates.remove(0);
-        /*logger.debug("RobotLaser: from " + robotPosition + " to " + to);
-        for (Coordinate coordinate : robotCoordinates) {
-            logger.debug("Coordinates " + coordinate);
-        }*/
     }
 }

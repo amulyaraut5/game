@@ -50,7 +50,6 @@ public class ActivationPhase extends Phase {
     private final VirusDeck virusDeck = game.getVirusDeck();
     private final WormDeck wormDeck = game.getWormDeck();
 
-    private final ArrayList<Player> priorityList = calculatePriority(map.getAntenna());
     /**
      * keeps track of the current register
      */
@@ -236,7 +235,7 @@ public class ActivationPhase extends Phase {
                 player.setEnergyCubes(player.getEnergyCubes() + 1);
                 server.communicateAll(new Energy(player.getID(), 1));
             }
-            case Again -> handleRecursion(player, orientation);
+            case Again -> handleRecursion(player);
 
             case Spam -> {
                 //Add spam card back into the spam deck
@@ -299,7 +298,7 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void handleRecursion(Player player, Orientation orientation) {
+    public void handleRecursion(Player player) {
         if (currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
         else if (currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
@@ -490,10 +489,6 @@ public class ActivationPhase extends Phase {
             }
         }
         return isRebooting;
-    }
-
-    public ArrayList<Player> getPriorityList() {
-        return priorityList;
     }
 
     /**

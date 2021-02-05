@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import utilities.ImageHandler;
-import utilities.JSONProtocol.body.DrawDamage;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -80,6 +78,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This
+     *
      * @param card
      */
     public void currentCard(CardType card) {
@@ -90,6 +89,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method sets the text of infoLabel2 and displays it only for a short amount of time
+     *
      * @param text which gets added to the label
      */
     public void setInfoLabel2(String text) {
@@ -99,6 +99,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method sets the text of infoLabel
+     *
      * @param text which gets added to the label
      */
     public void setInfoLabel(String text) {
@@ -107,6 +108,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method sets the text of checkboxLabel to a number
+     *
      * @param number of last checkpoint the player reached
      */
     public void addCheckPoint(int number) {
@@ -116,6 +118,7 @@ public class OnePlayerController extends Controller {
     /**
      * The method sets if a player put a card in a register. It only displays which register is already filled, not which
      * card
+     *
      * @param registerSelected
      */
     public void cardSelected(int registerSelected) {
@@ -125,6 +128,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method adds energy and displays this increase in the energyLabel
+     *
      * @param energyCount the amount of energy token that get added
      */
     public void addEnergy(int energyCount) {
@@ -134,6 +138,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method sets the HBox of the registers visible or invisible
+     *
      * @param visible
      */
     public void setHBoxRegisterVisible(boolean visible) {
@@ -153,6 +158,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method only displays a label for 5 seconds
+     *
      * @param node that gets set visible
      */
     public void displayingTime(Node node) {
@@ -171,12 +177,13 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method displays the images of the amount of damage cards for 5 seconds
+     *
      * @param damageCards this contains an array with CardTypes of damage cards
      */
     public void displayDamageCards(ArrayList<CardType> damageCards) {
         drawDamageHBox.getChildren().clear();
-        for (int i = 0; i < damageCards.size(); i++) {
-            String path = "/cards/programming/" + damageCards.get(i).name() + "-card.png";
+        for (CardType damageCard : damageCards) {
+            String path = "/cards/programming/" + damageCard.name() + "-card.png";
             ImageView damage = generateImageView(path, 30, 50);
             drawDamageHBox.getChildren().add(damage);
         }

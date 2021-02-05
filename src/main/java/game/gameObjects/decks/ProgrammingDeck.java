@@ -1,6 +1,5 @@
 package game.gameObjects.decks;
 
-import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.programming.*;
 
@@ -13,9 +12,6 @@ import static utilities.Constants.*;
  */
 public class ProgrammingDeck extends Deck {
     private ArrayList<Card> programmingDeck;
-
-    DiscardDeck discardDeck = new DiscardDeck();
-
 
     public ProgrammingDeck() {
         createDeck();
@@ -69,12 +65,6 @@ public class ProgrammingDeck extends Deck {
         for (int i = 0; i < AGAIN_CARDCOUNT; i++) {
             addCard(new Again());
         }
-    }
-
-    @Override
-    public void handleEmptyDeck(Player player) {
-        //player.getDiscardedProgrammingDeck().refillProgrammingDeck(this);
-        //player.message(new ShuffleCoding(player.getID()));
     }
 
     @Override

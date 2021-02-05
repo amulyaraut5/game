@@ -12,8 +12,4 @@ public class GameWon extends JSONBody {
     public int getPlayerID() {
         return playerID;
     }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
-    }
 }

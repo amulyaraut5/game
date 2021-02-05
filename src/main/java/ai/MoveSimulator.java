@@ -113,10 +113,10 @@ public class MoveSimulator {
         for (Coordinate coordinate : belts) {
             if (coordinate.equals(resPosition)) {
                 for (Attribute a : map.getTile(coordinate).getAttributes()) {
-                    if (a.getType() == AttributeType.Belt) {
+                    if (a instanceof Belt) {
                         orientation = ((Belt) a).getOrientation();
                     }
-                    if (a.getType() == AttributeType.RotatingBelt) {
+                    if (a instanceof RotatingBelt) {
                         orientation = ((RotatingBelt) a).getOrientations()[0];
                     }
                     handleMove(orientation);

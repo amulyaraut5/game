@@ -58,7 +58,7 @@ public class ProgrammingPhase extends Phase {
             for (Card card : player.getDrawnProgrammingCards()) {
                 cards.add(card.getName());
             }
-            player.message(new YourCards(cards, player.getID()));
+            player.message(new YourCards(cards, player.getID())); //FIXME send cardsInPile instead of ID!
             server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
         }
     }
@@ -118,7 +118,7 @@ public class ProgrammingPhase extends Phase {
                 }
             }
 
-        //if a card was removed, remove the card from the register and put it in the hand cards
+            //if a card was removed, remove the card from the register and put it in the hand cards
         } else {
             logger.info(player.getID() + " has moved a card out of his register");
             Card removeCard = player.getRegisterCard(selectCard.getRegister());
@@ -221,12 +221,12 @@ public class ProgrammingPhase extends Phase {
         logger.info(player.getID() + " has drawn 5 cards: " + player.getDrawnProgrammingCards());
         Collections.shuffle(player.getDrawnProgrammingCards());
         logger.info(player.getID() + " shuffled his cards: " + player.getDrawnProgrammingCards());
-        if (player.getDrawnProgrammingCards().get(0).getName() == CardType.Again ) {
+        if (player.getDrawnProgrammingCards().get(0).getName() == CardType.Again) {
             logger.info(player.getID() + " had to shuffle his cards again because first card was 'Again'");
             fillRegisters(player);
         } else {
             for (int register = 1; register < 6; register++) {
-                player.setRegisterCards(register, player.getDrawnProgrammingCards().get(register-1));
+                player.setRegisterCards(register, player.getDrawnProgrammingCards().get(register - 1));
             }
         }
     }

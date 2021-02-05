@@ -38,26 +38,18 @@ public class RotatingBelt extends Attribute {
 
         switch (orientations[0]) {
             case UP -> {
-                if (orientations[1] == Orientation.RIGHT) {
-                    imageView.setScaleX(-1f);
-                }
+                if (orientations[1] == Orientation.RIGHT) imageView.setScaleX(-1f);
             }
             case RIGHT -> {
-                if (orientations[1] == Orientation.DOWN) {
-                    imageView.setScaleX(-1f);
-                }
+                if (orientations[1] == Orientation.DOWN) imageView.setScaleX(-1f);
                 imageView.setRotate(90);
             }
             case DOWN -> {
-                if (orientations[1] == Orientation.LEFT) {
-                    imageView.setScaleX(-1f);
-                }
+                if (orientations[1] == Orientation.LEFT) imageView.setScaleX(-1f);
                 imageView.setRotate(180);
             }
             case LEFT -> {
-                if (orientations[1] == Orientation.UP) {
-                    imageView.setScaleX(-1f);
-                }
+                if (orientations[1] == Orientation.UP) imageView.setScaleX(-1f);
                 imageView.setRotate(270);
             }
         }

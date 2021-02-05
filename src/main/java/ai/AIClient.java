@@ -4,12 +4,11 @@ import client.model.Client;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
+import utilities.Constants;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
-import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
-import utilities.Constants;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
 import utilities.enums.MessageType;
@@ -67,7 +66,7 @@ public class AIClient extends Client {
         MessageType type = message.getType();
 
         switch (type) {
-            case TimerStarted, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
+            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
                 //TODO nothing
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
@@ -93,10 +92,6 @@ public class AIClient extends Client {
                     sendMessage(new SetStatus(true));
                 }
             }
-            case Error -> {
-                Error error = (Error) message.getBody();
-                //TODO catch error? e.g. if startingpoint is alreage taken
-            }
             case ConnectionUpdate -> {
                 //TODO remove player
             }
@@ -121,10 +116,6 @@ public class AIClient extends Client {
             case CardsYouGotNow -> {
                 CardsYouGotNow msg = (CardsYouGotNow) message.getBody();
                 //TODO getPlayerFromID(thisPlayersID).setDrawnProgrammingCards(msg.getCards());
-            }
-            case SelectionFinished -> {
-                SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
-                //TODO nothing
             }
             case CurrentCards -> {
                 //TODO
@@ -254,9 +245,5 @@ public class AIClient extends Client {
             String name = b.get(0) + "_AI";
             sendMessage(new PlayerValues(name, b.get(0)));
         }
-    }
-
-    public Map getMap() {
-        return map;
     }
 }

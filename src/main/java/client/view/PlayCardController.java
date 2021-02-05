@@ -6,9 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import utilities.JSONProtocol.body.PlayIt;
-import utilities.enums.MessageType;
-
-import java.util.ArrayList;
 
 public class PlayCardController extends Controller {
 
@@ -29,7 +26,6 @@ public class PlayCardController extends Controller {
     public ImageView getCurrentCardImageView() {
         return currentCardImageView;
     }
-
 
     /**
      * This method displays if player is current player and sets play It button disable (or not)

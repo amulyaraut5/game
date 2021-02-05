@@ -6,7 +6,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -86,7 +89,7 @@ public class ProgrammingController extends Controller {
         programmingCard.setFitWidth(widthHBox - 20);
         programmingCard.setOnDragDetected(event -> {
             setWasFormerRegister(false);
-            setOnDragDetected(event, programmingCard);
+            setOnDragDetected(programmingCard);
         });
 
         return programmingCard;
@@ -109,12 +112,12 @@ public class ProgrammingController extends Controller {
                 && pane.getChildren().isEmpty()) {
             ((Pane) getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
             ImageView puffer = getProgrammingImageView();
-            puffer.setOnDragDetected(event -> setOnDragDetected(event, puffer));
+            puffer.setOnDragDetected(event -> setOnDragDetected(puffer));
             pane.getChildren().add(puffer);
         }
     }
 
-    private void setOnDragDetected(MouseEvent dragDetected, ImageView imageView) {
+    private void setOnDragDetected(ImageView imageView) {
         Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
         dragboard.setDragView(imageView.snapshot(null, null));
         ClipboardContent cc2 = new ClipboardContent();

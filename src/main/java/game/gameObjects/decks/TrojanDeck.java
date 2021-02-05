@@ -1,6 +1,5 @@
 package game.gameObjects.decks;
 
-import game.Player;
 import game.gameObjects.cards.Card;
 import game.gameObjects.cards.damage.Trojan;
 
@@ -29,11 +28,6 @@ public class TrojanDeck extends DamageCardDeck {
         for (int i = 0; i < TROJANHORSE_CARDCOUNT; i++) {
             trojanDeck.add(new Trojan());
         }
-    }
-
-    @Override
-    public void handleEmptyDeck(Player player) {
-
     }
 
     @Override

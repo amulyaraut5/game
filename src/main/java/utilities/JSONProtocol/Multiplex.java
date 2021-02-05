@@ -1,13 +1,12 @@
 package utilities.JSONProtocol;
 
-
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.BoardElement;
 import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

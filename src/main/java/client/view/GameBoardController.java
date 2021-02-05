@@ -41,7 +41,6 @@ import static javafx.scene.input.MouseEvent.*;
 
 public class GameBoardController extends Controller {
     private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
-    private final ArrayList<Coordinate> path = new ArrayList<>();
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
     private boolean isStartPosSet = false;
@@ -284,7 +283,6 @@ public class GameBoardController extends Controller {
                     SequentialTransition sequentialTransition = new SequentialTransition();
                     sequentialTransition.getChildren().addAll(transition, fadeTransition);
                     sequentialTransition.play();
-                    path.clear();
                 }
             }
         }
@@ -332,7 +330,6 @@ public class GameBoardController extends Controller {
             SequentialTransition sequentialTransition = new SequentialTransition();
             sequentialTransition.getChildren().addAll(transition, fadeTransition);
             sequentialTransition.play();
-            path.clear();
         }
     }
 

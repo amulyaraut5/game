@@ -51,7 +51,7 @@ public final class TileFactory {
      * @return
      */
     private static Attribute convertIdToAttribute(int attributeID) {
-        Attribute attribute = null;
+        Attribute attribute;
 
         switch (attributeID) {
             case 0 -> attribute = new Empty();

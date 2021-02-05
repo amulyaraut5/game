@@ -47,8 +47,7 @@ public abstract class Controller {
     }
 
     public void setCountSpamCards(int countSpamCards) {
-        if (countSpamCards < 0) Controller.countSpamCards = 0;
-        else Controller.countSpamCards = countSpamCards;
+        Controller.countSpamCards = Math.max(countSpamCards, 0);
     }
 
     public int getCountTrojanCards() {
@@ -56,8 +55,7 @@ public abstract class Controller {
     }
 
     public void setCountTrojanCards(int countTrojanCards) {
-        if (countTrojanCards < 0) Controller.countTrojanCards = 0;
-        else Controller.countTrojanCards = countTrojanCards;
+        Controller.countTrojanCards = Math.max(countTrojanCards, 0);
     }
 
     public int getCountWormCards() {
@@ -65,8 +63,7 @@ public abstract class Controller {
     }
 
     public void setCountWormCards(int countWormCards) {
-        if (countWormCards < 0) Controller.countWormCards = 0;
-        else Controller.countWormCards = countWormCards;
+        Controller.countWormCards = Math.max(countWormCards, 0);
     }
 
     public int getCountVirusCards() {
@@ -74,8 +71,7 @@ public abstract class Controller {
     }
 
     public void setCountVirusCards(int countVirusCards) {
-        if (countVirusCards < 0) Controller.countVirusCards = 0;
-        else Controller.countVirusCards = countVirusCards;
+        Controller.countVirusCards = Math.max(countVirusCards, 0);
     }
 
     public void handleDamageCount(CardType cardType) {
@@ -96,7 +92,7 @@ public abstract class Controller {
         }
     }
 
-    protected ImageView generateImageView(String path, int width, int height){
+    protected ImageView generateImageView(String path, int width, int height) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);

@@ -1,8 +1,6 @@
 package game.gameActions;
 
 import game.Player;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.Reboot;
 import utilities.enums.Orientation;
 
@@ -12,7 +10,6 @@ import java.util.ArrayList;
  * @author annika
  */
 public class RebootAction extends Action {
-    private static final Logger logger = LogManager.getLogger();
 
     /**
      * If the robot falls off the board or into a pit, or if a worm card is activated,

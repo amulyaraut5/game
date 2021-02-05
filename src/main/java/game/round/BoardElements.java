@@ -156,10 +156,10 @@ public class BoardElements {
                     oldPositions.add(currentPlayer.getRobot().getCoordinate().clone());
 
                     for (Attribute a : map.getTile(tileCoordinate).getAttributes()) {
-                        if (a.getType() == AttributeType.Belt) {
+                        if (a instanceof Belt) {
                             orientations.add(((Belt) a).getOrientation());
                         }
-                        if (a.getType() == AttributeType.RotatingBelt) {
+                        if (a instanceof RotatingBelt) {
                             orientations.add(((RotatingBelt) a).getOrientations()[0]);
                         }
                     }
@@ -222,7 +222,7 @@ public class BoardElements {
                         if (a.getType() == AttributeType.Belt) {
                             orientations.add(((Belt) a).getOrientation());
                         }
-                        if (a.getType() == AttributeType.RotatingBelt) {
+                        if (a instanceof RotatingBelt) {
                             orientations.add(((RotatingBelt) a).getOrientations()[0]);
                         }
                     }

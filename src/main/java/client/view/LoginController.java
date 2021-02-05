@@ -123,12 +123,11 @@ public class LoginController extends Controller implements Updatable {
     }
 
     public void removePlayer(Player player) {
-        int i = 0;
         for (Figure figure : figures) {
             if (figure.getPlayerID() == player.getID()) {
                 figure.setTaken(false);
-                i = figures.indexOf(figure);
-                figures.set(i, figure);
+                int index = figures.indexOf(figure);
+                figures.set(index, figure);
             }
         }
     }
@@ -149,8 +148,8 @@ public class LoginController extends Controller implements Updatable {
     }
 
     private static class Figure {
-        private boolean taken = false;
         private final ImageView imageView;
+        private boolean taken = false;
         private int playerID;
 
         public Figure(ImageView imageView) {

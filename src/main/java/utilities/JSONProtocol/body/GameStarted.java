@@ -1,7 +1,7 @@
 package utilities.JSONProtocol.body;
 
+import utilities.BoardElement;
 import utilities.JSONProtocol.JSONBody;
-import utilities.JSONProtocol.body.gameStarted.BoardElement;
 
 import java.util.ArrayList;
 

@@ -4,7 +4,7 @@ import utilities.JSONProtocol.JSONBody;
 
 public class Welcome extends JSONBody {
 
-    private int playerID;
+    private final int playerID;
 
     public Welcome(int playerID) {
         this.playerID = playerID;
@@ -12,9 +12,5 @@ public class Welcome extends JSONBody {
 
     public int getPlayerID() {
         return playerID;
-    }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
     }
 }

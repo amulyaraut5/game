@@ -373,21 +373,6 @@ public class Server extends Thread {
     }
 
     /**
-     * It checks if the username is already used of another user.
-     *
-     * @param userName userName to be checked
-     * @return True if username is free, false if it´s already assigned
-     */
-    public synchronized boolean isAvailable(String userName) {
-        for (User u : users) {
-            if (u.getName().equals(userName)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * This method removes a saved user from the server and game.
      * If no user is left on the server, the server is closed.
      *
@@ -419,7 +404,6 @@ public class Server extends Thread {
                 }
             }
 
-
             if (game.getGameState() == GameState.PROGRAMMING) {
 
                 //if the user has not put down his cards already he is removed from the list tracking this
@@ -441,7 +425,6 @@ public class Server extends Thread {
                 game.getActivationPhase().removeCurrentCards(user.getID());
             }
         }
-
 
         readyUsers.remove(user);
         users.remove(user);

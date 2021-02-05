@@ -7,7 +7,6 @@ import game.gameObjects.tiles.RestartPoint;
 import game.gameObjects.tiles.Tile;
 import game.gameObjects.tiles.TileFactory;
 import utilities.JSONProtocol.body.GameStarted;
-import utilities.JSONProtocol.body.gameStarted.BoardElement;
 import utilities.enums.Orientation;
 
 import java.util.ArrayList;
@@ -24,9 +23,7 @@ public final class MapConverter {
 
         for (int y = 0; y < yMax; y++) {
             for (int x = 3; x < xMax; x++) {
-                BoardElement temp = new BoardElement();
-                temp.setField(tiles[x][y].getAttributes());
-                temp.setPosition(y * xMax + x);
+                BoardElement temp = new BoardElement(y * xMax + x, tiles[x][y].getAttributes());
                 mapList.add(temp);
             }
         }

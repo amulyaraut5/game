@@ -196,9 +196,6 @@ public class GameController extends Controller implements Updatable {
         playerMatController.resetDeckCounter(9);
 
         activePlayers.addAll(client.getPlayers());
-        for (Player player : activePlayers) {
-            //logger.info("Inside GameState:" + player.getID());
-        }
         phasePane.setCenter(programmingPane);
         othersController.visibleHBoxRegister(true);
     }
@@ -212,9 +209,7 @@ public class GameController extends Controller implements Updatable {
 
         switch (phase) {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
-            case PROGRAMMING -> {
-                resetInProgrammingPhase();
-            }
+            case PROGRAMMING -> resetInProgrammingPhase();
             case ACTIVATION -> {
                 activationController.changePhaseView("PlayIt");
                 currentAction.clear();
