@@ -395,45 +395,53 @@ public class Server extends Thread {
      */
     public void removeUser(User user) {
         logger.info("removeUser reached");
+
+        //Player is removed from the players and activePlayers List
+        game.getPlayers().remove(game.userToPlayer(user));
+        game.getActivePlayers().remove(game.userToPlayer(user));
+
+        //if the player is not the only one left in the game theres demand for further handling
         if (!(game.getPlayers() == null)) {
-            int userID = user.getID();
-            game.getPlayers().remove(game.userToPlayer(user));
 
-            if (!(game.getPlayers() == null)) {
+            if (game.getGameState() == GameState.CONSTRUCTION) {
 
-                if (game.getGameState() == GameState.CONSTRUCTION) {
-                    logger.info("Construction phase player: " + game.getConstructionPhase().getCurrentPlayer().getName());
-                    if (userID == game.getConstructionPhase().getCurrentIndex() + 1) {
+                //If its the users turn to set his starting point and he is not the last player that was left to do so
+                //the next player is set to pick a start point, otherwise the next phase is called
+                if (user.getID() == game.getConstructionPhase().getCurrentPlayer().getID()) {
+
+                    if (game.getConstructionPhase().getCurrentIndex() < game.getPlayers().size()) {
                         Player currentPlayer = game.getPlayers().get(game.getConstructionPhase().getCurrentIndex());
-                        logger.info("new current player: " + currentPlayer.getName());
+                        game.getConstructionPhase().setCurrentPlayer(currentPlayer);
                         communicateAll(new CurrentPlayer(currentPlayer.getID()));
+                    } else {
+                        game.nextPhase();
                     }
-                }
-
-
-                if (game.getGameState() == GameState.PROGRAMMING) {
-                    logger.info("removeuser IF");
-                    Player temp = null;
-                    for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
-                        if (player.getID() == user.getID()) {
-                            temp = player;
-                        }
-                    }
-                    game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
-                    communicateAll(new SelectionFinished(user.getID()));
-                    logger.info("removeuser IF" + game.getProgrammingPhase().getNotReadyPlayers());
-                    if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
-                        game.getProgrammingPhase().endProgrammingTimer();
-                    }
-                }
-                if (game.getGameState() == GameState.ACTIVATION) {
-                    logger.info("if statement reached");
-                    int removedUser = game.getActivationPhase().getPriorityList().indexOf(user.getID());
-                    Player nextPlayer = game.getActivationPhase().getPriorityList().get(removedUser + 1);
-                    game.getActivationPhase().removeCurrentCards(user.getID());
                 }
             }
+
+
+            if (game.getGameState() == GameState.PROGRAMMING) {
+
+                //if the user has not put down his cards already he is removed from the list tracking this
+                Player temp;
+                for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
+                    if (player.getID() == user.getID()) {
+                        temp = player;
+                        game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+                    }
+                }
+
+                //if he was the last one missing filling his registers the timer is stopped
+                if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
+                    game.getProgrammingPhase().endProgrammingTimer();
+                }
+            }
+
+            if (game.getGameState() == GameState.ACTIVATION) {
+                game.getActivationPhase().removeCurrentCards(user.getID());
+            }
         }
+
 
         readyUsers.remove(user);
         users.remove(user);
