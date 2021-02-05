@@ -80,9 +80,11 @@ public class ActivationPhase extends Phase {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
-        server.communicateAll(new CurrentCards(currentCards));
-        //logger.info("turnCards" + calculatePriority((gameMap.getAntenna())));
-        server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
+        if (!(currentCards.isEmpty())) {
+            server.communicateAll(new CurrentCards(currentCards));
+            //logger.info("turnCards" + calculatePriority((gameMap.getAntenna())));
+            server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
+        }
     }
 
     /**
@@ -135,25 +137,16 @@ public class ActivationPhase extends Phase {
     }
 
     public void removeCurrentCards(int playerID) {
-        logger.info("removeCC reached");
         RegisterCard temp = null;
         for (RegisterCard rc : currentCards) {
-            logger.info(rc.getPlayerID());
-            logger.info(rc.getCard());
             if (rc.getPlayerID() == playerID) {
-                logger.info("if reached");
                 temp = rc;
-                logger.info(rc.getPlayerID() + " und" + rc.getCard());
             }
         }
         currentCards.remove(temp);
         Player player = game.getPlayerFromID(playerID);
         activePlayers.remove(player);
         rebootedPlayers.remove(player);
-        for (RegisterCard rc : currentCards) {
-            logger.info(rc.getPlayerID());
-            logger.info(rc.getCard());
-        }
         if (currentCards.isEmpty() && currentRegister < 5) {
             endOfRound();
         } else {
