@@ -85,6 +85,7 @@ public class LoginController extends Controller implements Updatable {
                                 CornerRadii.EMPTY, Insets.EMPTY)));
                     }
                 }
+
                /*styleProperty().bind(Bindings.when(hoverProperty())
                         .then("-fx-background-color: midnightblue; -fx-border-color: midnightblue")
                         .otherwise("-fx-background-color: transparent; -fx-border-color: transparent"));*/
