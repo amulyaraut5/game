@@ -108,6 +108,7 @@ public class Game {
         server.communicateAll(new ActivePhase(gameState));
 
         switch (gameState) {
+            case UPGRADE -> nextPhase();
             case PROGRAMMING -> programmingPhase = new ProgrammingPhase();
             case ACTIVATION -> activationPhase = new ActivationPhase();
         }
@@ -172,9 +173,9 @@ public class Game {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
             //activates the board - only when activation phase was reached at least once
             case "#activateBoard" -> {
-                try{
+                try {
                     activationPhase.activateBoard();
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     server.communicateDirect(new Error("You must wait till you get to activation phase."), user.getID());
                 }
             }
@@ -227,9 +228,9 @@ public class Game {
                 }
             }
             case "#fire" -> {
-                try{
+                try {
                     activationPhase.activateCheatLaser();
-                }catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     server.communicateDirect(new Error("You must wait till you get to activation phase."), user.getID());
                 }
             }
