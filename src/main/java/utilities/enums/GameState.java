@@ -6,11 +6,13 @@ import java.util.EnumSet;
 
 public enum GameState {
     @SerializedName("0") CONSTRUCTION,
+    @SerializedName("1") UPGRADE,
     @SerializedName("2") PROGRAMMING,
     @SerializedName("3") ACTIVATION;
 
     static {
-        CONSTRUCTION.next = PROGRAMMING;
+        CONSTRUCTION.next = UPGRADE;
+        UPGRADE.next = PROGRAMMING;
         PROGRAMMING.next = ACTIVATION;
         ACTIVATION.next = PROGRAMMING;
 
