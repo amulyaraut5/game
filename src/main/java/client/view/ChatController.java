@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
@@ -28,13 +29,16 @@ public class ChatController extends Controller {
     private JFXComboBox<String> directChoiceBox;
     @FXML
     private TextField lobbyTextFieldChat;
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     public void initialize() {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
-
+        scrollPane.setFitToWidth(true);
         client.setChatController(this);
+
     }
 
     /**
