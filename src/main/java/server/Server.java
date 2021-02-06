@@ -381,52 +381,68 @@ public class Server extends Thread {
     public void removeUser(User user) {
         logger.info("removeUser reached");
 
+        logger.info("players: " + game.getPlayers());
+        logger.info("active players: " + game.getActivePlayers());
         //Player is removed from the players and activePlayers List
-        game.getPlayers().remove(game.userToPlayer(user));
-        game.getActivePlayers().remove(game.userToPlayer(user));
 
-        //if the player is not the only one left in the game theres demand for further handling
-        if (!(game.getPlayers() == null)) {
-
-            if (game.getGameState() == GameState.CONSTRUCTION) {
-
-                //If its the users turn to set his starting point and he is not the last player that was left to do so
-                //the next player is set to pick a start point, otherwise the next phase is called
-                if (user.getID() == game.getConstructionPhase().getCurrentPlayer().getID()) {
-
-                    if (game.getConstructionPhase().getCurrentIndex() < game.getPlayers().size()) {
-                        Player currentPlayer = game.getPlayers().get(game.getConstructionPhase().getCurrentIndex());
-                        game.getConstructionPhase().setCurrentPlayer(currentPlayer);
-                        communicateAll(new CurrentPlayer(currentPlayer.getID()));
-                    } else {
-                        game.nextPhase();
-                    }
+        if (serverState == ServerState.LOBBY) {
+            boolean wasReady = false;
+            for (User removedUser : readyUsers) {
+                if (user == removedUser) {
+                    wasReady = true;
                 }
             }
+            if (wasReady) {
+                readyUsers.remove(user);
+            }
+        } else {
 
-            if (game.getGameState() == GameState.PROGRAMMING) {
+            game.getPlayers().remove(game.userToPlayer(user));
+            game.getActivePlayers().remove(game.userToPlayer(user));
 
-                //if the user has not put down his cards already he is removed from the list tracking this
-                Player temp;
-                for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
-                    if (player.getID() == user.getID()) {
-                        temp = player;
-                        game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+            //if the player is not the only one left in the game theres demand for further handling
+            if (!(game.getPlayers() == null)) {
+
+                if (game.getGameState() == GameState.CONSTRUCTION) {
+
+                    //If its the users turn to set his starting point and he is not the last player that was left to do so
+                    //the next player is set to pick a start point, otherwise the next phase is called
+                    if (user.getID() == game.getConstructionPhase().getCurrentPlayer().getID()) {
+
+                        if (game.getConstructionPhase().getCurrentIndex() < game.getPlayers().size()) {
+                            Player currentPlayer = game.getPlayers().get(game.getConstructionPhase().getCurrentIndex());
+                            game.getConstructionPhase().setCurrentPlayer(currentPlayer);
+                            communicateAll(new CurrentPlayer(currentPlayer.getID()));
+                        } else {
+                            game.nextPhase();
+                        }
                     }
                 }
 
-                //if he was the last one missing filling his registers the timer is stopped
-                if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
-                    game.getProgrammingPhase().endProgrammingTimer();
-                }
-            }
+                if (game.getGameState() == GameState.PROGRAMMING) {
 
-            if (game.getGameState() == GameState.ACTIVATION) {
-                game.getActivationPhase().removeCurrentCards(user.getID());
+                    //if the user has not put down his cards already he is removed from the list tracking this
+                    Player temp = null;
+                    for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
+                        if (player.getID() == user.getID()) {
+                            temp = player;
+                            break;
+                        }
+                    }
+                    game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+
+                    //if he was the last one missing filling his registers the timer is stopped
+                    if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
+                        game.getProgrammingPhase().endProgrammingTimer();
+                    }
+                }
+
+                if (game.getGameState() == GameState.ACTIVATION) {
+                    game.getActivationPhase().removeCurrentCards(user.getID());
+                }
             }
         }
 
-        readyUsers.remove(user);
         users.remove(user);
 
         communicateAll(new ConnectionUpdate(user.getID(), false, "Remove"));
