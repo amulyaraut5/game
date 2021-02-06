@@ -51,7 +51,7 @@
                     <Insets top="35.0" />
                 </padding>
 
-                <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutX="6.0" layoutY="30.0" prefHeight="17.0" prefWidth="168.0" text="Username" textAlignment="CENTER" textFill="ORANGE" wrapText="true">
+                <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutX="6.0" layoutY="30.0" prefHeight="17.0" prefWidth="168.0" text="Username" textAlignment="CENTER" textFill="MIDNIGHTBLUE" wrapText="true">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -72,7 +72,7 @@
                 <TextField fx:id="textUserName" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="192.0" promptText="Enter a username..." />
             </HBox>
             <AnchorPane prefHeight="110.0" prefWidth="600.0">
-                <Label layoutX="120.0" layoutY="14.0" text="Choose a robot you want to play" textFill="ORANGE">
+                <Label layoutX="120.0" layoutY="14.0" text="Choose a robot you want to play" textFill="MIDNIGHTBLUE">
                 <effect>
                     <Lighting diffuseConstant="1.17" specularConstant="0.0" specularExponent="37.99" surfaceScale="3.75">
                         <bumpInput>
@@ -84,7 +84,7 @@
                     </Lighting>
                 </effect>
                 </Label>
-                <JFXListView fx:id="listView" fixedCellSize="0.0" layoutX="89.0" layoutY="37.0" orientation="HORIZONTAL" prefHeight="102.0" prefWidth="438.0" style="-fx-background-color: transparent; -jfx-horizontal-gap: 10;">
+                <JFXListView fx:id="listView" fixedCellSize="0.0" layoutX="89.0" layoutY="37.0" orientation="HORIZONTAL" prefHeight="102.0" prefWidth="438.0" style="-fx-background-color: white;">
                     <opaqueInsets>
                         <Insets right="10.0" />
                     </opaqueInsets>

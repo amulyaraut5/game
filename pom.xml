@@ -87,8 +87,12 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>client.Main</mainClass>
+                            <!-- client.JarMain or server.Server to create client and server jar -->
+                            <mainClass>server.Server</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <Multi-Release>true</Multi-Release>
+                        </manifestEntries>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

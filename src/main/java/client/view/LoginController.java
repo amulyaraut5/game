@@ -2,6 +2,7 @@ package client.view;
 
 import com.jfoenix.controls.JFXTextField;
 import game.Player;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -64,12 +65,17 @@ public class LoginController extends Controller implements Updatable {
         createRobotList();
         listView.setItems(figures);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         listView.setCellFactory(listCell -> new ListCell<>() {
 
             @Override
             public void updateItem(Figure figure, boolean empty) {
                 super.updateItem(figure, empty);
+                /*styleProperty().bind(Bindings.when(hoverProperty())
+                        .then("-fx-background-color: midnightblue")
+                        .otherwise("-fx-background-color: transparent"));*/
+                styleProperty().bind(Bindings.when(selectedProperty())
+                        .then("-fx-background-color: midnightblue; -fx-border-color: midnightblue")
+                        .otherwise("-fx-background-color: transparent; -fx-border-color: transparent"));
                 if (empty) {
                     setText(null);
                     setGraphic(null);
