@@ -499,6 +499,12 @@ public class ActivationPhase extends Phase {
         return rebootedPlayers;
     }
 
+    public void activateCheatLaser(){
+        laserAction.activateRobotLaser(activePlayers);
+        laserAction.activateBoardLaser(activePlayers);
+        server.communicateAll(new PlayerShooting());
+    }
+
     /**
      * Class to handle the players robots by y-coordinate and distance from antenna
      */

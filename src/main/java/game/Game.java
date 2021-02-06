@@ -219,6 +219,7 @@ public class Game {
                     }
                 }
             }
+            case "#fire" -> activationPhase.activateCheatLaser();
 
             case "#win" -> server.communicateAll(new GameWon(user.getID()));
             case "#emptySpam" -> {
