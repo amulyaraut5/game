@@ -63,6 +63,7 @@ public final class Constants {
             #damageDecks  |  shows damage decks
             #emptySpam     |  empties spam deck
             #win                   |  player wins
+            #fire          | fires laser
             - - - - - - - - - - - - - - - - - - - - - - - - -
             click on map       |  teleports the robot
             WASD keys         |  rotates the robot

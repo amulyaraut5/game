@@ -171,7 +171,14 @@ public class Game {
         switch (cheat) {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
             //activates the board - only when activation phase was reached at least once
-            case "#activateBoard" -> activationPhase.activateBoard();
+            case "#activateBoard" -> {
+                try{
+                    activationPhase.activateBoard();
+                }catch (NullPointerException e){
+                    server.communicateDirect(new Error("You must wait till you get to activation phase."), user.getID());
+                }
+            }
+
             case "#tp" -> {
                 Robot robot = userToPlayer(user).getRobot();
                 if (cheatInfo.length == 1) {
@@ -219,7 +226,13 @@ public class Game {
                     }
                 }
             }
-            case "#fire" -> activationPhase.activateCheatLaser();
+            case "#fire" -> {
+                try{
+                    activationPhase.activateCheatLaser();
+                }catch(NullPointerException e){
+                    server.communicateDirect(new Error("You must wait till you get to activation phase."), user.getID());
+                }
+            }
 
             case "#win" -> server.communicateAll(new GameWon(user.getID()));
             case "#emptySpam" -> {
