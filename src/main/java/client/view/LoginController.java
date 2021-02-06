@@ -70,12 +70,7 @@ public class LoginController extends Controller implements Updatable {
             @Override
             public void updateItem(Figure figure, boolean empty) {
                 super.updateItem(figure, empty);
-                /*styleProperty().bind(Bindings.when(hoverProperty())
-                        .then("-fx-background-color: midnightblue")
-                        .otherwise("-fx-background-color: transparent"));*/
-                styleProperty().bind(Bindings.when(selectedProperty())
-                        .then("-fx-background-color: midnightblue; -fx-border-color: midnightblue")
-                        .otherwise("-fx-background-color: transparent; -fx-border-color: transparent"));
+
                 if (empty) {
                     setText(null);
                     setGraphic(null);
@@ -85,9 +80,14 @@ public class LoginController extends Controller implements Updatable {
                     setDisable(figure.isTaken());
                     if (figure.isTaken()) setBackground(new Background(new BackgroundFill(Color.GRAY,
                             CornerRadii.EMPTY, Insets.EMPTY)));
-                    else setBackground(new Background(new BackgroundFill(Color.WHITE,
-                            CornerRadii.EMPTY, Insets.EMPTY)));
+                    else{
+                        setBackground(new Background(new BackgroundFill(Color.WHITE,
+                                CornerRadii.EMPTY, Insets.EMPTY)));
+                    }
                 }
+               /*styleProperty().bind(Bindings.when(hoverProperty())
+                        .then("-fx-background-color: midnightblue; -fx-border-color: midnightblue")
+                        .otherwise("-fx-background-color: transparent; -fx-border-color: transparent"));*/
             }
         });
     }
