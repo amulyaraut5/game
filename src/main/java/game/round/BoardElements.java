@@ -5,8 +5,6 @@ import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONBody;
@@ -14,7 +12,6 @@ import utilities.JSONProtocol.body.CheckpointReached;
 import utilities.JSONProtocol.body.Energy;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.GameWon;
-import utilities.SoundHandler;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 import utilities.enums.Rotation;
@@ -29,8 +26,6 @@ import java.util.ArrayList;
  * @author Louis
  */
 public class BoardElements {
-    private static final Logger logger = LogManager.getLogger();
-    private final SoundHandler soundHandler = new SoundHandler();
     private final Game game = Game.getInstance();
     private final ArrayList<Player> playerList = game.getPlayers();
     private final Map map = game.getMap();

@@ -19,10 +19,6 @@ public class Map {
     private final Tile[][] tiles;
     private final ArrayList<Coordinate> GreenBelts = new ArrayList<>();
     private final ArrayList<Coordinate> BlueBelts = new ArrayList<>();
-    private final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
-    private final ArrayList<Coordinate> controlPointCoordinates = new ArrayList<>();
-    private final ArrayList<Coordinate> laserCoordinates = new ArrayList<>();
-
     private Coordinate RestartPoint;
     private Coordinate antenna;
 
@@ -37,11 +33,6 @@ public class Map {
     public void readAll() {
         readBeltCoordinates();
         readRestartPointCoordinate();
-        readEnergySpaceCoordinates();
-        readGearCoordinate();
-        readPushPanelCoordinate();
-        readLaserCoordinates();
-        readControlPointCoordinate();
         readAntennaCoordinate();
     }
 
@@ -93,7 +84,7 @@ public class Map {
      *
      * @param x x coordinate of the tile
      * @param y y coordinate of the tile
-     * @return
+     * @return returns the tile
      * @throws ArrayIndexOutOfBoundsException when the position is not on the map.
      */
     public Tile getTile(int x, int y) throws ArrayIndexOutOfBoundsException {
@@ -104,12 +95,16 @@ public class Map {
      * Retrieves the tile of the given position from the map
      *
      * @param pos position of tile
-     * @return
+     * @return returns the tile
      * @throws ArrayIndexOutOfBoundsException when the position is not on the map
      */
     public Tile getTile(Coordinate pos) throws ArrayIndexOutOfBoundsException {
         return tiles[pos.getX()][pos.getY()];
     }
+
+    /**
+     * This method initializes the antenna coordinate from the map.
+     */
 
     public void readAntennaCoordinate() {
         for (int i = 0; i < (tiles.length); i++) {
@@ -126,8 +121,9 @@ public class Map {
 
     /**
      * This method initializes the restartPoint coordinates from the actual
-     * version of map and returns it.
+     * version of map.
      */
+
     public void readRestartPointCoordinate() {
         for (int i = 0; i < (tiles.length); i++) {
             for (int j = 0; j < (tiles[0].length); j++) {
@@ -145,6 +141,7 @@ public class Map {
      * This method stores all the laser coordinates from the actual
      * version of map.
      */
+
     public ArrayList<Coordinate> readLaserCoordinates() {
         ArrayList<Coordinate> laser = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
@@ -164,6 +161,7 @@ public class Map {
      * This method stores all the push panel coordinates from the actual
      * version of map and returns it.
      */
+
     public ArrayList<Coordinate> readPushPanelCoordinate() {
         final ArrayList<Coordinate> pushPanel = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
@@ -183,6 +181,7 @@ public class Map {
      * This method stores all the control points coordinates from the actual
      * version of map and returns it.
      */
+
     public ArrayList<Coordinate> readControlPointCoordinate() {
         ArrayList<Coordinate> checkPoints = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
@@ -202,6 +201,7 @@ public class Map {
      * This method stores all the gear coordinates from the actual
      * version of map and returns it.
      */
+
     public ArrayList<Coordinate> readGearCoordinate() {
         final ArrayList<Coordinate> gearCoordinates = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
@@ -235,19 +235,13 @@ public class Map {
             for (Attribute a : getTile(c).getAttributes()) {
                 if (a.getType() == AttributeType.Belt) {
                     Belt temp = (Belt) a;
-                    if (temp.getSpeed() == 1) {
-                        addGreenBelt(c);
-                    } else {
-                        addBlueBelt(c);
-                    }
+                    if (temp.getSpeed() == 1) addGreenBelt(c);
+                    else addBlueBelt(c);
                 }
                 if (a.getType() == AttributeType.RotatingBelt) {
                     RotatingBelt temp = (RotatingBelt) a;
-                    if (temp.getSpeed() == 1) {
-                        addGreenBelt(c);
-                    } else {
-                        addBlueBelt(c);
-                    }
+                    if (temp.getSpeed() == 1) addGreenBelt(c);
+                    else addBlueBelt(c);
                 }
             }
         }
@@ -285,14 +279,6 @@ public class Map {
 
     public Coordinate getRestartPoint() {
         return RestartPoint;
-    }
-
-    public ArrayList<Coordinate> getControlPointCoordinates() {
-        return controlPointCoordinates;
-    }
-
-    public ArrayList<Coordinate> getLaserCoordinates() {
-        return laserCoordinates;
     }
 
     public Coordinate getAntenna() {
