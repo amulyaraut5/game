@@ -63,7 +63,7 @@ public class GameController extends Controller implements Updatable {
     private int currentRound = 1;
     private boolean first = true;
     private boolean isMuted = true;
-    private boolean play = false;
+    private boolean play = true;
 
     @FXML
     private Pane infoPane;
@@ -488,7 +488,7 @@ public class GameController extends Controller implements Updatable {
                 GameWon gameWon = (GameWon) message.getBody();
                 phasePane.setCenter(gameWonPane);
                 gameWonController.setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
-                soundHandler.playSoundEffects("CheckPoint", play);
+                soundHandler.playSoundEffects("Victory", play);
             }
         }
     }

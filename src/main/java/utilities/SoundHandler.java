@@ -47,7 +47,15 @@ public class SoundHandler {
                     audioClip.play();
                 }
                 case "Laser" -> {
-                    audioClip = new AudioClip(getClass().getResource("/sounds/laser.mp3").toExternalForm());
+                    audioClip = new AudioClip(getClass().getResource("/sounds/laserSound.mp3").toExternalForm());
+                    audioClip.play();
+                }
+                case "Victory" ->{
+                    audioClip = new AudioClip(getClass().getResource("/sounds/victorySound.mp3").toExternalForm());
+                    audioClip.play();
+                }
+                case "Injured" ->{
+                    audioClip = new AudioClip(getClass().getResource("/sounds/gotHit.wav").toExternalForm());
                     audioClip.play();
                 }
             }
