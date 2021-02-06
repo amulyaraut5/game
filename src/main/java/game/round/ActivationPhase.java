@@ -75,7 +75,7 @@ public class ActivationPhase extends Phase {
      * This is already in priority order.
      */
     public void turnCards(int register) {
-        for (Player player : calculatePriority(map.getAntenna())) {
+        for (Player player : determinePriority(map.getAntenna())) {
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
@@ -342,7 +342,7 @@ public class ActivationPhase extends Phase {
      * @param antenna game antenna
      * @return A List of players in priority order
      */
-    public ArrayList<Player> calculatePriority(Coordinate antenna) {
+    public ArrayList<Player> determinePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
         ArrayList<Player> playerPriority = new ArrayList<>();
         int sortedDistanceSize = sortedDistance.size();
@@ -542,4 +542,5 @@ public class ActivationPhase extends Phase {
                     '}';
         }
     }
+
 }
