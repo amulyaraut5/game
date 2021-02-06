@@ -2,6 +2,7 @@ package client.view;
 
 import ai.AIClient;
 import client.model.Client;
+import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -26,6 +27,10 @@ public class MenuController extends Controller implements Updatable {
     private volatile boolean timeout = false;
 
     @FXML
+    private JFXButton hostButton;
+    @FXML
+    private JFXButton joinButton;
+    @FXML
     private Label infoLabel;
 
     /**
@@ -33,6 +38,8 @@ public class MenuController extends Controller implements Updatable {
      */
     @FXML
     public void hostGameClicked() {
+        hostButton.setDisable(true);
+        joinButton.setDisable(true);
         logger.info("Host Game Clicked.");
 
         new Thread(() -> {
@@ -48,6 +55,8 @@ public class MenuController extends Controller implements Updatable {
      */
     @FXML
     public void joinGameClicked() {
+        hostButton.setDisable(true);
+        joinButton.setDisable(true);
         logger.info("Join Game Clicked.");
         new Thread(() -> connect(client)).start();
     }
@@ -62,15 +71,13 @@ public class MenuController extends Controller implements Updatable {
         boolean connected = false;
         timeout = false;
 
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-                       @Override
-                       public void run() {
-                           timeout = true;
-                           t.cancel();
-                       }
-                   }, 2000
-        );
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timeout = true;
+                cancel();
+            }
+        }, 2000);
 
         while (!connected && !timeout) {
             connected = client.establishConnection();
@@ -80,10 +87,14 @@ public class MenuController extends Controller implements Updatable {
                 } catch (InterruptedException ignored) {
                 }
             }
-
-            if (!connected) Platform.runLater(() -> infoLabel.setText("The server is not reachable!"));
-            else Platform.runLater(() -> infoLabel.setText(""));
         }
+        boolean finalConnected = connected;
+        Platform.runLater(() -> {
+            if (!finalConnected) infoLabel.setText("The server is not reachable!");
+            else infoLabel.setText("");
+            hostButton.setDisable(false);
+            joinButton.setDisable(false);
+        });
     }
 
     @Override

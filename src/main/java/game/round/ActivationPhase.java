@@ -298,6 +298,13 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * This method handles recursion for Again Card with different base cases. If the player plays again card back to
+     * back in 2 registers, then in such case the card from the {register-2} is used.
+     * Under normal circumstance the effect of immediate previous card is handled.
+     * @param player current player playing game
+     */
+
     public void handleRecursion(Player player) {
         if (currentRegister == 1)
             player.message(new Error("No Previous Movement Recorded"));
@@ -497,6 +504,17 @@ public class ActivationPhase extends Phase {
 
     public ArrayList<Player> getRebootedPlayers() {
         return rebootedPlayers;
+    }
+
+    /**
+     * This is independent of activated board method and used for cheats.
+     * #fire activates this method.
+     */
+
+    public void activateCheatLaser(){
+        laserAction.activateRobotLaser(activePlayers);
+        laserAction.activateBoardLaser(activePlayers);
+        server.communicateAll(new PlayerShooting());
     }
 
     /**
