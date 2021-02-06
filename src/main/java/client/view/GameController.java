@@ -6,8 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import org.apache.logging.log4j.LogManager;
@@ -85,21 +83,14 @@ public class GameController extends Controller implements Updatable {
     private Pane boardPane;
     @FXML
     private Label infoLabel;
-    @FXML
-    private AnchorPane drawDamageAnchorPane;
-    @FXML
-    private Label drawDamageLabel;
-    @FXML
-    private HBox drawDamageHBox;
+
 
     /**
      *
      */
     @FXML
     public void initialize() {
-        drawDamageHBox.setAlignment(Pos.CENTER);
-        drawDamageHBox.setSpacing(5);
-        drawDamageAnchorPane.setVisible(false);
+
         constructPhaseViews();
         roundPane.setVisible(false);
 
@@ -141,33 +132,6 @@ public class GameController extends Controller implements Updatable {
         chatPane.setCenter(chat);
     }
 
-    /**
-     * @param drawDamage
-     */
-    public void setDrawDamage(DrawDamage drawDamage) {
-        drawDamageHBox.getChildren().clear();
-
-        drawDamageLabel.setText("You got damage!");
-        for (int i = 0; i < drawDamage.getCards().size(); i++) {
-            String path = "/cards/programming/" + drawDamage.getCards().get(i).name() + "-card.png";
-            ImageView damage = new ImageView(new Image(getClass().getResource(path).toString()));
-            damage.setFitWidth(30);
-            damage.setFitHeight(50);
-            drawDamageHBox.getChildren().add(damage);
-        }
-
-        Platform.runLater(() -> drawDamageAnchorPane.setVisible(true));
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (drawDamageAnchorPane.isVisible()) {
-                    Platform.runLater(() -> drawDamageAnchorPane.setVisible(false));
-                }
-                t.cancel();
-            }
-        }, 2000);
-    }
 
     /**
      *
@@ -421,7 +385,8 @@ public class GameController extends Controller implements Updatable {
                         infoPane.setVisible(false);
                     }
                     currentAction.clear();
-                    activationController.getPlayCardController().currentPlayer(isThisPlayer);
+                    Platform.runLater(() -> activationController.getPlayCardController().currentPlayer(isThisPlayer));
+
                     othersController.setInfoLabel(currentPlayer, isThisPlayer);
                 }
             }
@@ -447,17 +412,17 @@ public class GameController extends Controller implements Updatable {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
                 if (shuffleCoding.getPlayerID() == client.getThisPlayersID()) {
                     infoPane.setVisible(true);
-                    Platform.runLater(() -> infoLabel.setText("You're cards are shuffled"));
+                    Platform.runLater(() -> moveInfo.setText("You're cards are shuffled"));
                     Timer t = new Timer();
                     t.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            if (infoLabel.getText().equals("You're cards are shuffled")) {
+                            if (moveInfo.getText().equals("You're cards are shuffled")) {
                                 Platform.runLater(() -> infoPane.setVisible(false));
                             }
                             t.cancel();
                         }
-                    }, 2000);
+                    }, 5000);
                 } else {
                     othersController.setShuffleCodingLabel(shuffleCoding);
                 }
@@ -478,7 +443,7 @@ public class GameController extends Controller implements Updatable {
                 boolean isThisPlayer = drawDamage.getPlayerID() == client.getThisPlayersID();
                 handleDamageCount(drawDamage.getCards());
                 if (isThisPlayer) {
-                    setDrawDamage(drawDamage);
+                    activationController.getPlayCardController().setDrawDamage(drawDamage);
                     playerMatController.setDiscardDeckCounter(drawDamage.getCards().size());
                     playerMatController.addPlayerCards(drawDamage.getCards().size());
                 }
