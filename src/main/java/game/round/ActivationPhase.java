@@ -110,7 +110,7 @@ public class ActivationPhase extends Phase {
                 game.nextPhase();
                 break outerLoop;
             }
-            if (currentCards.isEmpty()) {
+             if (currentCards.isEmpty()) {
                 endOfRound();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
@@ -403,15 +403,15 @@ public class ActivationPhase extends Phase {
         ArrayList<RobotDistance> sortedDistance = new ArrayList<>();
         //Fill List sortedDistance with matching objects
         int i = 0;
-        while (i < players.size()) {
+        while (i < activePlayers.size()) {
             //Point is generated with robot x and y position
             Coordinate robotPosition = new Coordinate(
-                    players.get(i).getRobot().getCoordinate().getX(),
-                    players.get(i).getRobot().getCoordinate().getY());
+                    activePlayers.get(i).getRobot().getCoordinate().getX(),
+                    activePlayers.get(i).getRobot().getCoordinate().getY());
             //get playerID
-            Player player = players.get(i);
+            Player player = activePlayers.get(i);
             //get robot
-            Robot robot = players.get(i).getRobot();
+            Robot robot = activePlayers.get(i).getRobot();
             //get distance to antenna
             double distance = calculateDistance(antenna, robotPosition);
             //get y coordinate
