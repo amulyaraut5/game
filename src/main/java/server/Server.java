@@ -180,7 +180,6 @@ public class Server extends Thread {
                 }
             }
             case SelectDamage -> {
-                logger.info("selectDamage empfangen");
                 SelectDamage selectDamage = (SelectDamage) message.getBody();
                 game.getActivationPhase().handleSelectedDamage(selectDamage, user);
             }
@@ -189,7 +188,7 @@ public class Server extends Thread {
     }
 
     /**
-     * determines wether the message is a cheat or not
+     * determines if the message is a cheat or not
      *
      * @param sc   the received Chat protocol
      * @param user the user who sent the chat
@@ -379,26 +378,21 @@ public class Server extends Thread {
      * @param user User to be removed
      */
     public void removeUser(User user) {
-        logger.info("removeUser reached");
 
-        logger.info("players: " + game.getPlayers());
-        logger.info("active players: " + game.getActivePlayers());
         //Player is removed from the players and activePlayers List
 
         if (serverState == ServerState.LOBBY) {
-            boolean wasReady = false;
-            for (User removedUser : readyUsers) {
-                if (user == removedUser) {
-                    wasReady = true;
-                }
-            }
-            if (wasReady) {
-                readyUsers.remove(user);
-            }
+            readyUsers.remove(user);
         } else {
 
             game.getPlayers().remove(game.userToPlayer(user));
-            game.getActivePlayers().remove(game.userToPlayer(user));
+            Player temp = null;
+            for (Player player : game.getActivePlayers()) {
+                if (player.getID() == user.getID()) {
+                    temp = player;
+                }
+            }
+            game.getActivePlayers().remove(temp);
 
             //if the player is not the only one left in the game theres demand for further handling
             if (!(game.getPlayers() == null)) {
@@ -422,14 +416,8 @@ public class Server extends Thread {
                 if (game.getGameState() == GameState.PROGRAMMING) {
 
                     //if the user has not put down his cards already he is removed from the list tracking this
-                    Player temp = null;
-                    for (Player player : game.getProgrammingPhase().getNotReadyPlayers()) {
-                        if (player.getID() == user.getID()) {
-                            temp = player;
-                            break;
-                        }
-                    }
-                    game.getProgrammingPhase().getNotReadyPlayers().remove(temp);
+
+                    game.getProgrammingPhase().getNotReadyPlayers().remove(game.userToPlayer(user));
 
                     //if he was the last one missing filling his registers the timer is stopped
                     if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
