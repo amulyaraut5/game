@@ -59,7 +59,11 @@ public class OnePlayerController extends Controller {
      * @param otherPlayer the player which gets added
      */
     public void setPlayerInformation(Player otherPlayer) {
-        nameLabel.setText(otherPlayer.getName());
+        String playerName = client.getUniqueName(otherPlayer.getID());
+        if(Integer.parseInt(playerName.substring(playerName.length()-1)) == 1) {
+            playerName = client.getPlayerFromID(otherPlayer.getID()).getName();
+        }
+        nameLabel.setText(playerName);
         String robot = robotNames[otherPlayer.getFigure()];
         robotIcon.setImage(new Image(getClass().getResource("/lobby/" + robot + ".png").toString()));
         addEnergy(0);

@@ -149,7 +149,7 @@ public class PlayerMatController extends Controller {
     public void loadPlayerMap(Player player) {
         String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name + ".png").toString()));
-        playerMapLabelName.setText(player.getName() + " " + player.getID());
+        playerMapLabelName.setText(client.getUniqueName(player.getID()));
     }
 
     private void addImage(Image i, StackPane pane) {
