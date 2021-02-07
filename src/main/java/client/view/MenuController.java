@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
@@ -32,22 +33,27 @@ public class MenuController extends Controller implements Updatable {
     private JFXButton joinButton;
     @FXML
     private Label infoLabel;
+    @FXML
+    private TextField textPortNumber;
 
     /**
      * Method creates a new Server and Client and opens the Login view
      */
     @FXML
     public void hostGameClicked() {
-        hostButton.setDisable(true);
-        joinButton.setDisable(true);
         logger.info("Host Game Clicked.");
 
-        new Thread(() -> {
-            Server server = Server.getInstance();
-            if (!server.isAlive()) server.start();
-            else logger.warn("The server is already running. Joining instead.");
-            connect(client);
-        }).start();
+        if (checkPortNumber()) {
+            hostButton.setDisable(true);
+            joinButton.setDisable(true);
+
+            new Thread(() -> {
+                Server server = Server.getInstance();
+                if (!server.isAlive()) server.start();
+                else logger.warn("The server is already running. Joining instead.");
+                connect(client);
+            }).start();
+        }
     }
 
     /**
@@ -58,12 +64,16 @@ public class MenuController extends Controller implements Updatable {
         hostButton.setDisable(true);
         joinButton.setDisable(true);
         logger.info("Join Game Clicked.");
-        new Thread(() -> connect(client)).start();
+        if (checkPortNumber()) {
+            new Thread(() -> connect(client)).start();
+        }
     }
 
     @FXML
     public void aiJoinClicked() {
-        connect(new AIClient());
+        if (checkPortNumber()) {
+            connect(new AIClient());
+        }
     }
 
     private void connect(Client client) {
@@ -103,5 +113,19 @@ public class MenuController extends Controller implements Updatable {
             Error error = (Error) message.getBody();
             infoLabel.setText(error.getError());
         }
+    }
+
+    public boolean checkPortNumber() {
+        if (!(textPortNumber.getText().isBlank())) {
+            try {
+                int portNr = Integer.parseInt(textPortNumber.getText());
+                client.setPort(portNr);
+                return true;
+            } catch (NumberFormatException e) {
+                infoLabel.setText("This port number is invalid.");
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -19,9 +19,12 @@ import static utilities.Constants.PORT;
 public abstract class Client {
     protected static final Logger logger = LogManager.getLogger();
     protected final ArrayList<Player> players = new ArrayList<>();
+    private final boolean isAI = false;
     protected int thisPlayersID;
     private Socket socket;
     private ReaderThread readerThread;
+
+    private int port = PORT;
 
     private PrintWriter writer;
 
@@ -33,8 +36,9 @@ public abstract class Client {
      */
     public boolean establishConnection() {
         try {
+            logger.info("Client trying to establish connection to port " + port + ".");
             String hostname = "localhost";
-            socket = new Socket(hostname, PORT);
+            socket = new Socket(hostname, port);
             writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 
             readerThread = new ReaderThread(socket, this);
@@ -128,5 +132,9 @@ public abstract class Client {
 
     public int getThisPlayersID() {
         return thisPlayersID;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
