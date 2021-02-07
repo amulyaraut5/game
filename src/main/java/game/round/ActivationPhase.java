@@ -128,7 +128,6 @@ public class ActivationPhase extends Phase {
      * CheckPointReached and GameWon Protocol are sent.
      */
     public void activateControlPoint() {
-        System.out.println("activeControlPoint()");
         outerLoop:
         for (Coordinate coordinate : map.readControlPointCoordinate()) {
             for (Attribute a : map.getTile(coordinate).getAttributes()) {
