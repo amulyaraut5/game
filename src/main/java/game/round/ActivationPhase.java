@@ -507,6 +507,10 @@ public class ActivationPhase extends Phase {
         return rebootedPlayers;
     }
 
+    public BoardElements getActivationElements() {
+        return activationElements;
+    }
+
     /**
      * This is independent of activated board method and used for cheats.
      * #fire activates this method.
