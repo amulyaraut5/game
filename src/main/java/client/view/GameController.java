@@ -61,12 +61,12 @@ public class GameController extends Controller implements Updatable {
     private Pane gameWonPane;
 
     private SoundHandler soundHandler;
-
+    private ArrayList<CardType> damageCards = new ArrayList<>();
     private GameState currentPhase = GameState.CONSTRUCTION;
     private int currentRound = 1;
     private boolean first = true;
     private boolean isMuted = true;
-    private boolean play = true;
+    private boolean play = false;
 
     @FXML
     private Pane infoPane;
@@ -97,6 +97,11 @@ public class GameController extends Controller implements Updatable {
 
         constructPhaseViews();
         roundPane.setVisible(false);
+
+        damageCards.add(Spam);
+        damageCards.add(Virus);
+        damageCards.add(Trojan);
+        damageCards.add(Worm);
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/gameBoard.fxml"));
@@ -366,11 +371,7 @@ public class GameController extends Controller implements Updatable {
                 }
                 othersController.currentCards(otherPlayer);
 
-                ArrayList<CardType> damageCards = new ArrayList<>();
-                damageCards.add(Spam);
-                damageCards.add(Virus);
-                damageCards.add(Trojan);
-                damageCards.add(Worm);
+
 
                 for (int i = 0; i < currentCards.getActiveCards().size(); i++) {
                     if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
@@ -447,14 +448,10 @@ public class GameController extends Controller implements Updatable {
                     playerMatController.resetDeckCounter(5);
                 }
             }
-            case SelectDamage -> {
-                SelectDamage selectDamage = (SelectDamage) message.getBody();
-                playerMatController.setDiscardDeckCounter(selectDamage.getCards().size());
-            }
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
                 boolean isThisPlayer = drawDamage.getPlayerID() == client.getThisPlayersID();
-                handleDamageCount(drawDamage.getCards());
+                client.handleDamageCount(drawDamage.getCards());
                 if (isThisPlayer) {
                     activationController.getPlayCardController().setDrawDamage(drawDamage);
                     playerMatController.setDiscardDeckCounter(drawDamage.getCards().size());
