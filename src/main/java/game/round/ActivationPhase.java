@@ -111,7 +111,7 @@ public class ActivationPhase extends Phase {
                 game.nextPhase();
                 break outerLoop;
             }
-            if (currentCards.isEmpty() || game.isGameWon()) {
+            if (currentCards.isEmpty()) {
                 endOfRound();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
@@ -121,9 +121,49 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * Checkpoint is the final destination of the game and player wins the game as
+     * soon as the player has reached all the checkpoints in numerical order.
+     * The player gets the checkpoint token.
+     * CheckPointReached and GameWon Protocol are sent.
+     */
+    public void activateControlPoint() {
+        System.out.println("activeControlPoint()");
+        outerLoop:
+        for (Coordinate coordinate : map.readControlPointCoordinate()) {
+            for (Attribute a : map.getTile(coordinate).getAttributes()) {
+                if (a.getType() == AttributeType.ControlPoint) {
+                    int checkPointID = ((game.gameObjects.tiles.ControlPoint) a).getCount();
+                    int totalCheckPoints = map.readControlPointCoordinate().size();
+                    for (Player player : players) {
+                        if (player.getRobot().getCoordinate().equals(coordinate)) {
+                            if (player.getCheckPointCounter() == (checkPointID - 1)) {
+                                if (checkPointID < totalCheckPoints) {
+                                    int checkPoint = player.getCheckPointCounter();
+                                    checkPoint++;
+                                    player.setCheckPointCounter(checkPoint);
+                                    server.communicateAll(new CheckpointReached(player.getID(), checkPointID));
+                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint"));
+                                } else if (checkPointID == totalCheckPoints) {
+                                    server.communicateAll(new GameWon(player.getID()));
+                                    game.setGameWon(true);
+                                    break outerLoop;
+                                }
+                            } else if (player.getCheckPointCounter() > checkPointID) {
+                                player.message(new Error("CheckPoint Already Reached"));
+                            } else {
+                                player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void endOfRound() {
-        if(!game.isGameWon()) activateBoard();
-        else {
+        if(!game.isGameWon()) {
+            activateBoard();
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
                 turnCards(currentRegister);
@@ -168,7 +208,7 @@ public class ActivationPhase extends Phase {
         laserAction.activateBoardLaser(activePlayers);
         laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
-        game.activateControlPoint();
+        activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
@@ -284,7 +324,7 @@ public class ActivationPhase extends Phase {
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
         }
-        game.activateControlPoint();
+        activateControlPoint();
 
     }
 
