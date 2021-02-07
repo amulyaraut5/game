@@ -50,10 +50,10 @@ public class PickDamageController extends Controller {
      * @param pickDamage
      */
     public void pickDamage(PickDamage pickDamage) {
-        countSpam = getCountSpamCards();
-        countTrojan = getCountTrojanCards();
-        countVirus = getCountVirusCards();
-        countWorm = getCountWormCards();
+        countSpam = client.getCountSpamCards();
+        countTrojan = client.getCountTrojanCards();
+        countVirus = client.getCountVirusCards();
+        countWorm = client.getCountWormCards();
         updateDamageCountLabel(CardType.Spam);
         updateDamageCountLabel(CardType.Worm);
         updateDamageCountLabel(CardType.Trojan);
