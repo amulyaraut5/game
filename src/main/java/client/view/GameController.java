@@ -362,10 +362,8 @@ public class GameController extends Controller implements Updatable {
                         if (damageCards.contains(currentCards.getActiveCards().get(i).getCard())) {
                             playerMatController.subtractPlayerCards(1);
                             currentCardIsDamage = true;
-                            System.out.println("currentCardIsDamage = true;");
                         } else {
                             currentCardIsDamage = false;
-                            System.out.println("currentCardIsDamage = false;");
                         }
                     }
                 }

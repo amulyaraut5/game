@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -17,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
@@ -65,9 +68,9 @@ public class ProgrammingController extends Controller {
     }
 
     private void createBackground(HBox hBox) {
-        ImageView background = new ImageView(new Image(getClass().getResource("/cards/programming/underground-card.png").toString()));
-        background.setFitHeight(heightHBox);
-        background.setFitWidth(widthHBox - 20);
+        ImageView background = generateImageView("/cards/programming/underground-card.png", (int)(widthHBox - 20), (int) heightHBox);
+        background.setEffect(new DropShadow(1, Color.BLACK));
+        //background.setEffect(new InnerShadow(5, Color.WHITE));
         hBox.getChildren().add(background);
     }
 
@@ -94,22 +97,25 @@ public class ProgrammingController extends Controller {
 
         return programmingCard;
     }
+    private boolean checkDragAllowed(Pane pane, Dragboard db){
+        if(db.hasContent(cardFormat)
+                && getProgrammingImageView() != null
+                && getProgrammingImageView().getParent() != pane
+                && pane.getChildren().isEmpty())
+            return true;
+        else return false;
+    }
 
     private void setOnDragOver(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
-        if (db.hasContent(cardFormat)
-                && getProgrammingImageView() != null
-                && getProgrammingImageView().getParent() != pane
-                && pane.getChildren().isEmpty()) {
+        if (checkDragAllowed(pane, db)) {
             e.acceptTransferModes(TransferMode.MOVE);
         }
     }
 
     private void setOnDragExited(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
-        if (db.hasContent(cardFormat)
-                && getProgrammingImageView() != null
-                && pane.getChildren().isEmpty()) {
+        if (checkDragAllowed(pane, db)) {
             ((Pane) getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
             ImageView puffer = getProgrammingImageView();
             puffer.setOnDragDetected(event -> setOnDragDetected(puffer));
