@@ -2,7 +2,6 @@ package client.view;
 
 import game.Player;
 import game.gameObjects.maps.Map;
-import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import game.gameObjects.tiles.Laser;
@@ -30,7 +29,6 @@ import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.MapConverter;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
-import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -208,7 +206,7 @@ public class GameBoardController extends Controller {
      * orientation to update the view later.
      *
      * @param player   Player whose robot should be turned
-     * @param rotation Parameter that determines how the player should be rotated.
+     * @param angle Parameter that determines how the player should be rotated.
      */
 
     public void handlePlayerTurning(Player player, int angle) {

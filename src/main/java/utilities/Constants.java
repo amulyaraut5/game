@@ -28,9 +28,10 @@ public final class Constants {
 
     //Cards
     public static final int SPAM_CARDCOUNT = 38;
-    public static final int TROJANHORSE_CARDCOUNT = 12;
+    public static final int TROJAN_CARDCOUNT = 12;
     public static final int VIRUS_CARDCOUNT = 18;
     public static final int WORM_CARDCOUNT = 6;
+
     public static final int MOVE1_CARDCOUNT = 5;
     public static final int MOVE2_CARDCOUNT = 3;
     public static final int MOVE3_CARDCOUNT = 1;

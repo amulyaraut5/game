@@ -4,7 +4,6 @@ import game.Player;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -15,7 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
@@ -97,12 +95,10 @@ public class PlayerMatController extends Controller {
     }
 
     private boolean checkDragAllowed(Pane pane, Dragboard db){
-        if(db.hasContent(cardFormat)
+        return db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
                 && getProgrammingImageView().getParent() != pane
-                && pane.getChildren().isEmpty())
-            return true;
-        else return false;
+                && pane.getChildren().isEmpty();
     }
 
     private void setOnDragExited(DragEvent e, Pane pane) {

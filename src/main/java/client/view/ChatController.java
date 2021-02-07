@@ -38,7 +38,6 @@ public class ChatController extends Controller {
         directChoiceBox.getSelectionModel().select(0);
         scrollPane.setFitToWidth(true);
         client.setChatController(this);
-
     }
 
     /**
@@ -85,7 +84,7 @@ public class ChatController extends Controller {
                 }
                 boolean toMe = false;
                 if (count == 1) {
-                    if(sendTo.equals(client.getPlayerFromID(client.getThisPlayersID()).getName())) toMe = true;
+                    if (sendTo.equals(client.getPlayerFromID(client.getThisPlayersID()).getName())) toMe = true;
                     for (Player player : client.getPlayers())
                         if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
                 } else {
@@ -96,11 +95,11 @@ public class ChatController extends Controller {
                         jsonBody = new SendChat(message, names.get(0));
                     } else {
                         String idNr = sendTo.substring(sendTo.length() - 1);
-                        if(Integer.parseInt(idNr) == client.getThisPlayersID()) toMe = true;
+                        if (Integer.parseInt(idNr) == client.getThisPlayersID()) toMe = true;
                         jsonBody = new SendChat(message, Integer.parseInt(idNr));
                     }
                 }
-                if(!toMe){
+                if (!toMe) {
                     chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
                 }
             }
@@ -124,7 +123,7 @@ public class ChatController extends Controller {
         String chat;
         String sender = client.getUniqueName(receivedChat.getFrom());
         String message = receivedChat.getMessage();
-            if (receivedChat.isPrivat())
+        if (receivedChat.isPrivat())
             chat = "[" + sender + "] @You: " + message;
         else chat = "[" + sender + "] " + message;
         setTextArea(chat);

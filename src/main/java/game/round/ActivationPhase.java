@@ -110,7 +110,7 @@ public class ActivationPhase extends Phase {
                 game.nextPhase();
                 break outerLoop;
             }
-             if (currentCards.isEmpty()) {
+            if (currentCards.isEmpty()) {
                 endOfRound();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
@@ -302,6 +302,7 @@ public class ActivationPhase extends Phase {
      * This method handles recursion for Again Card with different base cases. If the player plays again card back to
      * back in 2 registers, then in such case the card from the {register-2} is used.
      * Under normal circumstance the effect of immediate previous card is handled.
+     *
      * @param player current player playing game
      */
 
@@ -511,7 +512,7 @@ public class ActivationPhase extends Phase {
      * #fire activates this method.
      */
 
-    public void activateCheatLaser(){
+    public void activateCheatLaser() {
         laserAction.activateRobotLaser(activePlayers);
         laserAction.activateBoardLaser(activePlayers);
         server.communicateAll(new PlayerShooting());
@@ -560,5 +561,4 @@ public class ActivationPhase extends Phase {
                     '}';
         }
     }
-
 }

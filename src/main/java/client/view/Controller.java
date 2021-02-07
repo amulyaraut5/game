@@ -5,10 +5,9 @@ import client.model.ViewClient;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Constants;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -26,10 +25,10 @@ public abstract class Controller {
     private static ImageView programmingImageView;
     private static boolean wasFormerRegister = false;
 
-    private static int countSpamCards = 38;
-    private static int countTrojanCards = 12;
-    private static int countWormCards = 6;
-    private static int countVirusCards = 18;
+    private static int countSpamCards = Constants.SPAM_CARDCOUNT; //TODO move to client instead
+    private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
+    private static int countWormCards = Constants.WORM_CARDCOUNT;
+    private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
 
     protected final ViewManager viewManager = ViewManager.getInstance();
     protected final ViewClient client = ViewClient.getInstance();
@@ -93,7 +92,6 @@ public abstract class Controller {
             }
         }
     }
-
 
     protected ImageView generateImageView(String path, int width, int height) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));

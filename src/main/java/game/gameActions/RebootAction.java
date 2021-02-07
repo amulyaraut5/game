@@ -4,8 +4,6 @@ import game.Player;
 import utilities.JSONProtocol.body.Reboot;
 import utilities.enums.Orientation;
 
-import java.util.ArrayList;
-
 /**
  * @author annika
  */
@@ -38,7 +36,6 @@ public class RebootAction extends Action {
             player.getRobot().moveTo(player.getRobot().getStartingPoint());
         }
         server.communicateAll(new Reboot(player.getID()));
-
 
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {

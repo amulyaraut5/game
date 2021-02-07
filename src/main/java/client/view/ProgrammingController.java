@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -98,12 +97,10 @@ public class ProgrammingController extends Controller {
         return programmingCard;
     }
     private boolean checkDragAllowed(Pane pane, Dragboard db){
-        if(db.hasContent(cardFormat)
+        return db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
                 && getProgrammingImageView().getParent() != pane
-                && pane.getChildren().isEmpty())
-            return true;
-        else return false;
+                && pane.getChildren().isEmpty();
     }
 
     private void setOnDragOver(DragEvent e, Pane pane) {

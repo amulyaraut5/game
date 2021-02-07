@@ -17,8 +17,8 @@ import java.io.IOException;
 
 public class ServerController implements Updatable {
     private static final Logger logger = LogManager.getLogger();
-    private Server server = Server.getInstance();
-    private Game game = Game.getInstance();
+    private final Server server = Server.getInstance();
+    private final Game game = Game.getInstance();
 
     private GameBoardController gameBoardController;
 

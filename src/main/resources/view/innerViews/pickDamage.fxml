@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <AnchorPane fx:id="selectDamageAnchorPane" layoutX="36.0" layoutY="78.0" prefHeight="447.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PickDamageController">
         <ImageView fx:id="s" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
         <Label fx:id="damageInfoLabel" layoutX="18.0" layoutY="94.0" prefHeight="51.0" prefWidth="318.0" />
