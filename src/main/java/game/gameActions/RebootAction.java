@@ -21,8 +21,6 @@ public class RebootAction extends Action {
      */
     @Override
     public void doAction(Player player) {
-        ArrayList<Player> activePlayers = game.getActivePlayers();
-        ArrayList<Player> rebootedPlayers = game.getActivationPhase().getRebootedPlayers();
 
         //rebootedPlayers.add(player);
         //Draw two spam cards
@@ -41,8 +39,12 @@ public class RebootAction extends Action {
         }
         server.communicateAll(new Reboot(player.getID()));
 
-        //Out of the round, must wait until the next round to program the robot again.
+
         for (Player robotOnReboot : game.getPlayers()) {
+            if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
+                robotOnReboot.getRobot().rotateTo(Orientation.UP);
+                game.getActivationPhase().handleMove(robotOnReboot, Orientation.UP);
+            }
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 if (map.getRestartPoint().toPosition() == 0) {
                     robotOnReboot.getRobot().rotateTo(Orientation.RIGHT);
