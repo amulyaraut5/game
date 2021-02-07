@@ -11,6 +11,7 @@ module roborally {
     exports game;
     exports server;
     exports game.round;
+    exports client.model;
     exports game.gameObjects.decks;
     exports game.gameObjects.cards;
     exports utilities.enums;
