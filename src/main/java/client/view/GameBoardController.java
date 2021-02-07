@@ -2,7 +2,6 @@ package client.view;
 
 import game.Player;
 import game.gameObjects.maps.Map;
-import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import game.gameObjects.tiles.Laser;
@@ -30,7 +29,6 @@ import utilities.JSONProtocol.body.SetStartingPoint;
 import utilities.MapConverter;
 import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
-import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -157,7 +155,7 @@ public class GameBoardController extends Controller {
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == client.getThisPlayersID()) {
-            isStartPosSet = true;//boardPane.removeEventHandler(MOUSE_CLICKED, onMapClicked);
+            isStartPosSet = true;
         }
         player.getRobot().setCoordinate(coordinate);
         ImageView imageView = player.getRobot().drawRobotImage();
@@ -184,20 +182,18 @@ public class GameBoardController extends Controller {
      */
     public void handleMovement(Player player, Coordinate newPos) {
         ImageView imageView = robotTokens.get(player);
-        Coordinate oldPos = player.getRobot().getCoordinate();
-        player.getRobot().setCoordinate(newPos);
 
-        imageView.setX(oldPos.getX() * Constants.FIELD_SIZE);
-        imageView.setY(oldPos.getY() * Constants.FIELD_SIZE);
+        double oldX = imageView.getX();
+        double oldY = imageView.getY();
 
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(1));
         transition.setNode(imageView);
-        transition.setToX((newPos.getX() - oldPos.getX()) * Constants.FIELD_SIZE);
-        transition.setToY((newPos.getY() - oldPos.getY()) * Constants.FIELD_SIZE);
+        transition.setToX((newPos.getX() * Constants.FIELD_SIZE) - oldX);
+        transition.setToY((newPos.getY() * Constants.FIELD_SIZE) - oldY);
         transition.setOnFinished(event -> {
-            imageView.setX((oldPos.getX() * Constants.FIELD_SIZE) + imageView.getTranslateX());
-            imageView.setY((oldPos.getY() * Constants.FIELD_SIZE) + imageView.getTranslateY());
+            imageView.setX(newPos.getX() * Constants.FIELD_SIZE);
+            imageView.setY(newPos.getY() * Constants.FIELD_SIZE);
             imageView.setTranslateX(0);
             imageView.setTranslateY(0);
         });
@@ -210,20 +206,11 @@ public class GameBoardController extends Controller {
      * orientation to update the view later.
      *
      * @param player   Player whose robot should be turned
-     * @param rotation Parameter that determines how the player should be rotated.
+     * @param angle Parameter that determines how the player should be rotated.
      */
 
-    public void handlePlayerTurning(Player player, Rotation rotation) {
+    public void handlePlayerTurning(Player player, int angle) {
         ImageView imageView = robotTokens.get(player);
-        int angle = 0;
-        Robot r = player.getRobot();
-        if (rotation == Rotation.LEFT) {
-            angle = -90;
-            r.setOrientation(r.getOrientation().getPrevious());
-        } else if (rotation == Rotation.RIGHT) {
-            angle = 90;
-            r.setOrientation(r.getOrientation().getNext());
-        }
 
         RotateTransition transition = new RotateTransition();
         transition.setDuration(Duration.seconds(1));
@@ -231,10 +218,10 @@ public class GameBoardController extends Controller {
         transition.setByAngle(angle);
 
         transition.setOnFinished(event -> {
-            switch (r.getOrientation()) {
+            switch (player.getRobot().getOrientation()) {
                 case UP -> imageView.setRotate(0);
-                case DOWN -> imageView.setRotate(180);
                 case RIGHT -> imageView.setRotate(90);
+                case DOWN -> imageView.setRotate(180);
                 case LEFT -> imageView.setRotate(270);
             }
         });

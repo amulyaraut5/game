@@ -2,6 +2,7 @@ package server;
 
 import game.Game;
 import game.Player;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Constants;
@@ -52,6 +53,8 @@ public class Server extends Thread {
     private final ArrayList<User> AIs = new ArrayList<>();
     private final ArrayList<User> notAIs = new ArrayList<>();
 
+    private ServerController serverController;
+
     /**
      * number of playersIDs is saved to give a new player a new number
      */
@@ -65,13 +68,6 @@ public class Server extends Thread {
     private boolean isMapSent = false;
 
     private Server() {
-    }
-
-    /**
-     * Main method starts only the server separately
-     */
-    public static void main(String[] args) {
-        Server.getInstance().start();
     }
 
     /**
@@ -387,6 +383,11 @@ public class Server extends Thread {
         for (User user : users) {
             user.message(jsonBody);
         }
+        if (serverController != null) {
+            Platform.runLater(() -> {
+                serverController.update(JSONMessage.build(jsonBody));
+            });
+        }
     }
 
     public void communicateDirect(JSONBody jsonBody, int receiver) {
@@ -395,6 +396,10 @@ public class Server extends Thread {
                 user.message(jsonBody);
             }
         }
+    }
+
+    public void setServerController(ServerController serverController) {
+        this.serverController = serverController;
     }
 
     /**
