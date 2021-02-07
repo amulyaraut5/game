@@ -31,21 +31,39 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-    private final ArrayList<User> users = new ArrayList<>(10); //all Users
-    private final ArrayList<User> readyUsers = new ArrayList<>(); //Users which pressed ready
+    private Game game;
+    /**
+     * saves all connected users
+     */
+    private final ArrayList<User> users = new ArrayList<>(10);
+    /**
+     * saves all users that clicked ready in the view
+     */
+    private final ArrayList<User> readyUsers = new ArrayList<>();
+    /**
+     * Queue to read json messages step by step TODO
+     */
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
+    /**
+     * stores all users and if this user is an AI or not
+     * TODO do we need these three?
+     */
     private final HashMap<User, Boolean> userIsNotAI = new HashMap<>();
     private final ArrayList<User> AIs = new ArrayList<>();
     private final ArrayList<User> notAIs = new ArrayList<>();
-    private Game game;
-    private int idCounter = 1; //Number of playerIDs is saved to give new player a new number
+
+    /**
+     * number of playersIDs is saved to give a new player a new number
+     */
+    private int idCounter = 1;
+    /**
+     * ServerState that shows that the clients are in the lobby currently
+     */
     private ServerState serverState = ServerState.LOBBY;
+
     private boolean isMapSelected = false;
     private boolean isMapSent = false;
 
-    /**
-     * private Constructor for the ChatServer class
-     */
     private Server() {
     }
 
@@ -101,6 +119,12 @@ public class Server extends Thread {
         logger.info("SERVER CLOSED");
     }
 
+    /**
+     * checks if a received json message is valid, that means if the ServerState allows the message at this point
+     *
+     * @param queueMessage received Object of JSONMessage
+     * @return boolean true if the message is valid at this point in the game/serverState
+     */
     private boolean isMessageValid(QueueMessage queueMessage) {
         MessageType type = queueMessage.getJsonMessage().getType();
         boolean isValid = false;
@@ -253,6 +277,12 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * TODO
+     * @param user
+     * @param status
+     */
+
     private void dealWithMap(User user, SetStatus status) {
         userIsNotAI.put(user, status.isReady());
 
@@ -294,10 +324,6 @@ public class Server extends Thread {
             game.play();
             serverState = ServerState.RUNNING_GAME;
         }
-    }
-
-    public BlockingQueue<QueueMessage> getMessageQueue() {
-        return messageQueue;
     }
 
     /**
@@ -442,5 +468,9 @@ public class Server extends Thread {
                 notify();
             }
         }
+    }
+
+    public BlockingQueue<QueueMessage> getMessageQueue() {
+        return messageQueue;
     }
 }

@@ -1,5 +1,7 @@
 package game.round;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import server.Server;
 import utilities.JSONProtocol.body.TimerStarted;
 
@@ -8,6 +10,8 @@ import utilities.JSONProtocol.body.TimerStarted;
  */
 
 public class GameTimer extends Thread {
+    private static final Logger logger = LogManager.getLogger();
+
     private final ProgrammingPhase programmingPhase;
 
     public GameTimer(ProgrammingPhase programmingPhase) {
@@ -21,6 +25,7 @@ public class GameTimer extends Thread {
     @Override
     public void run() {
         Server.getInstance().communicateAll(new TimerStarted());
+        logger.info("The timer has started");
         try {
             Thread.sleep(30000);
         } catch (InterruptedException e) {

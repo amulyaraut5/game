@@ -4,6 +4,7 @@ import game.Player;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -14,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.body.CardsYouGotNow;
 import utilities.JSONProtocol.body.SelectCard;
@@ -59,19 +61,24 @@ public class PlayerMatController extends Controller {
 
     public void initialize() {
         energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
-        energyHBox.setSpacing(5);
-        energyHBox2.setSpacing(5);
         addEnergy(5);
         widthRegisterCard = registerHBox.getPrefWidth() / 5;
         heightRegisterCard = registerHBox.getPrefHeight();
-        registerHBox.setSpacing(20);
-        registerHBoxBackground.setSpacing(20);
+        setSpacingHBoxes();
         createRegisterNumberImages();
         createRegisterBackground();
         createRegisters();
     }
 
-    protected void addDropHandling(Pane pane) {
+
+
+    private void setSpacingHBoxes(){
+        energyHBox.setSpacing(5);
+        energyHBox2.setSpacing(5);
+        registerHBox.setSpacing(20);
+        registerHBoxBackground.setSpacing(20);
+    }
+    private void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> setOnDragOver(e, pane));
         pane.setOnDragExited(e -> setOnDragExited(e, pane));
         pane.setOnDragDone(e -> setOnDragDone());
@@ -79,9 +86,7 @@ public class PlayerMatController extends Controller {
 
     private void setOnDragOver(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
-        if (db.hasContent(cardFormat)
-                && getProgrammingImageView() != null
-                && getProgrammingImageView().getParent() != pane) {
+        if (checkDragAllowed(pane, db)) {
             positionDroppedCard = registerHBox.getChildren().indexOf(pane);
             positionDroppedCard += 1;
             boolean isFirstRegisterAgain = generateCardType(getProgrammingImageView().getImage().getUrl()).toString().equals("Again");
@@ -91,11 +96,20 @@ public class PlayerMatController extends Controller {
         }
     }
 
+    private boolean checkDragAllowed(Pane pane, Dragboard db){
+        if(db.hasContent(cardFormat)
+                && getProgrammingImageView() != null
+                && getProgrammingImageView().getParent() != pane
+                && pane.getChildren().isEmpty())
+            return true;
+        else return false;
+    }
+
     private void setOnDragExited(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
         if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
         else playerMatInfoLabel.setText(" ");
-        if (db.hasContent(cardFormat) && getProgrammingImageView() != null && againNotFirst) {
+        if (checkDragAllowed(pane, db)) {
             ((Pane) getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
             droppedImageView = createImageView(getProgrammingImageView(), positionDroppedCard);
             pane.getChildren().add(droppedImageView);
@@ -149,7 +163,7 @@ public class PlayerMatController extends Controller {
     public void loadPlayerMap(Player player) {
         String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name + ".png").toString()));
-        playerMapLabelName.setText(player.getName() + " " + player.getID());
+        playerMapLabelName.setText(client.getUniqueName(player.getID()));
     }
 
     private void addImage(Image i, StackPane pane) {
@@ -199,10 +213,12 @@ public class PlayerMatController extends Controller {
     private void createRegisterBackground() {
         registerHBoxBackground.getChildren().clear();
         String path = "/cards/programming/backside-card.png";
+        ImageView imageView;
         int width = (int) (widthRegisterCard - 20);
         int height = (int) heightRegisterCard;
         for (int i = 0; i <= 4; i++) {
-            registerHBoxBackground.getChildren().add(ImageHandler.createImageView(path, width, height));
+            imageView = generateImageView(path, width, height);
+            registerHBoxBackground.getChildren().add(imageView);
         }
     }
 

@@ -77,7 +77,7 @@ public class LobbyController extends Controller implements Updatable {
         label.setPrefWidth(90);
         label.setPrefHeight(30);
         label.setAlignment(Pos.TOP_CENTER);
-
+        label.setStyle("-fx-text-fill: midnightblue");
         VBox group = new VBox(imageView, label);
         playerIconPane.getChildren().add(group);
         playerIcons.put(player, group);
