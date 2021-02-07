@@ -36,44 +36,6 @@ public class BoardElements {
         this.activationPhase = activationPhase;
     }
 
-    /**
-     * Checkpoint is the final destination of the game and player wins the game as
-     * soon as the player has reached all the checkpoints in numerical order.
-     * The player gets the checkpoint token.
-     * CheckPointReached and GameWon Protocol are sent.
-     */
-
-    public void activateControlPoint() {
-        outerLoop:
-        for (Coordinate coordinate : map.readControlPointCoordinate()) {
-            for (Attribute a : map.getTile(coordinate).getAttributes()) {
-                if (a.getType() == AttributeType.ControlPoint) {
-                    int checkPointID = ((game.gameObjects.tiles.ControlPoint) a).getCount();
-                    int totalCheckPoints = map.readControlPointCoordinate().size();
-                    for (Player player : playerList) {
-                        if (player.getRobot().getCoordinate().equals(coordinate)) {
-                            if (player.getCheckPointCounter() == (checkPointID - 1)) {
-                                if (checkPointID < totalCheckPoints) {
-                                    int checkPoint = player.getCheckPointCounter();
-                                    checkPoint++;
-                                    player.setCheckPointCounter(checkPoint);
-                                    server.communicateAll(new CheckpointReached(player.getID(), checkPointID));
-                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint"));
-                                } else if (checkPointID == totalCheckPoints) {
-                                    server.communicateAll(new GameWon(player.getID()));
-                                    break outerLoop;
-                                }
-                            } else if (player.getCheckPointCounter() > checkPointID) {
-                                player.message(new Error("CheckPoint Already Reached"));
-                            } else {
-                                player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Gears rotate robots resting on them 90 degrees in the direction of the arrows.
