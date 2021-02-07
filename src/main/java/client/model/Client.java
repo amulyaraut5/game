@@ -3,9 +3,11 @@ package client.model;
 import game.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
+import utilities.enums.CardType;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -23,10 +25,66 @@ public abstract class Client {
     protected int thisPlayersID;
     private Socket socket;
     private ReaderThread readerThread;
-
     private int port = PORT;
 
     private PrintWriter writer;
+
+    private static int countSpamCards = Constants.SPAM_CARDCOUNT; //TODO move to client instead
+    private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
+    private static int countWormCards = Constants.WORM_CARDCOUNT;
+    private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
+
+
+    public int getCountSpamCards() {
+        return countSpamCards;
+    }
+
+    public void setCountSpamCards(int countSpamCards) {
+        this.countSpamCards = Math.max(countSpamCards, 0);
+    }
+
+    public int getCountTrojanCards() {
+        return countTrojanCards;
+    }
+
+    public void setCountTrojanCards(int countTrojanCards) {
+        this.countTrojanCards = Math.max(countTrojanCards, 0);
+    }
+
+    public int getCountWormCards() {
+        return countWormCards;
+    }
+
+    public void setCountWormCards(int countWormCards) {
+        this.countWormCards = Math.max(countWormCards, 0);
+    }
+
+    public int getCountVirusCards() {
+        return countVirusCards;
+    }
+
+    public void setCountVirusCards(int countVirusCards) {
+        this.countVirusCards = Math.max(countVirusCards, 0);
+    }
+
+    public void handleDamageCount(CardType cardType) {
+        switch (cardType) {
+            case Spam -> setCountSpamCards(getCountSpamCards() - 1);
+            case Trojan -> setCountTrojanCards(getCountTrojanCards() - 1);
+            case Worm -> setCountWormCards(getCountWormCards() - 1);
+            case Virus -> setCountVirusCards(getCountVirusCards() - 1);
+
+        }
+    }
+
+    public void handleDamageCount(ArrayList<CardType> cardList) {
+        if (cardList.size() == 0) setCountSpamCards(0); //TODO correct?
+        else {
+            for (CardType cardType : cardList) {
+                handleDamageCount(cardType);
+            }
+        }
+    }
 
     protected abstract void handleMessage(JSONMessage message);
 
@@ -137,4 +195,5 @@ public abstract class Client {
     public void setPort(int port) {
         this.port = port;
     }
+
 }

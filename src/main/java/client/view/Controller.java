@@ -25,11 +25,6 @@ public abstract class Controller {
     private static ImageView programmingImageView;
     private static boolean wasFormerRegister = false;
 
-    private static int countSpamCards = Constants.SPAM_CARDCOUNT; //TODO move to client instead
-    private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
-    private static int countWormCards = Constants.WORM_CARDCOUNT;
-    private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
-
     protected final ViewManager viewManager = ViewManager.getInstance();
     protected final ViewClient client = ViewClient.getInstance();
     protected final String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
@@ -43,55 +38,6 @@ public abstract class Controller {
         Controller.wasFormerRegister = wasFormerRegister;
     }
 
-    protected int getCountSpamCards() {
-        return countSpamCards;
-    }
-
-    public void setCountSpamCards(int countSpamCards) {
-        Controller.countSpamCards = Math.max(countSpamCards, 0);
-    }
-
-    public int getCountTrojanCards() {
-        return countTrojanCards;
-    }
-
-    public void setCountTrojanCards(int countTrojanCards) {
-        Controller.countTrojanCards = Math.max(countTrojanCards, 0);
-    }
-
-    public int getCountWormCards() {
-        return countWormCards;
-    }
-
-    public void setCountWormCards(int countWormCards) {
-        Controller.countWormCards = Math.max(countWormCards, 0);
-    }
-
-    public int getCountVirusCards() {
-        return countVirusCards;
-    }
-
-    public void setCountVirusCards(int countVirusCards) {
-        Controller.countVirusCards = Math.max(countVirusCards, 0);
-    }
-
-    public void handleDamageCount(CardType cardType) {
-        switch (cardType) {
-            case Spam -> setCountSpamCards(getCountSpamCards() - 1);
-            case Trojan -> setCountTrojanCards(getCountTrojanCards() - 1);
-            case Worm -> setCountWormCards(getCountWormCards() - 1);
-            case Virus -> setCountVirusCards(getCountVirusCards() - 1);
-        }
-    }
-
-    public void handleDamageCount(ArrayList<CardType> cardList) {
-        if (cardList.size() == 0) setCountSpamCards(0); //TODO correct?
-        else {
-            for (CardType cardType : cardList) {
-                handleDamageCount(cardType);
-            }
-        }
-    }
 
     protected ImageView generateImageView(String path, int width, int height) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));
