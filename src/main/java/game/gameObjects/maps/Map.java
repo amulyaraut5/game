@@ -70,6 +70,27 @@ public class Map {
         return null;
     }
 
+    public boolean isAttributeOn(int pos){
+        Coordinate coordinate = Coordinate.parse(pos);
+        Tile tile = tiles[coordinate.getX()][coordinate.getY()];
+        for (Attribute attribute : tile.getAttributes()) {
+            if(attribute.getType() == AttributeType.Antenna || attribute.getType()== AttributeType.Pit){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAttributeOn(Coordinate pos){
+        Tile tile = tiles[pos.getX()][pos.getY()];
+        for (Attribute attribute : tile.getAttributes()) {
+            if(attribute.getType() == AttributeType.Antenna || attribute.getType()== AttributeType.Pit){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Getter for tiles
      *

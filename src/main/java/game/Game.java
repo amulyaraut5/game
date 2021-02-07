@@ -184,12 +184,23 @@ public class Game {
                 Robot robot = userToPlayer(user).getRobot();
                 if (cheatInfo.length == 1) {
                     int position = Integer.parseInt(cheatInfo[0]);
-                    robot.moveTo(Coordinate.parse(position));
+                    if(map.isAttributeOn(position))
+                        server.communicateDirect(new Error("Movement is not allowed."), user.getID());
+                    else if (activationPhase.isPositionFree(position))
+                        robot.moveTo(Coordinate.parse(position));
+                    else server.communicateDirect(new Error("Movement is not allowed."), user.getID());
+
+
                 } else if (cheatInfo.length == 2) {
                     int x = Integer.parseInt(cheatInfo[0]);
                     int y = Integer.parseInt(cheatInfo[1]);
                     Coordinate coordinate = new Coordinate(x, y);
-                    robot.moveTo(coordinate);
+                    if(map.isAttributeOn(coordinate))
+                        server.communicateDirect(new Error("Movement is not allowed."), user.getID());
+                    else if (activationPhase.isPositionFree(coordinate))
+                        robot.moveTo(coordinate);
+                    else server.communicateDirect(new Error("Movement is not allowed."), user.getID());
+
                 }
             }
             case "#r" -> {
