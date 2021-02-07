@@ -26,6 +26,7 @@ module roborally {
 
     opens game.gameObjects.maps;
     opens client.view to javafx.fxml;
+    opens server to javafx.fxml, com.google.gson;
     opens client to javafx.fxml;
     opens client.model to com.google.gson;
     opens utilities to com.google.gson;
@@ -36,5 +37,4 @@ module roborally {
     opens game.gameObjects.cards to com.google.gson;
     opens game.gameObjects.robot to com.google.gson;
     opens game.gameActions to com.google.gson;
-    opens server to com.google.gson;
 }

@@ -1,13 +1,17 @@
 package client.view;
 
 import game.Player;
+import game.gameObjects.robot.Robot;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
@@ -20,6 +24,7 @@ import utilities.SoundHandler;
 import utilities.Updatable;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
+import utilities.enums.Rotation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,7 +89,6 @@ public class GameController extends Controller implements Updatable {
     @FXML
     private Label infoLabel;
 
-
     /**
      *
      */
@@ -100,7 +104,7 @@ public class GameController extends Controller implements Updatable {
 
             gameBoardController = fxmlLoader.getController();
         } catch (IOException e) {
-            logger.error("PlayerMap could not be created: " + e.getMessage());
+            logger.error("GameBoard could not be created: " + e.getMessage());
         }
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
@@ -109,7 +113,7 @@ public class GameController extends Controller implements Updatable {
 
             playerMatController = fxmlLoader.getController();
         } catch (IOException e) {
-            logger.error("PlayerMap could not be created: " + e.getMessage());
+            logger.error("PlayerMat could not be created: " + e.getMessage());
         }
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/otherPlayer.fxml"));
@@ -117,7 +121,7 @@ public class GameController extends Controller implements Updatable {
             otherPlayerSpace.getChildren().add(fxmlLoader.load());
             othersController = fxmlLoader.getController();
         } catch (IOException e) {
-            logger.error("Other player maps could not be created: " + e.getMessage());
+            logger.error("Other player mats could not be created: " + e.getMessage());
         }
 
         soundHandler = new SoundHandler();
@@ -131,7 +135,6 @@ public class GameController extends Controller implements Updatable {
         chat.setPrefHeight(chatPane.getPrefHeight());
         chatPane.setCenter(chat);
     }
-
 
     /**
      *
@@ -258,7 +261,6 @@ public class GameController extends Controller implements Updatable {
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
-
                 gameBoardController.buildMap(gameStarted);
                 othersController.createPlayerMats(client.getPlayers());
             }
@@ -281,14 +283,27 @@ public class GameController extends Controller implements Updatable {
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
                 currentAction.add(msg);
-
-                gameBoardController.handleMovement(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getTo()));
+                Player player = client.getPlayerFromID(msg.getPlayerID());
+                Coordinate newPos = Coordinate.parse(msg.getTo());
+                player.getRobot().setCoordinate(newPos);
+                gameBoardController.handleMovement(player, newPos);
             }
             case PlayerTurning -> {
-                PlayerTurning pT = (PlayerTurning) message.getBody();
-                currentAction.add(pT);
+                PlayerTurning msg = (PlayerTurning) message.getBody();
+                currentAction.add(msg);
+                Player player = client.getPlayerFromID(msg.getPlayerID());
 
-                gameBoardController.handlePlayerTurning(client.getPlayerFromID(pT.getPlayerID()), pT.getDirection());
+                Robot r = player.getRobot();
+                int angle;
+                if (msg.getDirection() == Rotation.LEFT) {
+                    angle = -90;
+                    r.setOrientation(r.getOrientation().getPrevious());
+                } else {
+                    angle = 90;
+                    r.setOrientation(r.getOrientation().getNext());
+                }
+
+                gameBoardController.handlePlayerTurning(player, angle);
             }
             case CardSelected -> {
                 CardSelected cardSelected = (CardSelected) message.getBody();
