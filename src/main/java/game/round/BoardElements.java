@@ -151,20 +151,14 @@ public class BoardElements {
                     oldPositions.add(currentPlayer.getRobot().getCoordinate().clone());
 
                     for (Attribute a : map.getTile(tileCoordinate).getAttributes()) {
-                        if (a instanceof Belt) {
-                            orientations.add(((Belt) a).getOrientation());
-                        }
-                        if (a instanceof RotatingBelt) {
-                            orientations.add(((RotatingBelt) a).getOrientations()[0]);
-                        }
+                        if (a instanceof Belt) orientations.add(((Belt) a).getOrientation());
+                        if (a instanceof RotatingBelt) orientations.add(((RotatingBelt) a).getOrientations()[0]);
                     }
                 }
             }
         }
 
-        for (Player player : playersOnBelt) {
-            oldPositions.add(player.getRobot().getCoordinate().clone());
-        }
+        for (Player player : playersOnBelt)  oldPositions.add(player.getRobot().getCoordinate().clone());
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
         for (int j = 0; j < actionFinished.size(); j++) {
@@ -174,12 +168,9 @@ public class BoardElements {
         for (Player player : playersOnBelt) {
             boolean stillOnBelt = false;
             for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
-                if (a.getType() == AttributeType.Belt) {
-                    stillOnBelt = true;
-                } else {
-                    if (a.getType() == AttributeType.RotatingBelt) {
-                        stillOnBelt = true;
-                    }
+                if (a.getType() == AttributeType.Belt) stillOnBelt = true;
+                 else {
+                    if (a.getType() == AttributeType.RotatingBelt) stillOnBelt = true;
                 }
                 if (!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
             }
@@ -273,14 +264,12 @@ public class BoardElements {
                     for (Attribute a : map.getTile(p.getRobot().getCoordinate()).getAttributes()) {
                         if (a.getType() == AttributeType.RotatingBelt) {
                             RotatingBelt temp = ((RotatingBelt) a);
-
                             if (temp.getOrientations()[0] != orientations.get(playersOnBelt.indexOf(p))) {
                                 rotateOnBelt(p.getRobot(), temp.getOrientations());
                             }
                         }
                     }
                 }
-
                 activationPhase.handleTile(p);
             }
         }
