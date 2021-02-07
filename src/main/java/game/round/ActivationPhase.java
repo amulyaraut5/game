@@ -10,6 +10,7 @@ import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.decks.*;
 import game.gameObjects.robot.Robot;
+import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.User;
@@ -110,7 +111,7 @@ public class ActivationPhase extends Phase {
                 game.nextPhase();
                 break outerLoop;
             }
-            if (currentCards.isEmpty()) {
+            if (currentCards.isEmpty() || game.isGameWon()) {
                 endOfRound();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
@@ -121,18 +122,20 @@ public class ActivationPhase extends Phase {
     }
 
     public void endOfRound() {
-        activateBoard();
-
-        if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
-            currentRegister++;
-            turnCards(currentRegister);
-        } else { //if it is already the 5th register the next phase is called
-            if (!rebootedPlayers.isEmpty()) {
-                activePlayers.addAll(rebootedPlayers);
-                rebootedPlayers.clear();
+        if(!game.isGameWon()) activateBoard();
+        else {
+            if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+                currentRegister++;
+                turnCards(currentRegister);
+            } else { //if it is already the 5th register the next phase is called
+                if (!rebootedPlayers.isEmpty()) {
+                    activePlayers.addAll(rebootedPlayers);
+                    rebootedPlayers.clear();
+                }
+                game.nextPhase();
             }
-            game.nextPhase();
         }
+
     }
 
     public void removeCurrentCards(int playerID) {
@@ -165,7 +168,7 @@ public class ActivationPhase extends Phase {
         laserAction.activateBoardLaser(activePlayers);
         laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
-        activationElements.activateControlPoint();
+        game.activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
@@ -281,6 +284,8 @@ public class ActivationPhase extends Phase {
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
         }
+        game.activateControlPoint();
+
     }
 
     public void checkForAgainCard(Player player) {
