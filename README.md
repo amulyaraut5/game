@@ -3,6 +3,9 @@ Willkommen zu RoboRally!
 
 ## Spiel Starten
 
+- In das Textfeld im Menü kannst du eine passende Portnummer eingeben, 
+  oder du nutzt die Voreinstellung, um dich mit unserem Server zu verbinden und gibst nichts ein.
+
 - Um das Spiel zu starten klicke zunächst auf "Host".
   Jeder weitere Spieler kann durch das Klicken auf "Join" beitreten. 
 
