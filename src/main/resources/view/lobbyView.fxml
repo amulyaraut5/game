@@ -25,7 +25,7 @@
     </Pane>
     <BorderPane fx:id="chatPane" layoutX="376.0" prefHeight="369.0" prefWidth="250.0" />
     <FlowPane fx:id="playerIconPane" layoutX="58.0" layoutY="105.0" prefHeight="240.0" prefWidth="280.0" />
-    <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="58.0" layoutY="383.0" onAction="#checkBoxAction" prefHeight="37.0" prefWidth="101.0" text="Ready!" textFill="#363636" unCheckedColor="#727272">
+    <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="58.0" layoutY="383.0" onAction="#checkBoxAction" prefHeight="37.0" prefWidth="101.0" text="Ready!" textFill="midnightblue" unCheckedColor="#727272">
         <font>
             <Font name="System Bold" size="17.0" />
         </font>
@@ -35,7 +35,7 @@
             <Font name="System Bold" size="18.0" />
         </font>
     </Label>
-    <Label fx:id="infoLabel2" layoutX="42.0" layoutY="432.0" prefHeight="27.0" prefWidth="476.0" />
+    <Label fx:id="infoLabel2" layoutX="42.0" layoutY="432.0" prefHeight="27.0" prefWidth="476.0" textFill="midnightblue" />
 
     <JFXButton buttonType="RAISED" contentDisplay="CENTER" layoutX="204.0" layoutY="391.0" mnemonicParsing="false" onAction="#goToMapSelection" prefHeight="27.0" prefWidth="178.0" style="-fx-background-color: orange;" text="Go To MapSelectionView" textFill="WHITE" />
 </AnchorPane>
