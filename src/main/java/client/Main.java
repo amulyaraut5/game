@@ -16,6 +16,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage menuStage) {
-        ViewManager.getInstance();
+        ViewManager.getInstance().start();
     }
 }
