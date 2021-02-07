@@ -91,10 +91,10 @@ public class Game {
         constructionPhase = new ConstructionPhase();
     }
 
-    public void handleMapSelection(String selectedMap) {
-        if (selectedMap.equals("DizzyHighway")) {
+    public void handleMapSelection(ArrayList<String> selectedMap) {
+        if (selectedMap.get(0) == "DizzyHighway") {
             map = MapBuilder.constructMap(new DizzyHighway());
-        } else if (selectedMap.equals("ExtraCrispy")) {
+        } else if (selectedMap.get(0) == "ExtraCrispy") {
             map = MapBuilder.constructMap(new ExtraCrispy());
         }
     }

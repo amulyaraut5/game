@@ -317,7 +317,12 @@ public class Server extends Thread {
 
         // Random Map is selected if all users are AI
         if (allUsersReady && (AIs.equals(readyUsers))) {
-            game.handleMapSelection(maps.get(r.nextInt(maps.size())));
+
+            ArrayList<String> input = new ArrayList<>();
+            input.add(maps.get(r.nextInt(maps.size())));
+
+            //game.handleMapSelection(maps.get(r.nextInt(maps.size())));
+            game.handleMapSelection(input);
             game.play();
             serverState = ServerState.RUNNING_GAME;
         }
