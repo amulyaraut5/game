@@ -108,12 +108,12 @@ public class ChatController extends Controller {
                 String[] messageSplit = message.split(" ");
 
                 if (message.equals("#emptySpam")) {
-                    setCountSpamCards(0);
-                } else if (message.equals("#countDamage")) {
-                    logger.info("count of damage cards on client side: Spam: " + getCountSpamCards() + ", Trojan: " + getCountTrojanCards() + ", Virus: " + getCountVirusCards() + ", Worm: " + getCountWormCards());
+                    client.setCountSpamCards(0);
+                } else if (message.equals("#damageDecks")) {
+                    logger.info("count of damage cards on client side: Spam: " + client.getCountSpamCards() + ", Trojan: " + client.getCountTrojanCards() + ", Virus: " + client.getCountVirusCards() + ", Worm: " + client.getCountWormCards());
                 } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
                     int damageCount = Integer.parseInt(messageSplit[1]);
-                    setCountSpamCards(getCountSpamCards() - damageCount);
+                    client.setCountSpamCards(client.getCountSpamCards() - damageCount);
                 }
                 client.sendMessage(jsonBody);
 
