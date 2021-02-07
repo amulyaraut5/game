@@ -32,11 +32,13 @@ public class RebootAction extends Action {
         //discard cards in registers on discard pile and create new empty register
         player.discardCards(player.getRegisterCards(), player.getDiscardedProgrammingDeck());
 
-        //Robot is placed on reboot token
+        //Reboot on rebootTile
         if (player.getRobot().getCoordinate().getX() > 2) {
             player.getRobot().rotateTo(Orientation.UP);
             player.getRobot().moveTo(map.getRestartPoint());
-        } else {
+        }
+        //Reboot on particular startingTile
+        else {
             player.getRobot().setCoordinate(player.getRobot().getStartingPoint());
             Coordinate newPosition = game.getActivationPhase().getActivationElements().calculateNew(player, Orientation.UP);
             if(isTaken(player) && (map.isWallBlocking(newPosition, Orientation.DOWN) || map.isWallBlocking(player.getRobot().getCoordinate(), Orientation.UP))){
@@ -48,7 +50,7 @@ public class RebootAction extends Action {
                 player.getRobot().moveTo(player.getRobot().getStartingPoint());
             }
         }
-        clearRebootTile(player);
+        clearRebootTile2(player);
         server.communicateAll(new Reboot(player.getID()));
 
         /*activePlayers.remove(player);
@@ -84,6 +86,14 @@ public class RebootAction extends Action {
                     robotOnReboot.getRobot().rotateTo(Orientation.DOWN);
                     game.getActivationPhase().handleMove(robotOnReboot, Orientation.DOWN);
                 }
+            }
+        }
+    }
+
+    public void clearRebootTile2(Player player){
+        for(Player robotOnReboot : game.getPlayers()){
+            if(robotOnReboot.getRobot().getCoordinate().equals(player.getRobot().getCoordinate()) && robotOnReboot !=  player){
+                game.getActivationPhase().handleMove(robotOnReboot, Orientation.UP);
             }
         }
     }

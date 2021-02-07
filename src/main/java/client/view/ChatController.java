@@ -9,10 +9,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.JSONProtocol.body.SendChat;
 
+import javax.swing.text.Utilities;
 import java.util.ArrayList;
 
 public class ChatController extends Controller {
@@ -69,49 +71,55 @@ public class ChatController extends Controller {
         logger.trace("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
         JSONBody jsonBody = null;
-        if (!message.isBlank()) {
-            if (sendTo.equals("all")) {
-                jsonBody = new SendChat(message, -1);
-                chatWindow.appendText("[You] " + message + "\n");
-            } else {
-                int count = 0;
-                String[] name = sendTo.split(" ", 2);
-                for (Player player : client.getPlayers()) {
-                    if (player.getName().equals(name[0])) count++;
-                }
-                boolean toMe = false;
-                if (count == 1) {
-                    if (sendTo.equals(client.getPlayerFromID(client.getThisPlayersID()).getName())) toMe = true;
-                    for (Player player : client.getPlayers())
-                        if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
+        if(message.equals("#hotkeys")){
+            chatWindow.appendText(Constants.HOTKEYSLIST);
+        } else {
+            if (!message.isBlank()) {
+                if (sendTo.equals("all")) {
+                    jsonBody = new SendChat(message, -1);
+                    chatWindow.appendText("[You] " + message + "\n");
                 } else {
-                    ArrayList<Integer> names = new ArrayList<>();
-                    for (Player player : client.getPlayers())
-                        if (name[0].equals(player.getName())) names.add(player.getID());
-                    if (sendTo.length() == 1) {
-                        jsonBody = new SendChat(message, names.get(0));
+                    int count = 0;
+                    String[] name = sendTo.split(" ", 2);
+                    for (Player player : client.getPlayers()) {
+                        if (player.getName().equals(name[0])) count++;
+                    }
+                    boolean toMe = false;
+                    if (count == 1) {
+                        if (sendTo.equals(client.getPlayerFromID(client.getThisPlayersID()).getName())) toMe = true;
+                        for (Player player : client.getPlayers())
+                            if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
                     } else {
-                        String idNr = sendTo.substring(sendTo.length() - 1);
-                        if (Integer.parseInt(idNr) == client.getThisPlayersID()) toMe = true;
-                        jsonBody = new SendChat(message, Integer.parseInt(idNr));
+                        ArrayList<Integer> names = new ArrayList<>();
+                        for (Player player : client.getPlayers())
+                            if (name[0].equals(player.getName())) names.add(player.getID());
+                        if (sendTo.length() == 1) {
+                            jsonBody = new SendChat(message, names.get(0));
+                        } else {
+                            String idNr = sendTo.substring(sendTo.length() - 1);
+                            if (Integer.parseInt(idNr) == client.getThisPlayersID()) toMe = true;
+                            jsonBody = new SendChat(message, Integer.parseInt(idNr));
+                        }
+                    }
+                    if (!toMe) {
+                        chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
                     }
                 }
-                if (!toMe) {
-                    chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
-                }
-            }
-            String[] messageSplit = message.split(" ");
+                String[] messageSplit = message.split(" ");
 
-            if (message.equals("#emptySpam")) {
-                setCountSpamCards(0);
-            } else if (message.equals("#countDamage")) {
-                logger.info("count of damage cards on client side: Spam: " + getCountSpamCards() + ", Trojan: " + getCountTrojanCards() + ", Virus: " + getCountVirusCards() + ", Worm: " + getCountWormCards());
-            } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
-                int damageCount = Integer.parseInt(messageSplit[1]);
-                setCountSpamCards(getCountSpamCards() - damageCount);
+                if (message.equals("#emptySpam")) {
+                    setCountSpamCards(0);
+                } else if (message.equals("#countDamage")) {
+                    logger.info("count of damage cards on client side: Spam: " + getCountSpamCards() + ", Trojan: " + getCountTrojanCards() + ", Virus: " + getCountVirusCards() + ", Worm: " + getCountWormCards());
+                } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
+                    int damageCount = Integer.parseInt(messageSplit[1]);
+                    setCountSpamCards(getCountSpamCards() - damageCount);
+                }
+                client.sendMessage(jsonBody);
+
             }
-            client.sendMessage(jsonBody);
         }
+
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
     }
