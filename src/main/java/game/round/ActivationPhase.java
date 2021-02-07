@@ -544,7 +544,7 @@ public class ActivationPhase extends Phase {
                     player.getDiscardedProgrammingDeck().addCard(new Trojan());
                     trojanDeck.pop();
                 }
-                default -> server.communicateAll(new Error("This is not a valid damage card"));
+                default -> player.message(new Error("This is not a valid damage card"));
             }
             cardTypes.add(cardType);
         }

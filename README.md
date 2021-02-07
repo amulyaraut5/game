@@ -33,9 +33,9 @@ Um die Cheats zu aktivieren tippe: `#cheats on` in den Chat.
 | -------------- | ------------------------------------------------ |
 | #cheats        | Liste aller Cheats                               |
 | #cheats on/off | schaltet Cheats an/aus                           |
-| #tp <pos>      | teleportiert den Roboter                         |
-| #tp <x> <y>    | teleportiert den Roboter                         |
-| #r <u,r,d,l>   | rotiert den Roboter nach oben/rechts/unten/links |
+| #tp `pos`      | teleportiert den Roboter                         |
+| #tp `x y` | teleportiert den Roboter                         |
+| #r `u,r,d,l`   | rotiert den Roboter nach oben/rechts/unten/links |
 | #endTimer      | beendet den Timer                                |
 | #autoPlay      | spielt automatisch alle Play-Its                 |
 | #activateBoard | aktiviert das Board                              |
