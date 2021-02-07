@@ -123,9 +123,10 @@ public class ChatController extends Controller {
     public void receivedChat(ReceivedChat receivedChat) {
         String chat;
         String sender = client.getUniqueName(receivedChat.getFrom());
-        if (receivedChat.isPrivat())
-            chat = "[" + sender + "] @You: " + receivedChat.getMessage();
-        else chat = "[" + sender + "] " + receivedChat.getMessage();
+        String message = receivedChat.getMessage();
+            if (receivedChat.isPrivat())
+            chat = "[" + sender + "] @You: " + message;
+        else chat = "[" + sender + "] " + message;
         setTextArea(chat);
     }
 }

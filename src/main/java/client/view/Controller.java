@@ -5,6 +5,8 @@ import client.model.ViewClient;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.enums.CardType;
@@ -91,6 +93,7 @@ public abstract class Controller {
             }
         }
     }
+
 
     protected ImageView generateImageView(String path, int width, int height) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));
