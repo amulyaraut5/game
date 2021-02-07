@@ -91,7 +91,8 @@ public class Game {
         constructionPhase = new ConstructionPhase();
     }
 
-    public void handleMapSelection(String selectedMap) {
+    public void handleMapSelection(ArrayList<String> maps) {
+        String selectedMap = maps.get(0);
         if (selectedMap.equals("DizzyHighway")) {
             map = MapBuilder.constructMap(new DizzyHighway());
         } else if (selectedMap.equals("ExtraCrispy")) {
