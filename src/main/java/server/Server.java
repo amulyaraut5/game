@@ -478,4 +478,12 @@ public class Server extends Thread {
     public BlockingQueue<QueueMessage> getMessageQueue() {
         return messageQueue;
     }
+
+    public ArrayList<User> getReadyUsers() {
+        return readyUsers;
+    }
+
+    public void setServerState(ServerState serverState) {
+        this.serverState = serverState;
+    }
 }

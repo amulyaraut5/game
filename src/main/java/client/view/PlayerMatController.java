@@ -37,7 +37,7 @@ public class PlayerMatController extends Controller {
     @FXML
     private AnchorPane playerMapAnchorPane;
     @FXML
-    private Label discardDeckLabel; //TODO ?
+    private Label discardDeckLabel;
     @FXML
     private Label programmingDeckLabel;
     @FXML

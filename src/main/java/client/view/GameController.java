@@ -505,6 +505,11 @@ public class GameController extends Controller implements Updatable {
         if (client.getCurrentController().equals(this)) othersController.removePlayer(player);
     }
 
+    public void removeAll(){
+        gameBoardController.removeAll();
+        othersController.removeAll();
+    }
+
     /**
      * @return
      */

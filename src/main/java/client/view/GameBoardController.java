@@ -324,4 +324,8 @@ public class GameBoardController extends Controller {
         ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
     }
+
+    public void removeAll(){
+        robotPane.getChildren().clear();
+    }
 }

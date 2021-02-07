@@ -101,6 +101,11 @@ public class OthersController extends Controller {
         otherPlayers.remove(getOtherPlayer(player.getID()));
     }
 
+    public void removeAll(){
+        hBoxPlayer.getChildren().clear();
+        otherPlayers.clear();
+    }
+
     /**
      * This method determines the visibility of the registers of each one player mat
      *
