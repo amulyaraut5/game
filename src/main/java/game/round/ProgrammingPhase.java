@@ -58,8 +58,8 @@ public class ProgrammingPhase extends Phase {
             for (Card card : player.getDrawnProgrammingCards()) {
                 cards.add(card.getName());
             }
-            player.message(new YourCards(cards, player.getID())); //FIXME send cardsInPile instead of ID!
-            server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size())), player);
+            player.message(new YourCards(cards, player.getDrawProgrammingDeck().size()));
+            server.communicateUsers((new NotYourCards(player.getID(), player.getDrawnProgrammingCards().size(), player.getDrawProgrammingDeck().size())), player);
         }
     }
 

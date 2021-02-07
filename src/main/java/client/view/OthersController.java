@@ -203,7 +203,7 @@ public class OthersController extends Controller {
      * @param notYourCards
      */
     public void setNotYourCards(NotYourCards notYourCards) {
-        getOtherPlayerController(notYourCards.getPlayerID()).setInfoLabel(notYourCards.getCards() + " programming cards");
+        getOtherPlayerController(notYourCards.getPlayerID()).setInfoLabel(notYourCards.getCardsInHand() + " programming cards");
     }
 
     private static class OtherPlayer {
