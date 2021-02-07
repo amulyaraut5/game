@@ -105,7 +105,7 @@ public class PlayerMatController extends Controller {
         Dragboard db = e.getDragboard();
         if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
         else playerMatInfoLabel.setText(" ");
-        if (checkDragAllowed(pane, db)) {
+        if (checkDragAllowed(pane, db) && againNotFirst) {
             ((Pane) getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
             droppedImageView = createImageView(getProgrammingImageView(), positionDroppedCard);
             pane.getChildren().add(droppedImageView);
