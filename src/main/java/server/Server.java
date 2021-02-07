@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.Multiplex;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.QueueMessage;
@@ -32,7 +33,6 @@ public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-    private Game game;
     /**
      * saves all connected users
      */
@@ -52,7 +52,7 @@ public class Server extends Thread {
     private final HashMap<User, Boolean> userIsNotAI = new HashMap<>();
     private final ArrayList<User> AIs = new ArrayList<>();
     private final ArrayList<User> notAIs = new ArrayList<>();
-
+    private Game game;
     private ServerController serverController;
 
     /**
@@ -275,6 +275,7 @@ public class Server extends Thread {
 
     /**
      * TODO
+     *
      * @param user
      * @param status
      */
@@ -372,6 +373,8 @@ public class Server extends Thread {
     }
 
     public void communicateUsers(JSONBody jsonBody, User sender) {
+        String json = Multiplex.serialize(JSONMessage.build(jsonBody));
+        logger.debug("Protocol sent: " + json);
         for (User user : users) {
             if (!user.equals(sender)) {
                 user.message(jsonBody);
@@ -380,6 +383,8 @@ public class Server extends Thread {
     }
 
     public void communicateAll(JSONBody jsonBody) {
+        String json = Multiplex.serialize(JSONMessage.build(jsonBody));
+        logger.debug("Protocol sent: " + json);
         for (User user : users) {
             user.message(jsonBody);
         }

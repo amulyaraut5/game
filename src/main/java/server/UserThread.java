@@ -58,7 +58,7 @@ public class UserThread extends Thread {
                 if (jsonText == null) {
                     throw new IOException("Connection closed");
                 }
-                //logger.debug("Protocol received: " + text);
+                logger.debug("Protocol received: " + jsonText);
 
                 JSONMessage msg = Multiplex.deserialize(jsonText);
                 server.getMessageQueue().add(new QueueMessage(msg, user));
@@ -79,7 +79,6 @@ public class UserThread extends Thread {
      */
     public void sendMessage(JSONBody jsonBody) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
-        //logger.debug("Protocol sent: " + json);
         writer.println(json);
         writer.flush();
     }

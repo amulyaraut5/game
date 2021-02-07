@@ -10,6 +10,7 @@ import game.gameObjects.cards.damage.Virus;
 import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.decks.*;
 import game.gameObjects.robot.Robot;
+import game.gameObjects.tiles.Attribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.User;
@@ -120,19 +121,61 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void endOfRound() {
-        activateBoard();
-
-        if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
-            currentRegister++;
-            turnCards(currentRegister);
-        } else { //if it is already the 5th register the next phase is called
-            if (!rebootedPlayers.isEmpty()) {
-                activePlayers.addAll(rebootedPlayers);
-                rebootedPlayers.clear();
+    /**
+     * Checkpoint is the final destination of the game and player wins the game as
+     * soon as the player has reached all the checkpoints in numerical order.
+     * The player gets the checkpoint token.
+     * CheckPointReached and GameWon Protocol are sent.
+     */
+    public void activateControlPoint() {
+        System.out.println("activeControlPoint()");
+        outerLoop:
+        for (Coordinate coordinate : map.readControlPointCoordinate()) {
+            for (Attribute a : map.getTile(coordinate).getAttributes()) {
+                if (a.getType() == AttributeType.ControlPoint) {
+                    int checkPointID = ((game.gameObjects.tiles.ControlPoint) a).getCount();
+                    int totalCheckPoints = map.readControlPointCoordinate().size();
+                    for (Player player : players) {
+                        if (player.getRobot().getCoordinate().equals(coordinate)) {
+                            if (player.getCheckPointCounter() == (checkPointID - 1)) {
+                                if (checkPointID < totalCheckPoints) {
+                                    int checkPoint = player.getCheckPointCounter();
+                                    checkPoint++;
+                                    player.setCheckPointCounter(checkPoint);
+                                    server.communicateAll(new CheckpointReached(player.getID(), checkPointID));
+                                    player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint"));
+                                } else if (checkPointID == totalCheckPoints) {
+                                    server.communicateAll(new GameWon(player.getID()));
+                                    game.setGameWon(true);
+                                    break outerLoop;
+                                }
+                            } else if (player.getCheckPointCounter() > checkPointID) {
+                                player.message(new Error("CheckPoint Already Reached"));
+                            } else {
+                                player.message(new Error("You need to go CheckPoint " + (player.getCheckPointCounter() + 1) + " first"));
+                            }
+                        }
+                    }
+                }
             }
-            game.nextPhase();
         }
+    }
+
+    public void endOfRound() {
+        if(!game.isGameWon()) {
+            activateBoard();
+            if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
+                currentRegister++;
+                turnCards(currentRegister);
+            } else { //if it is already the 5th register the next phase is called
+                if (!rebootedPlayers.isEmpty()) {
+                    activePlayers.addAll(rebootedPlayers);
+                    rebootedPlayers.clear();
+                }
+                game.nextPhase();
+            }
+        }
+
     }
 
     public void removeCurrentCards(int playerID) {
@@ -165,7 +208,7 @@ public class ActivationPhase extends Phase {
         laserAction.activateBoardLaser(activePlayers);
         laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
-        activationElements.activateControlPoint();
+        activateControlPoint();
         // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
@@ -281,6 +324,8 @@ public class ActivationPhase extends Phase {
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
         }
+        activateControlPoint();
+
     }
 
     public void checkForAgainCard(Player player) {
