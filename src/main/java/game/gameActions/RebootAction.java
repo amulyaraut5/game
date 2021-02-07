@@ -1,10 +1,12 @@
 package game.gameActions;
 
 import game.Player;
+import utilities.Coordinate;
 import utilities.JSONProtocol.body.Reboot;
 import utilities.enums.Orientation;
 
-import java.util.ArrayList;
+import java.util.Random;
+
 
 /**
  * @author annika
@@ -21,6 +23,7 @@ public class RebootAction extends Action {
      */
     @Override
     public void doAction(Player player) {
+        Random random = new Random();
 
         //rebootedPlayers.add(player);
         //Draw two spam cards
@@ -34,12 +37,40 @@ public class RebootAction extends Action {
             player.getRobot().rotateTo(Orientation.UP);
             player.getRobot().moveTo(map.getRestartPoint());
         } else {
-            player.getRobot().rotateTo(Orientation.UP);
-            player.getRobot().moveTo(player.getRobot().getStartingPoint());
+            player.getRobot().setCoordinate(player.getRobot().getStartingPoint());
+            Coordinate newPosition = game.getActivationPhase().getActivationElements().calculateNew(player, Orientation.UP);
+            if(isTaken(player) && (map.isWallBlocking(newPosition, Orientation.DOWN) || map.isWallBlocking(player.getRobot().getCoordinate(), Orientation.UP))){
+                Coordinate randomStartPoint = map.getStartingPoints().get(random.nextInt(map.getStartingPoints().size()));
+                player.getRobot().rotateTo(Orientation.UP);
+                player.getRobot().moveTo(randomStartPoint);
+            } else {
+                player.getRobot().rotateTo(Orientation.UP);
+                player.getRobot().moveTo(player.getRobot().getStartingPoint());
+            }
         }
+        clearRebootTile(player);
         server.communicateAll(new Reboot(player.getID()));
 
+        /*activePlayers.remove(player);
 
+        if (activePlayers.isEmpty()) {
+            activePlayers.addAll(rebootedPlayers);
+            rebootedPlayers.clear();
+            game.nextPhase();
+        }*/
+    }
+
+    public boolean isTaken(Player player){
+        for (Player robotOnReboot : game.getPlayers()) {
+            if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void clearRebootTile(Player player){
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 robotOnReboot.getRobot().rotateTo(Orientation.UP);
@@ -55,13 +86,5 @@ public class RebootAction extends Action {
                 }
             }
         }
-
-        /*activePlayers.remove(player);
-
-        if (activePlayers.isEmpty()) {
-            activePlayers.addAll(rebootedPlayers);
-            rebootedPlayers.clear();
-            game.nextPhase();
-        }*/
     }
 }

@@ -261,6 +261,20 @@ public class Map {
         return EnergySpaces;
     }
 
+    public ArrayList<Coordinate> readStartingPointCoordinates() {
+        final ArrayList<Coordinate> startingPoints = new ArrayList<>();
+        for (int i = 0; i < (tiles.length); i++) {
+            for (int j = 0; j < (tiles[0].length); j++) {
+                for (Attribute a : tiles[i][j].getAttributes()) {
+                    if (a.getType() == AttributeType.StartPoint) {
+                        startingPoints.add(new Coordinate(i, j));
+                    }
+                }
+            }
+        }
+        return startingPoints;
+    }
+
     private void addGreenBelt(Coordinate c) {
         GreenBelts.add(c);
     }
@@ -283,5 +297,9 @@ public class Map {
 
     public Coordinate getAntenna() {
         return antenna;
+    }
+
+    public ArrayList<Coordinate> getStartingPoints() {
+        return readStartingPointCoordinates();
     }
 }
