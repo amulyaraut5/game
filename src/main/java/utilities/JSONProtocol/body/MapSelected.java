@@ -2,15 +2,20 @@ package utilities.JSONProtocol.body;
 
 import utilities.JSONProtocol.JSONBody;
 
+import java.util.ArrayList;
+
 public class MapSelected extends JSONBody {
 
-    private final String map;
+    private final ArrayList<String> map;
 
     public MapSelected(String map) {
-        this.map = map;
+
+        ArrayList<String> mapAttribute = new ArrayList<>();
+        mapAttribute.add(map);
+        this.map = mapAttribute;
     }
 
-    public String getMap() {
+    public ArrayList<String> getMap() {
         return map;
     }
 }
