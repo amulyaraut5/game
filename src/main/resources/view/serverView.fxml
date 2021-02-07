@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+   <children>
+      <HBox>
+         <children>
+            <Pane fx:id="boardPane" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+            <VBox prefWidth="500.0" />
+         </children>
+      </HBox>
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
