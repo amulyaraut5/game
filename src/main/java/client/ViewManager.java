@@ -48,6 +48,14 @@ public class ViewManager {
     private Scene currentScene;
 
     private ViewManager() {
+    }
+
+    public static ViewManager getInstance() {
+        if (instance == null) instance = new ViewManager();
+        return instance;
+    }
+
+    public void start() {
         Platform.runLater(() -> {
             try {
                 constructScenes();
@@ -63,11 +71,6 @@ public class ViewManager {
                 e.printStackTrace();
             }
         });
-    }
-
-    public static ViewManager getInstance() {
-        if (instance == null) instance = new ViewManager();
-        return instance;
     }
 
     public void showMenu() {

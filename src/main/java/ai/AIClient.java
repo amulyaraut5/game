@@ -64,123 +64,115 @@ public class AIClient extends Client {
      */
     public void handleMessage(JSONMessage message) {
         MessageType type = message.getType();
-        Timer timer = new Timer();
-        timer.schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        switch (type) {
-                            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
-                                //TODO nothing
+        switch (type) {
+            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
+                //TODO nothing
+            }
+            case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
+            case HelloServer, SetStatus, SendChat, DrawDamage, PickDamage, SelectCard, SelectDamage, SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
+            }
+            case Welcome -> {
+                Welcome wc = (Welcome) message.getBody();
+                thisPlayersID = wc.getPlayerID();
+                Timer t = new Timer();
+                t.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                choosePlayerValues();
+                                t.cancel();
                             }
-                            case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
-                            case HelloServer, SetStatus, SendChat, DrawDamage, PickDamage, SelectCard, SelectDamage, SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
-                            }
-                            case Welcome -> {
-                                Welcome wc = (Welcome) message.getBody();
-                                thisPlayersID = wc.getPlayerID();
-                                Timer t = new Timer();
-                                t.schedule(
-                                        new TimerTask() {
-                                            @Override
-                                            public void run() {
-                                                choosePlayerValues();
-                                                t.cancel();
-                                            }
-                                        }, 1000
-                                );
-                            }
-                            case PlayerAdded -> {
-                                PlayerAdded playerAdded = (PlayerAdded) message.getBody();
-                                Player player = new Player(playerAdded);
-                                players.add(player);
-                                if (player.getID() == thisPlayersID) {
-                                    sendMessage(new SetStatus(true));
-                                }
-                            }
-                            case ConnectionUpdate -> {
-                                //TODO remove player
-                            }
-                            case GameStarted -> {
-                                GameStarted gameStarted = (GameStarted) message.getBody();
-                                map = MapConverter.reconvert(gameStarted);
-                            }
-                            case StartingPointTaken -> {
-                                StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                                Player player = getPlayerFromID(msg.getPlayerID());
-                                Coordinate coordinate = Coordinate.parse(msg.getPosition());
-                                player.getRobot().setCoordinate(coordinate);
-                            }
-                            case ActivePhase -> {
-                                ActivePhase msg = (ActivePhase) message.getBody();
-                                currentPhase = msg.getPhase();
-                            }
-                            case YourCards -> {
-                                YourCards yourCards = (YourCards) message.getBody();
-                                chooseCards(yourCards);
-                            }
-                            case CardsYouGotNow -> {
-                                CardsYouGotNow msg = (CardsYouGotNow) message.getBody();
-                                //TODO getPlayerFromID(thisPlayersID).setDrawnProgrammingCards(msg.getCards());
-                            }
-                            case CurrentCards -> {
-                                //TODO
-                            }
-                            case Reboot -> {
-                                Reboot reboot = (Reboot) message.getBody();
-                                // TODO nothing
-                            }
-                            case CheckpointReached -> {
-                                CheckpointReached msg = (CheckpointReached) message.getBody();
-                                getPlayerFromID(msg.getPlayerID()).setCheckPointCounter(msg.getNumber());
-                            }
-                            case Movement -> {
-                                Movement msg = (Movement) message.getBody();
-                                getPlayerFromID(msg.getPlayerID()).getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
-                            }
-                            case PlayerTurning -> {
-                                PlayerTurning msg = (PlayerTurning) message.getBody();
-                                Orientation orientation = Orientation.UP;
-                                switch (msg.getDirection()) {
-                                    case RIGHT -> orientation = Orientation.RIGHT;
-                                    case LEFT -> orientation = Orientation.LEFT;
-                                }
-                                getPlayerFromID(msg.getPlayerID()).getRobot().setOrientation(orientation);
-                            }
-                            case CardSelected -> {
-                                CardSelected cardSelected = (CardSelected) message.getBody();
-                            } //TODO
-                            case NotYourCards -> {
-                                NotYourCards notYourCards = (NotYourCards) message.getBody();
-                            } //TODO
-                            case ShuffleCoding -> {
-                                ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                            } //TODO
-                            case DiscardHand -> {
-                                DiscardHand discardHand = (DiscardHand) message.getBody();
-                            } //TODO
-                            case SelectMap -> {
-                                // TODO Nothing Server sends a random Map
-                            }
-                            case CurrentPlayer -> {
-                                CurrentPlayer msg = (CurrentPlayer) message.getBody();
+                            }, 1000
+                );
+            }
+            case PlayerAdded -> {
+                PlayerAdded playerAdded = (PlayerAdded) message.getBody();
+                Player player = new Player(playerAdded);
+                players.add(player);
+                if (player.getID() == thisPlayersID) {
+                    sendMessage(new SetStatus(true));
+                }
+            }
+            case ConnectionUpdate -> {
+                //TODO remove player
+            }
+            case GameStarted -> {
+                GameStarted gameStarted = (GameStarted) message.getBody();
+                map = MapConverter.reconvert(gameStarted);
+            }
+            case StartingPointTaken -> {
+                StartingPointTaken msg = (StartingPointTaken) message.getBody();
+                Player player = getPlayerFromID(msg.getPlayerID());
+                Coordinate coordinate = Coordinate.parse(msg.getPosition());
+                player.getRobot().setCoordinate(coordinate);
+            }
+            case ActivePhase -> {
+                ActivePhase msg = (ActivePhase) message.getBody();
+                currentPhase = msg.getPhase();
+            }
+            case YourCards -> {
+                YourCards yourCards = (YourCards) message.getBody();
+                chooseCards(yourCards);
+            }
+            case CardsYouGotNow -> {
+                CardsYouGotNow msg = (CardsYouGotNow) message.getBody();
+                //TODO getPlayerFromID(thisPlayersID).setDrawnProgrammingCards(msg.getCards());
+            }
+            case CurrentCards -> {
+                //TODO
+            }
+            case Reboot -> {
+                Reboot reboot = (Reboot) message.getBody();
+                // TODO nothing
+            }
+            case CheckpointReached -> {
+                CheckpointReached msg = (CheckpointReached) message.getBody();
+                getPlayerFromID(msg.getPlayerID()).setCheckPointCounter(msg.getNumber());
+            }
+            case Movement -> {
+                Movement msg = (Movement) message.getBody();
+                getPlayerFromID(msg.getPlayerID()).getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
+            }
+            case PlayerTurning -> {
+                PlayerTurning msg = (PlayerTurning) message.getBody();
+                Orientation orientation = Orientation.UP;
+                switch (msg.getDirection()) {
+                    case RIGHT -> orientation = Orientation.RIGHT;
+                    case LEFT -> orientation = Orientation.LEFT;
+                }
+                getPlayerFromID(msg.getPlayerID()).getRobot().setOrientation(orientation);
+            }
+            case CardSelected -> {
+                CardSelected cardSelected = (CardSelected) message.getBody();
+            } //TODO
+            case NotYourCards -> {
+                NotYourCards notYourCards = (NotYourCards) message.getBody();
+            } //TODO
+            case ShuffleCoding -> {
+                ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
+            } //TODO
+            case DiscardHand -> {
+                DiscardHand discardHand = (DiscardHand) message.getBody();
+            } //TODO
+            case SelectMap -> {
+                // TODO Nothing Server sends a random Map
+            }
+            case CurrentPlayer -> {
+                CurrentPlayer msg = (CurrentPlayer) message.getBody();
 
-                                if (msg.getPlayerID() == thisPlayersID) {
-                                    if (currentPhase == GameState.CONSTRUCTION) {
-                                        int[] startingPoints = {39, 78, 14, 53, 66, 105};
-                                        for (int point : startingPoints) {
-                                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
-                                        }
-                                    } else if (currentPhase == GameState.ACTIVATION) {
-                                        sendMessage(new PlayIt());
-                                    }
-                                }
-                            }
-                            default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
+                if (msg.getPlayerID() == thisPlayersID) {
+                    if (currentPhase == GameState.CONSTRUCTION) {
+                        int[] startingPoints = {39, 78, 14, 53, 66, 105};
+                        for (int point : startingPoints) {
+                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
                         }
+                    } else if (currentPhase == GameState.ACTIVATION) {
+                        sendMessage(new PlayIt());
                     }
-                },2000
-        );
+                }
+            }
+            default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
+        }
     }
 
     private void chooseCards(YourCards yourCards) {

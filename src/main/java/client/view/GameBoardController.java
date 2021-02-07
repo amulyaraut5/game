@@ -1,5 +1,6 @@
 package client.view;
 
+import client.model.ViewClient;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.Attribute;
@@ -37,7 +38,7 @@ import java.util.List;
 
 import static javafx.scene.input.MouseEvent.*;
 
-public class GameBoardController extends Controller {
+public class GameBoardController {
     private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
@@ -78,9 +79,9 @@ public class GameBoardController extends Controller {
         int position = new Coordinate(x, y).toPosition();
 
         if (!isStartPosSet) {
-            client.sendMessage(new SetStartingPoint(position));
+            ViewClient.getInstance().sendMessage(new SetStartingPoint(position));
         } else {
-            client.sendMessage(new SendChat("#tp " + position, -1));
+            ViewClient.getInstance().sendMessage(new SendChat("#tp " + position, -1));
         }
     }
 
@@ -154,7 +155,7 @@ public class GameBoardController extends Controller {
      * @param coordinate
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
-        if (player.getID() == client.getThisPlayersID()) {
+        if (player.getID() == ViewClient.getInstance().getThisPlayersID()) {
             isStartPosSet = true;
         }
         player.getRobot().setCoordinate(coordinate);

@@ -376,6 +376,25 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    public boolean isPositionFree(int position){
+        Coordinate coordinate = Coordinate.parse(position);
+        for (Player collisionPlayer : players) {
+            if (coordinate.equals(collisionPlayer.getRobot().getCoordinate())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isPositionFree(Coordinate coordinate){
+        for (Player collisionPlayer : players) {
+            if (coordinate.equals(collisionPlayer.getRobot().getCoordinate())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * calculates the distance between antenna and robot on the map
      * and returns the distance by the number of tiles between them
