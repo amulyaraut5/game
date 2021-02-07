@@ -59,19 +59,24 @@ public class PlayerMatController extends Controller {
 
     public void initialize() {
         energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
-        energyHBox.setSpacing(5);
-        energyHBox2.setSpacing(5);
         addEnergy(5);
         widthRegisterCard = registerHBox.getPrefWidth() / 5;
         heightRegisterCard = registerHBox.getPrefHeight();
-        registerHBox.setSpacing(20);
-        registerHBoxBackground.setSpacing(20);
+        setSpacingHBoxes();
         createRegisterNumberImages();
         createRegisterBackground();
         createRegisters();
     }
 
-    protected void addDropHandling(Pane pane) {
+
+
+    private void setSpacingHBoxes(){
+        energyHBox.setSpacing(5);
+        energyHBox2.setSpacing(5);
+        registerHBox.setSpacing(20);
+        registerHBoxBackground.setSpacing(20);
+    }
+    private void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> setOnDragOver(e, pane));
         pane.setOnDragExited(e -> setOnDragExited(e, pane));
         pane.setOnDragDone(e -> setOnDragDone());
