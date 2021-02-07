@@ -19,9 +19,7 @@ import utilities.enums.ServerState;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
@@ -186,7 +184,21 @@ public class Server extends Thread {
                 SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
                 game.getConstructionPhase().setStartingPoint(user, setStartingPoint.getPosition());
             }
-            case PlayIt -> game.getActivationPhase().activateCards(user.getID());
+            case PlayIt ->{
+                if (AIs.equals(readyUsers)) {
+                    Timer t = new Timer();
+                    t.schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    game.getActivationPhase().activateCards(user.getID());
+                                }
+                            }, 2000
+                    );
+                }
+                else
+                    game.getActivationPhase().activateCards(user.getID());
+            }
             case MapSelected -> {
                 if (!isMapSelected) {
                     MapSelected selectMap = (MapSelected) message.getBody();
