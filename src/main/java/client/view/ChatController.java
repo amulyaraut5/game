@@ -83,7 +83,9 @@ public class ChatController extends Controller {
                 for (Player player : client.getPlayers()) {
                     if (player.getName().equals(name[0])) count++;
                 }
+                boolean toMe = false;
                 if (count == 1) {
+                    if(sendTo.equals(client.getPlayerFromID(client.getThisPlayersID()).getName())) toMe = true;
                     for (Player player : client.getPlayers())
                         if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
                 } else {
@@ -94,10 +96,13 @@ public class ChatController extends Controller {
                         jsonBody = new SendChat(message, names.get(0));
                     } else {
                         String idNr = sendTo.substring(sendTo.length() - 1);
+                        if(Integer.parseInt(idNr) == client.getThisPlayersID()) toMe = true;
                         jsonBody = new SendChat(message, Integer.parseInt(idNr));
                     }
                 }
-                chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
+                if(!toMe){
+                    chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
+                }
             }
             String[] messageSplit = message.split(" ");
 
