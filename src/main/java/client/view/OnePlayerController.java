@@ -61,9 +61,9 @@ public class OnePlayerController extends Controller {
     public void setPlayerInformation(Player otherPlayer) {
         String playerName = client.getPlayerFromID(otherPlayer.getID()).getName();
         String uniquePlayerName = client.getUniqueName(otherPlayer.getID());
-        if(uniquePlayerName.split(" ", 2).length!=1) {
-            if(Integer.parseInt(uniquePlayerName.substring(uniquePlayerName.length()-1)) == 1) {
-                playerName = client.getPlayerFromID(otherPlayer.getID()).getName();
+        if((uniquePlayerName.split(" ", 2).length)>1) {
+            if(Integer.parseInt(uniquePlayerName.substring(uniquePlayerName.length()-1)) > 1) {
+                playerName = uniquePlayerName;
             }
         }
         nameLabel.setText(playerName);
