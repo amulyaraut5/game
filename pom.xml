@@ -87,8 +87,9 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <!-- client.JarMain or server.Server to create client and server jar -->
-                            <mainClass>server.Server</mainClass>
+                            <!-- client.JarMain or server.JarServerApp to create client and server jar -->
+                            <!-- create jar with "mvn clean compile assembly:single" -->
+                            <mainClass>client.JarMain</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Multi-Release>true</Multi-Release>

@@ -25,7 +25,10 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="1106.0" layoutY="56.0" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: orange;" text="Start" textFill="WHITE" />
+                  <JFXButton layoutX="1106.0" layoutY="56.0" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: orange;" text="Start" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></JFXButton>
                </children>
             </Pane>
          </children>
