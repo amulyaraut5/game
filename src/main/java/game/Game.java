@@ -18,10 +18,8 @@ import server.Server;
 import server.User;
 import utilities.Constants;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.ActivePhase;
+import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.GameWon;
-import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
@@ -41,6 +39,7 @@ public class Game {
     private final Server server = Server.getInstance();
     private ArrayList<Player> players;
     private ArrayList<Player> activePlayers;
+    private boolean gameWon = false;
 
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
@@ -168,6 +167,7 @@ public class Game {
         } else server.communicateDirect(new Error("Please activate cheats first"), user.getID());
     }
 
+
     private void activateCheat(User user, String cheat, String[] cheatInfo) {
         switch (cheat) {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
@@ -287,5 +287,13 @@ public class Game {
 
     public TrojanDeck getTrojanDeck() {
         return trojanDeck;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
     }
 }
