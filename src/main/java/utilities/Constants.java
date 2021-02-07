@@ -65,11 +65,17 @@ public final class Constants {
             #emptySpam     |  empties spam deck
             #win                   |  player wins
             #fire          | fires laser
-            - - - - - - - - - - - - - - - - - - - - - - - - -
-            click on map       |  teleports the robot
-            WASD keys         |  rotates the robot
             ------------------------------------------
             """;
+    public static final  String HOTKEYSLIST = """
+                                       
+             ------------------------------------------
+             Hotkeys
+             ------------------------------------------
+             click on map       |  teleports the robot
+             WASD keys         |  rotates the robot
+             ------------------------------------------
+             """;
 
     private Constants() {
     }
