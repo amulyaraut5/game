@@ -60,7 +60,6 @@ public class PlayCardController extends Controller {
 
     @FXML
     private void playItButton() {
-        System.out.println("play it pressed");
         client.sendMessage(new PlayIt());
     }
 
