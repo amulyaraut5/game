@@ -69,7 +69,7 @@ public class AIClient extends Client {
                 //TODO nothing
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
-            case HelloServer, SetStatus, SendChat, DrawDamage, PickDamage, SelectCard, SelectDamage, SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
+            case HelloServer, SetStatus, SendChat, SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
             }
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
@@ -124,6 +124,28 @@ public class AIClient extends Client {
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
                 // TODO nothing
+            }
+            case DrawDamage -> {
+                DrawDamage drawDamage = (DrawDamage) message.getBody();
+                handleDamageCount(drawDamage.getCards());
+                if(drawDamage.getPlayerID() == thisPlayersID){
+                    //TODO nothing
+                }
+            }
+            case PickDamage -> {
+                PickDamage pickDamage = (PickDamage) message.getBody();
+                int countToPick = pickDamage.getCount();
+                ArrayList<CardType> damageCards = new ArrayList<>();
+                CardType chooseCard = null;
+                while (countToPick>0){ //TODO Reihenfolge?
+                    if(getCountSpamCards()>0) chooseCard = CardType.Spam;
+                    else if(getCountVirusCards()>0) chooseCard = CardType.Virus;
+                    else if(getCountTrojanCards()>0) chooseCard = CardType.Trojan;
+                    else if(getCountWormCards()>0) chooseCard = CardType.Worm;
+                    damageCards.add(chooseCard);
+                    countToPick--;
+                }
+                sendMessage(new SelectDamage(damageCards));
             }
             case CheckpointReached -> {
                 CheckpointReached msg = (CheckpointReached) message.getBody();
@@ -197,6 +219,7 @@ public class AIClient extends Client {
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
         for (int i = 0; i < 5; i++) {
+            handleDamageCount(bestCombination[i]);
             sendMessage(new SelectCard(bestCombination[i], i + 1));
         }
         //HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
