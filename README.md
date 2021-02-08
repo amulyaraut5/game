@@ -3,6 +3,9 @@ Willkommen zu RoboRally!
 
 ## Spiel Starten
 
+- um unser Spiel zu spielen musst man nur den Client öffnen 
+  (entweder Doppelklick, oder in der Konsole mit: java -jar path\Client.jar)
+
 - In das Textfeld im Menü kannst du eine passende Portnummer eingeben, 
   oder du nutzt die Voreinstellung, um dich mit unserem Server zu verbinden und gibst nichts ein.
 
