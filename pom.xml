@@ -56,6 +56,26 @@
             <artifactId>jfoenix</artifactId>
             <version>9.0.10</version>
         </dependency>
+        <!--
+          <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>mac</classifier>
+        </dependency>
+        -->
     </dependencies>
 
     <build>
@@ -89,7 +109,7 @@
                         <manifest>
                             <!-- client.JarMain or server.JarServerApp to create client and server jar -->
                             <!-- create jar with "mvn clean compile assembly:single" -->
-                            <mainClass>client.JarMain</mainClass>
+                            <mainClass>server.JarServerApp</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Multi-Release>true</Multi-Release>
