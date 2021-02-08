@@ -52,6 +52,7 @@ public class Player extends User {
 
         robot = Robot.create(figure, this);
 
+        checkPointCounter = 0;
         energyCubes = 5;
         drawProgrammingDeck = new ProgrammingDeck();
         discardedProgrammingDeck = new DiscardDeck();

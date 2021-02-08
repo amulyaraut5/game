@@ -65,25 +65,24 @@ public class AIClient extends Client {
     public void handleMessage(JSONMessage message) {
         MessageType type = message.getType();
         switch (type) {
-            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy, ReceivedChat, GameWon, PlayerStatus -> {
+            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy,
+                    ReceivedChat, GameWon, PlayerStatus, HelloServer, SetStatus, SendChat,
+                    SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
                 //TODO nothing
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
-            case HelloServer, SetStatus, SendChat, SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
-            }
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
+
                 Timer t = new Timer();
-                t.schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                choosePlayerValues();
-                                t.cancel();
-                            }
-                        }, 1000
-                );
+                t.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        choosePlayerValues();
+                        t.cancel();
+                    }
+                }, 1000);
             }
             case PlayerAdded -> {
                 PlayerAdded playerAdded = (PlayerAdded) message.getBody();
@@ -247,30 +246,34 @@ public class AIClient extends Client {
     }
 
     private int distance(Coordinate coordinate) {
-        Coordinate controlPoint = new Coordinate(12, 3);//map.getControlPointCoordinates().get(0); //TODO multiple controlpoints
+        //Coordinate controlPoint = new Coordinate(12, 3);//map.getControlPointCoordinates().get(0); //TODO multiple controlpoints
+        Player player = getPlayerFromID(thisPlayersID);
+        int nextControlPoint = player.getCheckPointCounter();
+        Coordinate controlPoint = map.readControlPointCoordinate().get(nextControlPoint);
         int x = Math.abs(controlPoint.getX() - coordinate.getX());
         int y = Math.abs(controlPoint.getY() - coordinate.getY());
         return x + y;
     }
 
     public void choosePlayerValues() {
-
-        List<Integer> a = new ArrayList<>();
-        List<Integer> b = new ArrayList<>();
+        List<Integer> takenFigures = new ArrayList<>();
+        List<Integer> freeFigures = new ArrayList<>();
 
         for (Player player : players) {
-            a.add(player.getFigure());
+            takenFigures.add(player.getFigure());
         }
 
         for (int i = 0; i < 6; i++) {
-            b.add(i);
+            freeFigures.add(i);
         }
 
-        b.removeAll(a);
+        freeFigures.removeAll(takenFigures);
 
-        if (b.size() > 0) {
-            String name = b.get(0) + "_AI";
-            sendMessage(new PlayerValues(name, b.get(0)));
-        }
+        if (freeFigures.size() > 0) {
+            Random r = new Random();
+            int chosenFigure = freeFigures.get(r.nextInt(freeFigures.size()));
+            String name = "AA AI " + chosenFigure;
+            sendMessage(new PlayerValues(name, chosenFigure));
+        } else disconnect();
     }
 }
