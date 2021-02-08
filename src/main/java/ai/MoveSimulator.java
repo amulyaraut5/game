@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class MoveSimulator {
     private final AIClient aiClient;
     private final Map map;
+    private CardType[] cards;
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
@@ -24,23 +25,24 @@ public class MoveSimulator {
     public Coordinate simulateCombination(CardType[] cards, Coordinate actualPos, Orientation orientation) {
         resPosition = actualPos.clone();
         resOrientation = orientation;
+        this.cards = cards;
 
         for (int i = 0; i < 5; i++) {
             if (!reboot) {
-                playCard(cards[i]);
+                playCard(cards[i], i);
                 activateBlueBelts();
                 activateGreenBelts();
                 activatePushPanel(i + 1);
                 activateGear();
             } else {
                 reboot = false;
-                return actualPos;
+                return null;
             }
         }
         return resPosition;
     }
 
-    private void playCard(CardType card) {
+    private void playCard(CardType card, int i) {
 
         switch (card) {
             case MoveI -> handleMove(resOrientation);
@@ -57,7 +59,15 @@ public class MoveSimulator {
             case TurnLeft -> resOrientation = resOrientation.getPrevious();
             case TurnRight -> resOrientation = resOrientation.getNext();
             case BackUp -> handleMove(resOrientation.getOpposite());
-            //TODO case Again -> handleRecursion(player, orientation);
+            case Again -> handleAgain(i);
+        }
+    }
+
+    private void handleAgain(int i) {
+        if (i > 0) {
+            playCard(cards[i - 1], i - 1);
+        } else {
+            reboot = true;
         }
     }
 

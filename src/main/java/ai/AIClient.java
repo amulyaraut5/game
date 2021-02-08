@@ -82,7 +82,7 @@ public class AIClient extends Client {
                                 choosePlayerValues();
                                 t.cancel();
                             }
-                            }, 1000
+                        }, 1000
                 );
             }
             case PlayerAdded -> {
@@ -128,7 +128,7 @@ public class AIClient extends Client {
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
                 handleDamageCount(drawDamage.getCards());
-                if(drawDamage.getPlayerID() == thisPlayersID){
+                if (drawDamage.getPlayerID() == thisPlayersID) {
                     //TODO nothing
                 }
             }
@@ -137,11 +137,11 @@ public class AIClient extends Client {
                 int countToPick = pickDamage.getCount();
                 ArrayList<CardType> damageCards = new ArrayList<>();
                 CardType chooseCard = null;
-                while (countToPick>0){ //TODO Reihenfolge?
-                    if(getCountSpamCards()>0) chooseCard = CardType.Spam;
-                    else if(getCountVirusCards()>0) chooseCard = CardType.Virus;
-                    else if(getCountTrojanCards()>0) chooseCard = CardType.Trojan;
-                    else if(getCountWormCards()>0) chooseCard = CardType.Worm;
+                while (countToPick > 0) { //TODO Reihenfolge?
+                    if (getCountSpamCards() > 0) chooseCard = CardType.Spam;
+                    else if (getCountVirusCards() > 0) chooseCard = CardType.Virus;
+                    else if (getCountTrojanCards() > 0) chooseCard = CardType.Trojan;
+                    else if (getCountWormCards() > 0) chooseCard = CardType.Worm;
                     damageCards.add(chooseCard);
                     countToPick--;
                 }
@@ -211,10 +211,13 @@ public class AIClient extends Client {
         Robot robot = getPlayerFromID(thisPlayersID).getRobot();
 
         for (CardType[] cards : combinations) {
-            Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-            //logger.trace(Arrays.toString(cards) + " " + "x: " + resPos.getX() + " y: " + resPos.getY());
-            possiblePositions.put(cards, resPos);
+            if (cards[0] != CardType.Again) {
+                Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
+                //logger.trace("resPos: " + Arrays.toString(cards) + " " + resPos);
+                if (resPos != null) possiblePositions.put(cards, resPos);
+            }
         }
+        //logger.trace("YourCards: " + yourCards.getCards());
 
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
