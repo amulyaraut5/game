@@ -509,6 +509,11 @@ public class GameController extends Controller implements Updatable {
         return playerMatController;
     }
 
+
+    public Pane getBoardPane() {
+        return boardPane;
+    }
+
     /**
      *
      */

@@ -67,6 +67,10 @@ public class ChatController extends Controller {
      */
     @FXML
     private void submitChatMessage(ActionEvent event) {
+        if(client.getCurrentController().getClass().equals(GameController.class)){
+            GameController gameController = (GameController) client.getCurrentController();
+            gameController.getBoardPane().requestFocus();
+        }
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
@@ -105,23 +109,25 @@ public class ChatController extends Controller {
                         chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
                     }
                 }
-                String[] messageSplit = message.split(" ");
-
-                if (message.equals("#emptySpam")) {
-                    client.setCountSpamCards(0);
-                } else if (message.equals("#damageDecks")) {
-                    logger.info("count of damage cards on client side: Spam: " + client.getCountSpamCards() + ", Trojan: " + client.getCountTrojanCards() + ", Virus: " + client.getCountVirusCards() + ", Worm: " + client.getCountWormCards());
-                } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
-                    int damageCount = Integer.parseInt(messageSplit[1]);
-                    client.setCountSpamCards(client.getCountSpamCards() - damageCount);
-                }
+                checkMessage(message);
                 client.sendMessage(jsonBody);
-
             }
         }
 
         lobbyTextFieldChat.clear();
         directChoiceBox.getSelectionModel().select(0);
+    }
+
+    private void checkMessage(String message){
+        String[] messageSplit = message.split(" ");
+        if (message.equals("#emptySpam")) {
+            client.setCountSpamCards(0);
+        } else if (message.equals("#damageDecks")) {
+            logger.info("count of damage cards on client side: Spam: " + client.getCountSpamCards() + ", Trojan: " + client.getCountTrojanCards() + ", Virus: " + client.getCountVirusCards() + ", Worm: " + client.getCountWormCards());
+        } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
+            int damageCount = Integer.parseInt(messageSplit[1]);
+            client.setCountSpamCards(client.getCountSpamCards() - damageCount);
+        }
     }
 
     public void receivedChat(ReceivedChat receivedChat) {
