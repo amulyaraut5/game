@@ -271,13 +271,15 @@ public class PlayerMatController extends Controller {
      * @param amount
      */
     public void setDiscardDeckCounter(int amount) {
+        String discardDeck;
         if (amount == 0) {
             discardDeckNr = 0;
-            discardDeckLabel.setText(amount + "cards");
+            discardDeck = String.valueOf(amount);
         } else {
             discardDeckNr += amount;
-            discardDeckLabel.setText(discardDeckNr + " cards");
+            discardDeck =String.valueOf(discardDeckNr);
         }
+        discardDeckLabel.setText(discardDeck);
     }
 
     /**
@@ -288,13 +290,15 @@ public class PlayerMatController extends Controller {
      * @param amount
      */
     public void setProgrammingDeckCounter(int amount) {
+        String programmingDeck;
         if (amount == playerCards) {
             programmingDeckNr = playerCards;
-            programmingDeckLabel.setText(amount + "cards");
+            programmingDeck = String.valueOf(amount);
         } else {
             programmingDeckNr = programmingDeckNr - amount;
-            programmingDeckLabel.setText(programmingDeckNr + " cards");
+            programmingDeck = String.valueOf(programmingDeckNr);
         }
+        programmingDeckLabel.setText(programmingDeck);
     }
 
     /**
