@@ -2,12 +2,17 @@ package client.view;
 
 import client.ViewManager;
 import client.model.ViewClient;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.enums.CardType;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Abstract super class of all view-controller
@@ -25,6 +30,20 @@ public abstract class Controller {
     protected final ViewClient viewClient = ViewClient.getInstance();
     protected final String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
+
+    protected static void showInfo(Label label, String text) {
+        Platform.runLater(() -> label.setText(text));
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (label.getText().equals(text)) {
+                    Platform.runLater(() -> label.setText(""));
+                }
+                t.cancel();
+            }
+        }, 2500);
+    }
 
     protected ImageView generateImageView(String path, int width, int height) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));

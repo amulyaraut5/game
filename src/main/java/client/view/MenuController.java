@@ -62,7 +62,7 @@ public class MenuController extends Controller implements Updatable {
 
             if (changePort()) {
                 buttonsEnabled = false;
-                infoLabel.setText("Trying to connect...");
+                showInfo(infoLabel, "Trying to connect...");
                 new Thread(() -> connect(viewClient)).start();
             }
         }
@@ -75,7 +75,7 @@ public class MenuController extends Controller implements Updatable {
 
             if (changePort()) {
                 buttonsEnabled = false;
-                infoLabel.setText("Trying to connect...");
+                showInfo(infoLabel, "Trying to connect...");
                 new Thread(() -> connect(new AIClient())).start();
             }
         }
@@ -104,8 +104,8 @@ public class MenuController extends Controller implements Updatable {
         }
         boolean finalConnected = connected;
         Platform.runLater(() -> {
-            if (!finalConnected) infoLabel.setText("The server is not reachable!");
-            else infoLabel.setText("");
+            if (!finalConnected) showInfo(infoLabel, "Server not reachable!");
+            else if (client instanceof AIClient) showInfo(infoLabel, "AI joined successfully!");
             buttonsEnabled = true;
         });
     }
@@ -114,7 +114,7 @@ public class MenuController extends Controller implements Updatable {
     public void update(JSONMessage message) {
         if (message.getType() == MessageType.Error) {
             Error error = (Error) message.getBody();
-            infoLabel.setText(error.getError());
+            showInfo(infoLabel, error.getError());
         }
     }
 
@@ -130,9 +130,9 @@ public class MenuController extends Controller implements Updatable {
                     viewClient.setPort(portNr);
                     if (server != null) server.setPort(portNr);
                     return true;
-                } else infoLabel.setText("Use port number in 1024 - 65535!");
+                } else showInfo(infoLabel, "Use port number between 1024 - 65535!");
             } catch (NumberFormatException e) {
-                infoLabel.setText("Port number invalid!");
+                showInfo(infoLabel, "Port number invalid!");
             }
         } else {
             viewClient.setPort(Constants.PORT);

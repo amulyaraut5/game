@@ -252,17 +252,7 @@ public class GameController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                Platform.runLater(() -> infoLabel.setText(error.getError()));
-                Timer t = new Timer();
-                t.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (infoLabel.getText().equals(error.getError())) {
-                            Platform.runLater(() -> infoLabel.setText(" "));
-                        }
-                        t.cancel();
-                    }
-                }, 2000);
+                showInfo(infoLabel, error.getError());
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
@@ -464,10 +454,6 @@ public class GameController extends Controller implements Updatable {
                 phasePane.setCenter(gameWonPane);
                 gameWonController.setWinnerLabel(viewClient.getPlayerFromID(gameWon.getPlayerID()));
                 soundHandler.playSoundEffects("Victory", play);
-            }
-            case SelectMap -> {
-                SelectMap selectMap  = (SelectMap) message.getBody();
-                //TODO
             }
         }
     }

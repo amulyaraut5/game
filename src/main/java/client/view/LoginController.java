@@ -112,12 +112,11 @@ public class LoginController extends Controller implements Updatable {
      */
     @FXML
     private void fxButtonClicked() {
-        infoLabel.setText("");
         String userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
 
-        if (userName.isBlank()) infoLabel.setText("Please insert a Username!");
-        else if (chosenRobot < 0) infoLabel.setText("You have to choose a robot!");
+        if (userName.isBlank()) showInfo(infoLabel, "Please insert a Username!");
+        else if (chosenRobot < 0) showInfo(infoLabel, "You have to choose a robot!");
         else viewClient.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
@@ -149,7 +148,7 @@ public class LoginController extends Controller implements Updatable {
     public void update(JSONMessage message) {
         if (message.getType() == MessageType.Error) {
             Error error = (Error) message.getBody();
-            infoLabel.setText(error.getError());
+            showInfo(infoLabel, error.getError());
         }
     }
 
