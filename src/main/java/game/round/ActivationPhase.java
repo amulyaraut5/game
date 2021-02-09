@@ -322,7 +322,14 @@ public class ActivationPhase extends Phase {
     }
 
     public void checkForAgainCard(Player player) {
-        if (currentRegister == 1) {
+        for (Card card : player.getDrawProgrammingDeck().getDeck()) {
+            if (!(card.getName() == CardType.Again)) {
+                Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
+                handleCard(topCard.getName(), player);
+                break;
+            }
+        }
+        /*if (currentRegister == 1) {
             for (Card card : player.getDrawProgrammingDeck().getDeck()) {
                 if (!(card.getName() == CardType.Again)) {
                     Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
@@ -330,10 +337,14 @@ public class ActivationPhase extends Phase {
                     break;
                 }
             }
-        } else {
+        }
+        else {
             Card topCard = player.getDrawProgrammingDeck().pop();
             handleCard(topCard.getName(), player);
         }
+
+         */
+
     }
 
     /**
