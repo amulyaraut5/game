@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
+import utilities.Constants;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.Updatable;
@@ -41,18 +42,19 @@ public class MenuController extends Controller implements Updatable {
      */
     @FXML
     public void hostGameClicked() {
-        logger.info("Host Game Clicked.");
+        if (buttonsEnabled) {
+            logger.info("Host Game Clicked.");
 
-        if (checkPortNumber()) {
-            hostButton.setDisable(true);
-            joinButton.setDisable(true);
+            if (isPortValid()) {
+                buttonsEnabled = false;
+                new Thread(() -> {
+                    Server server = Server.getInstance();
 
-            new Thread(() -> {
-                Server server = Server.getInstance();
-                if (!server.isAlive()) server.start();
-                else logger.warn("The server is already running. Joining instead.");
-                connect(client);
-            }).start();
+                    if (!server.isAlive()) server.start();
+                    System.out.println(server.getState());
+                    connect(client);
+                }).start();
+            }
         }
     }
 
@@ -61,18 +63,27 @@ public class MenuController extends Controller implements Updatable {
      */
     @FXML
     public void joinGameClicked() {
-        hostButton.setDisable(true);
-        joinButton.setDisable(true);
-        logger.info("Join Game Clicked.");
-        if (checkPortNumber()) {
-            new Thread(() -> connect(client)).start();
+        if (buttonsEnabled) {
+            logger.info("Join Game Clicked.");
+
+            if (isPortValid()) {
+                buttonsEnabled = false;
+                infoLabel.setText("Trying to connect...");
+                new Thread(() -> connect(client)).start();
+            }
         }
     }
 
     @FXML
     public void aiJoinClicked() {
-        if (checkPortNumber()) {
-            connect(new AIClient());
+        if (buttonsEnabled) {
+            logger.info("AI Join Clicked.");
+
+            if (isPortValid()) {
+                buttonsEnabled = false;
+                infoLabel.setText("Trying to connect...");
+                new Thread(() -> connect(new AIClient())).start();
+            }
         }
     }
 
@@ -115,17 +126,17 @@ public class MenuController extends Controller implements Updatable {
         }
     }
 
-    public boolean checkPortNumber() {
+    public boolean isPortValid() {
         if (!(textPortNumber.getText().isBlank())) {
             try {
                 int portNr = Integer.parseInt(textPortNumber.getText());
                 client.setPort(portNr);
                 return true;
             } catch (NumberFormatException e) {
-                infoLabel.setText("This port number is invalid.");
+                infoLabel.setText("Port number invalid!");
                 return false;
             }
-        }
+        } else client.setPort(Constants.PORT);
         return true;
     }
 }
