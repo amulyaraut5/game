@@ -465,6 +465,10 @@ public class GameController extends Controller implements Updatable {
                 gameWonController.setWinnerLabel(viewClient.getPlayerFromID(gameWon.getPlayerID()));
                 soundHandler.playSoundEffects("Victory", play);
             }
+            case SelectMap -> {
+                SelectMap selectMap  = (SelectMap) message.getBody();
+                //TODO
+            }
         }
     }
 
