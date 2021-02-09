@@ -4,7 +4,11 @@ import client.model.ViewClient;
 import client.view.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -129,6 +133,7 @@ public class ViewManager {
     private void constructMenuStage() {
         menuStage.setTitle("RoboRally - Menu");
         menuStage.setResizable(false);
+
         menuStage.setScene(menuScene);
 
         menuStage.setOnCloseRequest(event -> {
@@ -149,6 +154,11 @@ public class ViewManager {
         });
     }
 
+    private void setMouseImage(Scene scene){
+        Image image = new Image(getClass().getResource("/otherElements/mouse.png").toString());
+        scene.setCursor(new ImageCursor(image));
+    }
+
     private void constructScenes() throws IOException {
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
@@ -161,6 +171,11 @@ public class ViewManager {
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
         mapScene = new Scene(mapLoader.load());
+
+        setMouseImage(loginScene);
+        setMouseImage(lobbyScene);
+        setMouseImage(menuScene);
+        setMouseImage(gameScene);
 
         menuController = menuLoader.getController();
         loginController = loginLoader.getController();
