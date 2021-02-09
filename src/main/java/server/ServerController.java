@@ -43,12 +43,12 @@ public class ServerController implements Updatable {
     }
 
     @FXML
-    public void startClicked () {
+    public void startClicked() {
         server.startAIGame();
     }
 
     @FXML
-    public void addAIClicked () {
+    public void addAIClicked() {
         connect(new AIClient());
     }
 
@@ -117,8 +117,8 @@ public class ServerController implements Updatable {
             case PickDamage -> {
             }
             case PlayerShooting -> {
-                gameBoardController.handleShooting(game.getPlayers());
-                gameBoardController.handleRobotShooting(game.getPlayers());
+                gameBoardController.robotLaserAnimation(game.getPlayers());
+                gameBoardController.boardLaserAnimation(game.getPlayers());
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
