@@ -124,21 +124,22 @@ public class MenuController extends Controller implements Updatable {
     }
 
     public boolean changePort(Server server) {
-
         if (!textPortNumber.getText().isBlank()) {
             try {
                 int portNr = Integer.parseInt(textPortNumber.getText());
-                client.setPort(portNr);
-                if (server != null) server.setPort(portNr);
-                return true;
+                if (portNr > 1023 && portNr < 65536) {
+                    client.setPort(portNr);
+                    if (server != null) server.setPort(portNr);
+                    return true;
+                } else infoLabel.setText("Use port number in 1024 - 65535!");
             } catch (NumberFormatException e) {
                 infoLabel.setText("Port number invalid!");
-                return false;
             }
         } else {
             client.setPort(Constants.PORT);
             if (server != null) server.setPort(Constants.PORT);
+            return true;
         }
-        return true;
+        return false;
     }
 }
