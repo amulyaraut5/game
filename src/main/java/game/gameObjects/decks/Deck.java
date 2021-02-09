@@ -38,15 +38,6 @@ public abstract class Deck {
     }
 
     /**
-     * Checks whether the respective deck is empty.
-     *
-     * @return
-     */
-    public boolean isEmpty() {
-        return getDeck().isEmpty();
-    }
-
-    /**
      * Indicates the size of the deck.
      * Depending on the size, e.g., it needs to be reshuffled.
      */
@@ -107,6 +98,15 @@ public abstract class Deck {
         }
 
              */
+    }
+
+    /**
+     * Checks whether the respective deck is empty.
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        return getDeck().isEmpty();
     }
 
     /**

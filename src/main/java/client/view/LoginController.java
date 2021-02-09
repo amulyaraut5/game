@@ -77,7 +77,7 @@ public class LoginController extends Controller implements Updatable {
                     setDisable(figure.isTaken());
                     if (figure.isTaken()) setBackground(new Background(new BackgroundFill(Color.GRAY,
                             CornerRadii.EMPTY, Insets.EMPTY)));
-                    else{
+                    else {
                         setBackground(new Background(new BackgroundFill(Color.WHITE,
                                 CornerRadii.EMPTY, Insets.EMPTY)));
                     }
@@ -118,7 +118,7 @@ public class LoginController extends Controller implements Updatable {
 
         if (userName.isBlank()) infoLabel.setText("Please insert a Username!");
         else if (chosenRobot < 0) infoLabel.setText("You have to choose a robot!");
-        else client.sendMessage(new PlayerValues(userName, chosenRobot));
+        else viewClient.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
     public void setFigureTaken(int playerID, int id, boolean taken) {

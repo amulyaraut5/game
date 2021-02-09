@@ -67,15 +67,15 @@ public final class Constants {
             #fire          | fires laser
             ------------------------------------------
             """;
-    public static final  String HOTKEYSLIST = """
-                                       
-             ------------------------------------------
-             Hotkeys
-             ------------------------------------------
-             click on map       |  teleports the robot
-             WASD keys         |  rotates the robot
-             ------------------------------------------
-             """;
+    public static final String HOTKEYSLIST = """
+                                      
+            ------------------------------------------
+            Hotkeys
+            ------------------------------------------
+            click on map       |  teleports the robot
+            WASD keys         |  rotates the robot
+            ------------------------------------------
+            """;
 
     private Constants() {
     }

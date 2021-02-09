@@ -17,6 +17,9 @@ import java.util.TimerTask;
 
 public class PlayCardController extends Controller {
 
+    public Label drawDamageLabel;//TODO make private
+    public HBox drawDamageHBox;
+    public AnchorPane drawDamageAnchorPane;
     @FXML
     private ImageView currentCardImageView;
     @FXML
@@ -25,22 +28,11 @@ public class PlayCardController extends Controller {
     private Label infoLabel;
     @FXML
     private AnchorPane playCardAnchorPane;
-    public Label drawDamageLabel;
-    public HBox drawDamageHBox;
-    public AnchorPane drawDamageAnchorPane;
 
-    public void initialize(){
+    public void initialize() {
         drawDamageHBox.setAlignment(Pos.CENTER);
         drawDamageHBox.setSpacing(5);
         drawDamageAnchorPane.setVisible(false);
-    }
-
-    public Button getPlayItButton() {
-        return playItButton;
-    }
-
-    public ImageView getCurrentCardImageView() {
-        return currentCardImageView;
     }
 
     /**
@@ -60,7 +52,7 @@ public class PlayCardController extends Controller {
 
     @FXML
     private void playItButton() {
-        client.sendMessage(new PlayIt());
+        viewClient.sendMessage(new PlayIt());
     }
 
     private void setInfoLabel(String text) {
@@ -86,7 +78,7 @@ public class PlayCardController extends Controller {
         Platform.runLater(() -> timerSchedule());
     }
 
-    private void timerSchedule(){
+    private void timerSchedule() {
         Timer t = new Timer();
         t.schedule(new TimerTask() {
             @Override
@@ -97,5 +89,13 @@ public class PlayCardController extends Controller {
                 t.cancel();
             }
         }, 2000);
+    }
+
+    public Button getPlayItButton() {
+        return playItButton;
+    }
+
+    public ImageView getCurrentCardImageView() {
+        return currentCardImageView;
     }
 }

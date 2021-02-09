@@ -4,9 +4,10 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<StackPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="600.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/11.0.1"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameBoardController">
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity"
+           minHeight="-Infinity"
+           minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0"
+           xmlns="http://javafx.com/javafx/11.0.1" fx:controller="client.view.GameBoardController">
     <FlowPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               prefHeight="600.0" prefWidth="780.0"/>
     <Pane fx:id="animationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"

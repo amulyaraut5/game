@@ -117,10 +117,6 @@ public class Player extends User {
         registerCards.set(index, card);
     }
 
-    public ArrayList<Card> getRegisterCards() {
-        return registerCards;
-    }
-
     /**
      * returns the card that is saved to the given register (1-5)
      *
@@ -130,6 +126,10 @@ public class Player extends User {
     public Card getRegisterCard(int register) {
         int index = register - 1;
         return registerCards.get(index);
+    }
+
+    public ArrayList<Card> getRegisterCards() {
+        return registerCards;
     }
 
     public CardType getLastRegisterCard() {

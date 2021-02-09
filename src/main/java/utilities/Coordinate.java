@@ -49,28 +49,6 @@ public class Coordinate {
         return new Coordinate(x - other.x, y - other.y);
     }
 
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * @param x horizontal parameter of a position
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * @param y y vertical parameter of a position
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
-
     /**
      * @param obj Coordinate to test
      * @return true if both coordinates are at the same position
@@ -110,6 +88,28 @@ public class Coordinate {
 
     public void addToY(int y) {
         this.y = this.y + y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * @param x horizontal parameter of a position
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * @param y y vertical parameter of a position
+     */
+    public void setY(int y) {
+        this.y = y;
     }
 
     public boolean isOutsideMap() {

@@ -22,14 +22,6 @@ public class User {
     public User() {
     }
 
-    public int getFigure() {
-        return figure;
-    }
-
-    public void setFigure(int figure) {
-        this.figure = figure;
-    }
-
     /**
      * Test if two different objects of User are the same user.
      * (i.e. if they have the same UserThread and therefore are connected to the same client.)
@@ -59,6 +51,14 @@ public class User {
     @Override
     public String toString() {
         return name;
+    }
+
+    public int getFigure() {
+        return figure;
+    }
+
+    public void setFigure(int figure) {
+        this.figure = figure;
     }
 
     /**

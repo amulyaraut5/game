@@ -67,7 +67,7 @@ public class ProgrammingController extends Controller {
     }
 
     private void createBackground(HBox hBox) {
-        ImageView background = generateImageView("/cards/programming/underground-card.png", (int)(widthHBox - 20), (int) heightHBox);
+        ImageView background = generateImageView("/cards/programming/underground-card.png", (int) (widthHBox - 20), (int) heightHBox);
         background.setEffect(new DropShadow(1, Color.BLACK));
         //background.setEffect(new InnerShadow(5, Color.WHITE));
         hBox.getChildren().add(background);
@@ -96,7 +96,8 @@ public class ProgrammingController extends Controller {
 
         return programmingCard;
     }
-    private boolean checkDragAllowed(Pane pane, Dragboard db){
+
+    private boolean checkDragAllowed(Pane pane, Dragboard db) {
         return db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
                 && getProgrammingImageView().getParent() != pane
@@ -134,7 +135,7 @@ public class ProgrammingController extends Controller {
         pane.setOnDragExited(e -> setOnDragExited(e, pane));
         pane.setOnDragDone(e -> {
             if (getPosition() != 0)
-                client.sendMessage(new SelectCard(null, getPosition()));
+                viewClient.sendMessage(new SelectCard(null, getPosition()));
         });
     }
 

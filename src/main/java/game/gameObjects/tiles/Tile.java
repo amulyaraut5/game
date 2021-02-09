@@ -23,14 +23,6 @@ public class Tile {
     public Tile() {
     }
 
-    public ArrayList<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(ArrayList<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
     /**
      * Adds an Attribute to a tile by saving it in the ArrayList of attributes
      *
@@ -45,5 +37,13 @@ public class Tile {
             if (a.getType() == type) return true;
         }
         return false;
+    }
+
+    public ArrayList<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(ArrayList<Attribute> attributes) {
+        this.attributes = attributes;
     }
 }

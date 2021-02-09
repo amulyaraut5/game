@@ -67,10 +67,6 @@ public class ActivationPhase extends Phase {
         turnCards(currentRegister);
     }
 
-    public ArrayList<RegisterCard> getCurrentCards() {
-        return currentCards;
-    }
-
     /**
      * At the beginning of each register the cards of each player in the current register is shown.
      * This is already in priority order.
@@ -161,7 +157,7 @@ public class ActivationPhase extends Phase {
     }
 
     public void endOfRound() {
-        if(!game.isGameWon()) {
+        if (!game.isGameWon()) {
             activateBoard();
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
@@ -174,7 +170,6 @@ public class ActivationPhase extends Phase {
                 game.nextPhase();
             }
         }
-
     }
 
     public void removeCurrentCards(int playerID) {
@@ -324,7 +319,6 @@ public class ActivationPhase extends Phase {
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
         }
         activateControlPoint();
-
     }
 
     public void checkForAgainCard(Player player) {
@@ -375,7 +369,7 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public boolean isPositionFree(int position){
+    public boolean isPositionFree(int position) {
         Coordinate coordinate = Coordinate.parse(position);
         for (Player collisionPlayer : players) {
             if (coordinate.equals(collisionPlayer.getRobot().getCoordinate())) {
@@ -385,7 +379,7 @@ public class ActivationPhase extends Phase {
         return true;
     }
 
-    public boolean isPositionFree(Coordinate coordinate){
+    public boolean isPositionFree(Coordinate coordinate) {
         for (Player collisionPlayer : players) {
             if (coordinate.equals(collisionPlayer.getRobot().getCoordinate())) {
                 return false;
@@ -562,6 +556,21 @@ public class ActivationPhase extends Phase {
         return isRebooting;
     }
 
+    /**
+     * This is independent of activated board method and used for cheats.
+     * #fire activates this method.
+     */
+
+    public void activateCheatLaser() {
+        laserAction.activateRobotLaser(activePlayers);
+        laserAction.activateBoardLaser(activePlayers);
+        server.communicateAll(new PlayerShooting());
+    }
+
+    public ArrayList<RegisterCard> getCurrentCards() {
+        return currentCards;
+    }
+
     public int getCurrentRegister() {
         return currentRegister;
     }
@@ -572,17 +581,6 @@ public class ActivationPhase extends Phase {
 
     public BoardElements getActivationElements() {
         return activationElements;
-    }
-
-    /**
-     * This is independent of activated board method and used for cheats.
-     * #fire activates this method.
-     */
-
-    public void activateCheatLaser() {
-        laserAction.activateRobotLaser(activePlayers);
-        laserAction.activateBoardLaser(activePlayers);
-        server.communicateAll(new PlayerShooting());
     }
 
     /**
@@ -601,6 +599,17 @@ public class ActivationPhase extends Phase {
             this.yCoordinate = yCoordinate;
         }
 
+        //TODO remove after testing
+        @Override
+        public String toString() {
+            return "RobotDistance{" +
+                    "player=" + player +
+                    ", robot=" + robot +
+                    ", distance=" + distance +
+                    ", yCoordinate=" + yCoordinate +
+                    '}';
+        }
+
         public Player getPlayer() {
             return player;
         }
@@ -615,17 +624,6 @@ public class ActivationPhase extends Phase {
 
         public int getYCoordinate() {
             return yCoordinate;
-        }
-
-        //TODO remove after testing
-        @Override
-        public String toString() {
-            return "RobotDistance{" +
-                    "player=" + player +
-                    ", robot=" + robot +
-                    ", distance=" + distance +
-                    ", yCoordinate=" + yCoordinate +
-                    '}';
         }
     }
 }

@@ -69,14 +69,6 @@ public class ActivationController extends Controller {
         }
     }
 
-    public PickDamageController getPickDamageController() {
-        return pickDamageController;
-    }
-
-    public PlayCardController getPlayCardController() {
-        return playCardController;
-    }
-
     /**
      * This method gets called by getting protocol currentCards and displays current card of player
      * it also increases register number for view
@@ -87,6 +79,14 @@ public class ActivationController extends Controller {
         playCardController.getCurrentCardImageView().setImage(new Image(getClass().getResource("/cards/programming/" + cardType + "-card.png").toString()));
         register.setText("Register " + registerNr);
         registerNr++;
+    }
+
+    public PickDamageController getPickDamageController() {
+        return pickDamageController;
+    }
+
+    public PlayCardController getPlayCardController() {
+        return playCardController;
     }
 }
 

@@ -29,7 +29,6 @@ module roborally {
     exports game.gameObjects.cards.programming to com.google.gson;
     exports game.gameActions to com.google.gson;
 
-
     opens client;
     opens server;
     opens game;

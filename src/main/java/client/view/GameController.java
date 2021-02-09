@@ -45,6 +45,7 @@ public class GameController extends Controller implements Updatable {
 
     private final ArrayList<Player> activePlayers = new ArrayList<>();
     private final ArrayList<JSONBody> currentAction = new ArrayList<>();
+    private final ArrayList<CardType> damageCards = new ArrayList<>();
     private PlayerMatController playerMatController;
     private ConstructionController constructionController;
     private ProgrammingController programmingController;
@@ -61,7 +62,6 @@ public class GameController extends Controller implements Updatable {
     private Pane gameWonPane;
 
     private SoundHandler soundHandler;
-    private ArrayList<CardType> damageCards = new ArrayList<>();
     private GameState currentPhase = GameState.CONSTRUCTION;
     private int currentRound = 1;
     private boolean first = true;
@@ -166,7 +166,7 @@ public class GameController extends Controller implements Updatable {
         resetIfNotFirst();
         playerMatController.resetDeckCounter(9);
 
-        activePlayers.addAll(client.getPlayers());
+        activePlayers.addAll(viewClient.getPlayers());
         phasePane.setCenter(programmingPane);
         othersController.visibleHBoxRegister(true);
     }
@@ -267,11 +267,11 @@ public class GameController extends Controller implements Updatable {
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
                 gameBoardController.buildMap(gameStarted);
-                othersController.createPlayerMats(client.getPlayers());
+                othersController.createPlayerMats(viewClient.getPlayers());
             }
             case StartingPointTaken -> {
                 StartingPointTaken msg = (StartingPointTaken) message.getBody();
-                gameBoardController.placeRobotInMap(client.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
+                gameBoardController.placeRobotInMap(viewClient.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
             }
             case ActivePhase -> {
                 ActivePhase activePhase = (ActivePhase) message.getBody();
@@ -288,7 +288,7 @@ public class GameController extends Controller implements Updatable {
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
                 currentAction.add(msg);
-                Player player = client.getPlayerFromID(msg.getPlayerID());
+                Player player = viewClient.getPlayerFromID(msg.getPlayerID());
                 Coordinate newPos = Coordinate.parse(msg.getTo());
                 player.getRobot().setCoordinate(newPos);
                 gameBoardController.handleMovement(player, newPos);
@@ -296,7 +296,7 @@ public class GameController extends Controller implements Updatable {
             case PlayerTurning -> {
                 PlayerTurning msg = (PlayerTurning) message.getBody();
                 currentAction.add(msg);
-                Player player = client.getPlayerFromID(msg.getPlayerID());
+                Player player = viewClient.getPlayerFromID(msg.getPlayerID());
 
                 Robot r = player.getRobot();
                 int angle;
@@ -334,16 +334,16 @@ public class GameController extends Controller implements Updatable {
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-                Player player = client.getPlayerFromID(reboot.getPlayerID());
+                Player player = viewClient.getPlayerFromID(reboot.getPlayerID());
                 activePlayers.remove(player);
                 soundHandler.playSoundEffects("PitSound", play);
 
-                boolean isThisPlayer = reboot.getPlayerID() == client.getThisPlayersID();
+                boolean isThisPlayer = reboot.getPlayerID() == viewClient.getThisPlayersID();
                 othersController.setRebootLabel(reboot, isThisPlayer);
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
-                if (selectionFinished.getPlayerID() == client.getThisPlayersID()) {
+                if (selectionFinished.getPlayerID() == viewClient.getThisPlayersID()) {
                     playerMatController.fixSelectedCards();
                     allRegistersAsFirst = true;
                 } else {
@@ -365,16 +365,14 @@ public class GameController extends Controller implements Updatable {
                 CurrentCards currentCards = (CurrentCards) message.getBody();
                 ArrayList<RegisterCard> otherPlayer = new ArrayList<>();
                 for (RegisterCard registerCard : currentCards.getActiveCards()) {
-                    if (registerCard.getPlayerID() == client.getThisPlayersID()) {
+                    if (registerCard.getPlayerID() == viewClient.getThisPlayersID()) {
                         activationController.currentCards(registerCard.getCard());
                     } else otherPlayer.add(registerCard);
                 }
                 othersController.currentCards(otherPlayer);
 
-
-
                 for (int i = 0; i < currentCards.getActiveCards().size(); i++) {
-                    if (currentCards.getActiveCards().get(i).getPlayerID() == client.getThisPlayersID()) {
+                    if (currentCards.getActiveCards().get(i).getPlayerID() == viewClient.getThisPlayersID()) {
                         if (damageCards.contains(currentCards.getActiveCards().get(i).getCard())) {
                             playerMatController.subtractPlayerCards(1);
                             currentCardIsDamage = true;
@@ -386,7 +384,7 @@ public class GameController extends Controller implements Updatable {
             }
             case CurrentPlayer -> {
                 CurrentPlayer currentPlayer = (CurrentPlayer) message.getBody();
-                boolean isThisPlayer = currentPlayer.getPlayerID() == client.getThisPlayersID();
+                boolean isThisPlayer = currentPlayer.getPlayerID() == viewClient.getThisPlayersID();
 
                 if (currentPhase == GameState.CONSTRUCTION) {
 
@@ -406,7 +404,7 @@ public class GameController extends Controller implements Updatable {
             }
             case Energy -> {
                 Energy energy = (Energy) message.getBody();
-                if (energy.getPlayerID() == client.getThisPlayersID()) {
+                if (energy.getPlayerID() == viewClient.getThisPlayersID()) {
                     playerMatController.addEnergy(energy.getCount());
                     currentAction.add(energy);
                 } else {
@@ -415,7 +413,7 @@ public class GameController extends Controller implements Updatable {
             }
             case CheckpointReached -> {
                 CheckpointReached checkpointsReached = (CheckpointReached) message.getBody();
-                if (checkpointsReached.getPlayerID() == client.getThisPlayersID()) {
+                if (checkpointsReached.getPlayerID() == viewClient.getThisPlayersID()) {
                     playerMatController.checkPointReached(checkpointsReached.getNumber());
                 } else {
                     othersController.checkPointReached(checkpointsReached);
@@ -424,7 +422,7 @@ public class GameController extends Controller implements Updatable {
             }
             case ShuffleCoding -> {
                 ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-                if (shuffleCoding.getPlayerID() == client.getThisPlayersID()) {
+                if (shuffleCoding.getPlayerID() == viewClient.getThisPlayersID()) {
                     infoPane.setVisible(true);
                     Platform.runLater(() -> moveInfo.setText("You're cards are shuffled"));
                     Timer t = new Timer();
@@ -443,15 +441,15 @@ public class GameController extends Controller implements Updatable {
             }
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();
-                if (discardHand.getPlayerID() == client.getThisPlayersID()) {
+                if (discardHand.getPlayerID() == viewClient.getThisPlayersID()) {
                     playerMatController.setDiscardDeckCounter(5);
                     playerMatController.resetDeckCounter(5);
                 }
             }
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
-                boolean isThisPlayer = drawDamage.getPlayerID() == client.getThisPlayersID();
-                client.handleDamageCount(drawDamage.getCards());
+                boolean isThisPlayer = drawDamage.getPlayerID() == viewClient.getThisPlayersID();
+                viewClient.handleDamageCount(drawDamage.getCards());
                 if (isThisPlayer) {
                     activationController.getPlayCardController().setDrawDamage(drawDamage);
                     playerMatController.setDiscardDeckCounter(drawDamage.getCards().size());
@@ -462,7 +460,7 @@ public class GameController extends Controller implements Updatable {
             case GameWon -> {
                 GameWon gameWon = (GameWon) message.getBody();
                 phasePane.setCenter(gameWonPane);
-                gameWonController.setWinnerLabel(client.getPlayerFromID(gameWon.getPlayerID()));
+                gameWonController.setWinnerLabel(viewClient.getPlayerFromID(gameWon.getPlayerID()));
                 soundHandler.playSoundEffects("Victory", play);
             }
         }
@@ -490,7 +488,7 @@ public class GameController extends Controller implements Updatable {
             case P -> play = !play;
         }
         if (!orientation.equals("")) {
-            client.sendMessage(new SendChat("#r " + orientation, -1));
+            viewClient.sendMessage(new SendChat("#r " + orientation, -1));
         }
     }
 
@@ -499,19 +497,7 @@ public class GameController extends Controller implements Updatable {
      */
     public void removePlayer(Player player) {
         gameBoardController.removePlayer(player);
-        if (client.getCurrentController().equals(this)) othersController.removePlayer(player);
-    }
-
-    /**
-     * @return
-     */
-    public PlayerMatController getPlayerMatController() {
-        return playerMatController;
-    }
-
-
-    public Pane getBoardPane() {
-        return boardPane;
+        if (viewClient.getCurrentController().equals(this)) othersController.removePlayer(player);
     }
 
     /**
@@ -528,5 +514,16 @@ public class GameController extends Controller implements Updatable {
     @FXML
     private void soundsOffAction() {
         soundHandler.musicOff();
+    }
+
+    /**
+     * @return
+     */
+    public PlayerMatController getPlayerMatController() {
+        return playerMatController;
+    }
+
+    public Pane getBoardPane() {
+        return boardPane;
     }
 }

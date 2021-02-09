@@ -3,12 +3,8 @@ package client.view;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import game.Player;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +14,6 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.JSONProtocol.body.SendChat;
 
-import javax.swing.text.Utilities;
 import java.util.ArrayList;
 
 public class ChatController extends Controller {
@@ -40,14 +35,11 @@ public class ChatController extends Controller {
     public void initialize() {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
-        client.setChatController(this);
-        lobbyTextFieldChat.setOnKeyPressed(new EventHandler<KeyEvent>()
-        {
+        viewClient.setChatController(this);
+        lobbyTextFieldChat.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent ke)
-            {
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
                     submitChatMessage();
                 }
             }
@@ -71,27 +63,26 @@ public class ChatController extends Controller {
      * Also
      */
     public void addUser(Player player) {
-        String newName = client.getUniqueName(player.getID());
+        String newName = viewClient.getUniqueName(player.getID());
         directChoiceBox.getItems().add(newName);
     }
 
     /**
      * send a chat Message, either private or to everyone
-     *
      */
 
     private void submitChatMessage() {
-        if(client.getCurrentController().getClass().equals(GameController.class)){
-            GameController gameController = (GameController) client.getCurrentController();
+        if (viewClient.getCurrentController().getClass().equals(GameController.class)) {
+            GameController gameController = (GameController) viewClient.getCurrentController();
             gameController.getBoardPane().requestFocus();
         }
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
-        message = message.substring(0, message.length()-1);
+        message = message.substring(0, message.length() - 1);
         System.out.println(message);
         JSONBody jsonBody = null;
-        if(message.equals("#hotkeys")){
+        if (message.equals("#hotkeys")) {
             chatWindow.appendText(Constants.HOTKEYSLIST);
         } else {
             if (!message.isBlank()) {
@@ -101,23 +92,24 @@ public class ChatController extends Controller {
                 } else {
                     int count = 0;
                     String[] name = sendTo.split(" ", 2);
-                    for (Player player : client.getPlayers()) {
+                    for (Player player : viewClient.getPlayers()) {
                         if (player.getName().equals(name[0])) count++;
                     }
                     boolean toMe = false;
                     if (count == 1) {
-                        if (sendTo.equals(client.getPlayerFromID(client.getThisPlayersID()).getName())) toMe = true;
-                        for (Player player : client.getPlayers())
+                        if (sendTo.equals(viewClient.getPlayerFromID(viewClient.getThisPlayersID()).getName()))
+                            toMe = true;
+                        for (Player player : viewClient.getPlayers())
                             if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
                     } else {
                         ArrayList<Integer> names = new ArrayList<>();
-                        for (Player player : client.getPlayers())
+                        for (Player player : viewClient.getPlayers())
                             if (name[0].equals(player.getName())) names.add(player.getID());
                         if (sendTo.length() == 1) {
                             jsonBody = new SendChat(message, names.get(0));
                         } else {
                             String idNr = sendTo.substring(sendTo.length() - 1);
-                            if (Integer.parseInt(idNr) == client.getThisPlayersID()) toMe = true;
+                            if (Integer.parseInt(idNr) == viewClient.getThisPlayersID()) toMe = true;
                             jsonBody = new SendChat(message, Integer.parseInt(idNr));
                         }
                     }
@@ -126,7 +118,7 @@ public class ChatController extends Controller {
                     }
                 }
                 checkMessage(message);
-                client.sendMessage(jsonBody);
+                viewClient.sendMessage(jsonBody);
             }
         }
 
@@ -134,21 +126,21 @@ public class ChatController extends Controller {
         directChoiceBox.getSelectionModel().select(0);
     }
 
-    private void checkMessage(String message){
+    private void checkMessage(String message) {
         String[] messageSplit = message.split(" ");
         if (message.equals("#emptySpam")) {
-            client.setCountSpamCards(0);
+            viewClient.setCountSpamCards(0);
         } else if (message.equals("#damageDecks")) {
-            logger.info("count of damage cards on client side: Spam: " + client.getCountSpamCards() + ", Trojan: " + client.getCountTrojanCards() + ", Virus: " + client.getCountVirusCards() + ", Worm: " + client.getCountWormCards());
+            logger.info("count of damage cards on client side: Spam: " + viewClient.getCountSpamCards() + ", Trojan: " + viewClient.getCountTrojanCards() + ", Virus: " + viewClient.getCountVirusCards() + ", Worm: " + viewClient.getCountWormCards());
         } else if (messageSplit.length > 1 && messageSplit[0].equals("#damage")) {
             int damageCount = Integer.parseInt(messageSplit[1]);
-            client.setCountSpamCards(client.getCountSpamCards() - damageCount);
+            viewClient.setCountSpamCards(viewClient.getCountSpamCards() - damageCount);
         }
     }
 
     public void receivedChat(ReceivedChat receivedChat) {
         String chat;
-        String sender = client.getUniqueName(receivedChat.getFrom());
+        String sender = viewClient.getUniqueName(receivedChat.getFrom());
         String message = receivedChat.getMessage();
         if (receivedChat.isPrivat())
             chat = "[" + sender + "] @You: " + message;

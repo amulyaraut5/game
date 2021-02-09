@@ -16,12 +16,12 @@ public class HelloServer extends JSONBody {
         this.isAI = isAI;
     }
 
-    public String getGroup() {
-        return group;
-    }
-
     public Boolean isAI() {
         return isAI;
+    }
+
+    public String getGroup() {
+        return group;
     }
 
     public double getProtocol() {

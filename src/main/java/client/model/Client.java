@@ -16,56 +16,19 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import static utilities.Constants.PORT;
-
 public abstract class Client {
     protected static final Logger logger = LogManager.getLogger();
+    private static int countSpamCards = Constants.SPAM_CARDCOUNT; //TODO move to client instead
+    private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
+    private static int countWormCards = Constants.WORM_CARDCOUNT;
+    private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
     protected final ArrayList<Player> players = new ArrayList<>();
     private final boolean isAI = false;
     protected int thisPlayersID;
     private Socket socket;
     private ReaderThread readerThread;
-    private int port = PORT;
-
+    private int port = Constants.PORT;
     private PrintWriter writer;
-
-    private static int countSpamCards = Constants.SPAM_CARDCOUNT; //TODO move to client instead
-    private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
-    private static int countWormCards = Constants.WORM_CARDCOUNT;
-    private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
-
-
-    public int getCountSpamCards() {
-        return countSpamCards;
-    }
-
-    public void setCountSpamCards(int countSpamCards) {
-        this.countSpamCards = Math.max(countSpamCards, 0);
-    }
-
-    public int getCountTrojanCards() {
-        return countTrojanCards;
-    }
-
-    public void setCountTrojanCards(int countTrojanCards) {
-        this.countTrojanCards = Math.max(countTrojanCards, 0);
-    }
-
-    public int getCountWormCards() {
-        return countWormCards;
-    }
-
-    public void setCountWormCards(int countWormCards) {
-        this.countWormCards = Math.max(countWormCards, 0);
-    }
-
-    public int getCountVirusCards() {
-        return countVirusCards;
-    }
-
-    public void setCountVirusCards(int countVirusCards) {
-        this.countVirusCards = Math.max(countVirusCards, 0);
-    }
 
     public void handleDamageCount(CardType cardType) {
         switch (cardType) {
@@ -73,7 +36,6 @@ public abstract class Client {
             case Trojan -> setCountTrojanCards(getCountTrojanCards() - 1);
             case Worm -> setCountWormCards(getCountWormCards() - 1);
             case Virus -> setCountVirusCards(getCountVirusCards() - 1);
-
         }
     }
 
@@ -94,7 +56,7 @@ public abstract class Client {
      */
     public boolean establishConnection() {
         try {
-            logger.info("Client trying to establish connection to port " + port + ".");
+            logger.info("Trying to connect to port " + port + ".");
             String hostname = "localhost";
             socket = new Socket(hostname, port);
             writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
@@ -184,6 +146,42 @@ public abstract class Client {
         return player.getName();
     }
 
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public int getCountSpamCards() {
+        return countSpamCards;
+    }
+
+    public void setCountSpamCards(int countSpamCards) {
+        Client.countSpamCards = Math.max(countSpamCards, 0);
+    }
+
+    public int getCountTrojanCards() {
+        return countTrojanCards;
+    }
+
+    public void setCountTrojanCards(int countTrojanCards) {
+        Client.countTrojanCards = Math.max(countTrojanCards, 0);
+    }
+
+    public int getCountWormCards() {
+        return countWormCards;
+    }
+
+    public void setCountWormCards(int countWormCards) {
+        Client.countWormCards = Math.max(countWormCards, 0);
+    }
+
+    public int getCountVirusCards() {
+        return countVirusCards;
+    }
+
+    public void setCountVirusCards(int countVirusCards) {
+        Client.countVirusCards = Math.max(countVirusCards, 0);
+    }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -191,9 +189,4 @@ public abstract class Client {
     public int getThisPlayersID() {
         return thisPlayersID;
     }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
 }

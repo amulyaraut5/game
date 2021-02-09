@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameWonController">
-    <Pane layoutX="25.0" layoutY="68.0" prefHeight="67.0" prefWidth="379.0" style="-fx-background-color: orange; -fx-border-width: 3; -fx-border-color: white;">
-        <Label layoutX="35.0" layoutY="11.0" prefHeight="44.0" prefWidth="338.0" text="And the Winner is" textFill="WHITE">
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="557.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="client.view.GameWonController">
+    <Pane layoutX="25.0" layoutY="68.0" prefHeight="67.0" prefWidth="379.0"
+          style="-fx-background-color: orange; -fx-border-width: 3; -fx-border-color: white;">
+        <Label layoutX="35.0" layoutY="11.0" prefHeight="44.0" prefWidth="338.0" text="And the Winner is"
+               textFill="WHITE">
             <font>
-                <Font name="System Bold" size="35.0" />
+                <Font name="System Bold" size="35.0"/>
             </font>
         </Label>
     </Pane>
-    <FlowPane fx:id="winnerIconPane" layoutX="106.0" layoutY="150.0" prefHeight="200.0" prefWidth="200.0" />
-    <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="350.0" prefHeight="44.0" prefWidth="229.0" text="a" textFill="midnightblue">
+    <FlowPane fx:id="winnerIconPane" layoutX="106.0" layoutY="150.0" prefHeight="200.0" prefWidth="200.0"/>
+    <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="350.0"
+           prefHeight="44.0" prefWidth="229.0" text="a" textFill="midnightblue">
         <font>
-          <Font size="36.0" />
+            <Font size="36.0"/>
         </font>
     </Label>
-    <JFXButton id="exitGameButton" buttonType="RAISED" layoutX="108.0" layoutY="468.0" mnemonicParsing="false" onAction="#exitGameClicked" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Exit the Game" textFill="WHITE">
+    <JFXButton id="exitGameButton" buttonType="RAISED" layoutX="108.0" layoutY="468.0" mnemonicParsing="false"
+               onAction="#exitGameClicked" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;"
+               text="Exit the Game" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="16.0" />
+            <Font name="System Bold" size="16.0"/>
         </font>
     </JFXButton>
-    <JFXButton id="newGameButton" buttonType="RAISED" layoutX="102.0" layoutY="410.0" mnemonicParsing="false" onAction="#returnClicked" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Return to the Lobby" textFill="WHITE" visible="false">
+    <JFXButton id="newGameButton" buttonType="RAISED" layoutX="102.0" layoutY="410.0" mnemonicParsing="false"
+               onAction="#returnClicked" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;"
+               text="Return to the Lobby" textFill="WHITE" visible="false">
         <font>
-          <Font name="System Bold" size="16.0" />
+            <Font name="System Bold" size="16.0"/>
         </font>
     </JFXButton>
 </AnchorPane>

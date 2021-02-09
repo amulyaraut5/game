@@ -33,7 +33,6 @@ public class BoardElements {
         this.activationPhase = activationPhase;
     }
 
-
     /**
      * Gears rotate robots resting on them 90 degrees in the direction of the arrows.
      * Red gears rotate left, and green gears rotate right.
@@ -95,6 +94,7 @@ public class BoardElements {
             }
         }
     }
+
     /**
      * When a player is on a blue belt at the end of a register, he gets moved 2 tiles in direction of the belt
      */
@@ -120,7 +120,7 @@ public class BoardElements {
             }
         }
 
-        for (Player player : playersOnBelt)  oldPositions.add(player.getRobot().getCoordinate().clone());
+        for (Player player : playersOnBelt) oldPositions.add(player.getRobot().getCoordinate().clone());
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
         for (int j = 0; j < actionFinished.size(); j++) {
@@ -131,7 +131,7 @@ public class BoardElements {
             boolean stillOnBelt = false;
             for (Attribute a : map.getTile(player.getRobot().getCoordinate()).getAttributes()) {
                 if (a.getType() == AttributeType.Belt) stillOnBelt = true;
-                 else {
+                else {
                     if (a.getType() == AttributeType.RotatingBelt) stillOnBelt = true;
                 }
                 if (!stillOnBelt) actionFinished.set(playersOnBelt.indexOf(player), true);
@@ -190,12 +190,14 @@ public class BoardElements {
         }
          */
     }
+
     /**
      * Method that gets used to handle belt movement. Includes the functionality to move all players in a certain list into certain directions.
-     * @param playersOnBelt all players that are currently located on a belt.
+     *
+     * @param playersOnBelt  all players that are currently located on a belt.
      * @param actionFinished list that yields information about what players were already moved.
-     * @param orientations Directions of player movements
-     * @param oldPositions actual positions of the players. Later used to check whether player was moved or not
+     * @param orientations   Directions of player movements
+     * @param oldPositions   actual positions of the players. Later used to check whether player was moved or not
      */
     public void handleBeltMovement(ArrayList<Player> playersOnBelt, ArrayList<Boolean> actionFinished,
                                    ArrayList<Orientation> orientations, ArrayList<Coordinate> oldPositions) {
@@ -248,9 +250,9 @@ public class BoardElements {
 
     /**
      * Calculates new coordinate if player moves one tile into a given direction
-     * @param player Player that the coordinate should be calculated for
-     * @param o Direction player gets moved to
      *
+     * @param player Player that the coordinate should be calculated for
+     * @param o      Direction player gets moved to
      */
     public Coordinate calculateNew(Player player, Orientation o) {
         Coordinate newPosition = null;
@@ -276,9 +278,9 @@ public class BoardElements {
 
     /**
      * Implements rotating behavior of players when they enter a rotating belt.
-     * @param robot robot that gets rotated
-     * @param o Orientations attribute of rotating belt
      *
+     * @param robot robot that gets rotated
+     * @param o     Orientations attribute of rotating belt
      */
     public void rotateOnBelt(Robot robot, Orientation[] o) {
         if (o[0].getNext() == o[1]) robot.rotate(Rotation.RIGHT);

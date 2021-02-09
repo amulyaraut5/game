@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane fx:id="selectDamageAnchorPane" layoutX="36.0" layoutY="78.0" prefHeight="447.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PickDamageController">
-        <ImageView fx:id="s" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
-        <Label fx:id="damageInfoLabel" layoutX="18.0" layoutY="94.0" prefHeight="51.0" prefWidth="318.0" textFill="#cccad4" />
-        <Label fx:id="showPriority2" layoutX="74.0" layoutY="58.0" prefHeight="26.0" prefWidth="318.0" />
-        <JFXButton fx:id="spamCardButton" buttonType="RAISED" contentDisplay="TOP" layoutX="279.0" layoutY="146.0" onAction="#damageButtonClicked" prefHeight="125.0" prefWidth="85.0" style="-fx-background-color: orange;" text=" " textAlignment="CENTER" textFill="WHITE">
-            <graphic>
-                <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../cards/programming/Spam-card.png" />
-                </ImageView>
-            </graphic>
-        </JFXButton>
-        <JFXButton fx:id="trojanCardButton" buttonType="RAISED" contentDisplay="TOP" layoutY="146.0" onAction="#damageButtonClicked" prefHeight="124.0" prefWidth="85.0" style="-fx-background-color: orange;" text=" " textFill="WHITE">
-            <graphic>
-                <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../cards/programming/Trojan-card.png" />
-                </ImageView>
-            </graphic>
-        </JFXButton>
-        <JFXButton fx:id="virusCardButton" buttonType="RAISED" contentDisplay="TOP" layoutX="186.0" layoutY="146.0" onAction="#damageButtonClicked" prefHeight="101.0" prefWidth="85.0" style="-fx-background-color: orange;" text=" " textFill="WHITE">
-            <graphic>
-                <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../cards/programming/Virus-card.png" />
-                </ImageView>
-            </graphic>
-        </JFXButton>
-        <JFXButton fx:id="wormCardButton" buttonType="RAISED" contentDisplay="TOP" layoutX="92.0" layoutY="146.0" onAction="#damageButtonClicked" prefHeight="125.0" prefWidth="85.0" style="-fx-background-color: orange;" text=" " textFill="WHITE">
-            <graphic>
-                <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../../cards/programming/Worm-card.png" />
-                </ImageView>
-            </graphic>
-        </JFXButton>
-        <HBox fx:id="selectedDamageHBox" layoutX="56.0" layoutY="340.0" prefHeight="71.0" prefWidth="308.0" />
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="selectDamageAnchorPane" layoutX="36.0" layoutY="78.0"
+            prefHeight="447.0"
+            prefWidth="588.0" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="client.view.PickDamageController">
+    <ImageView fx:id="s" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true"
+               preserveRatio="true"/>
+    <Label fx:id="damageInfoLabel" layoutX="18.0" layoutY="94.0" prefHeight="51.0" prefWidth="318.0"
+           textFill="#cccad4"/>
+    <Label fx:id="showPriority2" layoutX="74.0" layoutY="58.0" prefHeight="26.0" prefWidth="318.0"/>
+    <JFXButton fx:id="spamCardButton" buttonType="RAISED" contentDisplay="TOP" layoutX="279.0" layoutY="146.0"
+               onAction="#damageButtonClicked" prefHeight="125.0" prefWidth="85.0" style="-fx-background-color: orange;"
+               text=" " textAlignment="CENTER" textFill="WHITE">
+        <graphic>
+            <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../cards/programming/Spam-card.png"/>
+            </ImageView>
+        </graphic>
+    </JFXButton>
+    <JFXButton fx:id="trojanCardButton" buttonType="RAISED" contentDisplay="TOP" layoutY="146.0"
+               onAction="#damageButtonClicked" prefHeight="124.0" prefWidth="85.0" style="-fx-background-color: orange;"
+               text=" " textFill="WHITE">
+        <graphic>
+            <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../cards/programming/Trojan-card.png"/>
+            </ImageView>
+        </graphic>
+    </JFXButton>
+    <JFXButton fx:id="virusCardButton" buttonType="RAISED" contentDisplay="TOP" layoutX="186.0" layoutY="146.0"
+               onAction="#damageButtonClicked" prefHeight="101.0" prefWidth="85.0" style="-fx-background-color: orange;"
+               text=" " textFill="WHITE">
+        <graphic>
+            <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../cards/programming/Virus-card.png"/>
+            </ImageView>
+        </graphic>
+    </JFXButton>
+    <JFXButton fx:id="wormCardButton" buttonType="RAISED" contentDisplay="TOP" layoutX="92.0" layoutY="146.0"
+               onAction="#damageButtonClicked" prefHeight="125.0" prefWidth="85.0" style="-fx-background-color: orange;"
+               text=" " textFill="WHITE">
+        <graphic>
+            <ImageView fitHeight="138.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../cards/programming/Worm-card.png"/>
+            </ImageView>
+        </graphic>
+    </JFXButton>
+    <HBox fx:id="selectedDamageHBox" layoutX="56.0" layoutY="340.0" prefHeight="71.0" prefWidth="308.0"/>
 </AnchorPane>

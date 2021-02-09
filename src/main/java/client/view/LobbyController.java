@@ -70,7 +70,7 @@ public class LobbyController extends Controller implements Updatable {
      */
     public void addJoinedPlayer(Player player) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
-        String name = client.getUniqueName(player.getID());
+        String name = viewClient.getUniqueName(player.getID());
         ImageView imageView = ImageHandler.createImageView(path, 90, 90);
 
         Label label = new Label(name);
@@ -90,7 +90,7 @@ public class LobbyController extends Controller implements Updatable {
      * @param playerStatus
      */
     private void displayStatus(PlayerStatus playerStatus) {
-        Player player = client.getPlayerFromID(playerStatus.getID());
+        Player player = viewClient.getPlayerFromID(playerStatus.getID());
         String path = "/lobby/" + robotNames[player.getFigure()];
         if (playerStatus.isReady()) path += "-ready.png";
         else path += ".png";
@@ -106,10 +106,10 @@ public class LobbyController extends Controller implements Updatable {
      */
     @FXML
     private void checkBoxAction() {
-        client.sendMessage(new SetStatus((readyCheckbox.isSelected())));
+        viewClient.sendMessage(new SetStatus((readyCheckbox.isSelected())));
 
         if (!readyCheckbox.isSelected()) {
-            client.sendMessage(new SetStatus(false));
+            viewClient.sendMessage(new SetStatus(false));
             infoLabel2.setText("Please wait till somebody selects the map.");
             MapSelectionController.getMapSelectionController().setSelected(false);
             MapSelectionController.getMapSelectionController().setDisable(true);

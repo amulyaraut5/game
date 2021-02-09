@@ -46,8 +46,7 @@ public class MenuController extends Controller implements Updatable {
                 buttonsEnabled = false;
                 new Thread(() -> {
                     if (!server.isAlive()) server.start();
-                    System.out.println(server.getState());
-                    connect(client);
+                    connect(viewClient);
                 }).start();
             }
         }
@@ -64,7 +63,7 @@ public class MenuController extends Controller implements Updatable {
             if (changePort()) {
                 buttonsEnabled = false;
                 infoLabel.setText("Trying to connect...");
-                new Thread(() -> connect(client)).start();
+                new Thread(() -> connect(viewClient)).start();
             }
         }
     }
@@ -128,7 +127,7 @@ public class MenuController extends Controller implements Updatable {
             try {
                 int portNr = Integer.parseInt(textPortNumber.getText());
                 if (portNr > 1023 && portNr < 65536) {
-                    client.setPort(portNr);
+                    viewClient.setPort(portNr);
                     if (server != null) server.setPort(portNr);
                     return true;
                 } else infoLabel.setText("Use port number in 1024 - 65535!");
@@ -136,7 +135,7 @@ public class MenuController extends Controller implements Updatable {
                 infoLabel.setText("Port number invalid!");
             }
         } else {
-            client.setPort(Constants.PORT);
+            viewClient.setPort(Constants.PORT);
             if (server != null) server.setPort(Constants.PORT);
             return true;
         }

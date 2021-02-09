@@ -22,10 +22,6 @@ public class MapSelectionController extends Controller implements Updatable {
         mapSelectionController = this;
     }
 
-    public static MapSelectionController getMapSelectionController() {
-        return mapSelectionController;
-    }
-
     @FXML
     public void initialize() {
         setVisible(false);
@@ -36,11 +32,11 @@ public class MapSelectionController extends Controller implements Updatable {
     private void choiceBoxActionForMap(ActionEvent event) {
 
         if (dizzyHighway.isSelected()) {
-            client.sendMessage(new MapSelected("DizzyHighway"));
+            viewClient.sendMessage(new MapSelected("DizzyHighway"));
             setDisable(true);
             viewManager.showLobby();
         } else if (extraCrispy.isSelected()) {
-            client.sendMessage(new MapSelected("ExtraCrispy"));
+            viewClient.sendMessage(new MapSelected("ExtraCrispy"));
             setDisable(true);
             viewManager.showLobby();
         }
@@ -83,5 +79,9 @@ public class MapSelectionController extends Controller implements Updatable {
 
     public void setInfoLabel(String string) {
         infoLabel.setText(string);
+    }
+
+    public static MapSelectionController getMapSelectionController() {
+        return mapSelectionController;
     }
 }

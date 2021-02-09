@@ -7,10 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.Constants;
 import utilities.enums.CardType;
-
-import java.util.ArrayList;
 
 /**
  * Abstract super class of all view-controller
@@ -24,20 +21,10 @@ public abstract class Controller {
     private static int positionRegister;
     private static ImageView programmingImageView;
     private static boolean wasFormerRegister = false;
-
     protected final ViewManager viewManager = ViewManager.getInstance();
-    protected final ViewClient client = ViewClient.getInstance();
+    protected final ViewClient viewClient = ViewClient.getInstance();
     protected final String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
-
-    public boolean getWasFormerRegister() {
-        return wasFormerRegister;
-    }
-
-    public void setWasFormerRegister(boolean wasFormerRegister) {
-        Controller.wasFormerRegister = wasFormerRegister;
-    }
-
 
     protected ImageView generateImageView(String path, int width, int height) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));
@@ -52,12 +39,12 @@ public abstract class Controller {
         return CardType.valueOf(imageName.substring(0, imageName.length() - 9));
     }
 
-    public ImageView getProgrammingImageView() {
-        return programmingImageView;
+    public boolean getWasFormerRegister() {
+        return wasFormerRegister;
     }
 
-    public void setProgrammingImageView(ImageView programmingImageView) {
-        Controller.programmingImageView = programmingImageView;
+    public void setWasFormerRegister(boolean wasFormerRegister) {
+        Controller.wasFormerRegister = wasFormerRegister;
     }
 
     protected int getPosition() {
@@ -66,5 +53,13 @@ public abstract class Controller {
 
     protected void setPosition(int position) {
         positionRegister = position;
+    }
+
+    public ImageView getProgrammingImageView() {
+        return programmingImageView;
+    }
+
+    public void setProgrammingImageView(ImageView programmingImageView) {
+        Controller.programmingImageView = programmingImageView;
     }
 }

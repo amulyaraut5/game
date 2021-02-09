@@ -50,11 +50,6 @@ public class ViewManager {
     private ViewManager() {
     }
 
-    public static ViewManager getInstance() {
-        if (instance == null) instance = new ViewManager();
-        return instance;
-    }
-
     public void start() {
         Platform.runLater(() -> {
             try {
@@ -181,5 +176,10 @@ public class ViewManager {
         controllerList.add(mapSelectionController);
 
         ViewClient.getInstance().setController(controllerList);
+    }
+
+    public static ViewManager getInstance() {
+        if (instance == null) instance = new ViewManager();
+        return instance;
     }
 }

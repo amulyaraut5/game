@@ -50,9 +50,9 @@ public class Server extends Thread {
     private final HashMap<User, Boolean> userIsNotAI = new HashMap<>();
     private final ArrayList<User> AIs = new ArrayList<>();
     private final ArrayList<User> notAIs = new ArrayList<>();
+    private int port = Constants.PORT;
     private Game game;
     private ServerController serverController;
-
     /**
      * number of playersIDs is saved to give a new player a new number
      */
@@ -61,21 +61,14 @@ public class Server extends Thread {
      * ServerState that shows that the clients are in the lobby currently
      */
     private ServerState serverState = ServerState.LOBBY;
-
     private boolean isMapSelected = false;
     private boolean isMapSent = false;
 
     private Server() {
     }
 
-    /**
-     * Gets the singleton instance of server.
-     *
-     * @return instance of server
-     */
-    public static Server getInstance() {
-        if (instance == null) instance = new Server();
-        return instance;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     /**
@@ -184,19 +177,16 @@ public class Server extends Thread {
                 SetStartingPoint setStartingPoint = (SetStartingPoint) message.getBody();
                 game.getConstructionPhase().setStartingPoint(user, setStartingPoint.getPosition());
             }
-            case PlayIt ->{
+            case PlayIt -> {
                 if (AIs.equals(readyUsers)) {
                     Timer t = new Timer();
-                    t.schedule(
-                            new TimerTask() {
-                                @Override
-                                public void run() {
-                                    game.getActivationPhase().activateCards(user.getID());
-                                }
-                            }, 2000
-                    );
-                }
-                else
+                    t.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            game.getActivationPhase().activateCards(user.getID());
+                        }
+                    }, 2000);
+                } else
                     game.getActivationPhase().activateCards(user.getID());
             }
             case MapSelected -> {
@@ -328,7 +318,8 @@ public class Server extends Thread {
         }
 
         // Random Map is selected if all users are AI
-        if (allUsersReady && (AIs.equals(readyUsers))) {
+        if (allUsersReady && (AIs.equals(readyUsers))) { //TODO does AIs.equals(readyUsers) work?
+            //todo because only the list reference is compared, not if there are the same users inside
 
             ArrayList<String> input = new ArrayList<>();
             input.add(maps.get(r.nextInt(maps.size())));
@@ -361,15 +352,6 @@ public class Server extends Thread {
                 logger.error("Accepting clients failed on port " + PORT + ": " + e.getMessage());
             }
         }
-    }
-
-    /**
-     * Getter for the Users.
-     *
-     * @return returns the list of users.
-     */
-    public ArrayList<User> getUsers() {
-        return users;
     }
 
     /**
@@ -494,6 +476,25 @@ public class Server extends Thread {
                 notify();
             }
         }
+    }
+
+    /**
+     * Gets the singleton instance of server.
+     *
+     * @return instance of server
+     */
+    public static Server getInstance() {
+        if (instance == null) instance = new Server();
+        return instance;
+    }
+
+    /**
+     * Getter for the Users.
+     *
+     * @return returns the list of users.
+     */
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
     public BlockingQueue<QueueMessage> getMessageQueue() {

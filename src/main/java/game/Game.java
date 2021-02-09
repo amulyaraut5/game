@@ -18,8 +18,10 @@ import server.Server;
 import server.User;
 import utilities.Constants;
 import utilities.Coordinate;
-import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.GameWon;
+import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
 import utilities.enums.GameState;
@@ -54,11 +56,6 @@ public class Game {
     private GameState gameState;
 
     private Game() {
-    }
-
-    public static Game getInstance() {
-        if (instance == null) instance = new Game();
-        return instance;
     }
 
     /**
@@ -168,7 +165,6 @@ public class Game {
         } else server.communicateDirect(new Error("Please activate cheats first"), user.getID());
     }
 
-
     private void activateCheat(User user, String cheat, String[] cheatInfo) {
         switch (cheat) {
             case "#endTimer" -> programmingPhase.endProgrammingTimer();
@@ -185,26 +181,26 @@ public class Game {
                 Robot robot = userToPlayer(user).getRobot();
                 if (cheatInfo.length == 1) {
                     int position = Integer.parseInt(cheatInfo[0]);
-                    try{
-                        if(map.isAttributeOn(position))
+                    try {
+                        if (map.isAttributeOn(position))
                             server.communicateDirect(new Error("Movement is not allowed."), user.getID());
                         else if (activationPhase.isPositionFree(position))
                             robot.moveTo(Coordinate.parse(position));
                         else server.communicateDirect(new Error("Movement is not allowed."), user.getID());
-                    }catch (NullPointerException e) {
+                    } catch (NullPointerException e) {
                         server.communicateDirect(new Error("You must wait till you get to activation phase."), user.getID());
                     }
                 } else if (cheatInfo.length == 2) {
                     int x = Integer.parseInt(cheatInfo[0]);
                     int y = Integer.parseInt(cheatInfo[1]);
                     Coordinate coordinate = new Coordinate(x, y);
-                    try{
-                        if(map.isAttributeOn(coordinate))
+                    try {
+                        if (map.isAttributeOn(coordinate))
                             server.communicateDirect(new Error("Movement is not allowed."), user.getID());
                         else if (activationPhase.isPositionFree(coordinate))
                             robot.moveTo(coordinate);
                         else server.communicateDirect(new Error("Movement is not allowed."), user.getID());
-                    }catch (NullPointerException e) {
+                    } catch (NullPointerException e) {
                         server.communicateDirect(new Error("You must wait till you get to activation phase."), user.getID());
                     }
                 }
@@ -260,6 +256,11 @@ public class Game {
             }
             default -> server.communicateDirect(new Error("your cheat is invalid!"), user.getID());
         }
+    }
+
+    public static Game getInstance() {
+        if (instance == null) instance = new Game();
+        return instance;
     }
 
     public ConstructionPhase getConstructionPhase() {

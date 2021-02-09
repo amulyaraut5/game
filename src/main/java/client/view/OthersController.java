@@ -65,7 +65,7 @@ public class OthersController extends Controller {
     public void createPlayerMats(ArrayList<Player> players) {
         hBoxPlayer.setAlignment(Pos.CENTER);
         for (Player player : players) {
-            if (player.getID() != client.getThisPlayersID()) {
+            if (player.getID() != viewClient.getThisPlayersID()) {
                 playerAdded(player);
             }
         }
@@ -157,7 +157,7 @@ public class OthersController extends Controller {
      */
     public void setTooSlowLabel(TimerEnded timerEnded) {
         for (int playerID : timerEnded.getPlayerIDs()) {
-            if (playerID != client.getThisPlayersID())
+            if (playerID != viewClient.getThisPlayersID())
                 getOtherPlayerController(playerID).setInfoLabel2("programmed too slowly!");
         }
     }

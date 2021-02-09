@@ -30,18 +30,6 @@ public enum Orientation {
     private Orientation next;
     private Orientation prior;
 
-    public Orientation getNext() {
-        return next;
-    }
-
-    public Orientation getPrevious() {
-        return prior;
-    }
-
-    public Orientation getOpposite() {
-        return opposite;
-    }
-
     public Coordinate toVector() {
         switch (this) {
             case UP -> {
@@ -58,5 +46,17 @@ public enum Orientation {
             }
             default -> throw new IllegalStateException("Unexpected value: " + this);
         }
+    }
+
+    public Orientation getNext() {
+        return next;
+    }
+
+    public Orientation getPrevious() {
+        return prior;
+    }
+
+    public Orientation getOpposite() {
+        return opposite;
     }
 }

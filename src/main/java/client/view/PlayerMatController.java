@@ -68,14 +68,13 @@ public class PlayerMatController extends Controller {
         createRegisters();
     }
 
-
-
-    private void setSpacingHBoxes(){
+    private void setSpacingHBoxes() {
         energyHBox.setSpacing(5);
         energyHBox2.setSpacing(5);
         registerHBox.setSpacing(20);
         registerHBoxBackground.setSpacing(20);
     }
+
     private void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> setOnDragOver(e, pane));
         pane.setOnDragExited(e -> setOnDragExited(e, pane));
@@ -94,7 +93,7 @@ public class PlayerMatController extends Controller {
         }
     }
 
-    private boolean checkDragAllowed(Pane pane, Dragboard db){
+    private boolean checkDragAllowed(Pane pane, Dragboard db) {
         return db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
                 && getProgrammingImageView().getParent() != pane
@@ -114,14 +113,14 @@ public class PlayerMatController extends Controller {
 
     private void setOnDragDone() {
         CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
-        if (getWasFormerRegister()) client.sendMessage(new SelectCard(null, getPosition()));
+        if (getWasFormerRegister()) viewClient.sendMessage(new SelectCard(null, getPosition()));
         switch (cardType) {
-            case Spam -> client.setCountSpamCards(client.getCountSpamCards() + 1);
-            case Virus -> client.setCountVirusCards(client.getCountVirusCards() + 1);
-            case Trojan -> client.setCountTrojanCards(client.getCountTrojanCards() + 1);
-            case Worm -> client.setCountWormCards(client.getCountWormCards() + 1);
+            case Spam -> viewClient.setCountSpamCards(viewClient.getCountSpamCards() + 1);
+            case Virus -> viewClient.setCountVirusCards(viewClient.getCountVirusCards() + 1);
+            case Trojan -> viewClient.setCountTrojanCards(viewClient.getCountTrojanCards() + 1);
+            case Worm -> viewClient.setCountWormCards(viewClient.getCountWormCards() + 1);
         }
-        client.sendMessage(new SelectCard(cardType, positionDroppedCard));
+        viewClient.sendMessage(new SelectCard(cardType, positionDroppedCard));
     }
 
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
@@ -159,7 +158,7 @@ public class PlayerMatController extends Controller {
     public void loadPlayerMap(Player player) {
         String name = robotNames[player.getFigure()];
         playerIcon.setImage(new Image(getClass().getResource("/lobby/" + name + ".png").toString()));
-        playerMapLabelName.setText(client.getUniqueName(player.getID()));
+        playerMapLabelName.setText(viewClient.getUniqueName(player.getID()));
     }
 
     private void addImage(Image i, StackPane pane) {
@@ -277,7 +276,7 @@ public class PlayerMatController extends Controller {
             discardDeck = String.valueOf(amount);
         } else {
             discardDeckNr += amount;
-            discardDeck =String.valueOf(discardDeckNr);
+            discardDeck = String.valueOf(discardDeckNr);
         }
         discardDeckLabel.setText(discardDeck);
     }

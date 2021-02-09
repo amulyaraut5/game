@@ -7,10 +7,7 @@ import game.gameObjects.tiles.Attribute;
 import game.gameObjects.tiles.Empty;
 import game.gameObjects.tiles.Laser;
 import game.round.LaserAction;
-import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -206,8 +203,8 @@ public class GameBoardController {
      * the player orientation after every method call on the client side to keep track of
      * orientation to update the view later.
      *
-     * @param player   Player whose robot should be turned
-     * @param angle Parameter that determines how the player should be rotated.
+     * @param player Player whose robot should be turned
+     * @param angle  Parameter that determines how the player should be rotated.
      */
 
     public void handlePlayerTurning(Player player, int angle) {

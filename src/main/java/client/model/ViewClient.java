@@ -35,11 +35,6 @@ public class ViewClient extends Client {
     private ViewClient() {
     }
 
-    public static ViewClient getInstance() {
-        if (instance == null) instance = new ViewClient();
-        return instance;
-    }
-
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
      * is casted down to respective class and then it interacts with the different controllers.
@@ -125,6 +120,11 @@ public class ViewClient extends Client {
 
     public void setChatController(ChatController chatController) {
         this.chatController = chatController;
+    }
+
+    public static ViewClient getInstance() {
+        if (instance == null) instance = new ViewClient();
+        return instance;
     }
 
     public Updatable getCurrentController() {

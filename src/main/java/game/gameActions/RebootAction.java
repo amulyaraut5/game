@@ -7,7 +7,6 @@ import utilities.enums.Orientation;
 
 import java.util.Random;
 
-
 /**
  * @author annika
  */
@@ -41,7 +40,7 @@ public class RebootAction extends Action {
         else {
             player.getRobot().setCoordinate(player.getRobot().getStartingPoint());
             Coordinate newPosition = game.getActivationPhase().getActivationElements().calculateNew(player, Orientation.UP);
-            if(isTaken(player) && (map.isWallBlocking(newPosition, Orientation.DOWN) || map.isWallBlocking(player.getRobot().getCoordinate(), Orientation.UP))){
+            if (isTaken(player) && (map.isWallBlocking(newPosition, Orientation.DOWN) || map.isWallBlocking(player.getRobot().getCoordinate(), Orientation.UP))) {
                 Coordinate randomStartPoint = map.getStartingPoints().get(random.nextInt(map.getStartingPoints().size()));
                 player.getRobot().rotateTo(Orientation.UP);
                 player.getRobot().moveTo(randomStartPoint);
@@ -62,7 +61,7 @@ public class RebootAction extends Action {
         }*/
     }
 
-    public boolean isTaken(Player player){
+    public boolean isTaken(Player player) {
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 return true;
@@ -71,8 +70,7 @@ public class RebootAction extends Action {
         return false;
     }
 
-
-    public void clearRebootTile(Player player){
+    public void clearRebootTile(Player player) {
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 robotOnReboot.getRobot().rotateTo(Orientation.UP);
@@ -90,9 +88,9 @@ public class RebootAction extends Action {
         }
     }
 
-    public void clearRebootTile2(Player player){
-        for(Player robotOnReboot : game.getPlayers()){
-            if(robotOnReboot.getRobot().getCoordinate().equals(player.getRobot().getCoordinate()) && robotOnReboot !=  player){
+    public void clearRebootTile2(Player player) {
+        for (Player robotOnReboot : game.getPlayers()) {
+            if (robotOnReboot.getRobot().getCoordinate().equals(player.getRobot().getCoordinate()) && robotOnReboot != player) {
                 game.getActivationPhase().handleMove(robotOnReboot, Orientation.UP);
             }
         }

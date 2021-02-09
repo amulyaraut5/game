@@ -50,10 +50,10 @@ public class PickDamageController extends Controller {
      * @param pickDamage
      */
     public void pickDamage(PickDamage pickDamage) {
-        countSpam = client.getCountSpamCards();
-        countTrojan = client.getCountTrojanCards();
-        countVirus = client.getCountVirusCards();
-        countWorm = client.getCountWormCards();
+        countSpam = viewClient.getCountSpamCards();
+        countTrojan = viewClient.getCountTrojanCards();
+        countVirus = viewClient.getCountVirusCards();
+        countWorm = viewClient.getCountWormCards();
         updateDamageCountLabel(CardType.Spam);
         updateDamageCountLabel(CardType.Worm);
         updateDamageCountLabel(CardType.Trojan);
@@ -111,7 +111,7 @@ public class PickDamageController extends Controller {
         ImageView selectedDamageCard = ImageHandler.createImageView(path, 70, 100);
         selectedDamageHBox.getChildren().add(selectedDamageCard);
         if (pickedDamageCards.size() == pickDamage) {
-            client.sendMessage(new SelectDamage(pickedDamageCards));
+            viewClient.sendMessage(new SelectDamage(pickedDamageCards));
             pickDamage = 0;
             pickedDamageCards.clear();
             activationController.changePhaseView("PlayIt");

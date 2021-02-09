@@ -22,7 +22,7 @@ public class GameWonController extends Controller {
 
     public void setWinnerLabel(Player winner) {
         String path = "/lobby/" + robotNames[winner.getFigure()] + ".png";
-        String name = client.getUniqueName(winner.getID());
+        String name = viewClient.getUniqueName(winner.getID());
         ImageView imageView = ImageHandler.createImageView(path, 200, 200);
         winnerLabel.setText(name);
 

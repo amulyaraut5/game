@@ -9,6 +9,10 @@ public abstract class Card {
 
     public abstract ImageView drawCardImage();
 
+    public String toString() {
+        return card.toString();
+    }
+
     /**
      * Gets the card name.
      *
@@ -16,10 +20,6 @@ public abstract class Card {
      */
     public CardType getName() {
         return card;
-    }
-
-    public String toString() {
-        return card.toString();
     }
 }
 

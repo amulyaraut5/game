@@ -97,7 +97,7 @@ public class ProgrammingPhase extends Phase {
             //logger.info(player.getID() + " has moved a card in his register");
             ArrayList<CardType> cardTypes = new ArrayList<>();
             for (Card card : player.getDrawnProgrammingCards()) {
-                if(card != null)
+                if (card != null)
                     cardTypes.add(card.getName());
                 else
                     logger.warn("programming phase: card.getName() is null"); //TODO
