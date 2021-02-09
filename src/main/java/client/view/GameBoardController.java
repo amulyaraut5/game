@@ -23,6 +23,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import utilities.Constants;
 import utilities.Coordinate;
+import utilities.ImageHandler;
 import utilities.JSONProtocol.body.GameStarted;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.JSONProtocol.body.SetStartingPoint;
@@ -339,22 +340,26 @@ public class GameBoardController {
         }
     }
 
-    private void laserAnimation(ArrayList<Player> players, Orientation orientation, Coordinate robotPos) {
-        Coordinate endPos = LaserAction.calculateLaserEnd(robotPos, orientation, map, players);
+    private void laserAnimation(ArrayList<Player> players, Orientation orientation, Coordinate startPos) {
+        Coordinate endPos = LaserAction.calculateLaserEnd(startPos, orientation, map, players);
         Coordinate vector = orientation.toVector();
 
         Line laser = new Line();
         laser.setStrokeWidth(3);
         laser.setStroke(Color.RED);
-        int halfTile = Constants.FIELD_SIZE / 2;
-
         animationPane.getChildren().add(laser);
 
-        int startX = robotPos.getX() * Constants.FIELD_SIZE + halfTile;
-        int startY = robotPos.getY() * Constants.FIELD_SIZE + halfTile;
+        int halfTile = Constants.FIELD_SIZE / 2;
+        int startX = startPos.getX() * Constants.FIELD_SIZE + halfTile;
+        int startY = startPos.getY() * Constants.FIELD_SIZE + halfTile;
         int endX = endPos.getX() * Constants.FIELD_SIZE + halfTile + vector.getX() * halfTile;
         int endY = endPos.getY() * Constants.FIELD_SIZE + halfTile + vector.getY() * halfTile;
-        int distance = Math.abs(robotPos.getX() - endPos.getX()) + Math.abs(robotPos.getY() - endPos.getY());
+        int distance = Math.abs(startPos.getX() - endPos.getX()) + Math.abs(startPos.getY() - endPos.getY());
+
+        boolean laserHit = laserHit(players, endPos, distance);
+        Group hit = null;
+        if (laserHit) hit = createHitAnimation(endPos, vector, orientation);
+        Group finalHit = hit;
 
         Timeline timeline = new Timeline(
                 new KeyFrame(
@@ -365,6 +370,9 @@ public class GameBoardController {
                         new KeyValue(laser.endYProperty(), startY)),
                 new KeyFrame(
                         Duration.seconds(.1 * distance),
+                        onFinished -> {
+                            if (laserHit) animationPane.getChildren().add(finalHit);
+                        },
                         new KeyValue(laser.endXProperty(), endX),
                         new KeyValue(laser.endYProperty(), endY)),
                 new KeyFrame(
@@ -375,11 +383,35 @@ public class GameBoardController {
                         new KeyValue(laser.endYProperty(), endY)),
                 new KeyFrame(
                         Duration.seconds(.05 * distance + 2),
-                        onFinished -> animationPane.getChildren().remove(laser),
+                        onFinished -> {
+                            animationPane.getChildren().remove(laser);
+                            if (laserHit) animationPane.getChildren().remove(finalHit);
+                        },
                         new KeyValue(laser.startXProperty(), endX),
                         new KeyValue(laser.startYProperty(), endY)
                 ));
         timeline.play();
+    }
+
+    private boolean laserHit(ArrayList<Player> players, Coordinate endPos, int distance) {
+        if (distance > 0) {
+            for (Player p : players) {
+                if (endPos.equals(p.getRobot().getCoordinate())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private Group createHitAnimation(Coordinate endPos, Coordinate vector, Orientation orientation) {
+        ImageView hitBase = ImageHandler.createImageView("/otherElements/hitBase.png", orientation);
+        hitBase.setX(endPos.getX() * Constants.FIELD_SIZE);
+        hitBase.setY(endPos.getY() * Constants.FIELD_SIZE);
+        ImageView hitFire = ImageHandler.createImageView("/otherElements/hit.png", orientation);
+        hitFire.setX(endPos.getX() * Constants.FIELD_SIZE - 0.9 * vector.getX() * Constants.FIELD_SIZE);
+        hitFire.setY(endPos.getY() * Constants.FIELD_SIZE - 0.9 * vector.getY() * Constants.FIELD_SIZE);
+        return new Group(hitBase, hitFire);
     }
 
     public void removePlayer(Player player) {
