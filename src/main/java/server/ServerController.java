@@ -1,5 +1,7 @@
 package server;
 
+import ai.AIClient;
+import client.model.Client;
 import client.view.GameBoardController;
 import game.Game;
 import javafx.fxml.FXML;
@@ -14,11 +16,14 @@ import utilities.Updatable;
 import utilities.enums.Rotation;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ServerController implements Updatable {
     private static final Logger logger = LogManager.getLogger();
     private final Server server = Server.getInstance();
     private final Game game = Game.getInstance();
+    private volatile boolean timeout = false;
 
     private GameBoardController gameBoardController;
 
@@ -34,6 +39,39 @@ public class ServerController implements Updatable {
             gameBoardController = fxmlLoader.getController();
         } catch (IOException e) {
             logger.error("GameBoard could not be created: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void startClicked () {
+        server.startAIGame();
+    }
+
+    @FXML
+    public void addAIClicked () {
+        connect(new AIClient());
+    }
+
+    private void connect(Client client) {
+        boolean connected = false;
+        timeout = false;
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timeout = true;
+                cancel();
+            }
+        }, 2000);
+
+        while (!connected && !timeout) {
+            connected = client.establishConnection();
+            synchronized (this) {
+                try {
+                    wait(200);
+                } catch (InterruptedException ignored) {
+                }
+            }
         }
     }
 

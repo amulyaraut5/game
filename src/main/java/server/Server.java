@@ -47,7 +47,7 @@ public class Server extends Thread {
      * stores all users and if this user is an AI or not
      * TODO do we need these three?
      */
-    private final HashMap<User, Boolean> userIsNotAI = new HashMap<>();
+    private final HashMap<User, Boolean> usersAI = new HashMap<>();
     private final ArrayList<User> AIs = new ArrayList<>();
     private final ArrayList<User> notAIs = new ArrayList<>();
     private int port = Constants.PORT;
@@ -283,7 +283,7 @@ public class Server extends Thread {
      */
 
     private void dealWithMap(User user, SetStatus status) {
-        userIsNotAI.put(user, status.isReady());
+        usersAI.put(user, status.isReady());
 
         ArrayList<String> maps = new ArrayList<>();
         Random r = new Random();
@@ -298,7 +298,7 @@ public class Server extends Thread {
         if (!isMapSent) {
             for (User user1 : notAIs) {
                 try {
-                    if (userIsNotAI.get(user1)) {
+                    if (usersAI.get(user1)) {
                         user1.message(new SelectMap(maps));
                         communicateAll(new Error(""));
                         isMapSent = true;
@@ -318,16 +318,19 @@ public class Server extends Thread {
         }
 
         // Random Map is selected if all users are AI
-        if (allUsersReady && (AIs.equals(readyUsers))) { //TODO does AIs.equals(readyUsers) work?
-            //todo because only the list reference is compared, not if there are the same users inside
+        if (allUsersReady && (AIs.size() == readyUsers.size())) {
+
 
             ArrayList<String> input = new ArrayList<>();
             input.add(maps.get(r.nextInt(maps.size())));
 
             game.handleMapSelection(input);
-            game.play();
-            serverState = ServerState.RUNNING_GAME;
         }
+    }
+
+    public void startAIGame () {
+        game.play();
+        serverState = ServerState.RUNNING_GAME;
     }
 
     /**
@@ -387,9 +390,7 @@ public class Server extends Thread {
             user.message(jsonBody);
         }
         if (serverController != null) {
-            Platform.runLater(() -> {
-                serverController.update(JSONMessage.build(jsonBody));
-            });
+            Platform.runLater(() -> serverController.update(JSONMessage.build(jsonBody)));
         }
     }
 
