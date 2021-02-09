@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
 <AnchorPane fx:id="playCardAnchorPane" layoutX="36.0" layoutY="78.0" prefHeight="633.0" prefWidth="644.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayCardController">
-    <Label fx:id="infoLabel" layoutX="8.0" layoutY="20.0" prefHeight="53.0" prefWidth="335.0" textFill="blue" />
+    <Label fx:id="infoLabel" layoutX="8.0" layoutY="20.0" prefHeight="53.0" prefWidth="335.0" textFill="#cccad4" />
 
     <ImageView fx:id="currentCardImageView" fitHeight="150.0" fitWidth="110.0" layoutX="129.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true" />
-        <Label fx:id="showPriority" layoutX="-5.0" layoutY="106.0" prefHeight="40.0" prefWidth="379.0" />
+        <Label fx:id="showPriority" layoutX="-5.0" layoutY="106.0" prefHeight="40.0" prefWidth="379.0" textFill="#cccad4" />
         <JFXButton fx:id="playItButton" buttonType="RAISED" layoutX="88.0" layoutY="309.0" onAction="#playItButton" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: orange;" text="Play It" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="15.0" />

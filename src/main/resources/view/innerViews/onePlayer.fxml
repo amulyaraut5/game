@@ -4,9 +4,15 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <AnchorPane prefHeight="177.0" prefWidth="137.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.OnePlayerController">
-    <Pane layoutX="21.0" layoutY="38.0" prefHeight="139.0" prefWidth="101.0" style="-fx-background-color: MIDNIGHTBLUE;">
-        <Label fx:id="nameLabel" layoutX="29.0" textFill="WHITE">
+    <Pane layoutX="21.0" layoutY="38.0" prefHeight="139.0" prefWidth="101.0" style="-fx-background-color: lightgray;">
+      <ImageView fitHeight="139.0" fitWidth="101.0" opacity="0.48" pickOnBounds="true">
+         <image>
+            <Image url="@../../tiles/empty.png" />
+         </image>
+      </ImageView>
+        <Label fx:id="nameLabel" layoutX="29.0" textFill="#003366">
             <font>
                 <Font size="18.0" />
             </font>
@@ -14,14 +20,14 @@
         <ImageView fx:id="robotIcon" fitHeight="55.0" fitWidth="54.0" layoutX="-25.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../tiles/startPoint.png" />
         </ImageView>
-        <Label fx:id="infoLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="34.0" prefHeight="37.0" prefWidth="79.0" textFill="WHITE" wrapText="true">
+        <Label fx:id="infoLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="34.0" prefHeight="37.0" prefWidth="79.0" textFill="#003366" wrapText="true">
             <font>
                 <Font name="System Bold" size="13.0" />
             </font>
         </Label>
         <HBox fx:id="registerHBox" layoutY="93.0" prefHeight="30.0" prefWidth="101.0" />
         <ImageView fx:id="currentCardImageView" fitHeight="62.0" fitWidth="41.0" layoutX="30.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true" />
-      <HBox fx:id="drawDamageHBox" alignment="CENTER" layoutX="0.0" layoutY="72.0" prefHeight="62.5" prefWidth="101.0" style="-fx-background-color: MIDNIGHTBLUE;" />
+      <HBox fx:id="drawDamageHBox" alignment="CENTER" layoutX="0.0" layoutY="72.0" prefHeight="62.5" prefWidth="101.0" />
     </Pane>
     <Pane layoutX="102.0" layoutY="52.0" prefHeight="37.0" prefWidth="47.0">
         <ImageView fitHeight="54.0" fitWidth="47.0" layoutX="-3.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
@@ -45,7 +51,7 @@
     </Pane>
    <Pane layoutX="-1.0" layoutY="-4.0" prefHeight="37.0" prefWidth="149.0">
       <children>
-         <Label fx:id="infoLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="-5.0" prefHeight="47.0" prefWidth="149.0" textFill="#2841a4">
+         <Label fx:id="infoLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="-5.0" prefHeight="47.0" prefWidth="149.0" textFill="#cccad4">
             <font>
                <Font name="System Bold" size="14.0" />
             </font>
