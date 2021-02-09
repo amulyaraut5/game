@@ -2,7 +2,6 @@ package client.view;
 
 import ai.AIClient;
 import client.model.Client;
-import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -27,11 +26,8 @@ import java.util.TimerTask;
 public class MenuController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
     private volatile boolean timeout = false;
+    private volatile boolean buttonsEnabled = true;
 
-    @FXML
-    private JFXButton hostButton;
-    @FXML
-    private JFXButton joinButton;
     @FXML
     private Label infoLabel;
     @FXML
@@ -88,7 +84,6 @@ public class MenuController extends Controller implements Updatable {
     }
 
     private void connect(Client client) {
-        Platform.runLater(() -> infoLabel.setText(""));
         boolean connected = false;
         timeout = false;
 
@@ -113,8 +108,7 @@ public class MenuController extends Controller implements Updatable {
         Platform.runLater(() -> {
             if (!finalConnected) infoLabel.setText("The server is not reachable!");
             else infoLabel.setText("");
-            hostButton.setDisable(false);
-            joinButton.setDisable(false);
+            buttonsEnabled = true;
         });
     }
 
