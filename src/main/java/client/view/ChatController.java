@@ -1,12 +1,16 @@
 package client.view;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import game.Player;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Constants;
@@ -21,7 +25,7 @@ public class ChatController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     @FXML
-    private TextArea chatWindow;
+    private JFXTextArea chatWindow;
     /**
      * the choiceBox where the user can choose if the
      * message should be a direct message or who should be
@@ -30,13 +34,24 @@ public class ChatController extends Controller {
     @FXML
     private JFXComboBox<String> directChoiceBox;
     @FXML
-    private TextField lobbyTextFieldChat;
+    private JFXTextArea lobbyTextFieldChat;
 
     @FXML
     public void initialize() {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
         client.setChatController(this);
+        lobbyTextFieldChat.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent ke)
+            {
+                if (ke.getCode().equals(KeyCode.ENTER))
+                {
+                    submitChatMessage();
+                }
+            }
+        });
     }
 
     /**
@@ -63,10 +78,9 @@ public class ChatController extends Controller {
     /**
      * send a chat Message, either private or to everyone
      *
-     * @param event
      */
-    @FXML
-    private void submitChatMessage(ActionEvent event) {
+
+    private void submitChatMessage() {
         if(client.getCurrentController().getClass().equals(GameController.class)){
             GameController gameController = (GameController) client.getCurrentController();
             gameController.getBoardPane().requestFocus();
@@ -74,6 +88,8 @@ public class ChatController extends Controller {
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
         String message = lobbyTextFieldChat.getText();
+        message = message.substring(0, message.length()-1);
+        System.out.println(message);
         JSONBody jsonBody = null;
         if(message.equals("#hotkeys")){
             chatWindow.appendText(Constants.HOTKEYSLIST);
