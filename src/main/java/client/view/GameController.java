@@ -328,8 +328,10 @@ public class GameController extends Controller implements Updatable {
                     logger.info("No active players");
                 } else {
                     soundHandler.playSoundEffects("Laser", play);
-                    gameBoardController.handleShooting(activePlayers);
-                    gameBoardController.handleRobotShooting(activePlayers);
+                    //gameBoardController.handleShooting(activePlayers);
+                    //gameBoardController.handleRobotShooting(activePlayers);
+                    gameBoardController.robotLaserAnimation(activePlayers);
+                    gameBoardController.boardLaserAnimation(activePlayers);
                 }
             }
             case Reboot -> {

@@ -18,6 +18,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import utilities.Constants;
 import utilities.Coordinate;
@@ -316,6 +318,68 @@ public class GameBoardController {
             sequentialTransition.getChildren().addAll(transition, fadeTransition);
             sequentialTransition.play();
         }
+    }
+
+    public void robotLaserAnimation(ArrayList<Player> players) {
+        for (Player player : players) {
+            Orientation orientation = player.getRobot().getOrientation();
+            Coordinate robotPos = player.getRobot().getCoordinate();
+            laserAnimation(players, orientation, robotPos);
+        }
+    }
+
+    public void boardLaserAnimation(ArrayList<Player> players) {
+        for (Coordinate c : map.readLaserCoordinates()) {
+            for (Attribute a : map.getTile(c).getAttributes()) {
+                if (a.getType() == AttributeType.Laser) {
+                    Orientation orientation = ((Laser) a).getOrientation();
+                    laserAnimation(players, orientation, c);
+                }
+            }
+        }
+    }
+
+    private void laserAnimation(ArrayList<Player> players, Orientation orientation, Coordinate robotPos) {
+        Coordinate endPos = LaserAction.calculateLaserEnd(robotPos, orientation, map, players);
+        Coordinate vector = orientation.toVector();
+
+        Line laser = new Line();
+        laser.setStrokeWidth(3);
+        laser.setStroke(Color.RED);
+        int halfTile = Constants.FIELD_SIZE / 2;
+
+        animationPane.getChildren().add(laser);
+
+        int startX = robotPos.getX() * Constants.FIELD_SIZE + halfTile;
+        int startY = robotPos.getY() * Constants.FIELD_SIZE + halfTile;
+        int endX = endPos.getX() * Constants.FIELD_SIZE + halfTile + vector.getX() * halfTile;
+        int endY = endPos.getY() * Constants.FIELD_SIZE + halfTile + vector.getY() * halfTile;
+        int distance = Math.abs(robotPos.getX() - endPos.getX()) + Math.abs(robotPos.getY() - endPos.getY());
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.ZERO,
+                        new KeyValue(laser.startXProperty(), startX),
+                        new KeyValue(laser.startYProperty(), startY),
+                        new KeyValue(laser.endXProperty(), startX),
+                        new KeyValue(laser.endYProperty(), startY)),
+                new KeyFrame(
+                        Duration.seconds(.1 * distance),
+                        new KeyValue(laser.endXProperty(), endX),
+                        new KeyValue(laser.endYProperty(), endY)),
+                new KeyFrame(
+                        Duration.seconds(2),
+                        new KeyValue(laser.startXProperty(), startX),
+                        new KeyValue(laser.startYProperty(), startY),
+                        new KeyValue(laser.endXProperty(), endX),
+                        new KeyValue(laser.endYProperty(), endY)),
+                new KeyFrame(
+                        Duration.seconds(.05 * distance + 2),
+                        onFinished -> animationPane.getChildren().remove(laser),
+                        new KeyValue(laser.startXProperty(), endX),
+                        new KeyValue(laser.startYProperty(), endY)
+                ));
+        timeline.play();
     }
 
     public void removePlayer(Player player) {
