@@ -31,6 +31,10 @@ public class Coordinate {
         return new Coordinate(x, y);
     }
 
+    public static int distance(Coordinate from, Coordinate to) {
+        return Math.abs(from.getX() - to.getX()) + Math.abs(from.getY() - to.getY());
+    }
+
     /**
      * Converts this {@link Coordinate} into a one-dimensional position on the map starting from top right to bottom left.
      *

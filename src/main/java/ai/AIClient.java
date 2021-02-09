@@ -67,8 +67,8 @@ public class AIClient extends Client {
         switch (type) {
             case TimerStarted, SelectionFinished, Error, TimerEnded, Energy,
                     ReceivedChat, GameWon, PlayerStatus, HelloServer, SetStatus, SendChat,
-                    SetStartingPoint, PlayIt, PlayerShooting, MapSelected, PlayerValues -> {
-                //TODO nothing
+                    SetStartingPoint, PlayIt, PlayerShooting, SelectMap, MapSelected, PlayerValues -> {
+                //nothing should happen, dummy case
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
             case Welcome -> {
@@ -92,18 +92,29 @@ public class AIClient extends Client {
                     sendMessage(new SetStatus(true));
                 }
             }
-            case ConnectionUpdate -> {
-                //TODO remove player
-            }
-            case GameStarted -> {
-                GameStarted gameStarted = (GameStarted) message.getBody();
-                map = MapConverter.reconvert(gameStarted);
+            case CurrentPlayer -> {
+                CurrentPlayer msg = (CurrentPlayer) message.getBody();
+
+                if (msg.getPlayerID() == thisPlayersID) {
+                    if (currentPhase == GameState.CONSTRUCTION) {
+                        int[] startingPoints = {39, 78, 14, 53, 66, 105};
+                        for (int point : startingPoints) {
+                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
+                        }
+                    } else if (currentPhase == GameState.ACTIVATION) {
+                        sendMessage(new PlayIt());
+                    }
+                }
             }
             case StartingPointTaken -> {
                 StartingPointTaken msg = (StartingPointTaken) message.getBody();
                 Player player = getPlayerFromID(msg.getPlayerID());
                 Coordinate coordinate = Coordinate.parse(msg.getPosition());
                 player.getRobot().setCoordinate(coordinate);
+            }
+            case GameStarted -> {
+                GameStarted gameStarted = (GameStarted) message.getBody();
+                map = MapConverter.reconvert(gameStarted);
             }
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
@@ -113,34 +124,16 @@ public class AIClient extends Client {
                 YourCards yourCards = (YourCards) message.getBody();
                 chooseCards(yourCards);
             }
-            case CardsYouGotNow -> {
-                CardsYouGotNow msg = (CardsYouGotNow) message.getBody();
-                //TODO getPlayerFromID(thisPlayersID).setDrawnProgrammingCards(msg.getCards());
-            }
-            case CurrentCards -> {
-                //TODO
-            }
-            case Reboot -> {
-                Reboot reboot = (Reboot) message.getBody();
-                // TODO nothing
-            }
-            case DrawDamage -> {
-                DrawDamage drawDamage = (DrawDamage) message.getBody();
-                handleDamageCount(drawDamage.getCards());
-                if (drawDamage.getPlayerID() == thisPlayersID) {
-                    //TODO nothing
-                }
-            }
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
                 int countToPick = pickDamage.getCount();
                 ArrayList<CardType> damageCards = new ArrayList<>();
                 CardType chooseCard = null;
-                while (countToPick > 0) { //TODO Reihenfolge?
-                    if (getCountSpamCards() > 0) chooseCard = CardType.Spam;
-                    else if (getCountVirusCards() > 0) chooseCard = CardType.Virus;
-                    else if (getCountTrojanCards() > 0) chooseCard = CardType.Trojan;
+                while (countToPick > 0) {
+                    if (getCountVirusCards() > 0) chooseCard = CardType.Virus;
+                    else if (getCountSpamCards() > 0) chooseCard = CardType.Spam;
                     else if (getCountWormCards() > 0) chooseCard = CardType.Worm;
+                    else if (getCountTrojanCards() > 0) chooseCard = CardType.Trojan;
                     damageCards.add(chooseCard);
                     countToPick--;
                 }
@@ -163,6 +156,27 @@ public class AIClient extends Client {
                 }
                 getPlayerFromID(msg.getPlayerID()).getRobot().setOrientation(orientation);
             }
+            case ConnectionUpdate -> {
+                //TODO remove player
+            }
+            case CardsYouGotNow -> {
+                CardsYouGotNow msg = (CardsYouGotNow) message.getBody();
+                //TODO getPlayerFromID(thisPlayersID).setDrawnProgrammingCards(msg.getCards());
+            }
+            case CurrentCards -> {
+                //TODO
+            }
+            case Reboot -> {
+                Reboot reboot = (Reboot) message.getBody();
+                // TODO nothing
+            }
+            case DrawDamage -> {
+                DrawDamage drawDamage = (DrawDamage) message.getBody();
+                handleDamageCount(drawDamage.getCards());
+                if (drawDamage.getPlayerID() == thisPlayersID) {
+                    //TODO nothing
+                }
+            }
             case CardSelected -> {
                 CardSelected cardSelected = (CardSelected) message.getBody();
             } //TODO
@@ -175,23 +189,6 @@ public class AIClient extends Client {
             case DiscardHand -> {
                 DiscardHand discardHand = (DiscardHand) message.getBody();
             } //TODO
-            case SelectMap -> {
-                // TODO Nothing Server sends a random Map
-            }
-            case CurrentPlayer -> {
-                CurrentPlayer msg = (CurrentPlayer) message.getBody();
-
-                if (msg.getPlayerID() == thisPlayersID) {
-                    if (currentPhase == GameState.CONSTRUCTION) {
-                        int[] startingPoints = {39, 78, 14, 53, 66, 105};
-                        for (int point : startingPoints) {
-                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
-                        }
-                    } else if (currentPhase == GameState.ACTIVATION) {
-                        sendMessage(new PlayIt());
-                    }
-                }
-            }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
@@ -233,8 +230,12 @@ public class AIClient extends Client {
 
         Set<CardType[]> keySet = possiblePositions.keySet();
 
+        Player player = getPlayerFromID(thisPlayersID);
+        int nextControlPoint = player.getCheckPointCounter();
+        Coordinate controlPoint = map.readControlPointCoordinate().get(nextControlPoint);
+
         for (CardType[] cards : keySet) {
-            int distance = distance(possiblePositions.get(cards));
+            int distance = Coordinate.distance(possiblePositions.get(cards), controlPoint);
             //logger.trace("distance: " + distance + " " + Arrays.toString(cards));
             if (distance < shortestDistance) {
                 shortestDistance = distance;
@@ -243,16 +244,6 @@ public class AIClient extends Client {
         }
         //logger.trace("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
         return bestCombination;
-    }
-
-    private int distance(Coordinate coordinate) {
-        //Coordinate controlPoint = new Coordinate(12, 3);//map.getControlPointCoordinates().get(0); //TODO multiple controlpoints
-        Player player = getPlayerFromID(thisPlayersID);
-        int nextControlPoint = player.getCheckPointCounter();
-        Coordinate controlPoint = map.readControlPointCoordinate().get(nextControlPoint);
-        int x = Math.abs(controlPoint.getX() - coordinate.getX());
-        int y = Math.abs(controlPoint.getY() - coordinate.getY());
-        return x + y;
     }
 
     public void choosePlayerValues() {
@@ -272,7 +263,7 @@ public class AIClient extends Client {
         if (freeFigures.size() > 0) {
             Random r = new Random();
             int chosenFigure = freeFigures.get(r.nextInt(freeFigures.size()));
-            String name = "AA AI " + chosenFigure;
+            String name = "AA AI";
             sendMessage(new PlayerValues(name, chosenFigure));
         } else disconnect();
     }

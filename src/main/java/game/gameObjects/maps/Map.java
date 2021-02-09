@@ -206,7 +206,25 @@ public class Map {
                 }
             }
         }
-        return checkPoints;
+        return sortCheckPoints(checkPoints);
+    }
+
+    private ArrayList<Coordinate> sortCheckPoints(ArrayList<Coordinate> checkPoints) {
+        ArrayList<Coordinate> sortedPoints = new ArrayList<>();
+        int i = 1;
+        while (checkPoints.size() != sortedPoints.size()) {
+            for (Coordinate point : checkPoints) {
+                for (Attribute a : getTile(point).getAttributes()) {
+                    if (a.getType() == AttributeType.ControlPoint) {
+                        if (((ControlPoint) a).getCount() == i) {
+                            sortedPoints.add(point);
+                            i++;
+                        }
+                    }
+                }
+            }
+        }
+        return sortedPoints;
     }
 
     /**
