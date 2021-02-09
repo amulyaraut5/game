@@ -4,6 +4,8 @@ import game.gameObjects.cards.Card;
 import game.gameObjects.decks.DiscardDeck;
 import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.robot.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import server.User;
 import utilities.JSONProtocol.body.PlayerAdded;
 import utilities.enums.CardType;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 public class Player extends User {
 
+    private static final Logger logger = LogManager.getLogger();
     /**
      * the players robot
      */
@@ -125,7 +128,13 @@ public class Player extends User {
      */
     public Card getRegisterCard(int register) {
         int index = register - 1;
-        return registerCards.get(index);
+        try {
+            return registerCards.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            logger.error("registerCards are apparently empty:" + registerCards);
+        }
+        return null;
     }
 
     public ArrayList<Card> getRegisterCards() {

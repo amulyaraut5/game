@@ -88,19 +88,20 @@ public class ProgrammingPhase extends Phase {
                 case Trojan -> chosenCard = new Trojan();
                 case Virus -> chosenCard = new Virus();
                 case Worm -> chosenCard = new Worm();
-                //case Null -> chosenCard = null;
             }
         }
 
         if (chosenCard != null) {
             //put the card in the register
-            //logger.info(player.getID() + " has moved a card in his register");
             ArrayList<CardType> cardTypes = new ArrayList<>();
             for (Card card : player.getDrawnProgrammingCards()) {
                 if (card != null)
-                    cardTypes.add(card.getName());
-                else
-                    logger.warn("programming phase: card.getName() is null"); //TODO
+                    try {
+                        cardTypes.add(card.getName());
+                    } catch (NullPointerException e) {
+                        logger.error("chosenCard: " + chosenCard.getName() + ". Drawn Programming Cards: "+ player.getDrawnProgrammingCards());
+                        server.communicateDirect(new Error("Please try again. Something went wrong"), player.getID());
+                    }
             }
             if (cardTypes.contains(type)) {
                 player.setRegisterCards(selectCard.getRegister(), chosenCard);
@@ -220,10 +221,7 @@ public class ProgrammingPhase extends Phase {
      */
 
     private void fillRegisters(Player player) {
-        logger.info(player.getID() + " has to fill his register randomly");
-        logger.info(player.getID() + " has drawn 5 cards: " + player.getDrawnProgrammingCards());
         Collections.shuffle(player.getDrawnProgrammingCards());
-        logger.info(player.getID() + " shuffled his cards: " + player.getDrawnProgrammingCards());
         if (player.getDrawnProgrammingCards().get(0).getName() == CardType.Again) {
             logger.info(player.getID() + " had to shuffle his cards again because first card was 'Again'");
             fillRegisters(player);
