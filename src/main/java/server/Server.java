@@ -88,8 +88,8 @@ public class Server extends Thread {
         logger.info("SERVER STARTED");
 
         try {
-            ServerSocket serverSocket = new ServerSocket(PORT);
-            logger.info("Chat server is waiting for clients to connect to port " + PORT + ".");
+            ServerSocket serverSocket = new ServerSocket(port);
+            logger.info("Chat server is waiting for clients to connect to port " + serverSocket.getLocalPort() + ".");
             Thread acceptClients = new Thread(() -> acceptClients(serverSocket));
             acceptClients.setDaemon(true);
             acceptClients.start();

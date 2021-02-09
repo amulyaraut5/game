@@ -40,12 +40,11 @@ public class MenuController extends Controller implements Updatable {
     public void hostGameClicked() {
         if (buttonsEnabled) {
             logger.info("Host Game Clicked.");
+            Server server = Server.getInstance();
 
-            if (isPortValid()) {
+            if (changePort(server)) {
                 buttonsEnabled = false;
                 new Thread(() -> {
-                    Server server = Server.getInstance();
-
                     if (!server.isAlive()) server.start();
                     System.out.println(server.getState());
                     connect(client);
@@ -62,7 +61,7 @@ public class MenuController extends Controller implements Updatable {
         if (buttonsEnabled) {
             logger.info("Join Game Clicked.");
 
-            if (isPortValid()) {
+            if (changePort()) {
                 buttonsEnabled = false;
                 infoLabel.setText("Trying to connect...");
                 new Thread(() -> connect(client)).start();
@@ -75,7 +74,7 @@ public class MenuController extends Controller implements Updatable {
         if (buttonsEnabled) {
             logger.info("AI Join Clicked.");
 
-            if (isPortValid()) {
+            if (changePort()) {
                 buttonsEnabled = false;
                 infoLabel.setText("Trying to connect...");
                 new Thread(() -> connect(new AIClient())).start();
@@ -120,17 +119,26 @@ public class MenuController extends Controller implements Updatable {
         }
     }
 
-    public boolean isPortValid() {
-        if (!(textPortNumber.getText().isBlank())) {
+    public boolean changePort() {
+        return changePort(null);
+    }
+
+    public boolean changePort(Server server) {
+
+        if (!textPortNumber.getText().isBlank()) {
             try {
                 int portNr = Integer.parseInt(textPortNumber.getText());
                 client.setPort(portNr);
+                if (server != null) server.setPort(portNr);
                 return true;
             } catch (NumberFormatException e) {
                 infoLabel.setText("Port number invalid!");
                 return false;
             }
-        } else client.setPort(Constants.PORT);
+        } else {
+            client.setPort(Constants.PORT);
+            if (server != null) server.setPort(Constants.PORT);
+        }
         return true;
     }
 }
