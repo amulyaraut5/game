@@ -54,33 +54,11 @@ public abstract class Controller {
     protected final String[] robotNames = {"hulkX90", "hammerbot", "smashbot",
             "twonky", "spinbot", "zoombot"};
 
-
-    /**
-     * it displays a text (mostly an error, instruction or information) into a label for a
-     * certain amount of time (2,5 sec)
-     *
-     * @param label the label which should display the information
-     * @param text the text which should get displayed
-     */
-    protected static void showInfo(Label label, String text) {
-        Platform.runLater(() -> label.setText(text));
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (label.getText().equals(text)) {
-                    Platform.runLater(() -> label.setText(""));
-                }
-                t.cancel();
-            }
-        }, 2500);
-    }
-
     /**
      * this method is useful for childclasses to quickly generate an ImageView
      *
-     * @param path the path of the image
-     * @param width the width the imageView should get
+     * @param path   the path of the image
+     * @param width  the width the imageView should get
      * @param height the height the imageView should get
      * @return an ImageView created with given parameters
      */
@@ -97,7 +75,7 @@ public abstract class Controller {
      * @param imageDropped the url of an image
      * @return the CardType the image of a card represents
      */
-    protected CardType extractCardType (String imageDropped) {
+    protected CardType extractCardType(String imageDropped) {
         String[] a = imageDropped.split("/");
         String imageName = a[a.length - 1];
         return CardType.valueOf(imageName.substring(0, imageName.length() - 9));

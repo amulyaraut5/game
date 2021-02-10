@@ -115,8 +115,8 @@ public class LoginController extends Controller implements Updatable {
         String userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
 
-        if (userName.isBlank()) showInfo(infoLabel, "Please insert a Username!");
-        else if (chosenRobot < 0) showInfo(infoLabel, "You have to choose a robot!");
+        if (userName.isBlank()) Updatable.showInfo(infoLabel, "Please insert a Username!");
+        else if (chosenRobot < 0) Updatable.showInfo(infoLabel, "You have to choose a robot!");
         else viewClient.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
@@ -150,7 +150,7 @@ public class LoginController extends Controller implements Updatable {
     public void update(JSONMessage message) {
         if (message.getType() == MessageType.Error) {
             Error error = (Error) message.getBody();
-            showInfo(infoLabel, error.getError());
+            Updatable.showInfo(infoLabel, error.getError());
         }
     }
 
