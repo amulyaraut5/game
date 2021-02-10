@@ -26,6 +26,7 @@ public abstract class Client {
     private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
 
     protected final ArrayList<Player> players = new ArrayList<>();
+    protected final ArrayList<Player> rebootingAIs = new ArrayList<>();
 
     protected int thisPlayersID;
 

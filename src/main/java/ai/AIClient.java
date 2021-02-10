@@ -25,6 +25,7 @@ public class AIClient extends Client {
     private Map map;
     private GameState currentPhase = GameState.CONSTRUCTION;
 
+
     /**
      * creates a set containing all combinations and their permutations
      * of 5 cards to choose from the 9 drawn card of the deck.
@@ -102,7 +103,10 @@ public class AIClient extends Client {
                             sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
                         }
                     } else if (currentPhase == GameState.ACTIVATION) {
-                        sendMessage(new PlayIt());
+                        if(players.contains(getPlayerFromID(msg.getPlayerID()))){
+                            sendMessage(new PlayIt());
+                        }
+
                     }
                 }
             }
@@ -119,6 +123,14 @@ public class AIClient extends Client {
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
                 currentPhase = msg.getPhase();
+                if(currentPhase == GameState.PROGRAMMING){
+                    for(Player player : rebootingAIs){
+                        logger.info(player.getID() + "is in.");
+                    }
+
+                    players.addAll(rebootingAIs);
+                    rebootingAIs.clear();
+                }
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -168,7 +180,9 @@ public class AIClient extends Client {
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-                // TODO nothing
+                logger.info(reboot.getPlayerID() + "was out.");
+                rebootingAIs.add(getPlayerFromID(reboot.getPlayerID()));
+                players.remove(getPlayerFromID(reboot.getPlayerID()));
             }
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
@@ -209,7 +223,7 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
+                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }
