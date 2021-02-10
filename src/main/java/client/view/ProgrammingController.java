@@ -19,7 +19,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
-import utilities.ImageHandler;
 import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
@@ -135,8 +134,8 @@ public class ProgrammingController extends Controller {
         pane.setOnDragOver(e -> setOnDragOver(e, pane));
         pane.setOnDragExited(e -> setOnDragExited(e, pane));
         pane.setOnDragDone(e -> {
-            if (getPosition() != 0)
-                viewClient.sendMessage(new SelectCard(null, getPosition()));
+            if (getRegisterPosition() != 0)
+                viewClient.sendMessage(new SelectCard(null, getRegisterPosition()));
         });
     }
 

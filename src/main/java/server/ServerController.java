@@ -3,17 +3,21 @@ package server;
 import ai.AIClient;
 import client.model.Client;
 import client.view.GameBoardController;
+import com.jfoenix.controls.JFXButton;
 import game.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
+import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.Updatable;
 import utilities.enums.Rotation;
+import utilities.enums.ServerState;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -29,6 +33,12 @@ public class ServerController implements Updatable {
 
     @FXML
     private Pane boardPane;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private JFXButton startButton;
+    @FXML
+    private JFXButton AIButton;
 
     @FXML
     private void initialize() {
@@ -44,11 +54,21 @@ public class ServerController implements Updatable {
 
     @FXML
     public void startClicked() {
-        server.startAIGame();
+        if (server.getServerState() != ServerState.RUNNING_GAME) {
+            if (server.getUsers().size() > 1) {
+                Updatable.showInfo(infoLabel, "Game started!");
+                startButton.setDisable(true);
+                AIButton.setDisable(true);
+                startButton.setVisible(false);
+                AIButton.setVisible(false);
+                server.startAIGame();
+            } else Updatable.showInfo(infoLabel, "Not enough users!");
+        } else Updatable.showInfo(infoLabel, "Game already running!");
     }
 
     @FXML
     public void addAIClicked() {
+        Updatable.showInfo(infoLabel, "Ai joined!");
         connect(new AIClient());
     }
 
@@ -78,6 +98,7 @@ public class ServerController implements Updatable {
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
+            case Error -> Updatable.showInfo(infoLabel, ((Error) message.getBody()).getError());
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
                 gameBoardController.buildMap(gameStarted);

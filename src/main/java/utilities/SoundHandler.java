@@ -6,7 +6,7 @@ import javafx.scene.media.MediaPlayer;
 
 /**
  * This class loads different soundtracks from the resources and plays the music
- * based on different situations.
+ * based on different situations and are operated by hotkeys.
  *
  * @author Amulya
  */

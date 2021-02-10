@@ -63,7 +63,7 @@ public class MenuController extends Controller implements Updatable {
 
             if (changePort()) {
                 buttonsEnabled = false;
-                showInfo(infoLabel, "Trying to connect...");
+                Updatable.showInfo(infoLabel, "Trying to connect...");
                 new Thread(() -> connect(viewClient)).start();
             }
         }
@@ -76,7 +76,7 @@ public class MenuController extends Controller implements Updatable {
 
             if (changePort()) {
                 buttonsEnabled = false;
-                showInfo(infoLabel, "Trying to connect...");
+                Updatable.showInfo(infoLabel, "Trying to connect...");
                 new Thread(() -> connect(new AIClient())).start();
             }
         }
@@ -105,8 +105,8 @@ public class MenuController extends Controller implements Updatable {
         }
         boolean finalConnected = connected;
         Platform.runLater(() -> {
-            if (!finalConnected) showInfo(infoLabel, "Server not reachable!");
-            else if (client instanceof AIClient) showInfo(infoLabel, "AI joined successfully!");
+            if (!finalConnected) Updatable.showInfo(infoLabel, "Server not reachable!");
+            else if (client instanceof AIClient) Updatable.showInfo(infoLabel, "AI joined successfully!");
             buttonsEnabled = true;
         });
     }
@@ -115,7 +115,7 @@ public class MenuController extends Controller implements Updatable {
     public void update(JSONMessage message) {
         if (message.getType() == MessageType.Error) {
             Error error = (Error) message.getBody();
-            showInfo(infoLabel, error.getError());
+            Updatable.showInfo(infoLabel, error.getError());
         }
     }
 
@@ -131,9 +131,9 @@ public class MenuController extends Controller implements Updatable {
                     viewClient.setPort(portNr);
                     if (server != null) server.setPort(portNr);
                     return true;
-                } else showInfo(infoLabel, "Use port number between 1024 - 65535!");
+                } else Updatable.showInfo(infoLabel, "Use port number between 1024 - 65535!");
             } catch (NumberFormatException e) {
-                showInfo(infoLabel, "Port number invalid!");
+                Updatable.showInfo(infoLabel, "Port number invalid!");
             }
         } else {
             viewClient.setPort(Constants.PORT);

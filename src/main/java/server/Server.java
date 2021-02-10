@@ -120,13 +120,13 @@ public class Server extends Thread {
         switch (serverState) {
             case LOBBY -> {
                 isValid = serverState.getAllowedMessages().contains(type);
-                if (!isValid) queueMessage.getUser().message(new Error("The game has not yet started!"));
+                if (!isValid) queueMessage.getUser().message(new Error("Game has not yet started!"));
             }
             case RUNNING_GAME -> {
                 GameState gameState = game.getGameState();
                 isValid = gameState.getAllowedMessages().contains(type);
                 if (!isValid) {
-                    queueMessage.getUser().message(new Error("The game has already started, you can't join anymore!"));
+                    queueMessage.getUser().message(new Error("Game has already started!"));
                     state += " " + gameState;
                 }
             }
@@ -486,6 +486,10 @@ public class Server extends Thread {
     public static Server getInstance() {
         if (instance == null) instance = new Server();
         return instance;
+    }
+
+    public ServerState getServerState() {
+        return serverState;
     }
 
     /**

@@ -4,7 +4,7 @@ import utilities.enums.Orientation;
 
 public final class Constants {
     //Connection
-    public static final int PORT = 5570;
+    public static final int PORT = 5575;
     public static final double PROTOCOL = 1.0;
 
     public static final Orientation[] UP_LEFT = {Orientation.UP, Orientation.LEFT};
@@ -59,8 +59,8 @@ public final class Constants {
             #damageDecks    |  shows damage decks
             #emptySpam      |  empties spam deck
             #win            |  player wins
-            #fire           | fires laser
-            #hotkeys        | shows the available hotkeys  
+            #fire           |  fires laser
+            #hotkeys        |  shows the available hotkeys  
             ------------------------------------------
             """;
     public static final String HOTKEYSLIST = """
@@ -68,10 +68,12 @@ public final class Constants {
             ------------------------------------------
             Hotkeys
             ------------------------------------------
-            click on map     |  teleports the robot
-            WASD keys        |  rotates the robot
+            click on map     | teleports the robot
+            WASD keys        | rotates the robot
+            'M'              | plays general soundtrack
+            'P'              | plays soundEffects
             ------------------------------------------
-            """; //TODO music hotkey
+            """;
 
     private Constants() {
     }

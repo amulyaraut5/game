@@ -36,11 +36,18 @@ public class ActivationPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * The players and their cards for the current register
+     */
     private final ArrayList<RegisterCard> currentCards = new ArrayList<>();
+    /**
+     * saves the cardTypes of damageCards
+     */
     private final ArrayList<CardType> cardTypes = new ArrayList<>();
 
     private final BoardElements activationElements = new BoardElements(this);
     private final LaserAction laserAction = new LaserAction();
+
     private final ArrayList<Player> rebootedPlayers = new ArrayList<>();
 
     private final SpamDeck spamDeck = game.getSpamDeck();
@@ -75,7 +82,6 @@ public class ActivationPhase extends Phase {
         }
         if (!(currentCards.isEmpty())) {
             server.communicateAll(new CurrentCards(currentCards));
-            //logger.info("turnCards" + calculatePriority((gameMap.getAntenna())));
             server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
         }
     }
@@ -106,12 +112,13 @@ public class ActivationPhase extends Phase {
                 break outerLoop;
             }
             if (currentCards.isEmpty()) {
-                endOfRound();
+                handleFinishedRegister();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
             }
         } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
             server.communicateDirect(new Error("It is not your turn!"), playerID);
+            //
         }
     }
 
@@ -154,7 +161,12 @@ public class ActivationPhase extends Phase {
         }
     }
 
-    public void endOfRound() {
+    /**
+     * this method starts the next register if the game is not already won or all players are rebooting.
+     * If it's already the fifth register the next Phase is called.
+     */
+
+    public void handleFinishedRegister() {
         if (!game.isGameWon()) {
             activateBoard();
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
@@ -170,6 +182,12 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * removes the current card of a player that has disconnected from the server.
+     *
+     * @param playerID player who disconnected
+     */
+
     public void removeCurrentCards(int playerID) {
         RegisterCard temp = null;
         for (RegisterCard rc : currentCards) {
@@ -182,7 +200,7 @@ public class ActivationPhase extends Phase {
         activePlayers.remove(player);
         rebootedPlayers.remove(player);
         if (currentCards.isEmpty() && currentRegister < 5) {
-            endOfRound();
+            handleFinishedRegister();
         } else {
             server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
         }
@@ -203,6 +221,11 @@ public class ActivationPhase extends Phase {
         activateControlPoint();
     }
 
+    /**
+     * Todo
+     * @param player
+     * @param o
+     */
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
 
@@ -317,6 +340,12 @@ public class ActivationPhase extends Phase {
         }
         activateControlPoint();
     }
+
+    /**
+     * this method checks if the top card of the draw deck is an Again card
+     *
+     * @param player player who has to draw a card
+     */
 
     public void checkForAgainCard(Player player) {
         for (Card card : player.getDrawProgrammingDeck().getDeck()) {
@@ -540,6 +569,13 @@ public class ActivationPhase extends Phase {
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
+    /**
+     * returns if a player is rebooting
+     *
+     * @param player player to check
+     * @return true if player is rebooting
+     */
+
     public boolean isRebooting(Player player) {
         boolean isRebooting = false;
         for (Player p : rebootedPlayers) {
@@ -568,10 +604,6 @@ public class ActivationPhase extends Phase {
 
     public int getCurrentRegister() {
         return currentRegister;
-    }
-
-    public ArrayList<Player> getRebootedPlayers() {
-        return rebootedPlayers;
     }
 
     public BoardElements getActivationElements() {
