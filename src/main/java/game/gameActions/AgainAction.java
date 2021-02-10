@@ -33,20 +33,11 @@ public class AgainAction extends Action {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                /*Card topCard = player.getDrawProgrammingDeck().pop();
+                Card topCard = player.getDrawProgrammingDeck().pop();
                 game.getActivationPhase().handleCard(topCard.getName(), player);
-
-                 */
-                for (Card card : player.getDrawProgrammingDeck().getDeck()) {
-                    if (!(card.getName() == CardType.Again)) {
-                        Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
-                        game.getActivationPhase().handleCard(topCard.getName(), player);
-                        break;
-                    }
-                }
-            } else {
-                game.getActivationPhase().handleCard(player.getLastRegisterCard(), player);
             }
         }
+
+        game.getActivationPhase().handleCard(player.getLastRegisterCard(), player);
     }
 }
