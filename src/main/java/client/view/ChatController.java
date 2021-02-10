@@ -3,10 +3,8 @@ package client.view;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import game.Player;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Constants;
@@ -16,41 +14,59 @@ import utilities.JSONProtocol.body.SendChat;
 
 import java.util.ArrayList;
 
+/**
+ * This method represents the chat for chatting with other players and direct chatting.
+ *
+ * @author sarah
+ */
 public class ChatController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * it shows if the current message is a direct message to the player itself,
+     * then the player won't see a [You] message, because he will receive it from the server and then display it
+     */
+    private boolean privateToMe;
+
+    /**
+     * the textArea where the whole chat history gets displayed
+     */
     @FXML
     private JFXTextArea chatWindow;
+
     /**
-     * the choiceBox where the user can choose if the
-     * message should be a direct message or who should be
-     * the receiver of the message
+     * the choiceBox where the user can choose if the message should be a direct message and who should be
+     * the receiver of the message (one or all)
      */
     @FXML
     private JFXComboBox<String> directChoiceBox;
-    @FXML
-    private JFXTextArea lobbyTextFieldChat;
 
+    /**
+     * the TextArea which reads the message the player typed
+     */
     @FXML
+    private JFXTextArea lobbyTextAreaChat;
+
+    /**
+     * in this method the directbox gets initialized and the chat controller gets assigned to viewClient. Also the
+     * lobbyTextArea recognizes if the enter key gets pressed and call the method submitChatMessage()
+     */
     public void initialize() {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
         viewClient.setChatController(this);
-        lobbyTextFieldChat.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent ke) {
-                if (ke.getCode().equals(KeyCode.ENTER)) {
-                    submitChatMessage();
-                }
+        lobbyTextAreaChat.setOnKeyPressed(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                submitChatMessage();
             }
         });
     }
 
     /**
      * The messages received from other users are printed
-     * in the chatTextArea
+     * in the chatTextArea and make a new line
      *
-     * @param messageBody
+     * @param messageBody the message which will get printed
      */
     public void setTextArea(String messageBody) {
         chatWindow.appendText(messageBody + "\n");
@@ -58,7 +74,7 @@ public class ChatController extends Controller {
 
     /**
      * this method displays an user who joined to the lobby
-     * with its choosed robot, name and also the name is added to the choicebox
+     * with its chosen robot, name and also the name is added to the choicebox
      * so that other users in lobby can send direct messages.
      * Also
      */
@@ -68,9 +84,9 @@ public class ChatController extends Controller {
     }
 
     /**
-     * send a chat Message, either private or to everyone
+     * This message gets called when the user presses enter, it reads the receiver (all or one person) from the combobox
+     * and the message which gets filtered for instructions and everything gets send as the JSONMessage SendChat
      */
-
     private void submitChatMessage() {
         if (viewClient.getCurrentController().getClass().equals(GameController.class)) {
             GameController gameController = (GameController) viewClient.getCurrentController();
@@ -78,54 +94,71 @@ public class ChatController extends Controller {
         }
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
-        String message = lobbyTextFieldChat.getText();
+        String message = lobbyTextAreaChat.getText();
         message = message.substring(0, message.length() - 1);
         System.out.println(message);
-        JSONBody jsonBody = null;
         if (message.equals("#hotkeys")) {
             chatWindow.appendText(Constants.HOTKEYSLIST);
         } else {
             if (!message.isBlank()) {
+                JSONBody jsonBody;
                 if (sendTo.equals("all")) {
                     jsonBody = new SendChat(message, -1);
                     chatWindow.appendText("[You] " + message + "\n");
                 } else {
-                    int count = 0;
-                    String[] name = sendTo.split(" ", 2);
-                    for (Player player : viewClient.getPlayers()) {
-                        if (player.getName().equals(name[0])) count++;
-                    }
-                    boolean toMe = false;
-                    if (count == 1) {
-                        if (sendTo.equals(viewClient.getPlayerFromID(viewClient.getThisPlayersID()).getName()))
-                            toMe = true;
-                        for (Player player : viewClient.getPlayers())
-                            if (sendTo.equals(player.getName())) jsonBody = new SendChat(message, player.getID());
-                    } else {
-                        ArrayList<Integer> names = new ArrayList<>();
-                        for (Player player : viewClient.getPlayers())
-                            if (name[0].equals(player.getName())) names.add(player.getID());
-                        if (sendTo.length() == 1) {
-                            jsonBody = new SendChat(message, names.get(0));
-                        } else {
-                            String idNr = sendTo.substring(sendTo.length() - 1);
-                            if (Integer.parseInt(idNr) == viewClient.getThisPlayersID()) toMe = true;
-                            jsonBody = new SendChat(message, Integer.parseInt(idNr));
-                        }
-                    }
-                    if (!toMe) {
-                        chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
-                    }
+                    jsonBody = extractDirectMessage(sendTo, message);
                 }
                 checkMessage(message);
                 viewClient.sendMessage(jsonBody);
             }
         }
-
-        lobbyTextFieldChat.clear();
+        if (!privateToMe) {
+            chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
+        }
+        privateToMe = false;
+        lobbyTextAreaChat.clear();
         directChoiceBox.getSelectionModel().select(0);
     }
 
+    /**
+     * this message extracts the message and the receiver of a direct message.
+     * It distinguishes the length of the receiver, if it is only one, it checks if it is a
+     * message to the player itself. If the name is longer, it extracts the id of the unified name.
+     * @param sendTo the receiver recognized from the combobox (possible is a unified name)
+     * @param message message of the player
+     * @return a jsonBody containing SendChat with receiver and message
+     */
+    private JSONBody extractDirectMessage(String sendTo, String message){
+        int count = 0;
+        String[] name = sendTo.split(" ", 2);
+        for (Player player : viewClient.getPlayers()) {
+            if (player.getName().equals(name[0])) count++;
+        }
+        if (count == 1) {
+            if (sendTo.equals(viewClient.getPlayerFromID(viewClient.getThisPlayersID()).getName()))
+                privateToMe = true;
+            for (Player player : viewClient.getPlayers())
+                if (sendTo.equals(player.getName())) return new SendChat(message, player.getID());
+        } else {
+            ArrayList<Integer> names = new ArrayList<>();
+            for (Player player : viewClient.getPlayers())
+                if (name[0].equals(player.getName())) names.add(player.getID());
+            if (sendTo.length() == 1) {
+                return new SendChat(message, names.get(0));
+            } else {
+                String idNr = sendTo.substring(sendTo.length() - 1);
+                if (Integer.parseInt(idNr) == viewClient.getThisPlayersID()) privateToMe = true;
+                return new SendChat(message, Integer.parseInt(idNr));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * this message checks whether the typed message is either #emptySpam or #damageDecks or #damage x,
+     * depending to this it calls messages that change things on the client side
+     * @param message the message which has to be checked
+     */
     private void checkMessage(String message) {
         String[] messageSplit = message.split(" ");
         if (message.equals("#emptySpam")) {
@@ -138,6 +171,11 @@ public class ChatController extends Controller {
         }
     }
 
+    /**
+     * this message displays a received message depending if it is direct or not
+     * in the chatWindow
+     * @param receivedChat the receivedChat with sender and message
+     */
     public void receivedChat(ReceivedChat receivedChat) {
         String chat;
         String sender = viewClient.getUniqueName(receivedChat.getFrom());

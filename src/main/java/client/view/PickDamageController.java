@@ -11,6 +11,7 @@ import utilities.ImageHandler;
 import utilities.JSONProtocol.body.PickDamage;
 import utilities.JSONProtocol.body.SelectDamage;
 import utilities.enums.CardType;
+import utilities.enums.InnerActivation;
 
 import java.util.ArrayList;
 
@@ -114,7 +115,7 @@ public class PickDamageController extends Controller {
             viewClient.sendMessage(new SelectDamage(pickedDamageCards));
             pickDamage = 0;
             pickedDamageCards.clear();
-            activationController.changePhaseView("PlayIt");
+            activationController.changePhaseView(InnerActivation.PlayIt);
         }
     }
 }

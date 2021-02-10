@@ -14,7 +14,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Abstract super class of all view-controller
+ * Abstract super class of all view-controller, which also stores information and required attributes
+ * for dragging and dropping between ProgrammingController and PlayerMatController
  *
  * @author simon, sarah
  */

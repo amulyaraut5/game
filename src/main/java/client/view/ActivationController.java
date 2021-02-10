@@ -9,21 +9,54 @@ import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.enums.CardType;
+import utilities.enums.InnerActivation;
 
 import java.io.IOException;
 
 /**
+ * This class represents the activation phase in the ui. It displays which register it is and every information related to
+ * this phase. In two inner views the player can either choose to play his cards or
+ * if the player gets damage
+ *
  * @author sarah
  */
 
 public class ActivationController extends Controller {
     private static final Logger logger = LogManager.getLogger();
+
+    /**
+     * The innerview which either displays playCard or pickDamage
+     */
     public BorderPane innerActivationPhase;
-    public Pane pickDamagePane;
-    public Pane playCardPane;
+
+    /**
+     * The pane contains the pickDamage view to let the player select damage cards
+     */
+    private Pane pickDamagePane;
+
+    /**
+     * The pane contains the playCard view to let the player play programming cards
+     */
+    private Pane playCardPane;
+
+    /**
+     * The controller for the pickDamagePane
+     */
     public PickDamageController pickDamageController;
+
+    /**
+     * The controller for the playCardController
+     */
     public PlayCardController playCardController;
+
+    /**
+     * The counter for the current register. At the end of one round it gets set to 1 again
+     */
     private int registerNr = 1;
+
+    /**
+     * The Label displays the current register
+     */
     @FXML
     private Label register;
 
@@ -39,11 +72,14 @@ public class ActivationController extends Controller {
      * This method resets the class and gets called at the start of activationPhase
      */
     public void reset() {
-        changePhaseView("PlayIt");
+        changePhaseView(InnerActivation.PlayIt);
         registerNr = 1;
         playCardController.getPlayItButton().setDisable(true);
     }
 
+    /**
+     * This method constructs the two innerviews and initializes the controller for them
+     */
     private void constructPhaseViews() {
 
         FXMLLoader pickDamageLoader = new FXMLLoader(getClass().getResource("/view/innerViews/pickDamage.fxml"));
@@ -62,10 +98,15 @@ public class ActivationController extends Controller {
         }
     }
 
-    public void changePhaseView(String innerView) {
-        switch (innerView) {
-            case "Damage" -> innerActivationPhase.setCenter(pickDamagePane);
-            case "PlayIt" -> innerActivationPhase.setCenter(playCardPane);
+    /**
+     * This method changes the innerview either its pickDamage or playCard
+     *
+     * @param innerActivation which should be displayed next
+     */
+    public void changePhaseView(InnerActivation innerActivation) {
+        switch (innerActivation) {
+            case Damage -> innerActivationPhase.setCenter(pickDamagePane);
+            case PlayIt -> innerActivationPhase.setCenter(playCardPane);
         }
     }
 
@@ -81,10 +122,20 @@ public class ActivationController extends Controller {
         registerNr++;
     }
 
+    /**
+     * getter for the pickDamageController
+     *
+     * @return the pickDamageController
+     */
     public PickDamageController getPickDamageController() {
         return pickDamageController;
     }
 
+    /**
+     * getter for the playCardController
+     *
+     * @return the playCardController
+     */
     public PlayCardController getPlayCardController() {
         return playCardController;
     }
