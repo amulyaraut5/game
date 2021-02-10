@@ -4,11 +4,9 @@ import client.model.ViewClient;
 import client.view.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -138,6 +136,7 @@ public class ViewManager {
 
         menuStage.setOnCloseRequest(event -> {
             if (currentScene != menuScene) ViewClient.getInstance().disconnect();
+            System.exit(0);
         });
     }
 
@@ -154,7 +153,7 @@ public class ViewManager {
         });
     }
 
-    private void setMouseImage(Scene scene){
+    private void setMouseImage(Scene scene) {
         Image image = new Image(getClass().getResource("/otherElements/mouse.png").toString());
         scene.setCursor(new ImageCursor(image));
     }

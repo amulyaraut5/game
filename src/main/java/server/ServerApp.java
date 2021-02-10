@@ -17,8 +17,13 @@ public class ServerApp extends Application {
         FXMLLoader serverLoader = new FXMLLoader(getClass().getResource("/view/serverView.fxml"));
         primaryStage.setTitle("Server - RoboRallye");
         primaryStage.setScene(new Scene(serverLoader.load()));
-        primaryStage.show();
+        primaryStage.setResizable(false);
 
         Server.getInstance().setServerController(serverLoader.getController());
+
+        primaryStage.setOnCloseRequest(event -> {
+            System.exit(0);
+        });
+        primaryStage.show();
     }
 }
