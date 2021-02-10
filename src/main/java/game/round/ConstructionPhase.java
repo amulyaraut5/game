@@ -8,6 +8,11 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.StartingPointTaken;
 import utilities.enums.AttributeType;
 
+/**
+ * The constructionPhase is the first Phase in a game that only happens once.
+ * The Players can set their starting point in the right order
+ */
+
 public class ConstructionPhase extends Phase {
 
     Player currentPlayer;
@@ -51,6 +56,10 @@ public class ConstructionPhase extends Phase {
         return false;
     }
 
+    /**
+     * calls the next player who can choose his starting point.
+     * If all players placed there robots on the board the next phase is called.
+     */
     public void nextPlayer() {
         currentIndex = players.indexOf(currentPlayer);
 
