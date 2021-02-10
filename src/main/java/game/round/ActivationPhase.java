@@ -201,7 +201,6 @@ public class ActivationPhase extends Phase {
         laserAction.activateRobotLaser(activePlayers);
         activationElements.activateEnergySpace();
         activateControlPoint();
-        // TODO after all robots were moved/affected by the board: check if two robots are on the same tile and handle pushing action
     }
 
     public void handleMove(Player player, Orientation o) {

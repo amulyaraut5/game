@@ -17,19 +17,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public abstract class Client {
+
     protected static final Logger logger = LogManager.getLogger();
+
     private static int countSpamCards = Constants.SPAM_CARDCOUNT;
     private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
     private static int countWormCards = Constants.WORM_CARDCOUNT;
     private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
+
     protected final ArrayList<Player> players = new ArrayList<>();
-    private final boolean isAI = false;
+
     protected int thisPlayersID;
+
     private Socket socket;
     private ReaderThread readerThread;
     private int port = Constants.PORT;
     private PrintWriter writer;
 
+    /**
+     * this method reduces the number of damage cards on the associated deck by one.
+     *
+     * @param cardType damage card drawn
+     */
     public void handleDamageCount(CardType cardType) {
         switch (cardType) {
             case Spam -> setCountSpamCards(getCountSpamCards() - 1);
@@ -38,6 +47,12 @@ public abstract class Client {
             case Virus -> setCountVirusCards(getCountVirusCards() - 1);
         }
     }
+
+    /**
+     * TODO
+     *
+     * @param cardList
+     */
 
     public void handleDamageCount(ArrayList<CardType> cardList) {
         if (cardList.size() == 0) setCountSpamCards(0); //TODO correct?

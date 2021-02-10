@@ -40,7 +40,7 @@ public class Server extends Thread {
      */
     private final ArrayList<User> readyUsers = new ArrayList<>();
     /**
-     * Queue to read json messages step by step TODO
+     * Queue to read json messages step by step TODO -> is this the right description?
      */
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
     /**
