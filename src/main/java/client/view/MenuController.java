@@ -45,6 +45,7 @@ public class MenuController extends Controller implements Updatable {
             if (changePort(server)) {
                 buttonsEnabled = false;
                 new Thread(() -> {
+                    logger.trace(server.getState());
                     if (!server.isAlive()) server.start();
                     connect(viewClient);
                 }).start();
