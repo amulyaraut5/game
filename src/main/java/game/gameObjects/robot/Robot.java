@@ -49,7 +49,7 @@ public abstract class Robot {
             case 3 -> robot = new Twonky(player);
             case 4 -> robot = new SpinBot(player);
             case 5 -> robot = new ZoomBot(player);
-            default -> throw new UnsupportedOperationException("Robot ID has to be in between 0 and 5.");
+            default -> throw new UnsupportedOperationException("Robot ID has to be in between 0 and 5: " + figure);
         }
         return robot;
     }

@@ -50,6 +50,7 @@ public class ServerController implements Updatable {
         } catch (IOException e) {
             logger.error("GameBoard could not be created: " + e.getMessage());
         }
+        Updatable.showInfo(infoLabel, "Server started!     ");
     }
 
     @FXML
@@ -68,8 +69,19 @@ public class ServerController implements Updatable {
 
     @FXML
     public void addAIClicked() {
-        Updatable.showInfo(infoLabel, "Ai joined!");
-        connect(new AIClient());
+        if (server.getUsers().size() < 6) {
+            Updatable.showInfo(infoLabel, "Ai joined!");
+            new Thread(() -> connect(new AIClient())).start();
+            if (server.getUsers().size() == 6) {
+                Updatable.showInfo(infoLabel, "Last AI Joined!");
+                AIButton.setDisable(true);
+                AIButton.setVisible(false);
+            }
+        } else {
+            Updatable.showInfo(infoLabel, "Server already full!");
+            AIButton.setDisable(true);
+            AIButton.setVisible(false);
+        }
     }
 
     private void connect(Client client) {

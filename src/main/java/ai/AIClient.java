@@ -83,7 +83,7 @@ public class AIClient extends Client {
                         choosePlayerValues();
                         t.cancel();
                     }
-                }, 1000);
+                }, 50);
             }
             case PlayerAdded -> {
                 PlayerAdded playerAdded = (PlayerAdded) message.getBody();
