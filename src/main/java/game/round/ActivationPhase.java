@@ -569,6 +569,13 @@ public class ActivationPhase extends Phase {
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
+    /**
+     * returns if a player is rebooting
+     *
+     * @param player player to check
+     * @return true if player is rebooting
+     */
+
     public boolean isRebooting(Player player) {
         boolean isRebooting = false;
         for (Player p : rebootedPlayers) {
@@ -597,10 +604,6 @@ public class ActivationPhase extends Phase {
 
     public int getCurrentRegister() {
         return currentRegister;
-    }
-
-    public ArrayList<Player> getRebootedPlayers() {
-        return rebootedPlayers;
     }
 
     public BoardElements getActivationElements() {
