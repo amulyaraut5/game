@@ -253,7 +253,7 @@ public class GameController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                showInfo(infoLabel, error.getError());
+                Updatable.showInfo(infoLabel, error.getError());
             }
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
