@@ -86,7 +86,7 @@ public class PlayerMatController extends Controller {
         if (checkDragAllowed(pane, db)) {
             positionDroppedCard = registerHBox.getChildren().indexOf(pane);
             positionDroppedCard += 1;
-            boolean isFirstRegisterAgain = generateCardType(getProgrammingImageView().getImage().getUrl()).toString().equals("Again");
+            boolean isFirstRegisterAgain = extractCardType(getProgrammingImageView().getImage().getUrl()).toString().equals("Again");
             boolean isFirstRegister = (positionDroppedCard == 1);
             againNotFirst = !(isFirstRegister && isFirstRegisterAgain);
             if (againNotFirst) e.acceptTransferModes(TransferMode.MOVE);
@@ -112,8 +112,8 @@ public class PlayerMatController extends Controller {
     }
 
     private void setOnDragDone() {
-        CardType cardType = generateCardType(droppedImageView.getImage().getUrl());
-        if (getWasFormerRegister()) viewClient.sendMessage(new SelectCard(null, getPosition()));
+        CardType cardType = extractCardType(droppedImageView.getImage().getUrl());
+        if (getWasFormerRegister()) viewClient.sendMessage(new SelectCard(null, getRegisterPosition()));
         switch (cardType) {
             case Spam -> viewClient.setCountSpamCards(viewClient.getCountSpamCards() + 1);
             case Virus -> viewClient.setCountVirusCards(viewClient.getCountVirusCards() + 1);
@@ -131,7 +131,7 @@ public class PlayerMatController extends Controller {
             ClipboardContent cc2 = new ClipboardContent();
             cc2.put(cardFormat, "cardName");
             dragboard.setContent(cc2);
-            setPosition(position);
+            setRegisterPosition(position);
             setProgrammingImageView(programmingCardImageView);
         });
 
