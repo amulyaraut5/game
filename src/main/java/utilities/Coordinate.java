@@ -31,8 +31,15 @@ public class Coordinate {
         return new Coordinate(x, y);
     }
 
+    /**
+     * calculates the distance between two Coordinates.
+     *
+     * @param from Coordinate
+     * @param to   different Coordinate
+     * @return distance between the Coordinate
+     */
     public static int distance(Coordinate from, Coordinate to) {
-        return Math.abs(from.getX() - to.getX()) + Math.abs(from.getY() - to.getY());
+        return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
     }
 
     /**

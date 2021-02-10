@@ -76,12 +76,15 @@ public class GameBoardController {
     private void onMapClicked(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX() / Constants.FIELD_SIZE;
         int y = (int) mouseEvent.getY() / Constants.FIELD_SIZE;
-        int position = new Coordinate(x, y).toPosition();
+        Coordinate coordinate = new Coordinate(x, y);
 
-        if (!isStartPosSet) {
-            ViewClient.getInstance().sendMessage(new SetStartingPoint(position));
-        } else {
-            ViewClient.getInstance().sendMessage(new SendChat("#tp " + position, -1));
+        if (!coordinate.isOutsideMap()) {
+            int position = coordinate.toPosition();
+            if (!isStartPosSet) {
+                ViewClient.getInstance().sendMessage(new SetStartingPoint(position));
+            } else {
+                ViewClient.getInstance().sendMessage(new SendChat("#tp " + position, -1));
+            }
         }
     }
 
@@ -354,9 +357,9 @@ public class GameBoardController {
         int startY = startPos.getY() * Constants.FIELD_SIZE + halfTile;
         int endX = endPos.getX() * Constants.FIELD_SIZE + halfTile + vector.getX() * halfTile;
         int endY = endPos.getY() * Constants.FIELD_SIZE + halfTile + vector.getY() * halfTile;
-        int distance = Math.abs(startPos.getX() - endPos.getX()) + Math.abs(startPos.getY() - endPos.getY());
+        int distance = Coordinate.distance(startPos, endPos);
 
-        boolean laserHit = laserHit(players, endPos, distance);
+        boolean laserHit = isLaserHittingRobot(players, endPos, distance);
         Group hit = null;
         if (laserHit) hit = createHitAnimation(endPos, vector, orientation);
         Group finalHit = hit;
@@ -393,7 +396,7 @@ public class GameBoardController {
         timeline.play();
     }
 
-    private boolean laserHit(ArrayList<Player> players, Coordinate endPos, int distance) {
+    private boolean isLaserHittingRobot(ArrayList<Player> players, Coordinate endPos, int distance) {
         if (distance > 0) {
             for (Player p : players) {
                 if (endPos.equals(p.getRobot().getCoordinate())) {
