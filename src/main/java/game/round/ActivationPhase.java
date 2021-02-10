@@ -91,30 +91,32 @@ public class ActivationPhase extends Phase {
 
         //Because currentCards is in priority order the first person to activate their cards is at index 0.
         //So by removing the index 0 after every players turn the current player is always at index 0.
-        RegisterCard playerRegisterCard = currentCards.get(0);
 
-        //if its this players turn his card is activated
-        outerLoop:
-        if (playerRegisterCard.getPlayerID() == playerID) {
-            CardType currentCard = playerRegisterCard.getCard();
-            handleCard(currentCard, game.getPlayerFromID(playerID));
-            currentCards.remove(0);
+            RegisterCard playerRegisterCard = currentCards.get(0);
 
-            //if he was the last player to send the PlayIt() protocol for this register the board is activated
-            if (activePlayers.isEmpty()) {
-                activePlayers.addAll(rebootedPlayers);
-                rebootedPlayers.clear();
-                game.nextPhase();
-                break outerLoop;
+            //if its this players turn his card is activated
+            outerLoop:
+            if (playerRegisterCard.getPlayerID() == playerID) {
+                CardType currentCard = playerRegisterCard.getCard();
+                handleCard(currentCard, game.getPlayerFromID(playerID));
+                currentCards.remove(0);
+
+                //if he was the last player to send the PlayIt() protocol for this register the board is activated
+                if (activePlayers.isEmpty()) {
+                    activePlayers.addAll(rebootedPlayers);
+                    rebootedPlayers.clear();
+                    game.nextPhase();
+                    break outerLoop;
+                }
+                if (currentCards.isEmpty()) {
+                    endOfRound();
+                } else {
+                    server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
+                }
+            } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
+                server.communicateDirect(new Error("It is not your turn!"), playerID);
             }
-            if (currentCards.isEmpty()) {
-                endOfRound();
-            } else {
-                server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
-            }
-        } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
-            server.communicateDirect(new Error("It is not your turn!"), playerID);
-        }
+
     }
 
     /**
@@ -162,7 +164,8 @@ public class ActivationPhase extends Phase {
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
                 turnCards(currentRegister);
-            } else { //if it is already the 5th register the next phase is called
+            }
+            else { //if it is already the 5th register the next phase is called
                 if (!rebootedPlayers.isEmpty()) {
                     activePlayers.addAll(rebootedPlayers);
                     rebootedPlayers.clear();
@@ -361,12 +364,13 @@ public class ActivationPhase extends Phase {
         else if (currentRegister == 2 && player.getLastRegisterCard() == CardType.Again)
             player.message(new Error("I am an Idiot."));
         else {
-            if (player.getLastRegisterCard() == CardType.Again) {
+            if (player.getLastRegisterCard() == CardType.Again ) {
                 int currentRegister = getCurrentRegister();
                 Card card = player.getRegisterCard(currentRegister - 2);
                 handleCard(card.getName(), player);
-            } else {
-                new AgainAction().doAction(player);
+            }
+            else {
+                handleCard(player.getLastRegisterCard(), player);
             }
         }
     }
