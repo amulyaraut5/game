@@ -500,4 +500,12 @@ public class Server extends Thread {
     public BlockingQueue<QueueMessage> getMessageQueue() {
         return messageQueue;
     }
+
+    public void setServerState(ServerState serverState) {
+        this.serverState = serverState;
+    }
+
+    public ArrayList<User> getReadyUsers() {
+        return readyUsers;
+    }
 }

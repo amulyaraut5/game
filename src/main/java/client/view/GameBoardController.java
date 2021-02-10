@@ -421,4 +421,12 @@ public class GameBoardController {
         ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
     }
+
+    public Pane getRobotPane() {
+        return robotPane;
+    }
+
+    public HashMap<Player, ImageView> getRobotTokens() {
+        return robotTokens;
+    }
 }

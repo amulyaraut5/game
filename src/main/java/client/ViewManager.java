@@ -2,6 +2,7 @@ package client;
 
 import client.model.ViewClient;
 import client.view.*;
+import game.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -109,6 +110,17 @@ public class ViewManager {
 
     public void closeGame() {
         gameStage.close();
+    }
+
+    public void resetPlayer(Player player){
+        ImageView imageView = gameController.getGameBoardController().getRobotTokens().get(player);
+        gameController.getGameBoardController().getRobotPane().getChildren().remove(imageView);
+
+        if (ViewClient.getInstance().getCurrentController().equals(this))
+
+            assert gameController.getOthersController().getOtherPlayer(player.getID()) != null;
+            gameController.getOthersController().gethBoxPlayer().getChildren().remove(gameController.getOthersController().getOtherPlayer(player.getID()));
+            gameController.getOthersController().getOtherPlayers().remove(gameController.getOthersController().getOtherPlayer(player.getID()));
     }
 
     private void openGameStage() {

@@ -100,6 +100,8 @@ public class LobbyController extends Controller implements Updatable {
         imageView.setImage(image);
     }
 
+
+
     /**
      * by clicking the ready checkbox a message will be send to the client (and then to the server)
      * to signal the ready status of the user.
@@ -146,5 +148,9 @@ public class LobbyController extends Controller implements Updatable {
                 MapSelectionController.getMapSelectionController().setDisable(false);
             }
         }
+    }
+
+    public CheckBox getReadyCheckbox() {
+        return readyCheckbox;
     }
 }

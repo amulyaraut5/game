@@ -38,7 +38,7 @@ public class OthersController extends Controller {
      * @param id of searched player
      * @return the player who is desired
      */
-    private OtherPlayer getOtherPlayer(int id) {
+   public OtherPlayer getOtherPlayer(int id) {
         for (OtherPlayer otherPlayer : otherPlayers) {
             if (id == otherPlayer.getPlayer().getID()) {
                 return otherPlayer;
@@ -242,5 +242,13 @@ public class OthersController extends Controller {
         public int getPositionHBox() {
             return positionHBox;
         }
-    }
+        }
+
+        public HBox gethBoxPlayer() {
+            return hBoxPlayer;
+        }
+
+        public ArrayList<OtherPlayer> getOtherPlayers() {
+            return otherPlayers;
+        }
 }

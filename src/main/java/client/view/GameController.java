@@ -519,4 +519,14 @@ public class GameController extends Controller implements Updatable {
     public Pane getBoardPane() {
         return boardPane;
     }
+
+    public GameBoardController getGameBoardController() {
+        return gameBoardController;
+    }
+
+    public OthersController getOthersController() {
+        return othersController;
+    }
+
+
 }
