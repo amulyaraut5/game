@@ -129,10 +129,12 @@ public class LoginController extends Controller implements Updatable {
 
     public void removePlayer(Player player) {
         for (Figure figure : figures) {
-            if (figure.getPlayerID() == player.getID()) {
-                figure.setTaken(false);
-                int index = figures.indexOf(figure);
-                figures.set(index, figure);
+            if (player != null) {
+                if (figure.getPlayerID() == player.getID()) {
+                    figure.setTaken(false);
+                    int index = figures.indexOf(figure);
+                    figures.set(index, figure);
+                }
             }
         }
     }
