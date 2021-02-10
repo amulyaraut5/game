@@ -47,19 +47,20 @@ public final class Constants {
             ------------------------------------------
             Cheats
             ------------------------------------------
-            #cheats             |  lists all cheats
+            #cheats         |  lists all cheats
             #cheats on/off  |  turns cheats on/off
-            #tp <pos>        |  teleports the robot
+            #tp <pos>       |  teleports the robot
             #tp <x> <y>     |  teleports the robot
-            #r <u,r,d,l>        |  rotates up, right...
-            #endTimer         |  ends the timer
-            #autoPlay          |  autoplays all PlayIt
+            #r <u,r,d,l>    |  rotates up, right...
+            #endTimer       |  ends the timer
+            #autoPlay       |  autoplays all PlayIt
             #activateBoard  |  activates the board
-            #damage <n>   |  deals spam cards
-            #damageDecks  |  shows damage decks
-            #emptySpam     |  empties spam deck
-            #win                   |  player wins
-            #fire          | fires laser
+            #damage <n>     |  deals spam cards
+            #damageDecks    |  shows damage decks
+            #emptySpam      |  empties spam deck
+            #win            |  player wins
+            #fire           | fires laser
+            #hotkeys        | shows the available hotkeys  
             ------------------------------------------
             """;
     public static final String HOTKEYSLIST = """
@@ -67,10 +68,10 @@ public final class Constants {
             ------------------------------------------
             Hotkeys
             ------------------------------------------
-            click on map       |  teleports the robot
-            WASD keys         |  rotates the robot
+            click on map     |  teleports the robot
+            WASD keys        |  rotates the robot
             ------------------------------------------
-            """;
+            """; //TODO music hotkey
 
     private Constants() {
     }

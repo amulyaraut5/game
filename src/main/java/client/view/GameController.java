@@ -24,6 +24,7 @@ import utilities.SoundHandler;
 import utilities.Updatable;
 import utilities.enums.CardType;
 import utilities.enums.GameState;
+import utilities.enums.InnerActivation;
 import utilities.enums.Rotation;
 
 import java.io.IOException;
@@ -181,7 +182,7 @@ public class GameController extends Controller implements Updatable {
             case CONSTRUCTION -> phasePane.setCenter(constructionPane);
             case PROGRAMMING -> resetInProgrammingPhase();
             case ACTIVATION -> {
-                activationController.changePhaseView("PlayIt");
+                activationController.changePhaseView(InnerActivation.PlayIt);
                 currentAction.clear();
                 programmingController.reset();
                 phasePane.setCenter(activationPane);
@@ -211,7 +212,7 @@ public class GameController extends Controller implements Updatable {
             activationController = activationLoader.getController();
             gameWonController = gameWonLoader.getController();
 
-            activationController.changePhaseView("PlayIt");
+            activationController.changePhaseView(InnerActivation.PlayIt);
         } catch (IOException e) {
             logger.error("Inner phase View could not be loaded: " + e.getMessage());
         }
@@ -310,7 +311,7 @@ public class GameController extends Controller implements Updatable {
             }
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
-                activationController.changePhaseView("Damage");
+                activationController.changePhaseView(InnerActivation.Damage);
                 activationController.getPickDamageController().pickDamage(pickDamage);
             }
             case PlayerShooting -> {
