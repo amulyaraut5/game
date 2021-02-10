@@ -44,8 +44,7 @@ public class AgainAction extends Action {
                         break;
                     }
                 }
-            }
-            else{
+            } else {
                 game.getActivationPhase().handleCard(player.getLastRegisterCard(), player);
             }
         }

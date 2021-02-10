@@ -42,11 +42,6 @@ public final class Constants {
     public static final int AGAIN_CARDCOUNT = 2;
     public static final int POWERUP_CARDCOUNT = 1;
 
-    //Game
-    public static final int MIN_PLAYERS = 2;
-    public static final int MAX_PLAYERS = 6;
-    public static final int ENERGY_BANK = 48;
-
     public static final String CHEAT_LIST = """
                                     
             ------------------------------------------

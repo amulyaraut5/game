@@ -320,7 +320,6 @@ public class Server extends Thread {
         // Random Map is selected if all users are AI
         if (allUsersReady && (AIs.size() == readyUsers.size())) {
 
-
             ArrayList<String> input = new ArrayList<>();
             input.add(maps.get(r.nextInt(maps.size())));
 
@@ -328,7 +327,7 @@ public class Server extends Thread {
         }
     }
 
-    public void startAIGame () {
+    public void startAIGame() {
         game.play();
         serverState = ServerState.RUNNING_GAME;
     }
@@ -469,7 +468,7 @@ public class Server extends Thread {
         users.remove(user);
 
         communicateAll(new ConnectionUpdate(user.getID(), false, "Remove"));
-        communicateAll(new Error(user.getName() + " left the game."));
+        if (user.getName() != null) communicateAll(new Error(user.getName() + " left the game."));
 
         if (users.size() == 0) {
             interrupt();

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import utilities.ImageHandler;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class OnePlayerController extends Controller {
      */
     private void fillRegister() {
         for (int i = 0; i < 5; i++) {
-            ImageView imageView = generateImageView("/cards/programming/underground-card.png", 20, 30);
+            ImageView imageView = ImageHandler.createImageView("/cards/programming/underground-card.png", 20, 30);
             registerHBox.getChildren().add(imageView);
         }
     }
@@ -191,7 +192,7 @@ public class OnePlayerController extends Controller {
         drawDamageHBox.getChildren().clear();
         for (CardType damageCard : damageCards) {
             String path = "/cards/programming/" + damageCard.name() + "-card.png";
-            ImageView damage = generateImageView(path, 30, 50);
+            ImageView damage = ImageHandler.createImageView(path, 30, 50);
             drawDamageHBox.getChildren().add(damage);
         }
         displayingTime(drawDamageHBox);

@@ -99,7 +99,7 @@ public class ProgrammingPhase extends Phase {
                     try {
                         cardTypes.add(card.getName());
                     } catch (NullPointerException e) {
-                        logger.error("chosenCard: " + chosenCard.getName() + ". Drawn Programming Cards: "+ player.getDrawnProgrammingCards());
+                        logger.error("chosenCard: " + chosenCard.getName() + ". Drawn Programming Cards: " + player.getDrawnProgrammingCards());
                         server.communicateDirect(new Error("Please try again. Something went wrong"), player.getID());
                     }
             }

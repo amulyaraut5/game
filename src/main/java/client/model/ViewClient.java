@@ -46,6 +46,12 @@ public class ViewClient extends Client {
 
         Platform.runLater(() -> {
             switch (type) {
+                case SelectMap, Reboot, Error, StartingPointTaken, YourCards, Movement,
+                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
+                        CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
+                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage, GameWon -> {
+                    currentController.update(message);
+                }
                 case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", false));
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
@@ -55,12 +61,6 @@ public class ViewClient extends Client {
                 case PlayerAdded -> {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
-                }
-                case SelectMap, Reboot, Error, StartingPointTaken, YourCards, Movement,
-                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
-                        CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
-                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage, GameWon -> {
-                    currentController.update(message);
                 }
                 case PlayerStatus -> lobbyController.update(message);
                 case ConnectionUpdate -> {

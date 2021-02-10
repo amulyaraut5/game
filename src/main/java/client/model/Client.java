@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public abstract class Client {
     protected static final Logger logger = LogManager.getLogger();
-    private static int countSpamCards = Constants.SPAM_CARDCOUNT; //TODO move to client instead
+    private static int countSpamCards = Constants.SPAM_CARDCOUNT;
     private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
     private static int countWormCards = Constants.WORM_CARDCOUNT;
     private static int countVirusCards = Constants.VIRUS_CARDCOUNT;

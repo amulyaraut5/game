@@ -212,7 +212,7 @@ public class PlayerMatController extends Controller {
         int width = (int) (widthRegisterCard - 20);
         int height = (int) heightRegisterCard;
         for (int i = 0; i <= 4; i++) {
-            imageView = generateImageView(path, width, height);
+            imageView = ImageHandler.createImageView(path, width, height);
             registerHBoxBackground.getChildren().add(imageView);
         }
     }

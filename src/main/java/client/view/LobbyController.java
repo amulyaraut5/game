@@ -134,7 +134,7 @@ public class LobbyController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                infoLabel.setText(error.getError());
+                showInfo(infoLabel, error.getError());
             }
             case PlayerStatus -> {
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();

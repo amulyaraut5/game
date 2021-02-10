@@ -1,7 +1,6 @@
 package ai;
 
 import game.gameObjects.maps.Map;
-import game.gameObjects.robot.Robot;
 import game.gameObjects.tiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,18 +8,17 @@ import utilities.Coordinate;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
 import utilities.enums.Orientation;
-import utilities.enums.Rotation;
 
 import java.util.ArrayList;
 
 public class MoveSimulator {
+    private static final Logger logger = LogManager.getLogger();
     private final AIClient aiClient;
     private final Map map;
     private CardType[] cards;
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
-    private static final Logger logger = LogManager.getLogger();
 
     public MoveSimulator(AIClient aiClient, Map map) {
         this.aiClient = aiClient;
@@ -138,17 +136,14 @@ public class MoveSimulator {
 
                     //Rotate robot if moved on Rotating belt
                     for (Attribute attribute : map.getTile(resPosition).getAttributes()) {
-                        if(attribute.getType() == AttributeType.RotatingBelt){
+                        if (attribute.getType() == AttributeType.RotatingBelt) {
                             RotatingBelt temp = ((RotatingBelt) attribute);
                             rotateOnBelt(temp.getOrientations());
                         }
                     }
-
                 }
-
             }
         }
-
     }
 
     private void activateGear() {
@@ -173,7 +168,7 @@ public class MoveSimulator {
     }
 
     public void rotateOnBelt(Orientation[] o) {
-        if (o[0].getNext() == o[1]) resOrientation  = resOrientation.getNext();
-        else if (o[0].getPrevious() == o[1]) resOrientation  = resOrientation.getPrevious();
+        if (o[0].getNext() == o[1]) resOrientation = resOrientation.getNext();
+        else if (o[0].getPrevious() == o[1]) resOrientation = resOrientation.getPrevious();
     }
 }
