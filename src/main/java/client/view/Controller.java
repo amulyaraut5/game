@@ -4,6 +4,7 @@ import client.ViewManager;
 import client.model.ViewClient;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import org.apache.logging.log4j.LogManager;
@@ -43,6 +44,13 @@ public abstract class Controller {
                 t.cancel();
             }
         }, 2500);
+    }
+
+    protected ImageView generateImageView(String path, int width, int height) {
+        ImageView imageView = new ImageView(new Image(getClass().getResource(path).toString()));
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        return imageView;
     }
 
     protected CardType generateCardType(String imageDropped) {

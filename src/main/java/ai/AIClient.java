@@ -209,11 +209,11 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                //logger.trace("resPos: " + Arrays.toString(cards) + " " + resPos);
+                System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }
-        //logger.trace("YourCards: " + yourCards.getCards());
+        System.out.println("YourCards: " + yourCards.getCards());
 
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
@@ -221,21 +221,20 @@ public class AIClient extends Client {
             handleDamageCount(bestCombination[i]);
             sendMessage(new SelectCard(bestCombination[i], i + 1));
         }
-        //HashMap<Coordinate, Set<CardType[]>> combinationsForPositions = new HashMap<>();
     }
 
-    private CardType[] getBestCombination(HashMap<CardType[], Coordinate> possiblePositions) {
+    private CardType[] getBestCombination(HashMap<CardType[], Coordinate> resultingPositions) {
         int shortestDistance = 100;
         CardType[] bestCombination = null;
 
-        Set<CardType[]> keySet = possiblePositions.keySet();
+        Set<CardType[]> keySet = resultingPositions.keySet();
 
         Player player = getPlayerFromID(thisPlayersID);
         int nextControlPoint = player.getCheckPointCounter();
         Coordinate controlPoint = map.readControlPointCoordinate().get(nextControlPoint);
 
         for (CardType[] cards : keySet) {
-            int distance = Coordinate.distance(possiblePositions.get(cards), controlPoint);
+            int distance = Coordinate.distance(resultingPositions.get(cards), controlPoint);
             //logger.trace("distance: " + distance + " " + Arrays.toString(cards));
             if (distance < shortestDistance) {
                 shortestDistance = distance;
