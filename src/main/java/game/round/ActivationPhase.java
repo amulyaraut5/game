@@ -102,6 +102,17 @@ public class ActivationPhase extends Phase {
             handleCard(currentCard, game.getPlayerFromID(playerID));
             currentCards.remove(0);
 
+            //check if next player is rebooting
+            if(!currentCards.isEmpty()) {
+                while (!isNotRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
+                    currentCards.remove(0);
+                    if(currentCards.isEmpty()){
+                        break;
+                    }
+
+                }
+            }
+
             //if he was the last player to send the PlayIt() protocol for this register the board is activated
             if (activePlayers.isEmpty()) {
                 activePlayers.addAll(rebootedPlayers);
@@ -113,6 +124,7 @@ public class ActivationPhase extends Phase {
                 handleFinishedRegister();
             } else {
                 server.communicateAll(new CurrentPlayer((currentCards.get(0)).getPlayerID()));
+                logger.info(rebootedPlayers);
             }
         } else { //if the player at index 0 is not the player that send the PlayIt() protocol he gets an error
             server.communicateDirect(new Error("It is not your turn!"), playerID);
@@ -169,7 +181,10 @@ public class ActivationPhase extends Phase {
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
                 logger.info("Now in Register " + currentRegister);
-                turnCards(currentRegister);
+                if(!allPlayersRebooting()) turnCards(currentRegister);
+                else{ game.nextPhase();
+                logger.info("Next Phase called bcs all Rebooting");}
+
             } else { //if it is already the 5th register the next phase is called
                 if (!rebootedPlayers.isEmpty()) {
                     activePlayers.addAll(rebootedPlayers);
@@ -565,6 +580,14 @@ public class ActivationPhase extends Phase {
                 " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
         server.communicateAll(new DrawDamage(user.getID(), selectedCards));
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
+    }
+
+    public boolean allPlayersRebooting(){
+        boolean allRebooting = true;
+        for (Player player : players) {
+            if(isNotRebooting(player)) allRebooting=false;
+        }
+        return allRebooting;
     }
 
     /**
