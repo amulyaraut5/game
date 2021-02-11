@@ -61,6 +61,7 @@ public class ChatController extends Controller {
         chatWindow.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean old, Boolean isFocused) -> {
             if (isFocused) resetFocus();
         });
+
     }
 
     /**
@@ -95,18 +96,21 @@ public class ChatController extends Controller {
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
         String message = messageField.getText();
-        message = message.substring(0, message.length() - 1);
-        System.out.println(message);
         if (message.equals("#hotkeys")) {
             chatWindow.appendText(Constants.HOTKEYSLIST);
         } else {
             if (!message.isBlank()) {
-                JSONBody jsonBody;
+                JSONBody jsonBody = null;
                 if (sendTo.equals("all")) {
                     jsonBody = new SendChat(message, -1);
                     chatWindow.appendText("[You] " + message + "\n");
-                } else {
-                    jsonBody = extractDirectMessage(sendTo, message);
+                } else{
+                    for (Player player: viewClient.getPlayers()){
+                        if (player.getUniqueName().equals(sendTo)){
+                            jsonBody = new SendChat(message, player.getID());
+                            if (player.getID() == viewClient.getThisPlayersID()) privateToMe = true;
+                        }
+                    }
                     if (!privateToMe) {
                         chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
                     }
@@ -115,46 +119,11 @@ public class ChatController extends Controller {
                 viewClient.sendMessage(jsonBody);
             }
         }
-
         privateToMe = false;
         messageField.clear();
         directChoiceBox.getSelectionModel().select(0);
     }
 
-    /**
-     * This message extracts the message and the receiver of a direct message.
-     * It distinguishes the length of the receiver, if it is only one, it checks if it is a
-     * message to the player itself. If the name is longer, it extracts the id of the unified name.
-     *
-     * @param sendTo  the receiver recognized from the combobox (possible is a unified name)
-     * @param message message of the player
-     * @return a jsonBody containing SendChat with receiver and message
-     */
-    private JSONBody extractDirectMessage(String sendTo, String message) {
-        int count = 0;
-        String[] name = sendTo.split(" ", 2);
-        for (Player player : viewClient.getPlayers()) {
-            if (player.getName().equals(name[0])) count++;
-        }
-        if (count == 1) {
-            if (sendTo.equals(viewClient.getPlayerFromID(viewClient.getThisPlayersID()).getName()))
-                privateToMe = true;
-            for (Player player : viewClient.getPlayers())
-                if (sendTo.equals(player.getName())) return new SendChat(message, player.getID());
-        } else {
-            ArrayList<Integer> names = new ArrayList<>();
-            for (Player player : viewClient.getPlayers())
-                if (name[0].equals(player.getName())) names.add(player.getID());
-            if (sendTo.length() == 1) {
-                return new SendChat(message, names.get(0));
-            } else {
-                String idNr = sendTo.substring(sendTo.length() - 1);
-                if (Integer.parseInt(idNr) == viewClient.getThisPlayersID()) privateToMe = true;
-                return new SendChat(message, Integer.parseInt(idNr));
-            }
-        }
-        return null;
-    }
 
     /**
      * This message checks whether the typed message is either #emptySpam or #damageDecks or #damage x,
