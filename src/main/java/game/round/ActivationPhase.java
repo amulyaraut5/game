@@ -77,6 +77,7 @@ public class ActivationPhase extends Phase {
      */
     public void turnCards(int register) {
         for (Player player : determinePriority(map.getAntenna())) {
+            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards()); //TODO remove if exception doesn't  come up again
             RegisterCard playerRegisterCard = new RegisterCard(player.getID(), player.getRegisterCard(register));
             currentCards.add(playerRegisterCard);
         }
