@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXCheckBox?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
@@ -10,21 +11,32 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: midnightblue;" stylesheets="@view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
-    <BorderPane fx:id="chatPane" layoutX="376.0" prefHeight="369.0" prefWidth="250.0" />
-    <FlowPane fx:id="playerIconPane" layoutX="100.0" layoutY="44.0" prefHeight="240.0" prefWidth="280.0" />
-    <JFXCheckBox fx:id="readyCheckbox" checkedColor="#ffb200" layoutX="451.0" layoutY="414.0" onAction="#checkBoxAction" prefHeight="37.0" prefWidth="101.0" text="Ready!" textFill="midnightblue" unCheckedColor="#727272">
+<AnchorPane id="loginPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="542.0" prefWidth="650.0" style="-fx-background-color: midnightblue;" stylesheets="@view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
+    <FlowPane fx:id="playerIconPane" layoutX="54.0" layoutY="65.0" prefHeight="260.0" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 5;">
+      <padding>
+         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      </padding></FlowPane>
+    <JFXCheckBox fx:id="readyCheckbox" checkedColor="GREEN" layoutX="472.0" layoutY="443.0" onAction="#checkBoxAction" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: orange;" text="Ready!" textFill="WHITE" unCheckedColor="#727272">
         <font>
             <Font name="System Bold" size="17.0" />
         </font>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
     </JFXCheckBox>
-    <Label fx:id="infoLabel" alignment="CENTER" layoutX="48.0" layoutY="284.0" prefHeight="27.0" prefWidth="385.0" textFill="#ff3600">
+    <Label fx:id="infoLabel" alignment="CENTER" layoutX="111.0" layoutY="513.0" prefHeight="27.0" prefWidth="487.0" textFill="#ff3600">
         <font>
             <Font name="System Bold" size="18.0" />
         </font>
     </Label>
-   <Label fx:id="mapLabel" layoutX="100.0" layoutY="398.0" prefHeight="17.0" prefWidth="90.0" />
-   <Pane layoutX="200.0" layoutY="326.0" prefHeight="160.0" prefWidth="160.0" style="-fx-background-color: lightgray; -fx-border-color: gray; -fx-border-width: 5;">
+   <Label fx:id="mapLabel" alignment="CENTER_RIGHT" layoutX="54.0" layoutY="423.0" prefHeight="20.0" prefWidth="123.0" text="Map" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font></Label>
+   <Pane layoutX="194.0" layoutY="353.0" prefHeight="160.0" prefWidth="160.0" style="-fx-background-color: lightgray; -fx-border-color: gray; -fx-border-width: 5;">
       <children>
          <Label layoutX="64.0" layoutY="40.0" text="?" textFill="#515151">
             <font>
@@ -34,9 +46,21 @@
          <ImageView fx:id="mapImageView" fitHeight="150.0" fitWidth="150.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
       </children>
    </Pane>
-   <Pane fx:id="mapSelectionPane" layoutX="63.0" layoutY="75.0" prefHeight="300.0" prefWidth="500.0" style="-fx-background-color: red;" visible="false">
-      <effect>
-         <DropShadow color="#323232" height="40.0" radius="19.5" spread="0.3" width="40.0" />
-      </effect>
+   <Label text="Label" />
+   <Label layoutX="296.0" layoutY="14.0" text="Lobby" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Label>
+    <BorderPane fx:id="chatPane" layoutX="400.0" layoutY="62.0" prefHeight="333.0" prefWidth="250.0" />
+   <Pane fx:id="overlayPane" visible="false">
+      <children>
+         <Pane prefHeight="550.0" prefWidth="650.0" style="-fx-background-color: black; -fx-opacity: 0.3;" />
+         <Pane fx:id="mapSelectionPane" layoutX="75.0" layoutY="125.0" prefHeight="300.0" prefWidth="500.0">
+            <effect>
+               <DropShadow color="#323232" height="40.0" radius="19.5" spread="0.3" width="40.0" />
+            </effect>
+         </Pane>
+      </children>
    </Pane>
 </AnchorPane>

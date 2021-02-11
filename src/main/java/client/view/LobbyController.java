@@ -71,6 +71,9 @@ public class LobbyController extends Controller implements Updatable {
     @FXML
     private Pane mapSelectionPane;
 
+    @FXML
+    private Pane overlayPane;
+
     /**
      * This method sets the chat in the chatPane with its width and height.
      *
@@ -178,11 +181,11 @@ public class LobbyController extends Controller implements Updatable {
         } catch (IOException e) {
             logger.error("GameBoard could not be created: " + e.getMessage());
         }
-        mapSelectionPane.setVisible(true);
+        overlayPane.setVisible(true);
     }
 
     public void mapSelected(String map) {
-        mapSelectionPane.setVisible(false);
+        overlayPane.setVisible(false);
         viewClient.sendMessage(new MapSelected(map));
     }
 
@@ -193,13 +196,6 @@ public class LobbyController extends Controller implements Updatable {
     @FXML
     private void checkBoxAction() {
         viewClient.sendMessage(new SetStatus((readyCheckbox.isSelected())));
-
-        if (!readyCheckbox.isSelected()) {
-            viewClient.sendMessage(new SetStatus(false));
-            infoLabel.setText("Please wait till somebody selects the map.");
-            MapSelectionController.getMapSelectionController().setSelected(false);
-            MapSelectionController.getMapSelectionController().setDisable(true);
-        }
     }
 
     /**
