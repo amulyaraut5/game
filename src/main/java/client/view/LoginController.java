@@ -80,6 +80,13 @@ public class LoginController extends Controller implements Updatable {
     }
 
     /**
+     * This method sets the focus on the textinput label to aim for usability
+     */
+    public void requestFocus(){
+        textUserName.requestFocus();
+    }
+
+    /**
      * This method creates a list with the robots and additional it
      * adds imageViews for each robot to another list.
      */

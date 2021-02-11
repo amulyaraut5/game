@@ -80,6 +80,7 @@ public class ViewManager {
     public void showLogin() {
         ViewClient.getInstance().setCurrentController(loginController);
         menuStage.setScene(loginScene);
+        loginController.requestFocus();
         if (currentScene == gameScene) openMenuStage();
         currentScene = loginScene;
     }
