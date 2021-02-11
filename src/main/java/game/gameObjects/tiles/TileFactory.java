@@ -28,7 +28,7 @@ public final class TileFactory {
     public static Tile createTile(Object tileID) {
         Tile tile = new Tile();
 
-        //Ckeck if tileID is just one ID or a list of IDs (for tiles with multiple Attributes)
+        //Check if tileID is just one ID or a list of IDs (for tiles with multiple Attributes)
         if (tileID instanceof int[]) {
             int[] idList = (int[]) tileID;
 
