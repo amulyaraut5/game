@@ -252,21 +252,26 @@ public class Server extends Thread {
 
     private void addNewUser(User user, HelloServer hs) {
         if (hs.getProtocol() == Constants.PROTOCOL) {
-            user.setID(idCounter++);
-            currentThread().setName("UserThread-" + user.getID());
-            if (hs.isAI()) {
-                AIs.add(user);
-            } else notAIs.add(user);
+            if (users.size() <= 6) {
+                user.setID(idCounter++);
+                currentThread().setName("UserThread-" + user.getID());
+                if (hs.isAI()) {
+                    AIs.add(user);
+                } else notAIs.add(user);
 
-            for (User u : users) {
-                if (u.getName() != null) {
-                    user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
+                for (User u : users) {
+                    if (u.getName() != null) {
+                        user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
+                    }
                 }
+                for (User readyUser : readyUsers) {
+                    user.message(new PlayerStatus(readyUser.getID(), true));
+                }
+                user.message(new Welcome(user.getID()));
+            } else {
+                user.message(new Error("Server is already full!"));
+                user.getThread().disconnect();
             }
-            for (User readyUser : readyUsers) {
-                user.message(new PlayerStatus(readyUser.getID(), true));
-            }
-            user.message(new Welcome(user.getID()));
         } else {
             JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
                     "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Constants.PROTOCOL);

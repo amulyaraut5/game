@@ -37,6 +37,6 @@ public class GameWonController extends Controller {
 
     @FXML
     public void exitGameClicked() {
-        viewManager.closeGame();
+        System.exit(0);
     }
 }

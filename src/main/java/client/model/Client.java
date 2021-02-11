@@ -1,12 +1,16 @@
 package client.model;
 
+import client.ViewManager;
 import game.Player;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
+import utilities.JSONProtocol.body.Error;
+import utilities.Updatable;
 import utilities.enums.CardType;
 
 import java.io.IOException;
@@ -104,13 +108,7 @@ public abstract class Client {
      * This method ends the client program. The reader and writer threads get interrupted and the socket is closed.
      */
     public void disconnect() {
-        readerThread.interrupt();
-        try {
-            socket.close();
-            logger.info("The connection with the server is closed.");
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
+        disconnect(null);
     }
 
     /**
@@ -121,12 +119,18 @@ public abstract class Client {
      */
     public void disconnect(Exception ex) {
         readerThread.interrupt();
-        logger.warn("The server is no longer reachable: " + ex.getMessage());
+        if (ex != null) logger.warn("The server is no longer reachable: " + ex.getMessage());
+        else logger.info("The connection with the server is closed.");
         try {
             socket.close();
             logger.info("The connection with the server is closed.");
         } catch (IOException e) {
             logger.error(e.getMessage());
+        }
+        if (this instanceof ViewClient) {
+            Platform.runLater(() -> ViewManager.getInstance().resetAll());
+            Updatable controller = ((ViewClient) this).getCurrentController();
+            controller.update(JSONMessage.build(new Error("Server no longer reachable!")));
         }
     }
 

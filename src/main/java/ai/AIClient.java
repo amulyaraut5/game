@@ -100,7 +100,7 @@ public class AIClient extends Client {
                     if (currentPhase == GameState.CONSTRUCTION) {
                         int[] startingPoints = {39, 78, 14, 53, 66, 105};
                         for (int point : startingPoints) {
-                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
+                            sendMessage(new SetStartingPoint(point)); //choose not just first startingPoint
                         }
                     } else if (currentPhase == GameState.ACTIVATION) {
                         if(players.contains(getPlayerFromID(msg.getPlayerID()))){

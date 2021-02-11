@@ -105,10 +105,6 @@ public class ViewManager {
         currentScene = gameScene;
     }
 
-    public void closeGame() {
-        gameStage.close();
-    }
-
     private void openGameStage() {
         gameController.attachChatPane(chatPane);
         menuStage.close();
@@ -190,6 +186,19 @@ public class ViewManager {
         controllerList.add(mapSelectionController);
 
         ViewClient.getInstance().setController(controllerList);
+    }
+
+    public void resetAll() {
+        showMenu();
+        try {
+            constructScenes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetGame() {
+        showLobby();
     }
 
     public static ViewManager getInstance() {
