@@ -75,12 +75,6 @@ public class ViewClient extends Client {
                         if (players.size() <= 1) {
                             viewManager.resetGame();
                         }
-                    } else if (msg.getAction().equals("Ignore") && !msg.isConnected()) {
-                        Player player = getPlayerFromID(msg.getID());
-                        loginController.ignorePlayer(player);
-                        //lobbyController.ignorePlayer(player); //TODO
-                        //gameController.ignorePlayer(player);
-                        //players.remove(player);
 
                     }
                 }
@@ -105,7 +99,7 @@ public class ViewClient extends Client {
             gameController.getPlayerMatController().loadPlayerMap(player);
             viewManager.showLobby();
         }
-        loginController.setFigureTaken(player.getID(), player.getFigure(), true);
+        loginController.setFigureTaken(player.getID(), player.getFigure());
         lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
     }

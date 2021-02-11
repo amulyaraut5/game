@@ -12,8 +12,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
@@ -28,46 +26,40 @@ import utilities.enums.MessageType;
  * @author sarah,
  */
 public class LoginController extends Controller implements Updatable {
-    private static final Logger logger = LogManager.getLogger();
     /**
-     * it stores the imageViews of the different robots,
+     * It stores the imageViews of the different robots,
      * so that name and id from the chosen robot
-     * can be recognized
+     * can be recognized.
      */
     private final ObservableList<Figure> figures = FXCollections.observableArrayList();
 
+    /** The player writes his username in this TextField. */
     @FXML
     private TextField textUserName;
     /**
-     * a label to check if everything works //TODO delete or change purpose
+     * A label to check if everything works. //TODO delete or change purpose
      */
     @FXML
     private Label infoLabel;
     /**
-     * the button for checking whether input is valid
-     */
-    @FXML
-    private Button okButton;
-    /**
-     * the listView for choosing one robot, it stores different ImageViews
+     * The listView for choosing one robot, it stores different ImageViews.
      */
     @FXML
     private ListView<Figure> listView;
 
     /**
-     * by initializing the view the listView gets filled with the imageViews of the robots and
-     * it makes sure that only one item of the listView can get clicked
+     * By initializing the view the listView gets filled with the imageViews of the robots and
+     * it makes sure that only one item of the listView can get clicked.
+     * And that the awarded figures cannot be picked.
      */
     public void initialize() {
         createRobotList();
         listView.setItems(figures);
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listView.setCellFactory(listCell -> new ListCell<>() {
-
             @Override
             public void updateItem(Figure figure, boolean empty) {
                 super.updateItem(figure, empty);
-
                 if (empty) {
                     setText(null);
                     setGraphic(null);
@@ -82,33 +74,29 @@ public class LoginController extends Controller implements Updatable {
                                 CornerRadii.EMPTY, Insets.EMPTY)));
                     }
                 }
-
-               /*styleProperty().bind(Bindings.when(hoverProperty())
-                        .then("-fx-background-color: midnightblue; -fx-border-color: midnightblue")
-                        .otherwise("-fx-background-color: transparent; -fx-border-color: transparent"));*/
             }
         });
     }
 
     /**
      * This method creates a list with the robots and additional it
-     * adds imageViews for each robot to another list
+     * adds imageViews for each robot to another list.
      */
     private void createRobotList() {
         ImageView robot;
-        double scaleSize = 50;
+        int scaleSize = 50;
         for (String robotName : robotNames) {
             String path = "/lobby/" + robotName + ".png";
-            robot = ImageHandler.createImageView(path, 50, 50);
+            robot = ImageHandler.createImageView(path, scaleSize, scaleSize);
 
             figures.add(new Figure(robot));
         }
     }
 
     /**
-     * This method gets called by clicking on the button, it checks if the username is
+     * This method gets called by clicking on the 'Login' button, it checks if the username is
      * valid and if a robot is selected and then it sends a PlayerValues protocol message
-     * and switches to the gameStage
+     * and switches to the gameStage.
      */
     @FXML
     private void fxButtonClicked() {
@@ -120,13 +108,24 @@ public class LoginController extends Controller implements Updatable {
         else viewClient.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
-    public void setFigureTaken(int playerID, int id, boolean taken) {
+    /**
+     * This method makes a figure ineligible if it has already been taken by the added player.
+     *
+     * @param playerID the id of the player which gets added
+     * @param id the id of the figure the player chose
+     */
+    public void setFigureTaken(int playerID, int id) {
         Figure figure = figures.get(id);
-        figure.setTaken(taken);
+        figure.setTaken(true);
         figure.setPlayerID(playerID);
         figures.set(id, figure);
     }
 
+    /**
+     * This method is called when a player leaves the game. His figure is then set to re-selectable.
+     *
+     * @param player who has been removed
+     */
     public void removePlayer(Player player) {
         for (Figure figure : figures) {
             if (player != null) {
@@ -139,13 +138,12 @@ public class LoginController extends Controller implements Updatable {
         }
     }
 
-    public void ignorePlayer(Player player) {
-        for (Figure figure : figures) {
-            if (figure.getPlayerID() == player.getID())
-                figure.getImageView().setImage(new Image(getClass().getResource("/cards/programming/backside-card.png").toString()));
-        }
-    }
 
+    /**
+     * This message gets errors related to login and displays them for a hort amount of timer in the infoLabel.
+     *
+     * @param message which is to be handled specifically in the LoginController
+     */
     @Override
     public void update(JSONMessage message) {
         if (message.getType() == MessageType.Error) {
@@ -154,31 +152,64 @@ public class LoginController extends Controller implements Updatable {
         }
     }
 
+    /**
+     * This private class is used to store the imageView of the figure and if it's taken or not.
+     * And if it's taken also the player which chose the figure.
+     */
     private static class Figure {
         private final ImageView imageView;
         private boolean taken = false;
         private int playerID;
 
+        /**
+         * The constructor of the private class sets the ImageView with an image of the robot
+         *
+         * @param imageView with the robot image
+         */
         public Figure(ImageView imageView) {
             this.imageView = imageView;
         }
 
+        /**
+         * This method returns if the figure is already taken from a player.
+         *
+         * @return if the figure is taken
+         */
         public boolean isTaken() {
             return taken;
         }
 
+        /**
+         * This method sets if a figure is already taken, e.g. by joining or exiting.
+         *
+         * @param taken if the figure is taken
+         */
         public void setTaken(boolean taken) {
             this.taken = taken;
         }
 
+        /**
+         * This method returns the imageView of the figure
+         *
+         * @return the imageView
+         */
         public ImageView getImageView() {
             return imageView;
         }
 
+        /**
+         * This method returns the name of the player who took the figure.
+         *
+         * @return player ID
+         */
         public int getPlayerID() {
             return playerID;
         }
 
+        /** This method sets the player ID of a player who took the figure.
+         *
+         * @param playerID of the player who took a figure
+         */
         public void setPlayerID(int playerID) {
             this.playerID = playerID;
         }
