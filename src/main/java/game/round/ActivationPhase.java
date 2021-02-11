@@ -508,7 +508,7 @@ public class ActivationPhase extends Phase {
         return sortedDistance;
     }
 
-    public void drawDamage(DamageCardDeck damageDeck, Player player, int amount) {
+    public void drawDamage(Deck damageDeck, Player player, int amount) {
         logger.info("drawDamage reached");
         cardTypes.clear();
         if (!(spamDeck.size() < amount)) {

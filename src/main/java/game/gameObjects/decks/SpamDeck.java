@@ -10,7 +10,7 @@ import static utilities.Constants.SPAM_CARDCOUNT;
 /**
  * @author annika
  */
-public class SpamDeck extends DamageCardDeck {
+public class SpamDeck extends Deck {
 
     private ArrayList<Card> spamDeck;
 

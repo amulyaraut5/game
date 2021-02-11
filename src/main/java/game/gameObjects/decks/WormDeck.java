@@ -10,7 +10,7 @@ import static utilities.Constants.WORM_CARDCOUNT;
 /**
  * @author annika
  */
-public class WormDeck extends DamageCardDeck {
+public class WormDeck extends Deck {
 
     private ArrayList<Card> wormDeck;
 
