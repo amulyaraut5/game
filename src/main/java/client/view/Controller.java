@@ -2,10 +2,15 @@ package client.view;
 
 import client.ViewManager;
 import client.model.ViewClient;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import utilities.enums.CardType;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Abstract super class of all view-controller, which also stores information and required attributes
@@ -129,5 +134,24 @@ public abstract class Controller {
      */
     public void setProgrammingImageView(ImageView programmingImageView) {
         Controller.programmingImageView = programmingImageView;
+    }
+
+    /**
+     * This method only displays a label for 5 seconds.
+     *
+     * @param node that gets set visible
+     */
+    protected void displayingTime(Node node) {
+        Platform.runLater(() -> node.setVisible(true));
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (node.isVisible()) {
+                    Platform.runLater(() -> node.setVisible(false));
+                }
+                t.cancel();
+            }
+        }, 5000);
     }
 }

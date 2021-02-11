@@ -146,8 +146,10 @@ public abstract class Client {
     public String getUniqueName(int id) {
         Player player = getPlayerFromID(id);
         for (Player p : players) {
-            if (player != p && player.getName().equals(p.getName()))
-                return player.getName() + " #" + player.getID();
+            if (player != p && player.getName().equals(p.getName())){
+                String uniqueName = player.getName() + " #" + player.getID();
+                return uniqueName;
+            }
         }
         return player.getName();
     }
