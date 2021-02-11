@@ -40,7 +40,10 @@ public class ServerController implements Updatable {
     private JFXButton startButton;
     @FXML
     private JFXButton AIButton;
-    public HBox iconPane;
+    @FXML
+    private HBox iconPane;
+    @FXML
+    private Pane instructionPane;
 
     @FXML
     private void initialize() {
@@ -65,6 +68,7 @@ public class ServerController implements Updatable {
                 AIButton.setDisable(true);
                 startButton.setVisible(false);
                 AIButton.setVisible(false);
+                instructionPane.setVisible(false);
                 server.startAIGame();
             } else Updatable.showInfo(infoLabel, "Not enough users!");
         } else Updatable.showInfo(infoLabel, "Game already running!");
