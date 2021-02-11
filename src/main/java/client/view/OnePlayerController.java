@@ -76,13 +76,9 @@ public class OnePlayerController extends Controller {
      * @param otherPlayer the player which gets added
      */
     public void setPlayerInformation(Player otherPlayer) {
-        String playerName = viewClient.getPlayerFromID(otherPlayer.getID()).getName();
+        String playerName = viewClient.getUniqueName(otherPlayer.getID());
         String uniquePlayerName = viewClient.getUniqueName(otherPlayer.getID());
-        if ((uniquePlayerName.split(" ", 2).length) > 1) {
-            if (Integer.parseInt(uniquePlayerName.substring(uniquePlayerName.length() - 1)) > 1) {
-                playerName = uniquePlayerName;
-            }
-        }
+
         nameLabel.setText(playerName);
         String robot = robotNames[otherPlayer.getFigure()];
         robotIcon.setImage(new Image(getClass().getResource("/lobby/" + robot + ".png").toString()));
@@ -180,24 +176,7 @@ public class OnePlayerController extends Controller {
         fillRegister();
     }
 
-    /**
-     * This method only displays a label for 5 seconds.
-     *
-     * @param node that gets set visible
-     */
-    public void displayingTime(Node node) {
-        Platform.runLater(() -> node.setVisible(true));
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (node.isVisible()) {
-                    Platform.runLater(() -> node.setVisible(false));
-                }
-                t.cancel();
-            }
-        }, 5000);
-    }
+
 
     /**
      * This method displays the images of the amount of damage cards for 5 seconds.
