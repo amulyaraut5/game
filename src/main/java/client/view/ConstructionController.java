@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
  * This class represents the construction phase where the player should set their starting point.
  * It shows the instructions for doing that.
  *
- * @author TODO
+ * @author simon
  */
 public class ConstructionController extends Controller {
     /**

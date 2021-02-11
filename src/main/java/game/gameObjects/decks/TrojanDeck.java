@@ -10,7 +10,7 @@ import static utilities.Constants.TROJAN_CARDCOUNT;
 /**
  * @author annika
  */
-public class TrojanDeck extends DamageCardDeck {
+public class TrojanDeck extends Deck {
 
     private ArrayList<Card> trojanDeck;
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Repeats the programming in the players previous register.
  * This card cannot be played in the first register.
  */
+@Deprecated
 public class AgainAction extends Action {
 
     /**

@@ -26,8 +26,6 @@ public class PlayCardController extends Controller {
     private Button playItButton;
     @FXML
     private Label infoLabel;
-    @FXML
-    private AnchorPane playCardAnchorPane;
 
     public void initialize() {
         drawDamageHBox.setAlignment(Pos.CENTER);

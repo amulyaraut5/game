@@ -1,9 +1,7 @@
 package client.view;
 
 import game.Player;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,11 +9,9 @@ import javafx.scene.layout.HBox;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
- * This class represents one small playermat of one other player, it contains all necessary information the
+ * This class represents one small playerMat of one other player, it contains all necessary information the
  * player needs to know about other players.
  *
  * @author sarah, annika
@@ -33,7 +29,7 @@ public class OnePlayerController extends Controller {
     private ImageView robotIcon;
     /**
      * This Label displays information about if the player is current player, etc.. It is placed above the
-     * little playermat
+     * little playerMat
      */
     @FXML
     private Label infoLabel;
@@ -77,7 +73,6 @@ public class OnePlayerController extends Controller {
      */
     public void setPlayerInformation(Player otherPlayer) {
         String playerName = viewClient.getUniqueName(otherPlayer.getID());
-        String uniquePlayerName = viewClient.getUniqueName(otherPlayer.getID());
 
         nameLabel.setText(playerName);
         String robot = robotNames[otherPlayer.getFigure()];
@@ -99,7 +94,7 @@ public class OnePlayerController extends Controller {
     /**
      * This
      *
-     * @param card
+     * @param card //TODO
      */
     public void currentCard(CardType card) {
         infoLabel.setText("Current card ");
@@ -139,7 +134,7 @@ public class OnePlayerController extends Controller {
      * The method sets if a player put a card in a register. It only displays which register is already filled, not which
      * card.
      *
-     * @param registerSelected
+     * @param registerSelected //TODO
      */
     public void cardSelected(int registerSelected) {
         ImageView imageView = (ImageView) registerHBox.getChildren().get(registerSelected - 1);
@@ -159,7 +154,7 @@ public class OnePlayerController extends Controller {
     /**
      * This method sets the HBox of the registers visible or invisible.
      *
-     * @param visible
+     * @param visible //TODO
      */
     public void setHBoxRegisterVisible(boolean visible) {
         registerHBox.setVisible(visible);
@@ -167,7 +162,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * This method resets the information related to the phases after one round. It sets everything related to programming
-     * phase. For this it fills the registers again and sets the imageView of activationphase not visible
+     * phase. For this it fills the registers again and sets the imageView of activationPhase not visible
      * the occurring HBox and sets the card.
      */
     public void reset() {

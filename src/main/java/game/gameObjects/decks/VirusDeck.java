@@ -10,7 +10,7 @@ import static utilities.Constants.VIRUS_CARDCOUNT;
 /**
  * @author annika
  */
-public class VirusDeck extends DamageCardDeck {
+public class VirusDeck extends Deck {
 
     private ArrayList<Card> virusDeck;
 

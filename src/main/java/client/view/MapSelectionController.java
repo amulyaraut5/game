@@ -12,6 +12,7 @@ import utilities.Updatable;
 /**
  * TODO
  */
+@Deprecated
 public class MapSelectionController extends Controller implements Updatable {
     private static MapSelectionController mapSelectionController;
     @FXML

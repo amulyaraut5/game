@@ -69,7 +69,6 @@ public class ProgrammingController extends Controller {
     private void createBackground(HBox hBox) {
         ImageView background = generateImageView("/cards/programming/underground-card.png", (int) (widthHBox - 20), (int) heightHBox);
         background.setEffect(new DropShadow(1, Color.BLACK));
-        //background.setEffect(new InnerShadow(5, Color.WHITE));
         hBox.getChildren().add(background);
     }
 

@@ -105,7 +105,6 @@ public class ViewClient extends Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameController = (GameController) controllerList.get(2);
-        MapSelectionController mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public void setChatController(ChatController chatController) {

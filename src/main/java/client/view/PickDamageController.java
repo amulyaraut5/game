@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.body.PickDamage;
@@ -20,8 +19,6 @@ public class PickDamageController extends Controller {
     private final ArrayList<CardType> pickedDamageCards = new ArrayList<>();
     @FXML
     private HBox selectedDamageHBox;
-    @FXML
-    private AnchorPane selectDamageAnchorPane;
     @FXML
     private Button spamCardButton;
     @FXML

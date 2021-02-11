@@ -270,7 +270,7 @@ public class AIClient extends Client {
         if (freeFigures.size() > 0) {
             Random r = new Random();
             int chosenFigure = freeFigures.get(r.nextInt(freeFigures.size()));
-            String name = "AI " + chosenFigure;
+            String name = "AI " + thisPlayersID;
             sendMessage(new PlayerValues(name, chosenFigure));
         } else disconnect();
     }

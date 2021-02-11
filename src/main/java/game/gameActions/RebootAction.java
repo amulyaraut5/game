@@ -24,7 +24,6 @@ public class RebootAction extends Action {
     public void doAction(Player player) {
         Random random = new Random();
 
-        //rebootedPlayers.add(player);
         //Draw two spam cards
         game.getActivationPhase().drawDamage(game.getSpamDeck(), player, 2);
 
@@ -51,14 +50,6 @@ public class RebootAction extends Action {
         }
         clearRebootTile2(player);
         server.communicateAll(new Reboot(player.getID()));
-
-        /*activePlayers.remove(player);
-
-        if (activePlayers.isEmpty()) {
-            activePlayers.addAll(rebootedPlayers);
-            rebootedPlayers.clear();
-            game.nextPhase();
-        }*/
     }
 
     public boolean isTaken(Player player) {
@@ -70,6 +61,7 @@ public class RebootAction extends Action {
         return false;
     }
 
+    //TODO brauchen wir beide methoden?
     public void clearRebootTile(Player player) {
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
