@@ -87,16 +87,7 @@ public class UserThread extends Thread {
      * The connection is closed and other users get notified that the user left.
      */
     protected void disconnect() {
-        if (!exit) {
-            exit = true;
-            server.removeUser(user);
-            logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
-            try {
-                socket.close();
-            } catch (IOException e) {
-                logger.error(e.getMessage());
-            }
-        }
+        disconnect(null);
     }
 
     /**
@@ -108,7 +99,7 @@ public class UserThread extends Thread {
     private void disconnect(Exception ex) {
         if (!exit) {
             exit = true;
-            logger.warn("Error in UserThread with address " + socket.getRemoteSocketAddress() + ": " + ex.getMessage());
+            if (ex != null) logger.warn(ex.getMessage());
             server.removeUser(user);
             logger.warn("Closed the connection with address:   " + socket.getRemoteSocketAddress());
             try {

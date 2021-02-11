@@ -517,6 +517,8 @@ public class ActivationPhase extends Phase {
             for (Card card : damageCards) {
                 cardTypes.add(card.getName());
             }
+            logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
+                    " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
             server.communicateAll(new DrawDamage(player.getID(), cardTypes));
         } else {
             if (damageDeck.size() == 0) {
@@ -559,6 +561,8 @@ public class ActivationPhase extends Phase {
             }
             cardTypes.add(cardType);
         }
+        logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
+                " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
         server.communicateAll(new DrawDamage(user.getID(), selectedCards));
         logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
