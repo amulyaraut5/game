@@ -157,7 +157,12 @@ public class AIClient extends Client {
             }
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
-                getPlayerFromID(msg.getPlayerID()).getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
+                Player ai = getPlayerFromID(msg.getPlayerID());
+                //TODO this might be just a temporary fix. Because rebooted AIs are removed from the player list the player can be null.
+                if (ai != null ) {
+                    ai.getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
+                }
+
             }
             case PlayerTurning -> {
                 PlayerTurning msg = (PlayerTurning) message.getBody();
