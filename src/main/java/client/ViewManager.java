@@ -149,11 +149,6 @@ public class ViewManager {
         });
     }
 
-    private void setMouseImage(Scene scene) {
-        Image image = new Image(getClass().getResource("/otherElements/mouse.png").toString());
-        scene.setCursor(new ImageCursor(image));
-    }
-
     private void constructScenes() throws IOException {
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
@@ -166,11 +161,6 @@ public class ViewManager {
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
         mapScene = new Scene(mapLoader.load());
-
-        setMouseImage(loginScene);
-        setMouseImage(lobbyScene);
-        setMouseImage(menuScene);
-        setMouseImage(gameScene);
 
         menuController = menuLoader.getController();
         loginController = loginLoader.getController();
