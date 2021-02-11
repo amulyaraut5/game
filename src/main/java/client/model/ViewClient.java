@@ -62,7 +62,7 @@ public class ViewClient extends Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case PlayerStatus -> lobbyController.update(message);
+                case PlayerStatus, MapSelected -> lobbyController.update(message);
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
                     if (msg.getAction().equals("Remove") && !msg.isConnected()) {
@@ -75,7 +75,6 @@ public class ViewClient extends Client {
                         if (players.size() <= 1) {
                             viewManager.resetGame();
                         }
-
                     }
                 }
                 case ReceivedChat -> {

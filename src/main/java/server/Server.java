@@ -63,6 +63,7 @@ public class Server extends Thread {
     private ServerState serverState = ServerState.LOBBY;
     private boolean isMapSelected = false;
     private boolean isMapSent = false;
+    private String selectedMap;
 
     private Server() {
     }
@@ -190,11 +191,10 @@ public class Server extends Thread {
                     game.getActivationPhase().activateCards(user.getID());
             }
             case MapSelected -> {
-                if (!isMapSelected) {
-                    MapSelected selectMap = (MapSelected) message.getBody();
-                    game.handleMapSelection(selectMap.getMap());
-                    isMapSelected = true;
-                } else communicateAll(new Error("Map has already been selected"));
+                MapSelected selectMap = (MapSelected) message.getBody();
+                selectedMap = selectMap.getMap().get(0);
+                isMapSelected = true;
+                communicateAll(selectMap);
 
                 if ((readyUsers.size() == users.size()) && readyUsers.size() > 1) {
                     game.play();
@@ -259,6 +259,8 @@ public class Server extends Thread {
                     AIs.add(user);
                 } else notAIs.add(user);
 
+                user.message(new Welcome(user.getID()));
+
                 for (User u : users) {
                     if (u.getName() != null) {
                         user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
@@ -267,7 +269,7 @@ public class Server extends Thread {
                 for (User readyUser : readyUsers) {
                     user.message(new PlayerStatus(readyUser.getID(), true));
                 }
-                user.message(new Welcome(user.getID()));
+                if (selectedMap != null) user.message(new MapSelected(selectedMap));
             } else {
                 user.message(new Error("Server is already full!"));
                 user.getThread().disconnect();
@@ -324,11 +326,7 @@ public class Server extends Thread {
 
         // Random Map is selected if all users are AI
         if (allUsersReady && (AIs.size() == readyUsers.size())) {
-
-            ArrayList<String> input = new ArrayList<>();
-            input.add(maps.get(r.nextInt(maps.size())));
-
-            game.handleMapSelection(input);
+            selectedMap = maps.get(r.nextInt(maps.size()));
         }
     }
 
@@ -491,6 +489,10 @@ public class Server extends Thread {
     public static Server getInstance() {
         if (instance == null) instance = new Server();
         return instance;
+    }
+
+    public String getSelectedMap() {
+        return selectedMap;
     }
 
     public ServerState getServerState() {

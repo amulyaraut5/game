@@ -3,6 +3,7 @@ package client.view;
 import game.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -17,11 +18,12 @@ import org.apache.logging.log4j.Logger;
 import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.PlayerStatus;
-import utilities.JSONProtocol.body.SetStatus;
+import utilities.JSONProtocol.body.*;
 import utilities.Updatable;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -58,24 +60,16 @@ public class LobbyController extends Controller implements Updatable {
      * The label which displays errors.
      */
     @FXML
-    private Label errorLabel;
-
-    /**
-     * The label which displays important information and instructions.
-     */
-    @FXML
     private Label infoLabel;
 
-    /**
-     * This method gets called automatically by constructing view
-     * it adds the different ImageViews and Labels to lists and also
-     * sets the default of the choiceBox to all. Additionally the current imageView
-     * and label are assigned.
-     */
     @FXML
-    public void initialize() {
-        infoLabel.setText("First Player to click Ready will get a chance to choose a map.");
-    }
+    private ImageView mapImageView;
+
+    @FXML
+    private Label mapLabel;
+
+    @FXML
+    private Pane mapSelectionPane;
 
     /**
      * This method sets the chat in the chatPane with its width and height.
@@ -127,8 +121,6 @@ public class LobbyController extends Controller implements Updatable {
         imageView.setImage(image);
     }
 
-
-
     /**
      * This method removes a player from the lobby by exiting.
      *
@@ -138,7 +130,6 @@ public class LobbyController extends Controller implements Updatable {
         VBox tile = playerIcons.get(player);
         playerIconPane.getChildren().remove(tile);
     }
-
 
     /**
      * This method overwrites the method from Client and handles the JSONMessage from the server
@@ -151,18 +142,48 @@ public class LobbyController extends Controller implements Updatable {
         switch (message.getType()) {
             case Error -> {
                 Error error = (Error) message.getBody();
-                Updatable.showInfo(errorLabel, error.getError());
+                Updatable.showInfo(infoLabel, error.getError());
             }
             case PlayerStatus -> {
                 PlayerStatus playerStatus = (PlayerStatus) message.getBody();
                 displayStatus(playerStatus);
             }
             case SelectMap -> {
-                infoLabel.setText("You can select a map. Go to MapSelectionView.");
+                SelectMap selectMap = (SelectMap) message.getBody();
+                showMapView(selectMap.getAvailableMaps());
                 MapSelectionController.getMapSelectionController().setVisible(true);
                 MapSelectionController.getMapSelectionController().setDisable(false);
             }
+            case MapSelected -> {
+                MapSelected msg = (MapSelected) message.getBody();
+                mapLabel.setText(msg.getMap().get(0));
+                try {
+                    InputStream path = getClass().getResourceAsStream("/maps/" + msg.getMap().get(0) + ".PNG");
+                    Image mapImage = new Image(path, 200, 200, true, true);
+                    mapImageView.setImage(mapImage);
+                    mapImageView.setVisible(true);
+                } catch (NullPointerException e) {
+                    mapImageView.setVisible(false);
+                }
+            }
         }
+    }
+
+    private void showMapView(ArrayList<String> availableMaps) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/mapView.fxml"));
+            mapSelectionPane.getChildren().add(fxmlLoader.load());
+            MapController mapController = fxmlLoader.getController();
+            mapController.setMaps(availableMaps, this);
+        } catch (IOException e) {
+            logger.error("GameBoard could not be created: " + e.getMessage());
+        }
+        mapSelectionPane.setVisible(true);
+    }
+
+    public void mapSelected(String map) {
+        mapSelectionPane.setVisible(false);
+        viewClient.sendMessage(new MapSelected(map));
     }
 
     /**
@@ -180,8 +201,10 @@ public class LobbyController extends Controller implements Updatable {
             MapSelectionController.getMapSelectionController().setDisable(true);
         }
     }
+
     /**
      * This method  TODO
+     *
      * @param event
      */
     @FXML
