@@ -26,7 +26,6 @@ public class ViewClient extends Client {
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private MapSelectionController mapSelectionController;
 
     private Updatable currentController;
 
@@ -47,11 +46,10 @@ public class ViewClient extends Client {
         Platform.runLater(() -> {
             switch (type) {
                 case SelectMap, Reboot, Error, StartingPointTaken, YourCards, Movement,
-                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
-                        CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
-                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage, GameWon -> {
-                    currentController.update(message);
-                }
+                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting,
+                        ActivePhase, CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded,
+                        CurrentCards, CurrentPlayer, Energy, CheckpointReached, ShuffleCoding,
+                        DiscardHand, SelectDamage, DrawDamage, GameWon -> currentController.update(message);
                 case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", false));
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
@@ -107,7 +105,7 @@ public class ViewClient extends Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameController = (GameController) controllerList.get(2);
-        mapSelectionController = (MapSelectionController) controllerList.get(3);
+        MapSelectionController mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public void setChatController(ChatController chatController) {

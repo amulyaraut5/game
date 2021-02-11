@@ -12,6 +12,7 @@ import utilities.RegisterCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * OthersController handles the HBox underneath the gamemat and creates as much little playermats (onePlayer.fxml)
@@ -54,7 +55,7 @@ public class OthersController extends Controller {
      * @return OnePlayerController of player
      */
     public OnePlayerController getOtherPlayerController(int id) {
-        return getOtherPlayer(id).getOnePlayerController();
+        return Objects.requireNonNull(getOtherPlayer(id)).getOnePlayerController();
     }
 
     /**

@@ -2,44 +2,40 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
-    <children>
-        <Pane prefHeight="200.0" prefWidth="200.0" />
-        <VBox prefHeight="200.0" prefWidth="100.0">
-            <children>
-                <HBox>
-                    <children>
-                        <Pane fx:id="boardPane" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
-                        <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
-                    </children>
-                </HBox>
-                <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <JFXButton fx:id="AIButton" layoutX="1081.0" layoutY="10.0" onAction="#addAIClicked" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: green;" text="Add AI" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </JFXButton>
-                        <JFXButton fx:id="startButton" layoutX="1081.0" layoutY="55.0" onAction="#startClicked" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: orange;" text="Start" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </JFXButton>
-                  <Label id="label" fx:id="infoLabel" alignment="CENTER_RIGHT" layoutX="590.0" layoutY="61.0" maxWidth="438.0" prefHeight="27.0" prefWidth="438.0" textAlignment="RIGHT" textFill="RED">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="5.0" layoutY="5.0" text="Port: 5570" />
-                    </children>
-                </Pane>
-            </children>
-        </VBox>
-    </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="server.ServerController">
+    <Pane prefHeight="200.0" prefWidth="200.0"/>
+    <VBox prefHeight="200.0" prefWidth="100.0">
+        <HBox>
+            <Pane fx:id="boardPane" disable="true" maxHeight="-Infinity" maxWidth="-Infinity"
+                  minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0"/>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0"/>
+        </HBox>
+        <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0">
+            <JFXButton fx:id="AIButton" layoutX="1081.0" layoutY="10.0" onAction="#addAIClicked"
+                       prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: green;" text="Add AI"
+                       textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </JFXButton>
+            <JFXButton fx:id="startButton" layoutX="1081.0" layoutY="55.0" onAction="#startClicked"
+                       prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: orange;" text="Start"
+                       textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </JFXButton>
+            <Label id="label" fx:id="infoLabel" alignment="CENTER_RIGHT" layoutX="590.0" layoutY="61.0"
+                   maxWidth="438.0" prefHeight="27.0" prefWidth="438.0" textAlignment="RIGHT"
+                   textFill="RED">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+            <Label layoutX="5.0" layoutY="5.0" text="Port: 5570"/>
+        </Pane>
+    </VBox>
 </AnchorPane>

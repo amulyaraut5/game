@@ -70,9 +70,7 @@
     <Pane layoutX="40.0" layoutY="70.0" prefHeight="102.0" prefWidth="71.0"
           style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
         <ImageView fitHeight="102.0" fitWidth="71.0" pickOnBounds="true">
-            <image>
-                <Image url="@../../cards/programming/backside-card.png"/>
-            </image>
+            <Image url="@../../cards/programming/backside-card.png"/>
         </ImageView>
         <Label alignment="CENTER" layoutY="-16.0" prefHeight="93.0" prefWidth="71.0" text="Discard&#10;Deck"
                textAlignment="CENTER" textFill="#cccbd4" wrapText="true">
@@ -97,9 +95,7 @@
     <Pane layoutX="550.0" layoutY="70.0" prefHeight="102.0" prefWidth="71.0"
           style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
         <ImageView fitHeight="102.0" fitWidth="71.0" pickOnBounds="true">
-            <image>
-                <Image url="@../../cards/programming/backside-card.png"/>
-            </image>
+            <Image url="@../../cards/programming/backside-card.png"/>
         </ImageView>
         <Label alignment="CENTER" layoutX="8.0" layoutY="-16.0" prefHeight="93.0" prefWidth="57.0"
                text="Programming Deck" textAlignment="CENTER" textFill="#cccbd4" wrapText="true">

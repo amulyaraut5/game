@@ -9,8 +9,8 @@ import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.*;
 import utilities.JSONProtocol.body.Error;
+import utilities.JSONProtocol.body.*;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ProgrammingPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private GameTimer gameTimer = new GameTimer(this);
+    private final GameTimer gameTimer = new GameTimer(this);
 
     /**
      * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
@@ -87,7 +87,7 @@ public class ProgrammingPhase extends Phase {
         return chosenCard;
     }
 
-    public void putCardToRegister (Card chosenCard, Player player, int register) {
+    public void putCardToRegister(Card chosenCard, Player player, int register) {
         ArrayList<CardType> cardTypes = new ArrayList<>();
         for (Card card : player.getDrawnProgrammingCards()) {
             if (card != null)
@@ -119,7 +119,7 @@ public class ProgrammingPhase extends Phase {
         }
     }
 
-    public void removeCardFromRegister (Player player, int register) {
+    public void removeCardFromRegister(Player player, int register) {
         logger.info(player.getID() + " has moved a card out of his register");
 
         Card cardRemoved = player.getRegisterCard(register);
@@ -144,7 +144,7 @@ public class ProgrammingPhase extends Phase {
         if (chosenCard != null) {
             //put the card in the register
             putCardToRegister(chosenCard, player, selectCard.getRegister());
-        //if a card was removed, remove the card from the register and put it in the hand cards
+            //if a card was removed, remove the card from the register and put it in the hand cards
         } else {
             removeCardFromRegister(player, selectCard.getRegister());
         }

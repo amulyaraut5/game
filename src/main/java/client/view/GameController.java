@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
@@ -44,7 +43,9 @@ import static utilities.enums.CardType.*;
 public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
-    /** A list which contains all active players. */
+    /**
+     * A list which contains all active players.
+     */
     private final ArrayList<Player> activePlayers = new ArrayList<>();
 
     /**
@@ -53,79 +54,139 @@ public class GameController extends Controller implements Updatable {
      */
     private final ArrayList<JSONBody> currentAction = new ArrayList<>();
 
-    /** The list stores all four possible damage CardTypes */
+    /**
+     * The list stores all four possible damage CardTypes
+     */
     private final ArrayList<CardType> damageCards = new ArrayList<>();
 
-    /** The controller of the PlayerMatController */
+    /**
+     * The controller of the PlayerMatController
+     */
     private PlayerMatController playerMatController;
-    /** The controller of the ConstructionController */
+    /**
+     * The controller of the ConstructionController
+     */
     private ConstructionController constructionController;
-    /** The controller of the ProgrammingController */
+    /**
+     * The controller of the ProgrammingController
+     */
     private ProgrammingController programmingController;
-    /** The controller of the ActivationController */
+    /**
+     * The controller of the ActivationController
+     */
     private ActivationController activationController;
-    /** The controller of the OthersController */
+    /**
+     * The controller of the OthersController
+     */
     private OthersController othersController;
-    /** The controller of the GameWonController */
+    /**
+     * The controller of the GameWonController
+     */
     private GameWonController gameWonController;
-    /** The controller of the GameBoardController */
+    /**
+     * The controller of the GameBoardController
+     */
     private GameBoardController gameBoardController;
 
-    /** It stores if the player was the first that selected all 5 registers.*/
+    /**
+     * It stores if the player was the first that selected all 5 registers.
+     */
     private boolean allRegistersAsFirst = false;
-    /** It stores if the card the player has in current register is a damage card.*/
+    /**
+     * It stores if the card the player has in current register is a damage card.
+     */
     private boolean currentCardIsDamage = false;
-    /** The pane that stores the constructionPane.*/
+    /**
+     * The pane that stores the constructionPane.
+     */
     private Pane constructionPane;
-    /** The pane that stores the programmingPane.*/
+    /**
+     * The pane that stores the programmingPane.
+     */
     private Pane programmingPane;
-    /** The pane that stores the activationPane.*/
+    /**
+     * The pane that stores the activationPane.
+     */
     private Pane activationPane;
-    /** The pane that stores the gameWonPane.*/
+    /**
+     * The pane that stores the gameWonPane.
+     */
     private Pane gameWonPane;
 
-    /** The Soundhandler plays sound effects. */
+    /**
+     * The Soundhandler plays sound effects.
+     */
     private SoundHandler soundHandler;
-    /** This GameState stores the currentPhase of the game.*/
+    /**
+     * This GameState stores the currentPhase of the game.
+     */
     private GameState currentPhase = GameState.CONSTRUCTION;
-    /** This stores the currentRound, it gets increased in the progress of the game.*/
+    /**
+     * This stores the currentRound, it gets increased in the progress of the game.
+     */
     private int currentRound = 1;
-    /** This stores if its the first round, then not so many attributes are resetted.*/
+    /**
+     * This stores if its the first round, then not so many attributes are resetted.
+     */
     private boolean first = true;
-    /** This stores if the game is muted.*/
+    /**
+     * This stores if the game is muted.
+     */
     private boolean isMuted = true;
-    /** This stores if the music is playing, the player can change ist by pressing a key.*/
+    /**
+     * This stores if the music is playing, the player can change ist by pressing a key.
+     */
     private boolean play = false;
 
-    /**The pane shows information for the player. */
+    /**
+     * The pane shows information for the player.
+     */
     @FXML
     private Pane infoPane;
-    /**The Label shows which moves the player does and that hos card were shuffled.*/
+    /**
+     * The Label shows which moves the player does and that hos card were shuffled.
+     */
     @FXML
     private Label moveInfo;
-    /**This Pane will store the onePlayerMats.*/
+    /**
+     * This Pane will store the onePlayerMats.
+     */
     @FXML
     private Pane otherPlayerSpace;
-    /** The pane stores the playerMat. */
+    /**
+     * The pane stores the playerMat.
+     */
     @FXML
     private StackPane playerMat;
-    /** The pane stores the phasePane. */
+    /**
+     * The pane stores the phasePane.
+     */
     @FXML
     private BorderPane phasePane;
-    /** The pane stores the chatPane. */
+    /**
+     * The pane stores the chatPane.
+     */
     @FXML
     private BorderPane chatPane;
-    /** The label displays which round it currently is. */
+    /**
+     * The label displays which round it currently is.
+     */
     @FXML
     private Label roundLabel;
-    /** This pane contains the roundLabel and is invisible in the login, lobby or construction phase
-     * and otherwise in activation- and programmingphase it is visible. */
+    /**
+     * This pane contains the roundLabel and is invisible in the login, lobby or construction phase
+     * and otherwise in activation- and programmingphase it is visible.
+     */
     @FXML
     private Pane roundPane;
-    /** The pane stores the boardPane. */
+    /**
+     * The pane stores the boardPane.
+     */
     @FXML
     private Pane boardPane;
-    /** This label displays the errors. */
+    /**
+     * This label displays the errors.
+     */
     @FXML
     private Label infoLabel;
 
@@ -147,7 +208,7 @@ public class GameController extends Controller implements Updatable {
     /**
      * This method constructs the gameBoard, initializes the gameBoardController and adds it to gameView.
      */
-    private void addGameBoard(){
+    private void addGameBoard() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/gameBoard.fxml"));
             boardPane.getChildren().add(fxmlLoader.load());
@@ -160,7 +221,7 @@ public class GameController extends Controller implements Updatable {
     /**
      * This method constructs the playerMat, initializes the playerMatController and adds it to gameView.
      */
-    private void addPlayerMat(){
+    private void addPlayerMat() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
             playerMat.setAlignment(Pos.CENTER);
@@ -174,7 +235,7 @@ public class GameController extends Controller implements Updatable {
     /**
      * This method constructs the otherPlayer view , initializes the othersController and adds it to gameView.
      */
-    private void addOtherPlayer(){
+    private void addOtherPlayer() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/otherPlayer.fxml"));
             otherPlayerSpace.getChildren().add(fxmlLoader.load());
@@ -187,7 +248,7 @@ public class GameController extends Controller implements Updatable {
     /**
      * This method fills the damageCards list with all available damage CardTypes.
      */
-    private void fillDamageCardsList(){
+    private void fillDamageCardsList() {
         damageCards.add(Spam);
         damageCards.add(Virus);
         damageCards.add(Trojan);

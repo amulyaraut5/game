@@ -147,7 +147,7 @@ public class ServerController implements Updatable {
                 CardSelected cardSelected = (CardSelected) message.getBody();
                 //othersController.getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
             }
-            case PickDamage -> {
+            case PickDamage, CurrentCards, TimerEnded, TimerStarted, SelectionFinished -> {
             }
             case PlayerShooting -> {
                 gameBoardController.robotLaserAnimation(game.getPlayers());
@@ -155,14 +155,6 @@ public class ServerController implements Updatable {
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-            }
-            case SelectionFinished -> {
-            }
-            case TimerStarted -> {
-            }
-            case TimerEnded -> {
-            }
-            case CurrentCards -> {
             }
             case CurrentPlayer -> {
                 //TODO display

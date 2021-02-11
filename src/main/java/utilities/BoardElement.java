@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class BoardElement {
     private int position;
-    private ArrayList<Attribute> field = new ArrayList<>();
+    private ArrayList<Attribute> field;
 
     public BoardElement(int position, ArrayList<Attribute> field) {
         this.position = position;

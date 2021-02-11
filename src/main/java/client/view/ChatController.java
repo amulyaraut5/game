@@ -127,11 +127,11 @@ public class ChatController extends Controller {
      * It distinguishes the length of the receiver, if it is only one, it checks if it is a
      * message to the player itself. If the name is longer, it extracts the id of the unified name.
      *
-     * @param sendTo the receiver recognized from the combobox (possible is a unified name)
+     * @param sendTo  the receiver recognized from the combobox (possible is a unified name)
      * @param message message of the player
      * @return a jsonBody containing SendChat with receiver and message
      */
-    private JSONBody extractDirectMessage(String sendTo, String message){
+    private JSONBody extractDirectMessage(String sendTo, String message) {
         int count = 0;
         String[] name = sendTo.split(" ", 2);
         for (Player player : viewClient.getPlayers()) {

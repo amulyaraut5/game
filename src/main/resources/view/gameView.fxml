@@ -64,7 +64,7 @@
 
     <Pane fx:id="infoPane" layoutX="948.0" layoutY="147.0" prefHeight="60.0" prefWidth="241.0"
           style="-fx-background-color: orange; -fx-border-color: darkblue;" visible="false">
-        <Label fx:id="taskLabel" layoutX="-5.0" layoutY="-7.0" prefHeight="74.0" prefWidth="242.0" textFill="WHITE"
+        <Label layoutX="-5.0" layoutY="-7.0" prefHeight="74.0" prefWidth="242.0" textFill="WHITE"
                wrapText="true">
             <font>
                 <Font name="System Bold" size="16.0"/>

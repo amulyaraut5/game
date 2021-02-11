@@ -224,6 +224,7 @@ public class ActivationPhase extends Phase {
 
     /**
      * Todo
+     *
      * @param player
      * @param o
      */
@@ -274,12 +275,12 @@ public class ActivationPhase extends Phase {
             case MoveI -> handleMove(player, orientation);
             case MoveII -> {
                 handleMove(player, orientation);
-                if (!isRebooting(player)) handleMove(player, orientation);
+                if (isNotRebooting(player)) handleMove(player, orientation);
             }
             case MoveIII -> {
                 handleMove(player, orientation);
-                if (!isRebooting(player)) handleMove(player, orientation);
-                if (!isRebooting(player)) handleMove(player, orientation);
+                if (isNotRebooting(player)) handleMove(player, orientation);
+                if (isNotRebooting(player)) handleMove(player, orientation);
             }
             case TurnLeft -> robot.rotate(Rotation.LEFT);
 
@@ -577,7 +578,7 @@ public class ActivationPhase extends Phase {
      * @return true if player is rebooting
      */
 
-    public boolean isRebooting(Player player) {
+    public boolean isNotRebooting(Player player) {
         boolean isRebooting = false;
         for (Player p : rebootedPlayers) {
             if (player == p) {
@@ -585,7 +586,7 @@ public class ActivationPhase extends Phase {
                 break;
             }
         }
-        return isRebooting;
+        return !isRebooting;
     }
 
     /**

@@ -21,9 +21,7 @@ public class ServerApp extends Application {
 
         Server.getInstance().setServerController(serverLoader.getController());
 
-        primaryStage.setOnCloseRequest(event -> {
-            System.exit(0);
-        });
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.show();
     }
 }

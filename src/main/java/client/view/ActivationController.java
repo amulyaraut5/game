@@ -28,27 +28,22 @@ public class ActivationController extends Controller {
      * The innerview which either displays playCard or pickDamage.
      */
     public BorderPane innerActivationPhase;
-
-    /**
-     * The pickDamagePane contains the pickDamage view to let the player select damage cards.
-     */
-    private Pane pickDamagePane;
-
-    /**
-     * The playCardPane contains the playCard view to let the player play programming cards.
-     */
-    private Pane playCardPane;
-
     /**
      * The controller for the pickDamagePane.
      */
     public PickDamageController pickDamageController;
-
     /**
      * The controller for the playCardController.
      */
     public PlayCardController playCardController;
-
+    /**
+     * The pickDamagePane contains the pickDamage view to let the player select damage cards.
+     */
+    private Pane pickDamagePane;
+    /**
+     * The playCardPane contains the playCard view to let the player play programming cards.
+     */
+    private Pane playCardPane;
     /**
      * The counter for the current register. At the end of one round it gets set to 1 again.
      */

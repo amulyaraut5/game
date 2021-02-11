@@ -198,6 +198,7 @@ public class PlayerMatController extends Controller {
         for (int i = 1; i <= 5; i++) {
             path = "/backgrounds/register/register_" + i + ".png";
             ImageView imageView = ImageHandler.createImageView(path, width, height);
+            assert imageView != null;
             imageView.setTranslateX(positionX);
             imageView.setTranslateY(positionY);
             positionX = positionX + widthRegisterCard + 3;
@@ -256,10 +257,6 @@ public class PlayerMatController extends Controller {
             energyHBox.getChildren().add(energyCube);
             count--;
         }
-    }
-
-    public void currentCards(CardType card) {
-        //TODO austauschen
     }
 
     /**

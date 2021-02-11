@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class MoveSimulator {
     private static final Logger logger = LogManager.getLogger();
-    private final AIClient aiClient;
     private final Map map;
     private CardType[] cards;
     private Coordinate resPosition;
@@ -21,7 +20,6 @@ public class MoveSimulator {
     private boolean reboot = false;
 
     public MoveSimulator(AIClient aiClient, Map map) {
-        this.aiClient = aiClient;
         this.map = map;
     }
 

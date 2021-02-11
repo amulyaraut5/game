@@ -40,30 +40,17 @@ public abstract class Client {
     private PrintWriter writer;
 
     /**
-     * this method reduces the number of damage cards on the associated deck by one.
+     * this method reduces the number of damage cards on the associated deck.
      *
-     * @param cardType damage card drawn
+     * @param cardList received damage cards
      */
-    public void handleDamageCount(CardType cardType) {
-        switch (cardType) {
-            case Spam -> setCountSpamCards(getCountSpamCards() - 1);
-            case Trojan -> setCountTrojanCards(getCountTrojanCards() - 1);
-            case Worm -> setCountWormCards(getCountWormCards() - 1);
-            case Virus -> setCountVirusCards(getCountVirusCards() - 1);
-        }
-    }
-
-    /**
-     * TODO
-     *
-     * @param cardList
-     */
-
     public void handleDamageCount(ArrayList<CardType> cardList) {
-        if (cardList.size() == 0) setCountSpamCards(0); //TODO correct?
-        else {
-            for (CardType cardType : cardList) {
-                handleDamageCount(cardType);
+        for (CardType cardType : cardList) {
+            switch (cardType) {
+                case Spam -> setCountSpamCards(countSpamCards - 1);
+                case Trojan -> setCountTrojanCards(countTrojanCards - 1);
+                case Worm -> setCountWormCards(countWormCards - 1);
+                case Virus -> setCountVirusCards(countVirusCards - 1);
             }
         }
     }

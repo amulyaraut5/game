@@ -38,7 +38,6 @@ import java.util.List;
 
 import static javafx.scene.input.MouseEvent.*;
 
-
 /**
  * TODO
  */
@@ -413,9 +412,11 @@ public class GameBoardController {
 
     private Group createHitAnimation(Coordinate endPos, Coordinate vector, Orientation orientation) {
         ImageView hitBase = ImageHandler.createImageView("/otherElements/hitBase.png", orientation);
+        assert hitBase != null;
         hitBase.setX(endPos.getX() * Constants.FIELD_SIZE);
         hitBase.setY(endPos.getY() * Constants.FIELD_SIZE);
         ImageView hitFire = ImageHandler.createImageView("/otherElements/hit.png", orientation);
+        assert hitFire != null;
         hitFire.setX(endPos.getX() * Constants.FIELD_SIZE - 0.9 * vector.getX() * Constants.FIELD_SIZE);
         hitFire.setY(endPos.getY() * Constants.FIELD_SIZE - 0.9 * vector.getY() * Constants.FIELD_SIZE);
         return new Group(hitBase, hitFire);

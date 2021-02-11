@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="programmingPhasePane" prefHeight="600.0" prefWidth="650.0"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="650.0"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="client.view.ProgrammingController">
     <HBox fx:id="hBox1Background" alignment="CENTER" layoutX="27.0" layoutY="230.0" prefHeight="84.0"
           prefWidth="386.0"/>
@@ -25,7 +25,7 @@
            prefWidth="329.0" textFill="#cccad4"/>
     <Pane layoutX="17.0" layoutY="72.0" prefHeight="80.0" prefWidth="386.0"
           style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
-        <Label fx:id="label" alignment="CENTER" layoutX="1.0" layoutY="-2.0" prefHeight="44.0" prefWidth="356.0"
+        <Label alignment="CENTER" layoutX="1.0" layoutY="-2.0" prefHeight="44.0" prefWidth="356.0"
                text="Programming Phase" textFill="WHITE" wrapText="true">
             <font>
                 <Font name="System Bold" size="20.0"/>
