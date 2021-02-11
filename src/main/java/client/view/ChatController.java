@@ -108,14 +108,15 @@ public class ChatController extends Controller {
                     chatWindow.appendText("[You] " + message + "\n");
                 } else {
                     jsonBody = extractDirectMessage(sendTo, message);
+                    if (!privateToMe) {
+                        chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
+                    }
                 }
                 checkMessage(message);
                 viewClient.sendMessage(jsonBody);
             }
         }
-        if (!privateToMe) {
-            chatWindow.appendText("[You] @" + sendTo + ": " + message + "\n");
-        }
+
         privateToMe = false;
         lobbyTextAreaChat.clear();
         directChoiceBox.getSelectionModel().select(0);
