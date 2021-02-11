@@ -25,6 +25,7 @@ public class Player extends User {
     private final Robot robot;
     private final Game game = Game.getInstance();
     private boolean usingCheats = false;
+    private String uniqueName;
     /**
      * contains the chosen Cards for each register
      */
@@ -188,4 +189,13 @@ public class Player extends User {
     public void setUsingCheats(boolean usingCheats) {
         this.usingCheats = usingCheats;
     }
+
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public void setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
+    }
+
 }

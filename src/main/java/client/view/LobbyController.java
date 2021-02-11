@@ -95,6 +95,7 @@ public class LobbyController extends Controller implements Updatable {
     public void addJoinedPlayer(Player player) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
         String name = viewClient.getUniqueName(player.getID());
+        player.setUniqueName(name);
         ImageView imageView = ImageHandler.createImageView(path, 90, 90);
 
         Label label = new Label(name);
