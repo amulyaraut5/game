@@ -114,7 +114,7 @@ public class GameController extends Controller implements Updatable {
     private Pane gameWonPane;
 
     /**
-     * The Soundhandler plays sound effects.
+     * The SoundHandler plays sound effects.
      */
     private SoundHandler soundHandler;
     /**
@@ -126,7 +126,7 @@ public class GameController extends Controller implements Updatable {
      */
     private int currentRound = 1;
     /**
-     * This stores if its the first round, then not so many attributes are resetted.
+     * This stores if its the first round, then not so many attributes are reset.
      */
     private boolean first = true;
     /**
@@ -175,7 +175,7 @@ public class GameController extends Controller implements Updatable {
     private Label roundLabel;
     /**
      * This pane contains the roundLabel and is invisible in the login, lobby or construction phase
-     * and otherwise in activation- and programmingphase it is visible.
+     * and otherwise in activation- and programming phase it is visible.
      */
     @FXML
     private Pane roundPane;
@@ -282,10 +282,9 @@ public class GameController extends Controller implements Updatable {
     /**
      * This method resets everything at the start of a programming phase. it sets the nodes
      * visible or invisible and updates the current round in the label,
-     * resets the deckcounter and adds all the player to the activePlayers list.
+     * resets the deck counter and adds all the player to the activePlayers list.
      */
     private void resetInProgrammingPhase() {
-        //playerMatController.fixSelectedCards(false);
         roundPane.setVisible(true);
         infoPane.setVisible(false);
         roundLabel.setText("Round " + currentRound);
@@ -626,7 +625,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * This method removes a player by exiting from the othersController and its small playermat and
+     * This method removes a player by exiting from the othersController and its small playerMat and
      * also it removes the player from the gameBoard.
      *
      * @param player which should get removed
@@ -639,19 +638,6 @@ public class GameController extends Controller implements Updatable {
     /**
      * TODO
      */
-    @FXML
-    private void soundsOnAction() {
-        soundHandler.musicOn();
-    }
-
-    /**
-     * TODO
-     */
-    @FXML
-    private void soundsOffAction() {
-        soundHandler.musicOff();
-    }
-
     public void resetFocus() {
         boardPane.requestFocus();
     }

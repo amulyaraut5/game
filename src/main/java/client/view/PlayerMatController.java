@@ -126,7 +126,6 @@ public class PlayerMatController extends Controller {
         }
         if(againNotFirst) {
             viewClient.sendMessage(new SelectCard(cardType, positionDroppedCard));
-            //againNotFirst = false;
         }
     }
 

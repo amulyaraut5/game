@@ -6,7 +6,6 @@ import com.jfoenix.controls.JFXTextField;
 import game.Player;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.input.KeyCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Constants;
@@ -14,8 +13,6 @@ import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.JSONProtocol.body.SendChat;
 import utilities.Updatable;
-
-import java.util.ArrayList;
 
 /**
  * This method represents the chat for chatting with other players and direct chatting.

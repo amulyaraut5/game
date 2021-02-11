@@ -1,7 +1,6 @@
 package client.view;
 
 import game.Player;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -155,8 +154,6 @@ public class LobbyController extends Controller implements Updatable {
             case SelectMap -> {
                 SelectMap selectMap = (SelectMap) message.getBody();
                 showMapView(selectMap.getAvailableMaps());
-                MapSelectionController.getMapSelectionController().setVisible(true);
-                MapSelectionController.getMapSelectionController().setDisable(false);
             }
             case MapSelected -> {
                 MapSelected msg = (MapSelected) message.getBody();
@@ -197,19 +194,6 @@ public class LobbyController extends Controller implements Updatable {
     @FXML
     private void checkBoxAction() {
         viewClient.sendMessage(new SetStatus((readyCheckbox.isSelected())));
-    }
-
-    /**
-     * This method  TODO
-     *
-     * @param event
-     */
-    @FXML
-    private void goToMapSelection(ActionEvent event) {
-        viewManager.showMap();
-        if (!readyCheckbox.isSelected()) {
-            MapSelectionController.getMapSelectionController().setInfoLabel("Click ready and wait for your turn to select map");
-        }
     }
 
     public void resetFocus() {

@@ -157,8 +157,8 @@ public class GameBoardController {
     /**
      * This method places the robot on the board based on the starting point player chooses.
      *
-     * @param player
-     * @param coordinate
+     * @param player //TODO
+     * @param coordinate //TODO
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == ViewClient.getInstance().getThisPlayersID()) {

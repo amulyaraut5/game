@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * OthersController handles the HBox underneath the gamemat and creates as much little playermats (onePlayer.fxml)
+ * OthersController handles the HBox underneath the gameMat and creates as much little playerMats (onePlayer.fxml)
  * as other player that joined and handles incoming protocol messages.
  *
  * @author sarah
@@ -59,9 +59,9 @@ public class OthersController extends Controller {
     }
 
     /**
-     * This method creates for every player except player itself a little playermat
+     * This method creates for every player except player itself a little playerMat
      *
-     * @param players
+     * @param players //TODO
      */
     public void createPlayerMats(ArrayList<Player> players) {
         hBoxPlayer.setAlignment(Pos.CENTER);
@@ -73,7 +73,7 @@ public class OthersController extends Controller {
     }
 
     /**
-     * @param player
+     * @param player //TODO
      */
     private void playerAdded(Player player) {
         hBoxPlayer.setSpacing(10);
