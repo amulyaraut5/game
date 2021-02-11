@@ -8,6 +8,7 @@
     -fx-border-color: green;
     -fx-border-width: 4px;
     -fx-border-radius: 5px;
+    /*-fx-text-fill: white;*/
 }
 
 .list-view {
@@ -18,12 +19,15 @@
     -fx-border-width: 4px;
     -fx-border-color: transparent;
     -fx-border-radius: 5px;
+    -fx-alignment: center;
+    /*-fx-text-fill: white;*/
 }
 
 .list-cell:filled:hover {
     -fx-border-color: gray;
     -fx-border-width: 4px;
     -fx-border-radius: 5px;
+    /*-fx-text-fill: white;*/
 }
 
 .register {
@@ -39,8 +43,10 @@
 }
 
 .chatLabel {
--fx-text-fill: red;
+    -fx-text-fill: #cccad4;
 }
+
+
 /*Label {
     -fx-text-alignment: right;
     -fx-alignment: right;

@@ -8,6 +8,7 @@ import game.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,9 +40,11 @@ public class ServerController implements Updatable {
     private JFXButton startButton;
     @FXML
     private JFXButton AIButton;
+    public HBox iconPane;
 
     @FXML
     private void initialize() {
+        iconPane.setSpacing(40);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/gameBoard.fxml"));
             boardPane.getChildren().add(fxmlLoader.load());
@@ -50,6 +53,7 @@ public class ServerController implements Updatable {
         } catch (IOException e) {
             logger.error("GameBoard could not be created: " + e.getMessage());
         }
+        Updatable.showInfo(infoLabel, "Server started!     ");
     }
 
     @FXML
@@ -68,8 +72,20 @@ public class ServerController implements Updatable {
 
     @FXML
     public void addAIClicked() {
-        Updatable.showInfo(infoLabel, "Ai joined!");
-        connect(new AIClient());
+        if (server.getUsers().size() < 6) {
+            Updatable.showInfo(infoLabel, "Ai joined!");
+            iconPane.getChildren().add(new Label("AI " + server.getUsers().size()));
+            new Thread(() -> connect(new AIClient())).start();
+            if (server.getUsers().size() == 6) {
+                Updatable.showInfo(infoLabel, "Last AI Joined!");
+                AIButton.setDisable(true);
+                AIButton.setVisible(false);
+            }
+        } else {
+            Updatable.showInfo(infoLabel, "Server already full!");
+            AIButton.setDisable(true);
+            AIButton.setVisible(false);
+        }
     }
 
     private void connect(Client client) {
@@ -135,7 +151,7 @@ public class ServerController implements Updatable {
                 CardSelected cardSelected = (CardSelected) message.getBody();
                 //othersController.getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
             }
-            case PickDamage -> {
+            case PickDamage, CurrentCards, TimerEnded, TimerStarted, SelectionFinished -> {
             }
             case PlayerShooting -> {
                 gameBoardController.robotLaserAnimation(game.getPlayers());
@@ -143,14 +159,6 @@ public class ServerController implements Updatable {
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-            }
-            case SelectionFinished -> {
-            }
-            case TimerStarted -> {
-            }
-            case TimerEnded -> {
-            }
-            case CurrentCards -> {
             }
             case CurrentPlayer -> {
                 //TODO display

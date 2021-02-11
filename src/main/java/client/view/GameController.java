@@ -35,7 +35,7 @@ import java.util.TimerTask;
 import static utilities.enums.CardType.*;
 
 /**
- * The GameViewController class controls the GameView and coordinates its inner views
+ * The GameViewController class controls the GameView and coordinates its inner views.
  *
  * @author Simon
  * @author Sarah
@@ -44,97 +44,222 @@ import static utilities.enums.CardType.*;
 public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * A list which contains all active players.
+     */
     private final ArrayList<Player> activePlayers = new ArrayList<>();
+
+    /**
+     * The list stores the actions the player makes if he's the current player to display the
+     * actions the damage card makes.
+     */
     private final ArrayList<JSONBody> currentAction = new ArrayList<>();
+
+    /**
+     * The list stores all four possible damage CardTypes
+     */
     private final ArrayList<CardType> damageCards = new ArrayList<>();
+
+    /**
+     * The controller of the PlayerMatController
+     */
     private PlayerMatController playerMatController;
+    /**
+     * The controller of the ConstructionController
+     */
     private ConstructionController constructionController;
+    /**
+     * The controller of the ProgrammingController
+     */
     private ProgrammingController programmingController;
+    /**
+     * The controller of the ActivationController
+     */
     private ActivationController activationController;
+    /**
+     * The controller of the OthersController
+     */
     private OthersController othersController;
+    /**
+     * The controller of the GameWonController
+     */
     private GameWonController gameWonController;
+    /**
+     * The controller of the GameBoardController
+     */
     private GameBoardController gameBoardController;
 
+    /**
+     * It stores if the player was the first that selected all 5 registers.
+     */
     private boolean allRegistersAsFirst = false;
+    /**
+     * It stores if the card the player has in current register is a damage card.
+     */
     private boolean currentCardIsDamage = false;
+    /**
+     * The pane that stores the constructionPane.
+     */
     private Pane constructionPane;
+    /**
+     * The pane that stores the programmingPane.
+     */
     private Pane programmingPane;
+    /**
+     * The pane that stores the activationPane.
+     */
     private Pane activationPane;
+    /**
+     * The pane that stores the gameWonPane.
+     */
     private Pane gameWonPane;
 
+    /**
+     * The Soundhandler plays sound effects.
+     */
     private SoundHandler soundHandler;
+    /**
+     * This GameState stores the currentPhase of the game.
+     */
     private GameState currentPhase = GameState.CONSTRUCTION;
+    /**
+     * This stores the currentRound, it gets increased in the progress of the game.
+     */
     private int currentRound = 1;
+    /**
+     * This stores if its the first round, then not so many attributes are resetted.
+     */
     private boolean first = true;
+    /**
+     * This stores if the game is muted.
+     */
     private boolean isMuted = true;
+    /**
+     * This stores if the music is playing, the player can change ist by pressing a key.
+     */
     private boolean play = false;
 
+    /**
+     * The pane shows information for the player.
+     */
     @FXML
     private Pane infoPane;
+    /**
+     * The Label shows which moves the player does and that hos card were shuffled.
+     */
     @FXML
     private Label moveInfo;
+    /**
+     * This Pane will store the onePlayerMats.
+     */
     @FXML
-    private HBox otherPlayerSpace;
+    private Pane otherPlayerSpace;
+    /**
+     * The pane stores the playerMat.
+     */
     @FXML
     private StackPane playerMat;
+    /**
+     * The pane stores the phasePane.
+     */
     @FXML
     private BorderPane phasePane;
+    /**
+     * The pane stores the chatPane.
+     */
     @FXML
     private BorderPane chatPane;
+    /**
+     * The label displays which round it currently is.
+     */
     @FXML
     private Label roundLabel;
+    /**
+     * This pane contains the roundLabel and is invisible in the login, lobby or construction phase
+     * and otherwise in activation- and programmingphase it is visible.
+     */
     @FXML
     private Pane roundPane;
+    /**
+     * The pane stores the boardPane.
+     */
     @FXML
     private Pane boardPane;
+    /**
+     * This label displays the errors.
+     */
     @FXML
     private Label infoLabel;
 
     /**
-     *
+     * This method loads and adds the gameBoard, the playerMat and initializes the otherController view, it also
+     * constructs the views of the different phases.
      */
     @FXML
     public void initialize() {
-
-        constructPhaseViews();
+        soundHandler = new SoundHandler();
         roundPane.setVisible(false);
+        constructPhaseViews();
+        fillDamageCardsList();
+        addGameBoard();
+        addPlayerMat();
+        addOtherPlayer();
+    }
 
-        damageCards.add(Spam);
-        damageCards.add(Virus);
-        damageCards.add(Trojan);
-        damageCards.add(Worm);
-
+    /**
+     * This method constructs the gameBoard, initializes the gameBoardController and adds it to gameView.
+     */
+    private void addGameBoard() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/gameBoard.fxml"));
             boardPane.getChildren().add(fxmlLoader.load());
-
             gameBoardController = fxmlLoader.getController();
         } catch (IOException e) {
             logger.error("GameBoard could not be created: " + e.getMessage());
         }
+    }
+
+    /**
+     * This method constructs the playerMat, initializes the playerMatController and adds it to gameView.
+     */
+    private void addPlayerMat() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/playerMat.fxml"));
             playerMat.setAlignment(Pos.CENTER);
             playerMat.getChildren().add(fxmlLoader.load());
-
             playerMatController = fxmlLoader.getController();
         } catch (IOException e) {
             logger.error("PlayerMat could not be created: " + e.getMessage());
         }
+    }
+
+    /**
+     * This method constructs the otherPlayer view , initializes the othersController and adds it to gameView.
+     */
+    private void addOtherPlayer() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/otherPlayer.fxml"));
-            otherPlayerSpace.setSpacing(20);
             otherPlayerSpace.getChildren().add(fxmlLoader.load());
             othersController = fxmlLoader.getController();
         } catch (IOException e) {
             logger.error("Other player mats could not be created: " + e.getMessage());
         }
-
-        soundHandler = new SoundHandler();
     }
 
     /**
-     * @param chat
+     * This method fills the damageCards list with all available damage CardTypes.
+     */
+    private void fillDamageCardsList() {
+        damageCards.add(Spam);
+        damageCards.add(Virus);
+        damageCards.add(Trojan);
+        damageCards.add(Worm);
+    }
+
+    /**
+     * This method sets the chat in the chatPane with its width and height.
+     *
+     * @param chat the chatPane
      */
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
@@ -143,7 +268,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
+     * This method calls all controllers that need a reset if it's not the first round.
      */
     private void resetIfNotFirst() {
         if (!first) {
@@ -156,7 +281,9 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
+     * This method resets everything at the start of a programming phase. it sets the nodes
+     * visible or invisible and updates the current round in the label,
+     * resets the deckcounter and adds all the player to the activePlayers list.
      */
     private void resetInProgrammingPhase() {
         //playerMatController.fixSelectedCards(false);
@@ -173,7 +300,9 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * @param phase
+     * This method changes the phases and reset elements related to the state of phases.
+     *
+     * @param phase which should be next
      */
     public void changePhaseView(GameState phase) {
         currentPhase = phase;
@@ -193,7 +322,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
+     * This method constructs the different phase views and their controllers.
      */
     private void constructPhaseViews() {
         FXMLLoader constructionLoader = new FXMLLoader(getClass().getResource("/view/innerViews/constructionView.fxml"));
@@ -219,7 +348,10 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * @param currentAction
+     * This method checks the currentAction of the player, it then gets added to the moveInfo label,
+     * which is only visible if the current card of the player is a damage card.
+     *
+     * @param currentAction a list with all actions since the player is the current player
      */
     private void setDisplayAction(ArrayList<JSONBody> currentAction) {
         StringBuilder text = new StringBuilder(" ");
@@ -244,10 +376,14 @@ public class GameController extends Controller implements Updatable {
                 text.append("You performed the card on top of your deck");
             }
         }
-
         moveInfo.setText(String.valueOf(text));
     }
 
+    /**
+     * This method checks which JSONMessage the gameController got and handles it.
+     *
+     * @param message which the server sent which is related to the game
+     */
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -298,7 +434,6 @@ public class GameController extends Controller implements Updatable {
                     angle = 90;
                     r.setOrientation(r.getOrientation().getNext());
                 }
-
                 gameBoardController.handlePlayerTurning(player, angle);
             }
             case CardSelected -> {
@@ -460,7 +595,13 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * @param event
+     * This method handles what should happen if the player presses the keys W, D, S, A, M, P.
+     * Each of those hotkeys has impacts.
+     *
+     * <p> W, A, S, D for manipulating the orientation of the robot</p>
+     * <p> M, P for manipulating the music</p>
+     *
+     * @param event which key gets pressed
      */
     public void keyPressed(KeyEvent event) {
         String orientation = "";
@@ -486,7 +627,10 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * @param player
+     * This method removes a player by exiting from the othersController and its small playermat and
+     * also it removes the player from the gameBoard.
+     *
+     * @param player which should get removed
      */
     public void removePlayer(Player player) {
         gameBoardController.removePlayer(player);
@@ -494,7 +638,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
+     * TODO
      */
     @FXML
     private void soundsOnAction() {
@@ -502,15 +646,21 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     *
+     * TODO
      */
     @FXML
     private void soundsOffAction() {
         soundHandler.musicOff();
     }
 
+    public void resetFocus() {
+        boardPane.requestFocus();
+    }
+
     /**
-     * @return
+     * This method returns the playerMatController.
+     *
+     * @return the playerMatController
      */
     public PlayerMatController getPlayerMatController() {
         return playerMatController;

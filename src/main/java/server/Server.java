@@ -63,6 +63,7 @@ public class Server extends Thread {
     private ServerState serverState = ServerState.LOBBY;
     private boolean isMapSelected = false;
     private boolean isMapSent = false;
+    private String selectedMap;
 
     private Server() {
     }
@@ -170,7 +171,7 @@ public class Server extends Thread {
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
-                game.getProgrammingPhase().putCardToRegister(game.userToPlayer(user), selectCard);
+                game.getProgrammingPhase().handleCardSelection(game.userToPlayer(user), selectCard);
                 communicateUsers(new CardSelected(user.getID(), selectCard.getRegister()), user);
             }
             case SetStartingPoint -> {
@@ -190,11 +191,10 @@ public class Server extends Thread {
                     game.getActivationPhase().activateCards(user.getID());
             }
             case MapSelected -> {
-                if (!isMapSelected) {
-                    MapSelected selectMap = (MapSelected) message.getBody();
-                    game.handleMapSelection(selectMap.getMap());
-                    isMapSelected = true;
-                } else communicateAll(new Error("Map has already been selected"));
+                MapSelected selectMap = (MapSelected) message.getBody();
+                selectedMap = selectMap.getMap().get(0);
+                isMapSelected = true;
+                communicateAll(selectMap);
 
                 if ((readyUsers.size() == users.size()) && readyUsers.size() > 1) {
                     game.play();
@@ -252,21 +252,28 @@ public class Server extends Thread {
 
     private void addNewUser(User user, HelloServer hs) {
         if (hs.getProtocol() == Constants.PROTOCOL) {
-            user.setID(idCounter++);
-            currentThread().setName("UserThread-" + user.getID());
-            if (hs.isAI()) {
-                AIs.add(user);
-            } else notAIs.add(user);
+            if (users.size() <= 6) {
+                user.setID(idCounter++);
+                currentThread().setName("UserThread-" + user.getID());
+                if (hs.isAI()) {
+                    AIs.add(user);
+                } else notAIs.add(user);
 
-            for (User u : users) {
-                if (u.getName() != null) {
-                    user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
+                user.message(new Welcome(user.getID()));
+
+                for (User u : users) {
+                    if (u.getName() != null) {
+                        user.message(new PlayerAdded(u.getID(), u.getName(), u.getFigure()));
+                    }
                 }
+                for (User readyUser : readyUsers) {
+                    user.message(new PlayerStatus(readyUser.getID(), true));
+                }
+                if (selectedMap != null) user.message(new MapSelected(selectedMap));
+            } else {
+                user.message(new Error("Server is already full!"));
+                user.getThread().disconnect();
             }
-            for (User readyUser : readyUsers) {
-                user.message(new PlayerStatus(readyUser.getID(), true));
-            }
-            user.message(new Welcome(user.getID()));
         } else {
             JSONBody error = new utilities.JSONProtocol.body.Error("Protocols don't match! " +
                     "Client Protocol: " + hs.getProtocol() + ", Server Protocol: " + Constants.PROTOCOL);
@@ -319,11 +326,7 @@ public class Server extends Thread {
 
         // Random Map is selected if all users are AI
         if (allUsersReady && (AIs.size() == readyUsers.size())) {
-
-            ArrayList<String> input = new ArrayList<>();
-            input.add(maps.get(r.nextInt(maps.size())));
-
-            game.handleMapSelection(input);
+            selectedMap = maps.get(r.nextInt(maps.size()));
         }
     }
 
@@ -486,6 +489,10 @@ public class Server extends Thread {
     public static Server getInstance() {
         if (instance == null) instance = new Server();
         return instance;
+    }
+
+    public String getSelectedMap() {
+        return selectedMap;
     }
 
     public ServerState getServerState() {

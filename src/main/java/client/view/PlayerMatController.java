@@ -60,6 +60,7 @@ public class PlayerMatController extends Controller {
     public void initialize() {
         energyCubeImage = new Image(getClass().getResource("/otherElements/energycube.png").toString());
         addEnergy(5);
+        playerMatInfoLabel.setVisible(false);
         widthRegisterCard = registerHBox.getPrefWidth() / 5;
         heightRegisterCard = registerHBox.getPrefHeight();
         setSpacingHBoxes();
@@ -102,7 +103,10 @@ public class PlayerMatController extends Controller {
 
     private void setOnDragExited(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
-        if (!againNotFirst) playerMatInfoLabel.setText("You are not allowed to play Again in first register");
+        if (positionDroppedCard==1 && !againNotFirst) {
+            playerMatInfoLabel.setText("You are not allowed to play Again in first register");
+            displayingTime(playerMatInfoLabel);
+        }
         else playerMatInfoLabel.setText(" ");
         if (checkDragAllowed(pane, db) && againNotFirst) {
             ((Pane) getProgrammingImageView().getParent()).getChildren().remove(getProgrammingImageView());
@@ -113,14 +117,17 @@ public class PlayerMatController extends Controller {
 
     private void setOnDragDone() {
         CardType cardType = extractCardType(droppedImageView.getImage().getUrl());
-        if (getWasFormerRegister()) viewClient.sendMessage(new SelectCard(null, getRegisterPosition()));
+        if (getWasFormerRegister() && againNotFirst) viewClient.sendMessage(new SelectCard(null, getRegisterPosition()));
         switch (cardType) {
             case Spam -> viewClient.setCountSpamCards(viewClient.getCountSpamCards() + 1);
             case Virus -> viewClient.setCountVirusCards(viewClient.getCountVirusCards() + 1);
             case Trojan -> viewClient.setCountTrojanCards(viewClient.getCountTrojanCards() + 1);
             case Worm -> viewClient.setCountWormCards(viewClient.getCountWormCards() + 1);
         }
-        viewClient.sendMessage(new SelectCard(cardType, positionDroppedCard));
+        if(againNotFirst) {
+            viewClient.sendMessage(new SelectCard(cardType, positionDroppedCard));
+            //againNotFirst = false;
+        }
     }
 
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
@@ -198,6 +205,7 @@ public class PlayerMatController extends Controller {
         for (int i = 1; i <= 5; i++) {
             path = "/backgrounds/register/register_" + i + ".png";
             ImageView imageView = ImageHandler.createImageView(path, width, height);
+            assert imageView != null;
             imageView.setTranslateX(positionX);
             imageView.setTranslateY(positionY);
             positionX = positionX + widthRegisterCard + 3;
@@ -256,10 +264,6 @@ public class PlayerMatController extends Controller {
             energyHBox.getChildren().add(energyCube);
             count--;
         }
-    }
-
-    public void currentCards(CardType card) {
-        //TODO austauschen
     }
 
     /**
@@ -340,6 +344,7 @@ public class PlayerMatController extends Controller {
     public int getProgrammingDeckNr() {
         return programmingDeckNr;
     }
+
 }
 
 

@@ -5,11 +5,9 @@ import client.view.*;
 import game.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -83,6 +81,7 @@ public class ViewManager {
     public void showLogin() {
         ViewClient.getInstance().setCurrentController(loginController);
         menuStage.setScene(loginScene);
+        loginController.requestFocus();
         if (currentScene == gameScene) openMenuStage();
         currentScene = loginScene;
     }
@@ -150,6 +149,7 @@ public class ViewManager {
 
         menuStage.setOnCloseRequest(event -> {
             if (currentScene != menuScene) ViewClient.getInstance().disconnect();
+            System.exit(0);
         });
     }
 
@@ -166,11 +166,6 @@ public class ViewManager {
         });
     }
 
-    private void setMouseImage(Scene scene){
-        Image image = new Image(getClass().getResource("/otherElements/mouse.png").toString());
-        scene.setCursor(new ImageCursor(image));
-    }
-
     private void constructScenes() throws IOException {
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
@@ -183,11 +178,6 @@ public class ViewManager {
         lobbyScene = new Scene(lobbyLoader.load());
         gameScene = new Scene(gameLoader.load());
         mapScene = new Scene(mapLoader.load());
-
-        setMouseImage(loginScene);
-        setMouseImage(lobbyScene);
-        setMouseImage(menuScene);
-        setMouseImage(gameScene);
 
         menuController = menuLoader.getController();
         loginController = loginLoader.getController();
@@ -203,6 +193,19 @@ public class ViewManager {
         controllerList.add(mapSelectionController);
 
         ViewClient.getInstance().setController(controllerList);
+    }
+
+    public void resetAll() {
+        showMenu();
+        try {
+            constructScenes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetGame() {
+        showLobby();
     }
 
     public static ViewManager getInstance() {

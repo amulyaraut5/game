@@ -9,6 +9,9 @@ import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.MapSelected;
 import utilities.Updatable;
 
+/**
+ * TODO
+ */
 public class MapSelectionController extends Controller implements Updatable {
     private static MapSelectionController mapSelectionController;
     @FXML

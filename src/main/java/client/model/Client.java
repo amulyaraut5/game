@@ -1,12 +1,16 @@
 package client.model;
 
+import client.ViewManager;
 import game.Player;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.Multiplex;
+import utilities.JSONProtocol.body.Error;
+import utilities.Updatable;
 import utilities.enums.CardType;
 
 import java.io.IOException;
@@ -26,6 +30,7 @@ public abstract class Client {
     private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
 
     protected final ArrayList<Player> players = new ArrayList<>();
+    protected final ArrayList<Player> rebootingAIs = new ArrayList<>();
 
     protected int thisPlayersID;
 
@@ -35,30 +40,17 @@ public abstract class Client {
     private PrintWriter writer;
 
     /**
-     * this method reduces the number of damage cards on the associated deck by one.
+     * this method reduces the number of damage cards on the associated deck.
      *
-     * @param cardType damage card drawn
+     * @param cardList received damage cards
      */
-    public void handleDamageCount(CardType cardType) {
-        switch (cardType) {
-            case Spam -> setCountSpamCards(getCountSpamCards() - 1);
-            case Trojan -> setCountTrojanCards(getCountTrojanCards() - 1);
-            case Worm -> setCountWormCards(getCountWormCards() - 1);
-            case Virus -> setCountVirusCards(getCountVirusCards() - 1);
-        }
-    }
-
-    /**
-     * TODO
-     *
-     * @param cardList
-     */
-
     public void handleDamageCount(ArrayList<CardType> cardList) {
-        if (cardList.size() == 0) setCountSpamCards(0); //TODO correct?
-        else {
-            for (CardType cardType : cardList) {
-                handleDamageCount(cardType);
+        for (CardType cardType : cardList) {
+            switch (cardType) {
+                case Spam -> setCountSpamCards(countSpamCards - 1);
+                case Trojan -> setCountTrojanCards(countTrojanCards - 1);
+                case Worm -> setCountWormCards(countWormCards - 1);
+                case Virus -> setCountVirusCards(countVirusCards - 1);
             }
         }
     }
@@ -103,13 +95,7 @@ public abstract class Client {
      * This method ends the client program. The reader and writer threads get interrupted and the socket is closed.
      */
     public void disconnect() {
-        readerThread.interrupt();
-        try {
-            socket.close();
-            logger.info("The connection with the server is closed.");
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
+        disconnect(null);
     }
 
     /**
@@ -120,12 +106,17 @@ public abstract class Client {
      */
     public void disconnect(Exception ex) {
         readerThread.interrupt();
-        logger.warn("The server is no longer reachable: " + ex.getMessage());
+        if (ex != null) logger.warn("The server is no longer reachable: " + ex.getMessage());
         try {
             socket.close();
-            logger.info("The connection with the server is closed.");
         } catch (IOException e) {
             logger.error(e.getMessage());
+        }
+        logger.info("The connection with the server is closed.");
+        if (this instanceof ViewClient) {
+            Platform.runLater(() -> ViewManager.getInstance().resetAll());
+            Updatable controller = ((ViewClient) this).getCurrentController();
+            controller.update(JSONMessage.build(new Error("Server no longer reachable!")));
         }
     }
 
@@ -155,8 +146,10 @@ public abstract class Client {
     public String getUniqueName(int id) {
         Player player = getPlayerFromID(id);
         for (Player p : players) {
-            if (player != p && player.getName().equals(p.getName()))
-                return player.getName() + " #" + player.getID();
+            if (player != p && player.getName().equals(p.getName())){
+                String uniqueName = player.getName() + " #" + player.getID();
+                return uniqueName;
+            }
         }
         return player.getName();
     }

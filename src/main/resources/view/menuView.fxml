@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,15 +12,13 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.MenuController">
-   <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 50;">
-      <image>
-         <Image url="@../otherElements/menu.png" />
-      </image>
-      <viewport>
-         <Rectangle2D minX="600.0" minY="400.0" width="600.0" />
-      </viewport>
-   </ImageView>
-   <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black; -fx-opacity: .5;" />
+    <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 50;">
+        <viewport>
+            <Rectangle2D minX="600.0" minY="400.0" width="600.0" />
+        </viewport>
+        <Image url="@../otherElements/menu.png" />
+    </ImageView>
+    <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black; -fx-opacity: .5;" />
     <Pane layoutX="81.0" layoutY="27.0" prefHeight="109.0" prefWidth="438.0" style="-fx-background-color: orange; -fx-background-radius: 10; -fx-border-radius: 5; -fx-border-color: orange; -fx-border-width: 5;">
         <Label id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="28.0" text="Welcome to Roborally" textFill="WHITE">
             <font>
@@ -32,24 +30,29 @@
         <font>
             <Font name="System Bold" size="18.0" />
         </font>
-      <effect>
-         <DropShadow blurType="ONE_PASS_BOX" spread="0.45" />
-      </effect>
+        <effect>
+            <DropShadow blurType="ONE_PASS_BOX" spread="0.45" />
+        </effect>
     </Label>
     <JFXButton buttonType="RAISED" layoutX="305.0" layoutY="316.0" onAction="#aiJoinClicked" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: green;" text="AI Join" textFill="WHITE">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>
     </JFXButton>
-    <TextField fx:id="textPortNumber" layoutX="240.0" layoutY="162.0" prefHeight="26.0" prefWidth="120.0" promptText="Port: 5570" />
-    <JFXButton fx:id="hostButton" buttonType="RAISED" layoutX="175.0" layoutY="251.0" onAction="#hostGameClicked" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: orange;" text="Host" textFill="WHITE">
+    <JFXButton buttonType="RAISED" layoutX="175.0" layoutY="251.0" onAction="#hostGameClicked" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: orange;" text="Host" textFill="WHITE">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>
     </JFXButton>
-    <JFXButton fx:id="joinButton" buttonType="RAISED" layoutX="175.0" layoutY="316.0" onAction="#joinGameClicked" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: orange;" text="Join" textFill="WHITE">
+    <JFXButton buttonType="RAISED" layoutX="175.0" layoutY="316.0" onAction="#joinGameClicked" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: orange;" text="Join" textFill="WHITE">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>
     </JFXButton>
+   <Pane layoutX="222.0" layoutY="163.0" prefHeight="30.0" prefWidth="157.0" style="-fx-background-color: white; -fx-opacity: 0.8;" />
+   <JFXTextField fx:id="textPortNumber" alignment="CENTER" focusColor="GREEN" layoutX="222.0" layoutY="163.0" promptText="Port: 5570" unFocusColor="ORANGE">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </JFXTextField>
 </AnchorPane>

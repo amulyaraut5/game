@@ -26,7 +26,6 @@ public class ViewClient extends Client {
     private GameController gameController;
     private LoginController loginController;
     private LobbyController lobbyController;
-    private MapSelectionController mapSelectionController;
 
     private Updatable currentController;
 
@@ -47,11 +46,10 @@ public class ViewClient extends Client {
         Platform.runLater(() -> {
             switch (type) {
                 case SelectMap, Reboot, Error, StartingPointTaken, YourCards, Movement,
-                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting, ActivePhase,
-                        CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded, CurrentCards, CurrentPlayer,
-                        Energy, CheckpointReached, ShuffleCoding, DiscardHand, SelectDamage, DrawDamage, GameWon -> {
-                    currentController.update(message);
-                }
+                        PlayerTurning, CardSelected, NotYourCards, PickDamage, PlayerShooting,
+                        ActivePhase, CardsYouGotNow, SelectionFinished, TimerStarted, TimerEnded,
+                        CurrentCards, CurrentPlayer, Energy, CheckpointReached, ShuffleCoding,
+                        DiscardHand, SelectDamage, DrawDamage, GameWon -> currentController.update(message);
                 case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", false));
                 case Welcome -> {
                     Welcome wc = (Welcome) message.getBody();
@@ -62,7 +60,7 @@ public class ViewClient extends Client {
                     PlayerAdded playerAdded = (PlayerAdded) message.getBody();
                     addNewPlayer(playerAdded);
                 }
-                case PlayerStatus -> lobbyController.update(message);
+                case PlayerStatus, MapSelected -> lobbyController.update(message);
                 case ConnectionUpdate -> {
                     ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
                     if (msg.getAction().equals("Remove") && !msg.isConnected()) {
@@ -73,16 +71,8 @@ public class ViewClient extends Client {
                         players.remove(player);
 
                         if (players.size() <= 1) {
-                            viewManager.closeGame();
-                            viewManager.showLobby();
+                            viewManager.resetGame();
                         }
-                    } else if (msg.getAction().equals("Ignore") && !msg.isConnected()) {
-                        Player player = getPlayerFromID(msg.getID());
-                        loginController.ignorePlayer(player);
-                        //lobbyController.ignorePlayer(player); //TODO
-                        //gameController.ignorePlayer(player);
-                        //players.remove(player);
-
                     }
                 }
                 case ReceivedChat -> {
@@ -106,7 +96,7 @@ public class ViewClient extends Client {
             gameController.getPlayerMatController().loadPlayerMap(player);
             viewManager.showLobby();
         }
-        loginController.setFigureTaken(player.getID(), player.getFigure(), true);
+        loginController.setFigureTaken(player.getID(), player.getFigure());
         lobbyController.addJoinedPlayer(player);
         chatController.addUser(player);
     }
@@ -115,7 +105,7 @@ public class ViewClient extends Client {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameController = (GameController) controllerList.get(2);
-        mapSelectionController = (MapSelectionController) controllerList.get(3);
+        MapSelectionController mapSelectionController = (MapSelectionController) controllerList.get(3);
     }
 
     public void setChatController(ChatController chatController) {

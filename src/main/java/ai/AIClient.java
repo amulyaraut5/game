@@ -65,9 +65,10 @@ public class AIClient extends Client {
     public void handleMessage(JSONMessage message) {
         MessageType type = message.getType();
         switch (type) {
-            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy,
+            case TimerStarted, SelectionFinished, Error, TimerEnded, Energy, CardsYouGotNow,
                     ReceivedChat, GameWon, PlayerStatus, HelloServer, SetStatus, SendChat,
-                    SetStartingPoint, PlayIt, PlayerShooting, SelectMap, MapSelected, PlayerValues -> {
+                    SetStartingPoint, PlayIt, PlayerShooting, SelectMap, MapSelected, PlayerValues,
+                    CardSelected, NotYourCards, DiscardHand, ShuffleCoding, CurrentCards -> {
                 //nothing should happen, dummy case
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
@@ -82,7 +83,7 @@ public class AIClient extends Client {
                         choosePlayerValues();
                         t.cancel();
                     }
-                }, 1000);
+                }, 50);
             }
             case PlayerAdded -> {
                 PlayerAdded playerAdded = (PlayerAdded) message.getBody();
@@ -99,10 +100,12 @@ public class AIClient extends Client {
                     if (currentPhase == GameState.CONSTRUCTION) {
                         int[] startingPoints = {39, 78, 14, 53, 66, 105};
                         for (int point : startingPoints) {
-                            sendMessage(new SetStartingPoint(point)); //TODO choose not just first startingPoint
+                            sendMessage(new SetStartingPoint(point)); //choose not just first startingPoint
                         }
                     } else if (currentPhase == GameState.ACTIVATION) {
-                        sendMessage(new PlayIt());
+                        if (players.contains(getPlayerFromID(msg.getPlayerID()))) {
+                            sendMessage(new PlayIt());
+                        }
                     }
                 }
             }
@@ -119,6 +122,14 @@ public class AIClient extends Client {
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
                 currentPhase = msg.getPhase();
+                if (currentPhase == GameState.PROGRAMMING) {
+                    for (Player player : rebootingAIs) {
+                        logger.info(player.getID() + "is in.");
+                    }
+
+                    players.addAll(rebootingAIs);
+                    rebootingAIs.clear();
+                }
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -145,7 +156,11 @@ public class AIClient extends Client {
             }
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
-                getPlayerFromID(msg.getPlayerID()).getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
+                Player ai = getPlayerFromID(msg.getPlayerID());
+                //TODO this might be just a temporary fix. Because rebooted AIs are removed from the player list the player can be null.
+                if (ai != null) {
+                    ai.getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
+                }
             }
             case PlayerTurning -> {
                 PlayerTurning msg = (PlayerTurning) message.getBody();
@@ -157,38 +172,29 @@ public class AIClient extends Client {
                 getPlayerFromID(msg.getPlayerID()).getRobot().setOrientation(orientation);
             }
             case ConnectionUpdate -> {
-                //TODO remove player
-            }
-            case CardsYouGotNow -> {
-                CardsYouGotNow msg = (CardsYouGotNow) message.getBody();
-                //TODO getPlayerFromID(thisPlayersID).setDrawnProgrammingCards(msg.getCards());
-            }
-            case CurrentCards -> {
-                //TODO
+                ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
+                if (msg.getAction().equals("Remove") && !msg.isConnected()) {
+                    Player player = getPlayerFromID(msg.getID());
+                    players.remove(player);
+
+                    if (players.size() <= 1) {
+                        disconnect();
+                    }
+                }
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
-                // TODO nothing
+                logger.info(reboot.getPlayerID() + "was out.");
+                rebootingAIs.add(getPlayerFromID(reboot.getPlayerID()));
+                players.remove(getPlayerFromID(reboot.getPlayerID()));
             }
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
                 handleDamageCount(drawDamage.getCards());
                 if (drawDamage.getPlayerID() == thisPlayersID) {
-                    //TODO nothing
+                    handleDamageCount(drawDamage.getCards());
                 }
             }
-            case CardSelected -> {
-                CardSelected cardSelected = (CardSelected) message.getBody();
-            } //TODO
-            case NotYourCards -> {
-                NotYourCards notYourCards = (NotYourCards) message.getBody();
-            } //TODO
-            case ShuffleCoding -> {
-                ShuffleCoding shuffleCoding = (ShuffleCoding) message.getBody();
-            } //TODO
-            case DiscardHand -> {
-                DiscardHand discardHand = (DiscardHand) message.getBody();
-            } //TODO
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }
     }
@@ -209,7 +215,7 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
+                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }
@@ -218,7 +224,6 @@ public class AIClient extends Client {
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
         for (int i = 0; i < 5; i++) {
-            handleDamageCount(bestCombination[i]);
             sendMessage(new SelectCard(bestCombination[i], i + 1));
         }
     }

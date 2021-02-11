@@ -83,6 +83,7 @@ public class Coordinate {
      *
      * @return a clone of this Coordinate.
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public Coordinate clone() {
         return new Coordinate(x, y);

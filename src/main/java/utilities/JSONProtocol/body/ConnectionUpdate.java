@@ -17,6 +17,7 @@ public class ConnectionUpdate extends JSONBody {
         return playerID;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isConnected() {
         return connected;
     }

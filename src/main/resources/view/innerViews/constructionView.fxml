@@ -14,7 +14,7 @@
     <Pane layoutX="17.0" layoutY="72.0" prefHeight="57.0" prefWidth="386.0"
           style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
 
-        <Label fx:id="label" alignment="CENTER" layoutX="4.0" layoutY="-2.0" prefHeight="59.0" prefWidth="386.0"
+        <Label alignment="CENTER" layoutX="4.0" layoutY="-2.0" prefHeight="59.0" prefWidth="386.0"
                text="Construction Phase" textFill="WHITE" wrapText="true">
             <font>
                 <Font name="System Bold" size="20.0"/>

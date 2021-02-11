@@ -2,6 +2,7 @@ package client.view;
 
 import game.Game;
 import game.Player;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -13,14 +14,26 @@ import utilities.enums.ServerState;
 
 import java.awt.*;
 
+/**
+ * This class is responsible for announcing the winner and ending the game.
+ *
+ * @author TODO
+ */
 public class GameWonController extends Controller {
 
     @FXML
-    private Button exitGameButton;
+    private Button exitGameButton; //TODO
     @FXML
-    private Button newGameButton;
+    private Button newGameButton;//TODO
+
+    /**
+     * This pane stores the ImageView of the winner
+     */
     @FXML
     private FlowPane winnerIconPane;
+    /**
+     * This Label shows thee name of the winner
+     */
     @FXML
     private Label winnerLabel;
 
@@ -31,6 +44,11 @@ public class GameWonController extends Controller {
     private GameBoardController gameBoardController= new GameBoardController();
     private LobbyController lobbyController = new LobbyController();
 
+    /**
+     * This method creates the ImageView and Label of the winner and adds it to the view
+     *
+     * @param winner of the game
+     */
     public void setWinnerLabel(Player winner) {
         String path = "/lobby/" + robotNames[winner.getFigure()] + ".png";
         String name = viewClient.getUniqueName(winner.getID());
@@ -40,6 +58,9 @@ public class GameWonController extends Controller {
         winnerIconPane.getChildren().add(imageView);
     }
 
+    /**
+     * TODO
+     */
     @FXML
     public void returnClicked() {
         Player player = viewClient.getPlayerFromID(viewClient.getThisPlayersID());
@@ -79,15 +100,17 @@ public class GameWonController extends Controller {
  */
 
 
+        Platform.runLater(viewManager::resetGame);
     }
 
 
 
 
+    /**
+     * This method gets called by clicking on exit and exits the game
+     */
     @FXML
     public void exitGameClicked() {
-        viewManager.closeGame();
+        System.exit(0);
     }
-
-
 }

@@ -75,7 +75,7 @@ public class PlayCardController extends Controller {
         }
 
         Platform.runLater(() -> drawDamageAnchorPane.setVisible(true));
-        Platform.runLater(() -> timerSchedule());
+        Platform.runLater(this::timerSchedule);
     }
 
     private void timerSchedule() {

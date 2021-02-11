@@ -11,8 +11,8 @@ import utilities.JSONProtocol.body.TimerStarted;
 
 public class GameTimer extends Thread {
     private static final Logger logger = LogManager.getLogger();
-
     private final ProgrammingPhase programmingPhase;
+    boolean timerAlreadyFinished = false;
 
     public GameTimer(ProgrammingPhase programmingPhase) {
 
@@ -31,6 +31,12 @@ public class GameTimer extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        programmingPhase.endProgrammingTimer();
+        if (!timerAlreadyFinished) {
+            programmingPhase.endProgrammingTimer();
+        }
+    }
+
+    public void setTimerAlreadyFinished(boolean timerAlreadyFinished) {
+        this.timerAlreadyFinished = timerAlreadyFinished;
     }
 }

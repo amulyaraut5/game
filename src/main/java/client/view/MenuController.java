@@ -2,10 +2,10 @@ package client.view;
 
 import ai.AIClient;
 import client.model.Client;
+import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.Server;
@@ -19,7 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * The MenuController is the Controller for the main menu view.
+ * The MenuController is the Controller for the main menu view. TODO
  *
  * @author simon
  */
@@ -31,7 +31,7 @@ public class MenuController extends Controller implements Updatable {
     @FXML
     private Label infoLabel;
     @FXML
-    private TextField textPortNumber;
+    private JFXTextField textPortNumber;
 
     /**
      * Method creates a new Server and Client and opens the Login view
