@@ -20,7 +20,6 @@ import utilities.Constants;
 import utilities.Coordinate;
 import utilities.JSONProtocol.body.ActivePhase;
 import utilities.JSONProtocol.body.Error;
-import utilities.JSONProtocol.body.GameWon;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.MapConverter;
 import utilities.RegisterCard;
@@ -41,7 +40,6 @@ public class Game {
     private final Server server = Server.getInstance();
     private ArrayList<Player> players;
     private ArrayList<Player> activePlayers;
-    private boolean gameWon = false;
 
     private SpamDeck spamDeck;
     private VirusDeck virusDeck;
@@ -252,7 +250,7 @@ public class Game {
                 }
             }
 
-            case "#win" -> server.communicateAll(new GameWon(user.getID()));
+            case "#win" -> server.gameWon(user.getID());
             case "#emptySpam" -> {
                 spamDeck.getDeck().clear();
                 logger.info("SpamDeckCheat: " + spamDeck.getDeck().size());
@@ -309,13 +307,5 @@ public class Game {
 
     public TrojanDeck getTrojanDeck() {
         return trojanDeck;
-    }
-
-    public boolean isGameWon() {
-        return gameWon;
-    }
-
-    public void setGameWon(boolean gameWon) {
-        this.gameWon = gameWon;
     }
 }

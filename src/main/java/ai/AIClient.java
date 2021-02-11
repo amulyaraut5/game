@@ -66,7 +66,7 @@ public class AIClient extends Client {
         MessageType type = message.getType();
         switch (type) {
             case TimerStarted, SelectionFinished, Error, TimerEnded, Energy, CardsYouGotNow,
-                    ReceivedChat, GameWon, PlayerStatus, HelloServer, SetStatus, SendChat,
+                    ReceivedChat, PlayerStatus, HelloServer, SetStatus, SendChat,
                     SetStartingPoint, PlayIt, PlayerShooting, SelectMap, MapSelected, PlayerValues,
                     CardSelected, NotYourCards, DiscardHand, ShuffleCoding, CurrentCards -> {
                 //nothing should happen, dummy case
@@ -194,6 +194,9 @@ public class AIClient extends Client {
                 if (drawDamage.getPlayerID() == thisPlayersID) {
                     handleDamageCount(drawDamage.getCards());
                 }
+            }
+            case GameWon -> {
+                disconnect();
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
         }

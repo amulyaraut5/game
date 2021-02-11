@@ -335,6 +335,14 @@ public class Server extends Thread {
         serverState = ServerState.RUNNING_GAME;
     }
 
+    public void gameWon(int winnerID) {
+        serverState = ServerState.LOBBY;
+        readyUsers.clear();
+        isMapSelected = false;
+        isMapSent = false;
+        communicateAll(new GameWon(winnerID));
+    }
+
     /**
      * This method accepts the clients request and ChatServer assigns a separate thread to handle multiple clients
      *
