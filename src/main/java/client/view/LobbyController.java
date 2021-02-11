@@ -114,7 +114,7 @@ public class LobbyController extends Controller implements Updatable {
      * The robot image of the user who clicked the ready button gets changed. Now the icon has a pink
      * background to signal the ready status.
      *
-     * @param playerStatus
+     * @param playerStatus if the player is ready or not
      */
     private void displayStatus(PlayerStatus playerStatus) {
         Player player = viewClient.getPlayerFromID(playerStatus.getID());

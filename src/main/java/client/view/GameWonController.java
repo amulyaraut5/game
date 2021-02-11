@@ -10,19 +10,33 @@ import utilities.ImageHandler;
 import java.awt.*;
 
 /**
+ * This class is responsible for announcing the winner and ending the game.
  *
+ * @author TODO
  */
 public class GameWonController extends Controller {
 
     @FXML
-    private Button exitGameButton;
+    private Button exitGameButton; //TODO
     @FXML
-    private Button newGameButton;
+    private Button newGameButton;//TODO
+
+    /**
+     * This pane stores the ImageView of the winner
+     */
     @FXML
     private FlowPane winnerIconPane;
+    /**
+     * This Label shows thee name of the winner
+     */
     @FXML
     private Label winnerLabel;
 
+    /**
+     * This method creates the ImageView and Label of the winner and adds it to the view
+     *
+     * @param winner of the game
+     */
     public void setWinnerLabel(Player winner) {
         String path = "/lobby/" + robotNames[winner.getFigure()] + ".png";
         String name = viewClient.getUniqueName(winner.getID());
@@ -32,12 +46,18 @@ public class GameWonController extends Controller {
         winnerIconPane.getChildren().add(imageView);
     }
 
+    /**
+     * TODO
+     */
     @FXML
     public void returnClicked() {
         //viewManager.closeGame(); //reset Game and Lobby
         //viewManager.showLobby();
     }
 
+    /**
+     * This method gets called by clicking on exit and exits the game
+     */
     @FXML
     public void exitGameClicked() {
         System.exit(0);
