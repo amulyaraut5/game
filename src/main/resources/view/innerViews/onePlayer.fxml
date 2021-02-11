@@ -21,7 +21,7 @@
                    pickOnBounds="true" preserveRatio="true">
             <Image url="@../../tiles/startPoint.png"/>
         </ImageView>
-        <Label fx:id="infoLabel2" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="34.0"
+        <Label fx:id="displayingLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="34.0"
                prefHeight="37.0" prefWidth="79.0" textFill="#003366" wrapText="true">
             <font>
                 <Font name="System Bold" size="13.0"/>

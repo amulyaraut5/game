@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import utilities.ImageHandler;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -19,17 +18,34 @@ import java.util.TimerTask;
  * This class represents one small playermat of one other player, it contains all necessary information the
  * player needs to know about other players.
  *
- * @author sarah
+ * @author sarah, annika
  */
 public class OnePlayerController extends Controller {
+    /**
+     * This Label displays the name of the other player
+     */
     @FXML
     private Label nameLabel;
+    /**
+     * This ImageView displays the figure of the other player
+     */
     @FXML
     private ImageView robotIcon;
+    /**
+     * This Label displays information about if the player is current player, etc.. It is placed above the
+     * little playermat
+     */
     @FXML
     private Label infoLabel;
+    /**
+     * This Label displays information that are only displayed for a short time,
+     * e.g. if the player got damage
+     */
     @FXML
-    private Label infoLabel2;
+    private Label displayingLabel;
+    /**
+     *
+     */
     @FXML
     private HBox drawDamageHBox;
     @FXML
@@ -100,9 +116,9 @@ public class OnePlayerController extends Controller {
      *
      * @param text which gets added to the label
      */
-    public void setInfoLabel2(String text) {
-        infoLabel2.setText(text);
-        displayingTime(infoLabel2);
+    public void setDisplayingLabel(String text) {
+        displayingLabel.setText(text);
+        displayingTime(displayingLabel);
     }
 
     /**
