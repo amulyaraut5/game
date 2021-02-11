@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -10,7 +11,7 @@
     <Pane prefHeight="200.0" prefWidth="200.0" />
     <Pane prefHeight="780.0" prefWidth="1180.0" style="-fx-background-color: white; -fx-opacity: 0.6;">
       <children>
-         <HBox fx:id="iconPane" layoutX="20.0" layoutY="652.0" prefHeight="114.0" prefWidth="884.0" />
+         <HBox fx:id="iconPane" layoutX="40.0" layoutY="666.0" prefHeight="100.0" prefWidth="864.0" />
          <ImageView fitHeight="780.0" fitWidth="1351.0" opacity="0.36" pickOnBounds="true">
             <image>
                <Image url="@../otherElements/menu.png" />
@@ -20,7 +21,10 @@
     <VBox prefHeight="200.0" prefWidth="100.0">
         <HBox>
             <Pane fx:id="boardPane" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
-            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" />
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="370.0" />
+         <padding>
+            <Insets left="30.0" top="30.0" />
+         </padding>
         </HBox>
         <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0">
             <JFXButton fx:id="AIButton" layoutX="1081.0" layoutY="10.0" onAction="#addAIClicked" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: green;" text="Add AI" textFill="WHITE">
