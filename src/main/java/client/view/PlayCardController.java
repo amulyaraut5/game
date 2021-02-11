@@ -40,7 +40,7 @@ public class PlayCardController extends Controller {
      */
     public void currentPlayer(boolean turn) {
         if (turn) {
-            setInfoLabel("It's your turn! \n Click on the button to validate your card!");
+            setInfoLabel("It's your turn! \nClick on the button \nto validate your card!");
             playItButton.setDisable(false);
         } else {
             setInfoLabel("It's not your turn");

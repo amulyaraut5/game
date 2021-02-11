@@ -227,7 +227,7 @@ public class PlayerMatController extends Controller {
     public void checkPointReached(int number) {
         int fitHeightWidth;
         String path = "/tiles/controlPoint/controlPoint_" + number + ".png";
-        if (checkPointsHBox.getChildren().size() < 4) fitHeightWidth = 35;
+        if (checkPointsHBox.getChildren().size() < 4) fitHeightWidth = 30;
         else {
             for (Node node : checkPointsHBox.getChildren()) {
                 if (node.getClass().equals(ImageView.class)) {

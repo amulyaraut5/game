@@ -41,6 +41,10 @@ public class PickDamageController extends Controller {
         this.activationController = activationController;
     }
 
+    public void initialize(){
+        selectedDamageHBox.setSpacing(20);
+    }
+
     /**
      * by getting protocol PickDamage the damageAnchorPane gets visible and it updates the
      * count numbers on the different damageButtons
