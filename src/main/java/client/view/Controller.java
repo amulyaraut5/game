@@ -2,15 +2,10 @@ package client.view;
 
 import client.ViewManager;
 import client.model.ViewClient;
-import javafx.application.Platform;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import utilities.enums.CardType;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Abstract super class of all view-controller, which also stores information and required attributes

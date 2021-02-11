@@ -78,6 +78,8 @@ public class Game {
     public void play() {
         reset();
 
+        handleMapSelection(server.getSelectedMap());
+
         ArrayList<User> users = server.getUsers();
         for (User user : users) {
             players.add(new Player(user));
@@ -88,12 +90,10 @@ public class Game {
         constructionPhase = new ConstructionPhase();
     }
 
-    public void handleMapSelection(ArrayList<String> maps) {
-        String selectedMap = maps.get(0);
-        if (selectedMap.equals("DizzyHighway")) {
-            map = MapBuilder.constructMap(new DizzyHighway());
-        } else if (selectedMap.equals("ExtraCrispy")) {
-            map = MapBuilder.constructMap(new ExtraCrispy());
+    public void handleMapSelection(String selectedMap) {
+        switch (selectedMap) {
+            case ("DizzyHighway") -> map = MapBuilder.constructMap(new DizzyHighway());
+            case ("ExtraCrispy") -> map = MapBuilder.constructMap(new ExtraCrispy());
         }
     }
 

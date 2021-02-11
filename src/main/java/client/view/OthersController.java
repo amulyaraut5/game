@@ -148,7 +148,7 @@ public class OthersController extends Controller {
      */
     public void setRebootLabel(Reboot reboot, boolean thisPlayer) {
         if (!thisPlayer) {
-            getOtherPlayerController(reboot.getPlayerID()).setInfoLabel2("rebooted and got spam!");
+            getOtherPlayerController(reboot.getPlayerID()).setDisplayingLabel("rebooted and got spam!");
         }
     }
 
@@ -158,7 +158,7 @@ public class OthersController extends Controller {
     public void setTooSlowLabel(TimerEnded timerEnded) {
         for (int playerID : timerEnded.getPlayerIDs()) {
             if (playerID != viewClient.getThisPlayersID())
-                getOtherPlayerController(playerID).setInfoLabel2("programmed too slowly!");
+                getOtherPlayerController(playerID).setDisplayingLabel("programmed too slowly!");
         }
     }
 
@@ -169,7 +169,7 @@ public class OthersController extends Controller {
     public void setDrewDamageLabel(DrawDamage drawDamage, boolean thisPlayer) {
         for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().setInfoLabel(" ");
         if (!thisPlayer) {
-            getOtherPlayerController(drawDamage.getPlayerID()).setInfoLabel2("got damage");
+            getOtherPlayerController(drawDamage.getPlayerID()).setDisplayingLabel("got damage");
             getOtherPlayerController(drawDamage.getPlayerID()).displayDamageCards(drawDamage.getCards());
         }
     }
@@ -178,7 +178,7 @@ public class OthersController extends Controller {
      * @param shuffleCoding
      */
     public void setShuffleCodingLabel(ShuffleCoding shuffleCoding) {
-        getOtherPlayerController(shuffleCoding.getPlayerID()).setInfoLabel2("refilled the deck");
+        getOtherPlayerController(shuffleCoding.getPlayerID()).setDisplayingLabel("refilled the deck");
     }
 
     /**

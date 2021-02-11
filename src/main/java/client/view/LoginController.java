@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -33,7 +32,9 @@ public class LoginController extends Controller implements Updatable {
      */
     private final ObservableList<Figure> figures = FXCollections.observableArrayList();
 
-    /** The player writes his username in this TextField. */
+    /**
+     * The player writes his username in this TextField.
+     */
     @FXML
     private TextField textUserName;
     /**
@@ -84,7 +85,7 @@ public class LoginController extends Controller implements Updatable {
      */
     private void createRobotList() {
         ImageView robot;
-        int scaleSize = 50;
+        int scaleSize = 65;
         for (String robotName : robotNames) {
             String path = "/lobby/" + robotName + ".png";
             robot = ImageHandler.createImageView(path, scaleSize, scaleSize);
@@ -112,7 +113,7 @@ public class LoginController extends Controller implements Updatable {
      * This method makes a figure ineligible if it has already been taken by the added player.
      *
      * @param playerID the id of the player which gets added
-     * @param id the id of the figure the player chose
+     * @param id       the id of the figure the player chose
      */
     public void setFigureTaken(int playerID, int id) {
         Figure figure = figures.get(id);
@@ -137,7 +138,6 @@ public class LoginController extends Controller implements Updatable {
             }
         }
     }
-
 
     /**
      * This message gets errors related to login and displays them for a hort amount of timer in the infoLabel.
@@ -206,7 +206,8 @@ public class LoginController extends Controller implements Updatable {
             return playerID;
         }
 
-        /** This method sets the player ID of a player who took the figure.
+        /**
+         * This method sets the player ID of a player who took the figure.
          *
          * @param playerID of the player who took a figure
          */
