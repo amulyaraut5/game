@@ -29,12 +29,12 @@ public class Player extends User {
     /**
      * contains the chosen Cards for each register
      */
-    private ArrayList<Card> registerCards;
+    private ArrayList<Card> registerCards = new ArrayList<>();
     /**
      * Programming deck that cards can be drawn from
      */
-    private ProgrammingDeck drawProgrammingDeck;
-    private DiscardDeck discardedProgrammingDeck;
+    private ProgrammingDeck drawProgrammingDeck = new ProgrammingDeck();
+    private DiscardDeck discardedProgrammingDeck = new DiscardDeck();
     /**
      * The cards that the player draws during the Programming Phase
      */
@@ -87,6 +87,15 @@ public class Player extends User {
         for (int i = 0; i < 5; i++) {
             registerCards.add(i, null);
         }
+    }
+
+    public void resetDecks(){
+        checkPointCounter = 0;
+        energyCubes = 5;
+        drawProgrammingDeck.getDeck().clear();
+        discardedProgrammingDeck.getDeck().clear();
+        registerCards.clear();
+        createRegister();
     }
 
     /**

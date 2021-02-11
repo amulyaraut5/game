@@ -100,17 +100,6 @@ public class ViewManager {
         gameStage.close();
     }
 
-    public void resetPlayer(Player player){
-        ImageView imageView = gameController.getGameBoardController().getRobotTokens().get(player);
-        gameController.getGameBoardController().getRobotPane().getChildren().remove(imageView);
-
-        if (ViewClient.getInstance().getCurrentController().equals(this))
-
-            assert gameController.getOthersController().getOtherPlayer(player.getID()) != null;
-            gameController.getOthersController().gethBoxPlayer().getChildren().remove(gameController.getOthersController().getOtherPlayer(player.getID()));
-            gameController.getOthersController().getOtherPlayers().remove(gameController.getOthersController().getOtherPlayer(player.getID()));
-    }
-
     private void openGameStage() {
         gameController.attachChatPane(chatPane);
         menuStage.close();
@@ -152,6 +141,27 @@ public class ViewManager {
         gameStage.setOnCloseRequest(event ->resetAll());
     }
 
+    public void reConstructGame() throws IOException {
+        FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
+
+        gameScene = new Scene(gameLoader.load());
+
+        gameController = gameLoader.getController();
+
+        ArrayList<Controller> controllerList = new ArrayList<>();
+
+        controllerList.add(getLoginController());
+        controllerList.add(getLobbyController());
+
+        controllerList.add(gameController);
+
+        ViewClient.getInstance().setController(controllerList);
+
+        lobbyController.getReadyCheckbox().setSelected(false);
+
+        showLobby();
+    }
+
     private void constructScenes() throws IOException {
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
@@ -186,12 +196,22 @@ public class ViewManager {
         }
     }
 
+    //TODO
     public void resetGame() {
-        showLobby();
+       showLobby();
+
     }
 
     public static ViewManager getInstance() {
         if (instance == null) instance = new ViewManager();
         return instance;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
+    public LobbyController getLobbyController() {
+        return lobbyController;
     }
 }

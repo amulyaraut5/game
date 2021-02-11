@@ -13,6 +13,7 @@ import utilities.JSONProtocol.body.SetStatus;
 import utilities.enums.ServerState;
 
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * This class is responsible for announcing the winner and ending the game.
@@ -62,45 +63,10 @@ public class GameWonController extends Controller {
      * TODO
      */
     @FXML
-    public void returnClicked() {
-        Player player = viewClient.getPlayerFromID(viewClient.getThisPlayersID());
-        //gameController.removePlayer(player);
+    public void returnClicked() throws IOException {
+        //Platform.runLater(viewManager::resetGame);
 
-
-        viewManager.closeGame(); //reset Game and Lobby
-
-        viewManager.resetPlayer(player);
-
-        game.reset();
-
-
-        //gameBoardController.removeAll();
-        ;
-
-        //gameController.removeAll();
-        //gameBoardController.getRobotPane().getChildren().clear();
-
-        //server.communicateAll(new PlayerStatus(player.getID(), false));
-
-        //lobbyController.getReadyCheckbox().setSelected(false);
-        viewClient.sendMessage(new SetStatus(false));
-
-        server.getReadyUsers().clear();
-        server.setServerState(ServerState.LOBBY);
-        viewManager.showLobby();
-
-
-/*
-        ArrayList<Controller> controllerList = new ArrayList<>();
-        controllerList.add(gameController);
-        //controllerList.add(gameBoardController);
-
-        viewClient.setController(controllerList);
-
- */
-
-
-        Platform.runLater(viewManager::resetGame);
+        viewManager.reConstructGame();
     }
 
 
@@ -113,4 +79,5 @@ public class GameWonController extends Controller {
     public void exitGameClicked() {
         System.exit(0);
     }
+
 }
