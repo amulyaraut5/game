@@ -58,11 +58,6 @@ public class ChatController extends Controller {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
         viewClient.setChatController(this);
-        messageField.setOnKeyPressed(ke -> {
-            if (ke.getCode().equals(KeyCode.ENTER)) {
-                submitChatMessage();
-            }
-        });
         chatWindow.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean old, Boolean isFocused) -> {
             if (isFocused) resetFocus();
         });
@@ -94,6 +89,7 @@ public class ChatController extends Controller {
      * This message gets called when the user presses enter, it reads the receiver (all or one person) from the combobox
      * and the message which gets filtered for instructions and everything gets send as the JSONMessage SendChat.
      */
+    @FXML
     private void submitChatMessage() {
         resetFocus();
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
