@@ -186,7 +186,7 @@ public class Server extends Thread {
                         public void run() {
                             game.getActivationPhase().activateCards(user.getID());
                         }
-                    }, 2000);
+                    }, 0);
                 } else
                     game.getActivationPhase().activateCards(user.getID());
             }
@@ -383,7 +383,7 @@ public class Server extends Thread {
         return (users.size() == readyUsers.size() && users.size() > 1);
     }
 
-    public void communicateUsers(JSONBody jsonBody, User sender) {
+    synchronized public void communicateUsers(JSONBody jsonBody, User sender) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
         for (User user : users) {
@@ -393,7 +393,7 @@ public class Server extends Thread {
         }
     }
 
-    public void communicateAll(JSONBody jsonBody) {
+    synchronized public void communicateAll(JSONBody jsonBody) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
         for (User user : users) {
@@ -404,7 +404,7 @@ public class Server extends Thread {
         }
     }
 
-    public void communicateDirect(JSONBody jsonBody, int receiver) {
+    synchronized public void communicateDirect(JSONBody jsonBody, int receiver) {
         for (User user : users) {
             if (user.getID() == receiver) {
                 user.message(jsonBody);

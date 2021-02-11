@@ -77,7 +77,7 @@ public class ServerController implements Updatable {
     @FXML
     public void addAIClicked() {
         if (server.getUsers().size() < 6) {
-            Updatable.showInfo(infoLabel, "Ai joined!");
+            Updatable.showInfo(infoLabel, "AI joined!");
             iconPane.getChildren().add(new Label("AI " + server.getUsers().size()));
             new Thread(() -> connect(new AIClient())).start();
             if (server.getUsers().size() == 6) {

@@ -156,6 +156,7 @@ public class ProgrammingPhase extends Phase {
             server.communicateAll(new SelectionFinished(player.getID()));
             player.discardCards(player.getDrawnProgrammingCards(), player.getDiscardedProgrammingDeck());
 
+
             //If this player is the first to finish the timer starts
             if (notReadyPlayers.size() == players.size() - 1) {
                 startProgrammingTimer();
@@ -268,7 +269,7 @@ public class ProgrammingPhase extends Phase {
             logger.info("Draw Deck before: " + player.getDrawProgrammingDeck().size());
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeckSize));
             player.reuseDiscardedDeck();
-            logger.info("Draw Deck after: " + player.getDrawProgrammingDeck());
+            logger.info("Draw Deck after: " + player.getDrawProgrammingDeck().size());
             server.communicateAll(new ShuffleCoding(player.getID()));
             player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeckSize));
         }
