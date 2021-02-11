@@ -76,7 +76,7 @@ public class OthersController extends Controller {
      * @param player
      */
     private void playerAdded(Player player) {
-        hBoxPlayer.setSpacing(20);
+        hBoxPlayer.setSpacing(10);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/onePlayer.fxml"));
             fxmlLoader.load();
