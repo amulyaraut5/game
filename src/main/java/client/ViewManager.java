@@ -141,7 +141,7 @@ public class ViewManager {
         gameStage.setOnCloseRequest(event ->resetAll());
     }
 
-    public void reConstructGame() throws IOException {
+    public void resetGame() throws IOException {
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
 
         gameScene = new Scene(gameLoader.load());
@@ -196,11 +196,7 @@ public class ViewManager {
         }
     }
 
-    //TODO
-    public void resetGame() {
-       showLobby();
 
-    }
 
     public static ViewManager getInstance() {
         if (instance == null) instance = new ViewManager();
