@@ -171,7 +171,7 @@ public class Server extends Thread {
             }
             case SelectCard -> {
                 SelectCard selectCard = (SelectCard) message.getBody();
-                game.getProgrammingPhase().putCardToRegister(game.userToPlayer(user), selectCard);
+                game.getProgrammingPhase().handleCardSelection(game.userToPlayer(user), selectCard);
                 communicateUsers(new CardSelected(user.getID(), selectCard.getRegister()), user);
             }
             case SetStartingPoint -> {
