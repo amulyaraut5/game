@@ -9,8 +9,8 @@ import game.gameObjects.cards.damage.Worm;
 import game.gameObjects.cards.programming.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
+import utilities.JSONProtocol.body.Error;
 import utilities.enums.CardType;
 
 import java.util.ArrayList;
@@ -25,6 +25,8 @@ import java.util.Collections;
 public class ProgrammingPhase extends Phase {
 
     private static final Logger logger = LogManager.getLogger();
+
+    private GameTimer gameTimer = new GameTimer(this);
 
     /**
      * saves the player ID's. A player gets removed if he has already chosen 5 cards before the timer runs out
@@ -63,16 +65,8 @@ public class ProgrammingPhase extends Phase {
         }
     }
 
-    /**
-     * If a player puts a card (or removes one) into a register it is saved there.
-     * If the player has filled all 5 registers and he is the first one to do so the timer is started.
-     *
-     * @param player     The player moved a card in the register
-     * @param selectCard Message that was received
-     */
-    public void putCardToRegister(Player player, SelectCard selectCard) {
+    public Card convertCardType(CardType type) {
         Card chosenCard = null;
-        CardType type = selectCard.getCard();
         if (type != null) {
             switch (type) {
                 case Again -> chosenCard = new Again();
@@ -90,44 +84,69 @@ public class ProgrammingPhase extends Phase {
                 case Worm -> chosenCard = new Worm();
             }
         }
+        return chosenCard;
+    }
+
+    public void putCardToRegister (Card chosenCard, Player player, int register) {
+        ArrayList<CardType> cardTypes = new ArrayList<>();
+        for (Card card : player.getDrawnProgrammingCards()) {
+            if (card != null)
+                try {
+                    cardTypes.add(card.getName());
+                } catch (NullPointerException e) {
+                    logger.error("chosenCard: " + chosenCard.getName() + ". Drawn Programming Cards: " + player.getDrawnProgrammingCards());
+                    server.communicateDirect(new Error("Please try again. Something went wrong"), player.getID());
+                }
+        }
+        if (cardTypes.contains(chosenCard.getName())) {
+            player.setRegisterCards(register, chosenCard);
+        } else {
+            server.communicateDirect(new Error("This is not a valid card."), player.getID());
+        }
+        //Here the card with the same cardType enum as the chosen card is removed from the hand cards
+        for (Card card : player.getDrawnProgrammingCards()) {
+            if (card != null) {
+                cardTypes.add(card.getName());
+            } else {
+                logger.info("card is null: " + player.getDrawnProgrammingCards());
+            }
+        }
+        for (int i = 0; i < cardTypes.size(); i++) {
+            if (cardTypes.get(i) == chosenCard.getName()) {
+                player.getDrawnProgrammingCards().remove(i);
+                break;
+            }
+        }
+    }
+
+    public void removeCardFromRegister (Player player, int register) {
+        logger.info(player.getID() + " has moved a card out of his register");
+
+        Card cardRemoved = player.getRegisterCard(register);
+        if (cardRemoved != null) {
+            CardType removeCardType = cardRemoved.getName();
+            cardRemoved = convertCardType(removeCardType);
+            player.getDrawnProgrammingCards().add(cardRemoved);
+            player.setRegisterCards(register, null);
+        }
+    }
+
+    /**
+     * If a player puts a card (or removes one) into a register it is saved there.
+     * If the player has filled all 5 registers and he is the first one to do so the timer is started.
+     *
+     * @param player     The player moved a card in the register
+     * @param selectCard Message that was received
+     */
+    public void handleCardSelection(Player player, SelectCard selectCard) {
+        Card chosenCard = convertCardType(selectCard.getCard());
 
         if (chosenCard != null) {
             //put the card in the register
-            ArrayList<CardType> cardTypes = new ArrayList<>();
-            for (Card card : player.getDrawnProgrammingCards()) {
-                if (card != null)
-                    try {
-                        cardTypes.add(card.getName());
-                    } catch (NullPointerException e) {
-                        logger.error("chosenCard: " + chosenCard.getName() + ". Drawn Programming Cards: " + player.getDrawnProgrammingCards());
-                        server.communicateDirect(new Error("Please try again. Something went wrong"), player.getID());
-                    }
-            }
-            if (cardTypes.contains(type)) {
-                player.setRegisterCards(selectCard.getRegister(), chosenCard);
-            } else {
-                server.communicateDirect(new Error("This is not a valid card."), player.getID());
-            }
-
-            //Here the card with the same cardType enum as the chosen card is removed from the hand cards
-            CardType chosenCardType = chosenCard.getName();
-            for (Card card : player.getDrawnProgrammingCards()) {
-                cardTypes.add(card.getName());
-            }
-
-            for (int i = 0; i < cardTypes.size(); i++) {
-                if (cardTypes.get(i) == chosenCardType) {
-                    player.getDrawnProgrammingCards().remove(i);
-                    break;
-                }
-            }
-
-            //if a card was removed, remove the card from the register and put it in the hand cards
+            putCardToRegister(chosenCard, player, selectCard.getRegister());
+        //if a card was removed, remove the card from the register and put it in the hand cards
         } else {
-            logger.info(player.getID() + " has moved a card out of his register");
-            Card removeCard = player.getRegisterCard(selectCard.getRegister());
-            player.getDrawnProgrammingCards().add(removeCard);
-            player.setRegisterCards(selectCard.getRegister(), null);
+            removeCardFromRegister(player, selectCard.getRegister());
         }
 
         //if this player put a card in each register he is removed from the notReadyPlayer List and discards the rest of his programming hand cards
@@ -145,13 +164,13 @@ public class ProgrammingPhase extends Phase {
                 endProgrammingTimer();
             }
         }
+        logger.info("player register cards: " + player.getRegisterCards() + " and hand cards: " + player.getDrawnProgrammingCards());
     }
 
     /**
      * Starts a 30 second timer when the first player filled all 5 registers.
      */
     private void startProgrammingTimer() {
-        GameTimer gameTimer = new GameTimer(this);
         gameTimer.setName("GameTimer");
         gameTimer.start();
     }
@@ -163,6 +182,7 @@ public class ProgrammingPhase extends Phase {
     public void endProgrammingTimer() {
         logger.info("The timer has stopped");
         if (!(timerFinished)) {
+            gameTimer.setTimerAlreadyFinished(true);
             timerFinished = true;
             ArrayList<Integer> playerIDs = new ArrayList<>();
             for (Player player : notReadyPlayers) {
@@ -241,11 +261,14 @@ public class ProgrammingPhase extends Phase {
      */
     private void drawProgrammingCards(int amount, Player player) {
         int currentDeckSize = player.getDrawProgrammingDeck().getDeck().size();
+        logger.info("Current deck size: " + currentDeckSize);
         if (!(currentDeckSize < amount)) {
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(amount));
         } else {
+            logger.info("Draw Deck before: " + player.getDrawProgrammingDeck().size());
             player.setDrawnProgrammingCards(player.getDrawProgrammingDeck().drawCards(currentDeckSize));
             player.reuseDiscardedDeck();
+            logger.info("Draw Deck after: " + player.getDrawProgrammingDeck());
             server.communicateAll(new ShuffleCoding(player.getID()));
             player.getDrawnProgrammingCards().addAll(player.getDrawProgrammingDeck().drawCards(amount - currentDeckSize));
         }
