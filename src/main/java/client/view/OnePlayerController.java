@@ -54,8 +54,8 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method sets the name and the ocurring profile image and the 5 energy tokens when this other
-     * player gets added
+     * This method sets the name and the occurring profile image and the 5 energy tokens when this other
+     * player gets added.
      *
      * @param otherPlayer the player which gets added
      */
@@ -75,7 +75,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method fills 5 registers in an HBox with the same card image
+     * This method fills 5 registers in an HBox with the same card image.
      */
     private void fillRegister() {
         for (int i = 0; i < 5; i++) {
@@ -96,7 +96,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method sets the text of infoLabel2 and displays it only for a short amount of time
+     * This method sets the text of infoLabel2 and displays it only for a short amount of time.
      *
      * @param text which gets added to the label
      */
@@ -106,7 +106,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method sets the text of infoLabel
+     * This method sets the text of infoLabel.
      *
      * @param text which gets added to the label
      */
@@ -115,7 +115,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method sets the text of checkboxLabel to a number
+     * This method sets the text of checkboxLabel to a number.
      *
      * @param number of last checkpoint the player reached
      */
@@ -125,7 +125,7 @@ public class OnePlayerController extends Controller {
 
     /**
      * The method sets if a player put a card in a register. It only displays which register is already filled, not which
-     * card
+     * card.
      *
      * @param registerSelected
      */
@@ -135,7 +135,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method adds energy and displays this increase in the energyLabel
+     * This method adds energy and displays this increase in the energyLabel.
      *
      * @param energyCount the amount of energy token that get added
      */
@@ -145,7 +145,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method sets the HBox of the registers visible or invisible
+     * This method sets the HBox of the registers visible or invisible.
      *
      * @param visible
      */
@@ -156,7 +156,7 @@ public class OnePlayerController extends Controller {
     /**
      * This method resets the information related to the phases after one round. It sets everything related to programming
      * phase. For this it fills the registers again and sets the imageView of activationphase not visible
-     * the occurring HBox and sets the card
+     * the occurring HBox and sets the card.
      */
     public void reset() {
         currentCardImageView.setVisible(false);
@@ -165,7 +165,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method only displays a label for 5 seconds
+     * This method only displays a label for 5 seconds.
      *
      * @param node that gets set visible
      */
@@ -184,7 +184,7 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This method displays the images of the amount of damage cards for 5 seconds
+     * This method displays the images of the amount of damage cards for 5 seconds.
      *
      * @param damageCards this contains an array with CardTypes of damage cards
      */

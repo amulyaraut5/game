@@ -38,6 +38,10 @@ import java.util.List;
 
 import static javafx.scene.input.MouseEvent.*;
 
+
+/**
+ * TODO
+ */
 public class GameBoardController {
     private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();

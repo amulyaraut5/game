@@ -23,33 +23,33 @@ public class ChatController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     /**
-     * it shows if the current message is a direct message to the player itself,
-     * then the player won't see a [You] message, because he will receive it from the server and then display it
+     * It shows if the current message is a direct message to the player itself,
+     * then the player won't see a [You] message, because he will receive it from the server and then display it.
      */
     private boolean privateToMe;
 
     /**
-     * the textArea where the whole chat history gets displayed
+     * The textArea where the whole chat history gets displayed.
      */
     @FXML
     private JFXTextArea chatWindow;
 
     /**
-     * the choiceBox where the user can choose if the message should be a direct message and who should be
-     * the receiver of the message (one or all)
+     * The choiceBox where the user can choose if the message should be a direct message and who should be
+     * the receiver of the message (one or all).
      */
     @FXML
     private JFXComboBox<String> directChoiceBox;
 
     /**
-     * the TextArea which reads the message the player typed
+     * The TextArea which reads the message the player typed.
      */
     @FXML
     private JFXTextArea lobbyTextAreaChat;
 
     /**
-     * in this method the directbox gets initialized and the chat controller gets assigned to viewClient. Also the
-     * lobbyTextArea recognizes if the enter key gets pressed and call the method submitChatMessage()
+     * In this method the directbox gets initialized and the chat controller gets assigned to viewClient. Also the
+     * lobbyTextArea recognizes if the enter key gets pressed and call the method submitChatMessage().
      */
     public void initialize() {
         directChoiceBox.getItems().add("all");
@@ -64,7 +64,7 @@ public class ChatController extends Controller {
 
     /**
      * The messages received from other users are printed
-     * in the chatTextArea and make a new line
+     * in the chatTextArea and make a new line.
      *
      * @param messageBody the message which will get printed
      */
@@ -73,10 +73,11 @@ public class ChatController extends Controller {
     }
 
     /**
-     * this method displays an user who joined to the lobby
+     * This method displays an user who joined to the lobby
      * with its chosen robot, name and also the name is added to the choicebox
      * so that other users in lobby can send direct messages.
-     * Also
+     *
+     * @param player that gets added
      */
     public void addUser(Player player) {
         String newName = viewClient.getUniqueName(player.getID());
@@ -85,7 +86,7 @@ public class ChatController extends Controller {
 
     /**
      * This message gets called when the user presses enter, it reads the receiver (all or one person) from the combobox
-     * and the message which gets filtered for instructions and everything gets send as the JSONMessage SendChat
+     * and the message which gets filtered for instructions and everything gets send as the JSONMessage SendChat.
      */
     private void submitChatMessage() {
         if (viewClient.getCurrentController().getClass().equals(GameController.class)) {
@@ -121,9 +122,10 @@ public class ChatController extends Controller {
     }
 
     /**
-     * this message extracts the message and the receiver of a direct message.
+     * This message extracts the message and the receiver of a direct message.
      * It distinguishes the length of the receiver, if it is only one, it checks if it is a
      * message to the player itself. If the name is longer, it extracts the id of the unified name.
+     *
      * @param sendTo the receiver recognized from the combobox (possible is a unified name)
      * @param message message of the player
      * @return a jsonBody containing SendChat with receiver and message
@@ -155,8 +157,9 @@ public class ChatController extends Controller {
     }
 
     /**
-     * this message checks whether the typed message is either #emptySpam or #damageDecks or #damage x,
-     * depending to this it calls messages that change things on the client side
+     * This message checks whether the typed message is either #emptySpam or #damageDecks or #damage x,
+     * depending to this it calls messages that change things on the client side.
+     *
      * @param message the message which has to be checked
      */
     private void checkMessage(String message) {
@@ -172,8 +175,9 @@ public class ChatController extends Controller {
     }
 
     /**
-     * this message displays a received message depending if it is direct or not
-     * in the chatWindow
+     * This message displays a received message depending if it is direct or not
+     * in the chatWindow.
+     *
      * @param receivedChat the receivedChat with sender and message
      */
     public void receivedChat(ReceivedChat receivedChat) {

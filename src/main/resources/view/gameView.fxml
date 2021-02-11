@@ -43,7 +43,7 @@
         <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0"
                    stylesheets="@view.css" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <Pane fx:id="boardPane" prefHeight="600.0" prefWidth="780.0"/>
-        <HBox fx:id="otherPlayerSpace" prefHeight="180.0" prefWidth="780.0" GridPane.rowIndex="1"/>
+        <Pane fx:id="otherPlayerSpace" prefHeight="180.0" prefWidth="780.0" GridPane.rowIndex="1"/>
     </GridPane>
     <Pane fx:id="roundPane" layoutX="796.0" layoutY="13.0" prefHeight="41.0" prefWidth="381.0"
           style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">

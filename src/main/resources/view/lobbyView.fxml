@@ -43,13 +43,13 @@
             <Font name="System Bold" size="17.0"/>
         </font>
     </JFXCheckBox>
-    <Label fx:id="infoLabel" alignment="CENTER" layoutX="47.0" layoutY="351.0" prefHeight="27.0" prefWidth="385.0"
+    <Label fx:id="errorLabel" alignment="CENTER" layoutX="47.0" layoutY="351.0" prefHeight="27.0" prefWidth="385.0"
            textFill="#ff3600">
         <font>
             <Font name="System Bold" size="18.0"/>
         </font>
     </Label>
-    <Label fx:id="infoLabel2" layoutX="42.0" layoutY="432.0" prefHeight="27.0" prefWidth="476.0"
+    <Label fx:id="infoLabel" layoutX="42.0" layoutY="432.0" prefHeight="27.0" prefWidth="476.0"
            textFill="midnightblue"/>
 
     <JFXButton buttonType="RAISED" contentDisplay="CENTER" layoutX="204.0" layoutY="391.0" mnemonicParsing="false"

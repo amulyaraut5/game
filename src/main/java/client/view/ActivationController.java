@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * This class represents the activation phase in the ui. It displays which register it is and every information related to
  * this phase. In two inner views the player can either choose to play his cards or
- * if the player gets damage
+ * if the player gets damage.
  *
  * @author sarah
  */
@@ -25,43 +25,43 @@ public class ActivationController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     /**
-     * The innerview which either displays playCard or pickDamage
+     * The innerview which either displays playCard or pickDamage.
      */
     public BorderPane innerActivationPhase;
 
     /**
-     * The pane contains the pickDamage view to let the player select damage cards
+     * The pickDamagePane contains the pickDamage view to let the player select damage cards.
      */
     private Pane pickDamagePane;
 
     /**
-     * The pane contains the playCard view to let the player play programming cards
+     * The playCardPane contains the playCard view to let the player play programming cards.
      */
     private Pane playCardPane;
 
     /**
-     * The controller for the pickDamagePane
+     * The controller for the pickDamagePane.
      */
     public PickDamageController pickDamageController;
 
     /**
-     * The controller for the playCardController
+     * The controller for the playCardController.
      */
     public PlayCardController playCardController;
 
     /**
-     * The counter for the current register. At the end of one round it gets set to 1 again
+     * The counter for the current register. At the end of one round it gets set to 1 again.
      */
     private int registerNr = 1;
 
     /**
-     * The Label displays the current register
+     * The Label displays the current register.
      */
     @FXML
     private Label register;
 
     /**
-     * This method initializes the ActivationController, sets important things visible
+     * This method initializes the ActivationController, sets important things visible.
      */
     public void initialize() {
         constructPhaseViews();
@@ -69,7 +69,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * This method resets the class and gets called at the start of activationPhase
+     * This method resets the class and gets called at the start of activationPhase.
      */
     public void reset() {
         changePhaseView(InnerActivation.PlayIt);
@@ -78,7 +78,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * This method constructs the two innerviews and initializes the controller for them
+     * This method constructs the two innerviews and initializes the controller for them.
      */
     private void constructPhaseViews() {
 
@@ -99,7 +99,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * This method changes the innerview either its pickDamage or playCard
+     * This method changes the innerview either its pickDamage or playCard.
      *
      * @param innerActivation which should be displayed next
      */
@@ -112,7 +112,7 @@ public class ActivationController extends Controller {
 
     /**
      * This method gets called by getting protocol currentCards and displays current card of player
-     * it also increases register number for view
+     * it also increases register number for view.
      *
      * @param cardType current card of the player
      */
@@ -123,7 +123,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * getter for the pickDamageController
+     * This method is the getter for the pickDamageController.
      *
      * @return the pickDamageController
      */
@@ -132,7 +132,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * getter for the playCardController
+     * This method is a getter for the playCardController.
      *
      * @return the playCardController
      */

@@ -27,35 +27,61 @@ import java.util.HashMap;
 /**
  * This class displays the joined and ready users and already has the possibility to chat with other users
  *
- * @author sarah, louis
+ * @author sarah, louis, simon
  */
 public class LobbyController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
+    /**
+     * HashMap with a player and its related vBox.
+     */
     private final HashMap<Player, VBox> playerIcons = new HashMap<>();
 
+    /**
+     * The chatPane contains the pane.
+     */
     @FXML
     private BorderPane chatPane;
+
+    /**
+     * The checkBox for the player to set its status.
+     */
     @FXML
     private CheckBox readyCheckbox;
+
+    /**
+     * The playerIconPane which contains all different vBoxes of players.
+     */
     @FXML
     private FlowPane playerIconPane;
+
+    /**
+     * The label which displays errors.
+     */
+    @FXML
+    private Label errorLabel;
+
+    /**
+     * The label which displays important information and instructions.
+     */
     @FXML
     private Label infoLabel;
 
-    @FXML
-    private Label infoLabel2;
-
     /**
-     * this method gets called automatically by constructing view
+     * This method gets called automatically by constructing view
      * it adds the different ImageViews and Labels to lists and also
      * sets the default of the choiceBox to all. Additionally the current imageView
-     * and label are assigned
+     * and label are assigned.
      */
     @FXML
     public void initialize() {
-        infoLabel2.setText("First Player to click Ready will get a chance to choose a map.");
+        infoLabel.setText("First Player to click Ready will get a chance to choose a map.");
     }
 
+    /**
+     * This method sets the chat in the chatPane with its width and height.
+     *
+     * @param chat the chatPane
+     */
     public void attachChatPane(Pane chat) {
         chat.setPrefWidth(chatPane.getPrefWidth());
         chat.setPrefHeight(chatPane.getPrefHeight());
@@ -63,10 +89,11 @@ public class LobbyController extends Controller implements Updatable {
     }
 
     /**
-     * this method displays an user who joined to the lobby
+     * This method displays an user who joined to the lobby
      * with its chosen robot, name and also the name is added to the ChoiceBox
-     * so that other users in lobby can send direct messages.
-     * Also
+     * so that other users in lobby can send (direct) messages.
+     *
+     * @param player the player who joins
      */
     public void addJoinedPlayer(Player player) {
         String path = "/lobby/" + robotNames[player.getFigure()] + ".png";
@@ -100,8 +127,46 @@ public class LobbyController extends Controller implements Updatable {
         imageView.setImage(image);
     }
 
+
+
     /**
-     * by clicking the ready checkbox a message will be send to the client (and then to the server)
+     * This method removes a player from the lobby by exiting.
+     *
+     * @param player that exits
+     */
+    public void removePlayer(Player player) {
+        VBox tile = playerIcons.get(player);
+        playerIconPane.getChildren().remove(tile);
+    }
+
+
+    /**
+     * This method overwrites the method from Client and handles the JSONMessage from the server
+     * that are for the LobbyController and handles them.
+     *
+     * @param message that the player received from the server for the lobby
+     */
+    @Override
+    public void update(JSONMessage message) {
+        switch (message.getType()) {
+            case Error -> {
+                Error error = (Error) message.getBody();
+                Updatable.showInfo(errorLabel, error.getError());
+            }
+            case PlayerStatus -> {
+                PlayerStatus playerStatus = (PlayerStatus) message.getBody();
+                displayStatus(playerStatus);
+            }
+            case SelectMap -> {
+                infoLabel.setText("You can select a map. Go to MapSelectionView.");
+                MapSelectionController.getMapSelectionController().setVisible(true);
+                MapSelectionController.getMapSelectionController().setDisable(false);
+            }
+        }
+    }
+
+    /**
+     * By clicking the ready checkbox a message will be send to the client (and then to the server)
      * to signal the ready status of the user.
      */
     @FXML
@@ -110,41 +175,20 @@ public class LobbyController extends Controller implements Updatable {
 
         if (!readyCheckbox.isSelected()) {
             viewClient.sendMessage(new SetStatus(false));
-            infoLabel2.setText("Please wait till somebody selects the map.");
+            infoLabel.setText("Please wait till somebody selects the map.");
             MapSelectionController.getMapSelectionController().setSelected(false);
             MapSelectionController.getMapSelectionController().setDisable(true);
         }
     }
-
-    public void removePlayer(Player player) {
-        VBox tile = playerIcons.get(player);
-        playerIconPane.getChildren().remove(tile);
-    }
-
+    /**
+     * This method  TODO
+     * @param event
+     */
     @FXML
     private void goToMapSelection(ActionEvent event) {
         viewManager.showMap();
         if (!readyCheckbox.isSelected()) {
             MapSelectionController.getMapSelectionController().setInfoLabel("Click ready and wait for your turn to select map");
-        }
-    }
-
-    @Override
-    public void update(JSONMessage message) {
-        switch (message.getType()) {
-            case Error -> {
-                Error error = (Error) message.getBody();
-                Updatable.showInfo(infoLabel, error.getError());
-            }
-            case PlayerStatus -> {
-                PlayerStatus playerStatus = (PlayerStatus) message.getBody();
-                displayStatus(playerStatus);
-            }
-            case SelectMap -> {
-                infoLabel2.setText("You can select a map. Go to MapSelectionView.");
-                MapSelectionController.getMapSelectionController().setVisible(true);
-                MapSelectionController.getMapSelectionController().setDisable(false);
-            }
         }
     }
 }
