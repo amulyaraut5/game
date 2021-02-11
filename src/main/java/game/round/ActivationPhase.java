@@ -164,7 +164,7 @@ public class ActivationPhase extends Phase {
      */
 
     public void handleFinishedRegister() {
-        if (server.getServerState() == ServerState.LOBBY) {
+        if (server.getServerState() == ServerState.RUNNING_GAME) {
             activateBoard();
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
