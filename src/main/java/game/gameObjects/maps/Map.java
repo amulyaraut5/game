@@ -29,7 +29,9 @@ public class Map {
         this.tiles = tiles;
         readAll();
     }
-
+    /**
+     * Reads all coordinates that initially need to be read.(Store belts, restart point, and antenna for the specific map)
+     */
     public void readAll() {
         readBeltCoordinates();
         readRestartPointCoordinate();
@@ -246,7 +248,9 @@ public class Map {
         }
         return gearCoordinates;
     }
-
+    /**
+     * Iterates through every tile of the map and stores all tiles that have a belt attribute in the particular list(One for green and one for blue belts)
+     */
     public void readBeltCoordinates() {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {

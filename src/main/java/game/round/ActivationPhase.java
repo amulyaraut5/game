@@ -168,6 +168,7 @@ public class ActivationPhase extends Phase {
             activateBoard();
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
+                logger.info("Now in Register " + currentRegister);
                 turnCards(currentRegister);
             } else { //if it is already the 5th register the next phase is called
                 if (!rebootedPlayers.isEmpty()) {
@@ -219,10 +220,10 @@ public class ActivationPhase extends Phase {
     }
 
     /**
-     * Todo
+     * Handles the movment of one player for one tile in a specific direction. Considers board elements.
      *
-     * @param player
-     * @param o
+     * @param player Player that is moved
+     * @param o Orientation player is moved to
      */
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
@@ -258,6 +259,12 @@ public class ActivationPhase extends Phase {
         if (canMove) moveOne(player, o);
     }
 
+    /**
+     * Moves the player in a direction. Does not consider board elements. Only called by the handleMove method.
+     *
+     * @param player Player that is moved
+     * @param orientation Orientation player is moved to
+     */
     public void moveOne(Player player, Orientation orientation) {
         player.getRobot().move(orientation);
         handleTile(player);
@@ -394,7 +401,11 @@ public class ActivationPhase extends Phase {
             }
         }
     }
-
+    /**
+     * Handles effects of a specific position on the map.(Outside the map? Did the player fall into a pit?)
+     *
+     * @param player Player whose tile must be checked
+     */
     public void handleTile(Player player) {
         Coordinate robotPos = player.getRobot().getCoordinate();
         if (robotPos.isOutsideMap() || map.getAttributeOn(AttributeType.Pit, robotPos) != null) {
