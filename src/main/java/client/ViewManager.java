@@ -5,9 +5,7 @@ import client.view.*;
 import game.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -161,8 +159,7 @@ public class ViewManager {
         gameScene.setOnKeyPressed(event -> gameController.keyPressed(event));
 
         gameStage.setOnCloseRequest(event -> {
-            ViewClient.getInstance().disconnect();
-            showMenu();
+            resetAll();
         });
     }
 

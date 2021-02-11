@@ -17,10 +17,7 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
-import utilities.enums.AttributeType;
-import utilities.enums.CardType;
-import utilities.enums.Orientation;
-import utilities.enums.Rotation;
+import utilities.enums.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -146,8 +143,7 @@ public class ActivationPhase extends Phase {
                                     server.communicateAll(new CheckpointReached(player.getID(), checkPointID));
                                     player.message(new Error("Congratulations: You have reached " + checkPointID + " checkPoint"));
                                 } else if (checkPointID == totalCheckPoints) {
-                                    server.communicateAll(new GameWon(player.getID()));
-                                    game.setGameWon(true);
+                                    server.gameWon(player.getID());
                                     break outerLoop;
                                 }
                             } else if (player.getCheckPointCounter() > checkPointID) {
@@ -168,7 +164,7 @@ public class ActivationPhase extends Phase {
      */
 
     public void handleFinishedRegister() {
-        if (!game.isGameWon()) {
+        if (server.getServerState() == ServerState.LOBBY) {
             activateBoard();
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;

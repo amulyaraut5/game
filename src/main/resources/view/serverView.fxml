@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -11,7 +12,7 @@
     <Pane prefHeight="200.0" prefWidth="200.0" />
     <Pane prefHeight="780.0" prefWidth="1180.0" style="-fx-background-color: white; -fx-opacity: 0.6;">
       <children>
-         <HBox fx:id="iconPane" layoutX="40.0" layoutY="666.0" prefHeight="100.0" prefWidth="864.0" />
+         <HBox fx:id="iconPane" layoutX="24.0" layoutY="705.0" prefHeight="61.0" prefWidth="880.0" />
          <ImageView fitHeight="780.0" fitWidth="1351.0" opacity="0.36" pickOnBounds="true">
             <image>
                <Image url="@../otherElements/menu.png" />
@@ -21,7 +22,18 @@
     <VBox prefHeight="200.0" prefWidth="100.0">
         <HBox>
             <Pane fx:id="boardPane" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
-            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="370.0" />
+            <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="370.0">
+                <Pane fx:id="instructionPane" layoutX="20.0" layoutY="481.0" prefHeight="77.0" prefWidth="333.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
+                    <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutY="4.0" prefHeight="77.0" prefWidth="333.0" text="Click 'Add AI' for each AI you want to add. &#10;When you have the wanted number, press 'Start'." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Label>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Pane>
+            </AnchorPane>
          <padding>
             <Insets left="30.0" top="30.0" />
          </padding>
@@ -42,7 +54,8 @@
                     <Font name="System Bold" size="18.0" />
                 </font>
             </Label>
-            <Label layoutX="5.0" layoutY="5.0" text="Port: 5570" />
+            <Label layoutX="33.0" layoutY="6.0" text="Port: 5570" />
+            <Label layoutX="31.0" layoutY="47.0" text="Joined AIs:" />
         </Pane>
     </VBox>
 </AnchorPane>

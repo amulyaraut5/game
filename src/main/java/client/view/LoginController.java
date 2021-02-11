@@ -1,5 +1,6 @@
 package client.view;
 
+import com.jfoenix.controls.JFXTextField;
 import game.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,7 @@ public class LoginController extends Controller implements Updatable {
      * The player writes his username in this TextField.
      */
     @FXML
-    private TextField textUserName;
+    private JFXTextField textUserName;
     /**
      * A label to check if everything works. //TODO delete or change purpose
      */
@@ -110,9 +111,10 @@ public class LoginController extends Controller implements Updatable {
     private void fxButtonClicked() {
         String userName = textUserName.getText();
         int chosenRobot = listView.getSelectionModel().getSelectedIndex();
-
         if (userName.isBlank()) Updatable.showInfo(infoLabel, "Please insert a Username!");
         else if (chosenRobot < 0) Updatable.showInfo(infoLabel, "You have to choose a robot!");
+        else if(userName.contains("#")) Updatable.showInfo(infoLabel, "You aren't allowed to use '#' in your name!");
+        else if(userName.equals("all")) Updatable.showInfo(infoLabel, "You aren't allowed to use the name 'all'!");
         else viewClient.sendMessage(new PlayerValues(userName, chosenRobot));
     }
 
