@@ -652,6 +652,10 @@ public class GameController extends Controller implements Updatable {
         soundHandler.musicOff();
     }
 
+    public void resetFocus() {
+        boardPane.requestFocus();
+    }
+
     /**
      * This method returns the playerMatController.
      *
@@ -659,14 +663,5 @@ public class GameController extends Controller implements Updatable {
      */
     public PlayerMatController getPlayerMatController() {
         return playerMatController;
-    }
-
-    /**
-     * This method returns the boardPane so that the chat can request the focus to here.
-     *
-     * @return the boardPane
-     */
-    public Pane getBoardPane() {
-        return boardPane;
     }
 }

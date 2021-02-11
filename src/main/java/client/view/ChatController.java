@@ -2,7 +2,9 @@ package client.view;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import game.Player;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +13,7 @@ import utilities.Constants;
 import utilities.JSONProtocol.JSONBody;
 import utilities.JSONProtocol.body.ReceivedChat;
 import utilities.JSONProtocol.body.SendChat;
+import utilities.Updatable;
 
 import java.util.ArrayList;
 
@@ -42,10 +45,10 @@ public class ChatController extends Controller {
     private JFXComboBox<String> directChoiceBox;
 
     /**
-     * The TextArea which reads the message the player typed.
+     * The TextField which reads the message the player typed.
      */
     @FXML
-    private JFXTextArea lobbyTextAreaChat;
+    private JFXTextField messageField;
 
     /**
      * In this method the directbox gets initialized and the chat controller gets assigned to viewClient. Also the
@@ -55,10 +58,13 @@ public class ChatController extends Controller {
         directChoiceBox.getItems().add("all");
         directChoiceBox.getSelectionModel().select(0);
         viewClient.setChatController(this);
-        lobbyTextAreaChat.setOnKeyPressed(ke -> {
+        messageField.setOnKeyPressed(ke -> {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 submitChatMessage();
             }
+        });
+        chatWindow.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean old, Boolean isFocused) -> {
+            if (isFocused) resetFocus();
         });
     }
 
@@ -89,13 +95,10 @@ public class ChatController extends Controller {
      * and the message which gets filtered for instructions and everything gets send as the JSONMessage SendChat.
      */
     private void submitChatMessage() {
-        if (viewClient.getCurrentController().getClass().equals(GameController.class)) {
-            GameController gameController = (GameController) viewClient.getCurrentController();
-            gameController.getBoardPane().requestFocus();
-        }
+        resetFocus();
         String sendTo = directChoiceBox.getSelectionModel().getSelectedItem();
         logger.trace("chose choice: " + sendTo);
-        String message = lobbyTextAreaChat.getText();
+        String message = messageField.getText();
         message = message.substring(0, message.length() - 1);
         System.out.println(message);
         if (message.equals("#hotkeys")) {
@@ -118,7 +121,7 @@ public class ChatController extends Controller {
         }
 
         privateToMe = false;
-        lobbyTextAreaChat.clear();
+        messageField.clear();
         directChoiceBox.getSelectionModel().select(0);
     }
 
@@ -189,5 +192,16 @@ public class ChatController extends Controller {
             chat = "[" + sender + "] @You: " + message;
         else chat = "[" + sender + "] " + message;
         setTextArea(chat);
+    }
+
+    private void resetFocus() {
+        Updatable controller = viewClient.getCurrentController();
+        if (controller instanceof GameController) {
+            GameController gameController = (GameController) controller;
+            gameController.resetFocus();
+        } else if (controller instanceof LobbyController) {
+            LobbyController lobbyController = (LobbyController) controller;
+            lobbyController.resetFocus();
+        }
     }
 }

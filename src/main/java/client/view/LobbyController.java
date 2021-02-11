@@ -210,4 +210,8 @@ public class LobbyController extends Controller implements Updatable {
             MapSelectionController.getMapSelectionController().setInfoLabel("Click ready and wait for your turn to select map");
         }
     }
+
+    public void resetFocus() {
+        infoLabel.requestFocus();
+    }
 }
