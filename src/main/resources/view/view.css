@@ -40,8 +40,9 @@
 }
 
 .chatLabel {
-    -fx-text-fill: red;
+    -fx-text-fill: #cccad4;
 }
+
 
 /*Label {
     -fx-text-alignment: right;

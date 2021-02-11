@@ -37,7 +37,7 @@
                         <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                     </HBox.margin>
                 </Label>
-                <JFXComboBox fx:id="directChoiceBox" prefHeight="25.0" prefWidth="96.0" style="-fx-text-fill: #cccad4;">
+                <JFXComboBox fx:id="directChoiceBox" prefHeight="25.0" prefWidth="96.0" styleClass="chatLabel">
                     <HBox.margin>
                         <Insets bottom="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
