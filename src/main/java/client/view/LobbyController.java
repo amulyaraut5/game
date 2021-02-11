@@ -34,7 +34,7 @@ import java.util.HashMap;
 public class LobbyController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
     /**
-     * HashMap with a player and its related vBox.
+     * HashMap with a player and its related VBox.
      */
     private final HashMap<Player, VBox> playerIcons = new HashMap<>();
 
