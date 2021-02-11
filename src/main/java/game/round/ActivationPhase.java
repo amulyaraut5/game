@@ -306,7 +306,7 @@ public class ActivationPhase extends Phase {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                checkForAgainCard(player);
+                replaceDamageCard(player);
             }
             case Worm -> {
                 //Reboot the robot.
@@ -330,7 +330,7 @@ public class ActivationPhase extends Phase {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                checkForAgainCard(player);
+                replaceDamageCard(player);
             }
             case Trojan -> {
                 trojanDeck.addCard(new Trojan());
@@ -339,7 +339,7 @@ public class ActivationPhase extends Phase {
                 if (player.getDrawProgrammingDeck().isEmpty()) {
                     player.reuseDiscardedDeck();
                 }
-                checkForAgainCard(player);
+                replaceDamageCard(player);
             }
             default -> logger.error("The CardType " + cardType + " is invalid or not yet implemented!");
         }
@@ -352,30 +352,15 @@ public class ActivationPhase extends Phase {
      * @param player player who has to draw a card
      */
 
-    public void checkForAgainCard(Player player) {
+    public void replaceDamageCard(Player player) {
         for (Card card : player.getDrawProgrammingDeck().getDeck()) {
-            if (!(card.getName() == CardType.Again)) {
+            if (!(currentRegister == 1 && card.getName() == CardType.Again)) {
                 Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
+                player.setRegisterCards(currentRegister, card);
                 handleCard(topCard.getName(), player);
                 break;
             }
         }
-        /*if (currentRegister == 1) {
-            for (Card card : player.getDrawProgrammingDeck().getDeck()) {
-                if (!(card.getName() == CardType.Again)) {
-                    Card topCard = player.getDrawProgrammingDeck().popThisCard(card);
-                    handleCard(topCard.getName(), player);
-                    break;
-                }
-            }
-        }
-        else {
-            Card topCard = player.getDrawProgrammingDeck().pop();
-            handleCard(topCard.getName(), player);
-        }
-
-         */
-
     }
 
     /**
