@@ -1,6 +1,7 @@
 package client.view;
 
 import game.Player;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -51,8 +52,7 @@ public class GameWonController extends Controller {
      */
     @FXML
     public void returnClicked() {
-        //viewManager.closeGame(); //reset Game and Lobby
-        //viewManager.showLobby();
+        Platform.runLater(viewManager::resetGame);
     }
 
     /**

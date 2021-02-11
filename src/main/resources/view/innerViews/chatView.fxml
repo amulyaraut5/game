@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="500.0" stylesheets="@../view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.ChatController">
     <GridPane>
@@ -32,18 +33,24 @@
         </JFXTextArea>
         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
             <HBox prefHeight="100.0" prefWidth="200.0">
-                <Label styleClass="chatLabel" text="to:" textFill="#cccad4">
+                <Label text="to:" textFill="#cccad4">
                     <HBox.margin>
                         <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                     </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
                 </Label>
-                <JFXComboBox fx:id="directChoiceBox" prefHeight="25.0" prefWidth="96.0" styleClass="chatLabel">
+                <JFXComboBox fx:id="directChoiceBox" focusColor="ORANGE" prefHeight="33.0" prefWidth="157.0" style="-fx-text-fill: #cccad4;" styleClass="directChoiceBox">
                     <HBox.margin>
-                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                        <Insets right="5.0" top="5.0" />
                     </HBox.margin>
                 </JFXComboBox>
             </HBox>
-         <JFXTextField fx:id="messageField" />
+         <JFXTextField fx:id="messageField" focusColor="ORANGE" onAction="#submitChatMessage">
+            <VBox.margin>
+               <Insets bottom="5.0" left="5.0" right="5.0" />
+            </VBox.margin></JFXTextField>
         </VBox>
     </GridPane>
 </StackPane>

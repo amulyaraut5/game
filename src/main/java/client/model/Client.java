@@ -107,13 +107,12 @@ public abstract class Client {
     public void disconnect(Exception ex) {
         readerThread.interrupt();
         if (ex != null) logger.warn("The server is no longer reachable: " + ex.getMessage());
-        else logger.info("The connection with the server is closed.");
         try {
             socket.close();
-            logger.info("The connection with the server is closed.");
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
+        logger.info("The connection with the server is closed.");
         if (this instanceof ViewClient) {
             Platform.runLater(() -> ViewManager.getInstance().resetAll());
             Updatable controller = ((ViewClient) this).getCurrentController();
