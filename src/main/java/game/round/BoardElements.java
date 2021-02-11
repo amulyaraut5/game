@@ -150,7 +150,7 @@ public class BoardElements {
                 activationPhase.handleTile(p);
             }
         }
-         */
+         */ //TODO
     }
 
     /**
@@ -188,7 +188,7 @@ public class BoardElements {
                 activationPhase.handleTile(p);
             }
         }
-         */
+         */ //TODO
     }
 
     /**

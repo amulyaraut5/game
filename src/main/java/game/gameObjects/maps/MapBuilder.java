@@ -8,12 +8,17 @@ import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 
 /**
- *
+ * TODO
  */
 public final class MapBuilder {
     private MapBuilder() {
     }
 
+    /**
+     * TODO
+     * @param blueprint
+     * @return
+     */
     public static Map constructMap(Blueprint blueprint) {
         int max = 10;
         Tile[][] tiles = new Tile[max + 3][max];
@@ -34,6 +39,12 @@ public final class MapBuilder {
         }
         return new Map(tiles);
     }
+
+    /**
+     * TODO
+     * @param tiles
+     * @return
+     */
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     public static boolean isRebootOnTiles(Tile[][] tiles) {
