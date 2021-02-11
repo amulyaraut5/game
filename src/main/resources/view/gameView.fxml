@@ -1,86 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.Bloom?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1427.0"
-            stylesheets="@view.css" xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="client.view.GameController">
-    <Pane prefHeight="780.0" prefWidth="1427.0" style="-fx-background-color: black; -fx-opacity: 0.6;"/>
-    <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
-              prefWidth="1427.0">
+
+<AnchorPane id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1427.0" stylesheets="@view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameController">
+    <Pane prefHeight="780.0" prefWidth="1427.0" style="-fx-background-color: black; -fx-opacity: 0.6;" />
+    <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1427.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="780.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="780.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" vgrow="SOMETIMES"/>
-            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="180.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <GridPane prefHeight="600.0" prefWidth="653.0" GridPane.columnIndex="1">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <BorderPane fx:id="phasePane">
                 <bottom>
-                    <Label fx:id="infoLabel" alignment="CENTER" prefHeight="27.0" prefWidth="367.0" textFill="#ff3600"
-                           BorderPane.alignment="CENTER">
+                    <Label fx:id="infoLabel" alignment="CENTER" prefHeight="74.0" prefWidth="377.0" textFill="#ff3600" BorderPane.alignment="CENTER">
                         <font>
-                            <Font name="System Bold" size="18.0"/>
+                            <Font name="System Bold" size="18.0" />
                         </font>
                     </Label>
                 </bottom>
             </BorderPane>
-            <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="233.0" GridPane.columnIndex="1"/>
+            <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="233.0" GridPane.columnIndex="1" />
         </GridPane>
-        <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0"
-                   stylesheets="@view.css" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Pane fx:id="boardPane" prefHeight="600.0" prefWidth="780.0"/>
-        <Pane fx:id="otherPlayerSpace" prefHeight="180.0" prefWidth="780.0" GridPane.rowIndex="1"/>
+        <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0" stylesheets="@view.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Pane fx:id="boardPane" prefHeight="600.0" prefWidth="780.0" />
+        <Pane fx:id="otherPlayerSpace" prefHeight="180.0" prefWidth="780.0" GridPane.rowIndex="1" />
     </GridPane>
-    <Pane fx:id="roundPane" layoutX="796.0" layoutY="13.0" prefHeight="41.0" prefWidth="381.0"
-          style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
-        <Label fx:id="roundLabel" alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="41.0" prefWidth="379.0"
-               text="!" textFill="WHITE" wrapText="true">
+    <Pane fx:id="roundPane" layoutX="796.0" layoutY="13.0" prefHeight="41.0" prefWidth="381.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
+        <Label fx:id="roundLabel" alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="41.0" prefWidth="379.0" text="!" textFill="WHITE" wrapText="true">
             <font>
-                <Font name="System Bold" size="20.0"/>
+                <Font name="System Bold" size="20.0" />
             </font>
         </Label>
         <effect>
             <Bloom threshold="0.85">
                 <input>
-                    <DropShadow height="33.07" radius="13.7725" width="24.02"/>
+                    <DropShadow height="33.07" radius="13.7725" width="24.02" />
                 </input>
             </Bloom>
         </effect>
     </Pane>
 
-    <Pane fx:id="infoPane" layoutX="948.0" layoutY="147.0" prefHeight="60.0" prefWidth="241.0"
-          style="-fx-background-color: orange; -fx-border-color: darkblue;" visible="false">
-        <Label layoutX="-5.0" layoutY="-7.0" prefHeight="74.0" prefWidth="242.0" textFill="WHITE"
-               wrapText="true">
+    <Pane fx:id="infoPane" layoutX="948.0" layoutY="147.0" prefHeight="60.0" prefWidth="241.0" style="-fx-background-color: orange; -fx-border-color: darkblue;" visible="false">
+        <Label layoutX="-5.0" layoutY="-7.0" prefHeight="74.0" prefWidth="242.0" textFill="WHITE" wrapText="true">
             <font>
-                <Font name="System Bold" size="16.0"/>
+                <Font name="System Bold" size="16.0" />
             </font>
         </Label>
         <Label fx:id="moveInfo" layoutX="27.0" layoutY="15.0" prefHeight="41.0" prefWidth="242.0" textFill="WHITE">
             <font>
-                <Font size="16.0"/>
+                <Font size="16.0" />
             </font>
         </Label>
-        <Pane layoutX="6.0" layoutY="8.0" prefHeight="21.0" prefWidth="23.0"
-              style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
-            <Label alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="21.0" prefWidth="22.0" text="i"
-                   textFill="WHITE" wrapText="true">
+        <Pane layoutX="6.0" layoutY="8.0" prefHeight="21.0" prefWidth="23.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
+            <Label alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="21.0" prefWidth="22.0" text="i" textFill="WHITE" wrapText="true">
                 <font>
-                    <Font name="System Bold" size="14.0"/>
+                    <Font name="System Bold" size="14.0" />
                 </font>
             </Label>
         </Pane>
