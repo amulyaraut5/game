@@ -18,16 +18,17 @@ public class MoveSimulator {
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
+    private AIClient aiClient;
 
     public MoveSimulator(AIClient aiClient, Map map) {
         this.map = map;
+        this.aiClient = aiClient;
     }
 
     public Coordinate simulateCombination(CardType[] cards, Coordinate actualPos, Orientation orientation) {
         resPosition = actualPos.clone();
         resOrientation = orientation;
         this.cards = cards;
-
         for (int i = 0; i < 5; i++) {
             if (!reboot) {
                 playCard(cards[i], i);
@@ -111,12 +112,12 @@ public class MoveSimulator {
     }
 
     private void activateGreenBelts() {
-        handleBeltMovement(map.getGreenBelts());
+        handleBeltMovement2(map.getGreenBelts());
     }
 
     private void activateBlueBelts() {
-        handleBeltMovement(map.getBlueBelts());
-        handleBeltMovement(map.getBlueBelts());
+        handleBeltMovement2(map.getBlueBelts());
+        handleBeltMovement2(map.getBlueBelts());
     }
 
     private void handleBeltMovement(ArrayList<Coordinate> belts) {
@@ -131,6 +132,34 @@ public class MoveSimulator {
                         orientation = ((RotatingBelt) a).getOrientations()[0];
                     }
                     handleMove(orientation);
+
+                    //Rotate robot if moved on Rotating belt
+                    for (Attribute attribute : map.getTile(resPosition).getAttributes()) {
+                        if (attribute.getType() == AttributeType.RotatingBelt) {
+                            RotatingBelt temp = ((RotatingBelt) attribute);
+                            if(temp.getOrientations()[0] != orientation) rotateOnBelt(temp.getOrientations());
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void handleBeltMovement2(ArrayList<Coordinate> belts) {
+        Orientation orientation = null;
+        boolean moved = false;
+        for (Coordinate coordinate : belts) {
+            if (coordinate.equals(resPosition) && moved==false) {
+                for (Attribute a : map.getTile(coordinate).getAttributes()) {
+                    if (a instanceof Belt) {
+                        orientation = ((Belt) a).getOrientation();
+                    }
+                    if (a instanceof RotatingBelt) {
+                        orientation = ((RotatingBelt) a).getOrientations()[0];
+                    }
+                    handleMove(orientation);
+                    moved = true;
 
                     //Rotate robot if moved on Rotating belt
                     for (Attribute attribute : map.getTile(resPosition).getAttributes()) {
