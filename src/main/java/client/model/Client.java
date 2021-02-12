@@ -46,13 +46,16 @@ public abstract class Client {
      */
     public void handleDamageCount(ArrayList<CardType> cardList) {
         for (CardType cardType : cardList) {
-            if (!(cardType == null)) {
-                switch (cardType) {
-                    case Spam -> setCountSpamCards(countSpamCards - 1);
-                    case Trojan -> setCountTrojanCards(countTrojanCards - 1);
-                    case Worm -> setCountWormCards(countWormCards - 1);
-                    case Virus -> setCountVirusCards(countVirusCards - 1);
-                }
+            handleDamageCount(cardType);
+        }
+    }
+    public void handleDamageCount(CardType cardType){
+        if (!(cardType == null)) {
+            switch (cardType) {
+                case Spam -> setCountSpamCards(countSpamCards - 1);
+                case Trojan -> setCountTrojanCards(countTrojanCards - 1);
+                case Worm -> setCountWormCards(countWormCards - 1);
+                case Virus -> setCountVirusCards(countVirusCards - 1);
             }
         }
     }
