@@ -466,7 +466,7 @@ public class GameController extends Controller implements Updatable {
                 soundHandler.playSoundEffects("PitSound", play);
 
                 boolean isThisPlayer = reboot.getPlayerID() == viewClient.getThisPlayersID();
-                othersController.setRebootLabel(reboot, isThisPlayer);
+                if(!isThisPlayer) othersController.setRebootLabel(reboot);
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -580,7 +580,7 @@ public class GameController extends Controller implements Updatable {
                     playerMatController.setDiscardDeckCounter(drawDamage.getCards().size());
                     playerMatController.addPlayerCards(drawDamage.getCards().size());
                 }
-                othersController.setDrewDamageLabel(drawDamage, isThisPlayer);
+                if(!isThisPlayer) othersController.setDrewDamageLabel(drawDamage);
             }
             case GameWon -> {
                 GameWon gameWon = (GameWon) message.getBody();

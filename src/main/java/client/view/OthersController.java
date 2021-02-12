@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utilities.JSONProtocol.body.*;
 import utilities.RegisterCard;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,7 +21,13 @@ import java.util.Objects;
  */
 public class OthersController extends Controller {
     private static final Logger logger = LogManager.getLogger();
+    /**
+     * This method stores all players of the game except the player itself.
+     */
     private final ArrayList<OtherPlayer> otherPlayers = new ArrayList<>();
+    /**
+     * This HBox contains all small onePlayerMats.
+     */
     @FXML
     private HBox hBoxPlayer;
 
@@ -34,12 +39,12 @@ public class OthersController extends Controller {
     }
 
     /**
-     * This method extracts the OtherPlayer with its controller etc
+     * This method extracts the OtherPlayer with its controller etc.
      *
      * @param id of searched player
      * @return the player who is desired
      */
-   public OtherPlayer getOtherPlayer(int id) {
+    private OtherPlayer getOtherPlayer(int id) {
         for (OtherPlayer otherPlayer : otherPlayers) {
             if (id == otherPlayer.getPlayer().getID()) {
                 return otherPlayer;
@@ -49,7 +54,7 @@ public class OthersController extends Controller {
     }
 
     /**
-     * returns the OnePlayerController of the given id
+     * This method returns the OnePlayerController of the given id.
      *
      * @param id of wanted player
      * @return OnePlayerController of player
@@ -59,9 +64,9 @@ public class OthersController extends Controller {
     }
 
     /**
-     * This method creates for every player except player itself a little playerMat
+     * This method creates for every player except player itself a little playerMat.
      *
-     * @param players //TODO
+     * @param players a list with all players
      */
     public void createPlayerMats(ArrayList<Player> players) {
         hBoxPlayer.setAlignment(Pos.CENTER);
@@ -73,7 +78,10 @@ public class OthersController extends Controller {
     }
 
     /**
-     * @param player //TODO
+     * This method creates the innerView of one player mat and adds it to the hBoxPlayer.
+     * Also it creates and adds an instance of the private class OtherPlayer and assigns the position in HBox.
+     *
+     * @param player the player that gets added
      */
     private void playerAdded(Player player) {
         hBoxPlayer.setSpacing(10);
@@ -114,7 +122,9 @@ public class OthersController extends Controller {
     }
 
     /**
-     * @param currentCards
+     * This method shows for every player the currentCard of the current register on its playerMat
+     *
+     * @param currentCards this list contains all information about
      */
     public void currentCards(ArrayList<RegisterCard> currentCards) {
         for (RegisterCard registerCard : currentCards) {
@@ -123,40 +133,45 @@ public class OthersController extends Controller {
     }
 
     /**
-     * @param energy
+     * This method adds to the playerMat of the player that got energy a new amount of energy
+     *
+     * @param energy the playerID and the amount of energy the player got
      */
     public void addEnergy(Energy energy) {
         getOtherPlayerController(energy.getPlayerID()).addEnergy(energy.getCount());
     }
 
     /**
-     * @param selectionFinished
+     * This method sets the infoLabel of the other player that was first, so that the player can recognize who it was.
+     *
+     * @param selectionFinished the player that was first
      */
     public void playerWasFirst(SelectionFinished selectionFinished) {
         getOtherPlayerController(selectionFinished.getPlayerID()).setInfoLabel("This player was first");
     }
 
     /**
-     * @param checkpointReached
+     * This method adds to the playerMat of the player that got a new checkpoint a the checkpoint number
+     *
+     * @param checkpointReached the playerID and the number of checkpoint of a player that reached a new checkpoint
      */
     public void checkPointReached(CheckpointReached checkpointReached) {
         getOtherPlayerController(checkpointReached.getPlayerID()).addCheckPoint(checkpointReached.getNumber());
     }
 
     /**
-     * Displays the reboot and spam information in the small player mat
-     * @param reboot
-     * @param thisPlayer
+     * This method displays the reboot and spam information in the small player mat.
+     *
+     * @param reboot the playerID of the rebooted player
      */
-    public void setRebootLabel(Reboot reboot, boolean thisPlayer) {
-        if (!thisPlayer) {
+    public void setRebootLabel(Reboot reboot) {
             getOtherPlayerController(reboot.getPlayerID()).setDisplayingLabel("rebooted and got spam!");
-        }
     }
 
     /**
-     *  Displays that the player was too slow
-     * @param timerEnded
+     * This method displays on their playerMats which player was too slow.
+     *
+     * @param timerEnded the player who didn't finish filling their registers in time
      */
     public void setTooSlowLabel(TimerEnded timerEnded) {
         for (int playerID : timerEnded.getPlayerIDs()) {
@@ -166,21 +181,22 @@ public class OthersController extends Controller {
     }
 
     /**
-     *  Displays that the player git damage
-     * @param drawDamage
-     * @param thisPlayer
+     * This method displays the information (including images) about damage on the
+     * small playerMat of the player that got damage.
+     *
+     * @param drawDamage The playerID of the player that got damage and which cards
      */
-    public void setDrewDamageLabel(DrawDamage drawDamage, boolean thisPlayer) {
+    public void setDrewDamageLabel(DrawDamage drawDamage) {
         for (OtherPlayer otherPlayer : otherPlayers) otherPlayer.getOnePlayerController().setInfoLabel(" ");
-        if (!thisPlayer) {
-            getOtherPlayerController(drawDamage.getPlayerID()).setDisplayingLabel("got damage");
-            getOtherPlayerController(drawDamage.getPlayerID()).displayDamageCards(drawDamage.getCards());
-        }
+        getOtherPlayerController(drawDamage.getPlayerID()).setDisplayingLabel("got damage");
+        getOtherPlayerController(drawDamage.getPlayerID()).displayDamageCards(drawDamage.getCards());
     }
 
     /**
-     * Displays that the player refilled the deck
-     * @param shuffleCoding
+     * This method displays the information shuffling cards on the
+     * small playerMat of the player that shuffled cards.
+     *
+     * @param shuffleCoding The playerID of the player that shuffled cards
      */
     public void setShuffleCodingLabel(ShuffleCoding shuffleCoding) {
         getOtherPlayerController(shuffleCoding.getPlayerID()).setDisplayingLabel("refilled the deck");
@@ -247,13 +263,6 @@ public class OthersController extends Controller {
         public int getPositionHBox() {
             return positionHBox;
         }
-        }
+    }
 
-        public HBox gethBoxPlayer() {
-            return hBoxPlayer;
-        }
-
-        public ArrayList<OtherPlayer> getOtherPlayers() {
-            return otherPlayers;
-        }
 }
