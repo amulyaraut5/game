@@ -9,7 +9,7 @@ import utilities.enums.Rotation;
 /**
  * This  class creates the different tiles.
  *
- * @author Amulya, Simon
+ * @author Amulya, Simon, annika
  */
 public final class TileFactory {
     private static final Logger logger = LogManager.getLogger();
