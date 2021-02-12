@@ -14,42 +14,81 @@ import utilities.enums.InnerActivation;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the innerview of the activation phase for the situation that the
+ * player has to pick damage cards because the spam deck is empty. The player has to pick a certain
+ * amount of cards of the other damage decks and send his choice back to the server.
+ */
 public class PickDamageController extends Controller {
-
+    /**
+     * The ActivationController that sets this view as inner view
+     */
+    private ActivationController activationController;
+    /**
+     * The amount of damage cards the player should pick.
+     */
+    private int pickDamage;
+    /**
+     * It saves the actual count of spam cards in the spam deck.
+     */
+    private int countSpam;
+    /**
+     * It saves the actual count of trojan cards in the trojan deck.
+     */
+    private int countTrojan;
+    /**
+     * It saves the actual count of virus cards in the virus deck.
+     */
+    private int countVirus;
+    /**
+     * It saves the actual count of worm cards in the worm deck.
+     */
+    private int countWorm;
+    /**
+     * This list stores all damage cards that the player chose and gets cleared when one pickDamage pass is over.
+     */
     private final ArrayList<CardType> pickedDamageCards = new ArrayList<>();
+    /**
+     * This HBox shows the images of damage cards the player has chosen.
+     */
     @FXML
     private HBox selectedDamageHBox;
+    /**
+     * The Button for choosing a spam card.
+     */
     @FXML
     private Button spamCardButton;
+    /**
+     * The Button for choosing a trojan card.
+     */
     @FXML
     private Button trojanCardButton;
+    /**
+     * The Button for choosing a virus card.
+     */
     @FXML
     private Button virusCardButton;
+    /**
+     * The Button for choosing a worm card.
+     */
     @FXML
     private Button wormCardButton;
+    /**
+     * This Label displays how much cards the player should pick.
+     */
     @FXML
     private Label damageInfoLabel;
-    private int pickDamage;
-
-    private ActivationController activationController;
-    private int countSpam;
-    private int countTrojan;
-    private int countVirus;
-    private int countWorm;
-
-    public void setActivationController(ActivationController activationController) {
-        this.activationController = activationController;
-    }
 
     public void initialize(){
         selectedDamageHBox.setSpacing(20);
     }
 
     /**
-     * by getting protocol PickDamage the damageAnchorPane gets visible and it updates the
-     * count numbers on the different damageButtons
+     * By getting protocol PickDamage the damageAnchorPane gets visible and the method updates the
+     * count numbers on the different damageButtons, shows how much damage cards the player has to choose and
+     * stores the current counts of each damage deck in its class attributes.
      *
-     * @param pickDamage
+     * @param pickDamage how much damage cards the player has to select
      */
     public void pickDamage(PickDamage pickDamage) {
         countSpam = viewClient.getCountSpamCards();
@@ -66,6 +105,12 @@ public class PickDamageController extends Controller {
         this.pickDamage = pickDamage.getCount();
     }
 
+    /**
+     * This method updates displaying the count of cards each button should represent and disables the buttons
+     * if the deck is empty
+     *
+     * @param cardType the CardType the player selected
+     */
     private void updateDamageCountLabel(CardType cardType) {
         switch (cardType) {
             case Spam -> {
@@ -87,6 +132,13 @@ public class PickDamageController extends Controller {
         }
     }
 
+    /**
+     *This method is called when one of the four buttons is pressed.
+     * Depending on which button this was, the number of cards in the locally stored class attribute
+     * that represents this deck is increased and the method checkDamageReady is called with the selected CardType.
+     *
+     * @param actionEvent the actionEvent which also stores its source
+     */
     @FXML
     private void damageButtonClicked(ActionEvent actionEvent) {
         CardType clickedButton = null;
@@ -106,6 +158,13 @@ public class PickDamageController extends Controller {
         checkDamageReady(clickedButton);
     }
 
+    /**
+     * This method checks if the player picked as much cards as he should and displays the selected card
+     * underneath the buttons. If the player picked enough cards everything related to displaying this class
+     * gets reset and the innerView of the activation phase gets changed back to Play It.
+     *
+     * @param card the CardType the player selected
+     */
     private void checkDamageReady(CardType card) {
         updateDamageCountLabel(card);
         pickedDamageCards.add(card);
@@ -118,5 +177,10 @@ public class PickDamageController extends Controller {
             pickedDamageCards.clear();
             activationController.changePhaseView(InnerActivation.PlayIt);
         }
+    }
+
+
+    public void setActivationController(ActivationController activationController) {
+        this.activationController = activationController;
     }
 }
