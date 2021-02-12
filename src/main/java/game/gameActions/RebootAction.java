@@ -102,11 +102,4 @@ public class RebootAction extends Action {
         }
     }
 
-    public void clearRebootTile2(Player player) {
-        for (Player robotOnReboot : game.getPlayers()) {
-            if (robotOnReboot.getRobot().getCoordinate().equals(player.getRobot().getCoordinate()) && robotOnReboot != player) {
-                game.getActivationPhase().handleMove(robotOnReboot, Orientation.UP);
-            }
-        }
-    }
 }

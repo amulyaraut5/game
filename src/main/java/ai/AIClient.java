@@ -356,16 +356,5 @@ public class AIClient extends Client {
 
     }
 
-    public String cardsToString(CardType[] array){
-        String output = "";
-        for (CardType card : array) {
-            switch (card){
-                case MoveII -> output += "MoveII ";
-                case Spam -> output += "Spam";
-            }
-        }
-        return output;
-    }
-
 
 }
