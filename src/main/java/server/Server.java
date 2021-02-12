@@ -27,6 +27,15 @@ import java.util.regex.Pattern;
 
 import static utilities.Constants.PORT;
 
+/**
+ * This class mainly deals with establishing connection between server and client and helps in
+ * communication between different users.
+ *
+ * @author Louis
+ * @author amulya
+ * @author TODO
+ */
+
 public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
@@ -40,12 +49,11 @@ public class Server extends Thread {
      */
     private final ArrayList<User> readyUsers = new ArrayList<>();
     /**
-     * Queue to read json messages step by step TODO -> is this the right description?
+     * Queue to read json messages step by step
      */
     private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
     /**
      * stores all users and if this user is an AI or not
-     * TODO do we need these three?
      */
     private final HashMap<User, Boolean> usersAI = new HashMap<>();
     private final ArrayList<User> AIs = new ArrayList<>();
@@ -75,7 +83,8 @@ public class Server extends Thread {
     }
 
     /**
-     * It opens a channel for the connection between Server and Client.
+     * It opens a channel for the connection between Server and Client, and picks the message
+     * from the blocking queue in the order they are received.
      */
     @Override
     public void run() {
@@ -188,7 +197,7 @@ public class Server extends Thread {
                         public void run() {
                             game.getActivationPhase().activateCards(user.getID());
                         }
-                    }, 1500);
+                    }, 0);
                 } else
                     game.getActivationPhase().activateCards(user.getID());
             }
@@ -230,6 +239,11 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     *
+     * @param user is the current player
+     * @param pv is the type of protocol message which is handled
+     */
     private void addPlayerValues(User user, PlayerValues pv) {
         boolean figureTaken = false;
         for (User userLoop : getUsers()) {
@@ -252,6 +266,11 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     *
+     * @param user is the current player
+     * @param hs is the type of protocol message which is handled
+     */
     private void addNewUser(User user, HelloServer hs) {
         if (hs.getProtocol() == Constants.PROTOCOL) {
             if (users.size() <= 6) {
@@ -284,12 +303,14 @@ public class Server extends Thread {
         }
     }
     /**
-     * TODO
+     * This method sends the message to the first user who presses ready. If the same
+     * player presses unready, then the SelectMap protocol message is sent to the next player
+     * in the playersList.
+     * If all users are AIs, a random map is selected.
      *
-     * @param user
-     * @param status
+     * @param user is the current player
+     * @param status is the type of protocol message which is handled
      */
-
     private void dealWithMap(User user, SetStatus status) {
         usersAI.put(user, status.isReady());
 
@@ -302,7 +323,6 @@ public class Server extends Thread {
             isMapSent = false;
             isMapSelected = false;
         }
-
         if (!isMapSent && !isMapSelected) {
             for (User user1 : notAIs) {
                 try {
@@ -310,22 +330,18 @@ public class Server extends Thread {
                         user1.message(new SelectMap(maps));
                         isMapSent = true;
                         selectUser = user1;
-                        //isMapSelected = true;
                         break;
                     }
                 } catch (NullPointerException ignored) {
                 }
             }
         }
-
         boolean allUsersReady = setReadyStatus(user, status.isReady());
 
         if (allUsersReady && isMapSelected) {
             game.play();
             serverState = ServerState.RUNNING_GAME;
         }
-
-        // Random Map is selected if all users are AI
         if (allUsersReady && (AIs.size() == readyUsers.size())) {
             selectedMap = maps.get(r.nextInt(maps.size()));
         }
@@ -336,6 +352,11 @@ public class Server extends Thread {
         serverState = ServerState.RUNNING_GAME;
     }
 
+    /**
+     * This method resets all the things from the server, makes ready for the new game.
+     *
+     * @param winnerID id of the player who has won the game
+     */
     public void gameWon(int winnerID) {
         serverState = ServerState.LOBBY;
         readyUsers.clear();
@@ -349,7 +370,6 @@ public class Server extends Thread {
      *
      * @param serverSocket socket from which connection is to be established
      */
-
     private void acceptClients(ServerSocket serverSocket) {
         boolean accept = true;
         while (accept) {
@@ -384,6 +404,11 @@ public class Server extends Thread {
         return (users.size() == readyUsers.size() && users.size() > 1);
     }
 
+    /**
+     * This method sends a message to each client which is connected to the server except the sender itself.
+     * @param jsonBody type of protocol message which needs to be sent.
+     * @param sender the user who is responsible for sending the message.
+     */
     synchronized public void communicateUsers(JSONBody jsonBody, User sender) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
@@ -394,6 +419,11 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * This method sends the message to all the connected users.
+     *
+     * @param jsonBody type of protocol message which needs to be sent.
+     */
     synchronized public void communicateAll(JSONBody jsonBody) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
@@ -405,6 +435,12 @@ public class Server extends Thread {
         }
     }
 
+    /**
+     * It sends the message to the particular user based on the id of the player.
+     *
+     * @param jsonBody type of protocol message which needs to be sent.
+     * @param receiver id of the receiver
+     */
     synchronized public void communicateDirect(JSONBody jsonBody, int receiver) {
         for (User user : users) {
             if (user.getID() == receiver) {
@@ -424,8 +460,6 @@ public class Server extends Thread {
      * @param user User to be removed
      */
     public void removeUser(User user) {
-
-        //Player is removed from the players and activePlayers List
 
         if (serverState == ServerState.LOBBY) {
             readyUsers.remove(user);
@@ -476,9 +510,7 @@ public class Server extends Thread {
                 }
             }
         }
-
         users.remove(user);
-
         communicateAll(new ConnectionUpdate(user.getID(), false, "Remove"));
         if (user.getName() != null) communicateAll(new Error(user.getName() + " left the game."));
 

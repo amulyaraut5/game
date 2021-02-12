@@ -2,6 +2,12 @@ package ai;
 
 import client.model.Client;
 import game.Player;
+import game.gameActions.RebootAction;
+import game.gameObjects.cards.damage.Spam;
+import game.gameObjects.cards.damage.Trojan;
+import game.gameObjects.cards.damage.Virus;
+import game.gameObjects.cards.damage.Worm;
+import game.gameObjects.cards.programming.MoveII;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import utilities.Constants;
@@ -124,6 +130,7 @@ public class AIClient extends Client {
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
+                logger.info("AI's cards: " + yourCards.getCards());
                 chooseCards(yourCards);
             }
             case PickDamage -> {
@@ -160,7 +167,7 @@ public class AIClient extends Client {
                 } else {
                     r.setOrientation(r.getOrientation().getNext());
                 }
-                logger.info("AI think it's facing " + r.getOrientation());
+                //logger.info("AI think it's facing " + r.getOrientation());
             }
             case ConnectionUpdate -> {
                 ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
@@ -247,6 +254,7 @@ public class AIClient extends Client {
 
         for (CardType[] cards : keySet) {
             int distance = Coordinate.distance(resultingPositions.get(cards), controlPoint);
+            logger.info("Calculated combination difference: " + distance  + " Cards: " + cardsToString(cards));
             //logger.trace("distance: " + distance + " " + Arrays.toString(cards));
             if (distance < shortestDistance) {
                 shortestDistance = distance;
@@ -254,6 +262,17 @@ public class AIClient extends Client {
             }
         }
         //logger.trace("best distance: " + shortestDistance + " " + Arrays.toString(bestCombination));
+        logger.info("AI Shortest distance (" + thisPlayersID + ") "  + shortestDistance);
+        Robot robot = getPlayerFromID(thisPlayersID).getRobot();
+
+        MoveSimulator testsim = new MoveSimulator(this, map);
+        CardType[] cards = new CardType[]{ CardType.PowerUp, CardType.MoveII, CardType.MoveII, CardType.TurnRight, CardType.BackUp};
+        CardType[] cards2 = new CardType[]{ CardType.PowerUp, CardType.MoveII, CardType.MoveI, CardType.PowerUp, CardType.PowerUp};
+        Coordinate startpoint = new Coordinate(0, 6);
+        int distance = Coordinate.distance(testsim.simulateCombination(cards2, startpoint, robot.getOrientation()), controlPoint);
+        logger.info("Test::" + distance);
+
+
         return bestCombination;
     }
 
@@ -277,5 +296,40 @@ public class AIClient extends Client {
             String name = "AI " + thisPlayersID;
             sendMessage(new PlayerValues(name, chosenFigure));
         } else disconnect();
+    }
+
+    public String cardsToString(CardType[] cards){
+        String returnString = "";
+        for (CardType card : cards) {
+            switch (card){
+                case MoveI -> returnString += "MoveI, ";
+                case MoveII -> {
+                    returnString += "MoveII, ";
+                }
+                case MoveIII -> {
+                    returnString += "MoveIII, ";
+                }
+                case TurnLeft -> returnString += "TurnLeft, ";
+
+                case TurnRight -> returnString += "TurnRight, ";
+
+                case UTurn -> returnString += "UTurn, ";
+
+                case BackUp -> returnString += "BackUp, ";
+
+                case PowerUp -> {
+                    returnString += "PowerUp, ";
+                }
+                case Again-> returnString += "Again, ";
+
+                case Spam -> returnString += "Spam, ";
+
+                case Worm -> returnString += "Worm, ";
+                case Virus -> returnString += "Virus, ";
+                case Trojan -> returnString += "Trojan, ";
+            }
+        }
+
+        return returnString;
     }
 }
