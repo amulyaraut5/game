@@ -123,10 +123,6 @@ public class AIClient extends Client {
                 ActivePhase msg = (ActivePhase) message.getBody();
                 currentPhase = msg.getPhase();
                 if (currentPhase == GameState.PROGRAMMING) {
-                    for (Player player : rebootingAIs) {
-                        logger.info(player.getID() + "is in.");
-                    }
-
                     players.addAll(rebootingAIs);
                     rebootingAIs.clear();
                 }
