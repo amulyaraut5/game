@@ -1,6 +1,7 @@
 package ai;
 
 import client.model.Client;
+import game.Game;
 import game.Player;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
@@ -24,6 +25,7 @@ import java.util.*;
 public class AIClient extends Client {
     private Map map;
     private GameState currentPhase = GameState.CONSTRUCTION;
+    private Game game = Game.getInstance();
 
     /**
      * creates a set containing all combinations and their permutations
@@ -58,7 +60,7 @@ public class AIClient extends Client {
     }
 
     /**
-     * mandles the received messages on the clientside for the AI.
+     * handles the received messages on the clientside for the AI.
      *
      * @param message message from the ReaderThread
      */
@@ -131,11 +133,27 @@ public class AIClient extends Client {
                 int countToPick = pickDamage.getCount();
                 ArrayList<CardType> damageCards = new ArrayList<>();
                 CardType chooseCard = null;
+                int virusCount = game.getVirusDeck().size();
+                int spamCount = game.getSpamDeck().size();
+                int wormCount = game.getWormDeck().size();
+                int trojanCount = game.getTrojanDeck().size();
                 while (countToPick > 0) {
-                    if (getCountVirusCards() > 0) chooseCard = CardType.Virus;
-                    else if (getCountSpamCards() > 0) chooseCard = CardType.Spam;
-                    else if (getCountWormCards() > 0) chooseCard = CardType.Worm;
-                    else if (getCountTrojanCards() > 0) chooseCard = CardType.Trojan;
+                    if (virusCount > 0) {
+                        chooseCard = CardType.Virus;
+                        virusCount--;
+                    }
+                    else if (spamCount > 0) {
+                        chooseCard = CardType.Spam;
+                        spamCount--;
+                    }
+                    else if (wormCount > 0){
+                        chooseCard = CardType.Worm;
+                        wormCount--;
+                    }
+                    else if (trojanCount > 0) {
+                        chooseCard = CardType.Trojan;
+                        trojanCount--;
+                    }
                     damageCards.add(chooseCard);
                     countToPick--;
                 }
@@ -177,10 +195,6 @@ public class AIClient extends Client {
                 Reboot reboot = (Reboot) message.getBody();
                 logger.info(reboot.getPlayerID() + "was out.");
             }
-            case DrawDamage -> {
-                DrawDamage drawDamage = (DrawDamage) message.getBody();
-                handleDamageCount(drawDamage.getCards());
-            }
             case GameWon -> {
                 Random r = new Random();
                 synchronized (this) {
@@ -208,7 +222,7 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
+                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos); //TODO
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }
@@ -222,7 +236,6 @@ public class AIClient extends Client {
 
         for (int i = 0; i < 5; i++) {
             CardType cardType = bestCombination[i];
-            handleDamageCount(cardType);
             sendMessage(new SelectCard(cardType, i + 1));
         }
     }
