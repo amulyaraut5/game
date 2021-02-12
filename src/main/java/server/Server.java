@@ -308,14 +308,12 @@ public class Server extends Thread {
                 try {
                     if (usersAI.get(user1)) {
                         user1.message(new SelectMap(maps));
-                        communicateAll(new Error(""));
                         isMapSent = true;
                         selectUser = user1;
                         //isMapSelected = true;
                         break;
                     }
-                } catch (NullPointerException e) {
-                    communicateAll(new Error("Click Ready to select a map"));
+                } catch (NullPointerException ignored) {
                 }
             }
         }

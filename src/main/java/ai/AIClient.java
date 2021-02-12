@@ -9,7 +9,10 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
-import utilities.enums.*;
+import utilities.enums.CardType;
+import utilities.enums.GameState;
+import utilities.enums.MessageType;
+import utilities.enums.Rotation;
 
 import java.util.*;
 
@@ -145,25 +148,19 @@ public class AIClient extends Client {
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
                 Player ai = getPlayerFromID(msg.getPlayerID());
+                if (ai != null) {
+                    ai.getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
+                }
             }
             case PlayerTurning -> {
                 PlayerTurning msg = (PlayerTurning) message.getBody();
-                if(msg.getPlayerID() == thisPlayersID) {
-                    if (msg.getDirection() == Rotation.RIGHT) {
-                        getPlayerFromID(thisPlayersID).getRobot().setOrientation(getPlayerFromID(thisPlayersID).getRobot().getOrientation().getNext());
-                    }
-                    else {getPlayerFromID(thisPlayersID).getRobot().setOrientation(getPlayerFromID(thisPlayersID).getRobot().getOrientation().getPrevious());}
-                    logger.info("AI think it's facing " + getPlayerFromID(thisPlayersID).getRobot().getOrientation());
+                Robot r = getPlayerFromID(msg.getPlayerID()).getRobot();
+                if (msg.getDirection() == Rotation.LEFT) {
+                    r.setOrientation(r.getOrientation().getPrevious());
+                } else {
+                    r.setOrientation(r.getOrientation().getNext());
                 }
-                /*
-                Orientation orientation = Orientation.UP;
-                switch (msg.getDirection()) {
-                    case RIGHT -> orientation = Orientation.RIGHT;
-                    case LEFT -> orientation = Orientation.LEFT;
-                }
-
-                getPlayerFromID(msg.getPlayerID()).getRobot().setOrientation(orientation);
-                 */
+                logger.info("AI think it's facing " + r.getOrientation());
             }
             case ConnectionUpdate -> {
                 ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
