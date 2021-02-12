@@ -85,10 +85,6 @@ public class AIClient extends Client {
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
             case Welcome -> {
-                CardType test[] = new CardType[] {CardType.MoveII, CardType.Spam, CardType.MoveII, CardType.MoveII, CardType.MoveII };
-                logger.info(cardsToString(test));
-                CardType[] test1= handleDamageCards(test);
-                logger.info(cardsToString(test1));
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
                 new Timer().schedule(new TimerTask() {
