@@ -33,44 +33,46 @@ import static utilities.Constants.PORT;
  *
  * @author Louis
  * @author amulya
- * @author TODO
+ * @author janau
  */
 
 public class Server extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private static Server instance;
-    /**
-     * saves all connected users
-     */
-    private final ArrayList<User> users = new ArrayList<>(10);
-    /**
-     * saves all users that clicked ready in the view
-     */
-    private final ArrayList<User> readyUsers = new ArrayList<>();
-    /**
-     * Queue to read json messages step by step
-     */
-    private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
-    /**
-     * stores all users and if this user is an AI or not
-     */
-    private final HashMap<User, Boolean> usersAI = new HashMap<>();
-    private final ArrayList<User> AIs = new ArrayList<>();
-    private final ArrayList<User> notAIs = new ArrayList<>();
-    private int port = Constants.PORT;
     private Game game;
     private ServerController serverController;
+
+    /** saves all connected users */
+    private final ArrayList<User> users = new ArrayList<>(10);
+
+    /** saves all users that clicked ready in the view */
+    private final ArrayList<User> readyUsers = new ArrayList<>();
+
+    /** Queue to read json messages step by step */
+    private final BlockingQueue<QueueMessage> messageQueue = new LinkedBlockingQueue<>();
+
+    /** stores all users and and their status(either ready or false) */
+    private final HashMap<User, Boolean> usersAI = new HashMap<>();
+
+    /** list of AIs */
+    private final ArrayList<User> AIs = new ArrayList<>();
+
+    /** list of non AIs */
+    private final ArrayList<User> notAIs = new ArrayList<>();
+
+    /** port at which server is open for client to connect */
+    private int port = Constants.PORT;
+
+    /** an instance of User */
     private User selectUser = null;
 
-    /**
-     * number of playersIDs is saved to give a new player a new number
-     */
+    /** number of playersIDs is saved to give a new player a new number */
     private int idCounter = 1;
-    /**
-     * ServerState that shows that the clients are in the lobby currently
-     */
+
+    /** ServerState that shows that the clients are in the lobby currently */
     private ServerState serverState = ServerState.LOBBY;
+
     private boolean isMapSelected = false;
     private boolean isMapSent = false;
     private String selectedMap;
@@ -303,10 +305,11 @@ public class Server extends Thread {
         }
     }
     /**
-     * This method sends the message to the first user who presses ready. If the same
+     * This method sends the SelectMap protocol message to the first user who presses ready. If the same
      * player presses unready, then the SelectMap protocol message is sent to the next player
      * in the playersList.
      * If all users are AIs, a random map is selected.
+     * In addition to that, it calls the play method from the {@link Game} to start the game
      *
      * @param user is the current player
      * @param status is the type of protocol message which is handled
@@ -357,6 +360,7 @@ public class Server extends Thread {
      *
      * @param winnerID id of the player who has won the game
      */
+
     public void gameWon(int winnerID) {
         serverState = ServerState.LOBBY;
         readyUsers.clear();
@@ -370,6 +374,7 @@ public class Server extends Thread {
      *
      * @param serverSocket socket from which connection is to be established
      */
+
     private void acceptClients(ServerSocket serverSocket) {
         boolean accept = true;
         while (accept) {
@@ -396,6 +401,7 @@ public class Server extends Thread {
      * @param ready true if ready, otherwise false
      * @return true if all players (min. 2) are ready
      */
+
     public boolean setReadyStatus(User user, boolean ready) {
         if (ready) {
             if (!readyUsers.contains(user)) readyUsers.add(user);
@@ -409,6 +415,7 @@ public class Server extends Thread {
      * @param jsonBody type of protocol message which needs to be sent.
      * @param sender the user who is responsible for sending the message.
      */
+
     synchronized public void communicateUsers(JSONBody jsonBody, User sender) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
@@ -424,6 +431,7 @@ public class Server extends Thread {
      *
      * @param jsonBody type of protocol message which needs to be sent.
      */
+
     synchronized public void communicateAll(JSONBody jsonBody) {
         String json = Multiplex.serialize(JSONMessage.build(jsonBody));
         logger.debug("Protocol sent: " + json);
@@ -441,6 +449,7 @@ public class Server extends Thread {
      * @param jsonBody type of protocol message which needs to be sent.
      * @param receiver id of the receiver
      */
+
     synchronized public void communicateDirect(JSONBody jsonBody, int receiver) {
         for (User user : users) {
             if (user.getID() == receiver) {
@@ -464,7 +473,6 @@ public class Server extends Thread {
         if (serverState == ServerState.LOBBY) {
             readyUsers.remove(user);
         } else {
-
             game.getPlayers().remove(game.userToPlayer(user));
             Player temp = null;
             for (Player player : game.getActivePlayers()) {
@@ -492,22 +500,16 @@ public class Server extends Thread {
                         }
                     }
                 }
-
                 if (game.getGameState() == GameState.PROGRAMMING) {
-
                     //if the user has not put down his cards already he is removed from the list tracking this
-
                     game.getProgrammingPhase().getNotReadyPlayers().remove(game.userToPlayer(user));
-
                     //if he was the last one missing filling his registers the timer is stopped
                     if (game.getProgrammingPhase().getNotReadyPlayers().isEmpty()) {
                         game.getProgrammingPhase().endProgrammingTimer();
                     }
                 }
-
-                if (game.getGameState() == GameState.ACTIVATION) {
+                if (game.getGameState() == GameState.ACTIVATION)
                     game.getActivationPhase().removeCurrentCards(user.getID());
-                }
             }
         }
         users.remove(user);
@@ -532,32 +534,20 @@ public class Server extends Thread {
         return instance;
     }
 
-    public String getSelectedMap() {
-        return selectedMap;
-    }
-
-    public ServerState getServerState() {
-        return serverState;
-    }
-
     /**
      * Getter for the Users.
      *
      * @return returns the list of users.
      */
-    public ArrayList<User> getUsers() {
-        return users;
-    }
+    public ArrayList<User> getUsers() { return users; }
 
-    public BlockingQueue<QueueMessage> getMessageQueue() {
-        return messageQueue;
-    }
+    public BlockingQueue<QueueMessage> getMessageQueue() { return messageQueue; }
 
-    public void setServerState(ServerState serverState) {
-        this.serverState = serverState;
-    }
+    public void setServerState(ServerState serverState) { this.serverState = serverState; }
 
-    public ArrayList<User> getReadyUsers() {
-        return readyUsers;
-    }
+    public ArrayList<User> getReadyUsers() { return readyUsers; }
+
+    public String getSelectedMap() { return selectedMap; }
+
+    public ServerState getServerState() { return serverState; }
 }

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 /**
  * This class extends user to specify different Attributes for a player.
+ *
+ * @author janau
  */
 
 public class Player extends User {

@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
@@ -636,7 +635,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * TODO
+     * This method sets the focus to the boardPane
      */
     public void resetFocus() {
         boardPane.requestFocus();
@@ -650,18 +649,5 @@ public class GameController extends Controller implements Updatable {
     public PlayerMatController getPlayerMatController() {
         return playerMatController;
     }
-
-    public Pane getBoardPane() {
-        return boardPane;
-    }
-
-    public GameBoardController getGameBoardController() {
-        return gameBoardController;
-    }
-
-    public OthersController getOthersController() {
-        return othersController;
-    }
-
 
 }

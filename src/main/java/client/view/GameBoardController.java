@@ -242,7 +242,7 @@ public class GameBoardController {
      *
      * @param players active player list
      */
-
+    @Deprecated
     public void handleShooting(ArrayList<Player> players) {
         for (Coordinate c : map.readLaserCoordinates()) {
             for (Attribute a : map.getTile(c).getAttributes()) {
@@ -289,7 +289,7 @@ public class GameBoardController {
      *
      * @param players active player list
      */
-
+    @Deprecated
     public void handleRobotShooting(ArrayList<Player> players) {
         for (Player player : players) {
             Orientation orientation = player.getRobot().getOrientation();
@@ -431,7 +431,4 @@ public class GameBoardController {
         return robotPane;
     }
 
-    public HashMap<Player, ImageView> getRobotTokens() {
-        return robotTokens;
-    }
 }
