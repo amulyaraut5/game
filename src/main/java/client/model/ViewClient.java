@@ -87,7 +87,7 @@ public class ViewClient extends Client {
                         players.remove(player);
 
                         if (players.size() <= 1) {
-                            viewManager.resetGame();
+                            System.exit(0);
                         }
                     }
                 }

@@ -24,9 +24,4 @@
             <Font name="System Bold" size="16.0" />
         </font>
     </JFXButton>
-    <JFXButton id="newGameButton" buttonType="RAISED" layoutX="108.0" layoutY="408.0" mnemonicParsing="false" onAction="#returnClicked" prefHeight="40.0" prefWidth="197.0" style="-fx-background-color: orange;" text="Return to the Lobby" textFill="WHITE">
-        <font>
-            <Font name="System Bold" size="16.0" />
-        </font>
-    </JFXButton>
 </AnchorPane>
