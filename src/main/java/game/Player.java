@@ -137,14 +137,13 @@ public class Player extends User {
      * @return the card in the register
      */
     public Card getRegisterCard(int register) {
-        int index = register - 1;
-        try {
+        if (!(registerCards.isEmpty())) {
+            int index = register - 1;
             return registerCards.get(index);
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            logger.error("registerCards are apparently empty:" + registerCards);
+        } else {
+            return null;
         }
-        return null;
+
     }
 
     public ArrayList<Card> getRegisterCards() {
