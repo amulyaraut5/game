@@ -27,6 +27,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * This class represents the programming phase, where the player chooses programming cards and puts them into
+ * his registers. Also the timer gets started by receiving related protocol from the server.
+ *
  * @author sarah
  */
 public class ProgrammingController extends Controller {
