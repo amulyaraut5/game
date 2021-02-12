@@ -45,7 +45,7 @@ public class ViewClient extends Client {
     private ChatController chatController;
 
     /**
-     * The currentController //TODO
+     * The currentController of the currently open view
      */
     private Updatable currentController;
 

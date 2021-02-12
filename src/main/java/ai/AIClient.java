@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * This Class coordinates the messages received on the client and their responses from the AI.
  *
- * @author simon,Louis
+ * @author simon, Louis, sarah
  */
 public class AIClient extends Client {
     /**
@@ -35,7 +35,7 @@ public class AIClient extends Client {
     /**
      * Instance of game.
      */
-    private Game game = Game.getInstance();
+    private final Game game = Game.getInstance();
 
     /**
      * creates a set containing all combinations and their permutations
@@ -237,7 +237,7 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos); //TODO
+                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }
@@ -248,6 +248,15 @@ public class AIClient extends Client {
         if (bestCombination == null) {
             bestCombination = createRandomCombination(yourCards);
         }
+        boolean includesAgain=false;
+        for (CardType card : bestCombination) {
+            if(card==CardType.Again){
+                includesAgain=true;
+            }
+        }
+        CardType[] improvedCombination = handleDamageCards(bestCombination);
+
+        if (!includesAgain) bestCombination=improvedCombination;
 
         for (int i = 0; i < 5; i++) {
             CardType cardType = bestCombination[i];
@@ -267,9 +276,9 @@ public class AIClient extends Client {
     }
 
     /**
-     * Approach to choose the best card combination(consisting of five cards)  from all possible ones
+     * Approach to choose the best card combination(consisting of five cards)  from all possible ones.
      *
-     * @param resultingPositions Hashmap that includes all Card combinations, mapped to their resulting positions.
+     * @param resultingPositions Hashmap that includes all Card possible combinations, mapped to their resulting positions.
      */
     private CardType[] getBestCombination(HashMap<CardType[], Coordinate> resultingPositions) {
         int shortestDistance = 100;
@@ -318,4 +327,37 @@ public class AIClient extends Client {
             sendMessage(new PlayerValues(name, chosenFigure));
         } else disconnect();
     }
+
+
+    public CardType[] handleDamageCards(CardType[] combination){
+        CardType[] newList = new CardType[5];
+        int i = 0;
+        for (CardType card : combination) {
+            if(!isDamageCard(card)){
+                newList[i] = card;
+                i++;
+            }
+        }
+        for (CardType card : combination) {
+            if(isDamageCard(card)){
+                newList[i] = card;
+                i++;
+            }
+        }
+
+        return newList;
+    }
+
+
+
+    public boolean isDamageCard(CardType card){
+        switch (card){
+            case Spam,Virus,Trojan,Worm:
+                return true;
+        }
+        return false;
+
+    }
+
+
 }

@@ -2,8 +2,6 @@ package ai;
 
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -14,30 +12,29 @@ import java.util.ArrayList;
 /**
  * This Class simulates game movement on the client side, in order to determine good moves for the AI.
  *
- * @author simon,Louis
+ * @author simon, Louis
  */
 
 public class MoveSimulator {
 
     private final Map map;
+    private final Coordinate controlPoint;
     private CardType[] cards;
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
-    private Coordinate controlPoint;
 
     public MoveSimulator(AIClient aiClient, Map map, Coordinate controlpoint) {
         this.map = map;
-        this.controlPoint=controlpoint;
-
+        this.controlPoint = controlpoint;
     }
+
     /**
      * This method simulates game movement for one particular card combination.
      *
-     * @param cards card combination to be simulated
-     * @param actualPos actual position of the robot
+     * @param cards       card combination to be simulated
+     * @param actualPos   actual position of the robot
      * @param orientation actual orientation of the robot
-     *
      */
     public Coordinate simulateCombination(CardType[] cards, Coordinate actualPos, Orientation orientation) {
         resPosition = actualPos.clone();
@@ -52,8 +49,8 @@ public class MoveSimulator {
                 activatePushPanel(i + 1);
                 activateGear();
                 //immediately interrupt if on controlpoint
-                if(Coordinate.distance(resPosition,controlPoint)==0){
-                    resPosition=controlPoint;
+                if (Coordinate.distance(resPosition, controlPoint) == 0) {
+                    resPosition = controlPoint;
                     break;
                 }
             } else {
@@ -65,12 +62,10 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Simulates one single card.
      *
      * @param card card to be simulated
-     * @param i current register(Required due to again card)
-     *
+     * @param i    current register(Required due to again card)
      */
     private void playCard(CardType card, int i) {
 
@@ -92,12 +87,11 @@ public class MoveSimulator {
             case Again -> handleAgain(i);
         }
     }
+
     /**
-     *
      * Simulates the again card.
      *
      * @param i current register
-     *
      */
     private void handleAgain(int i) {
         if (i > 0) {
@@ -108,11 +102,9 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Simulates player movement for one tile in a specific direction.
      *
      * @param orientation orientation the robot should move in.
-     *
      */
     public void handleMove(Orientation orientation) {
         if (!reboot) {
@@ -140,11 +132,9 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Detects whether the player must reboot.
      *
      * @param newPos Position the player is on.
-     *
      */
     private boolean isRebooting(Coordinate newPos) {
         if (newPos.isOutsideMap()) {
@@ -158,19 +148,16 @@ public class MoveSimulator {
         }
         return false;
     }
+
     /**
-     *
      * Simulates the green belts.
-     *
      */
     private void activateGreenBelts() {
         handleBeltMovement(map.getGreenBelts());
     }
 
     /**
-     *
      * Simulates the blue belts.
-     *
      */
     private void activateBlueBelts() {
         handleBeltMovement(map.getBlueBelts());
@@ -178,7 +165,6 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Executes belt movement in general.(Used by belt methods)
      *
      * @param belts List that includes coordinates of all belts that must be considered.(Either Green or Blue belt lists)
@@ -187,7 +173,7 @@ public class MoveSimulator {
         Orientation orientation = null;
         boolean moved = false;
         for (Coordinate coordinate : belts) {
-            if (coordinate.equals(resPosition) && moved==false) {
+            if (coordinate.equals(resPosition) && !moved) {
                 for (Attribute a : map.getTile(coordinate).getAttributes()) {
                     if (a instanceof Belt) {
                         orientation = ((Belt) a).getOrientation();
@@ -202,8 +188,7 @@ public class MoveSimulator {
                     for (Attribute attribute : map.getTile(resPosition).getAttributes()) {
                         if (attribute.getType() == AttributeType.RotatingBelt) {
                             RotatingBelt temp = ((RotatingBelt) attribute);
-                            if(temp.getOrientations()[0] != orientation) rotateOnBelt(temp.getOrientations());
-
+                            if (temp.getOrientations()[0] != orientation) rotateOnBelt(temp.getOrientations());
                         }
                     }
                 }
@@ -212,9 +197,7 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Simulates gears.
-     *
      */
     private void activateGear() {
         Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
@@ -227,9 +210,7 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Simulates push panels.
-     *
      */
     private void activatePushPanel(int i) {
         PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
@@ -243,9 +224,7 @@ public class MoveSimulator {
     }
 
     /**
-     *
      * Simulates belt rotations.
-     *
      */
     public void rotateOnBelt(Orientation[] o) {
         if (o[0].getNext() == o[1]) resOrientation = resOrientation.getNext();

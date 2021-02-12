@@ -418,7 +418,7 @@ public class GameController extends Controller implements Updatable {
                 Player player = viewClient.getPlayerFromID(msg.getPlayerID());
                 Coordinate newPos = Coordinate.parse(msg.getTo());
                 player.getRobot().setCoordinate(newPos);
-                gameBoardController.handleMovement(player, newPos);
+                gameBoardController.handleMovement(player, newPos); // delay movement
             }
             case PlayerTurning -> {
                 PlayerTurning msg = (PlayerTurning) message.getBody();
@@ -434,7 +434,16 @@ public class GameController extends Controller implements Updatable {
                     angle = 90;
                     r.setOrientation(r.getOrientation().getNext());
                 }
-                gameBoardController.handlePlayerTurning(player, angle);
+                gameBoardController.handlePlayerTurning(player, angle); // delay turning
+            }
+            case PlayerShooting -> {
+                if (activePlayers.isEmpty()) {
+                    logger.info("No active players");
+                } else {
+                    soundHandler.playSoundEffects("Laser", play);
+                    gameBoardController.robotLaserAnimation(activePlayers);
+                    gameBoardController.boardLaserAnimation(activePlayers);// delay lasers
+                }
             }
             case CardSelected -> {
                 CardSelected cardSelected = (CardSelected) message.getBody();
@@ -448,17 +457,6 @@ public class GameController extends Controller implements Updatable {
                 PickDamage pickDamage = (PickDamage) message.getBody();
                 activationController.changePhaseView(InnerActivation.Damage);
                 activationController.getPickDamageController().pickDamage(pickDamage);
-            }
-            case PlayerShooting -> {
-                if (activePlayers.isEmpty()) {
-                    logger.info("No active players");
-                } else {
-                    soundHandler.playSoundEffects("Laser", play);
-                    //gameBoardController.handleShooting(activePlayers);
-                    //gameBoardController.handleRobotShooting(activePlayers);
-                    gameBoardController.robotLaserAnimation(activePlayers);
-                    gameBoardController.boardLaserAnimation(activePlayers);
-                }
             }
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
@@ -485,7 +483,7 @@ public class GameController extends Controller implements Updatable {
                 programmingController.setTimerEnded(true);
                 playerMatController.setDiscardDeckCounter(4);
                 if (!allRegistersAsFirst) playerMatController.fixSelectedCards();
-                allRegistersAsFirst = false; //TODO everything that is round related
+                allRegistersAsFirst = false;
 
                 othersController.setTooSlowLabel(timerEnded);
             }
@@ -650,5 +648,4 @@ public class GameController extends Controller implements Updatable {
     public PlayerMatController getPlayerMatController() {
         return playerMatController;
     }
-
 }

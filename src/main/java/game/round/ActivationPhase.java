@@ -74,7 +74,7 @@ public class ActivationPhase extends Phase {
      */
     public void turnCards(int register) {
         for (Player player : determinePriority(map.getAntenna())) {
-            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards()); //TODO remove if exception doesn't  come up again
+            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards());
             Card card = player.getRegisterCard(register);
             if (!(card == null)) {
                 RegisterCard playerRegisterCard = new RegisterCard(player.getID(), card);
@@ -329,7 +329,13 @@ public class ActivationPhase extends Phase {
             case Worm -> {
                 //Reboot the robot.
                 new RebootAction().doAction(player);
-                currentCards.remove(player);
+                RegisterCard toRemove = null;
+                for (RegisterCard registerCard : currentCards) {
+                    if (registerCard.getPlayerID() == player.getID()) {
+                        toRemove = registerCard;
+                    }
+                }
+                currentCards.remove(toRemove);
                 //Add worm card back into the worm deck
                 wormDeck.getDeck().add(new Worm());
             }
@@ -417,7 +423,13 @@ public class ActivationPhase extends Phase {
             rebootedPlayers.add(player);
             activePlayers.remove(player);
             new RebootAction().doAction(player);
-            currentCards.remove(player);
+            RegisterCard toRemove = null;
+            for (RegisterCard registerCard : currentCards) {
+                if (registerCard.getPlayerID() == player.getID()) {
+                    toRemove = registerCard;
+                }
+            }
+            currentCards.remove(toRemove);
         }
     }
 
@@ -610,6 +622,10 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * Checks if every player is rebooting at the same time.
+     *
+     */
     public boolean allPlayersRebooting() {
         boolean allRebooting = true;
         for (Player player : players) {
@@ -619,7 +635,7 @@ public class ActivationPhase extends Phase {
     }
 
     /**
-     * returns if a player is rebooting
+     * returns if a player is not rebooting
      *
      * @param player player to check
      * @return true if player is rebooting

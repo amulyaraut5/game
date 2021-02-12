@@ -144,13 +144,6 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-        /*
-        for (Player p : playersOnBelt) {
-            if (!p.getRobot().getCoordinate().equals(oldPositions.get(playersOnBelt.indexOf(p)))) {
-                activationPhase.handleTile(p);
-            }
-        }
-         */ //TODO
     }
 
     /**
@@ -182,13 +175,6 @@ public class BoardElements {
         }
 
         handleBeltMovement(playersOnBelt, actionFinished, orientations, oldPositions);
-        /*
-        for (Player p : playersOnBelt) {
-            if (!(p.getRobot().getCoordinate() == oldPositions.get(playersOnBelt.indexOf(p)))) {
-                activationPhase.handleTile(p);
-            }
-        }
-         */ //TODO
     }
 
     /**
@@ -286,4 +272,5 @@ public class BoardElements {
         if (o[0].getNext() == o[1]) robot.rotate(Rotation.RIGHT);
         else if (o[0].getPrevious() == o[1]) robot.rotate(Rotation.LEFT);
     }
+
 }

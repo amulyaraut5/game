@@ -35,12 +35,12 @@ public class GameWonController extends Controller {
     @FXML
     private Label winnerLabel;
 
-    private Game game = Game.getInstance();
-    private Server server = Server.getInstance();
+    private final Game game = Game.getInstance();
+    private final Server server = Server.getInstance();
 
     private GameController gameController;
-    private GameBoardController gameBoardController= new GameBoardController();
-    private LobbyController lobbyController = new LobbyController();
+    private final GameBoardController gameBoardController= new GameBoardController();
+    private final LobbyController lobbyController = new LobbyController();
 
     /**
      * This method creates the ImageView and Label of the winner and adds it to the view
