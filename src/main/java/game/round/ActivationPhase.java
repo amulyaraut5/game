@@ -82,7 +82,6 @@ public class ActivationPhase extends Phase {
             } else {
                 game.getActivePlayers().remove(player);
             }
-
         }
         if (!(currentCards.isEmpty())) {
             server.communicateAll(new CurrentCards(currentCards));
@@ -106,17 +105,15 @@ public class ActivationPhase extends Phase {
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
             handleCard(currentCard, game.getPlayerFromID(playerID));
+            currentCards.remove(0);
+
+            //check if next player is rebooting
             if (!currentCards.isEmpty()) {
-                currentCards.remove(0);
-            }
-            if (!currentCards.isEmpty()) {
-                //check if next player is rebooting
-                while (isRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
+                while (!isRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
                     currentCards.remove(0);
                     if (currentCards.isEmpty()) {
                         break;
                     }
-
                 }
             }
 
@@ -193,7 +190,6 @@ public class ActivationPhase extends Phase {
                     game.nextPhase();
                     logger.info("Next Phase called bcs all Rebooting");
                 }
-
             } else { //if it is already the 5th register the next phase is called
                 if (!rebootedPlayers.isEmpty()) {
                     activePlayers.addAll(rebootedPlayers);
@@ -476,12 +472,10 @@ public class ActivationPhase extends Phase {
         ArrayList<Player> playerPriority = new ArrayList<>();
 
         for (int i = 0; i < sortedDistance.size(); i++) {
-            if (sortedDistance.size() == 0) {
-                return playerPriority;
-            } else if (sortedDistance.size() == 1) {
+            if (sortedDistance.size() == 1) {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
                 sortedDistance.remove(0);
-            //objects have the same distance values -> selection by clockwise antenna beam
+                //objects have the same distance values -> selection by clockwise antenna beam
             } else if (sortedDistance.get(0).getDistance() == sortedDistance.get(1).getDistance()) {
                 //add the robots with same distance into a list
                 ArrayList<RobotDistance> sameDistance = new ArrayList<>();
@@ -495,7 +489,7 @@ public class ActivationPhase extends Phase {
                     }
                 }
                 sortByYCoordinate(sameDistance, antenna, playerPriority);
-            //first and second object have different distance values -> first player in list is currentPlayer
+                //first and second object have different distance values -> first player in list is currentPlayer
             } else {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
                 sortedDistance.remove(0);
@@ -507,8 +501,9 @@ public class ActivationPhase extends Phase {
     /**
      * Sorts the list of players with the same distance to the antenna
      * by the order in which the antenna beam hits them clockwise.
-     * @param sameDistance ArrayList of robots with the same distance
-     * @param antenna game antenna
+     *
+     * @param sameDistance   ArrayList of robots with the same distance
+     * @param antenna        game antenna
      * @param playerPriority a list of players in priority order
      */
     public void sortByYCoordinate(ArrayList<RobotDistance> sameDistance, Coordinate antenna, ArrayList<Player> playerPriority) {
@@ -564,8 +559,8 @@ public class ActivationPhase extends Phase {
      * and send drawDamage or PickDamage based on this information.
      *
      * @param damageDeck Deck from which the damage cards should be drawn
-     * @param player player whose robot received damage
-     * @param amount number of damage cards to draw
+     * @param player     player whose robot received damage
+     * @param amount     number of damage cards to draw
      */
 
     public void drawDamage(Deck damageDeck, Player player, int amount) {
@@ -602,7 +597,7 @@ public class ActivationPhase extends Phase {
      * If there are not enough cards PickDamage is sent again
      *
      * @param selectDamage received message
-     * @param user user whose robot receives damage
+     * @param user         user whose robot receives damage
      */
     public void handleSelectedDamage(SelectDamage selectDamage, User user) {
         logger.info("handleSelectedDamage");
@@ -662,7 +657,6 @@ public class ActivationPhase extends Phase {
 
     /**
      * Checks if every player is rebooting at the same time.
-     *
      */
     public boolean allPlayersRebooting() {
         boolean allRebooting = true;
