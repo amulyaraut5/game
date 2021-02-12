@@ -31,6 +31,7 @@ import java.util.ArrayList;
 /**
  * This class handles the game itself.
  * It saves all the different assets like decks, players etc. and the game is started from here.
+ * @author janau
  */
 
 public class Game {

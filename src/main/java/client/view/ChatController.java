@@ -48,7 +48,7 @@ public class ChatController extends Controller {
     private JFXTextField messageField;
 
     /**
-     * In this method the directbox gets initialized and the chat controller gets assigned to viewClient. Also the
+     * In this method the directBox gets initialized and the chat controller gets assigned to viewClient. Also the
      * lobbyTextArea recognizes if the enter key gets pressed and call the method submitChatMessage().
      */
     public void initialize() {
@@ -73,7 +73,7 @@ public class ChatController extends Controller {
 
     /**
      * This method displays an user who joined to the lobby
-     * with its chosen robot, name and also the name is added to the choicebox
+     * with its chosen robot, name and also the name is added to the choiceBox
      * so that other users in lobby can send direct messages.
      *
      * @param player that gets added
@@ -84,7 +84,7 @@ public class ChatController extends Controller {
     }
 
     /**
-     * This message gets called when the user presses enter, it reads the receiver (all or one person) from the combobox
+     * This message gets called when the user presses enter, it reads the receiver (all or one person) from the comboBox
      * and the message which gets filtered for instructions and everything gets send as the JSONMessage SendChat.
      */
     @FXML
@@ -156,6 +156,11 @@ public class ChatController extends Controller {
         setTextArea(chat);
     }
 
+    /**
+     * This method resets the focus onto the infoLabel if the current controller is LobbyController
+     * or to the boardPane if current controller is GameController.#
+     * It gets called if the focus is set on the textField or textArea and the user clicks Enter.
+     */
     private void resetFocus() {
         Updatable controller = viewClient.getCurrentController();
         if (controller instanceof GameController) {

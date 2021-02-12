@@ -25,7 +25,7 @@ public class ActivationController extends Controller {
     private static final Logger logger = LogManager.getLogger();
 
     /**
-     * The innerview which either displays playCard or pickDamage.
+     * The innerView which either displays playCard or pickDamage.
      */
     public BorderPane innerActivationPhase;
     /**
@@ -73,7 +73,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * This method constructs the two innerviews and initializes the controller for them.
+     * This method constructs the two innerViews and initializes the controller for them.
      */
     private void constructPhaseViews() {
 
@@ -94,7 +94,7 @@ public class ActivationController extends Controller {
     }
 
     /**
-     * This method changes the innerview either its pickDamage or playCard.
+     * This method changes the innerView either its pickDamage or playCard.
      *
      * @param innerActivation which should be displayed next
      */
