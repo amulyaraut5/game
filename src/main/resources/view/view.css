@@ -1,0 +1,61 @@
+
+#loginPane {
+    -fx-width: 10px;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: lightgreen;
+    -fx-border-color: green;
+    -fx-border-width: 4px;
+    -fx-border-radius: 5px;
+    /*-fx-text-fill: white;*/
+}
+
+.list-view {
+    -fx-background-color: white;
+}
+
+.list-cell {
+    -fx-border-width: 4px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-alignment: center;
+    /*-fx-text-fill: white;*/
+}
+
+.list-cell:filled:hover {
+    -fx-border-color: gray;
+    -fx-border-width: 4px;
+    -fx-border-radius: 5px;
+    /*-fx-text-fill: white;*/
+}
+
+.register {
+    -fx-background-color: blue;
+}
+
+#gameViewAnchorPane {
+    -fx-background-color: #999999;
+}
+
+#playerMat {
+    -fx-background-color: blue;
+}
+
+.chatLabel {
+    -fx-text-fill: #cccad4;
+}
+
+
+/*Label {
+    -fx-text-alignment: right;
+    -fx-alignment: right;
+    -fx-color: red;
+    -fx-background-color: red;
+}*/
+
+TextArea {
+    -fx-font-size: 12;
+}
+
+

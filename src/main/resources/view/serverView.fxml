@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+    <Pane prefHeight="200.0" prefWidth="200.0" />
+    <Pane prefHeight="780.0" prefWidth="1180.0" style="-fx-background-color: white; -fx-opacity: 0.6;">
+      <children>
+         <HBox fx:id="iconPane" layoutX="24.0" layoutY="705.0" prefHeight="61.0" prefWidth="880.0" />
+         <ImageView fitHeight="780.0" fitWidth="1351.0" opacity="0.36" pickOnBounds="true">
+            <image>
+               <Image url="@../otherElements/menu.png" />
+            </image>
+         </ImageView>
+      </children></Pane>
+    <VBox prefHeight="200.0" prefWidth="100.0">
+        <HBox>
+            <Pane fx:id="boardPane" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="780.0" />
+            <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="370.0">
+                <Pane fx:id="instructionPane" layoutX="20.0" layoutY="481.0" prefHeight="77.0" prefWidth="333.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">
+                    <Label id="label" alignment="CENTER" contentDisplay="TOP" layoutY="4.0" prefHeight="77.0" prefWidth="333.0" text="Click 'Add AI' for each AI you want to add. &#10;When you have the wanted number, press 'Start'." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Label>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Pane>
+            </AnchorPane>
+         <padding>
+            <Insets left="30.0" top="30.0" />
+         </padding>
+        </HBox>
+        <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0">
+            <JFXButton fx:id="AIButton" layoutX="1081.0" layoutY="10.0" onAction="#addAIClicked" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: green;" text="Add AI" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </JFXButton>
+            <JFXButton fx:id="startButton" layoutX="1081.0" layoutY="55.0" onAction="#startClicked" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: orange;" text="Start" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </JFXButton>
+            <Label id="label" fx:id="infoLabel" alignment="CENTER_RIGHT" layoutX="590.0" layoutY="61.0" maxWidth="438.0" prefHeight="27.0" prefWidth="438.0" textAlignment="RIGHT" textFill="RED">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="6.0" text="Localhost Port: 5570" />
+            <Label layoutX="31.0" layoutY="47.0" text="Joined AIs:" />
+        </Pane>
+    </VBox>
+   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+   <AnchorPane fx:id="AIWonPane" layoutX="211.0" layoutY="106.0" opacity="0.78" prefHeight="554.0" prefWidth="728.0" style="-fx-background-color: midnightblue;" visible="false">
+      <children>
+          <Pane layoutX="175.0" layoutY="398.0" prefHeight="67.0" prefWidth="379.0" style="-fx-background-color: orange; -fx-border-width: 3; -fx-border-color: white;">
+              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="11.0" prefHeight="44.0" prefWidth="329.0" text="One AI won!" textAlignment="CENTER" textFill="WHITE">
+                  <font>
+                      <Font name="System Bold" size="35.0" />
+                  </font>
+              </Label>
+          </Pane>
+         <ImageView fitHeight="234.0" fitWidth="270.0" layoutX="245.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../otherElements/AIWon.png" />
+            </image>
+         </ImageView>
+      </children></AnchorPane>
+</AnchorPane>
