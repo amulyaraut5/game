@@ -8,6 +8,7 @@ import game.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +33,7 @@ public class ServerController implements Updatable {
 
     private GameBoardController gameBoardController;
 
+    public AnchorPane AIWonPane;
     @FXML
     private Pane boardPane;
     @FXML
@@ -115,6 +117,7 @@ public class ServerController implements Updatable {
         }
     }
 
+
     @Override
     public void update(JSONMessage message) {
         switch (message.getType()) {
@@ -171,7 +174,8 @@ public class ServerController implements Updatable {
                 //todo show
             }
             case GameWon -> {
-                //TODO close game
+                AIWonPane.setVisible(true);
+                //TODO close
             }
         }
     }
