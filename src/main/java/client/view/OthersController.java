@@ -203,11 +203,11 @@ public class OthersController extends Controller {
     }
 
     /**
-     * This method sets the information label cards on the
-     * small playerMat of the player that shuffled cards
+     * This method sets the information label of other players to default or to the information that it's his
+     * turn.
      *
-     * @param currentPlayer
-     * @param thisPlayer
+     * @param currentPlayer the player who is the currentPlayer
+     * @param thisPlayer if the currentPlayer is the actual player
      */
     public void setInfoLabel(CurrentPlayer currentPlayer, boolean thisPlayer) {
         if (thisPlayer)
@@ -224,21 +224,30 @@ public class OthersController extends Controller {
     }
 
     /**
-     * @param notYourCards
+     * This method gives the amount of cards the other player has to its playerMats and displays them.
+     *
+     * @param notYourCards the amount of cards of the player
      */
     public void setNotYourCards(NotYourCards notYourCards) {
         getOtherPlayerController(notYourCards.getPlayerID()).setInfoLabel(notYourCards.getCardsInHand() + " programming cards");
     }
 
+    /**
+     * This private class represents the player that are not the player itself. It stores information like
+     * the player, the OnePlayerController and the position in the HBox with all small playerMats
+     */
     private static class OtherPlayer {
         private final Player otherPlayer;
         private final OnePlayerController onePlayerController;
         private final int positionHBox;
 
         /**
-         * @param otherPlayer
-         * @param onePlayerController
-         * @param positionHBox
+         * The constructor initializes all important information about the other player to handle
+         * messages and actions that the player receives from the server
+         *
+         * @param otherPlayer the player instance of the other player
+         * @param onePlayerController the controller instance for handling the small playerMat
+         * @param positionHBox the position of the small playerMat in the hBox
          */
         public OtherPlayer(Player otherPlayer, OnePlayerController onePlayerController, int positionHBox) {
             this.otherPlayer = otherPlayer;
@@ -246,23 +255,14 @@ public class OthersController extends Controller {
             this.positionHBox = positionHBox;
         }
 
-        /**
-         * @return
-         */
         public Player getPlayer() {
             return otherPlayer;
         }
 
-        /**
-         * @return
-         */
         public OnePlayerController getOnePlayerController() {
             return onePlayerController;
         }
 
-        /**
-         * @return
-         */
         public int getPositionHBox() {
             return positionHBox;
         }
