@@ -75,13 +75,11 @@ public class AIClient extends Client {
             case Welcome -> {
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
-
-                Timer t = new Timer();
-                t.schedule(new TimerTask() {
+                new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
                         choosePlayerValues();
-                        t.cancel();
+                        cancel();
                     }
                 }, 50);
             }
@@ -122,10 +120,6 @@ public class AIClient extends Client {
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
                 currentPhase = msg.getPhase();
-                if (currentPhase == GameState.PROGRAMMING) {
-                    players.addAll(rebootingAIs);
-                    rebootingAIs.clear();
-                }
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -181,8 +175,6 @@ public class AIClient extends Client {
             case Reboot -> {
                 Reboot reboot = (Reboot) message.getBody();
                 logger.info(reboot.getPlayerID() + "was out.");
-                rebootingAIs.add(getPlayerFromID(reboot.getPlayerID()));
-                players.remove(getPlayerFromID(reboot.getPlayerID()));
             }
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
@@ -192,6 +184,13 @@ public class AIClient extends Client {
                 }
             }
             case GameWon -> {
+                Random r = new Random();
+                synchronized (this) {
+                    try {
+                        wait(r.nextInt(1000));
+                    } catch (InterruptedException ignored) {
+                    }
+                }
                 disconnect();
             }
             default -> logger.error("The MessageType " + type + " is invalid or not yet implemented!");
@@ -199,13 +198,6 @@ public class AIClient extends Client {
     }
 
     private void chooseCards(YourCards yourCards) {
-//        ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
-//        for (int i = 0; i < 5; i++) {
-//            int rdm = new Random().nextInt(availableCards.size());
-//            sendMessage(new SelectCard(availableCards.get(rdm), i + 1));
-//            availableCards.remove(rdm);
-//        }
-
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
         HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
         MoveSimulator moveSimulator = new MoveSimulator(this, map);
@@ -222,9 +214,24 @@ public class AIClient extends Client {
 
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
+        if (bestCombination == null) {
+            bestCombination = createRandomCombination(yourCards);
+        }
+
         for (int i = 0; i < 5; i++) {
             sendMessage(new SelectCard(bestCombination[i], i + 1));
         }
+    }
+
+    private CardType[] createRandomCombination(YourCards yourCards) {
+        CardType[] randCombination = new CardType[5];
+        ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
+        for (int i = 0; i < 5; i++) {
+            int rdm = new Random().nextInt(availableCards.size());
+            randCombination[i] = availableCards.get(rdm);
+            availableCards.remove(rdm);
+        }
+        return randCombination;
     }
 
     private CardType[] getBestCombination(HashMap<CardType[], Coordinate> resultingPositions) {
