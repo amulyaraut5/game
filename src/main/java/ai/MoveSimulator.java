@@ -11,8 +11,14 @@ import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
+/**
+ * This Class simulates game movement on the client side, in order to determine good moves for the AI.
+ *
+ * @author simon,Louis
+ */
+
 public class MoveSimulator {
-    private static final Logger logger = LogManager.getLogger();
+
     private final Map map;
     private CardType[] cards;
     private Coordinate resPosition;
@@ -25,7 +31,14 @@ public class MoveSimulator {
         this.controlPoint=controlpoint;
 
     }
-
+    /**
+     * This method simulates game movement for one particular card combination.
+     *
+     * @param cards card combination to be simulated
+     * @param actualPos actual position of the robot
+     * @param orientation actual orientation of the robot
+     *
+     */
     public Coordinate simulateCombination(CardType[] cards, Coordinate actualPos, Orientation orientation) {
         resPosition = actualPos.clone();
         resOrientation = orientation;
@@ -51,6 +64,14 @@ public class MoveSimulator {
         return resPosition;
     }
 
+    /**
+     *
+     * Simulates one single card.
+     *
+     * @param card card to be simulated
+     * @param i current register(Required due to again card)
+     *
+     */
     private void playCard(CardType card, int i) {
 
         switch (card) {
@@ -71,7 +92,13 @@ public class MoveSimulator {
             case Again -> handleAgain(i);
         }
     }
-
+    /**
+     *
+     * Simulates the again card.
+     *
+     * @param i current register
+     *
+     */
     private void handleAgain(int i) {
         if (i > 0) {
             playCard(cards[i - 1], i - 1);
@@ -80,6 +107,13 @@ public class MoveSimulator {
         }
     }
 
+    /**
+     *
+     * Simulates player movement for one tile in a specific direction.
+     *
+     * @param orientation orientation the robot should move in.
+     *
+     */
     public void handleMove(Orientation orientation) {
         if (!reboot) {
             Coordinate newPos = resPosition.clone();
@@ -105,6 +139,13 @@ public class MoveSimulator {
         }
     }
 
+    /**
+     *
+     * Detects whether the player must reboot.
+     *
+     * @param newPos Position the player is on.
+     *
+     */
     private boolean isRebooting(Coordinate newPos) {
         if (newPos.isOutsideMap()) {
             reboot = true;
@@ -117,16 +158,31 @@ public class MoveSimulator {
         }
         return false;
     }
-
+    /**
+     *
+     * Simulates the green belts.
+     *
+     */
     private void activateGreenBelts() {
         handleBeltMovement(map.getGreenBelts());
     }
 
+    /**
+     *
+     * Simulates the blue belts.
+     *
+     */
     private void activateBlueBelts() {
         handleBeltMovement(map.getBlueBelts());
         handleBeltMovement(map.getBlueBelts());
     }
 
+    /**
+     *
+     * Executes belt movement in general.(Used by belt methods)
+     *
+     * @param belts List that includes coordinates of all belts that must be considered.(Either Green or Blue belt lists)
+     */
     private void handleBeltMovement(ArrayList<Coordinate> belts) {
         Orientation orientation = null;
         boolean moved = false;
@@ -155,6 +211,11 @@ public class MoveSimulator {
         }
     }
 
+    /**
+     *
+     * Simulates gears.
+     *
+     */
     private void activateGear() {
         Gear gear = (Gear) map.getAttributeOn(AttributeType.Gear, resPosition);
         if (gear != null) {
@@ -165,6 +226,11 @@ public class MoveSimulator {
         }
     }
 
+    /**
+     *
+     * Simulates push panels.
+     *
+     */
     private void activatePushPanel(int i) {
         PushPanel pushPanel = (PushPanel) map.getAttributeOn(AttributeType.PushPanel, resPosition);
         if (pushPanel != null) {
@@ -176,6 +242,11 @@ public class MoveSimulator {
         }
     }
 
+    /**
+     *
+     * Simulates belt rotations.
+     *
+     */
     public void rotateOnBelt(Orientation[] o) {
         if (o[0].getNext() == o[1]) resOrientation = resOrientation.getNext();
         else if (o[0].getPrevious() == o[1]) resOrientation = resOrientation.getPrevious();
