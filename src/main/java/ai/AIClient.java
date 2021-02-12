@@ -180,9 +180,6 @@ public class AIClient extends Client {
             case DrawDamage -> {
                 DrawDamage drawDamage = (DrawDamage) message.getBody();
                 handleDamageCount(drawDamage.getCards());
-                if (drawDamage.getPlayerID() == thisPlayersID) {
-                    handleDamageCount(drawDamage.getCards());
-                }
             }
             case GameWon -> {
                 Random r = new Random();
