@@ -11,10 +11,18 @@ import utilities.enums.Orientation;
 
 import java.util.ArrayList;
 
+/**
+ * This class is used to convert the map, which is a 2 dimensional array on the server side, into the protocol GameStarted message and back.
+ *
+ * @author Louis
+ */
 public final class MapConverter {
-    private MapConverter() {
-    }
 
+    /**
+     * Converts an instance of the map class into a GameStarted protocol message body.
+     * @param map Map instance that is converted
+     * @return resulting GameStarted message body
+     */
     public static GameStarted convert(Map map) {
         Tile[][] tiles = map.getTiles();
         ArrayList<BoardElement> mapList = new ArrayList<>();
@@ -30,6 +38,11 @@ public final class MapConverter {
         return new GameStarted(mapList);
     }
 
+    /**
+     * Converts a GameStarted message body back to an instance of the map class.
+     * @param body GameStarted message body that is converted to a map object.
+     * @return resulting map instance
+     */
     public static Map reconvert(GameStarted body) {
         ArrayList<BoardElement> JsonMap = body.getMap();
         int xMax = Constants.MAP_WIDTH;

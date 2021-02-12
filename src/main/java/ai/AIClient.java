@@ -263,7 +263,11 @@ public class AIClient extends Client {
             sendMessage(new SelectCard(cardType, i + 1));
         }
     }
-
+    /**
+     * Creates a random card combination from a YourCards message body
+     * @param yourCards YourCards message body the combination is created for
+     * @return resulting random combination (array)
+     */
     private CardType[] createRandomCombination(YourCards yourCards) {
         CardType[] randCombination = new CardType[5];
         ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
@@ -279,6 +283,7 @@ public class AIClient extends Client {
      * Approach to choose the best card combination(consisting of five cards)  from all possible ones.
      *
      * @param resultingPositions Hashmap that includes all Card possible combinations, mapped to their resulting positions.
+     * @return combination that is considered as the best choice (as array)
      */
     private CardType[] getBestCombination(HashMap<CardType[], Coordinate> resultingPositions) {
         int shortestDistance = 100;
@@ -328,7 +333,11 @@ public class AIClient extends Client {
         } else disconnect();
     }
 
-
+    /**
+     * Sorts a card combination, so that damage cards are at the back
+     * @param combination combination that needs to get sorted
+     * @return resulting sorted combination
+     */
     public CardType[] handleDamageCards(CardType[] combination){
         CardType[] newList = new CardType[5];
         int i = 0;
@@ -349,7 +358,11 @@ public class AIClient extends Client {
     }
 
 
-
+    /**
+     * Checks whether a card is a damage card or not.
+     * @param card card that gets examined
+     * @return true if the card is a damage card, false otherwise.
+     */
     public boolean isDamageCard(CardType card){
         switch (card){
             case Spam,Virus,Trojan,Worm:

@@ -3,9 +3,20 @@ package utilities;
 import game.gameObjects.tiles.Attribute;
 
 import java.util.ArrayList;
+/**
+ * One instance of this class represents one tile in the GameStarted map attribute.
+ *
+ * @author Louis
+ */
 
 public class BoardElement {
+    /**
+     * Position of the tile.
+     */
     private int position;
+    /**
+     * Attributes of the tile
+     */
     private ArrayList<Attribute> field;
 
     public BoardElement(int position, ArrayList<Attribute> field) {
