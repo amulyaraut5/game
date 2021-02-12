@@ -117,6 +117,10 @@ public class MenuController extends Controller implements Updatable {
         });
     }
 
+    /**
+     * Outputs the error on the infoLabel.
+     * @param message the JSONMessage
+     */
     @Override
     public void update(JSONMessage message) {
         if (message.getType() == MessageType.Error) {
@@ -125,10 +129,19 @@ public class MenuController extends Controller implements Updatable {
         }
     }
 
+    /**
+     * Checks for the port.
+     * @return if port is changed
+     */
     public boolean changePort() {
         return changePort(null);
     }
 
+    /**
+     * Checks for the port.
+     * @param server the server
+     * @return if port is changed
+     */
     public boolean changePort(Server server) {
         if (!textPortNumber.getText().isBlank()) {
             try {

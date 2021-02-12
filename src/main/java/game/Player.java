@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * This class extends user to specify different Attributes for a player.
  *
- * @author janau
+ * @author janau, annika
  */
 
 public class Player extends User {
@@ -81,8 +81,6 @@ public class Player extends User {
 
     /**
      * Creates 5 empty registers.
-     *
-     * @author annika
      */
     public void createRegister() {
         registerCards = new ArrayList<>();
