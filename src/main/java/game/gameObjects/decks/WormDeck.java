@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import static utilities.Constants.WORM_CARDCOUNT;
 
 /**
+ * The WormDeck inherits the methods of the abstract class Deck.
+ * It includes a deck containing all worm cards.
  * @author annika
  */
 public class WormDeck extends Deck {
 
+    /**
+     * ArrayList for the cards in the worm deck.
+     */
     private ArrayList<Card> wormDeck;
 
     public WormDeck() {
@@ -19,7 +24,7 @@ public class WormDeck extends Deck {
     }
 
     /**
-     * Creates the deck of Worm cards.
+     * Creates the deck of worm cards.
      */
     @Override
     public void createDeck() {

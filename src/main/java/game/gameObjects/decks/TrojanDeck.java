@@ -24,7 +24,7 @@ public class TrojanDeck extends Deck {
     }
 
     /**
-     * Creates the deck of Trojan cards.
+     * Creates the deck of trojan cards.
      */
     @Override
     public void createDeck() {

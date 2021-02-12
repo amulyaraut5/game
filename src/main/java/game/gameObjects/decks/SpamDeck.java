@@ -24,7 +24,7 @@ public class SpamDeck extends Deck {
     }
 
     /**
-     * Creates the deck of Spam cards.
+     * Creates the deck of spam cards.
      */
     @Override
     public void createDeck() {
