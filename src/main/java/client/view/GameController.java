@@ -354,6 +354,7 @@ public class GameController extends Controller implements Updatable {
      */
     private void setDisplayAction(ArrayList<JSONBody> currentAction) {
         StringBuilder text = new StringBuilder(" ");
+        String defaultString = "You performed the card \non top of your deck";
         if (currentAction.size() == 1) {
             if (Energy.class.equals(currentAction.get(0).getClass())) {
                 text.append("You got energy");
@@ -361,18 +362,18 @@ public class GameController extends Controller implements Updatable {
                 text.append("You moved 1");
             } else if (PlayerTurning.class.equals(currentAction.get(0).getClass())) {
                 text.append("You turned");
-            } else text.append("You performed the card on top of your deck");
+            } else text.append(defaultString);
         } else if (currentAction.size() == 2) {
             if (Movement.class.equals(currentAction.get(0).getClass()) && Movement.class.equals(currentAction.get(1).getClass())) {
                 text.append("You moved 2");
             } else if (PlayerTurning.class.equals(currentAction.get(0).getClass()) && PlayerTurning.class.equals(currentAction.get(1).getClass())) {
                 text.append("You performed an UTurn");
-            } else text.append("You performed the card on top of your deck");
+            } else text.append(defaultString);
         } else if (currentAction.size() == 3) {
             if (Movement.class.equals(currentAction.get(0).getClass()) && Movement.class.equals(currentAction.get(1).getClass()) && Movement.class.equals(currentAction.get(2).getClass())) {
                 text.append("You moved 3");
             } else {
-                text.append("You performed the card on top of your deck");
+                text.append(defaultString);
             }
         }
         moveInfo.setText(String.valueOf(text));
@@ -519,9 +520,7 @@ public class GameController extends Controller implements Updatable {
                 } else if (currentPhase == GameState.ACTIVATION) {
                     if (currentCardIsDamage) {
                         setDisplayAction(currentAction);
-                        infoPane.setVisible(true);
-                    } else {
-                        infoPane.setVisible(false);
+                        displayingTime(infoPane);
                     }
                     currentAction.clear();
                     Platform.runLater(() -> activationController.getPlayCardController().currentPlayer(isThisPlayer));

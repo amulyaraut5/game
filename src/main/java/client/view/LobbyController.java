@@ -153,7 +153,8 @@ public class LobbyController extends Controller implements Updatable {
             }
             case SelectMap -> {
                 SelectMap selectMap = (SelectMap) message.getBody();
-                showMapView(selectMap.getAvailableMaps());
+                if(!mapSelected)
+                    showMapView(selectMap.getAvailableMaps());
             }
             case MapSelected -> {
                 MapSelected msg = (MapSelected) message.getBody();
@@ -183,10 +184,14 @@ public class LobbyController extends Controller implements Updatable {
     }
 
     public void mapSelected(String map) {
-        overlayPane.setVisible(false);
-        viewClient.sendMessage(new MapSelected(map));
+            overlayPane.setVisible(false);
+            viewClient.sendMessage(new MapSelected(map));
+            mapSelected = true;
+
+
     }
 
+    public boolean mapSelected = false;
     /**
      * By clicking the ready checkbox a message will be send to the client (and then to the server)
      * to signal the ready status of the user.

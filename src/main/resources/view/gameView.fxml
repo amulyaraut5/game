@@ -26,7 +26,7 @@
             </rowConstraints>
             <BorderPane fx:id="phasePane">
                 <bottom>
-                    <Label fx:id="infoLabel" alignment="CENTER" prefHeight="74.0" prefWidth="377.0" textFill="#ff3600" BorderPane.alignment="CENTER">
+                    <Label fx:id="infoLabel" alignment="CENTER" prefHeight="105.0" prefWidth="383.0" textFill="#ff3600" BorderPane.alignment="CENTER">
                         <font>
                             <Font name="System Bold" size="18.0" />
                         </font>
@@ -36,11 +36,14 @@
             <BorderPane fx:id="chatPane" prefHeight="600.0" prefWidth="233.0" GridPane.columnIndex="1" />
         </GridPane>
         <StackPane id="playerMapStackPane" fx:id="playerMat" prefHeight="189.0" prefWidth="647.0" stylesheets="@view.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Pane fx:id="boardPane" prefHeight="600.0" prefWidth="780.0" />
+        <Pane fx:id="boardPane" prefHeight="600.0" prefWidth="780.0">
+         <effect>
+            <DropShadow />
+         </effect></Pane>
         <Pane fx:id="otherPlayerSpace" prefHeight="180.0" prefWidth="780.0" GridPane.rowIndex="1" />
     </GridPane>
-    <Pane fx:id="roundPane" layoutX="796.0" layoutY="13.0" prefHeight="41.0" prefWidth="381.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
-        <Label fx:id="roundLabel" alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="41.0" prefWidth="379.0" text="!" textFill="WHITE" wrapText="true">
+    <Pane fx:id="roundPane" layoutX="796.0" layoutY="7.0" prefHeight="27.0" prefWidth="387.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
+        <Label fx:id="roundLabel" alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="26.0" prefWidth="389.0" textFill="WHITE" wrapText="true">
             <font>
                 <Font name="System Bold" size="20.0" />
             </font>
@@ -54,15 +57,10 @@
         </effect>
     </Pane>
 
-    <Pane fx:id="infoPane" layoutX="948.0" layoutY="147.0" prefHeight="60.0" prefWidth="241.0" style="-fx-background-color: orange; -fx-border-color: darkblue;" visible="false">
-        <Label layoutX="-5.0" layoutY="-7.0" prefHeight="74.0" prefWidth="242.0" textFill="WHITE" wrapText="true">
+    <Pane fx:id="infoPane" layoutX="948.0" layoutY="134.0" prefHeight="59.0" prefWidth="223.0" style="-fx-background-color: orange; -fx-border-color: darkblue;" visible="false">
+        <Label fx:id="moveInfo" layoutX="36.0" layoutY="-4.0" prefHeight="66.0" prefWidth="186.0" text="You're cards are shuffled&quot;" textFill="WHITE">
             <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-        <Label fx:id="moveInfo" layoutX="27.0" layoutY="15.0" prefHeight="41.0" prefWidth="242.0" textFill="WHITE">
-            <font>
-                <Font size="16.0" />
+                <Font size="15.0" />
             </font>
         </Label>
         <Pane layoutX="6.0" layoutY="8.0" prefHeight="21.0" prefWidth="23.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: orange;">

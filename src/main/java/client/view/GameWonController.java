@@ -2,15 +2,12 @@ package client.view;
 
 import game.Game;
 import game.Player;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import server.Server;
 import utilities.ImageHandler;
-import utilities.JSONProtocol.body.SetStatus;
-import utilities.enums.ServerState;
 
 import java.awt.*;
 import java.io.IOException;
@@ -66,7 +63,7 @@ public class GameWonController extends Controller {
     public void returnClicked() throws IOException {
         //Platform.runLater(viewManager::resetGame);
 
-        viewManager.reConstructGame();
+        viewManager.resetGame();
     }
 
 

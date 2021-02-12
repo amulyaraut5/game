@@ -11,14 +11,14 @@
         <ImageView fitHeight="139.0" fitWidth="101.0" opacity="0.48" pickOnBounds="true">
             <Image url="@../../tiles/empty.png" />
         </ImageView>
-        <Label fx:id="nameLabel" layoutX="29.0" prefHeight="23.0" prefWidth="61.0" textFill="#003366" />
+        <Label fx:id="nameLabel" layoutX="29.0" prefHeight="30.0" prefWidth="61.0" text="Name" textFill="#003366" />
         <ImageView fx:id="robotIcon" fitHeight="55.0" fitWidth="54.0" layoutX="-25.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../tiles/startPoint.png" />
          <effect>
             <DropShadow />
          </effect>
         </ImageView>
-        <Label fx:id="displayingLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="6.0" layoutY="51.0" prefHeight="37.0" prefWidth="83.0" textFill="#003366" wrapText="true">
+        <Label fx:id="displayingLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="6.0" layoutY="34.0" prefHeight="47.0" prefWidth="83.0" textFill="#003366" wrapText="true">
             <font>
                 <Font name="System Bold" size="13.0" />
             </font>
@@ -27,7 +27,7 @@
         <ImageView fx:id="currentCardImageView" fitHeight="62.0" fitWidth="41.0" layoutX="30.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true" />
         <HBox fx:id="drawDamageHBox" alignment="CENTER" layoutY="72.0" prefHeight="62.5" prefWidth="101.0" />
       <effect>
-         <DropShadow />
+         <DropShadow radius="13.0175" width="33.07" />
       </effect>
     </Pane>
     <Pane layoutX="102.0" layoutY="52.0" prefHeight="37.0" prefWidth="47.0">

@@ -10,6 +10,7 @@ import utilities.JSONProtocol.body.*;
 import utilities.Updatable;
 import utilities.enums.MessageType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -71,7 +72,12 @@ public class ViewClient extends Client {
                         players.remove(player);
 
                         if (players.size() <= 1) {
-                            viewManager.resetGame();
+
+                            try {
+                                viewManager.resetGame();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
