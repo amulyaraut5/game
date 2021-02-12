@@ -329,7 +329,13 @@ public class ActivationPhase extends Phase {
             case Worm -> {
                 //Reboot the robot.
                 new RebootAction().doAction(player);
-                currentCards.remove(player);
+                RegisterCard toRemove = null;
+                for (RegisterCard registerCard : currentCards) {
+                    if (registerCard.getPlayerID() == player.getID()) {
+                        toRemove = registerCard;
+                    }
+                }
+                currentCards.remove(toRemove);
                 //Add worm card back into the worm deck
                 wormDeck.getDeck().add(new Worm());
             }
@@ -417,7 +423,13 @@ public class ActivationPhase extends Phase {
             rebootedPlayers.add(player);
             activePlayers.remove(player);
             new RebootAction().doAction(player);
-            currentCards.remove(player);
+            RegisterCard toRemove = null;
+            for (RegisterCard registerCard : currentCards) {
+                if (registerCard.getPlayerID() == player.getID()) {
+                    toRemove = registerCard;
+                }
+            }
+            currentCards.remove(toRemove);
         }
     }
 
