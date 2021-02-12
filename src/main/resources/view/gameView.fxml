@@ -2,11 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane id="gameViewAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1427.0" stylesheets="@view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameController">
-    <Pane prefHeight="780.0" prefWidth="1427.0" style="-fx-background-color: black; -fx-opacity: 0.6;" />
+    <Pane prefHeight="780.0" prefWidth="1427.0" style="-fx-background-color: black; -fx-opacity: 0.6;">
+      <children>
+         <ImageView fitHeight="924.0" fitWidth="1648.0" layoutY="-93.0" opacity="0.1" pickOnBounds="true">
+            <image>
+               <Image url="@../otherElements/menu.png" />
+            </image>
+         </ImageView>
+      </children></Pane>
     <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1427.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="780.0" />
@@ -42,8 +50,8 @@
          </effect></Pane>
         <Pane fx:id="otherPlayerSpace" prefHeight="180.0" prefWidth="780.0" GridPane.rowIndex="1" />
     </GridPane>
-    <Pane fx:id="roundPane" layoutX="796.0" layoutY="7.0" prefHeight="27.0" prefWidth="387.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
-        <Label fx:id="roundLabel" alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="26.0" prefWidth="389.0" textFill="WHITE" wrapText="true">
+    <Pane fx:id="roundPane" layoutX="794.0" layoutY="7.0" prefHeight="27.0" prefWidth="389.0" style="-fx-border-color: white; -fx-border-width: 3; -fx-background-color: #5387c0;">
+        <Label fx:id="roundLabel" alignment="CENTER" layoutX="-12.0" layoutY="1.0" prefHeight="26.0" prefWidth="389.0" textFill="WHITE" wrapText="true">
             <font>
                 <Font name="System Bold" size="20.0" />
             </font>

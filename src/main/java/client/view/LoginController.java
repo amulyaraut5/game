@@ -12,7 +12,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import utilities.ImageHandler;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.Error;
 import utilities.JSONProtocol.body.PlayerValues;
@@ -96,8 +95,7 @@ public class LoginController extends Controller implements Updatable {
         int scaleSize = 65;
         for (String robotName : robotNames) {
             String path = "/lobby/" + robotName + ".png";
-            robot = ImageHandler.createImageView(path, scaleSize, scaleSize);
-
+            robot = generateImageView(path, scaleSize, scaleSize);
             figures.add(new Figure(robot));
         }
     }

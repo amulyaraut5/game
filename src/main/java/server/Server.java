@@ -33,7 +33,7 @@ import static utilities.Constants.PORT;
  *
  * @author Louis
  * @author amulya
- * @author TODO
+ * @author janau
  */
 
 public class Server extends Thread {

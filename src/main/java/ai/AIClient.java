@@ -20,11 +20,21 @@ import java.util.*;
 /**
  * This Class coordinates the messages received on the client and their responses from the AI.
  *
- * @author simon
+ * @author simon,Louis
  */
 public class AIClient extends Client {
+    /**
+     * Game map.
+     */
     private Map map;
+
+    /**
+     * the current phase of the game.
+     */
     private GameState currentPhase = GameState.CONSTRUCTION;
+    /**
+     * Instance of game.
+     */
     private Game game = Game.getInstance();
 
     /**
@@ -209,6 +219,11 @@ public class AIClient extends Client {
         }
     }
 
+    /**
+     * Chooses five cards from the received yourCards protocol to fill the registers with.
+     *
+     * @param yourCards received yourCards protocol
+     */
     private void chooseCards(YourCards yourCards) {
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
         HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
@@ -251,6 +266,11 @@ public class AIClient extends Client {
         return randCombination;
     }
 
+    /**
+     * Approach to choose the best card combination(consisting of five cards)  from all possible ones
+     *
+     * @param resultingPositions Hashmap that includes all Card combinations, mapped to their resulting positions.
+     */
     private CardType[] getBestCombination(HashMap<CardType[], Coordinate> resultingPositions) {
         int shortestDistance = 100;
         CardType[] bestCombination = null;
@@ -273,6 +293,10 @@ public class AIClient extends Client {
         return bestCombination;
     }
 
+    /**
+     * Creates the PlayerValues protocol message. To do so, it chooses a random still available player figure.
+     *
+     */
     public void choosePlayerValues() {
         List<Integer> takenFigures = new ArrayList<>();
         List<Integer> freeFigures = new ArrayList<>();
