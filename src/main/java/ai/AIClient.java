@@ -198,7 +198,11 @@ public class AIClient extends Client {
     private void chooseCards(YourCards yourCards) {
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
         HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
-        MoveSimulator moveSimulator = new MoveSimulator(this, map);
+
+        int nextControlPoint = getPlayerFromID(thisPlayersID).getCheckPointCounter();
+        Coordinate controlPoint = map.readControlPointCoordinate().get(nextControlPoint);
+
+        MoveSimulator moveSimulator = new MoveSimulator(this, map, controlPoint);
         Robot robot = getPlayerFromID(thisPlayersID).getRobot();
 
         for (CardType[] cards : combinations) {
