@@ -38,7 +38,7 @@ public class LobbyController extends Controller implements Updatable {
     private final HashMap<Player, VBox> playerIcons = new HashMap<>();
 
     /**
-     * The chatPane contains the pane.
+     * The chatPane contains the whole chat application.
      */
     @FXML
     private BorderPane chatPane;
@@ -61,15 +61,27 @@ public class LobbyController extends Controller implements Updatable {
     @FXML
     private Label infoLabel;
 
+    /**
+     * The mapImageView shows if someone has already chose a map.
+     */
     @FXML
     private ImageView mapImageView;
 
+    /**
+     * The mapLabel displays the name of the chosen map.
+     */
     @FXML
     private Label mapLabel;
 
+    /**
+     * The mapSelectionPane shows the possibility to choose between available maps, it is
+     * only visible for the first player if his status is ready.
+     */
     @FXML
     private Pane mapSelectionPane;
-
+    /**
+     * This Pane darkens the window, sets the focus on the mapSelectionPane and contains it.
+     */
     @FXML
     private Pane overlayPane;
 
@@ -170,6 +182,12 @@ public class LobbyController extends Controller implements Updatable {
         }
     }
 
+    /**
+     * This method shows the innerView mapView and sets the available maps, also it sets the overlayPane to
+     * visible, so that the player is able to choose a map.
+     *
+     * @param availableMaps all available maps the player can choose from
+     */
     private void showMapView(ArrayList<String> availableMaps) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/innerViews/mapView.fxml"));
@@ -182,6 +200,12 @@ public class LobbyController extends Controller implements Updatable {
         overlayPane.setVisible(true);
     }
 
+    /**
+     * This method gets called if the player selects a map than the protocol MapSelected gets send and the
+     * pane for choosing a map gets invisible
+     *
+     * @param map The map the player chose
+     */
     public void mapSelected(String map) {
             overlayPane.setVisible(false);
             viewClient.sendMessage(new MapSelected(map));
@@ -196,6 +220,9 @@ public class LobbyController extends Controller implements Updatable {
         viewClient.sendMessage(new SetStatus((readyCheckbox.isSelected())));
     }
 
+    /**
+     * This method sets the focus onto the infoLabel
+     */
     public void resetFocus() {
         infoLabel.requestFocus();
     }
