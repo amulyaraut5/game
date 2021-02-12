@@ -38,7 +38,7 @@ public class LoginController extends Controller implements Updatable {
     @FXML
     private JFXTextField textUserName;
     /**
-     * A label to check if everything works. //TODO delete or change purpose
+     * A label to check if everything works.
      */
     @FXML
     private Label infoLabel;

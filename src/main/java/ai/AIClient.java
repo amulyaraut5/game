@@ -35,7 +35,7 @@ public class AIClient extends Client {
     /**
      * Instance of game.
      */
-    private Game game = Game.getInstance();
+    private final Game game = Game.getInstance();
 
     /**
      * creates a set containing all combinations and their permutations
@@ -237,7 +237,7 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos); //TODO
+                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }

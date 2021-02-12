@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 public class PlayCardController extends Controller {
 
-    public Label drawDamageLabel;//TODO make private
+    public Label drawDamageLabel;
     public HBox drawDamageHBox;
     public AnchorPane drawDamageAnchorPane;
     @FXML

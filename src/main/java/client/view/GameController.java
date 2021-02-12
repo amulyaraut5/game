@@ -485,7 +485,7 @@ public class GameController extends Controller implements Updatable {
                 programmingController.setTimerEnded(true);
                 playerMatController.setDiscardDeckCounter(4);
                 if (!allRegistersAsFirst) playerMatController.fixSelectedCards();
-                allRegistersAsFirst = false; //TODO everything that is round related
+                allRegistersAsFirst = false;
 
                 othersController.setTooSlowLabel(timerEnded);
             }

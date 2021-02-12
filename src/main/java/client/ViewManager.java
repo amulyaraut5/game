@@ -2,7 +2,6 @@ package client;
 
 import client.model.ViewClient;
 import client.view.*;
-import game.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

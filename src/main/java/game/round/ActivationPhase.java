@@ -74,7 +74,7 @@ public class ActivationPhase extends Phase {
      */
     public void turnCards(int register) {
         for (Player player : determinePriority(map.getAntenna())) {
-            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards()); //TODO remove if exception doesn't  come up again
+            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards());
             Card card = player.getRegisterCard(register);
             if (!(card == null)) {
                 RegisterCard playerRegisterCard = new RegisterCard(player.getID(), card);
@@ -668,17 +668,6 @@ public class ActivationPhase extends Phase {
             this.robot = robot;
             this.distance = distance;
             this.yCoordinate = yCoordinate;
-        }
-
-        //TODO remove after testing
-        @Override
-        public String toString() {
-            return "RobotDistance{" +
-                    "player=" + player +
-                    ", robot=" + robot +
-                    ", distance=" + distance +
-                    ", yCoordinate=" + yCoordinate +
-                    '}';
         }
 
         public Player getPlayer() {
