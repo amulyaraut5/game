@@ -85,13 +85,10 @@ public class AIClient extends Client {
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
             case Welcome -> {
-                ArrayList<CardType> test = new ArrayList<>();
-                test.add(CardType.Spam);
-                test.add(CardType.Spam);
-                test.add(CardType.Spam);
-                test.add(CardType.Spam);
-                test.add(CardType.Spam);
-                logger.info();
+                CardType test[] = new CardType[] {CardType.MoveII, CardType.Spam, CardType.MoveII, CardType.MoveII, CardType.MoveII };
+                logger.info(cardsToString(test));
+                CardType[] test1= handleDamageCards(test);
+                logger.info(cardsToString(test1));
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
                 new Timer().schedule(new TimerTask() {
@@ -256,8 +253,10 @@ public class AIClient extends Client {
             bestCombination = createRandomCombination(yourCards);
         }
 
+        CardType[] improvedCombination = handleDamageCards(bestCombination);
+
         for (int i = 0; i < 5; i++) {
-            CardType cardType = bestCombination[i];
+            CardType cardType = improvedCombination[i];
             sendMessage(new SelectCard(cardType, i + 1));
         }
     }
@@ -326,25 +325,27 @@ public class AIClient extends Client {
         } else disconnect();
     }
 
-    public void handleSpamCards(ArrayList<CardType> combination){
-        //Find out highest index with no spam card
-        int j = 4;
-        for (int i=0;i<4;i++){
-            if(isDamageCard(combination.get(j))){
-                j = j - 1;
+
+    public CardType[] handleDamageCards(CardType[] combination){
+        CardType[] newList = new CardType[5];
+        int i = 0;
+        for (CardType card : combination) {
+            if(!isDamageCard(card)){
+                newList[i] = card;
+                i++;
+            }
+        }
+        for (CardType card : combination) {
+            if(isDamageCard(card)){
+                newList[i] = card;
+                i++;
             }
         }
 
-        for (int i = 0; i < 5; i++){
-            if(j<0) break;
-            Collections.swap(combination,i,j);
-            while (isDamageCard(combination.get(j))){
-                if(j<1) break;
-                else j = j-1;
-            }
-        }
-
+        return newList;
     }
+
+
 
     public boolean isDamageCard(CardType card){
         switch (card){
@@ -353,6 +354,17 @@ public class AIClient extends Client {
         }
         return false;
 
+    }
+
+    public String cardsToString(CardType[] array){
+        String output = "";
+        for (CardType card : array) {
+            switch (card){
+                case MoveII -> output += "MoveII ";
+                case Spam -> output += "Spam";
+            }
+        }
+        return output;
     }
 
 
