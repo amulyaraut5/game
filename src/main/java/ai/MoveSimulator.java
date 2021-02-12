@@ -38,7 +38,7 @@ public class MoveSimulator {
                 activateGreenBelts();
                 activatePushPanel(i + 1);
                 activateGear();
-                //immediately interupt if on controlpoint
+                //immediately interrupt if on controlpoint
                 if(Coordinate.distance(resPosition,controlPoint)==0){
                     resPosition=controlPoint;
                     break;
