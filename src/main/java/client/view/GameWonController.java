@@ -63,7 +63,7 @@ public class GameWonController extends Controller {
     public void returnClicked() throws IOException {
         //Platform.runLater(viewManager::resetGame);
 
-        viewManager.resetGame();
+        viewManager.reconstructGame();
     }
 
 

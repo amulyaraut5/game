@@ -144,6 +144,7 @@ public class OthersController extends Controller {
     }
 
     /**
+     * Displays the reboot and spam information in the small player mat
      * @param reboot
      * @param thisPlayer
      */
@@ -154,6 +155,7 @@ public class OthersController extends Controller {
     }
 
     /**
+     *  Displays that the player was too slow
      * @param timerEnded
      */
     public void setTooSlowLabel(TimerEnded timerEnded) {
@@ -164,6 +166,7 @@ public class OthersController extends Controller {
     }
 
     /**
+     *  Displays that the player git damage
      * @param drawDamage
      * @param thisPlayer
      */
@@ -176,6 +179,7 @@ public class OthersController extends Controller {
     }
 
     /**
+     * Displays that the player refilled the deck
      * @param shuffleCoding
      */
     public void setShuffleCodingLabel(ShuffleCoding shuffleCoding) {

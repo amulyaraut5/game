@@ -72,12 +72,7 @@ public class ViewClient extends Client {
                         players.remove(player);
 
                         if (players.size() <= 1) {
-
-                            try {
-                                viewManager.resetGame();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            viewManager.resetGame();
                         }
                     }
                 }
