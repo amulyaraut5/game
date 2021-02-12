@@ -21,19 +21,36 @@ import java.util.ArrayList;
  * @author sarah
  */
 public class ViewClient extends Client {
+    /**
+     * The instance of the ViewClient.
+     */
     private static ViewClient instance;
+    /**
+     * The ViewManager which handles the different views, scenes and windows.
+     */
     private final ViewManager viewManager = ViewManager.getInstance();
-
+    /**
+     * The GameController which gets used during the actual game.
+     */
     private GameController gameController;
+    /**
+     * The LoginLogger gets used for the loginView
+     */
     private LoginController loginController;
+    /**
+     * The LobbyController gets used for the lobbyView
+     */
     private LobbyController lobbyController;
-
-    private Updatable currentController;
-
+    /**
+     * The ChatController gets used for the chatView
+     */
     private ChatController chatController;
 
-    private ViewClient() {
-    }
+    /**
+     * The currentController //TODO
+     */
+    private Updatable currentController;
+
 
     /**
      * Based on the messageType the various protocol are differentiated and Object class type
@@ -89,6 +106,12 @@ public class ViewClient extends Client {
         });
     }
 
+    /**
+     * This method adds a new player with its name, shows the related components in the view and shows
+     * which figure is now taken.
+     *
+     * @param playerAdded a joining player
+     */
     public void addNewPlayer(PlayerAdded playerAdded) {
         Player player = new Player(playerAdded);
         players.add(player);
@@ -102,19 +125,30 @@ public class ViewClient extends Client {
         chatController.addUser(player);
     }
 
+    /**
+     * This method sets different controllers and gets called from the ViewManager
+     *
+     * @param controllerList a list with all required controllers
+     */
     public void setController(ArrayList<Controller> controllerList) {
         loginController = (LoginController) controllerList.get(0);
         lobbyController = (LobbyController) controllerList.get(1);
         gameController = (GameController) controllerList.get(2);
     }
 
-    public void setChatController(ChatController chatController) {
-        this.chatController = chatController;
-    }
-
+    /**
+     * This method returns the instance of this Singelton class
+     *
+     * @return the instance
+     */
     public static ViewClient getInstance() {
         if (instance == null) instance = new ViewClient();
         return instance;
+    }
+
+
+    public void setChatController(ChatController chatController) {
+        this.chatController = chatController;
     }
 
     public Updatable getCurrentController() {

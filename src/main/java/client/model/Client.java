@@ -20,27 +20,64 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * The Client class is abstract and represents a generalisation of the ViewClient and AIClient.
+ * It stores the number of damage cards and how to handle them.
+ * It also takes care of disconnecting a client and individual naming.
+ *
+ * @author sarah
+ */
 public abstract class Client {
 
     protected static final Logger logger = LogManager.getLogger();
 
+    /**
+     * The initial count of spam cards on client side.
+     */
     private static int countSpamCards = Constants.SPAM_CARDCOUNT;
+    /**
+     * The initial count of trojan cards on client side.
+     */
     private static int countTrojanCards = Constants.TROJAN_CARDCOUNT;
+    /**
+     * The initial count of worm cards on client side.
+     */
     private static int countWormCards = Constants.WORM_CARDCOUNT;
+    /**
+     * The initial count of virus cards on client side.
+     */
     private static int countVirusCards = Constants.VIRUS_CARDCOUNT;
 
+    /**
+     * All players of the game that get added and the player itself.
+     */
     protected final ArrayList<Player> players = new ArrayList<>();
-    protected final ArrayList<Player> rebootingAIs = new ArrayList<>();
+    protected final ArrayList<Player> rebootingAIs = new ArrayList<>(); //TODO?
 
+    /**
+     * The playerID of the client.
+     */
     protected int thisPlayersID;
 
+    /**
+     * Stream socket which get connected to the specified port number on the named host of the server.
+     */
     private Socket socket;
+    /**
+     * The ReaderThread that reads (for the client) the servers input constantly and prints it out on the console.
+     */
     private ReaderThread readerThread;
+    /**
+     * The port of the server on the named host is saved here for the socket creation.
+     */
     private int port = Constants.PORT;
+    /**
+     * The PrintWriter which writes messages onto the socket connected to the server.
+     */
     private PrintWriter writer;
 
     /**
-     * this method reduces the number of damage cards on the associated deck.
+     *This method reduces the number of damage cards on the associated deck.
      *
      * @param cardList received damage cards
      */
@@ -49,6 +86,12 @@ public abstract class Client {
             handleDamageCount(cardType);
         }
     }
+
+    /**
+     *This method reduces the number of damage cards on the associated deck.
+     *
+     * @param cardType received damage CardType
+     */
     public void handleDamageCount(CardType cardType){
         if (!(cardType == null)) {
             switch (cardType) {
@@ -60,6 +103,11 @@ public abstract class Client {
         }
     }
 
+    /**
+     * This abstract method shoul be implemented to handle JSONMessages.
+     *
+     * @param message JSONMessage that should get handled
+     */
     protected abstract void handleMessage(JSONMessage message);
 
     /**
