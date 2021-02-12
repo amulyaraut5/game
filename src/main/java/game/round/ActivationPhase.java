@@ -250,24 +250,19 @@ public class ActivationPhase extends Phase {
      */
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
-
         Coordinate newPosition = activationElements.calculateNew(player, o);
-
-        //Handle board elements
         boolean canMove = true;
 
         //look for a blocking wall on current Tile
         if (map.isWallBlocking(player.getRobot().getCoordinate(), o)) {
             canMove = false;
         }
-
         //look for a blocking wall on new tile
         if (!newPosition.isOutsideMap()) {
             if (map.isWallBlocking(newPosition, o.getOpposite())) {
                 canMove = false;
             }
         }
-
         //Handle collisions
         for (Player collisionPlayer : players) {
             if (newPosition.equals(collisionPlayer.getRobot().getCoordinate())) {
@@ -426,6 +421,12 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * It checks whether the position is free or not.
+     *
+     * @param position position of tile on board
+     * @return true if no robot is on that tile
+     */
     public boolean isPositionFree(int position) {
         Coordinate coordinate = Coordinate.parse(position);
         for (Player collisionPlayer : players) {
@@ -436,6 +437,12 @@ public class ActivationPhase extends Phase {
         return true;
     }
 
+    /**
+     * It checks whether the position is free or not.
+     *
+     * @param coordinate coordinate of tile on board
+     * @return true if no robot is on that tile
+     */
     public boolean isPositionFree(Coordinate coordinate) {
         for (Player collisionPlayer : players) {
             if (coordinate.equals(collisionPlayer.getRobot().getCoordinate())) {
