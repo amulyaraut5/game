@@ -15,10 +15,10 @@ import java.util.Random;
 public class RebootAction extends Action {
 
     /**
-     * If the robot falls off the board or into a pit, or if a worm card is activated,
-     * the robot gets rebooted.
+     * This method is used to carry out the reboot action.
+     * Depending on where the robot is located, it is rebooted either on the reboot token or on the starting point.
      * If multiple robots reboot on the same board or if a robot sits on the reboot token when other robots are rebooting,
-     * robots will leave the reboot space in the order they rebooted, in the direction indicated by the arrow on the reboot token.
+     * robots will leave the reboot space in the order they rebooted.
      *
      * @param player is the player who is affected by the game action.
      */
@@ -50,11 +50,16 @@ public class RebootAction extends Action {
                 player.getRobot().rotateTo(Orientation.UP);
                 player.getRobot().moveTo(player.getRobot().getStartingPoint());
             }
-            clearRestartPoint(player);
+            clearStartingPoint(player);
         }
         server.communicateAll(new Reboot(player.getID()));
     }
 
+    /**
+     * Checks whether the reboot tile is already taken.
+     * @param player the rebooting player
+     * @return true if the reboot tile is taken otherwise false
+     */
     public boolean isTaken(Player player) {
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
@@ -64,7 +69,12 @@ public class RebootAction extends Action {
         return false;
     }
 
-    public void clearRestartPoint(Player player) {
+    /**
+     * Clears the starting point for the rebooting robot.
+     * If the starting point is taken, the robot is moved to the north.
+     * @param player the rebooting player
+     */
+    public void clearStartingPoint(Player player) {
         for (Player robotOnReboot : game.getPlayers()) {
             if (player.getRobot().getStartingPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
                 robotOnReboot.getRobot().rotateTo(Orientation.UP);
@@ -73,6 +83,11 @@ public class RebootAction extends Action {
         }
     }
 
+    /**
+     * Clears the reboot token for the rebooting robot.
+     * If the reboot token is taken, the robot is moved in the direction indicated by the arrow on the reboot token.
+     * @param player the rebooting player
+     */
     public void clearRebootTile(Player player) {
         for (Player robotOnReboot : game.getPlayers()) {
             if (map.getRestartPoint().equals(robotOnReboot.getRobot().getCoordinate()) && robotOnReboot != player) {
