@@ -106,11 +106,12 @@ public class ActivationPhase extends Phase {
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
             handleCard(currentCard, game.getPlayerFromID(playerID));
-            currentCards.remove(0);
-
-            //check if next player is rebooting
             if (!currentCards.isEmpty()) {
-                while (!isNotRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
+                currentCards.remove(0);
+            }
+            if (!currentCards.isEmpty()) {
+                //check if next player is rebooting
+                while (isRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
                     currentCards.remove(0);
                     if (currentCards.isEmpty()) {
                         break;
@@ -296,12 +297,12 @@ public class ActivationPhase extends Phase {
             case MoveI -> handleMove(player, orientation);
             case MoveII -> {
                 handleMove(player, orientation);
-                if (isNotRebooting(player)) handleMove(player, orientation);
+                if (!isRebooting(player)) handleMove(player, orientation);
             }
             case MoveIII -> {
                 handleMove(player, orientation);
-                if (isNotRebooting(player)) handleMove(player, orientation);
-                if (isNotRebooting(player)) handleMove(player, orientation);
+                if (!isRebooting(player)) handleMove(player, orientation);
+                if (!isRebooting(player)) handleMove(player, orientation);
             }
             case TurnLeft -> robot.rotate(Rotation.LEFT);
 
@@ -587,40 +588,61 @@ public class ActivationPhase extends Phase {
         Player player = game.userToPlayer(user);
         ArrayList<CardType> selectedCards = selectDamage.getCards();
         logger.info("selectedCards Damage. " + selectedCards);
+        int drawAgain = 0;
         for (CardType cardType : selectedCards) {
             if (!(cardType == null)) {
                 switch (cardType) {
                     case Spam -> {
-                        player.getDiscardedProgrammingDeck().addCard(new Spam());
-                        spamDeck.pop();
+                        if (!(spamDeck.isEmpty())) {
+                            player.getDiscardedProgrammingDeck().addCard(new Spam());
+                            spamDeck.pop();
+                        } else {
+                            drawAgain++;
+                        }
                     }
                     case Virus -> {
-                        player.getDiscardedProgrammingDeck().addCard(new Virus());
-                        virusDeck.pop();
+                        if (!(virusDeck.isEmpty())) {
+                            player.getDiscardedProgrammingDeck().addCard(new Virus());
+                            virusDeck.pop();
+                        } else {
+                            drawAgain++;
+                        }
                     }
                     case Worm -> {
-                        player.getDiscardedProgrammingDeck().addCard(new Worm());
-                        wormDeck.pop();
+                        if (!(virusDeck.isEmpty())) {
+                            player.getDiscardedProgrammingDeck().addCard(new Worm());
+                            wormDeck.pop();
+                        } else {
+                            drawAgain++;
+                        }
                     }
                     case Trojan -> {
-                        player.getDiscardedProgrammingDeck().addCard(new Trojan());
-                        trojanDeck.pop();
+                        if (!(virusDeck.isEmpty())) {
+                            player.getDiscardedProgrammingDeck().addCard(new Trojan());
+                            trojanDeck.pop();
+                        } else {
+                            drawAgain++;
+                        }
                     }
                     default -> player.message(new Error("This is not a valid damage card"));
                 }
                 cardTypes.add(cardType);
             }
-            logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
-                    " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
-            server.communicateAll(new DrawDamage(user.getID(), cardTypes));
-            logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
+            if (drawAgain == 0) {
+                logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
+                        " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
+                server.communicateAll(new DrawDamage(user.getID(), cardTypes));
+                logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
+            } else {
+                server.communicateDirect(new PickDamage(drawAgain), player.getID());
+            }
         }
     }
 
     public boolean allPlayersRebooting() {
         boolean allRebooting = true;
         for (Player player : players) {
-            if (isNotRebooting(player)) allRebooting = false;
+            if (!isRebooting(player)) allRebooting = false;
         }
         return allRebooting;
     }
@@ -632,7 +654,7 @@ public class ActivationPhase extends Phase {
      * @return true if player is rebooting
      */
 
-    public boolean isNotRebooting(Player player) {
+    public boolean isRebooting(Player player) {
         boolean isRebooting = false;
         for (Player p : rebootedPlayers) {
             if (player == p) {
@@ -640,7 +662,7 @@ public class ActivationPhase extends Phase {
                 break;
             }
         }
-        return !isRebooting;
+        return isRebooting;
     }
 
     /**
