@@ -137,33 +137,6 @@ public class ViewManager {
         gameStage.setOnCloseRequest(event ->resetAll());
     }
 
-    public void reconstructGame() throws IOException {
-        FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("/view/gameView.fxml"));
-
-        gameScene = new Scene(gameLoader.load());
-
-        gameController = gameLoader.getController();
-
-        ArrayList<Controller> controllerList = new ArrayList<>();
-
-        controllerList.add(getLoginController());
-        controllerList.add(getLobbyController());
-
-        controllerList.add(gameController);
-
-        ViewClient.getInstance().setController(controllerList);
-
-        lobbyController.getReadyCheckbox().setSelected(false);
-
-        showLobby();
-
-        /*
-        for(Player player : ViewClient.getInstance().getPlayers()){
-            player.resetDecks();
-        }
-
-         */
-    }
 
     private void constructScenes() throws IOException {
         FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/view/menuView.fxml"));
@@ -199,20 +172,9 @@ public class ViewManager {
         }
     }
 
-    public void resetGame(){
-        showMenu();
-    }
-
     public static ViewManager getInstance() {
         if (instance == null) instance = new ViewManager();
         return instance;
     }
 
-    public LoginController getLoginController() {
-        return loginController;
-    }
-
-    public LobbyController getLobbyController() {
-        return lobbyController;
-    }
 }

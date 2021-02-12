@@ -466,23 +466,22 @@ public class ActivationPhase extends Phase {
     }
 
     /**
-     * calculates the priority and returns a list of players in the order of priority
+     * Determines the priority depending on the antenna and returns a list of players in order of priority.
      *
      * @param antenna game antenna
-     * @return A List of players in priority order
+     * @return a list of players in priority order
      */
     public ArrayList<Player> determinePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
         ArrayList<Player> playerPriority = new ArrayList<>();
-        int sortedDistanceSize = sortedDistance.size();
 
-        for (int i = 0; i < sortedDistanceSize; i++) {
+        for (int i = 0; i < sortedDistance.size(); i++) {
             if (sortedDistance.size() == 0) {
                 return playerPriority;
             } else if (sortedDistance.size() == 1) {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
                 sortedDistance.remove(0);
-                //objects have the same distance values -> selection by clockwise antenna beam
+            //objects have the same distance values -> selection by clockwise antenna beam
             } else if (sortedDistance.get(0).getDistance() == sortedDistance.get(1).getDistance()) {
                 //add the robots with same distance into a list
                 ArrayList<RobotDistance> sameDistance = new ArrayList<>();
@@ -495,9 +494,8 @@ public class ActivationPhase extends Phase {
                         sortedDistance.remove(sortedDistance.get(0));
                     }
                 }
-                //sort sameDistance by yCoordinate -> smallest y coordinate first
                 sortByYCoordinate(sameDistance, antenna, playerPriority);
-                //first and second object have different distance values -> first player in list is currentPlayer
+            //first and second object have different distance values -> first player in list is currentPlayer
             } else {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
                 sortedDistance.remove(0);
@@ -506,8 +504,14 @@ public class ActivationPhase extends Phase {
         return playerPriority;
     }
 
+    /**
+     * Sorts the list of players with the same distance to the antenna
+     * by the order in which the antenna beam hits them clockwise.
+     * @param sameDistance ArrayList of robots with the same distance
+     * @param antenna game antenna
+     * @param playerPriority a list of players in priority order
+     */
     public void sortByYCoordinate(ArrayList<RobotDistance> sameDistance, Coordinate antenna, ArrayList<Player> playerPriority) {
-        //sort sameDistance by yCoordinate -> smallest y coordinate first
         sameDistance.sort(Comparator.comparingInt(RobotDistance::getYCoordinate));
         ArrayList<Player> greaterThanAntenna = new ArrayList<>();
         ArrayList<Player> smallerThanAntenna = new ArrayList<>();
@@ -527,32 +531,42 @@ public class ActivationPhase extends Phase {
         playerPriority.addAll(smallerThanAntenna);
     }
 
+    /**
+     * Fills the ArrayList sortedDistance with matching objects
+     * and sorts them according to their distance to the antenna.
+     *
+     * @param antenna the game antenna
+     * @return an ArrayList of players and their robots sorted by their distance to the antenna
+     */
     public ArrayList<RobotDistance> sortDistance(Coordinate antenna) {
-        //List containing information for determining the next player in line (next robot with priority)
         ArrayList<RobotDistance> sortedDistance = new ArrayList<>();
-        //Fill List sortedDistance with matching objects
+
         int i = 0;
         while (i < activePlayers.size()) {
-            //Point is generated with robot x and y position
             Coordinate robotPosition = new Coordinate(
                     activePlayers.get(i).getRobot().getCoordinate().getX(),
                     activePlayers.get(i).getRobot().getCoordinate().getY());
-            //get playerID
+
             Player player = activePlayers.get(i);
-            //get robot
             Robot robot = activePlayers.get(i).getRobot();
-            //get distance to antenna
             double distance = Coordinate.distance(antenna, robotPosition);
-            //get y coordinate
             int yRobot = robot.getCoordinate().getY();
-            //safe object in sortedDistance
+
             sortedDistance.add(new RobotDistance(player, robot, distance, yRobot));
             i++;
         }
-        // sort RobotDistance by distance
         sortedDistance.sort(Comparator.comparingDouble(RobotDistance::getDistance));
         return sortedDistance;
     }
+
+    /**
+     * whenever a robot receives damage this method is called to check if there are enough damage cards available
+     * and send drawDamage or PickDamage based on this information.
+     *
+     * @param damageDeck Deck from which the damage cards should be drawn
+     * @param player player whose robot received damage
+     * @param amount number of damage cards to draw
+     */
 
     public void drawDamage(Deck damageDeck, Player player, int amount) {
         logger.info("drawDamage reached");
@@ -583,6 +597,13 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * If a selectDamage protocol was received this method tries to draw the cards from the chosen decks.
+     * If there are not enough cards PickDamage is sent again
+     *
+     * @param selectDamage received message
+     * @param user user whose robot receives damage
+     */
     public void handleSelectedDamage(SelectDamage selectDamage, User user) {
         logger.info("handleSelectedDamage");
         Player player = game.userToPlayer(user);

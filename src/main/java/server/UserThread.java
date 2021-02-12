@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  * Handles connection for each connected client,
  * therefore the server is able to handle multiple clients at the same time.
  *
- * @author annika
+ * @author vossa,
  */
 
 public class UserThread extends Thread {
@@ -46,7 +46,6 @@ public class UserThread extends Thread {
 
     /**
      * The method runs a loop of reading messages from the user and sending them to all other users.
-     * The user disconnects by typing "bye".
      */
     @Override
     public void run() {
@@ -73,7 +72,7 @@ public class UserThread extends Thread {
     }
 
     /**
-     * prints a message for specific user
+     * sends a message for specific user
      *
      * @param jsonBody the JSONBody of the message to sent
      */

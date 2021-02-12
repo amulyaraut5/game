@@ -20,22 +20,46 @@ import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
 /**
+ * This class represents the playerMat of the player, it contains the registers where the player has to place
+ * programming cards and also information about name, figure, energy, checkpoints,
+ * discard deck count and programming deck count.
+ *
  * @author sarah, annika
  */
 public class PlayerMatController extends Controller {
-
+    /**
+     * This HBox is behind the HBox that contains all registers and displays default images.
+     */
     @FXML
     private HBox registerHBoxBackground;
+    /**
+     * This HBox displays the images that get dragged and dropped into its children.
+     */
     @FXML
     private HBox registerHBox;
+    /**
+     * The playerIcon displays the figure of the player.
+     */
     @FXML
     private ImageView playerIcon;
+    /**
+     * This Label shows the name of the player.
+     */
     @FXML
     private Label playerMapLabelName;
+    /**
+     * This HBox will contain Images of the checkPoints the player visited.
+     */
     @FXML
     private HBox checkPointsHBox;
+    /**
+     * This Pane contains everything according to the playerMat.
+     */
     @FXML
     private AnchorPane playerMapAnchorPane;
+    /**
+     * This Label displays the count of the amount of cards in the discard deck
+     */
     @FXML
     private Label discardDeckLabel;
     @FXML
@@ -94,6 +118,16 @@ public class PlayerMatController extends Controller {
         }
     }
 
+    /**
+     * This method checks if dragging the image is allowed on a pane.
+     * <p>
+     * If this is allowed depends on the facts if the DragBoard has the right DataFormat, if the ImageView that stores
+     * the dragged image is not null, that the former parent isn't the pane and that the pane is empty.
+     *
+     * @param pane the pane that should be the aim for dragging and dropping the imageView
+     * @param db the DragBoard of the dragged event
+     * @return it returns if dragging the image is allowed
+     */
     private boolean checkDragAllowed(Pane pane, Dragboard db) {
         return db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
@@ -129,15 +163,23 @@ public class PlayerMatController extends Controller {
         }
     }
 
+    /**
+     * This method adds an EventHandler to an ImageView which creates a DragBoard with DataFormat and sets information
+     * about the dragged imageView in the parentclass.
+     *
+     * @param programmingCardImageView the imageView that should get EventHandler
+     * @param position the position if the imageView in the registers
+     * @return
+     */
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
         programmingCardImageView.setOnDragDetected(event -> {
-            setWasFormerRegister(true);
             Dragboard dragboard = programmingCardImageView.startDragAndDrop(TransferMode.MOVE);
             dragboard.setDragView(programmingCardImageView.snapshot(null, null));
             ClipboardContent cc2 = new ClipboardContent();
             cc2.put(cardFormat, "cardName");
             dragboard.setContent(cc2);
             setRegisterPosition(position);
+            setWasFormerRegister(true);
             setProgrammingImageView(programmingCardImageView);
         });
 

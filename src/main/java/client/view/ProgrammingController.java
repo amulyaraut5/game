@@ -30,27 +30,63 @@ import java.util.TimerTask;
  * @author sarah
  */
 public class ProgrammingController extends Controller {
-
-    private int interval;
-    private double widthHBox;
-    private double heightHBox;
-    private boolean timerEnded = false;
-
+    /**
+     * This HBox is behind the HBox that contains the available programming cards and displays default images
+     */
     @FXML
     private HBox hBox1Background;
+    /**
+     * This HBox is behind the HBox that contains the available programming cards and displays default images
+     */
     @FXML
     private HBox hBox2Background;
+    /**
+     * This HBox shows 5 programming cards (if available) which the player can draw into his register.
+     */
     @FXML
     private HBox hBox1;
+    /**
+     * This HBox shows 4 programming cards (if available) which the player can draw into his register.
+     */
     @FXML
     private HBox hBox2;
+    /**
+     * This Pane contains the video of the hourglass
+     */
     @FXML
     private AnchorPane timerAnchorPane;
+    /**
+     * This Label contains information if the timer is running because of the player or that the player has to hurry.
+     */
     @FXML
     private Label programInfoLabel;
+    /**
+     * This Label shows the countdown of the timer
+     */
     @FXML
     private Label timerLabel;
 
+    /**
+     * Interval means the interval of the timer that is normally 30 sec.
+     */
+    private int interval;
+    /**
+     * This is the width of one element of the HBox
+     */
+    private double widthHBox;
+    /**
+     * This is the height of one element of the HBox
+     */
+    private double heightHBox;
+    /**
+     * This boolean show if the timer has already ended, its default value is false.
+     */
+    private boolean timerEnded = false;
+
+    /**
+     * This automatically called method sets all layout settings of the HBoxes, creates the background
+     * and calculates the height and width of the HBoxes' contents.
+     */
     public void initialize() {
         widthHBox = hBox1.getPrefWidth() / 5;
         heightHBox = hBox1.getPrefHeight();
@@ -59,6 +95,11 @@ public class ProgrammingController extends Controller {
         for (int i = 0; i < 4; i++) createBackground(hBox2Background);
     }
 
+    /**
+     * This method sets Spacing and Alignment for all hBoxes that occur to choosing programming cards
+     *
+     * @param hBoxes an Array that contains all hBoxes that should get layout
+     */
     private void settingsHBoxes(HBox[] hBoxes) {
         for (HBox hBox : hBoxes) {
             hBox.setSpacing(20);
@@ -66,12 +107,25 @@ public class ProgrammingController extends Controller {
         }
     }
 
+    /**
+     * This method creates the background of one HBox with underground card images.
+     * The whole HBox now is the default background for its overlapping HBox.
+     *
+     * @param hBox The HBox that should get images with background cards
+     */
     private void createBackground(HBox hBox) {
         ImageView background = generateImageView("/cards/programming/underground-card.png", (int) (widthHBox - 20), (int) heightHBox);
         background.setEffect(new DropShadow(1, Color.BLACK));
         hBox.getChildren().add(background);
     }
 
+    /**
+     * This method starts the programming phase by getting the available programming cards and displaying them
+     * in two HBoxes and also adds EventHandler to the pane that contains the imageView that also has an EventHandler
+     * to allow drag and dropping on the panes that are now children of the HBoxes.
+     *
+     * @param cardList the list of cards the player can choose from
+     */
     public void startProgrammingPhase(ArrayList<CardType> cardList) {
         for (CardType cardType : cardList) {
             StackPane pane = new StackPane();
@@ -84,18 +138,32 @@ public class ProgrammingController extends Controller {
         }
     }
 
+    /**
+     * This method creates an Image from a CardType and adds an EventHandler that sets a DragBoard when a Drag gets detected
+     * and also the information that this imageView former place wasn't a register.
+     *
+     * @param cardName The CardType that should get transformed into an image
+     * @return the ImageView with EventHandler
+     */
     private ImageView createImageView(CardType cardName) {
-        ImageView programmingCard = new ImageView(new Image(getClass().getResource("/cards/programming/" + cardName + "-card.png").toString()));
-        programmingCard.setFitHeight(heightHBox);
-        programmingCard.setFitWidth(widthHBox - 20);
+        ImageView programmingCard = generateImageView("/cards/programming/" + cardName + "-card.png", (int)(widthHBox-20), (int)heightHBox);
         programmingCard.setOnDragDetected(event -> {
             setWasFormerRegister(false);
             setOnDragDetected(programmingCard);
         });
-
         return programmingCard;
     }
 
+    /**
+     * This method checks if dragging the image is allowed on a pane.
+     * <p>
+     * If this is allowed depends on the facts if the DragBoard has the right DataFormat, if the ImageView that stores
+     * the dragged image is not null, that the former parent isn't the pane and that the pane is empty.
+     *
+     * @param pane the pane that should be the aim for dragging and dropping the imageView
+     * @param db the DragBoard of the dragged event
+     * @return it returns if dragging the image is allowed
+     */
     private boolean checkDragAllowed(Pane pane, Dragboard db) {
         return db.hasContent(cardFormat)
                 && getProgrammingImageView() != null
