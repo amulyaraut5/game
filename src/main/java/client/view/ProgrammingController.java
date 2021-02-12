@@ -51,7 +51,7 @@ public class ProgrammingController extends Controller {
     @FXML
     private Label timerLabel;
 
-    public void initialize() { //TODO method that gets called when cards were dealt
+    public void initialize() {
         widthHBox = hBox1.getPrefWidth() / 5;
         heightHBox = hBox1.getPrefHeight();
         settingsHBoxes(new HBox[]{hBox1, hBox2, hBox1Background, hBox2Background});

@@ -18,18 +18,18 @@ import java.util.ArrayList;
  */
 public class OnePlayerController extends Controller {
     /**
-     * This Label displays the name of the other player
+     * This Label displays the name of the other player.
      */
     @FXML
     private Label nameLabel;
     /**
-     * This ImageView displays the figure of the other player
+     * This ImageView displays the figure of the other player.
      */
     @FXML
     private ImageView robotIcon;
     /**
-     * This Label displays information about if the player is current player, etc.. It is placed above the
-     * little playerMat
+     * This Label displays information about if the player is current player, etc.
+     * It is placed above the little playerMat
      */
     @FXML
     private Label infoLabel;
@@ -40,33 +40,48 @@ public class OnePlayerController extends Controller {
     @FXML
     private Label displayingLabel;
     /**
-     *
+     * This HBox shows how much damage cards the player had to draw.
      */
     @FXML
     private HBox drawDamageHBox;
+    /**
+     * This ImageView shows the programming card the player plays in the current register
+     */
     @FXML
     private ImageView currentCardImageView;
+    /**
+     * This registerHBox shows which registers the player has already filled.
+     */
     @FXML
     private HBox registerHBox;
+    /**
+     * This Label shows the amount of energyTokens that the other player has.
+     */
     @FXML
     private Label energyLabel;
+    /**
+     * This Label shows the amount of checkPoints that the other player visited.
+     */
     @FXML
     private Label checkBoxLabel;
 
+    /**
+     * This is the amount of energy of the player, initialized with 5.
+     */
     private int energy = 5;
 
     /**
      * This method gets called automatically by creating the view, fills five registers with backside cards
-     * and
+     * and sets elements of programming and activation phase invisible.
      */
     public void initialize() {
         currentCardImageView.setVisible(false);
-        fillRegister();
         setHBoxRegisterVisible(false);
+        fillRegister();
     }
 
     /**
-     * This method sets the name and the occurring profile image and the 5 energy tokens when this other
+     * This method sets the name, the occurring profile image and the 5 energy tokens when this other
      * player gets added.
      *
      * @param otherPlayer the player which gets added
@@ -92,14 +107,15 @@ public class OnePlayerController extends Controller {
     }
 
     /**
-     * This
+     * This method shows the current card of the register that the player plays in the activation phase.
      *
-     * @param card //TODO
+     * @param card programming card of the player in the current register
      */
     public void currentCard(CardType card) {
         infoLabel.setText("Current card ");
         currentCardImageView.setVisible(true);
-        currentCardImageView.setImage(new Image(getClass().getResource("/cards/programming/" + card + "-card.png").toString()));
+        String path = "/cards/programming/" + card + "-card.png";
+        currentCardImageView.setImage(new Image(getClass().getResource(path).toString()));
     }
 
     /**
@@ -134,7 +150,7 @@ public class OnePlayerController extends Controller {
      * The method sets if a player put a card in a register. It only displays which register is already filled, not which
      * card.
      *
-     * @param registerSelected //TODO
+     * @param registerSelected the register where the player discarded a card
      */
     public void cardSelected(int registerSelected) {
         ImageView imageView = (ImageView) registerHBox.getChildren().get(registerSelected - 1);
@@ -154,7 +170,7 @@ public class OnePlayerController extends Controller {
     /**
      * This method sets the HBox of the registers visible or invisible.
      *
-     * @param visible //TODO
+     * @param visible if the HBox should be visible
      */
     public void setHBoxRegisterVisible(boolean visible) {
         registerHBox.setVisible(visible);
@@ -170,8 +186,6 @@ public class OnePlayerController extends Controller {
         registerHBox.getChildren().clear();
         fillRegister();
     }
-
-
 
     /**
      * This method displays the images of the amount of damage cards for 5 seconds.

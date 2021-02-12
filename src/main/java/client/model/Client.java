@@ -52,7 +52,6 @@ public abstract class Client {
      * All players of the game that get added and the player itself.
      */
     protected final ArrayList<Player> players = new ArrayList<>();
-    protected final ArrayList<Player> rebootingAIs = new ArrayList<>(); //TODO?
 
     /**
      * The playerID of the client.

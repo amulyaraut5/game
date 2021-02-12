@@ -2,8 +2,6 @@ package ai;
 
 import game.gameObjects.maps.Map;
 import game.gameObjects.tiles.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import utilities.Coordinate;
 import utilities.enums.AttributeType;
 import utilities.enums.CardType;
@@ -24,7 +22,7 @@ public class MoveSimulator {
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
-    private Coordinate controlPoint;
+    private final Coordinate controlPoint;
 
     public MoveSimulator(AIClient aiClient, Map map, Coordinate controlpoint) {
         this.map = map;
@@ -187,7 +185,7 @@ public class MoveSimulator {
         Orientation orientation = null;
         boolean moved = false;
         for (Coordinate coordinate : belts) {
-            if (coordinate.equals(resPosition) && moved==false) {
+            if (coordinate.equals(resPosition) && !moved) {
                 for (Attribute a : map.getTile(coordinate).getAttributes()) {
                     if (a instanceof Belt) {
                         orientation = ((Belt) a).getOrientation();

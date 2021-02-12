@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +39,7 @@ import static utilities.enums.CardType.*;
  * @author Simon
  * @author Sarah
  * @author Amulya
+ * @author annika
  */
 public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();
@@ -467,7 +467,7 @@ public class GameController extends Controller implements Updatable {
                 soundHandler.playSoundEffects("PitSound", play);
 
                 boolean isThisPlayer = reboot.getPlayerID() == viewClient.getThisPlayersID();
-                othersController.setRebootLabel(reboot, isThisPlayer);
+                if(!isThisPlayer) othersController.setRebootLabel(reboot);
             }
             case SelectionFinished -> {
                 SelectionFinished selectionFinished = (SelectionFinished) message.getBody();
@@ -485,7 +485,7 @@ public class GameController extends Controller implements Updatable {
                 programmingController.setTimerEnded(true);
                 playerMatController.setDiscardDeckCounter(4);
                 if (!allRegistersAsFirst) playerMatController.fixSelectedCards();
-                allRegistersAsFirst = false; //TODO everything that is round related
+                allRegistersAsFirst = false;
 
                 othersController.setTooSlowLabel(timerEnded);
             }
@@ -581,7 +581,7 @@ public class GameController extends Controller implements Updatable {
                     playerMatController.setDiscardDeckCounter(drawDamage.getCards().size());
                     playerMatController.addPlayerCards(drawDamage.getCards().size());
                 }
-                othersController.setDrewDamageLabel(drawDamage, isThisPlayer);
+                if(!isThisPlayer) othersController.setDrewDamageLabel(drawDamage);
             }
             case GameWon -> {
                 GameWon gameWon = (GameWon) message.getBody();
@@ -636,7 +636,7 @@ public class GameController extends Controller implements Updatable {
     }
 
     /**
-     * TODO
+     * This method sets the focus to the boardPane
      */
     public void resetFocus() {
         boardPane.requestFocus();
@@ -650,18 +650,5 @@ public class GameController extends Controller implements Updatable {
     public PlayerMatController getPlayerMatController() {
         return playerMatController;
     }
-
-    public Pane getBoardPane() {
-        return boardPane;
-    }
-
-    public GameBoardController getGameBoardController() {
-        return gameBoardController;
-    }
-
-    public OthersController getOthersController() {
-        return othersController;
-    }
-
 
 }

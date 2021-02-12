@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import static utilities.Constants.VIRUS_CARDCOUNT;
 
 /**
+ * The VirusDeck inherits the methods of the abstract class Deck.
+ * It includes a deck containing all virus cards.
  * @author annika
  */
 public class VirusDeck extends Deck {
 
+    /**
+     * ArrayList for the cards in the virus deck.
+     */
     private ArrayList<Card> virusDeck;
 
     public VirusDeck() {
@@ -19,7 +24,7 @@ public class VirusDeck extends Deck {
     }
 
     /**
-     * Creates the deck of Virus cards.
+     * Creates the deck of virus cards.
      */
     @Override
     public void createDeck() {

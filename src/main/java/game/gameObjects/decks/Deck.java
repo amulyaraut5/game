@@ -1,15 +1,13 @@
 package game.gameObjects.decks;
 
 import game.gameObjects.cards.Card;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import server.Server;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * The abstract class Deck provides methods for the the different inheriting  decks.
+ * The abstract class Deck provides methods for the different inheriting  decks.
  * @author annika
  */
 

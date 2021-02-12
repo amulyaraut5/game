@@ -2,7 +2,6 @@ package client;
 
 import client.model.ViewClient;
 import client.view.*;
-import game.Player;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -96,9 +95,6 @@ public class ViewManager {
         currentScene = gameScene;
     }
 
-    public void closeGame() {
-        gameStage.close();
-    }
 
     private void openGameStage() {
         gameController.attachChatPane(chatPane);
@@ -204,7 +200,7 @@ public class ViewManager {
     }
 
     public void resetGame(){
-        showLobby();
+        showMenu();
     }
 
     public static ViewManager getInstance() {

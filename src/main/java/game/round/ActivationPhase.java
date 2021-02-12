@@ -74,7 +74,7 @@ public class ActivationPhase extends Phase {
      */
     public void turnCards(int register) {
         for (Player player : determinePriority(map.getAntenna())) {
-            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards()); //TODO remove if exception doesn't  come up again
+            logger.info("RegisterCards of Player " + player.getName() + ": " + player.getRegisterCards());
             Card card = player.getRegisterCard(register);
             if (!(card == null)) {
                 RegisterCard playerRegisterCard = new RegisterCard(player.getID(), card);
@@ -250,24 +250,19 @@ public class ActivationPhase extends Phase {
      */
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
-
         Coordinate newPosition = activationElements.calculateNew(player, o);
-
-        //Handle board elements
         boolean canMove = true;
 
         //look for a blocking wall on current Tile
         if (map.isWallBlocking(player.getRobot().getCoordinate(), o)) {
             canMove = false;
         }
-
         //look for a blocking wall on new tile
         if (!newPosition.isOutsideMap()) {
             if (map.isWallBlocking(newPosition, o.getOpposite())) {
                 canMove = false;
             }
         }
-
         //Handle collisions
         for (Player collisionPlayer : players) {
             if (newPosition.equals(collisionPlayer.getRobot().getCoordinate())) {
@@ -334,7 +329,13 @@ public class ActivationPhase extends Phase {
             case Worm -> {
                 //Reboot the robot.
                 new RebootAction().doAction(player);
-                currentCards.remove(player);
+                RegisterCard toRemove = null;
+                for (RegisterCard registerCard : currentCards) {
+                    if (registerCard.getPlayerID() == player.getID()) {
+                        toRemove = registerCard;
+                    }
+                }
+                currentCards.remove(toRemove);
                 //Add worm card back into the worm deck
                 wormDeck.getDeck().add(new Worm());
             }
@@ -422,10 +423,22 @@ public class ActivationPhase extends Phase {
             rebootedPlayers.add(player);
             activePlayers.remove(player);
             new RebootAction().doAction(player);
-            currentCards.remove(player);
+            RegisterCard toRemove = null;
+            for (RegisterCard registerCard : currentCards) {
+                if (registerCard.getPlayerID() == player.getID()) {
+                    toRemove = registerCard;
+                }
+            }
+            currentCards.remove(toRemove);
         }
     }
 
+    /**
+     * It checks whether the position is free or not.
+     *
+     * @param position position of tile on board
+     * @return true if no robot is on that tile
+     */
     public boolean isPositionFree(int position) {
         Coordinate coordinate = Coordinate.parse(position);
         for (Player collisionPlayer : players) {
@@ -436,6 +449,12 @@ public class ActivationPhase extends Phase {
         return true;
     }
 
+    /**
+     * It checks whether the position is free or not.
+     *
+     * @param coordinate coordinate of tile on board
+     * @return true if no robot is on that tile
+     */
     public boolean isPositionFree(Coordinate coordinate) {
         for (Player collisionPlayer : players) {
             if (coordinate.equals(collisionPlayer.getRobot().getCoordinate())) {
@@ -665,17 +684,6 @@ public class ActivationPhase extends Phase {
             this.robot = robot;
             this.distance = distance;
             this.yCoordinate = yCoordinate;
-        }
-
-        //TODO remove after testing
-        @Override
-        public String toString() {
-            return "RobotDistance{" +
-                    "player=" + player +
-                    ", robot=" + robot +
-                    ", distance=" + distance +
-                    ", yCoordinate=" + yCoordinate +
-                    '}';
         }
 
         public Player getPlayer() {

@@ -125,23 +125,10 @@ public class ServerController implements Updatable {
             case GameStarted -> {
                 GameStarted gameStarted = (GameStarted) message.getBody();
                 gameBoardController.buildMap(gameStarted);
-                //othersController.createPlayerMats(client.getPlayers());
             }
             case StartingPointTaken -> {
                 StartingPointTaken msg = (StartingPointTaken) message.getBody();
                 gameBoardController.placeRobotInMap(game.getPlayerFromID(msg.getPlayerID()), Coordinate.parse(msg.getPosition()));
-            }
-            case ActivePhase -> {
-                ActivePhase activePhase = (ActivePhase) message.getBody();
-                //todo display phase
-            }
-            case YourCards -> {
-                YourCards yourCards = (YourCards) message.getBody();
-                //TODO programmingController.startProgrammingPhase(yourCards.getCards());
-            }
-            case CardsYouGotNow -> {
-                CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) message.getBody();
-                //TODO playerMatController.setNewCardsYouGotNow(cardsYouGotNow);
             }
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
@@ -154,29 +141,11 @@ public class ServerController implements Updatable {
                 else angle = 90;
                 gameBoardController.handlePlayerTurning(game.getPlayerFromID(msg.getPlayerID()), angle);
             }
-            case CardSelected -> {
-                CardSelected cardSelected = (CardSelected) message.getBody();
-                //othersController.getOtherPlayerController(cardSelected.getPlayerID()).cardSelected(cardSelected.getRegister());
-            }
-            case PickDamage, CurrentCards, TimerEnded, TimerStarted, SelectionFinished -> {
-            }
             case PlayerShooting -> {
                 gameBoardController.robotLaserAnimation(game.getPlayers());
                 gameBoardController.boardLaserAnimation(game.getPlayers());
             }
-            case Reboot -> {
-                Reboot reboot = (Reboot) message.getBody();
-            }
-            case CurrentPlayer -> {
-                //TODO display
-            }
-            case CheckpointReached -> {
-                //todo show
-            }
-            case GameWon -> {
-                AIWonPane.setVisible(true);
-                //TODO close
-            }
+            case GameWon -> AIWonPane.setVisible(true);
         }
     }
 }

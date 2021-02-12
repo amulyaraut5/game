@@ -8,9 +8,16 @@ import java.util.ArrayList;
 import static utilities.Constants.*;
 
 /**
+ * The ProgrammingDeck inherits the methods of the abstract class Deck.
+ * It includes a deck with all 20 shuffled programming cards.
+ *
  * @author annika
  */
 public class ProgrammingDeck extends Deck {
+
+    /**
+     * ArrayList for the cards in the programming deck.
+     */
     private ArrayList<Card> programmingDeck;
 
     public ProgrammingDeck() {
