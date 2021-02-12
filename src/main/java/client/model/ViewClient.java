@@ -9,8 +9,6 @@ import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 import utilities.Updatable;
 import utilities.enums.MessageType;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -137,7 +135,7 @@ public class ViewClient extends Client {
     }
 
     /**
-     * This method returns the instance of this Singelton class
+     * This method returns the instance of this Singleton class
      *
      * @return the instance
      */

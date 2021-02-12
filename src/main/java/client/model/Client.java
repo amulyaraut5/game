@@ -104,7 +104,7 @@ public abstract class Client {
     }
 
     /**
-     * This abstract method shoul be implemented to handle JSONMessages.
+     * This abstract method should be implemented to handle JSONMessages.
      *
      * @param message JSONMessage that should get handled
      */
@@ -200,8 +200,7 @@ public abstract class Client {
         Player player = getPlayerFromID(id);
         for (Player p : players) {
             if (player != p && player.getName().equals(p.getName())) {
-                String uniqueName = player.getName() + " #" + player.getID();
-                return uniqueName;
+                return player.getName() + " #" + player.getID();
             }
         }
         return player.getName();
