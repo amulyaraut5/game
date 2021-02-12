@@ -171,13 +171,25 @@ public class ProgrammingController extends Controller {
                 && pane.getChildren().isEmpty();
     }
 
+    /**
+     * This method gets called by dragging over a pane. It checks if the drag is allowed.
+     *
+     * @param e The DragEvent occurs by dragging over the pane
+     * @param pane the pane that triggers the event
+     */
     private void setOnDragOver(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
         if (checkDragAllowed(pane, db)) {
             e.acceptTransferModes(TransferMode.MOVE);
         }
     }
-
+    /**
+     * This method adds the dropped image to the pane and removes it from its former parent.
+     * Also it adds again EventHandlers to that ImageView for the next tryout of dragging and dropping.
+     *
+     * @param e The DragEvent occurs when the drag get exited
+     * @param pane the pane that triggers the event
+     */
     private void setOnDragExited(DragEvent e, Pane pane) {
         Dragboard db = e.getDragboard();
         if (checkDragAllowed(pane, db)) {
@@ -188,6 +200,12 @@ public class ProgrammingController extends Controller {
         }
     }
 
+    /**
+     * This method adds an EventHandler to an ImageView which creates a DragBoard with DataFormat and sets information
+     * about the dragged imageView in the parent class.
+     *
+     * @param imageView the imageView that gets dragged
+     */
     private void setOnDragDetected(ImageView imageView) {
         Dragboard dragboard = imageView.startDragAndDrop(TransferMode.MOVE);
         dragboard.setDragView(imageView.snapshot(null, null));
@@ -197,6 +215,13 @@ public class ProgrammingController extends Controller {
         setProgrammingImageView(imageView);
     }
 
+    /**
+     * This method adds EventHandler to a pane by dragging over it, drag exited and drag done.
+     * When a drag is done it gets checked if the former position was a register than
+     * the protocol selectCard gets send wil null and the former register position.
+     *
+     * @param pane the pane that should get EventHandler
+     */
     protected void addDropHandling(Pane pane) {
         pane.setOnDragOver(e -> setOnDragOver(e, pane));
         pane.setOnDragExited(e -> setOnDragExited(e, pane));
@@ -207,7 +232,7 @@ public class ProgrammingController extends Controller {
     }
 
     /**
-     * by getting protocol TimerStarted, the countdown in the label and the video will start
+     * by getting protocol TimerStarted, the countdown in the label and the video will start.
      *
      * @param allRegistersAsFirst
      */
@@ -219,6 +244,9 @@ public class ProgrammingController extends Controller {
         startVideo();
     }
 
+    /**
+     * This method starts the video with the hourglass and adds it to the timeAnchorPane.
+     */
     private void startVideo() {
         String path = "/video/hourglass-video.mp4";
         Media media = new Media(getClass().getResource(path).toString());
@@ -230,6 +258,9 @@ public class ProgrammingController extends Controller {
         timerAnchorPane.getChildren().add(mediaView);
     }
 
+    /**
+     * This method sets the countdown and counts down from 30.
+     */
     private void setTimer() {
         Timer timer = new Timer();
         interval = 30;
@@ -245,10 +276,17 @@ public class ProgrammingController extends Controller {
         }, 1000, 1000);
     }
 
-    public void setTimerEnded(boolean timerEnded) {
+    /**
+     * This method sets the timer ended as soon as the protocol TimerEnded gets received.
+     *
+     */
+    public void setTimerEnded() {
         this.timerEnded = timerEnded;
     }
 
+    /**
+     * This method resets all elements and information that get changed during the programming phase.
+     */
     public void reset() {
         hBox2.getChildren().clear();
         hBox1.getChildren().clear();

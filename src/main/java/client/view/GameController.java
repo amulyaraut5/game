@@ -480,7 +480,7 @@ public class GameController extends Controller implements Updatable {
             case TimerStarted -> programmingController.startTimer(allRegistersAsFirst);
             case TimerEnded -> {
                 TimerEnded timerEnded = (TimerEnded) message.getBody();
-                programmingController.setTimerEnded(true);
+                programmingController.setTimerEnded();
                 playerMatController.setDiscardDeckCounter(4);
                 if (!allRegistersAsFirst) playerMatController.fixSelectedCards();
                 allRegistersAsFirst = false;
