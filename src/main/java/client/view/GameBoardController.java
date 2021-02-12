@@ -39,14 +39,17 @@ import java.util.List;
 import static javafx.scene.input.MouseEvent.*;
 
 /**
- * TODO
+ * Controller for the 2d gameboard displayed in the GameView and ServerView.
+ * Displays the board, robots, lasers amd their animations.
+ *
+ * @author simon
+ * @author Amulya
  */
 public class GameBoardController {
     private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
     private boolean isStartPosSet = false;
-
     @FXML
     private StackPane boardPane; //stacks the map-, animation-, and playerPane
     @FXML
@@ -157,8 +160,8 @@ public class GameBoardController {
     /**
      * This method places the robot on the board based on the starting point player chooses.
      *
-     * @param player     //TODO
-     * @param coordinate //TODO
+     * @param player current player
+     * @param coordinate position chosen by the player on the board
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == ViewClient.getInstance().getThisPlayersID()) {
@@ -430,5 +433,4 @@ public class GameBoardController {
     public Pane getRobotPane() {
         return robotPane;
     }
-
 }

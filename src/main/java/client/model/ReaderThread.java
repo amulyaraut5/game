@@ -12,9 +12,11 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 /**
- * It reads (for the client) the servers input constantly and prints it out on the console.
+ * It reads (for the client) different protocol messages from the server which are first deserialized (converted back to
+ * Java Object {@link Multiplex} and then handled in {@link Client}.
  *
- * @author sarah,
+ * @author sarah
+ * @author Amulya
  */
 public class ReaderThread extends Thread {
 

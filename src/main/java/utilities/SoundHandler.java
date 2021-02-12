@@ -10,6 +10,7 @@ import javafx.scene.media.MediaPlayer;
  *
  * @author Amulya
  */
+
 public class SoundHandler {
 
     private MediaPlayer mediaPlayer;
