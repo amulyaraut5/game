@@ -245,11 +245,11 @@ public class PlayerMatController extends Controller {
 
     /**
      * This method adds an EventHandler to an ImageView which creates a DragBoard with DataFormat and sets information
-     * about the dragged imageView in the parentclass.
+     * about the dragged imageView in the parent class.
      *
      * @param programmingCardImageView the imageView that should get EventHandler
      * @param position the position if the imageView in the registers
-     * @return
+     * @return the imageView that has now an EventHandler
      */
     private ImageView createImageView(ImageView programmingCardImageView, int position) {
         programmingCardImageView.setOnDragDetected(event -> {
@@ -290,7 +290,8 @@ public class PlayerMatController extends Controller {
     /**
      * This method sets cards if the player didn't fill the registers in time.
      * The images of those cards get added to the registerHBox.
-     * @param cardsYouGotNow
+     *
+     * @param cardsYouGotNow the list of new cards
      */
     public void setNewCardsYouGotNow(CardsYouGotNow cardsYouGotNow) {
         registerHBox.getChildren().clear();
@@ -422,7 +423,7 @@ public class PlayerMatController extends Controller {
      * If the amount is 0, the number is reset to 0.
      * Otherwise, the amount is added to the current number.
      *
-     * @param amount
+     * @param amount the amount of cards that gets added
      */
     public void setDiscardDeckCounter(int amount) {
         String discardDeck;
@@ -438,10 +439,10 @@ public class PlayerMatController extends Controller {
 
     /**
      * Sets the number of the Programming Deck.
-     * If the amount is equal to the playercards, the number is reset.
+     * If the amount is equal to the player cards, the number is reset.
      * Otherwise, the amount is subtracted from the current number.
      *
-     * @param amount
+     * @param amount the amount of cards that gets added
      */
     public void setProgrammingDeckCounter(int amount) {
         String programmingDeck;
@@ -473,7 +474,7 @@ public class PlayerMatController extends Controller {
     /**
      * The playerCards are increased by the amount.
      *
-     * @param amount
+     * @param amount the amount of cards that gets added
      */
     public void addPlayerCards(int amount) {
         playerCards += amount;
@@ -482,7 +483,7 @@ public class PlayerMatController extends Controller {
     /**
      * The playerCards are decreased by the amount.
      *
-     * @param amount
+     * @param amount the amount of cards that gets subtracted
      */
     public void subtractPlayerCards(int amount) {
         playerCards -= amount;
