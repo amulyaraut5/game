@@ -85,6 +85,13 @@ public class AIClient extends Client {
             }
             case HelloClient -> sendMessage(new HelloServer(Constants.PROTOCOL, "Astreine Akazien", true));
             case Welcome -> {
+                ArrayList<CardType> test = new ArrayList<>();
+                test.add(CardType.Spam);
+                test.add(CardType.Spam);
+                test.add(CardType.Spam);
+                test.add(CardType.Spam);
+                test.add(CardType.Spam);
+                logger.info();
                 Welcome wc = (Welcome) message.getBody();
                 thisPlayersID = wc.getPlayerID();
                 new Timer().schedule(new TimerTask() {
@@ -267,9 +274,9 @@ public class AIClient extends Client {
     }
 
     /**
-     * Approach to choose the best card combination(consisting of five cards)  from all possible ones
+     * Approach to choose the best card combination(consisting of five cards)  from all possible ones.
      *
-     * @param resultingPositions Hashmap that includes all Card combinations, mapped to their resulting positions.
+     * @param resultingPositions Hashmap that includes all Card possible combinations, mapped to their resulting positions.
      */
     private CardType[] getBestCombination(HashMap<CardType[], Coordinate> resultingPositions) {
         int shortestDistance = 100;
@@ -318,4 +325,35 @@ public class AIClient extends Client {
             sendMessage(new PlayerValues(name, chosenFigure));
         } else disconnect();
     }
+
+    public void handleSpamCards(ArrayList<CardType> combination){
+        //Find out highest index with no spam card
+        int j = 4;
+        for (int i=0;i<4;i++){
+            if(isDamageCard(combination.get(j))){
+                j = j - 1;
+            }
+        }
+
+        for (int i = 0; i < 5; i++){
+            if(j<0) break;
+            Collections.swap(combination,i,j);
+            while (isDamageCard(combination.get(j))){
+                if(j<1) break;
+                else j = j-1;
+            }
+        }
+
+    }
+
+    public boolean isDamageCard(CardType card){
+        switch (card){
+            case Spam,Virus,Trojan,Worm:
+                return true;
+        }
+        return false;
+
+    }
+
+
 }
