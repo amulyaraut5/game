@@ -30,6 +30,9 @@ public class MenuController extends Controller implements Updatable {
 
     @FXML
     private Label infoLabel;
+    /**
+     * This JFXTextField takes the port or the default port.
+     */
     @FXML
     private JFXTextField textPortNumber;
 
@@ -69,6 +72,9 @@ public class MenuController extends Controller implements Updatable {
         }
     }
 
+    /**
+     * This method gets called by clicking on the join button and tries to connect an AIClient
+     */
     @FXML
     public void aiJoinClicked() {
         if (buttonsEnabled) {

@@ -218,7 +218,6 @@ public class GameBoardController {
      * @param player Player whose robot should be turned
      * @param angle  Parameter that determines how the player should be rotated.
      */
-
     public void handlePlayerTurning(Player player, int angle) {
         ImageView imageView = robotTokens.get(player);
 
