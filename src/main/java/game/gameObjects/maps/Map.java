@@ -29,14 +29,23 @@ public class Map {
         this.tiles = tiles;
         readAll();
     }
+
     /**
      * Reads all coordinates that initially need to be read.(Store belts, restart point, and antenna for the specific map)
      */
+
     public void readAll() {
         readBeltCoordinates();
         readRestartPointCoordinate();
         readAntennaCoordinate();
     }
+
+    /**
+     * Checks whether the antenna or wall is blocking the movement or not.
+     * @param coordinate coordinate of attribute where it needs to be checked
+     * @param orientation orientation of wall
+     * @return false if there is wall blocking, otherwise true
+     */
 
     public boolean isWallBlocking(Coordinate coordinate, Orientation orientation) {
         boolean canMove = true;

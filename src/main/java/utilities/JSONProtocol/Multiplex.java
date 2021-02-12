@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * This class contains 2 important methods namely serialize and deserialize whose functionality are described
  * in respective method.
  *
- * @author Amulya, Simon
+ * @author Amulya
+ * @author Simon
  */
 public class Multiplex {
 
@@ -24,8 +25,8 @@ public class Multiplex {
     /**
      * This method converts a Java Object into Json String with the use of Gson library.
      *
-     * @param messageObj
-     * @return Json String
+     * @param messageObj is the type which of message which need to be converted
+     * @return converted Json String
      */
 
     public static String serialize(JSONMessage messageObj) {
@@ -37,7 +38,7 @@ public class Multiplex {
      * This method converts Json String back to Java Object with the use of custom
      * gson deserializer.
      *
-     * @param jsonString
+     * @param jsonString String which needs to be converted back to java Object.
      * @return Java Object
      */
 

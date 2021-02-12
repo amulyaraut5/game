@@ -8,16 +8,18 @@ import utilities.enums.AttributeType;
 import utilities.enums.Orientation;
 
 /**
- * TODO
+ * This class is used to initialize the map.
+ *
+ * @author simon
  */
 public final class MapBuilder {
     private MapBuilder() {
     }
 
     /**
-     * TODO
-     * @param blueprint
-     * @return
+     * Constructs the map from a blueprint.
+     * @param blueprint blueprint that map gets constructed with.
+     * @return returns the resulting map instance.
      */
     public static Map constructMap(Blueprint blueprint) {
         int max = 10;
@@ -41,9 +43,9 @@ public final class MapBuilder {
     }
 
     /**
-     * TODO
-     * @param tiles
-     * @return
+     * Checks if there is a reboot point in a particular 2d array of tiles.
+     * @param tiles tiles that are checked for a reboot point
+     * @return returns a boolean value, indicating whether there is a reboot point on the input tiles or not.
      */
 
     @SuppressWarnings("ForLoopReplaceableByForEach")

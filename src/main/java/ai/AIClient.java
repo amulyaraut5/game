@@ -1,8 +1,9 @@
 package ai;
 
 import client.model.Client;
-import game.Game;
 import game.Player;
+import game.gameObjects.cards.Card;
+import game.gameObjects.decks.ProgrammingDeck;
 import game.gameObjects.maps.Map;
 import game.gameObjects.robot.Robot;
 import utilities.Constants;
@@ -23,19 +24,28 @@ import java.util.*;
  * @author simon, Louis, sarah
  */
 public class AIClient extends Client {
+    private CardType[] damagePriority = {CardType.Virus, CardType.Spam, CardType.Worm, CardType.Trojan};
+    private int priorityIndex = 0;
+
+    private int round = 0;
     /**
      * Game map.
      */
     private Map map;
-
     /**
      * the current phase of the game.
      */
     private GameState currentPhase = GameState.CONSTRUCTION;
-    /**
-     * Instance of game.
-     */
-    private final Game game = Game.getInstance();
+    private
+    ArrayList<CardType> programmingDeck = new ArrayList<>(30);
+
+    public AIClient() {
+        ProgrammingDeck deck = new ProgrammingDeck();
+        deck.createDeck();
+        for (Card card : deck.getDeck()) {
+            programmingDeck.add(card.getName());
+        }
+    }
 
     /**
      * creates a set containing all combinations and their permutations
@@ -133,6 +143,10 @@ public class AIClient extends Client {
             case ActivePhase -> {
                 ActivePhase msg = (ActivePhase) message.getBody();
                 currentPhase = msg.getPhase();
+                if (currentPhase == GameState.PROGRAMMING) {
+                    round++;
+                    priorityIndex = 0;
+                }
             }
             case YourCards -> {
                 YourCards yourCards = (YourCards) message.getBody();
@@ -141,33 +155,19 @@ public class AIClient extends Client {
             case PickDamage -> {
                 PickDamage pickDamage = (PickDamage) message.getBody();
                 int countToPick = pickDamage.getCount();
+
                 ArrayList<CardType> damageCards = new ArrayList<>();
-                CardType chooseCard = null;
-                int virusCount = game.getVirusDeck().size();
-                int spamCount = game.getSpamDeck().size();
-                int wormCount = game.getWormDeck().size();
-                int trojanCount = game.getTrojanDeck().size();
-                while (countToPick > 0) {
-                    if (virusCount > 0) {
-                        chooseCard = CardType.Virus;
-                        virusCount--;
+                if (priorityIndex < 4) {
+                    for (int i = 0; i < countToPick; i++) {
+                        damageCards.add(damagePriority[priorityIndex]);
                     }
-                    else if (spamCount > 0) {
-                        chooseCard = CardType.Spam;
-                        spamCount--;
-                    }
-                    else if (wormCount > 0){
-                        chooseCard = CardType.Worm;
-                        wormCount--;
-                    }
-                    else if (trojanCount > 0) {
-                        chooseCard = CardType.Trojan;
-                        trojanCount--;
-                    }
-                    damageCards.add(chooseCard);
-                    countToPick--;
+                    priorityIndex++;
                 }
                 sendMessage(new SelectDamage(damageCards));
+            }
+            case DrawDamage -> {
+                DrawDamage msg = (DrawDamage) message.getBody();
+                programmingDeck.addAll(msg.getCards());
             }
             case CheckpointReached -> {
                 CheckpointReached msg = (CheckpointReached) message.getBody();
@@ -225,6 +225,7 @@ public class AIClient extends Client {
      * @param yourCards received yourCards protocol
      */
     private void chooseCards(YourCards yourCards) {
+        logger.info(round + ": " + yourCards.getCards());
         Set<CardType[]> combinations = createCardCombinations(yourCards.getCards());
         HashMap<CardType[], Coordinate> possiblePositions = new HashMap<>();
 
@@ -237,26 +238,26 @@ public class AIClient extends Client {
         for (CardType[] cards : combinations) {
             if (cards[0] != CardType.Again) {
                 Coordinate resPos = moveSimulator.simulateCombination(cards, robot.getCoordinate(), robot.getOrientation());
-                //System.out.println("resPos: " + Arrays.toString(cards) + " " + resPos);
+                //logger.trace("resPos: " + Arrays.toString(cards) + " " + resPos);
                 if (resPos != null) possiblePositions.put(cards, resPos);
             }
         }
-        System.out.println("YourCards: " + yourCards.getCards());
+        //logger.trace("YourCards: " + yourCards.getCards());
 
         CardType[] bestCombination = getBestCombination(possiblePositions);
 
         if (bestCombination == null) {
             bestCombination = createRandomCombination(yourCards);
         }
-        boolean includesAgain=false;
+        boolean includesAgain = false;
         for (CardType card : bestCombination) {
-            if(card==CardType.Again){
-                includesAgain=true;
+            if (card == CardType.Again) {
+                includesAgain = true;
             }
         }
         CardType[] improvedCombination = handleDamageCards(bestCombination);
 
-        if (!includesAgain) bestCombination=improvedCombination;
+        if (!includesAgain) bestCombination = improvedCombination;
 
         for (int i = 0; i < 5; i++) {
             CardType cardType = bestCombination[i];
@@ -264,6 +265,11 @@ public class AIClient extends Client {
         }
     }
 
+    /**
+     * Creates a random card combination from a yourCards message body
+     *
+     * @param yourCards
+     */
     private CardType[] createRandomCombination(YourCards yourCards) {
         CardType[] randCombination = new CardType[5];
         ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
@@ -304,7 +310,6 @@ public class AIClient extends Client {
 
     /**
      * Creates the PlayerValues protocol message. To do so, it chooses a random still available player figure.
-     *
      */
     public void choosePlayerValues() {
         List<Integer> takenFigures = new ArrayList<>();
@@ -328,18 +333,22 @@ public class AIClient extends Client {
         } else disconnect();
     }
 
-
-    public CardType[] handleDamageCards(CardType[] combination){
+    /**
+     * Sorts an array of cards, so that damage cards are at the back
+     * @param combination combination that is sorted
+     * @return sorted combination
+     */
+    public CardType[] handleDamageCards(CardType[] combination) {
         CardType[] newList = new CardType[5];
         int i = 0;
         for (CardType card : combination) {
-            if(!isDamageCard(card)){
+            if (!isDamageCard(card)) {
                 newList[i] = card;
                 i++;
             }
         }
         for (CardType card : combination) {
-            if(isDamageCard(card)){
+            if (isDamageCard(card)) {
                 newList[i] = card;
                 i++;
             }
@@ -348,16 +357,16 @@ public class AIClient extends Client {
         return newList;
     }
 
-
-
-    public boolean isDamageCard(CardType card){
-        switch (card){
-            case Spam,Virus,Trojan,Worm:
+    /**
+     * verifies whether a certain card is a damage card or not.
+     * @param card card that should get checked
+     * @return true if card is a damage card, false otherwise
+     */
+    public boolean isDamageCard(CardType card) {
+        switch (card) {
+            case Spam, Virus, Trojan, Worm:
                 return true;
         }
         return false;
-
     }
-
-
 }

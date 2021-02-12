@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * This class takes care of rebooting the robots.
  *
- * @author annika
+ * @author annika, Louis
  */
 public class RebootAction extends Action {
 

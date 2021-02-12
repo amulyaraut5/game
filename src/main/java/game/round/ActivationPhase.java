@@ -26,7 +26,7 @@ import java.util.Comparator;
  * The Activation Phase is the third phase in the Round.
  * In this class the Programming Cards and GameBoard Tiles are activated.
  *
- * @author janau, sarah, annika
+ * @author janau, sarah, annika, Louis
  */
 
 public class ActivationPhase extends Phase {
