@@ -60,6 +60,12 @@ public class Map {
         return !canMove;
     }
 
+    /**
+     * This method retrieves the attribute from the coordinate in the map.
+     * @param type
+     * @param pos position to be checked
+     * @return the attributeType
+     */
     public Attribute getAttributeOn(AttributeType type, Coordinate pos) {
         if (!pos.isOutsideMap()) {
             Tile tile = tiles[pos.getX()][pos.getY()];
@@ -72,6 +78,12 @@ public class Map {
         return null;
     }
 
+    /**
+     * This method checks whether there is antenna or pit on the given coordinate.
+     * @param pos position to be checked
+     * @return true if there is pit or antenna, otherwise false
+     */
+
     public boolean isAttributeOn(int pos) {
         Coordinate coordinate = Coordinate.parse(pos);
         Tile tile = tiles[coordinate.getX()][coordinate.getY()];
@@ -82,6 +94,12 @@ public class Map {
         }
         return false;
     }
+
+    /**
+     * This method checks whether there is antenna or pit on the given coordinate.
+     * @param pos coordinate to be checked
+     * @return true if there is pit or antenna, otherwise false
+     */
 
     public boolean isAttributeOn(Coordinate pos) {
         Tile tile = tiles[pos.getX()][pos.getY()];
@@ -211,6 +229,12 @@ public class Map {
         return sortCheckPoints(checkPoints);
     }
 
+    /**
+     * This method sorts all the checkPoints in the increasing order.
+     * @param checkPoints arraylist of checkpoints to be sorted
+     * @return sorted arrayList
+     */
+
     private ArrayList<Coordinate> sortCheckPoints(ArrayList<Coordinate> checkPoints) {
         ArrayList<Coordinate> sortedPoints = new ArrayList<>();
         int i = 1;
@@ -248,6 +272,7 @@ public class Map {
         }
         return gearCoordinates;
     }
+
     /**
      * Iterates through every tile of the map and stores all tiles that have a belt attribute in the particular list(One for green and one for blue belts)
      */
@@ -263,7 +288,6 @@ public class Map {
                 }
             }
         }
-
         //Add Belts to Green and Blue Belt lists
         for (Coordinate c : coordinates) {
             for (Attribute a : getTile(c).getAttributes()) {
@@ -281,6 +305,12 @@ public class Map {
         }
     }
 
+    /**
+     * This method stores all the energy space coordinates from the actual
+     * version of map and returns it.
+     * @return ArrayList of coordinates of energy space
+     */
+
     public ArrayList<Coordinate> readEnergySpaceCoordinates() {
         final ArrayList<Coordinate> EnergySpaces = new ArrayList<>();
         for (int i = 0; i < (tiles.length); i++) {
@@ -294,6 +324,12 @@ public class Map {
         }
         return EnergySpaces;
     }
+
+    /**
+     * This method stores all the startingPoint coordinates from the actual
+     * version of map and returns it.
+     * @return ArrayList of coordinates of startingPoint
+     */
 
     public ArrayList<Coordinate> readStartingPointCoordinates() {
         final ArrayList<Coordinate> startingPoints = new ArrayList<>();
@@ -317,11 +353,6 @@ public class Map {
         BlueBelts.add(c);
     }
 
-    /**
-     * Getter for tiles
-     *
-     * @return returns the 2 dimensional array of tiles
-     */
     public Tile[][] getTiles() {
         return tiles;
     }
