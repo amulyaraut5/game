@@ -96,9 +96,6 @@ public class ViewManager {
         currentScene = gameScene;
     }
 
-    public void closeGame() {
-        gameStage.close();
-    }
 
     private void openGameStage() {
         gameController.attachChatPane(chatPane);
@@ -204,7 +201,7 @@ public class ViewManager {
     }
 
     public void resetGame(){
-        showLobby();
+        showMenu();
     }
 
     public static ViewManager getInstance() {
