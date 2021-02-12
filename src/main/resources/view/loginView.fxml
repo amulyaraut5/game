@@ -24,7 +24,7 @@
         </padding>
     </JFXListView>
 
-    <JFXButton buttonType="RAISED" contentDisplay="CENTER" layoutX="211.0" layoutY="328.0" mnemonicParsing="false" onAction="#fxButtonClicked" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: white;" text="Login" textFill="ORANGE">
+    <JFXButton buttonType="RAISED" contentDisplay="CENTER" layoutX="259.0" layoutY="338.0" mnemonicParsing="false" onAction="#fxButtonClicked" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: white;" text="Login" textFill="ORANGE">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>
@@ -34,11 +34,11 @@
             <Font name="System Bold" size="18.0" />
         </font>
     </Label>
-   <JFXTextField fx:id="textUserName" alignment="CENTER" focusColor="GREEN" layoutX="222.0" layoutY="92.0" style="-fx-background-color: #ffd57b;" unFocusColor="ORANGE">
+   <JFXTextField fx:id="textUserName" alignment="CENTER" focusColor="GREEN" layoutX="268.0" layoutY="69.0" style="-fx-background-color: #ffd57b;" unFocusColor="ORANGE">
       <font>
          <Font size="14.0" />
       </font></JFXTextField>
-   <Label layoutX="126.0" layoutY="97.0" text="Username:" textFill="#393939">
+   <Label layoutX="162.0" layoutY="74.0" text="Username:" textFill="#393939">
       <font>
          <Font name="System Bold" size="14.0" />
       </font>
