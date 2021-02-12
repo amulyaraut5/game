@@ -39,6 +39,7 @@ import static utilities.enums.CardType.*;
  * @author Simon
  * @author Sarah
  * @author Amulya
+ * @author annika
  */
 public class GameController extends Controller implements Updatable {
     private static final Logger logger = LogManager.getLogger();

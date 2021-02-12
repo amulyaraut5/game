@@ -20,7 +20,7 @@ import utilities.JSONProtocol.body.SelectCard;
 import utilities.enums.CardType;
 
 /**
- * @author sarah
+ * @author sarah, annika
  */
 public class PlayerMatController extends Controller {
 

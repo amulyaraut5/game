@@ -5,10 +5,16 @@ import game.gameObjects.cards.Card;
 import java.util.ArrayList;
 
 /**
+ * The DiscardDeck inherits the methods of the abstract class Deck.
+ * It includes an empty deck and provides a method that shuffles the discard pile and replenishes the programming deck.
+ *
  * @author annika
  */
 public class DiscardDeck extends Deck {
 
+    /**
+     * ArrayList for the cards in the discard deck.
+     */
     private ArrayList<Card> discardDeck;
 
     public DiscardDeck() {
@@ -23,18 +29,18 @@ public class DiscardDeck extends Deck {
         discardDeck = new ArrayList<>();
     }
 
-    @Override
-    public ArrayList<Card> getDeck() {
-        return discardDeck;
-    }
-
     /**
      * This method is needed, if the ProgrammingDeck gets to small. (less than 9 cards)
-     * It shuffles the programming discard pile and replenishes the programming deck.
+     * It shuffles the discard pile and replenishes the programming deck.
      */
     public void refillProgrammingDeck(ProgrammingDeck programmingDeck) {
         shuffle();
         programmingDeck.getDeck().addAll(discardDeck);
         discardDeck.clear();
+    }
+
+    @Override
+    public ArrayList<Card> getDeck() {
+        return discardDeck;
     }
 }

@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import static utilities.Constants.SPAM_CARDCOUNT;
 
 /**
+ * The SpamDeck inherits the methods of the abstract class Deck.
+ * It includes a deck containing all spam cards.
  * @author annika
  */
 public class SpamDeck extends Deck {
 
+    /**
+     * ArrayList for the cards in the spam deck.
+     */
     private ArrayList<Card> spamDeck;
 
     public SpamDeck() {
