@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * This Class coordinates the messages received on the client and their responses from the AI.
  *
- * @author simon,Louis
+ * @author simon, Louis, sarah
  */
 public class AIClient extends Client {
     /**
