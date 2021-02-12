@@ -63,6 +63,9 @@ public class GameBoardController {
     @FXML
     private Label labelCoordinate;
 
+    /**
+     * Initializes the board with different event handlers.
+     */
     @FXML
     private void initialize() {
         boardPane.addEventHandler(MOUSE_CLICKED, this::onMapClicked);
@@ -79,6 +82,11 @@ public class GameBoardController {
         });
     }
 
+    /**
+     * This method reacts to the mouse clicked on the board.
+     * @param mouseEvent
+     */
+
     private void onMapClicked(MouseEvent mouseEvent) {
         int x = (int) mouseEvent.getX() / Constants.FIELD_SIZE;
         int y = (int) mouseEvent.getY() / Constants.FIELD_SIZE;
@@ -93,6 +101,11 @@ public class GameBoardController {
             }
         }
     }
+
+    /**
+     * This method builds the map based on the map received from the gameStarted protocol message.
+     * @param gameStarted protocol message type which is to be handled
+     */
 
     public void buildMap(GameStarted gameStarted) {
         map = MapConverter.reconvert(gameStarted);
@@ -119,6 +132,12 @@ public class GameBoardController {
             }
         }
     }
+
+    /**
+     * Sorts out the different attribute type based on their priority.
+     * @param field arraylist of the attribute
+     * @return sorted arrayList
+     */
 
     private ArrayList<Attribute> sortBoardAttributes(ArrayList<Attribute> field) {
         var sortedField = new ArrayList<Attribute>();
@@ -163,6 +182,7 @@ public class GameBoardController {
      * @param player current player
      * @param coordinate position chosen by the player on the board
      */
+
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == ViewClient.getInstance().getThisPlayersID()) {
             isStartPosSet = true;
@@ -190,6 +210,7 @@ public class GameBoardController {
      * @param player Player whose robot should be moved
      * @param newPos new Position of robot after movement is handled
      */
+
     public void handleMovement(Player player, Coordinate newPos) {
         ImageView imageView = robotTokens.get(player);
 
@@ -244,6 +265,7 @@ public class GameBoardController {
      *
      * @param players active player list
      */
+
     @Deprecated
     public void handleShooting(ArrayList<Player> players) {
         for (Coordinate c : map.readLaserCoordinates()) {
@@ -291,6 +313,7 @@ public class GameBoardController {
      *
      * @param players active player list
      */
+
     @Deprecated
     public void handleRobotShooting(ArrayList<Player> players) {
         for (Player player : players) {
@@ -329,6 +352,12 @@ public class GameBoardController {
         }
     }
 
+    /**
+     * This method  shows the animation of laser beam being fired in the view.
+     *
+     * @param players active player list
+     */
+
     public void robotLaserAnimation(ArrayList<Player> players) {
         for (Player player : players) {
             Orientation orientation = player.getRobot().getOrientation();
@@ -336,6 +365,12 @@ public class GameBoardController {
             laserAnimation(players, orientation, robotPos);
         }
     }
+
+    /**
+     * This method shows the animation of laser beam being fired in the view.
+     *
+     * @param players active player list
+     */
 
     public void boardLaserAnimation(ArrayList<Player> players) {
         for (Coordinate c : map.readLaserCoordinates()) {
@@ -348,6 +383,13 @@ public class GameBoardController {
         }
     }
 
+    /**
+     * This method shows the laser beam traversing.
+     * The laser beam will terminate abruptly if it hits the robot or wall on it's way.
+     * @param players arrayList of the players
+     * @param orientation orientation of laser or robot
+     * @param startPos position of robot or laser
+     */
     private void laserAnimation(ArrayList<Player> players, Orientation orientation, Coordinate startPos) {
         Coordinate endPos = LaserAction.calculateLaserEnd(startPos, orientation, map, players);
         Coordinate vector = orientation.toVector();
@@ -401,6 +443,13 @@ public class GameBoardController {
         timeline.play();
     }
 
+    /**
+     * This method checks whether the player is on the path of traversing beam.
+     * @param players playersList
+     * @param endPos end position
+     * @param distance distance
+     * @return true if it hits the robot
+     */
     private boolean isLaserHittingRobot(ArrayList<Player> players, Coordinate endPos, int distance) {
         if (distance > 0) {
             for (Player p : players) {
@@ -412,6 +461,13 @@ public class GameBoardController {
         return false;
     }
 
+    /**
+     * This method creates the hit animation. As the player gets shot by laser, an impact image is shown.
+     * @param endPos position where impact is to be shown
+     * @param vector from where the laser is fired
+     * @param orientation orientation of the beam
+     * @return
+     */
     private Group createHitAnimation(Coordinate endPos, Coordinate vector, Orientation orientation) {
         ImageView hitBase = ImageHandler.createImageView("/otherElements/hitBase.png", orientation);
         assert hitBase != null;
@@ -424,6 +480,10 @@ public class GameBoardController {
         return new Group(hitBase, hitFire);
     }
 
+    /**
+     * It removes the player's robot from the robot pane.
+     * @param player whose robot is to be removed from the robot pane.
+     */
     public void removePlayer(Player player) {
         ImageView imageView = robotTokens.get(player);
         robotPane.getChildren().remove(imageView);
