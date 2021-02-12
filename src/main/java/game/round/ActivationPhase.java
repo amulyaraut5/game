@@ -559,6 +559,15 @@ public class ActivationPhase extends Phase {
         return sortedDistance;
     }
 
+    /**
+     * whenever a robot receives damage this method is called to check if there are enough damage cards available
+     * and send drawDamage or PickDamage based on this information.
+     *
+     * @param damageDeck Deck from which the damage cards should be drawn
+     * @param player player whose robot received damage
+     * @param amount number of damage cards to draw
+     */
+
     public void drawDamage(Deck damageDeck, Player player, int amount) {
         logger.info("drawDamage reached");
         cardTypes.clear();
@@ -588,6 +597,13 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * If a selectDamage protocol was received this method tries to draw the cards from the chosen decks.
+     * If there are not enough cards PickDamage is sent again
+     *
+     * @param selectDamage received message
+     * @param user user whose robot receives damage
+     */
     public void handleSelectedDamage(SelectDamage selectDamage, User user) {
         logger.info("handleSelectedDamage");
         Player player = game.userToPlayer(user);
