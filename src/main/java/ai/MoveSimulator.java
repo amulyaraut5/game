@@ -121,8 +121,9 @@ public class MoveSimulator {
 
     private void handleBeltMovement(ArrayList<Coordinate> belts) {
         Orientation orientation = null;
+        boolean moved = false;
         for (Coordinate coordinate : belts) {
-            if (coordinate.equals(resPosition)) {
+            if (coordinate.equals(resPosition) && moved==false) {
                 for (Attribute a : map.getTile(coordinate).getAttributes()) {
                     if (a instanceof Belt) {
                         orientation = ((Belt) a).getOrientation();
@@ -131,6 +132,7 @@ public class MoveSimulator {
                         orientation = ((RotatingBelt) a).getOrientations()[0];
                     }
                     handleMove(orientation);
+                    moved = true;
 
                     //Rotate robot if moved on Rotating belt
                     for (Attribute attribute : map.getTile(resPosition).getAttributes()) {
