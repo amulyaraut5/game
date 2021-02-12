@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * The abstract class Deck provides methods for the the different inheriting  decks.
  * @author annika
  */
 
 public abstract class Deck {
-    private static final Logger logger = LogManager.getLogger();
     protected Server server = Server.getInstance();
 
     /**
@@ -30,9 +30,9 @@ public abstract class Deck {
     }
 
     /**
-     * Adds a card back to the deck.
+     * Adds a card to the deck.
      *
-     * @param card card to be added back to the deck.
+     * @param card card to be added.
      */
     public void addCard(Card card) {
         getDeck().add(card);
@@ -47,7 +47,7 @@ public abstract class Deck {
     }
 
     /**
-     * removes first card of the deck
+     * Takes the first card of the deck and removes it
      *
      * @return the removed card
      */
@@ -57,6 +57,11 @@ public abstract class Deck {
         return popped;
     }
 
+    /**
+     * Takes the desired card from the deck and removes it
+     * @param card the card to be removed
+     * @return the desired card
+     */
     public Card popThisCard(Card card) {
         int cardIndex = getDeck().indexOf(card);
         Card popped = getDeck().get(cardIndex);
@@ -66,6 +71,9 @@ public abstract class Deck {
 
     /**
      * Return the desired amount of cards and then removes them from the deck.
+     *
+     * @param amount the desired amount of cards
+     * @return the desired amount of cards
      */
     public ArrayList<Card> drawCards(int amount) {
         ArrayList<Card> currentDeck = getDeck();
