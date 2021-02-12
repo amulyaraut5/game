@@ -334,6 +334,7 @@ public class ActivationPhase extends Phase {
             case Worm -> {
                 //Reboot the robot.
                 new RebootAction().doAction(player);
+                currentCards.remove(player);
                 //Add worm card back into the worm deck
                 wormDeck.getDeck().add(new Worm());
             }
@@ -421,6 +422,7 @@ public class ActivationPhase extends Phase {
             rebootedPlayers.add(player);
             activePlayers.remove(player);
             new RebootAction().doAction(player);
+            currentCards.remove(player);
         }
     }
 
@@ -535,13 +537,15 @@ public class ActivationPhase extends Phase {
     public void drawDamage(Deck damageDeck, Player player, int amount) {
         logger.info("drawDamage reached");
         cardTypes.clear();
+        logger.info("Vorher : (Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
+                " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
         if (!(damageDeck.size() < amount)) {
             ArrayList<Card> damageCards = damageDeck.drawCards(amount);
             player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
             for (Card card : damageCards) {
                 cardTypes.add(card.getName());
             }
-            logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
+            logger.info("Nachher: (Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
                     " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
             server.communicateAll(new DrawDamage(player.getID(), cardTypes));
         } else {
@@ -589,7 +593,7 @@ public class ActivationPhase extends Phase {
             }
             logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
                     " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
-            server.communicateAll(new DrawDamage(user.getID(), selectedCards));
+            server.communicateAll(new DrawDamage(user.getID(), cardTypes));
             logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
         }
     }
