@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  * Handles connection for each connected client,
  * therefore the server is able to handle multiple clients at the same time.
  *
- * @author vossa,
+ * @author annika
  */
 
 public class UserThread extends Thread {

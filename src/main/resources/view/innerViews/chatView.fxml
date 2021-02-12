@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextArea?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="500.0" stylesheets="@../view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.ChatController">
     <GridPane>
@@ -41,13 +34,13 @@
                   <Font size="14.0" />
                </font>
                 </Label>
-                <JFXComboBox fx:id="directChoiceBox" focusColor="ORANGE" prefHeight="33.0" prefWidth="157.0" style="-fx-text-fill: #cccad4;" styleClass="directChoiceBox">
+                <JFXComboBox fx:id="directChoiceBox" focusColor="ORANGE" prefHeight="33.0" prefWidth="157.0" style="-fx-prompt-text-fill: #cccad4;" styleClass="directChoiceBox">
                     <HBox.margin>
                         <Insets right="5.0" top="5.0" />
                     </HBox.margin>
                 </JFXComboBox>
             </HBox>
-         <JFXTextField fx:id="messageField" focusColor="ORANGE" onAction="#submitChatMessage">
+         <JFXTextField fx:id="messageField" focusColor="ORANGE" onAction="#submitChatMessage" styleClass="chatLabel">
             <VBox.margin>
                <Insets bottom="5.0" left="5.0" right="5.0" />
             </VBox.margin></JFXTextField>

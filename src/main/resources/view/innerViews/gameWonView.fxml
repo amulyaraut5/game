@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.GameWonController">
     <Pane layoutX="17.0" layoutY="68.0" prefHeight="67.0" prefWidth="379.0" style="-fx-background-color: orange; -fx-border-width: 3; -fx-border-color: white;">
-        <Label layoutX="60.0" layoutY="12.0" prefHeight="43.0" prefWidth="259.0" text="And the Winner is" textFill="WHITE">
+        <Label layoutX="17.0" layoutY="11.0" prefHeight="44.0" prefWidth="329.0" text="And the Winner is" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="35.0" />
             </font>
