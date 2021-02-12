@@ -15,32 +15,26 @@ import java.io.IOException;
 /**
  * This class is responsible for announcing the winner and ending the game.
  *
- * @author TODO
+ * @author annika
  */
 public class GameWonController extends Controller {
 
+    /**
+     * Button to exit the game
+     */
     @FXML
-    private Button exitGameButton; //TODO
-    @FXML
-    private Button newGameButton;//TODO
-
+    private Button exitGameButton;
     /**
      * This pane stores the ImageView of the winner
      */
     @FXML
     private FlowPane winnerIconPane;
     /**
-     * This Label shows thee name of the winner
+     * This Label shows the name of the winner
      */
     @FXML
     private Label winnerLabel;
 
-    private final Game game = Game.getInstance();
-    private final Server server = Server.getInstance();
-
-    private GameController gameController;
-    private final GameBoardController gameBoardController= new GameBoardController();
-    private final LobbyController lobbyController = new LobbyController();
 
     /**
      * This method creates the ImageView and Label of the winner and adds it to the view
@@ -55,19 +49,6 @@ public class GameWonController extends Controller {
 
         winnerIconPane.getChildren().add(imageView);
     }
-
-    /**
-     * TODO
-     */
-    @FXML
-    public void returnClicked() throws IOException {
-        //Platform.runLater(viewManager::resetGame);
-
-        viewManager.reconstructGame();
-    }
-
-
-
 
     /**
      * This method gets called by clicking on exit and exits the game
