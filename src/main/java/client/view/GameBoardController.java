@@ -43,6 +43,7 @@ import static javafx.scene.input.MouseEvent.*;
  * Displays the board, robots, lasers amd their animations.
  *
  * @author simon
+ * @author Amulya
  */
 public class GameBoardController {
     private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
@@ -159,8 +160,8 @@ public class GameBoardController {
     /**
      * This method places the robot on the board based on the starting point player chooses.
      *
-     * @param player     //TODO
-     * @param coordinate //TODO
+     * @param player current player
+     * @param coordinate position chosen by the player on the board
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
         if (player.getID() == ViewClient.getInstance().getThisPlayersID()) {
