@@ -203,6 +203,9 @@ public class OthersController extends Controller {
     }
 
     /**
+     * This method sets the information label cards on the
+     * small playerMat of the player that shuffled cards
+     *
      * @param currentPlayer
      * @param thisPlayer
      */
