@@ -11,6 +11,9 @@ import javafx.scene.image.ImageView;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/**
+ * TODO
+ */
 public class MapController {
     private final ObservableList<String> maps = FXCollections.observableArrayList();
     LobbyController lobbyController;
