@@ -46,11 +46,13 @@ public abstract class Client {
      */
     public void handleDamageCount(ArrayList<CardType> cardList) {
         for (CardType cardType : cardList) {
-            switch (cardType) {
-                case Spam -> setCountSpamCards(countSpamCards - 1);
-                case Trojan -> setCountTrojanCards(countTrojanCards - 1);
-                case Worm -> setCountWormCards(countWormCards - 1);
-                case Virus -> setCountVirusCards(countVirusCards - 1);
+            if (!(cardType == null)) {
+                switch (cardType) {
+                    case Spam -> setCountSpamCards(countSpamCards - 1);
+                    case Trojan -> setCountTrojanCards(countTrojanCards - 1);
+                    case Worm -> setCountWormCards(countWormCards - 1);
+                    case Virus -> setCountVirusCards(countVirusCards - 1);
+                }
             }
         }
     }
@@ -146,7 +148,7 @@ public abstract class Client {
     public String getUniqueName(int id) {
         Player player = getPlayerFromID(id);
         for (Player p : players) {
-            if (player != p && player.getName().equals(p.getName())){
+            if (player != p && player.getName().equals(p.getName())) {
                 String uniqueName = player.getName() + " #" + player.getID();
                 return uniqueName;
             }
