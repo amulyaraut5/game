@@ -135,6 +135,7 @@ public class MoveSimulator {
      * Detects whether the player must reboot.
      *
      * @param newPos Position the player is on.
+     * @return true if player is rebooting, false otherwise
      */
     private boolean isRebooting(Coordinate newPos) {
         if (newPos.isOutsideMap()) {

@@ -265,6 +265,11 @@ public class AIClient extends Client {
         }
     }
 
+    /**
+     * Creates a random card combination from a yourCards message body
+     *
+     * @param yourCards
+     */
     private CardType[] createRandomCombination(YourCards yourCards) {
         CardType[] randCombination = new CardType[5];
         ArrayList<CardType> availableCards = new ArrayList<>(yourCards.getCards());
@@ -328,6 +333,11 @@ public class AIClient extends Client {
         } else disconnect();
     }
 
+    /**
+     * Sorts an array of cards, so that damage cards are at the back
+     * @param combination combination that is sorted
+     * @return sorted combination
+     */
     public CardType[] handleDamageCards(CardType[] combination) {
         CardType[] newList = new CardType[5];
         int i = 0;
@@ -347,6 +357,11 @@ public class AIClient extends Client {
         return newList;
     }
 
+    /**
+     * verifies whether a certain card is a damage card or not.
+     * @param card card that should get checked
+     * @return true if card is a damage card, false otherwise
+     */
     public boolean isDamageCard(CardType card) {
         switch (card) {
             case Spam, Virus, Trojan, Worm:
