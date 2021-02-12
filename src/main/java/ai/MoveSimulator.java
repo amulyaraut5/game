@@ -136,7 +136,8 @@ public class MoveSimulator {
                     for (Attribute attribute : map.getTile(resPosition).getAttributes()) {
                         if (attribute.getType() == AttributeType.RotatingBelt) {
                             RotatingBelt temp = ((RotatingBelt) attribute);
-                            rotateOnBelt(temp.getOrientations());
+                            if(temp.getOrientations()[0] != orientation) rotateOnBelt(temp.getOrientations());
+
                         }
                     }
                 }

@@ -153,7 +153,7 @@ public class LobbyController extends Controller implements Updatable {
             }
             case SelectMap -> {
                 SelectMap selectMap = (SelectMap) message.getBody();
-                showMapView(selectMap.getAvailableMaps());
+                    showMapView(selectMap.getAvailableMaps());
             }
             case MapSelected -> {
                 MapSelected msg = (MapSelected) message.getBody();
@@ -183,8 +183,8 @@ public class LobbyController extends Controller implements Updatable {
     }
 
     public void mapSelected(String map) {
-        overlayPane.setVisible(false);
-        viewClient.sendMessage(new MapSelected(map));
+            overlayPane.setVisible(false);
+            viewClient.sendMessage(new MapSelected(map));
     }
 
     /**

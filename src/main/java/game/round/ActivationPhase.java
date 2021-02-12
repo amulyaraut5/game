@@ -103,10 +103,10 @@ public class ActivationPhase extends Phase {
             currentCards.remove(0);
 
             //check if next player is rebooting
-            if(!currentCards.isEmpty()) {
+            if (!currentCards.isEmpty()) {
                 while (!isNotRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
                     currentCards.remove(0);
-                    if(currentCards.isEmpty()){
+                    if (currentCards.isEmpty()) {
                         break;
                     }
 
@@ -181,9 +181,11 @@ public class ActivationPhase extends Phase {
             if (currentRegister < 5) { //if it is not the 5th register yet the cards from the next register are turned
                 currentRegister++;
                 logger.info("Now in Register " + currentRegister);
-                if(!allPlayersRebooting()) turnCards(currentRegister);
-                else{ game.nextPhase();
-                logger.info("Next Phase called bcs all Rebooting");}
+                if (!allPlayersRebooting()) turnCards(currentRegister);
+                else {
+                    game.nextPhase();
+                    logger.info("Next Phase called bcs all Rebooting");
+                }
 
             } else { //if it is already the 5th register the next phase is called
                 if (!rebootedPlayers.isEmpty()) {
@@ -238,7 +240,7 @@ public class ActivationPhase extends Phase {
      * Handles the movment of one player for one tile in a specific direction. Considers board elements.
      *
      * @param player Player that is moved
-     * @param o Orientation player is moved to
+     * @param o      Orientation player is moved to
      */
     public void handleMove(Player player, Orientation o) {
         //calculate potential new position
@@ -277,7 +279,7 @@ public class ActivationPhase extends Phase {
     /**
      * Moves the player in a direction. Does not consider board elements. Only called by the handleMove method.
      *
-     * @param player Player that is moved
+     * @param player      Player that is moved
      * @param orientation Orientation player is moved to
      */
     public void moveOne(Player player, Orientation orientation) {
@@ -401,6 +403,7 @@ public class ActivationPhase extends Phase {
             }
         }
     }
+
     /**
      * Handles effects of a specific position on the map.(Outside the map? Did the player fall into a pit?)
      *
@@ -544,7 +547,7 @@ public class ActivationPhase extends Phase {
                 for (Card card : damageCards) {
                     cardTypes.add(card.getName());
                 }
-                player.getDiscardedProgrammingDeck().drawCards(alreadyDrawn);
+                player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
                 server.communicateDirect(new PickDamage(amount - (damageDeck.size())), player.getID());
             }
         }
@@ -554,38 +557,41 @@ public class ActivationPhase extends Phase {
         logger.info("handleSelectedDamage");
         Player player = game.userToPlayer(user);
         ArrayList<CardType> selectedCards = selectDamage.getCards();
+        logger.info("selectedCards Damage. " + selectedCards);
         for (CardType cardType : selectedCards) {
-            switch (cardType) {
-                case Spam -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Spam());
-                    spamDeck.pop();
+            if (!(cardType == null)) {
+                switch (cardType) {
+                    case Spam -> {
+                        player.getDiscardedProgrammingDeck().addCard(new Spam());
+                        spamDeck.pop();
+                    }
+                    case Virus -> {
+                        player.getDiscardedProgrammingDeck().addCard(new Virus());
+                        virusDeck.pop();
+                    }
+                    case Worm -> {
+                        player.getDiscardedProgrammingDeck().addCard(new Worm());
+                        wormDeck.pop();
+                    }
+                    case Trojan -> {
+                        player.getDiscardedProgrammingDeck().addCard(new Trojan());
+                        trojanDeck.pop();
+                    }
+                    default -> player.message(new Error("This is not a valid damage card"));
                 }
-                case Virus -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Virus());
-                    virusDeck.pop();
-                }
-                case Worm -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Worm());
-                    wormDeck.pop();
-                }
-                case Trojan -> {
-                    player.getDiscardedProgrammingDeck().addCard(new Trojan());
-                    trojanDeck.pop();
-                }
-                default -> player.message(new Error("This is not a valid damage card"));
+                cardTypes.add(cardType);
             }
-            cardTypes.add(cardType);
+            logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
+                    " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
+            server.communicateAll(new DrawDamage(user.getID(), selectedCards));
+            logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
         }
-        logger.info("(Decks) Spam: " + game.getSpamDeck().size() + " Trojan: " + game.getTrojanDeck().size() +
-                " Virus: " + game.getVirusDeck().size() + " Worm: " + game.getWormDeck().size());
-        server.communicateAll(new DrawDamage(user.getID(), selectedCards));
-        logger.info("playerDiscard: " + player.getDiscardedProgrammingDeck().getDeck());
     }
 
-    public boolean allPlayersRebooting(){
+    public boolean allPlayersRebooting() {
         boolean allRebooting = true;
         for (Player player : players) {
-            if(isNotRebooting(player)) allRebooting=false;
+            if (isNotRebooting(player)) allRebooting = false;
         }
         return allRebooting;
     }

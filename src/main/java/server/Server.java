@@ -53,6 +53,8 @@ public class Server extends Thread {
     private int port = Constants.PORT;
     private Game game;
     private ServerController serverController;
+    private User selectUser = null;
+
     /**
      * number of playersIDs is saved to give a new player a new number
      */
@@ -281,7 +283,6 @@ public class Server extends Thread {
             user.getThread().disconnect();
         }
     }
-
     /**
      * TODO
      *
@@ -297,22 +298,22 @@ public class Server extends Thread {
         maps.add("DizzyHighway");
         maps.add("ExtraCrispy");
 
-        if (!status.isReady()) {
+        if (!status.isReady() && selectUser==user) {
             isMapSent = false;
             isMapSelected = false;
         }
 
-        if (!isMapSent) {
+        if (!isMapSent && !isMapSelected) {
             for (User user1 : notAIs) {
                 try {
                     if (usersAI.get(user1)) {
                         user1.message(new SelectMap(maps));
-                        communicateAll(new Error(""));
                         isMapSent = true;
+                        selectUser = user1;
+                        //isMapSelected = true;
                         break;
                     }
-                } catch (NullPointerException e) {
-                    communicateAll(new Error("Click Ready to select a map"));
+                } catch (NullPointerException ignored) {
                 }
             }
         }
