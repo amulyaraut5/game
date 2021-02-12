@@ -197,7 +197,7 @@ public class Server extends Thread {
                         public void run() {
                             game.getActivationPhase().activateCards(user.getID());
                         }
-                    }, 1500);
+                    }, 0);
                 } else
                     game.getActivationPhase().activateCards(user.getID());
             }

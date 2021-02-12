@@ -18,9 +18,12 @@ public class MoveSimulator {
     private Coordinate resPosition;
     private Orientation resOrientation;
     private boolean reboot = false;
+    private Coordinate controlPoint;
 
-    public MoveSimulator(AIClient aiClient, Map map) {
+    public MoveSimulator(AIClient aiClient, Map map, Coordinate controlpoint) {
         this.map = map;
+        this.controlPoint=controlpoint;
+
     }
 
     public Coordinate simulateCombination(CardType[] cards, Coordinate actualPos, Orientation orientation) {
@@ -35,6 +38,11 @@ public class MoveSimulator {
                 activateGreenBelts();
                 activatePushPanel(i + 1);
                 activateGear();
+                //immediately interupt if on controlpoint
+                if(Coordinate.distance(resPosition,controlPoint)==0){
+                    resPosition=controlPoint;
+                    break;
+                }
             } else {
                 reboot = false;
                 return null;
