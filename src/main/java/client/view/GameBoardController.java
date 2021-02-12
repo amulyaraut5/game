@@ -157,7 +157,7 @@ public class GameBoardController {
     /**
      * This method places the robot on the board based on the starting point player chooses.
      *
-     * @param player //TODO
+     * @param player     //TODO
      * @param coordinate //TODO
      */
     public void placeRobotInMap(Player player, Coordinate coordinate) {
@@ -358,8 +358,8 @@ public class GameBoardController {
         int halfTile = Constants.FIELD_SIZE / 2;
         int startX = startPos.getX() * Constants.FIELD_SIZE + halfTile;
         int startY = startPos.getY() * Constants.FIELD_SIZE + halfTile;
-        int endX = endPos.getX() * Constants.FIELD_SIZE + halfTile + vector.getX() * halfTile;
-        int endY = endPos.getY() * Constants.FIELD_SIZE + halfTile + vector.getY() * halfTile;
+        int endX = endPos.getX() * Constants.FIELD_SIZE + halfTile + vector.getX() * (int) (0.8 * halfTile);
+        int endY = endPos.getY() * Constants.FIELD_SIZE + halfTile + vector.getY() * (int) (0.8 * halfTile);
         int distance = Coordinate.distance(startPos, endPos);
 
         boolean laserHit = isLaserHittingRobot(players, endPos, distance);
