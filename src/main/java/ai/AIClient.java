@@ -217,7 +217,9 @@ public class AIClient extends Client {
         }
 
         for (int i = 0; i < 5; i++) {
-            sendMessage(new SelectCard(bestCombination[i], i + 1));
+            CardType cardType = bestCombination[i];
+            handleDamageCount(cardType);
+            sendMessage(new SelectCard(cardType, i + 1));
         }
     }
 
