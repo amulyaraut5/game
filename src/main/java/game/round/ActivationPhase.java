@@ -558,7 +558,7 @@ public class ActivationPhase extends Phase {
                     cardTypes.add(card.getName());
                 }
                 player.getDiscardedProgrammingDeck().getDeck().addAll(damageCards);
-                server.communicateDirect(new PickDamage(amount - (damageDeck.size())), player.getID());
+                server.communicateDirect(new PickDamage(amount - alreadyDrawn), player.getID());
             }
         }
     }
