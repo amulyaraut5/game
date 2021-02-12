@@ -248,11 +248,18 @@ public class AIClient extends Client {
         if (bestCombination == null) {
             bestCombination = createRandomCombination(yourCards);
         }
-
+        boolean includesAgain=false;
+        for (CardType card : bestCombination) {
+            if(card==CardType.Again){
+                includesAgain=true;
+            }
+        }
         CardType[] improvedCombination = handleDamageCards(bestCombination);
 
+        if (!includesAgain) bestCombination=improvedCombination;
+
         for (int i = 0; i < 5; i++) {
-            CardType cardType = improvedCombination[i];
+            CardType cardType = bestCombination[i];
             sendMessage(new SelectCard(cardType, i + 1));
         }
     }
