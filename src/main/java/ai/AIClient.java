@@ -9,10 +9,7 @@ import utilities.Coordinate;
 import utilities.JSONProtocol.JSONMessage;
 import utilities.JSONProtocol.body.*;
 import utilities.MapConverter;
-import utilities.enums.CardType;
-import utilities.enums.GameState;
-import utilities.enums.MessageType;
-import utilities.enums.Orientation;
+import utilities.enums.*;
 
 import java.util.*;
 
@@ -97,6 +94,7 @@ public class AIClient extends Client {
                 CurrentPlayer msg = (CurrentPlayer) message.getBody();
 
                 if (msg.getPlayerID() == thisPlayersID) {
+                    logger.info("The orientation the AI thinks it is in is (before turn): " + getPlayerFromID(thisPlayersID).getRobot().getOrientation());
                     if (currentPhase == GameState.CONSTRUCTION) {
                         int[] startingPoints = {39, 78, 14, 53, 66, 105};
                         for (int point : startingPoints) {
@@ -157,19 +155,25 @@ public class AIClient extends Client {
             case Movement -> {
                 Movement msg = (Movement) message.getBody();
                 Player ai = getPlayerFromID(msg.getPlayerID());
-                //TODO this might be just a temporary fix. Because rebooted AIs are removed from the player list the player can be null.
-                if (ai != null) {
-                    ai.getRobot().setCoordinate(Coordinate.parse(msg.getTo()));
-                }
             }
             case PlayerTurning -> {
                 PlayerTurning msg = (PlayerTurning) message.getBody();
+                if(msg.getPlayerID() == thisPlayersID) {
+                    if (msg.getDirection() == Rotation.RIGHT) {
+                        getPlayerFromID(thisPlayersID).getRobot().setOrientation(getPlayerFromID(thisPlayersID).getRobot().getOrientation().getNext());
+                    }
+                    else {getPlayerFromID(thisPlayersID).getRobot().setOrientation(getPlayerFromID(thisPlayersID).getRobot().getOrientation().getPrevious());}
+                    logger.info("AI think it's facing " + getPlayerFromID(thisPlayersID).getRobot().getOrientation());
+                }
+                /*
                 Orientation orientation = Orientation.UP;
                 switch (msg.getDirection()) {
                     case RIGHT -> orientation = Orientation.RIGHT;
                     case LEFT -> orientation = Orientation.LEFT;
                 }
+
                 getPlayerFromID(msg.getPlayerID()).getRobot().setOrientation(orientation);
+                 */
             }
             case ConnectionUpdate -> {
                 ConnectionUpdate msg = (ConnectionUpdate) message.getBody();
