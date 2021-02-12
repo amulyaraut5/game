@@ -272,4 +272,5 @@ public class BoardElements {
         if (o[0].getNext() == o[1]) robot.rotate(Rotation.RIGHT);
         else if (o[0].getPrevious() == o[1]) robot.rotate(Rotation.LEFT);
     }
+
 }

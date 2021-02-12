@@ -13,6 +13,8 @@ import utilities.enums.Rotation;
 
 /**
  * @author simon
+ *
+ *
  */
 public abstract class Robot {
     protected final String imagePath;

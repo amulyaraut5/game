@@ -39,14 +39,16 @@ import java.util.List;
 import static javafx.scene.input.MouseEvent.*;
 
 /**
- * TODO
+ * Controller for the 2d gameboard displayed in the GameView and ServerView.
+ * Displays the board, robots, lasers amd their animations.
+ *
+ * @author simon
  */
 public class GameBoardController {
     private final Group[][] fields = new Group[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
     private final HashMap<Player, ImageView> robotTokens = new HashMap<>();
     private Map map;
     private boolean isStartPosSet = false;
-
     @FXML
     private StackPane boardPane; //stacks the map-, animation-, and playerPane
     @FXML
@@ -430,5 +432,4 @@ public class GameBoardController {
     public Pane getRobotPane() {
         return robotPane;
     }
-
 }

@@ -639,6 +639,10 @@ public class ActivationPhase extends Phase {
         }
     }
 
+    /**
+     * Checks if every player is rebooting at the same time.
+     *
+     */
     public boolean allPlayersRebooting() {
         boolean allRebooting = true;
         for (Player player : players) {
@@ -648,7 +652,7 @@ public class ActivationPhase extends Phase {
     }
 
     /**
-     * returns if a player is rebooting
+     * returns if a player is not rebooting
      *
      * @param player player to check
      * @return true if player is rebooting
