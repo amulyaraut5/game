@@ -1,33 +1,63 @@
-# Informationen
-Hallo Astreine Akazien,
+# 🤖 RoboRally - Astreine Akazien
+Willkommen zu RoboRally!
 
-dies hier ist euer Git-Repository, welches ihr im Rahmen des Softwareentwicklungspraktikums nutzen könnt und sollt. Im derzeitigen Zustand befindet sich in diesem dieses Readme, welches ihr grade lest, und ein [.gitignore](https://git-scm.com/docs/gitignore)-File.
+Link zu den jar Dateien: https://1drv.ms/u/s!Ah7XKHHWiSYIq1biW8CvM2ZXlti6?e=EBypyX
 
-## Handhabung
+## Spiel Starten
 
-Eine sehr einfach und verständliche Anleitung zum Thema "git" findet ihr unter folgender Adresse:  https://rogerdudler.github.io/git-guide/index.de.html (Bitte schaut euch diese mindestens einmal an!)
+- um unser Spiel zu spielen musst du nur den Client öffnen 
+  (entweder Doppelklick, oder in der Konsole mit: java -jar path\Client.jar)
 
-### Download
-* Git für eure Kommandozeile könnt ihr euch hier herunterladen: https://git-scm.com/downloads
-* Als Plugin für Eclipse: https://www.eclipse.org/egit/
-* Einbindung in IntelliJ: https://www.jetbrains.com/help/idea/using-git-integration.html
+- In das Textfeld im Menü kannst du eine passende Portnummer eingeben, 
+  oder du nutzt die Voreinstellung, um dich mit unserem Server zu verbinden und gibst nichts ein.
+
+- Um das Spiel zu starten klicke zunächst auf "Host".
+  Jeder weitere Spieler kann durch das Klicken auf "Join" beitreten. 
+
+- Gib nun einen Usernamen ein und wähle deinen Roboter aus.
+
+- Mit dem Klicken von "Ready" signalisierst du Bereitschaft zu spielen. 
+
+- Der Spieler, der zuerst  "Ready" geklickt hat, darf in der "MapSelectionView" eine Map auswählen.
+
+- Alle weiteren Anweisungen erfährst du während des Spieles.
+
+  Viel Spaß!
+
+  
+
+## Cheats und Hotkeys
+
+### Cheats:
+
+Durch das Eingeben von `#cheats` in den Chat bekommst du eine Auflistung aller Cheats.
+
+Um die Cheats zu aktivieren tippe: `#cheats on` in den Chat.
+
+| Cheat          | Funktion                                         |
+| -------------- | ------------------------------------------------ |
+| #cheats        | Liste aller Cheats                               |
+| #cheats on/off | schaltet Cheats an/aus                           |
+| #tp `pos`      | teleportiert den Roboter                         |
+| #tp `x y` | teleportiert den Roboter                         |
+| #r `u,r,d,l`   | rotiert den Roboter nach oben/rechts/unten/links |
+| #endTimer      | beendet den Timer                                |
+| #autoPlay      | spielt automatisch alle Play-Its                 |
+| #activateBoard | aktiviert das Board                              |
+| #damage <n>    | verteilt Spamkarten                              |
+| #damageDecks   | zeigt die DamageDecks an                         |
+| #emptySpam     | entleert das SpamDeck                            |
+| #win           | der Spieler gewinnt                              |
+| #fire          | feuert Laser                                     |
 
 
-### Einstellungen
 
-    git config --global user.name "Vorname Nachname"
-    git config --global user.email "name@cip.ifi.lmu.de"
+### Hotkeys:
 
-### Klonen des Repositorys
-Die Adresse eures Repositorys findet ihr oben rechts auf dieser Seite, wenn ihr auf den blauen `Clone` Knopf klickt. 
-Auf euren Computer bekommt ihr dieses dann, indem ihr im gewünschten Verzeichnis folgenden Befehl aufruft:
+Durch das Eingeben von `#hotkeys` bekommst du eine Auflistung aller Hotkeys.
 
-    
-    git clone git@gitlab2.cip.ifi.lmu.de:dbs_sep/dbs_sep2020-21/vp-astreine-akazien.git
+| Hotkeys             | Funktion                 |
+| ------------------- | ------------------------ |
+| Klicken auf die Map | teleportiert den Roboter |
+| WASD keys           | rotiert den Roboter      |
 
-Dies setzt einen von euch erstellten SSH Schlüssel voraus. Informiert euch bitte, wie ihr dies mit eurem Betriebssystem am Besten macht. Alternativ auch möglich mit https zu arbeiten. 
-
-## Keine Angst!
-Git und GitLab bieten eine Menge an Funktionen. Wir möchten euch ermutigen diese zu erkunden und zu experimentieren. Solltet ihr Hemmungen haben an diesem Repository zu werkeln, könnt ihr euch auch gerne beliebig viele eigene Repositorys hier im GitLab erstellen und dort euer Wissen erweitern.
-
-Solltet ihr im Laufe des Praktikums dazu entscheiden mit Branches zu arbeiten, würden wir euch bitten diese nicht mutwillig zu löschen. Um die schlimmsten Unfälle zu verhindern, ist in diesem Repository das Löschen des `master` Branches sowie `git push --force` auf diesem Branch nicht möglich. Falls ihr zusätzliche Branches geschützt haben möchtet, wendet euch bitte an euren Tutor.

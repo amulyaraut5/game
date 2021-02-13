@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="playCardAnchorPane" layoutX="36.0" layoutY="78.0" prefHeight="633.0" prefWidth="644.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayCardController">
+    <Label fx:id="infoLabel" layoutX="10.0" layoutY="-29.0" prefHeight="82.0" prefWidth="336.0" textFill="#cccad4" />
+
+    <ImageView fx:id="currentCardImageView" fitHeight="150.0" fitWidth="110.0" layoutX="124.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" />
+    <JFXButton fx:id="playItButton" buttonType="RAISED" layoutX="89.0" layoutY="247.0" onAction="#playItButton" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: orange;" text="Play It" textFill="WHITE">
+        <font>
+            <Font name="System Bold" size="15.0" />
+        </font>
+    </JFXButton>
+    <AnchorPane fx:id="drawDamageAnchorPane" layoutX="47.0" layoutY="298.0" prefHeight="123.0" prefWidth="222.0">
+        <ImageView fitHeight="139.0" fitWidth="210.0" layoutX="-14.0" layoutY="-2.0" pickOnBounds="true">
+            <Image url="@../../otherElements/speech-bubble.png" />
+        </ImageView>
+        <HBox fx:id="drawDamageHBox" layoutX="32.0" layoutY="42.0" prefHeight="63.0" prefWidth="151.0" />
+        <Label fx:id="drawDamageLabel" layoutX="46.0" layoutY="8.0" prefHeight="30.0" prefWidth="144.0" textFill="WHITE" />
+      <effect>
+         <DropShadow />
+      </effect>
+
+    </AnchorPane>
+</AnchorPane>
