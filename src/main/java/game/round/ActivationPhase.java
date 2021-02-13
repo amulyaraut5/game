@@ -105,11 +105,12 @@ public class ActivationPhase extends Phase {
         if (playerRegisterCard.getPlayerID() == playerID) {
             CardType currentCard = playerRegisterCard.getCard();
             handleCard(currentCard, game.getPlayerFromID(playerID));
-            currentCards.remove(0);
-
+            if (!currentCards.isEmpty()) {
+                currentCards.remove(0);
+            }
             //check if next player is rebooting
             if (!currentCards.isEmpty()) {
-                while (!isRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
+                while (isRebooting(game.getPlayerFromID(currentCards.get(0).getPlayerID()))) {
                     currentCards.remove(0);
                     if (currentCards.isEmpty()) {
                         break;
@@ -470,9 +471,12 @@ public class ActivationPhase extends Phase {
     public ArrayList<Player> determinePriority(Coordinate antenna) {
         ArrayList<RobotDistance> sortedDistance = sortDistance(antenna);
         ArrayList<Player> playerPriority = new ArrayList<>();
+        int sortedDistanceSize = sortedDistance.size();
 
-        for (int i = 0; i < sortedDistance.size(); i++) {
-            if (sortedDistance.size() == 1) {
+        for (int i = 0; i < sortedDistanceSize; i++) {
+            if (sortedDistance.size() == 0) {
+                return playerPriority;
+            } else if (sortedDistance.size() == 1) {
                 playerPriority.add(sortedDistance.get(0).getPlayer());
                 sortedDistance.remove(0);
                 //objects have the same distance values -> selection by clockwise antenna beam

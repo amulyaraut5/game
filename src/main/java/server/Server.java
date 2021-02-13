@@ -199,7 +199,7 @@ public class Server extends Thread {
                         public void run() {
                             game.getActivationPhase().activateCards(user.getID());
                         }
-                    }, 0);
+                    }, 1900);
                 } else
                     game.getActivationPhase().activateCards(user.getID());
             }
